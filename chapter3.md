@@ -489,7 +489,7 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 这句话里面，“what” 末尾的/t/与 “should” 前面的/ʃ/结合，变成了/ʧ/，而 “should” 末尾的/d/与后面的/ju:/结合成/djə/（因为 “you” 被弱读，后面的 “do” 被强读）。这句话里的/d + j/组合，并没因产生音变而成为 “ʤ”
 
-/s + j/可能会变成/ʃ/。注意，都是 “可能” 而非 “必须。实际上，/s + j/的情况并不多，最常见的是这个短语 “this year”。其实，是否产生音变，实在是因人而异 —— 有些人在发/s/音的时候，舌面更靠上一些；而另外一些人在发/s/音的时候，舌面没有那么靠上。舌面更靠上的人（下面第一句话），读出来，感觉是变成/ðɪ-ˈʃɪə/了，而舌面没有那么靠上的人（下面第二句话），读出来就没有什么变化。（其实，即便是同一个人说话，也不一定总是一模一样的，比如，他也可能有时候舌面更靠上一点，而另外一些时候没那么靠上。）
+/s + j/可能会变成/ʃ/。注意，都是 “可能” 而非 “必须”。实际上，/s + j/的情况并不多，最常见的是这个短语 “this year”。其实，是否产生音变，实在是因人而异 —— 有些人在发/s/音的时候，舌面更靠上一些；而另外一些人在发/s/音的时候，舌面没有那么靠上。舌面更靠上的人（下面第一句话），读出来，感觉是变成/ðɪ-ˈʃɪə/了，而舌面没有那么靠上的人（下面第二句话），读出来就没有什么变化。（其实，即便是同一个人说话，也不一定总是一模一样的，比如，他也可能有时候舌面更靠上一点，而另外一些时候没那么靠上。）
 
 > As the committee in charge of **this year's** tree-planting project, we have several items on our agenda. （第9篇第2句）
 
@@ -810,7 +810,7 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 * “interested in it” 末尾的/t/，口腔动作完整，但没有气流振动，感觉像切音；
 * “it offers” 中的/t/夹在两个原因之间，所以，浊化；“offer”“二声”；
 * “teaching” 被强读，“一声”；
-* “that is“中的/t/浊化；
+* “that is” 中的/t/浊化；
 * “tutoring” 强读，“四声”；
 * “and English” 连读，“English” 被强读，“四声”；
 
