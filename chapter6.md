@@ -36,7 +36,7 @@
 如果有机会接触各个文化的人就都知道了：其实，地球上任何一个文化的人群都一样，大部分的人讨厌甚至憎恨语法学习。许多年前，英国人在他们的语文课上要花费大量的时间精力教学生所谓 “Parsing” 的语法分析方法，可是现在却因所谓 “现代教育改革”（其实只不过是和过往任何一次该领域中的改革一样 “过大于功” 的另外一次 “改变” 而已）而被弃用：
 
 > **Parsing**: Lost art of identifying all the components of a text, and once one of the fundamental exercises that tested and informed pupils in English. To parse a phrase such as ‘man bites dog’ involves noting that the singular noun ‘man’ is the subject of the sentence, the verb ‘bites’ is the third person singular of the present tense of the verb to bite, and the singular noun ‘dog’ is the object of the sentence.
-	
+
 > – Dictionary of Modern English Grammar, by Ned Halley, Wordsworth, 2005
 
 这种基础语言训练是否像那些 “新锐改革派” 们所认为的那样一无是处乃至于必须废弃呢？才不是呢。事实上，这些所谓的改革者尽管愚蠢但在历史进程中却属于 “成功者”，因为他们 “竟然” 用不合理战胜了合理。其实也没啥可奇怪的，傻蛋总是可以 “成功” 地把世界变坏，这种例子随处可见，因为傻蛋最容易找到（众多）同伴，也因此在投票活动中最可能成为大多数 …… 他们最常挂在嘴边上的话是套用这个句型的：“……要不然怎么大家都……？” —— 尽管使用这个句型的句子有时候也确实有道理。
@@ -151,7 +151,7 @@
 
 如果一本语法书中没有找到满意的答案，那就再换一本语法书，最终总能找到答案。有时就算在一本语法书中找到了答案，也可以再翻翻另外一本语法书，因为这么做总是可以找到一些补充的信息。
 
-## 5. 很多中国学生学的是数学式语法而不是英语语法
+## 5. 很多中国学生学的是数学语法而不是语言语法
 
 很多人用对待初等数学的方式对待英语，这是一种过分简单化的看法，或者说是一种不切实际的想法和做法。
 
