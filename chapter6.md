@@ -36,7 +36,7 @@
 如果有机会接触各个文化的人就都知道了：其实，地球上任何一个文化的人群都一样，大部分的人讨厌甚至憎恨语法学习。许多年前，英国人在他们的语文课上要花费大量的时间精力教学生所谓 “Parsing” 的语法分析方法，可是现在却因所谓 “现代教育改革”（其实只不过是和过往任何一次该领域中的改革一样 “过大于功” 的另外一次 “改变” 而已）而被弃用：
 
 > **Parsing**: Lost art of identifying all the components of a text, and once one of the fundamental exercises that tested and informed pupils in English. To parse a phrase such as ‘man bites dog’ involves noting that the singular noun ‘man’ is the subject of the sentence, the verb ‘bites’ is the third person singular of the present tense of the verb to bite, and the singular noun ‘dog’ is the object of the sentence.
-	
+
 > – Dictionary of Modern English Grammar, by Ned Halley, Wordsworth, 2005
 
 这种基础语言训练是否像那些 “新锐改革派” 们所认为的那样一无是处乃至于必须废弃呢？才不是呢。事实上，这些所谓的改革者尽管愚蠢但在历史进程中却属于 “成功者”，因为他们 “竟然” 用不合理战胜了合理。其实也没啥可奇怪的，傻蛋总是可以 “成功” 地把世界变坏，这种例子随处可见，因为傻蛋最容易找到（众多）同伴，也因此在投票活动中最可能成为大多数 …… 他们最常挂在嘴边上的话是套用这个句型的：“……要不然怎么大家都……？” —— 尽管使用这个句型的句子有时候也确实有道理。
@@ -55,7 +55,7 @@
 
 为了成为一个有影响力的公众人物，林肯经常要步行很久去参加 William Mentor Graham 的演讲培训。可是林肯却长期进步缓慢，表现欠佳。还好林肯悟性不错，意识到语法的重要：
 
-> “Spoke to me one day and said: ‘I had a notion of studying grammar‘, recalled Graham. “There was none in the village and I said to him: ‘I know of a grammar at one Vance’s (a man named John Vance), about six miles. Got up and went on foot to Vance’s and got the book. He soon came back and told me he had it. He then turned his immediate and almost undivided attention to English grammar. The book was Kirkham’s Grammar, an old (1826) volume.”
+> “Spoke to me one day and said: ‘I had a notion of studying grammar’, recalled Graham. “There was none in the village and I said to him: ‘I know of a grammar at one Vance’s (a man named John Vance), about six miles. Got up and went on foot to Vance’s and got the book. He soon came back and told me he had it. He then turned his immediate and almost undivided attention to English grammar. The book was Kirkham’s Grammar, an old (1826) volume.”
 
 > – “My Childhood’s Home” Growing Up With Young Abe Lincoln, by Richard Kigel
 
@@ -81,7 +81,7 @@
 
 丘吉尔，不仅语法功底扎实，据说词汇量也是现代人中最大的。据说他所使用过的词汇（含文稿和讲演稿）总计超过六万个，而大多数普通人能够熟练使用的词汇，书面语中最多两万个左右，而口语中不过区区五千个左右。可是丘吉尔也并不是完人：
 
-> If one were looking for an iconic image of the Second World War that summed up Allied pluck and derring-do it would have to be that of Winston Churchill with index and middle finger raised in a defiant ‘V’ for “Victory” sign. Revered for his strength of character and his willful defiance of Nazi Germany when Britain stood alone against the Third Reich, Winston Churchill is cherished throughout the world as one of the war’s most heroic figures. His legacy during one of the darkest eras in human history paints a portrait of the man as a wonderful, larger-than-life personality—a characterization that overshadows his faults and shortcomings in those crucial years. But those faults and shortcomings had a devastating legacy of their own. Winston Churchill: The Flawed Genius of World War II examines the decisions and policies Churchill made in the vital months between June 1940 and December 1941 that prolonged the war, allowed for millions of casualties, and left half of Europe behind the Iron Curtain. In 1941 Britain was waging a successful campaign against Italy in North Africa. General O’Connor could in fact have beaten them altogether and thereby prevented Rommel and his army from even landing. However, Churchill made the fatal decision to switch key British and Commonwealth divisions from North Africa to Greece in order to defend that country from German invasion, a heroic but guaranteed-to-fail gesture, and fail it did. When the United States entered the war, George Marshall’s victory plan was to launch an invasion of the Continent—what would become operation Overlord—early in 1943 and force a direct engagement of the enemy. But Churchill’s decision to remove troops to Greece stalled Britain’s victory in North Africa and enabled Rommel and his crack Afrika Korps to gain a foothold. Now Churchill urged Roosevelt to help beleaguered British troops in the African desert and that meant diverting troops from Marshall’s victory plan. It made landing in northwestern Europe entirely impossible, and D-day, the main objective of attacking Germany directly, through France, was postponed until June 1944. As a result, by the time the Allies landed in Normandy, Soviet troops were further west than they would have been in 1943. In that crucial year, millions of civilians—Jewish, Russian, Polish, and German—died who might have lived. By the war’s end Stalin had already eclipsed half of Europe. Had D-day been earlier the Iron Curtain may have fallen with very different and diminished borders and millions of Central Europeans could have lived in freedom from 1945-1989. While Churchill’s was only one player in the drama that allowed this calamity to happen, Christopher Catherwood contends that it certainly tarnished the legacy of his “finest hour.”
+> If one were looking for an iconic image of the Second World War that summed up Allied pluck and derring-do it would have to be that of Winston Churchill with index and middle finger raised in a defiant “V” for “Victory” sign. Revered for his strength of character and his willful defiance of Nazi Germany when Britain stood alone against the Third Reich, Winston Churchill is cherished throughout the world as one of the war’s most heroic figures. His legacy during one of the darkest eras in human history paints a portrait of the man as a wonderful, larger-than-life personality—a characterization that overshadows his faults and shortcomings in those crucial years. But those faults and shortcomings had a devastating legacy of their own. Winston Churchill: The Flawed Genius of World War II examines the decisions and policies Churchill made in the vital months between June 1940 and December 1941 that prolonged the war, allowed for millions of casualties, and left half of Europe behind the Iron Curtain. In 1941 Britain was waging a successful campaign against Italy in North Africa. General O’Connor could in fact have beaten them altogether and thereby prevented Rommel and his army from even landing. However, Churchill made the fatal decision to switch key British and Commonwealth divisions from North Africa to Greece in order to defend that country from German invasion, a heroic but guaranteed-to-fail gesture, and fail it did. When the United States entered the war, George Marshall’s victory plan was to launch an invasion of the Continent—what would become operation Overlord—early in 1943 and force a direct engagement of the enemy. But Churchill’s decision to remove troops to Greece stalled Britain’s victory in North Africa and enabled Rommel and his crack Afrika Korps to gain a foothold. Now Churchill urged Roosevelt to help beleaguered British troops in the African desert and that meant diverting troops from Marshall’s victory plan. It made landing in northwestern Europe entirely impossible, and D-day, the main objective of attacking Germany directly, through France, was postponed until June 1944. As a result, by the time the Allies landed in Normandy, Soviet troops were further west than they would have been in 1943. In that crucial year, millions of civilians—Jewish, Russian, Polish, and German—died who might have lived. By the war’s end Stalin had already eclipsed half of Europe. Had D-day been earlier the Iron Curtain may have fallen with very different and diminished borders and millions of Central Europeans could have lived in freedom from 1945-1989. While Churchill’s was only one player in the drama that allowed this calamity to happen, Christopher Catherwood contends that it certainly tarnished the legacy of his “finest hour.”
 
 > – Winston Churchill: The Flawed Genius of WWII by Christopher Catherwood
 
@@ -151,7 +151,7 @@
 
 如果一本语法书中没有找到满意的答案，那就再换一本语法书，最终总能找到答案。有时就算在一本语法书中找到了答案，也可以再翻翻另外一本语法书，因为这么做总是可以找到一些补充的信息。
 
-## 5. 很多中国学生学的是数学式语法而不是英语语法
+## 5. 很多中国学生学的是数学语法而不是语言语法
 
 很多人用对待初等数学的方式对待英语，这是一种过分简单化的看法，或者说是一种不切实际的想法和做法。
 
@@ -242,7 +242,11 @@
 
 期间，我告诉他，这一年里，我自己出资向上海科学技术文献出版社联系，前后印了 5000 册《新编英语阅读手册》，叶先生很开心。不过，接下来我才知道，叶先生的《实用科技英语阅读手册》卖了 130 万册，而作者却一分钱稿费没要 —— 特殊的时代，特殊的决定。而这次加印 5000 册的事情，叶先生也并不知道……
 
-我把这件事情讲给周筠老师听。周筠老师是博文视点的出版人，我的书《把时间当作朋友》就是她制作的。周老师认为《新编英语阅读手册》是本好书，绝对不应该就这样消失。于是带着助手夏青几次奔赴天津，与叶先生确定重版事宜。读者们有福了，从 2010 年 3 月份起，可以买到武汉博文视点重新出版的《新编英语阅读手册》了 —— 它终于重见天日！
+在我与博文视点的夏青几次奔赴天津，与叶先生确定重版事宜之后，读者们有福了，从 2010 年 3 月份起，可以买到武汉博文视点重新出版的《新编英语阅读手册》了 —— 它终于重见天日！
+
+> 可惜，后来这本书又 “断印” 了…… 于是，我只好把它的电子版（未经加工）放到 github 上：
+>
+> > https://github.com/xiaolai/a-new-english-reading-handbook
 
 ## 7. 反复通读至少一本语法书
 
@@ -285,3 +289,6 @@
 那些语法概念并非不重要，只不过我们并不需要像患了强迫症一般非要一次就把它们全部彻底搞定。在反复的浏览过程中，那些曾经艰涩的概念大多都会潜移默化地被吸收，不再那么难缠。并且，有些概念就算搞不清，其实也无所谓。例如 “独立主格结构” 这个概念，不了解又怎么样呢？只要遇到那样的句子之时能够正确理解其意（因为做过好几遍那么多例句的替换练习）不就可以了么？有些人好不容易搞清楚了 “独立主格结构” 这个概念，换一本语法书（比如 Collins Cobuild 的《英语语法大全》）之后，才发现那个概念在这些书里叫另外一个名字，于是就痛苦不堪……
 
 **别想了，开始行动吧。**
+
+| [< 第五章: 词典](./chapter5.md) | [第七章: 精读 >](./chapter7.md) |
+| ------------------------------- | ------------------------------- |
