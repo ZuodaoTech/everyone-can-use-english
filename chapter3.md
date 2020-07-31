@@ -238,15 +238,15 @@ AudioEdit Deluxe v4.10 截图
 
 常见的音节结构有以下几种（以下单词都是单音节单词）：
 
-元音：a /eɪ/, eye /aɪ/
-辅音+元音：tea /tiː/, bay /beɪ/
-辅音+辅音+元音：fly /flaɪ/, sky /skaɪ/
-元音+辅音：ebb /eb/, odd /ɔd/
-辅音+元音+辅音：beep /biːp/, big /bɪg/
-元音+辅音+辅音：east /iːst/，axe /æks/
-辅音+辅音+元音+辅音：stop /stɔp/, bleed /bliːd/
-辅音+元音+辅音+辅音：last /læst/, lapse /læps/
-辅音+辅音+元音+辅音+辅音：blast /blæst/, frost /frɔːst/
+* 元音：a /eɪ/, eye /aɪ/
+* 辅音+元音：tea /tiː/, bay /beɪ/
+* 辅音+辅音+元音：fly /flaɪ/, sky /skaɪ/
+* 元音+辅音：ebb /eb/, odd /ɔd/
+* 辅音+元音+辅音：beep /biːp/, big /bɪg/
+* 元音+辅音+辅音：east /iːst/，axe /æks/
+* 辅音+辅音+元音+辅音：stop /stɔp/, bleed /bliːd/
+* 辅音+元音+辅音+辅音：last /læst/, lapse /læps/
+* 辅音+辅音+元音+辅音+辅音：blast /blæst/, frost /frɔːst/
 
 而多音节单词，就用以上的模式去套，看看能够划分出多少个合乎以上模式的音节出来 —— 辅助原则很简单：多音节的单词，除了最后一个音节之外，基本上是以上 9 种之中的前 5 种居多。
 
@@ -270,76 +270,74 @@ Community service is an important component of education here at our university.
 
 如果一个单词被强读，那么这个单词中的：
 
-长元音会被读的很清楚，并且足够长，甚至显得更长一些；
-双元音会被读的很饱满，并且显得很有弹性；
-落在重音上的短元音都会显得更长一些；
-重音所在的音节可能带着不同的声调（平调、升调、降调）……
-重音所在的音节可能带着不同的音高（往往是 “高”、“中”、“低” 中的 “高”）……
+* 长元音会被读的很清楚，并且足够长，甚至显得更长一些；
+* 双元音会被读的很饱满，并且显得很有弹性；
+* 落在重音上的短元音都会显得更长一些；
+* 重音所在的音节可能带着不同的声调（平调、升调、降调）……
+* 重音所在的音节可能带着不同的音高（往往是 “高”、“中”、“低” 中的 “高”）……
 
 如果一个单词被弱读，那么这个单词中的：
 
-长元音会变得短一些（几乎与短元音的长度相当）；
-重音音节会变得与非重音音节一样轻；
-很多元音都会发生变化，向/ə/靠拢；
-轻辅音/s/、/t/、/k/、/f/之后的元音/ə/可能会直接被省略掉；
-整个单词所处的音高往往是 “高”、“中”、“低” 之中的 “低”，最多是 “中”……
+* 长元音会变得短一些（几乎与短元音的长度相当）；
+* 重音音节会变得与非重音音节一样轻；
+* 很多元音都会发生变化，向/ə/靠拢；
+* 轻辅音/s/、/t/、/k/、/f/之后的元音/ə/可能会直接被省略掉；
+* 整个单词所处的音高往往是 “高”、“中”、“低” 之中的 “低”，最多是 “中”……
 
 其实，哪怕在单独读某一个单词的时候，其中元音的长短都会受到重音重读的影响。比如，“city” 这个单词，重音在第一个音节上，而两处的元音是一样的：/ˈsi-ti/；但是只要你把第一个音节读得足够重，自然而然就能感觉到第一个/i/要比第二个/i/长。
 
 大多数助动词、系动词、介词、连词、冠词、代词，都有两种发音形式：强读式、弱读式。这些单词往往都是单音节单词。在自然语流中，它们更多的情况下是以弱读式读出的。以下是其中最常见最普及的强读式、弱读式对照列表。注意，以下的列表不能当作规则使用，不是所有的虚词在任何情况下都必须弱读；也不是所有的实词都必须被强读。下面的列表只是在描述现象。
 
-
-a: /eɪ/→/ə/
-am: /æm/→/əm, m/
-an: /æn/→/ən, n/
-and: /ænd/→/ənd, nd, ən, n/
-any: /'eni/→/ni/
-are: /a:/→/ə/
-as: /æs/→/əz/
-at: /æt/→/ət/
-but: /bʌt/→/bət/
-can: /kæn/→/kən, kn, kŋ/
-could: /kud/→/kəd, kd/
-do: /duː/→/du, də, d/
-does: /dʌz/→/dəz, z, s/
-for: /fɔː/→/fə/
-from: /frɔm/→/frəm, frm/
-had: /hæd/→/həd, əd, d/
-has: /hæz/→/həz, əz, z, s/
-have: /hæv/→/həv, əv, v/
-he: /hiː/→/hi, iː, i/
-her: /həː/→/hə, əː, ə/
-him: /him/→/im/
-his: /hiz/→/iz/
-I: /ai/→/aː, ə/
-is: /iz/→/s, z/
-many: /'meni/→/mni/
-me: /miː/→/mi/
-must: /mʌst/→/məst, məs/
-my: /mai/→/mi/
-of: /əv/→/əv, v, ə/
-our: /ɑʊɚ/→/ar/
-shall: /ʃæl/→/ʃəl, ʃl/
-she: /ʃiː/→/ʃi/
-should: /ʃud/→/ʃəd, ʃd, ʃt/
-so: /səʊ/→/sə/
-some: /sʌm/→/səm, sm/
-such: /sʌʧ/→/səʧ/
-than: /ðæn/→/ðən, ðn/
-that: /ðæt/→/ðət/
-the: /ði:/→/ði, ðə/
-them: /ðem/→/ðəm, ðm, əm, m/
-then: /ðen/→/ðən/
-to: /tuː/→/tu, tə/
-us: /us/→/əs/
-was: /wɔz/→/wəz, wə/
-we: /wiː/→/wi/
-were: /wəː/→/wə/
-when: /wen/→/wən/
-will: /wil/→/əl, l/
-would: /wud/→/wəd, əd, d/
-you: /juː/→/ju/
-
+* a: /eɪ/→/ə/
+* am: /æm/→/əm, m/
+* an: /æn/→/ən, n/
+* and: /ænd/→/ənd, nd, ən, n/
+* any: /'eni/→/ni/
+* are: /a:/→/ə/
+* as: /æs/→/əz/
+* at: /æt/→/ət/
+* but: /bʌt/→/bət/
+* can: /kæn/→/kən, kn, kŋ/
+* could: /kud/→/kəd, kd/
+* do: /duː/→/du, də, d/
+* does: /dʌz/→/dəz, z, s/
+* for: /fɔː/→/fə/
+* from: /frɔm/→/frəm, frm/
+* had: /hæd/→/həd, əd, d/
+* has: /hæz/→/həz, əz, z, s/
+* have: /hæv/→/həv, əv, v/
+* he: /hiː/→/hi, iː, i/
+* her: /həː/→/hə, əː, ə/
+* him: /him/→/im/
+* his: /hiz/→/iz/
+* I: /ai/→/aː, ə/
+* is: /iz/→/s, z/
+* many: /'meni/→/mni/
+* me: /miː/→/mi/
+* must: /mʌst/→/məst, məs/
+* my: /mai/→/mi/
+* of: /əv/→/əv, v, ə/
+* our: /ɑʊɚ/→/ar/
+* shall: /ʃæl/→/ʃəl, ʃl/
+* she: /ʃiː/→/ʃi/
+* should: /ʃud/→/ʃəd, ʃd, ʃt/
+* so: /səʊ/→/sə/
+* some: /sʌm/→/səm, sm/
+* such: /sʌʧ/→/səʧ/
+* than: /ðæn/→/ðən, ðn/
+* that: /ðæt/→/ðət/
+* the: /ði:/→/ði, ðə/
+* them: /ðem/→/ðəm, ðm, əm, m/
+* then: /ðen/→/ðən/
+* to: /tuː/→/tu, tə/
+* us: /us/→/əs/
+* was: /wɔz/→/wəz, wə/
+* we: /wiː/→/wi/
+* were: /wəː/→/wə/
+* when: /wen/→/wən/
+* will: /wil/→/əl, l/
+* would: /wud/→/wəd, əd, d/
+* you: /juː/→/ju/
 
 这些词的弱读形式在托福听力中都特别常见，比如，“our” 这个单词，大多数情况下都被读成/ar/。比如在以下两句话中：
 
