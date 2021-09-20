@@ -256,8 +256,8 @@ AudioEdit Deluxe v4.10 截图
 
 掌握强读弱读规律，是使自己的语流变得自然的关键。只要掌握了强读弱读的规律，哪怕某些音素的发音不够好，语流依然会显得很自然，也更容易被别人听懂。我们在美国惊悚电影里经常可以听到外国特工，比如俄国特工或者伊朗特工，所讲的英语。他们尽管讲话有着明显的口音，但不仅流利，并且沟通无障碍 —— 而对方讲一口 “地道标准” 的美式英语，却也并不因为这些外国特工有口音而听不懂他们在说什么。这样的情况能够说明的是，单独的音素发音尽管很重要，但显然有比这个更重要的东西需要关注，比如现在正在讲的强读弱读规律。
 
-> 以下所使用的例子，音频文件位于 `files/TOELFL-PartC-93/audios/` 目录之下……
-> [鼠标右键点击此链接将音频文件 '另存为...' 至本地文件夹](https://raw.githubusercontent.com/xiaolai/everyone-can-use-english/master/files/TOELFL-PartC-93/audios/1.mp3)
+> * 以下所使用的例子，音频文件位于 `files/TOELFL-PartC-93/audios/` 目录之下……
+> * [使用鼠标右键点击此链接将本节使用的音频文件 '另存为...' 至本地文件夹](https://raw.githubusercontent.com/xiaolai/everyone-can-use-english/master/files/TOELFL-PartC-93/audios/1.mp3)
 
 以下是 TOEFL 听力录音中第一篇中的前两个句子，请注意同一个单词 “community” 第一次出现和第二次出现时的具体不同：
 
