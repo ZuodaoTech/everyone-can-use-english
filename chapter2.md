@@ -38,9 +38,9 @@
 
 如此这般之后，我才反应过来，其实我自己讲中文也是如此的。平时跟朋友闲聊，倒不见得一定要准备，但是哪次上台演讲不需要提前准备呢？有时即便提前准备了，也可能因为不够充分而出现 “演砸了” 的情况。而事实上，即便是与朋友闲聊的时候，有些重要内容还是需要准备一下的（只不过那准备很多的时候并不 “正式”）。谁都一样，有多少次你我在给朋友讲故事的时候由于不熟练而最终把好故事讲臭了？
 
-* [TOEFL作文题目](http://www.ets.org/Media/Tests/TOEFL/pdf/989563wt.pdf)
-* [GRE的Issue题目](http://www.ets.org/gre/general/prepare/sample_questions/analytical/issues/index.html)
-* [GRE的Argument题目](http://www.ets.org/gre/general/prepare/sample_questions/analytical/argument/index.html)
+* [TOEFL作文题目](files/TOEFL-writing-topics.pdf)
+* [GRE的Issue题目](files/GRE-Analytical-Writing-Argument-Task-Topics.md)
+* [GRE的Argument题目](files/GRE-Analytical-Writing-Issue-Task-Topics)
 
 在相当长一段时间里，我以为自己 “发现” 了一条真正的捷径，后来才发现 “我并不孤独”。在国内，卖得最好的口语教材，实际上是北京外国语大学的专业教材，作者是北外教授吴桢福老师：一共三本，《英语初级口语》、《英语中级口语》、《英语高级口语》，多年来多次再版，印数均超过 100 万本。如果读者有机会，不妨去书店翻翻这套教材──你会发现其中的大多数课文话题，实际上也许都是从 TOEFL 作文题脱胎而来的。
 
