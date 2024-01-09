@@ -4,6 +4,6 @@
 
 - [《人人都能用英语》](./book/README.md)
 
-## Enjoy.bot
+## 应用
 
-- [Enjoy App](./enjoy/)
+- [Enjoy App](./enjoy/README.md)
