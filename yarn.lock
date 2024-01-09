@@ -1127,7 +1127,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/community@npm:~0.0.13":
+"@langchain/community@npm:~0.0.15":
   version: 0.0.15
   resolution: "@langchain/community@npm:0.0.15"
   dependencies:
@@ -1408,7 +1408,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/openai@npm:~0.0.10, @langchain/openai@npm:~0.0.9":
+"@langchain/openai@npm:~0.0.10":
   version: 0.0.10
   resolution: "@langchain/openai@npm:0.0.10"
   dependencies:
@@ -5779,7 +5779,7 @@ __metadata:
     fs-extra: "npm:^11.2.0"
     html-to-text: "npm:^9.0.5"
     i18next: "npm:^23.7.16"
-    langchain: "npm:^0.0.214"
+    langchain: "npm:^0.1.1"
     lodash: "npm:^4.17.21"
     lucide-react: "npm:^0.306.0"
     mark.js: "npm:^8.11.1"
@@ -8099,14 +8099,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"langchain@npm:^0.0.214":
-  version: 0.0.214
-  resolution: "langchain@npm:0.0.214"
+"langchain@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "langchain@npm:0.1.1"
   dependencies:
     "@anthropic-ai/sdk": "npm:^0.9.1"
-    "@langchain/community": "npm:~0.0.13"
-    "@langchain/core": "npm:~0.1.5"
-    "@langchain/openai": "npm:~0.0.9"
+    "@langchain/community": "npm:~0.0.15"
+    "@langchain/core": "npm:~0.1.9"
+    "@langchain/openai": "npm:~0.0.10"
     binary-extensions: "npm:^2.2.0"
     expr-eval: "npm:^2.0.2"
     js-tiktoken: "npm:^1.0.7"
@@ -8164,7 +8164,7 @@ __metadata:
     pyodide: ^0.24.1
     redis: ^4.6.4
     sonix-speech-recognition: ^2.1.1
-    srt-parser-2: ^1.2.2
+    srt-parser-2: ^1.2.3
     typeorm: ^0.3.12
     vectordb: ^0.1.4
     weaviate-ts-client: ^1.4.0
@@ -8275,7 +8275,7 @@ __metadata:
       optional: true
     youtubei.js:
       optional: true
-  checksum: 4c70acd1d7ad8b999a7fa2b86bba15ebe4de74339cba0028141e03f8d38f08f1ee5369a707a5597044321d36e4bafe72eed95c04ebb410aa7e881e833d87c201
+  checksum: 86c4107051d87c342ecb8544aba2137ce0791fb9ec8eb5c564bf064dbd89d3b94378ab09d2f2e789211adf0bdeb854eb07cb6d9a2f84c8aeabe1d4e26614acea
   languageName: node
   linkType: hard
 
