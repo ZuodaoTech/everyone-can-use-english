@@ -7,3 +7,15 @@
 ## 应用
 
 - [Enjoy App](./enjoy/README.md)
+
+### Start
+
+```bash
+yarn start:enjoy
+```
+
+### Make
+
+```bash
+yarn make:enjoy
+```
