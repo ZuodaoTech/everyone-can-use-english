@@ -17,13 +17,14 @@
 
 - [Enjoy App](./enjoy/README.md)
 
-本地启动
+### 本地启动
 
 ```bash
+yarn install
 yarn start:enjoy
 ```
 
-编译
+### 编译
 
 ```bash
 yarn make:enjoy
