@@ -7,11 +7,11 @@
   "main": ".vite/build/main.js",
   "types": "./src/types.d.ts",
   "scripts": {
-    "dev": "WEB_API_URL=http://localhost:3000 electron-forge start",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
+    "dev": "rimraf .vite && WEB_API_URL=http://localhost:3000 electron-forge start",
+    "start": "rimraf .vite && electron-forge start",
+    "package": "rimraf .vite && electron-forge package",
+    "make": "rimraf .vite && electron-forge make",
+    "publish": "rimraf .vite && electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
     "create-migration": "zx ./src/main/db/create-migration.mjs"
   },
@@ -29,6 +29,7 @@
     "@electron-forge/maker-zip": "^7.2.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.2.0",
     "@electron-forge/plugin-vite": "^7.2.0",
+    "@electron-forge/publisher-github": "^7.2.0",
     "@tailwindcss/typography": "^0.5.10",
     "@types/adm-zip": "^0.5.5",
     "@types/autosize": "^4.0.3",
@@ -62,7 +63,6 @@
     "zx": "^7.2.3"
   },
   "dependencies": {
-    "@electron-forge/publisher-github": "^7.2.0",
     "@hookform/resolvers": "^3.3.4",
     "@langchain/google-genai": "^0.0.7",
     "@mozilla/readability": "^0.5.0",

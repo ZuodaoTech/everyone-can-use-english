@@ -3821,7 +3821,7 @@ electron-winstaller@^5.0.0:
     lodash.template "^4.2.2"
     temp "^0.9.0"
 
-electron@^28.1.2:
+electron@^28.1.1:
   version "28.1.2"
   resolved "https://registry.npmjs.org/electron/-/electron-28.1.2.tgz#9446fcabb3e391881fb7b4e9f94c9ff055ee773b"
   integrity sha512-rbRuIj5pRn6K16Hx3XYlI2C4jp6s0ZJ4QptQ+wGw0blO5563cXCtZxK/wifVGfuwVfa3n/UqMuUwn3IshjZ8dw==

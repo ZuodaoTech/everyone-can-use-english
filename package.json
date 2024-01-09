@@ -4,12 +4,12 @@
     "enjoy"
   ],
   "scripts": {
-    "dev:enjoy": "cd enjoy && yarn dev",
-    "start:enjoy": "cd enjoy && yarn start",
-    "package:enjoy": "cd enjoy && yarn package",
-    "make:enjoy": "cd enjoy && yarn make",
-    "publish:enjoy": "cd enjoy && yarn publish",
-    "lint:enjoy": "cd enjoy && yarn eslint --ext .ts,.tsx .",
-    "create-migration:enjoy": "cd enjoy && yarn zx ./src/main/db/create-migration.mjs"
+    "dev:enjoy": "yarn workspace enjoy dev",
+    "start:enjoy": "yarn workspace enjoy start",
+    "package:enjoy": "yarn workspace enjoy package",
+    "make:enjoy": "yarn workspace enjoy make",
+    "publish:enjoy": "yarn workspace enjoy publish",
+    "lint:enjoy": "yarn workspace enjoy eslint --ext .ts,.tsx .",
+    "create-migration:enjoy": "yarn workspace enjoy zx ./src/main/db/create-migration.mjs"
   }
 }
