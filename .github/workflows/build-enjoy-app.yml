@@ -1,4 +1,4 @@
-name: Build
+name: Build Enjoy App
 on: workflow_dispatch
 
 jobs:
@@ -15,4 +15,4 @@ jobs:
       - name: install dependencies
         run: yarn install
       - name: build
-        run: yarn package
+        run: yarn package:enjoy

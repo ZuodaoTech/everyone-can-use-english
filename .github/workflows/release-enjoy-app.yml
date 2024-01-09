@@ -1,4 +1,4 @@
-name: Release
+name: Release Enjoy App
 on: workflow_dispatch
 
 jobs:
@@ -17,8 +17,4 @@ jobs:
       - name: publish
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-        run: yarn run publish
-      - if: matrix.os == 'macos-latest'
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-        run: yarn run publish --arch=arm64
+        run: yarn publish:enjoy
