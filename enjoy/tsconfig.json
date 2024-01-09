@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "commonjs",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@renderer/*": ["./src/renderer/*"],
+      "@main/*": ["./src/main/*"]
+    },
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false
+  },
+  "include": ["src"]
+}
