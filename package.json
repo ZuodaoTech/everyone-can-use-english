@@ -11,5 +11,9 @@
     "publish:enjoy": "yarn workspace enjoy publish",
     "lint:enjoy": "yarn workspace enjoy eslint --ext .ts,.tsx .",
     "create-migration:enjoy": "yarn workspace enjoy zx ./src/main/db/create-migration.mjs"
+  },
+  "packageManager": "yarn@4.0.2",
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
