@@ -21,15 +21,17 @@ function App() {
     });
   });
 
-  useHotkeys(["Control+Comma", "Command+Comma"], () => {
+  const ControlOrCommand = navigator.platform.includes("Mac") ? "Meta" : "Control";
+
+  useHotkeys(`${ControlOrCommand}+,`, () => {
     document.getElementById("preferences-button")?.click();
   });
 
-  useHotkeys(["Control+Q", "Command+Q"], () => {
+  useHotkeys(`${ControlOrCommand}+Q`, () => {
     window.__ENJOY_APP__.app.quit();
   });
 
-  useHotkeys(["Control+Shift+I", "Command+Shift+I"], () => {
+  useHotkeys(`${ControlOrCommand}+Shift+I`, () => {
     window.__ENJOY_APP__.app.openDevTools();
   });
 
