@@ -35,7 +35,7 @@ import camelcaseKeys from "camelcase-keys";
   timestamps: true,
 })
 export class Recording extends Model<Recording> {
-  @IsUUID(4)
+  @IsUUID('all')
   @Default(DataType.UUIDV4)
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;

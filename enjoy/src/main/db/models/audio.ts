@@ -2,6 +2,7 @@ import {
   AfterCreate,
   AfterUpdate,
   AfterDestroy,
+  BeforeSave,
   BeforeCreate,
   BelongsTo,
   Table,
@@ -37,7 +38,7 @@ const logger = log.scope("db/models/audio");
   timestamps: true,
 })
 export class Audio extends Model<Audio> {
-  @IsUUID(4)
+  @IsUUID("all")
   @Default(DataType.UUIDV4)
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;
@@ -175,11 +176,6 @@ export class Audio extends Model<Audio> {
     } catch (err) {
       logger.error("failed to generate metadata", err.message);
     }
-
-    // Generate unique ID base on user ID and audio MD5
-    const userId = settings.getSync("user.id");
-    audio.id = uuidv5(`${userId}/${audio.md5}`, uuidv5.URL);
-    logger.info("generated ID:", audio.id);
   }
 
   @AfterCreate
@@ -241,6 +237,11 @@ export class Audio extends Model<Audio> {
 
     const md5 = await hashFile(filePath, { algo: "md5" });
 
+    // Generate ID
+    const userId = settings.getSync("user.id");
+    const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);
+    logger.debug("Generated ID:", id);
+
     const destDir = path.join(settings.userDataPath(), "audios");
     const destFile = path.join(destDir, `${md5}${extname}`);
 
@@ -265,6 +266,7 @@ export class Audio extends Model<Audio> {
       coverUrl,
     } = params || {};
     const record = this.build({
+      id,
       source,
       md5,
       name,

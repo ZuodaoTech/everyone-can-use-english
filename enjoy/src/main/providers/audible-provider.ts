@@ -2,7 +2,7 @@ import log from "electron-log/main";
 import $ from "cheerio";
 import { BrowserView, ipcMain } from "electron";
 
-const logger = log.scope("AUDIBLE_PROVIDER");
+const logger = log.scope("providers/audible-provider");
 
 export class AudibleProvider {
   baseURL: string;
@@ -12,6 +12,7 @@ export class AudibleProvider {
   }
 
   scrape = async (path: string) => {
+    logger.debug(`Scraping ${this.baseURL + path}`);
     return new Promise<string>((resolve, reject) => {
       const view = new BrowserView();
       view.webContents.loadURL(this.baseURL + path);
