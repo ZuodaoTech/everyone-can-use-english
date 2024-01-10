@@ -21,9 +21,11 @@ function App() {
     });
   });
 
-  const ControlOrCommand = navigator.platform.includes("Mac") ? "Meta" : "Control";
+  const ControlOrCommand = navigator.platform.includes("Mac")
+    ? "Meta"
+    : "Control";
 
-  useHotkeys(`${ControlOrCommand}+,`, () => {
+  useHotkeys(`${ControlOrCommand}+Comma`, () => {
     document.getElementById("preferences-button")?.click();
   });
 
