@@ -3579,7 +3579,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/validator@npm:^13.11.7, @types/validator@npm:^13.7.17":
+"@types/validator@npm:^13.11.8":
+  version: 13.11.8
+  resolution: "@types/validator@npm:13.11.8"
+  checksum: 9e96e96b25a4ed2234fa081b9d99bcbd29e8714b7c48446ff386e3c47ea9c3bb482b5d03e4cb68da636c80c63350aee06a71f7c74bd7a8e3a08a1d75ec817d8a
+  languageName: node
+  linkType: hard
+
+"@types/validator@npm:^13.7.17":
   version: 13.11.7
   resolution: "@types/validator@npm:13.11.7"
   checksum: 9ca2a047d6e7c1d718c6dd28b12d6d893c4ac2acdb8a557b8d448dab17aaa044e92c7a13c8476601078f4c907ed66259e3b20525f7fa849378fbaf53a971d574
@@ -5744,7 +5751,7 @@ __metadata:
     "@types/node": "npm:^20.10.6"
     "@types/react": "npm:^18.2.46"
     "@types/react-dom": "npm:^18.2.18"
-    "@types/validator": "npm:^13.11.7"
+    "@types/validator": "npm:^13.11.8"
     "@types/wavesurfer.js": "npm:^6.0.12"
     "@typescript-eslint/eslint-plugin": "npm:^6.17.0"
     "@typescript-eslint/parser": "npm:^6.17.0"
