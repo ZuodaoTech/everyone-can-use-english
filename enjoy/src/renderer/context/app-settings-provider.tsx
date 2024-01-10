@@ -11,7 +11,7 @@ type AppSettingsProviderState = {
   logout?: () => void;
   setLibraryPath?: (path: string) => Promise<void>;
   setWhisperModel?: (name: string) => void;
-  ffmpegConfg?: FfmpegConfigType;
+  ffmpegConfig?: FfmpegConfigType;
   setFfmegConfig?: (config: FfmpegConfigType) => void;
   EnjoyApp?: EnjoyAppType;
 };
@@ -35,7 +35,7 @@ export const AppSettingsProvider = ({
   const [libraryPath, setLibraryPath] = useState("");
   const [whisperModelsPath, setWhisperModelsPath] = useState<string>("");
   const [whisperModel, setWhisperModel] = useState<string>(null);
-  const [ffmpegConfg, setFfmegConfig] = useState<FfmpegConfigType>(null);
+  const [ffmpegConfig, setFfmegConfig] = useState<FfmpegConfigType>(null);
   const EnjoyApp = window.__ENJOY_APP__;
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export const AppSettingsProvider = ({
 
   useEffect(() => {
     validate();
-  }, [user, libraryPath, whisperModel, ffmpegConfg]);
+  }, [user, libraryPath, whisperModel, ffmpegConfig]);
 
   const fetchFfmpegConfig = async () => {
     const config = await EnjoyApp.settings.getFfmpegConfig();
@@ -114,7 +114,7 @@ export const AppSettingsProvider = ({
 
   const validate = async () => {
     setInitialized(
-      !!(user && libraryPath && whisperModel && ffmpegConfg?.ready)
+      !!(user && libraryPath && whisperModel && ffmpegConfig?.ready)
     );
   };
 
@@ -131,7 +131,7 @@ export const AppSettingsProvider = ({
         whisperModelsPath,
         whisperModel,
         setWhisperModel: setModelHandler,
-        ffmpegConfg,
+        ffmpegConfig,
         setFfmegConfig,
         initialized,
       }}

@@ -5,7 +5,7 @@ import { AppSettingsProviderContext } from "@renderer/context";
 import { CheckCircle2Icon, XCircleIcon, LoaderIcon } from "lucide-react";
 
 export const FfmpegCheck = () => {
-  const { ffmpegConfg, setFfmegConfig, EnjoyApp } = useContext(
+  const { ffmpegConfig, setFfmegConfig, EnjoyApp } = useContext(
     AppSettingsProviderContext
   );
   const [downloading, setDownloading] = useState(false);
@@ -41,7 +41,7 @@ export const FfmpegCheck = () => {
 
   useEffect(() => {
     return EnjoyApp.download.removeAllListeners();
-  }, [ffmpegConfg?.ready]);
+  }, [ffmpegConfig?.ready]);
 
   useEffect(() => {
     refreshFfmpegConfig();
@@ -49,7 +49,7 @@ export const FfmpegCheck = () => {
 
   return (
     <div className="w-full max-w-sm px-6">
-      {ffmpegConfg?.ready ? (
+      {ffmpegConfig?.ready ? (
         <>
           <div className="flex justify-center items-center mb-8">
             <img src="./assets/ffmpeg-logo.svg" className="" />
