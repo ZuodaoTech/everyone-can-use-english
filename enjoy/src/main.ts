@@ -54,6 +54,10 @@ app.on("ready", async () => {
   globalShortcut.register("CommandOrControl+Shift+I", () => {
     mainWindow.win.webContents.toggleDevTools();
   });
+
+  globalShortcut.register("CommandOrControl+Q", () => {
+    app.quit();
+  });
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
