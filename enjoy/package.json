@@ -112,7 +112,7 @@
     "fs-extra": "^11.2.0",
     "html-to-text": "^9.0.5",
     "i18next": "^23.7.16",
-    "langchain": "^0.0.214",
+    "langchain": "^0.1.2",
     "lodash": "^4.17.21",
     "lucide-react": "^0.306.0",
     "mark.js": "^8.11.1",

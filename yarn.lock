@@ -1127,9 +1127,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/community@npm:~0.0.13":
-  version: 0.0.15
-  resolution: "@langchain/community@npm:0.0.15"
+"@langchain/community@npm:~0.0.15":
+  version: 0.0.16
+  resolution: "@langchain/community@npm:0.0.16"
   dependencies:
     "@langchain/core": "npm:~0.1.9"
     "@langchain/openai": "npm:~0.0.10"
@@ -1376,7 +1376,25 @@ __metadata:
       optional: true
     ws:
       optional: true
-  checksum: d86a157d08012bcf9cfc8203e3e9249b60f58cca0666ea325388b6ad4d295f95b27742399c413945f2f3f2256aa03499459d9bd905b81d46665561c85cfce93e
+  checksum: 77fd7221a148fc9c2ff44cb4e19dd245e52c29c6d44185be2d9e75f7ce8789c8037f02aa9470e1bb11f5f25df6eca1d076e5244bd42e8b9581846a289d726a5c
+  languageName: node
+  linkType: hard
+
+"@langchain/core@npm:~0.1.12":
+  version: 0.1.12
+  resolution: "@langchain/core@npm:0.1.12"
+  dependencies:
+    ansi-styles: "npm:^5.0.0"
+    camelcase: "npm:6"
+    decamelize: "npm:1.2.0"
+    js-tiktoken: "npm:^1.0.8"
+    langsmith: "npm:~0.0.48"
+    ml-distance: "npm:^4.0.0"
+    p-queue: "npm:^6.6.2"
+    p-retry: "npm:4"
+    uuid: "npm:^9.0.0"
+    zod: "npm:^3.22.3"
+  checksum: 20c6590170c4d995074cd099273a9b43e99c24df4f510a954c32cedd8ef8d47c2c0c504433e2c59db8e62032b578de513fcd6881efbbf2a7545968cf9299299f
   languageName: node
   linkType: hard
 
@@ -1408,7 +1426,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/openai@npm:~0.0.10, @langchain/openai@npm:~0.0.9":
+"@langchain/openai@npm:~0.0.10":
   version: 0.0.10
   resolution: "@langchain/openai@npm:0.0.10"
   dependencies:
@@ -5779,7 +5797,7 @@ __metadata:
     fs-extra: "npm:^11.2.0"
     html-to-text: "npm:^9.0.5"
     i18next: "npm:^23.7.16"
-    langchain: "npm:^0.0.214"
+    langchain: "npm:^0.1.2"
     lodash: "npm:^4.17.21"
     lucide-react: "npm:^0.306.0"
     mark.js: "npm:^8.11.1"
@@ -8099,14 +8117,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"langchain@npm:^0.0.214":
-  version: 0.0.214
-  resolution: "langchain@npm:0.0.214"
+"langchain@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "langchain@npm:0.1.2"
   dependencies:
     "@anthropic-ai/sdk": "npm:^0.9.1"
-    "@langchain/community": "npm:~0.0.13"
-    "@langchain/core": "npm:~0.1.5"
-    "@langchain/openai": "npm:~0.0.9"
+    "@langchain/community": "npm:~0.0.15"
+    "@langchain/core": "npm:~0.1.12"
+    "@langchain/openai": "npm:~0.0.10"
     binary-extensions: "npm:^2.2.0"
     expr-eval: "npm:^2.0.2"
     js-tiktoken: "npm:^1.0.7"
@@ -8148,6 +8166,7 @@ __metadata:
     fast-xml-parser: ^4.2.7
     google-auth-library: ^8.9.0
     googleapis: ^126.0.1
+    handlebars: ^4.7.8
     html-to-text: ^9.0.5
     ignore: ^5.2.0
     ioredis: ^5.3.2
@@ -8164,7 +8183,7 @@ __metadata:
     pyodide: ^0.24.1
     redis: ^4.6.4
     sonix-speech-recognition: ^2.1.1
-    srt-parser-2: ^1.2.2
+    srt-parser-2: ^1.2.3
     typeorm: ^0.3.12
     vectordb: ^0.1.4
     weaviate-ts-client: ^1.4.0
@@ -8227,6 +8246,8 @@ __metadata:
       optional: true
     googleapis:
       optional: true
+    handlebars:
+      optional: true
     html-to-text:
       optional: true
     ignore:
@@ -8275,7 +8296,7 @@ __metadata:
       optional: true
     youtubei.js:
       optional: true
-  checksum: 4c70acd1d7ad8b999a7fa2b86bba15ebe4de74339cba0028141e03f8d38f08f1ee5369a707a5597044321d36e4bafe72eed95c04ebb410aa7e881e833d87c201
+  checksum: af7ef602aa8804690f5030d4a4aeedd89731dc5080ebd52da46b779430e4d85dc2775086aa5cea70f25db0bb4eb460ef031ad7b8eec59a50ff1982c47c5db876
   languageName: node
   linkType: hard
 
