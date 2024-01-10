@@ -3469,7 +3469,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^20.10.6":
+"@types/node@npm:*":
   version: 20.10.7
   resolution: "@types/node@npm:20.10.7"
   dependencies:
@@ -3484,6 +3484,15 @@ __metadata:
   dependencies:
     undici-types: "npm:~5.26.4"
   checksum: 8ad59db82b08cb34b2e891e2193aad1081db082178e16189857ffff6619180b9dc74cb14f6e0449007c6797cf0a818a3929a7575b9816267b3d1d858f9fa7be1
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.10.8":
+  version: 20.10.8
+  resolution: "@types/node@npm:20.10.8"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 93268c33c3bf0194427d696658160c77ab8661aa57107df5b248ff952898a372bf92cf0ba7fc07788fa35e59c69b6619cce63d45e4e67fca806e37da7ea42512
   languageName: node
   linkType: hard
 
@@ -5741,7 +5750,7 @@ __metadata:
     "@types/html-to-text": "npm:^9.0.4"
     "@types/lodash": "npm:^4.14.202"
     "@types/mark.js": "npm:^8.11.12"
-    "@types/node": "npm:^20.10.6"
+    "@types/node": "npm:^20.10.8"
     "@types/react": "npm:^18.2.46"
     "@types/react-dom": "npm:^18.2.18"
     "@types/validator": "npm:^13.11.7"
