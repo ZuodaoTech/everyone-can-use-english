@@ -15,8 +15,10 @@ export default class FfmpegWrapper {
     const config = settings.ffmpegConfig();
 
     if (config.commandExists) {
+      logger.info("Using system ffmpeg");
       this.ffmpeg = Ffmpeg();
     } else {
+      logger.info("Using downloaded ffmpeg");
       const ff = Ffmpeg();
       ff.setFfmpegPath(config.ffmpegPath);
       ff.setFfprobePath(config.ffprobePath);
