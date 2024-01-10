@@ -5,6 +5,8 @@ type EnjoyAppType = {
     reload: () => Promise<void>;
     isPackaged: () => Promise<boolean>;
     apiUrl: () => Promise<string>;
+    quit: () => Promise<void>;
+    openDevTools: () => Promise<void>;
     version: string;
   };
   providers: {

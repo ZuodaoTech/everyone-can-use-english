@@ -135,7 +135,6 @@
     "sequelize-typescript": "^2.1.6",
     "sqlite3": "^5.1.7",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "ts-key-enum": "^2.0.12",
     "umzug": "^3.5.0",
     "wavesurfer.js": "^7.6.3",
     "zod": "^3.22.4"

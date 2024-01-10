@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { Button, ScrollArea } from "@renderer/components/ui";
-import { BasicSettings, AdvancedSettings, About } from "@renderer/components";
+import { BasicSettings, AdvancedSettings, About, Hotkeys } from "@renderer/components";
 import { useState } from "react";
 
 export const Preferences = () => {
@@ -14,6 +14,11 @@ export const Preferences = () => {
       value: "advanced",
       label: t("advancedSettings"),
       component: () => <AdvancedSettings />,
+    },
+    {
+      value: "hotkeys",
+      label: t("hotkeys"),
+      component: () => <Hotkeys />,
     },
     {
       value: "about",

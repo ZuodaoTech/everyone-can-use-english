@@ -247,6 +247,14 @@ main.init = () => {
     return process.env.WEB_API_URL || WEB_API_URL;
   });
 
+  ipcMain.handle("app-quit", () => {
+    app.quit();
+  });
+
+  ipcMain.handle("app-open-dev-tools", () => {
+    mainWindow.webContents.openDevTools();
+  });
+
   // Shell
   ipcMain.handle("shell-open-external", (_event, url) => {
     shell.openExternal(url);

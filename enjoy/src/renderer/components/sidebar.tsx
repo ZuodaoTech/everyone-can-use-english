@@ -11,7 +11,6 @@ import {
   HeadphonesIcon,
   VideoIcon,
   NewspaperIcon,
-  BookOpenTextIcon,
   BookMarkedIcon,
   UserIcon,
   BotIcon,
@@ -210,6 +209,7 @@ export const Sidebar = () => {
                           ? "secondary"
                           : "ghost"
                       }
+                      id="preferences-button"
                       className="w-full xl:justify-start"
                       data-tooltip-id="sidebar-tooltip"
                       data-tooltip-content={t("sidebar.preferences")}

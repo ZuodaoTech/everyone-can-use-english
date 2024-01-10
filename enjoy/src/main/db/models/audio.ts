@@ -208,6 +208,12 @@ export class Audio extends Model<Audio> {
   @AfterDestroy
   static cleanupFile(audio: Audio) {
     fs.remove(audio.filePath);
+    Recording.destroy({
+      where: {
+        targetId: audio.id,
+        targetType: "Audio",
+      },
+    });
   }
 
   static async buildFromLocalFile(

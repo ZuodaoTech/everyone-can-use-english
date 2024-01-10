@@ -5840,7 +5840,6 @@ __metadata:
     tailwind-scrollbar-hide: "npm:^1.1.7"
     tailwindcss: "npm:^3.4.1"
     tailwindcss-animate: "npm:^1.0.7"
-    ts-key-enum: "npm:^2.0.12"
     ts-node: "npm:^10.9.2"
     tslib: "npm:^2.6.2"
     typescript: "npm:^5.3.3"
@@ -12160,13 +12159,6 @@ __metadata:
   version: 0.1.13
   resolution: "ts-interface-checker@npm:0.1.13"
   checksum: 232509f1b84192d07b81d1e9b9677088e590ac1303436da1e92b296e9be8e31ea042e3e1fd3d29b1742ad2c959e95afe30f63117b8f1bc3a3850070a5142fea7
-  languageName: node
-  linkType: hard
-
-"ts-key-enum@npm:^2.0.12":
-  version: 2.0.12
-  resolution: "ts-key-enum@npm:2.0.12"
-  checksum: 1d9cf8085785bdc324827c5c38f6359b09d9438deab81dfab7fa6d8315c618280ba7527e98d06b68c11066a5a81b06ef84eb378a48bf80ca5772ab0e4c6683d5
   languageName: node
   linkType: hard
 

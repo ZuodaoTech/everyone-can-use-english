@@ -1,4 +1,3 @@
-import { app } from "electron";
 import {
   AfterCreate,
   AfterUpdate,
@@ -27,6 +26,8 @@ import Ffmpeg from "@main/ffmpeg";
 import webApi from "@main/web-api";
 import { AzureSpeechSdk } from "@main/azure-speech-sdk";
 import camelcaseKeys from "camelcase-keys";
+
+const logger = log.scope("db/models/recording");
 
 @Table({
   modelName: "Recording",
@@ -119,7 +120,7 @@ export class Recording extends Model<Recording> {
     return storage
       .put(this.md5, this.filePath)
       .then((result) => {
-        log.debug("[RECORDING]", "upload result:", result.data);
+        logger.debug("upload result:", result.data);
         if (result.data.success) {
           this.update({ uploadedAt: new Date() });
         } else {
@@ -127,7 +128,7 @@ export class Recording extends Model<Recording> {
         }
       })
       .catch((err) => {
-        log.error("[RECORDING]", "upload failed:", err.message);
+        logger.error("upload failed:", err.message);
         throw err;
       });
   }
@@ -187,10 +188,10 @@ export class Recording extends Model<Recording> {
     if (!Array.isArray(findResult)) findResult = [findResult];
 
     for (const instance of findResult) {
-      if (instance.targetType === "Audio" && instance.audio !== undefined) {
+      if (instance.targetType === "Audio" && instance.audio) {
         instance.target = instance.audio.toJSON();
       }
-      if (instance.targetType === "Video" && instance.video !== undefined) {
+      if (instance.targetType === "Video" && instance.video) {
         instance.target = instance.video.toJSON();
       }
       // To prevent mistakes:
@@ -240,6 +241,13 @@ export class Recording extends Model<Recording> {
       Audio.findByPk(recording.targetId).then((audio) => {
         audio.decrement("recordingsCount");
         audio.decrement("recordingsDuration", {
+          by: recording.duration,
+        });
+      });
+    } else if (recording.targetType === "Video") {
+      Video.findByPk(recording.targetId).then((video) => {
+        video.decrement("recordingsCount");
+        video.decrement("recordingsDuration", {
           by: recording.duration,
         });
       });

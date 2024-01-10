@@ -9,6 +9,7 @@ import { RouterProvider } from "react-router-dom";
 import { Toaster, useToast } from "@renderer/components/ui";
 import { t } from "i18next";
 import { Tooltip } from "react-tooltip";
+import { useHotkeys } from "react-hotkeys-hook";
 
 function App() {
   const { toast } = useToast();
@@ -18,6 +19,22 @@ function App() {
       description: notification.message,
       variant: notification.type === "error" ? "destructive" : "default",
     });
+  });
+
+  const ControlOrCommand = navigator.platform.includes("Mac")
+    ? "Meta"
+    : "Control";
+
+  useHotkeys(`${ControlOrCommand}+Comma`, () => {
+    document.getElementById("preferences-button")?.click();
+  });
+
+  useHotkeys(`${ControlOrCommand}+Q`, () => {
+    window.__ENJOY_APP__.app.quit();
+  });
+
+  useHotkeys(`${ControlOrCommand}+Shift+I`, () => {
+    window.__ENJOY_APP__.app.openDevTools();
   });
 
   return (
