@@ -21,7 +21,7 @@ import { AudibleProvider, TedProvider } from "@main/providers";
 import { FfmpegDownloader } from "@main/ffmpeg";
 
 log.initialize({ preload: true });
-const logger = log.scope("WINDOW");
+const logger = log.scope("window");
 
 const audibleProvider = new AudibleProvider();
 const tedProvider = new TedProvider();
@@ -147,7 +147,15 @@ main.init = () => {
     const view = mainWindow.getBrowserView();
     if (!view) return;
 
-    view.setBounds({ x: 0, y: 0, width: 0, height: 0 });
+    const bounds = view.getBounds();
+    logger.debug("current view bounds", bounds);
+
+    view.setBounds({
+      x: -bounds.width,
+      y: -bounds.height,
+      width: 0,
+      height: 0,
+    });
   });
 
   ipcMain.handle(
@@ -161,8 +169,11 @@ main.init = () => {
         height: number;
       }
     ) => {
+      const view = mainWindow.getBrowserView();
+      if (!view) return;
+
       logger.debug("view-show", bounds);
-      mainWindow.getBrowserView()?.setBounds(bounds);
+      view.setBounds(bounds);
     }
   );
 
