@@ -31,7 +31,7 @@ import webApi from "@main/web-api";
   },
 }))
 export class PronunciationAssessment extends Model<PronunciationAssessment> {
-  @IsUUID(4)
+  @IsUUID('all')
   @Default(DataType.UUIDV4)
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, protocol, net } from "electron";
+import { app, BrowserWindow, globalShortcut, protocol, net } from "electron";
 import path from "path";
 import settings from "@main/settings";
 import "@main/i18n";
@@ -50,6 +50,10 @@ app.on("ready", async () => {
   });
 
   mainWindow.init();
+
+  globalShortcut.register("CommandOrControl+Shift+I", () => {
+    mainWindow.win.webContents.toggleDevTools();
+  });
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

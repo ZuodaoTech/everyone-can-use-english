@@ -5,6 +5,9 @@ import path from "path";
 import fs from "fs-extra";
 import os from "os";
 import commandExists from "command-exists";
+import log from "electron-log";
+
+const logger = log.scope("settings");
 
 const libraryPath = () => {
   const _library = settings.getSync("library");
@@ -96,12 +99,18 @@ const ffmpegConfig = () => {
 
   const ready = Boolean(_commandExists || (ffmpegPath && ffprobePath));
 
-  return {
+  const config = {
+    os: os.platform(),
+    arch: os.arch(),
     commandExists: _commandExists,
     ffmpegPath,
     ffprobePath,
     ready,
   };
+
+  logger.info("ffmpeg config", config);
+
+  return config;
 };
 
 export default {

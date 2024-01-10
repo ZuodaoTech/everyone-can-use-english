@@ -25,7 +25,7 @@ const logger = log.scope("db/models/transcription");
   timestamps: true,
 })
 export class Transcription extends Model<Transcription> {
-  @IsUUID(4)
+  @IsUUID('all')
   @Default(DataType.UUIDV4)
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;

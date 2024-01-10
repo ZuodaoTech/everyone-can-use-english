@@ -5,6 +5,7 @@ import RecordPlugin from "wavesurfer.js/dist/plugins/record";
 import WaveSurfer from "wavesurfer.js";
 import { cn } from "@renderer/lib/utils";
 import { RadialProgress, useToast } from "@renderer/components/ui";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const RecordButton = (props: {
   className?: string;
@@ -16,6 +17,11 @@ export const RecordButton = (props: {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
   const { toast } = useToast();
+
+  useHotkeys(["command+alt+r", "control+alt+r"], () => {
+    if (disabled) return;
+    setIsRecording((isRecording) => !isRecording);
+  });
 
   useEffect(() => {
     if (!isRecording) return;

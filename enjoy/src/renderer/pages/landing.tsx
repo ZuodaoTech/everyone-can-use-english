@@ -16,13 +16,13 @@ export default () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [currentStepValid, setCurrentStepValid] = useState<boolean>(false);
 
-  const { user, libraryPath, whisperModel, ffmpegConfg, initialized } =
+  const { user, libraryPath, whisperModel, ffmpegConfig, initialized } =
     useContext(AppSettingsProviderContext);
   const totalSteps = 5;
 
   useEffect(() => {
     validateCurrentStep();
-  }, [currentStep, user, whisperModel, ffmpegConfg]);
+  }, [currentStep, user, whisperModel, ffmpegConfig]);
 
   const validateCurrentStep = async () => {
     switch (currentStep) {
@@ -36,7 +36,7 @@ export default () => {
         setCurrentStepValid(!!whisperModel);
         break;
       case 4:
-        setCurrentStepValid(ffmpegConfg?.ready);
+        setCurrentStepValid(ffmpegConfig?.ready);
         break;
       case 5:
         setCurrentStepValid(initialized);

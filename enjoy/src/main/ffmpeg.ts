@@ -1,4 +1,4 @@
-import { ipcMain, app } from "electron";
+import { ipcMain } from "electron";
 import Ffmpeg from "fluent-ffmpeg";
 import settings from "@main/settings";
 import log from "electron-log/main";
@@ -6,8 +6,9 @@ import path from "path";
 import fs from "fs-extra";
 import AdmZip from "adm-zip";
 import downloader from "@main/downloader";
+import storage from "@main/storage";
 
-const logger = log.scope("FFMPEG");
+const logger = log.scope("ffmepg");
 export default class FfmpegWrapper {
   public ffmpeg: Ffmpeg.FfmpegCommand;
 
@@ -15,8 +16,10 @@ export default class FfmpegWrapper {
     const config = settings.ffmpegConfig();
 
     if (config.commandExists) {
+      logger.info("Using system ffmpeg");
       this.ffmpeg = Ffmpeg();
     } else {
+      logger.info("Using downloaded ffmpeg");
       const ff = Ffmpeg();
       ff.setFfmpegPath(config.ffmpegPath);
       ff.setFfprobePath(config.ffprobePath);
@@ -30,6 +33,10 @@ export default class FfmpegWrapper {
         .input(input)
         .on("start", (commandLine) => {
           logger.info("Spawned FFmpeg with command: " + commandLine);
+        })
+        .on("error", (err) => {
+          logger.error(err);
+          reject(err);
         })
         .ffprobe((err, metadata) => {
           if (err) {
@@ -121,6 +128,7 @@ export default class FfmpegWrapper {
           resolve(output);
         })
         .on("error", (err: Error) => {
+          logger.error(err);
           reject(err);
         })
         .save(output);
@@ -167,7 +175,41 @@ export class FfmpegDownloader {
     }
   }
 
+  async downloadForDarwinArm64(webContents?: Electron.WebContents) {
+    const DARWIN_FFMPEG_ARM64_URL = storage.getUrl(
+      "ffmpeg-apple-arm64-build-6.0.zip"
+    );
+
+    fs.ensureDirSync(path.join(settings.libraryPath(), "ffmpeg"));
+
+    const ffmpegZipPath = await downloader.download(DARWIN_FFMPEG_ARM64_URL, {
+      webContents,
+    });
+    const ffmepgZip = new AdmZip(ffmpegZipPath);
+
+    ffmepgZip.extractEntryTo(
+      "ffmpeg/ffmpeg",
+      path.join(settings.libraryPath(), "ffmpeg"),
+      false,
+      true
+    );
+
+    ffmepgZip.extractEntryTo(
+      "ffmpeg/ffprobe",
+      path.join(settings.libraryPath(), "ffmpeg"),
+      false,
+      true
+    );
+
+    fs.chmodSync(path.join(settings.libraryPath(), "ffmpeg", "ffmpeg"), 0o775);
+    fs.chmodSync(path.join(settings.libraryPath(), "ffmpeg", "ffprobe"), 0o775);
+  }
+
   async downloadForDarwin(webContents?: Electron.WebContents) {
+    if (process.arch === "arm64") {
+      return this.downloadForDarwinArm64(webContents);
+    }
+
     const DARWIN_FFMPEG_URL = "https://evermeet.cx/ffmpeg/getrelease/zip";
     const DARWIN_FFPROBE_URL =
       "https://evermeet.cx/ffmpeg/getrelease/ffprobe/zip";
@@ -185,10 +227,7 @@ export class FfmpegDownloader {
       true
     );
 
-    fs.chmodSync(
-      path.join(settings.libraryPath(), "ffmpeg", "ffmpeg"),
-      0o775
-    );
+    fs.chmodSync(path.join(settings.libraryPath(), "ffmpeg", "ffmpeg"), 0o775);
 
     const ffprobeZipPath = await downloader.download(DARWIN_FFPROBE_URL, {
       webContents,
@@ -200,10 +239,7 @@ export class FfmpegDownloader {
       false,
       true
     );
-    fs.chmodSync(
-      path.join(settings.libraryPath(), "ffmpeg", "ffprobe"),
-      0o775
-    );
+    fs.chmodSync(path.join(settings.libraryPath(), "ffmpeg", "ffprobe"), 0o775);
 
     return settings.ffmpegConfig();
   }

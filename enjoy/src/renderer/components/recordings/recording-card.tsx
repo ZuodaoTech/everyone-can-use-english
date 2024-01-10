@@ -1,9 +1,6 @@
 import { useState, useContext } from "react";
 import { AppSettingsProviderContext } from "@/renderer/context";
-import {
-  RecordingPlayer,
-  PronunciationAssessmentScoreIcon,
-} from "@renderer/components";
+import { RecordingPlayer } from "@renderer/components";
 import {
   AlertDialog,
   AlertDialogHeader,
@@ -16,12 +13,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@renderer/components/ui";
-import { MoreHorizontalIcon, Trash2Icon, InfoIcon } from "lucide-react";
-import { formatDateTime , secondsToTimestamp } from "@renderer/lib/utils";
-import { useLongPress } from "@uidotdev/usehooks";
+import { ChevronDownIcon, Trash2Icon, InfoIcon, Share2Icon } from "lucide-react";
+import { formatDateTime, secondsToTimestamp } from "@renderer/lib/utils";
 import { t } from "i18next";
 
 export const RecordingCard = (props: {
@@ -30,45 +25,19 @@ export const RecordingCard = (props: {
   onSelect?: () => void;
 }) => {
   const { recording, id, onSelect } = props;
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [isPlaying, setIsPlaying] = useState(false);
-
-  const longPressAttrs = useLongPress(
-    () => {
-      setIsMenuOpen(true);
-    },
-    {
-      onFinish: () => {},
-      onCancel: () => {},
-      threshold: 400,
-    }
-  );
 
   const handleDelete = () => {
     EnjoyApp.recordings.destroy(recording.id);
   };
 
   return (
-    <div
-      id={id}
-      className={`flex items-center justify-end p-4 transition-all ${
-        isMenuOpen ? "bg-sky-500/20" : ""
-      }`}
-    >
-      <DropdownMenu
-        open={isMenuOpen}
-        onOpenChange={(value) => setIsMenuOpen(value)}
-      >
-        <div {...longPressAttrs} className="w-full">
-          <div className="flex items-center space-x-2 justify-start px-2 mb-1">
-            <DropdownMenuTrigger>
-              <MoreHorizontalIcon className="w-4 h-4 text-muted-foreground hidden" />
-            </DropdownMenuTrigger>
-          </div>
-
-          <div className="bg-white rounded-lg py-2 px-4 mb-2 relative">
+    <div id={id} className="flex items-center justify-end px-4 transition-all">
+      <DropdownMenu>
+        <div className="w-full">
+          <div className="bg-white rounded-lg py-2 px-4 relative mb-1">
             <div className="flex items-center justify-end space-x-2">
               <span className="text-xs text-muted-foreground">
                 {secondsToTimestamp(recording.duration / 1000)}
@@ -81,7 +50,7 @@ export const RecordingCard = (props: {
               setIsPlaying={setIsPlaying}
             />
 
-            <div className="flex items-center justify-between space-x-2">
+            <div className="flex items-center justify-end space-x-2">
               <Button
                 onClick={onSelect}
                 variant="ghost"
@@ -104,22 +73,19 @@ export const RecordingCard = (props: {
                     `}
                 />
               </Button>
-
-              <span className="text-xs text-muted-foreground">
-                {formatDateTime(recording.createdAt)}
-              </span>
+              <DropdownMenuTrigger>
+                <ChevronDownIcon className="w-4 h-4 text-muted-foreground" />
+              </DropdownMenuTrigger>
             </div>
+          </div>
+          <div className="flex justify-end">
+            <span className="text-xs text-muted-foreground">
+              {formatDateTime(recording.createdAt)}
+            </span>
           </div>
         </div>
 
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={onSelect}>
-            <span className="mr-auto capitalize">{t("detail")}</span>
-            <InfoIcon className="w-4 h-4" />
-          </DropdownMenuItem>
-
-          <DropdownMenuSeparator />
-
           <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
             <span className="mr-auto text-destructive capitalize">
               {t("delete")}

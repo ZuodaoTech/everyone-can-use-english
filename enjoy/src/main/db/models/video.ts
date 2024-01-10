@@ -37,7 +37,7 @@ const logger = log.scope("db/models/video");
   timestamps: true,
 })
 export class Video extends Model<Video> {
-  @IsUUID(4)
+  @IsUUID('all')
   @Default(DataType.UUIDV4)
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;
@@ -196,11 +196,6 @@ export class Video extends Model<Video> {
     } catch (err) {
       logger.error("failed to generate metadata", err.message);
     }
-
-    // Generate unique ID base on user ID and audio MD5
-    const userId = settings.getSync("user.id");
-    video.id = uuidv5(`${userId}/${video.md5}`, uuidv5.URL);
-    logger.info("generated ID:", video.id);
   }
 
   @AfterCreate
@@ -263,6 +258,11 @@ export class Video extends Model<Video> {
 
     const md5 = await hashFile(filePath, { algo: "md5" });
 
+    // Generate ID
+    const userId = settings.getSync("user.id");
+    const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);
+    logger.debug("Generated ID:", id);
+
     const destDir = path.join(settings.userDataPath(), "videos");
     const destFile = path.join(destDir, `${md5}${extname}`);
 
@@ -287,6 +287,7 @@ export class Video extends Model<Video> {
       coverUrl,
     } = params || {};
     const record = this.build({
+      id,
       source,
       md5,
       name,
