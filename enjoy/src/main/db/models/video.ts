@@ -37,7 +37,7 @@ const logger = log.scope("db/models/video");
   timestamps: true,
 })
 export class Video extends Model<Video> {
-  @IsUUID('all')
+  @IsUUID("all")
   @Default(DataType.UUIDV4)
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;
@@ -230,6 +230,12 @@ export class Video extends Model<Video> {
   @AfterDestroy
   static cleanupFile(video: Video) {
     fs.remove(video.filePath);
+    Recording.destroy({
+      where: {
+        targetId: video.id,
+        targetType: "Video",
+      },
+    });
   }
 
   static async buildFromLocalFile(

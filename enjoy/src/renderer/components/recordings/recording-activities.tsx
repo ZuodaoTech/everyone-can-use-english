@@ -28,7 +28,7 @@ export const RecordingActivities = (props: { from: string; to: string }) => {
         to,
       })
       .then((_activities) => {
-        setActitivies(_activities);
+        setActitivies(_activities || []);
       })
       .finally(() => {
         setLoading(false);
@@ -88,6 +88,11 @@ const Activity = (props: {
   };
 }) => {
   const { activity, displayDate } = props;
+
+  if (!activity.target) {
+    return null;
+  }
+
   return (
     <>
       {displayDate && (
