@@ -11,6 +11,12 @@ export const FfmpegCheck = () => {
   const [downloading, setDownloading] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  const refreshFfmpegConfig = async () => {
+    EnjoyApp.settings.getFfmpegConfig().then((config) => {
+      setFfmegConfig(config);
+    });
+  };
+
   const downloadFfmpeg = () => {
     listenToDownloadState();
     setDownloading(true);
@@ -36,6 +42,10 @@ export const FfmpegCheck = () => {
   useEffect(() => {
     return EnjoyApp.download.removeAllListeners();
   }, [ffmpegConfg?.ready]);
+
+  useEffect(() => {
+    refreshFfmpegConfig();
+  }, []);
 
   return (
     <div className="w-full max-w-sm px-6">
