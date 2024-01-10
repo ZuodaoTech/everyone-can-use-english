@@ -26,6 +26,8 @@ import {
   DefaultVideoLayout,
   defaultLayoutIcons,
 } from "@vidstack/react/player/layouts/default";
+import { useHotkeys } from "react-hotkeys-hook";
+import { Key } from "ts-key-enum";
 
 const minPxPerSecBase = 150;
 
@@ -498,6 +500,15 @@ export const MediaPlayer = (props: {
 
     return fitZoomRatio;
   };
+
+  useHotkeys(
+    " ",
+    () => {
+      if (!wavesurfer) return;
+      onPlayClick();
+    },
+    [wavesurfer]
+  );
 
   return (
     <>

@@ -13,7 +13,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@renderer/components/ui";
 import { ChevronDownIcon, Trash2Icon, InfoIcon, Share2Icon } from "lucide-react";
