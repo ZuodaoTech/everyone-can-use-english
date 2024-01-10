@@ -2,7 +2,6 @@ import {
   AfterCreate,
   AfterUpdate,
   AfterDestroy,
-  BeforeSave,
   BeforeCreate,
   BelongsTo,
   Table,
