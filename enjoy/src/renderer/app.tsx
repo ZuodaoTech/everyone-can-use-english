@@ -21,11 +21,11 @@ function App() {
     });
   });
 
-  useHotkeys("Control+Comma", () => {
+  useHotkeys(["Control+Comma", "Command+Comma"], () => {
     document.getElementById("preferences-button")?.click();
   });
 
-  useHotkeys("Control+Q", () => {
+  useHotkeys(["Control+Q", "Command+Q"], () => {
     window.__ENJOY_APP__.app.quit();
   });
 
