@@ -156,7 +156,7 @@ export const RecordingsList = (props: {
           </div>
         )}
 
-        <div className="flex flex-col-reverse">
+        <div className="flex flex-col-reverse space-y-4">
           <div className="w-full h-24"></div>
           {recordings.map((recording) => (
             <RecordingCard

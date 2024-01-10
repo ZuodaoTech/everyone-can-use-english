@@ -153,6 +153,7 @@
   "autoScroll": "auto scroll",
   "detail": "detail",
   "remove": "remove",
+  "share": "share",
   "loadMore": "Load more",
   "databaseError": "Failed to connect to database {{url}}",
   "somethingWentWrong": "Something went wrong",
