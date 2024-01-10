@@ -7,7 +7,7 @@ import fs from "fs-extra";
 import AdmZip from "adm-zip";
 import downloader from "@main/downloader";
 
-const logger = log.scope("FFMPEG");
+const logger = log.scope("ffmepg");
 export default class FfmpegWrapper {
   public ffmpeg: Ffmpeg.FfmpegCommand;
 
@@ -30,6 +30,10 @@ export default class FfmpegWrapper {
         .input(input)
         .on("start", (commandLine) => {
           logger.info("Spawned FFmpeg with command: " + commandLine);
+        })
+        .on("error", (err) => {
+          logger.error(err);
+          reject(err);
         })
         .ffprobe((err, metadata) => {
           if (err) {
@@ -121,6 +125,7 @@ export default class FfmpegWrapper {
           resolve(output);
         })
         .on("error", (err: Error) => {
+          logger.error(err);
           reject(err);
         })
         .save(output);

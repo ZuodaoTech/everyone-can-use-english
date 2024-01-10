@@ -9,7 +9,7 @@ import { exec } from "child_process";
 import fs from "fs-extra";
 import log from "electron-log/main";
 
-const logger = log.scope("WHISPER");
+const logger = log.scope("whisper");
 const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
 const END_OF_WORD_REGEX = /[^\.!,\?][\.!\?]/g;
 class Whipser {
