@@ -20,6 +20,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     apiUrl: () => {
       return ipcRenderer.invoke("app-api-url");
     },
+    quit: () => {
+      ipcRenderer.invoke("app-quit");
+    },
+    openDevTools: () => {
+      ipcRenderer.invoke("app-open-dev-tools");
+    },
     version,
   },
   providers: {

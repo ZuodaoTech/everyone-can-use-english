@@ -19,16 +19,10 @@ import { useLocation, Link } from "react-router-dom";
 import { t } from "i18next";
 import { Preferences } from "@renderer/components";
 import { Tooltip } from "react-tooltip";
-import { useHotkeys } from "react-hotkeys-hook";
 
 export const Sidebar = () => {
   const location = useLocation();
   const activeTab = location.pathname;
-
-  useHotkeys("Control+Comma", () => {
-    console.log("open preferences");
-    document.getElementById("preferences-button")?.click();
-  });
 
   return (
     <div className="h-[100vh] w-20 xl:w-48 2xl:w-64 transition-all relative">

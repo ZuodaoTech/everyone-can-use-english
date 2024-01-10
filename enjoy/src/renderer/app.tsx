@@ -9,6 +9,7 @@ import { RouterProvider } from "react-router-dom";
 import { Toaster, useToast } from "@renderer/components/ui";
 import { t } from "i18next";
 import { Tooltip } from "react-tooltip";
+import { useHotkeys } from "react-hotkeys-hook";
 
 function App() {
   const { toast } = useToast();
@@ -18,6 +19,18 @@ function App() {
       description: notification.message,
       variant: notification.type === "error" ? "destructive" : "default",
     });
+  });
+
+  useHotkeys("Control+Comma", () => {
+    document.getElementById("preferences-button")?.click();
+  });
+
+  useHotkeys("Control+Q", () => {
+    window.__ENJOY_APP__.app.quit();
+  });
+
+  useHotkeys(["Control+Shift+I", "Command+Shift+I"], () => {
+    window.__ENJOY_APP__.app.openDevTools();
   });
 
   return (
