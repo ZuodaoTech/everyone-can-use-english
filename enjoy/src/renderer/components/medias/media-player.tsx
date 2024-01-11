@@ -501,9 +501,11 @@ export const MediaPlayer = (props: {
   };
 
   useHotkeys(
-    " ",
-    () => {
+    "Space",
+    (keyboardEvent, _hotkeyEvent) => {
       if (!wavesurfer) return;
+
+      keyboardEvent.preventDefault();
       onPlayClick();
     },
     [wavesurfer]
