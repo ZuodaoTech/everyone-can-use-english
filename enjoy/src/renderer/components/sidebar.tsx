@@ -14,6 +14,7 @@ import {
   BookMarkedIcon,
   UserIcon,
   BotIcon,
+  UsersRoundIcon,
 } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import { t } from "i18next";
@@ -48,6 +49,21 @@ export const Sidebar = () => {
                 >
                   <HomeIcon className="xl:mr-2 h-5 w-5" />
                   <span className="hidden xl:block">{t("sidebar.home")}</span>
+                </Button>
+              </Link>
+
+              <Link
+                to="/community"
+                data-tooltip-id="sidebar-tooltip"
+                data-tooltip-content={t("sidebar.community")}
+                className="block"
+              >
+                <Button
+                  variant={activeTab === "" ? "secondary" : "ghost"}
+                  className="w-full xl:justify-start"
+                >
+                  <UsersRoundIcon className="xl:mr-2 h-5 w-5" />
+                  <span className="hidden xl:block">{t("sidebar.community")}</span>
                 </Button>
               </Link>
             </div>

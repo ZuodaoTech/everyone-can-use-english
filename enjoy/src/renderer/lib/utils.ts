@@ -3,10 +3,12 @@ import { twMerge } from "tailwind-merge";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
+import duration, { type DurationUnitType } from "dayjs/plugin/duration";
 import "dayjs/locale/en";
 import "dayjs/locale/zh-cn";
 import i18next, { t } from "i18next";
 dayjs.extend(localizedFormat);
+dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
 export function cn(...inputs: ClassValue[]) {
@@ -16,6 +18,23 @@ export function cn(...inputs: ClassValue[]) {
 export function secondsToTimestamp(seconds: number) {
   const date = new Date(seconds * 1000);
   return date.toISOString().substr(11, 8);
+}
+
+export function humanizeDuration(
+  duration: number,
+  unit: DurationUnitType = "second"
+) {
+  dayjs.locale(i18next.resolvedLanguage?.toLowerCase() || "en");
+  return dayjs.duration(duration, unit).humanize();
+}
+
+export function formatDuration(
+  duration: number,
+  unit: DurationUnitType = "second",
+  format = "HH:mm:ss"
+) {
+  dayjs.locale(i18next.resolvedLanguage?.toLowerCase() || "en");
+  return dayjs.duration(duration, unit).format(format);
 }
 
 export function bytesToSize(bytes: number) {

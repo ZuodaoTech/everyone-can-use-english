@@ -1,16 +1,14 @@
 import { Button, useToast } from "@renderer/components/ui";
-import { useContext, useState, useEffect } from "react";
-import { WEB_API_URL } from "@/constants";
+import { useContext, useEffect } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 
 export const LoginForm = () => {
   const { toast } = useToast();
-  const { EnjoyApp, login } = useContext(AppSettingsProviderContext);
-  const [endpoint, setEndpoint] = useState(WEB_API_URL);
+  const { EnjoyApp, login, apiUrl } = useContext(AppSettingsProviderContext);
 
   const handleMixinLogin = () => {
-    const url = `${endpoint}/sessions/new?provider=mixin`;
+    const url = `${apiUrl}/sessions/new?provider=mixin`;
     EnjoyApp.view.load(url, { x: 0, y: 0 });
   };
 
@@ -36,7 +34,7 @@ export const LoginForm = () => {
       const provider = new URL(url).pathname.split("/")[2];
       const code = new URL(url).searchParams.get("code");
 
-      if (!url.startsWith(endpoint)) {
+      if (!url.startsWith(apiUrl)) {
         toast({
           title: t("error"),
           description: t("invalidRedirectUrl"),
@@ -66,19 +64,13 @@ export const LoginForm = () => {
   };
 
   useEffect(() => {
-    EnjoyApp.app.apiUrl().then((url) => {
-      setEndpoint(url);
-    });
-  }, []);
-
-  useEffect(() => {
     EnjoyApp.view.onViewState((_event, state) => onViewState(state));
 
     return () => {
       EnjoyApp.view.removeViewStateListeners();
       EnjoyApp.view.remove();
     };
-  }, [endpoint]);
+  }, [apiUrl]);
 
   return (
     <div className="w-full max-w-sm px-6 flex flex-col space-y-4">

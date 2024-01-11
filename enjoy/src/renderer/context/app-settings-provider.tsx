@@ -1,6 +1,8 @@
 import { createContext, useEffect, useState } from "react";
+import { WEB_API_URL } from "@/constants";
 
 type AppSettingsProviderState = {
+  apiUrl: string;
   user: UserType | null;
   initialized: boolean;
   version?: string;
@@ -17,6 +19,7 @@ type AppSettingsProviderState = {
 };
 
 const initialState: AppSettingsProviderState = {
+  apiUrl: WEB_API_URL,
   user: null,
   initialized: false,
 };
@@ -31,6 +34,7 @@ export const AppSettingsProvider = ({
 }) => {
   const [initialized, setInitialized] = useState<boolean>(false);
   const [version, setVersion] = useState<string>("");
+  const [apiUrl, setApiUrl] = useState<string>(WEB_API_URL);
   const [user, setUser] = useState<UserType | null>(null);
   const [libraryPath, setLibraryPath] = useState("");
   const [whisperModelsPath, setWhisperModelsPath] = useState<string>("");
@@ -44,6 +48,7 @@ export const AppSettingsProvider = ({
     fetchLibraryPath();
     fetchModel();
     fetchFfmpegConfig();
+    fetchApiUrl();
   }, []);
 
   useEffect(() => {
@@ -107,6 +112,11 @@ export const AppSettingsProvider = ({
     setWhisperModel(whisperModel);
   };
 
+  const fetchApiUrl = async () => {
+    const apiUrl = await EnjoyApp.app.apiUrl();
+    setApiUrl(apiUrl);
+  }
+
   const setModelHandler = async (name: string) => {
     await EnjoyApp.settings.setWhisperModel(name);
     setWhisperModel(name);
@@ -123,6 +133,7 @@ export const AppSettingsProvider = ({
       value={{
         EnjoyApp,
         version,
+        apiUrl,
         user,
         login,
         logout,

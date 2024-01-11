@@ -14,6 +14,7 @@ import Story from "./pages/story";
 import Books from "./pages/books";
 import Profile from "./pages/profile";
 import Home from "./pages/home";
+import Community from "./pages/community";
 import StoryPreview from "./pages/story-preview";
 
 export default createHashRouter([
@@ -23,6 +24,10 @@ export default createHashRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
+      {
+        path: "/community",
+        element: <Community />,
+      },
       {
         path: "/profile",
         element: <Profile />,

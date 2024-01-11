@@ -63,12 +63,43 @@ class WebApi {
     );
   }
 
+  auth(params: { provider: string; code: string }): Promise<UserType> {
+    return this.api.post("/api/sessions", decamelizeKeys(params));
+  }
+
   me() {
     return this.api.get("/api/me");
   }
 
-  auth(params: { provider: string; code: string }): Promise<UserType> {
-    return this.api.post("/api/sessions", decamelizeKeys(params));
+  rankings(range: "day" | "week" | "month" | "year" | "all" = "day"): Promise<{
+    rankings: UserType[];
+    range: string;
+  }> {
+    return this.api.get("/api/users/rankings", { params: { range } });
+  }
+
+  posts(params?: { page?: number; items?: number }): Promise<
+    {
+      posts: PostType[];
+    } & PagyResponseType
+  > {
+    return this.api.get("/api/posts", { params: decamelizeKeys(params) });
+  }
+
+  post(id: string): Promise<PostType> {
+    return this.api.get(`/api/posts/${id}`);
+  }
+
+  createPost(params: { content: string }): Promise<PostType> {
+    return this.api.post("/api/posts", decamelizeKeys(params));
+  }
+
+  updatePost(id: string, params: { content: string }): Promise<PostType> {
+    return this.api.put(`/api/posts/${id}`, decamelizeKeys(params));
+  }
+
+  deletePost(id: string): Promise<void> {
+    return this.api.delete(`/api/posts/${id}`);
   }
 
   syncAudio(audio: Partial<AudioType>) {
@@ -228,6 +259,76 @@ class WebApi {
         });
     });
 
+    ipcMain.handle("web-api-rankings", async (event, range) => {
+      return this.rankings(range)
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          logger.error(error);
+          event.sender.send("on-notification", {
+            type: "error",
+            message: error.message,
+          });
+        });
+    });
+
+    ipcMain.handle("web-api-posts", async (event, params) => {
+      return this.posts(params)
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          logger.error(error);
+          event.sender.send("on-notification", {
+            type: "error",
+            message: error.message,
+          });
+        });
+    });
+
+    ipcMain.handle("web-api-post", async (event, id) => {
+      return this.post(id)
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          logger.error(error);
+          event.sender.send("on-notification", {
+            type: "error",
+            message: error.message,
+          });
+        });
+    });
+
+    ipcMain.handle("web-api-create-post", async (event, params) => {
+      return this.createPost(params)
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          logger.error(error);
+          event.sender.send("on-notification", {
+            type: "error",
+            message: error.message,
+          });
+        });
+    });
+
+    ipcMain.handle("web-api-delete-post", async (event, id) => {
+      return this.deletePost(id)
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          logger.error(error);
+          event.sender.send("on-notification", {
+            type: "error",
+            message: error.message,
+          });
+        });
+    });
+
     ipcMain.handle("web-api-lookup", async (event, params) => {
       return this.lookup(params)
         .then((response) => {
@@ -296,21 +397,18 @@ class WebApi {
       }
     );
 
-    ipcMain.handle(
-      "web-api-story-meanings",
-      async (event, storyId, params) => {
-        return this.storyMeanings(storyId, params)
-          .then((response) => {
-            return response;
-          })
-          .catch((error) => {
-            event.sender.send("on-notification", {
-              type: "error",
-              message: error.message,
-            });
+    ipcMain.handle("web-api-story-meanings", async (event, storyId, params) => {
+      return this.storyMeanings(storyId, params)
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          event.sender.send("on-notification", {
+            type: "error",
+            message: error.message,
           });
-      }
-    );
+        });
+    });
 
     ipcMain.handle("web-api-stories", async (event, params) => {
       return this.stories(params)

@@ -122,6 +122,7 @@
   },
   "sidebar": {
     "home": "主页",
+    "community": "社区",
     "audios": "音频",
     "videos": "视频",
     "stories": "文章",
@@ -320,5 +321,13 @@
   "presenter": "讲者",
   "downloadAudio": "下载音频",
   "downloadVideo": "下载视频",
-  "recordTooShort": "录音时长太短"
+  "recordTooShort": "录音时长太短",
+  "rankings": "排行榜",
+  "dayRankings": "日排行榜",
+  "weekRankings": "周排行榜",
+  "monthRankings": "月排行榜",
+  "allRankings": "总排行榜",
+  "noOneHasRecordedYet": "还没有人练习",
+  "activities": "动态",
+  "noOneSharedYet": "还没有人分享"
 }
