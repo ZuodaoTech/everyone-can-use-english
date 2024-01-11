@@ -335,5 +335,7 @@
   "shareAudio": "分享音频",
   "areYouSureToShareThisAudioToCommunity": "您确定要分享此音频到社区吗？",
   "shareVideo": "分享视频",
-  "areYouSureToShareThisVideoToCommunity": "您确定要分享此视频到社区吗？"
+  "areYouSureToShareThisVideoToCommunity": "您确定要分享此视频到社区吗？",
+  "sharePrompt": "分享提示语",
+  "areYouSureToShareThisPromptToCommunity": "您确定要分享此提示语到社区吗？"
 }

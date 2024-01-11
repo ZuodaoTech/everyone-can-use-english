@@ -335,5 +335,7 @@
   "shareAudio": "Share audio",
   "areYouSureToShareThisAudioToCommunity": "Are you sure to share this audio to community?",
   "shareVideo": "Share video",
-  "areYouSureToShareThisVideoToCommunity": "Are you sure to share this video to community?"
+  "areYouSureToShareThisVideoToCommunity": "Are you sure to share this video to community?",
+  "sharePrompt": "Share prompt",
+  "areYouSureToShareThisPromptToCommunity": "Are you sure to share this prompt to community?"
 }

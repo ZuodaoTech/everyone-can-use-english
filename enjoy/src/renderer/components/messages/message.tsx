@@ -8,8 +8,9 @@ export const MessageComponent = (props: {
   configuration: { [key: string]: any };
   onResend?: () => void;
   onRemove?: () => void;
+  onShare?: () => void;
 }) => {
-  const { message, configuration, onResend, onRemove } = props;
+  const { message, configuration, onResend, onRemove, onShare } = props;
   if (message.role === "assistant") {
     return (
       <AssistantMessageComponent
@@ -24,6 +25,7 @@ export const MessageComponent = (props: {
         configuration={configuration}
         onResend={onResend}
         onRemove={onRemove}
+        onShare={onShare}
       />
     );
   }

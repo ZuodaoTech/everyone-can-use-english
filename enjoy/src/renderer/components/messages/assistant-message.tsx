@@ -94,14 +94,14 @@ export const AssistantMessageComponent = (props: {
         <AvatarImage></AvatarImage>
         <AvatarFallback className="bg-white">AI</AvatarFallback>
       </Avatar>
-      <div className="flex flex-col gap-2 px-4 py-2 bg-white border rounded-lg shadow-sm w-full prose max-w-prose">
+      <div className="flex flex-col gap-2 px-4 py-2 bg-white border rounded-lg shadow-sm w-full">
         {configuration?.autoSpeech && speeching ? (
           <div className="p-4">
             <LoaderIcon className="w-8 h-8 animate-spin" />
           </div>
         ) : (
           <Markdown
-            className="select-text"
+            className="select-text prose"
             components={{
               a({ node, children, ...props }) {
                 try {

@@ -17,6 +17,7 @@ import {
   AlertCircleIcon,
   CopyIcon,
   CheckIcon,
+  Share2Icon,
 } from "lucide-react";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
@@ -27,8 +28,9 @@ export const UserMessageComponent = (props: {
   configuration?: { [key: string]: any };
   onResend?: () => void;
   onRemove?: () => void;
+  onShare?: () => void;
 }) => {
-  const { message, onResend, onRemove } = props;
+  const { message, onResend, onRemove, onShare } = props;
   const speech = message.speeches?.[0];
   const { user } = useContext(AppSettingsProviderContext);
   const [_, copyToClipboard] = useCopyToClipboard();
@@ -41,7 +43,7 @@ export const UserMessageComponent = (props: {
     >
       <DropdownMenu>
         <div className="flex flex-col gap-2 px-4 py-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full">
-          <Markdown className="select-text">{message.content}</Markdown>
+          <Markdown className="select-text prose">{message.content}</Markdown>
 
           {Boolean(speech) && <SpeechPlayer speech={speech} />}
 
@@ -79,6 +81,15 @@ export const UserMessageComponent = (props: {
                     setCopied(false);
                   }, 3000);
                 }}
+              />
+            )}
+
+            {message.createdAt && (
+              <Share2Icon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("share")}
+                className="w-3 h-3 cursor-pointer"
+                onClick={onShare}
               />
             )}
           </div>

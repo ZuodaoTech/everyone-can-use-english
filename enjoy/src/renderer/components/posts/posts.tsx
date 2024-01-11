@@ -8,6 +8,7 @@ import {
   DefaultVideoLayout,
   defaultLayoutIcons,
 } from "@vidstack/react/player/layouts/default";
+import Markdown from "react-markdown";
 
 export const Posts = () => {
   const { webApi } = useContext(AppSettingsProviderContext);
@@ -16,7 +17,6 @@ export const Posts = () => {
   const fetchPosts = async () => {
     webApi.posts().then(
       (res) => {
-        console.log(res);
         setPosts(res.posts);
       },
       (err) => {
@@ -60,7 +60,9 @@ const PostCard = (props: { post: PostType }) => {
           <div className="">{post.user.name}</div>
         </div>
       </div>
-      {post.content && <div className="mb-4">{post.content}</div>}
+      {post.content && (
+        <Markdown className="prose select-text mb-4">{post.content}</Markdown>
+      )}
       {post.targetType == "Medium" && <PostMedium medium={post.target} />}
     </div>
   );

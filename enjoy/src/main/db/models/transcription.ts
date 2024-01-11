@@ -157,7 +157,7 @@ export class Transcription extends Model<Transcription> {
 
   @AfterFind
   static expireProcessingState(transcription: Transcription) {
-    if (transcription.state !== "processing") return;
+    if (transcription?.state !== "processing") return;
 
     if (transcription.updatedAt.getTime() + PROCESS_TIMEOUT < Date.now()) {
       if (transcription.result) {
