@@ -35,6 +35,8 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
   const [playBackRate, setPlaybackRate] = useState<number>(1);
+  const [displayInlineCaption, setDisplayInlineCaption] =
+    useState<boolean>(true);
 
   const onTransactionUpdate = (event: CustomEvent) => {
     const { model, action, record } = event.detail || {};
@@ -109,6 +111,8 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
             setIsLooping={setIsLooping}
             playBackRate={playBackRate}
             setPlaybackRate={setPlaybackRate}
+            displayInlineCaption={displayInlineCaption}
+            setDisplayInlineCaption={setDisplayInlineCaption}
           />
 
           <ScrollArea
