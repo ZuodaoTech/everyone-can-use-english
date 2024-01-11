@@ -2,6 +2,7 @@ import {
   AfterCreate,
   AfterUpdate,
   AfterDestroy,
+  AfterFind,
   BelongsTo,
   Table,
   Column,
@@ -16,7 +17,7 @@ import whisper from "@main/whisper";
 import mainWindow from "@main/window";
 import log from "electron-log/main";
 import { Client } from "@/api";
-import { WEB_API_URL } from "@/constants";
+import { WEB_API_URL, PROCESS_TIMEOUT } from "@/constants";
 import settings from "@main/settings";
 
 const logger = log.scope("db/models/transcription");
@@ -151,6 +152,23 @@ export class Transcription extends Model<Transcription> {
   @AfterDestroy
   static notifyForDestroy(transcription: Transcription) {
     this.notify(transcription, "destroy");
+  }
+
+  @AfterFind
+  static expireProcessingState(transcription: Transcription) {
+    if (transcription.state !== "processing") return;
+
+    if (transcription.updatedAt.getTime() + PROCESS_TIMEOUT < Date.now()) {
+      if (transcription.result) {
+        transcription.update({
+          state: "finished",
+        });
+      } else {
+        transcription.update({
+          state: "pending",
+        });
+      }
+    }
   }
 
   static notify(
