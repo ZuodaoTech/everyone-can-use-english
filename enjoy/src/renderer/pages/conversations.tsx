@@ -85,7 +85,15 @@ export default () => {
 
         {conversations.map((conversation) => (
           <Link key={conversation.id} to={`/conversations/${conversation.id}`}>
-            <div className="bg-white text-primary rounded-full w-full mb-2 p-4 hover:bg-primary hover:text-white cursor-pointer flex items-center">
+            <div
+              className="bg-white text-primary rounded-full w-full mb-2 p-4 hover:bg-primary hover:text-white cursor-pointer flex items-center"
+              style={{
+                borderLeftColor: `#${conversation.id
+                  .replaceAll("-", "")
+                  .substr(0, 6)}`,
+                borderLeftWidth: 3,
+              }}
+            >
               <div className="">
                 <MessageCircleIcon className="mr-2" />
               </div>

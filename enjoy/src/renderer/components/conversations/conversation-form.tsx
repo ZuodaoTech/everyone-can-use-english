@@ -53,6 +53,7 @@ const conversationFormSchema = z.object({
           engine: z.enum(["openai"]).default("openai"),
           model: z.string().default("tts-1"),
           voice: z.string().optional(),
+          baseUrl: z.string().optional(),
         })
         .optional(),
     })
@@ -102,6 +103,9 @@ export const ConversationForm = (props: {
           engine: conversation.engine,
           configuration: {
             ...conversation.configuration,
+            tts: {
+              ...conversation.configuration?.tts,
+            },
           },
         }
       : {
@@ -126,6 +130,10 @@ export const ConversationForm = (props: {
 
     if (!configuration.baseUrl) {
       configuration.baseUrl = LLM_PROVIDERS[engine]?.baseUrl;
+    }
+
+    if (!configuration.tts.baseUrl) {
+      configuration.tts.baseUrl = LLM_PROVIDERS[engine]?.baseUrl;
     }
 
     if (conversation?.id) {
@@ -547,6 +555,21 @@ export const ConversationForm = (props: {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="configuration.tts.baseUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("models.conversation.ttsBaseUrl")}</FormLabel>
+                  <Input {...field} />
+                  <FormDescription>
+                    {t("models.conversation.baseUrl")}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
         </ScrollArea>
 
@@ -584,7 +607,9 @@ export const ConversationForm = (props: {
           )}
 
           <Button
-            disabled={submitting || !form.formState.isDirty}
+            disabled={
+              submitting || (conversation.id && !form.formState.isDirty)
+            }
             className="w-full h-12"
             size="lg"
             type="submit"
@@ -686,8 +711,9 @@ const conversationDefaultConfiguration = {
     maxTokens: 2048,
     presencePenalty: 0,
     frequencyPenalty: 0,
-    historyBufferSize: 10,
+    historyBufferSize: 0,
     tts: {
+      baseUrl: "",
       engine: "openai",
       model: "tts-1",
       voice: "alloy",

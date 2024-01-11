@@ -29,6 +29,8 @@ import webApi from "@main/web-api";
 import { startCase } from "lodash";
 import { v5 as uuidv5 } from "uuid";
 
+const SIZE_LIMIT = 1024 * 1024 * 50; // 50MB
+
 const logger = log.scope("db/models/audio");
 @Table({
   modelName: "Audio",
@@ -238,6 +240,11 @@ export class Audio extends Model<Audio> {
       return Video.buildFromLocalFile(filePath, params);
     } else if (!AudioFormats.includes(extname.split(".").pop() as string)) {
       throw new Error(t("models.audio.fileNotSupported", { file: filePath }));
+    }
+
+    const stats = fs.statSync(filePath);
+    if (stats.size > SIZE_LIMIT) {
+      throw new Error(t("models.audio.fileTooLarge", { file: filePath }));
     }
 
     const md5 = await hashFile(filePath, { algo: "md5" });

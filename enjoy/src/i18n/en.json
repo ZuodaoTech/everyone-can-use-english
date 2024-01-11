@@ -21,6 +21,7 @@
       "added": "Successfully added audio",
       "removed": "Successfully removed audio",
       "notFound": "Video not found",
+      "fileTooLarge": "File too large {{ file }}",
       "failedToAdd": "Failed to add audio, {{ error }}",
       "fileNotFound": "File not found {{file}}",
       "fileNotSupported": "File not supported {{file}}",
@@ -45,6 +46,7 @@
       "added": "Successfully added video",
       "removed": "Successfully removed video",
       "notFound": "Video not found",
+      "fileTooLarge": "File too large {{ file }}",
       "failedToAdd": "Failed to add video, {{ error }}",
       "fileNotFound": "File not found {{file}}",
       "fileNotSupported": "File not supported {{file}}",
@@ -82,6 +84,7 @@
       "ttsEngine": "TTS engine",
       "ttsModel": "TTS model",
       "ttsVoice": "TTS voice",
+      "ttsBaseUrl": "TTS base URL",
       "notFound": "Conversation not found",
       "contentRequired": "Content required"
     },

@@ -104,6 +104,7 @@ export const WhisperModelOptions = () => {
       }
       if (state.state === "completed") {
         model.downloaded = true;
+        setWhisperModel(model.name);
         EnjoyApp.download.removeAllListeners();
       }
 

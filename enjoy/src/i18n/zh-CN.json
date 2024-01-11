@@ -21,6 +21,7 @@
       "added": "成功添加音频",
       "removed": "成功删除音频",
       "notFound": "未找到音频",
+      "fileTooLarge": "文件太大了 {{ file }}",
       "failedToAdd": "添加音频失败, {{error}}",
       "fileNotFound": "无法访问文件 {{file}}",
       "fileNotSupported": "文件不支持 {{file}}",
@@ -45,6 +46,7 @@
       "added": "成功添加视频",
       "removed": "成功删除视频",
       "notFound": "未找到视频",
+      "fileTooLarge": "文件太大了 {{ file }}",
       "failedToAdd": "添加视频失败, {{error}}",
       "fileNotFound": "无法访问文件 {{file}}",
       "fileNotSupported": "文件不支持 {{file}}",
@@ -82,6 +84,7 @@
       "ttsEngine": "TTS 引擎",
       "ttsModel": "TTS 模型",
       "ttsVoice": "TTS 声音",
+      "ttsBaseUrl": "TTS 请求地址",
       "notFound": "未找到对话",
       "contentRequired": "对话内容不能为空"
     },
