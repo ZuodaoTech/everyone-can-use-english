@@ -686,7 +686,7 @@ const conversationDefaultConfiguration = {
     maxTokens: 2048,
     presencePenalty: 0,
     frequencyPenalty: 0,
-    historyBufferSize: 10,
+    historyBufferSize: 0,
     tts: {
       engine: "openai",
       model: "tts-1",
