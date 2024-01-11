@@ -329,5 +329,11 @@
   "allRankings": "总排行榜",
   "noOneHasRecordedYet": "还没有人练习",
   "activities": "动态",
-  "noOneSharedYet": "还没有人分享"
+  "noOneSharedYet": "还没有人分享",
+  "sharedSuccessfully": "分享成功",
+  "sharedFailed": "分享失败",
+  "shareAudio": "分享音频",
+  "areYouSureToShareThisAudioToCommunity": "您确定要分享此音频到社区吗？",
+  "shareVideo": "分享视频",
+  "areYouSureToShareThisVideoToCommunity": "您确定要分享此视频到社区吗？"
 }

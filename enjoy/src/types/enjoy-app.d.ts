@@ -93,7 +93,7 @@ type EnjoyAppType = {
   audios: {
     findAll: (params: object) => Promise<AudioType[]>;
     findOne: (params: object) => Promise<AudioType>;
-    create: (source: string, params?: object) => Promise<AudioType>;
+    create: (uri: string, params?: object) => Promise<AudioType>;
     update: (id: string, params: object) => Promise<AudioType | undefined>;
     destroy: (id: string) => Promise<undefined>;
     transcribe: (id: string) => Promise<void>;
@@ -102,7 +102,7 @@ type EnjoyAppType = {
   videos: {
     findAll: (params: object) => Promise<VideoType[]>;
     findOne: (params: object) => Promise<VideoType>;
-    create: (source: string, params?: object) => Promise<VideoType>;
+    create: (uri: string, params?: object) => Promise<VideoType>;
     update: (id: string, params: object) => Promise<VideoType | undefined>;
     destroy: (id: string) => Promise<undefined>;
     transcribe: (id: string) => Promise<void>;

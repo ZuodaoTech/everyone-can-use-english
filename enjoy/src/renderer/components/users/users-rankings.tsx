@@ -58,11 +58,11 @@ const RankingsCard = (props: {
         )}
 
         {rankings.map((user, index) => (
-          <div key={user.id} className="flex items-center space-x-4 px-4 py-2">
+          <div key={user.id} className="flex items-center space-x-4 p-2">
             <div className="font-mono text-sm">#{index + 1}</div>
 
             <div className="flex items-center space-x-2">
-              <Avatar>
+              <Avatar className="w-8 h-8">
                 <AvatarImage src={user.avatarUrl} />
                 <AvatarFallback className="text-xl">
                   {user.name[0].toUpperCase()}

@@ -16,6 +16,7 @@ import {
   MinimizeIcon,
   GalleryHorizontalIcon,
   SpellCheckIcon,
+  Share2Icon,
 } from "lucide-react";
 import { t } from "i18next";
 import { type WaveSurferOptions } from "wavesurfer.js";
@@ -24,7 +25,6 @@ import { Tooltip } from "react-tooltip";
 const PLAYBACK_RATE_OPTIONS = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75];
 const MIN_ZOOM_RATIO = 0.25;
 const MAX_ZOOM_RATIO = 5.0;
-const ZOOM_RATIO_STEP = 0.25;
 
 export const MediaPlayerControls = (props: {
   isPlaying: boolean;
@@ -47,6 +47,7 @@ export const MediaPlayerControls = (props: {
   setWavesurferOptions?: (options: Partial<WaveSurferOptions>) => void;
   displayInlineCaption?: boolean;
   setDisplayInlineCaption?: (display: boolean) => void;
+  onShare?: () => void;
 }) => {
   const {
     isPlaying,
@@ -67,6 +68,7 @@ export const MediaPlayerControls = (props: {
     setWavesurferOptions,
     displayInlineCaption,
     setDisplayInlineCaption,
+    onShare,
   } = props;
 
   return (
@@ -244,20 +246,32 @@ export const MediaPlayerControls = (props: {
         </Button>
       )}
 
-      {transcriptionDirty && (
-        <div className="absolute right-4">
-          <div className="flex items-center space-x-4">
-            <Button
-              variant="secondary"
-              className=""
-              onClick={resetTranscription}
-            >
-              {t("reset")}
-            </Button>
-            <Button onClick={saveTranscription}>{t("save")}</Button>
-          </div>
+      <Button
+        variant="ghost"
+        data-tooltip-id="media-player-controls-tooltip"
+        data-tooltip-content={t("share")}
+        className="relative aspect-square p-0 h-10"
+        onClick={onShare}
+      >
+        <Share2Icon className="w-6 h-6" />
+      </Button>
+
+      <div className="absolute right-4">
+        <div className="flex items-center space-x-4">
+          {transcriptionDirty && (
+            <>
+              <Button
+                variant="secondary"
+                className=""
+                onClick={resetTranscription}
+              >
+                {t("reset")}
+              </Button>
+              <Button onClick={saveTranscription}>{t("save")}</Button>
+            </>
+          )}
         </div>
-      )}
+      </div>
 
       <Tooltip id="media-player-controls-tooltip" />
     </div>

@@ -94,7 +94,11 @@ export class Client {
     return this.api.get(`/api/posts/${id}`);
   }
 
-  createPost(params: { content: string }): Promise<PostType> {
+  createPost(params: {
+    content?: string;
+    targetType?: string;
+    targetId?: string;
+  }): Promise<PostType> {
     return this.api.post("/api/posts", decamelizeKeys(params));
   }
 

@@ -14,28 +14,30 @@ export default () => {
   const navigate = useNavigate();
 
   return (
-    <div className="h-full max-w-5xl mx-auto px-4 py-6">
-      <div className="flex space-x-1 items-center mb-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-          <ChevronLeftIcon className="w-5 h-5" />
-        </Button>
-        <span>{t("sidebar.community")}</span>
+    <div className="bg-muted h-full px-4 lg:px-8 py-6">
+      <div className="max-w-screen-md mx-auto">
+        <div className="flex space-x-1 items-center mb-4">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+            <ChevronLeftIcon className="w-5 h-5" />
+          </Button>
+          <span>{t("sidebar.community")}</span>
+        </div>
+
+        <Tabs defaultValue="activities">
+          <TabsList className="mb-6">
+            <TabsTrigger value="activities">{t("activities")}</TabsTrigger>
+            <TabsTrigger value="rankings">{t("rankings")}</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="activities">
+            <Posts />
+          </TabsContent>
+
+          <TabsContent value="rankings">
+            <UsersRankings />
+          </TabsContent>
+        </Tabs>
       </div>
-
-      <Tabs defaultValue="activities">
-        <TabsList className="mb-6">
-          <TabsTrigger value="activities">{t("activities")}</TabsTrigger>
-          <TabsTrigger value="rankings">{t("rankings")}</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="activities">
-          <Posts />
-        </TabsContent>
-
-        <TabsContent value="rankings">
-          <UsersRankings />
-        </TabsContent>
-      </Tabs>
     </div>
   );
 };

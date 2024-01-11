@@ -175,8 +175,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findOne: (params: object) => {
       return ipcRenderer.invoke("audios-find-one", params);
     },
-    create: (source: string, params?: object) => {
-      return ipcRenderer.invoke("audios-create", source, params);
+    create: (uri: string, params?: object) => {
+      return ipcRenderer.invoke("audios-create", uri, params);
     },
     update: (id: string, params: object) => {
       return ipcRenderer.invoke("audios-update", id, params);
@@ -201,8 +201,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findOne: (params: object) => {
       return ipcRenderer.invoke("videos-find-one", params);
     },
-    create: (source: string, params?: object) => {
-      return ipcRenderer.invoke("videos-create", source, params);
+    create: (uri: string, params?: object) => {
+      return ipcRenderer.invoke("videos-create", uri, params);
     },
     update: (id: string, params: object) => {
       return ipcRenderer.invoke("videos-update", id, params);

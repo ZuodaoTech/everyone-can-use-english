@@ -90,27 +90,29 @@ class VideosHandler {
 
   private async create(
     event: IpcMainEvent,
-    source: string,
+    uri: string,
     params: {
       name?: string;
       coverUrl?: string;
     } = {}
   ) {
-    let file = source;
-    if (source.startsWith("http")) {
+    let file = uri;
+    let source;
+    if (uri.startsWith("http")) {
       try {
-        if (youtubedr.validateYtURL(source)) {
-          file = await youtubedr.autoDownload(source);
+        if (youtubedr.validateYtURL(uri)) {
+          file = await youtubedr.autoDownload(uri);
         } else {
-          file = await downloader.download(source, {
+          file = await downloader.download(uri, {
             webContents: event.sender,
           });
         }
         if (!file) throw new Error("Failed to download file");
+        source = uri;
       } catch (err) {
         return event.sender.send("on-notification", {
           type: "error",
-          message: t("models.video.failedToDownloadFile", { file: source }),
+          message: t("models.video.failedToDownloadFile", { file: uri }),
         });
       }
     }
