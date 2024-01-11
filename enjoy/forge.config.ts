@@ -80,7 +80,10 @@ const config: ForgeConfig = {
     }),
   ],
   hooks: {
+    // TODO: remove this once this issue is resolved: https://github.com/electron/forge/pull/3336
     prePackage: async (forgeConfig) => {
+      if (process.platform === "linux") return;
+
       if (forgeConfig.packagerConfig.ignore !== undefined) {
         throw new Error(
           "forgeConfig.packagerConfig.ignore is already defined. Please remove it from your forge config and instead use the prePackage hook to dynamically set it."
