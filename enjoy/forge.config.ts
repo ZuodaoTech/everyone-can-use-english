@@ -50,8 +50,8 @@ const config: ForgeConfig = {
       name: "@electron-forge/publisher-github",
       config: {
         repository: {
-          owner: "an-lee",
-          name: "enjoy",
+          owner: "xiaolai",
+          name: "everyone-can-use-english",
         },
         draft: true,
       },
