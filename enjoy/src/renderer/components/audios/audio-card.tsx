@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { cn } from "@renderer/lib/utils";
 
 export const AudioCard = (props: {
-  audio: ResourceType;
+  audio: AudioType;
   className?: string;
 }) => {
   const { audio, className } = props;
