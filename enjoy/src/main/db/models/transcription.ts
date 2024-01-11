@@ -15,9 +15,16 @@ import { Audio, Video } from "@main/db/models";
 import whisper from "@main/whisper";
 import mainWindow from "@main/window";
 import log from "electron-log/main";
-import webApi from "@main/web-api";
+import { Client } from "@/api";
+import { WEB_API_URL } from "@/constants";
+import settings from "@main/settings";
 
 const logger = log.scope("db/models/transcription");
+const webApi = new Client({
+  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+  accessToken: settings.getSync("user.accessToken") as string,
+});
+
 @Table({
   modelName: "Transcription",
   tableName: "transcriptions",
@@ -25,7 +32,7 @@ const logger = log.scope("db/models/transcription");
   timestamps: true,
 })
 export class Transcription extends Model<Transcription> {
-  @IsUUID('all')
+  @IsUUID("all")
   @Default(DataType.UUIDV4)
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;

@@ -25,13 +25,20 @@ import mainWindow from "@main/window";
 import log from "electron-log/main";
 import storage from "@main/storage";
 import Ffmpeg from "@main/ffmpeg";
-import webApi from "@main/web-api";
+import { Client } from "@/api";
+import { WEB_API_URL } from "@/constants";
 import { startCase } from "lodash";
 import { v5 as uuidv5 } from "uuid";
 
 const SIZE_LIMIT = 1024 * 1024 * 100; // 100MB
 
 const logger = log.scope("db/models/video");
+
+const webApi = new Client({
+  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+  accessToken: settings.getSync("user.accessToken") as string,
+});
+
 @Table({
   modelName: "Video",
   tableName: "videos",

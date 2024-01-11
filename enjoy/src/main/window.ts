@@ -14,7 +14,6 @@ import downloader from "@main/downloader";
 import whisper from "@main/whisper";
 import fs from "fs-extra";
 import "@main/i18n";
-import webApi from "@main/web-api";
 import log from "electron-log/main";
 import { WEB_API_URL } from "@/constants";
 import { AudibleProvider, TedProvider } from "@main/providers";
@@ -37,8 +36,6 @@ main.init = () => {
     main.win.show();
     return;
   }
-
-  webApi.registerIpcHandlers();
 
   // Prepare local database
   db.registerIpcHandlers();
