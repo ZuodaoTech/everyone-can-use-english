@@ -356,50 +356,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       ipcRenderer.removeAllListeners("download-on-error");
     },
   },
-  webApi: {
-    auth: (params: object) => {
-      return ipcRenderer.invoke("web-api-auth", params);
-    },
-    me: () => {
-      return ipcRenderer.invoke("web-api-me");
-    },
-    lookup: (params: object) => {
-      return ipcRenderer.invoke("web-api-lookup", params);
-    },
-    lookupInBatch: (params: object[]) => {
-      return ipcRenderer.invoke("web-api-lookup-in-batch", params);
-    },
-    createStory: (params: object) => {
-      return ipcRenderer.invoke("web-api-create-story", params);
-    },
-    starStory: (storyId: string) => {
-      return ipcRenderer.invoke("web-api-star-story", storyId);
-    },
-    unstarStory: (storyId: string) => {
-      return ipcRenderer.invoke("web-api-unstar-story", storyId);
-    },
-    extractVocabularyFromStory: (storyId: string) => {
-      return ipcRenderer.invoke(
-        "web-api-extract-vocabulary-from-story",
-        storyId
-      );
-    },
-    storyMeanings: (storyId: string, params: object) => {
-      return ipcRenderer.invoke("web-api-story-meanings", storyId, params);
-    },
-    story: (id: string) => {
-      return ipcRenderer.invoke("web-api-story", id);
-    },
-    stories: (params: object) => {
-      return ipcRenderer.invoke("web-api-stories", params);
-    },
-    mineStories: (params: object) => {
-      return ipcRenderer.invoke("web-api-mine-stories", params);
-    },
-    mineMeanings: (params: object) => {
-      return ipcRenderer.invoke("web-api-mine-meanings", params);
-    },
-  },
   cacheObjects: {
     get: (key: string) => {
       return ipcRenderer.invoke("cache-objects-get", key);
