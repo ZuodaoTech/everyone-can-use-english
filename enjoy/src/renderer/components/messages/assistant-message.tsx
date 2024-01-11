@@ -54,6 +54,7 @@ export const AssistantMessageComponent = (props: {
         engine: configuration?.tts?.engine,
         model: configuration?.tts?.model,
         voice: configuration?.tts?.voice,
+        baseUrl: configuration?.tts?.baseUrl,
       })
       .then((speech) => {
         setSpeech(speech);

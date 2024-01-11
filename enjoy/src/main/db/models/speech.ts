@@ -161,6 +161,7 @@ export class Speech extends Model<Speech> {
       engine = "openai",
       model = "tts-1",
       voice = "alloy",
+      baseUrl,
     } = configuration || {};
 
     logger.debug("Generating speech", { engine, model, voice });
@@ -176,7 +177,9 @@ export class Speech extends Model<Speech> {
       }
       const openai = new OpenAI({
         apiKey: key,
+        baseURL: baseUrl,
       });
+      logger.debug("baseURL", openai.baseURL);
 
       const file = await openai.audio.speech.create({
         input: text,

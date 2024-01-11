@@ -84,6 +84,7 @@
       "ttsEngine": "TTS 引擎",
       "ttsModel": "TTS 模型",
       "ttsVoice": "TTS 声音",
+      "ttsBaseUrl": "TTS 请求地址",
       "notFound": "未找到对话",
       "contentRequired": "对话内容不能为空"
     },
