@@ -20,6 +20,7 @@ let nativeModuleDependenciesToPackage: Set<string>;
 const config: ForgeConfig = {
   packagerConfig: {
     icon: "./assets/icon",
+    name: "Enjoy",
     executableName: "enjoy",
     protocols: [
       {
