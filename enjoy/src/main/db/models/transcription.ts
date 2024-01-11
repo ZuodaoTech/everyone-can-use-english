@@ -24,6 +24,7 @@ const logger = log.scope("db/models/transcription");
 const webApi = new Client({
   baseUrl: process.env.WEB_API_URL || WEB_API_URL,
   accessToken: settings.getSync("user.accessToken") as string,
+  logger: log.scope("api/client"),
 });
 
 @Table({

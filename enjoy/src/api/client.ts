@@ -7,10 +7,16 @@ const ONE_MINUTE = 1000 * 60; // 1 minute
 export class Client {
   public api: AxiosInstance;
   public baseUrl: string;
+  public logger: any;
 
-  constructor(options: { baseUrl: string; accessToken?: string }) {
-    const { baseUrl, accessToken } = options;
+  constructor(options: {
+    baseUrl: string;
+    accessToken?: string;
+    logger?: any;
+  }) {
+    const { baseUrl, accessToken, logger } = options;
     this.baseUrl = baseUrl;
+    this.logger = logger || console;
 
     this.api = axios.create({
       baseURL: baseUrl,
@@ -22,7 +28,7 @@ export class Client {
     this.api.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${accessToken}`;
 
-      console.debug(
+      this.logger.debug(
         config.method.toUpperCase(),
         config.baseURL + config.url,
         config.data,
@@ -32,7 +38,7 @@ export class Client {
     });
     this.api.interceptors.response.use(
       (response) => {
-        console.debug(
+        this.logger.debug(
           response.status,
           response.config.method.toUpperCase(),
           response.config.baseURL + response.config.url
@@ -41,19 +47,19 @@ export class Client {
       },
       (err) => {
         if (err.response) {
-          console.error(
+          this.logger.error(
             err.response.status,
             err.response.config.method.toUpperCase(),
             err.response.config.baseURL + err.response.config.url
           );
-          console.error(err.response.data);
+          this.logger.error(err.response.data);
           return Promise.reject(err.response.data);
         }
 
         if (err.request) {
-          console.error(err.request);
+          this.logger.error(err.request);
         } else {
-          console.error(err.message);
+          this.logger.error(err.message);
         }
 
         return Promise.reject(err);
@@ -153,7 +159,7 @@ export class Client {
       sourceId?: string;
       sourceType?: string;
     }[]
-  ): Promise<{ successCount: number; errors: string[], total: number }> {
+  ): Promise<{ successCount: number; errors: string[]; total: number }> {
     return this.api.post("/api/lookups/batch", {
       lookups: decamelizeKeys(lookups, { deep: true }),
     });

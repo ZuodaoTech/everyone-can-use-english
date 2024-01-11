@@ -17,12 +17,13 @@ import { Recording } from "@main/db/models";
 import { Client } from "@/api";
 import { WEB_API_URL } from "@/constants";
 import settings from "@main/settings";
+import log from "electron-log/main";
 
 const webApi = new Client({
   baseUrl: process.env.WEB_API_URL || WEB_API_URL,
   accessToken: settings.getSync("user.accessToken") as string,
+  logger: log.scope("api/client"),
 });
-
 
 @Table({
   modelName: "PronunciationAssessment",
