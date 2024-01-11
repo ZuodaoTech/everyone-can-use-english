@@ -6,9 +6,11 @@ const ONE_MINUTE = 1000 * 60; // 1 minute
 
 export class Client {
   public api: AxiosInstance;
+  public baseUrl: string;
 
   constructor(options: { baseUrl: string; accessToken?: string }) {
     const { baseUrl, accessToken } = options;
+    this.baseUrl = baseUrl;
 
     this.api = axios.create({
       baseURL: baseUrl,
@@ -20,7 +22,7 @@ export class Client {
     this.api.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${accessToken}`;
 
-      console.info(
+      console.debug(
         config.method.toUpperCase(),
         config.baseURL + config.url,
         config.data,
@@ -30,7 +32,7 @@ export class Client {
     });
     this.api.interceptors.response.use(
       (response) => {
-        console.info(
+        console.debug(
           response.status,
           response.config.method.toUpperCase(),
           response.config.baseURL + response.config.url
@@ -63,7 +65,7 @@ export class Client {
     return this.api.post("/api/sessions", decamelizeKeys(params));
   }
 
-  me() {
+  me(): Promise<UserType> {
     return this.api.get("/api/me");
   }
 
@@ -151,7 +153,7 @@ export class Client {
       sourceId?: string;
       sourceType?: string;
     }[]
-  ): Promise<{ successCount: number; total: number }> {
+  ): Promise<{ successCount: number; errors: string[], total: number }> {
     return this.api.post("/api/lookups/batch", {
       lookups: decamelizeKeys(lookups, { deep: true }),
     });
@@ -171,6 +173,7 @@ export class Client {
   ): Promise<
     {
       meanings: MeaningType[];
+      pendingLookups?: LookupType[];
     } & PagyResponseType
   > {
     return this.api.get(`/api/stories/${storyId}/meanings`, {
@@ -220,11 +223,11 @@ export class Client {
     });
   }
 
-  starStory(storyId: string) {
+  starStory(storyId: string): Promise<{ starred: boolean }> {
     return this.api.post(`/api/mine/stories`, decamelizeKeys({ storyId }));
   }
 
-  unstarStory(storyId: string) {
+  unstarStory(storyId: string): Promise<{ starred: boolean }> {
     return this.api.delete(`/api/mine/stories/${storyId}`);
   }
 }

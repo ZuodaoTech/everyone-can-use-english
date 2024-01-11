@@ -1,19 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { Client } from "@/api";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 
 export const Posts = () => {
-  const { apiUrl, user } = useContext(AppSettingsProviderContext);
+  const { webApi } = useContext(AppSettingsProviderContext);
   const [posts, setPosts] = useState<PostType[]>([]);
 
-  const client = new Client({
-    baseUrl: apiUrl,
-    accessToken: user.accessToken,
-  });
-
   const fetchPosts = async () => {
-    client.posts().then(
+    webApi.posts().then(
       (res) => {
         setPosts(res.posts);
       },

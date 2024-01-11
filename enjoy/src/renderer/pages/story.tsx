@@ -16,7 +16,7 @@ nlp.plugin(paragraphs);
 let timeout: NodeJS.Timeout = null;
 export default () => {
   const { id } = useParams<{ id: string }>();
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { webApi } = useContext(AppSettingsProviderContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [story, setStory] = useState<StoryType>();
   const [meanings, setMeanings] = useState<MeaningType[]>([]);
@@ -26,7 +26,7 @@ export default () => {
   const [doc, setDoc] = useState<any>(null);
 
   const fetchStory = async () => {
-    EnjoyApp.webApi
+    webApi
       .story(id)
       .then((story) => {
         setStory(story);
@@ -41,7 +41,7 @@ export default () => {
 
   const fetchMeanings = async () => {
     setScanning(true);
-    EnjoyApp.webApi
+    webApi
       .storyMeanings(id, { items: 500 })
       .then((response) => {
         if (!response) return;
@@ -88,14 +88,14 @@ export default () => {
       });
     });
 
-    EnjoyApp.webApi.lookupInBatch(vocabulary).then((response) => {
+    webApi.lookupInBatch(vocabulary).then((response) => {
       const { errors } = response;
       if (errors.length > 0) {
         console.warn(errors);
         return;
       }
 
-      EnjoyApp.webApi.extractVocabularyFromStory(id).then(() => {
+      webApi.extractVocabularyFromStory(id).then(() => {
         fetchStory();
         if (pendingLookups.length > 0) return;
 
@@ -108,11 +108,11 @@ export default () => {
     if (!story) return;
 
     if (story.starred) {
-      EnjoyApp.webApi.unstarStory(id).then((result) => {
+      webApi.unstarStory(id).then((result) => {
         setStory({ ...story, starred: result.starred });
       });
     } else {
-      EnjoyApp.webApi.starStory(id).then((result) => {
+      webApi.starStory(id).then((result) => {
         setStory({ ...story, starred: result.starred });
       });
     }

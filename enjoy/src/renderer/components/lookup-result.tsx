@@ -18,7 +18,7 @@ export const LookupResult = (props: {
   const [loading, setLoading] = useState<boolean>(true);
   if (!word) return null;
 
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { webApi } = useContext(AppSettingsProviderContext);
 
   const lookup = (retries = 0) => {
     if (!word) return;
@@ -28,7 +28,7 @@ export const LookupResult = (props: {
     }
 
     retries += 1;
-    EnjoyApp.webApi
+    webApi
       .lookup({
         word,
         context,

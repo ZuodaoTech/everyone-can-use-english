@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardContent,
 } from "@renderer/components/ui";
-import { Client } from "@/api";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import { formatDuration } from "@renderer/lib/utils";
@@ -28,16 +27,11 @@ const RankingsCard = (props: {
   range: "day" | "week" | "month" | "year" | "all";
 }) => {
   const { range } = props;
-  const { apiUrl, user } = useContext(AppSettingsProviderContext);
+  const { webApi } = useContext(AppSettingsProviderContext);
   const [rankings, setRankings] = useState<UserType[]>([]);
 
-  const client = new Client({
-    baseUrl: apiUrl,
-    accessToken: user.accessToken,
-  });
-
   const fetchRankings = async () => {
-    client.rankings(range).then(
+    webApi.rankings(range).then(
       (res) => {
         setRankings(res.rankings);
       },

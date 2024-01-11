@@ -26,7 +26,7 @@ export default () => {
   });
   const [loading, setLoading] = useState(true);
   const [readable, setReadable] = useState(true);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const { toast } = useToast();
   const [meanings, setMeanings] = useState<MeaningType[]>([]);
   const [marked, setMarked] = useState<boolean>(false);
@@ -52,7 +52,7 @@ export default () => {
   const createStory = async () => {
     if (!story) return;
 
-    EnjoyApp.webApi
+    webApi
       .createStory({
         url: story.metadata?.url || story.url,
         ...story,

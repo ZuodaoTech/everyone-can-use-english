@@ -5,10 +5,10 @@ import { t } from "i18next";
 
 export const LoginForm = () => {
   const { toast } = useToast();
-  const { EnjoyApp, login, apiUrl } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, login, webApi } = useContext(AppSettingsProviderContext);
 
   const handleMixinLogin = () => {
-    const url = `${apiUrl}/sessions/new?provider=mixin`;
+    const url = `${webApi.baseUrl}/sessions/new?provider=mixin`;
     EnjoyApp.view.load(url, { x: 0, y: 0 });
   };
 
@@ -34,7 +34,7 @@ export const LoginForm = () => {
       const provider = new URL(url).pathname.split("/")[2];
       const code = new URL(url).searchParams.get("code");
 
-      if (!url.startsWith(apiUrl)) {
+      if (!url.startsWith(webApi.baseUrl)) {
         toast({
           title: t("error"),
           description: t("invalidRedirectUrl"),
@@ -44,7 +44,7 @@ export const LoginForm = () => {
       }
 
       if (provider && code) {
-        EnjoyApp.webApi
+        webApi
           .auth({ provider, code })
           .then((user) => {
             login(user);
@@ -70,7 +70,7 @@ export const LoginForm = () => {
       EnjoyApp.view.removeViewStateListeners();
       EnjoyApp.view.remove();
     };
-  }, [apiUrl]);
+  }, [webApi]);
 
   return (
     <div className="w-full max-w-sm px-6 flex flex-col space-y-4">
