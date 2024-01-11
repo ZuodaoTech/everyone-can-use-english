@@ -584,7 +584,7 @@ export const ConversationForm = (props: {
           )}
 
           <Button
-            disabled={submitting || !form.formState.isDirty}
+            disabled={submitting || (conversation.id && !form.formState.isDirty)}
             className="w-full h-12"
             size="lg"
             type="submit"
