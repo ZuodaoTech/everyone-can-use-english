@@ -1,5 +1,6 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { CacheObject } from "@main/db/models";
+import db from "@main/db";
 
 class CacheObjectsHandler {
   private async get(event: IpcMainEvent, key: string) {
@@ -49,6 +50,7 @@ class CacheObjectsHandler {
   private async clear(event: IpcMainEvent) {
     return CacheObject.destroy({ where: {} })
       .then(() => {
+        db.connection.query("VACUUM");
         return;
       })
       .catch((err) => {
