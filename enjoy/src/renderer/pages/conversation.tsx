@@ -179,7 +179,10 @@ export default () => {
       const content = message.content;
       webApi
         .createPost({
-          content,
+          metadata: {
+            type: "prompt",
+            content,
+          },
         })
         .then(() => {
           toast({

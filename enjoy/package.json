@@ -7,7 +7,7 @@
   "main": ".vite/build/main.js",
   "types": "./src/types.d.ts",
   "scripts": {
-    "dev": "rimraf .vite && WEB_API_URL=http://192.168.31.116:3000 electron-forge start",
+    "dev": "rimraf .vite && WEB_API_URL=http://localhost:3000 electron-forge start",
     "start": "rimraf .vite && electron-forge start",
     "package": "rimraf .vite && electron-forge package",
     "make": "rimraf .vite && electron-forge make",

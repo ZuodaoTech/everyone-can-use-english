@@ -1,9 +1,17 @@
 type PostType = {
   id: string;
-  content?: string;
+  metadata: {
+    type: 'text' | 'prompt' | 'llm_configuration';
+    content:
+      | string
+      | {
+          [key: string]: any;
+        };
+  };
   user: UserType;
-  targetType: string;
-  target?: MediumType;
-  createdAt: string;
-  updatedAt: string;
-}
+  targetType?: string;
+  targetId?: string;
+  target?: MediumType | StoryType;
+  createdAt: Date;
+  updatedAt: Date;
+};

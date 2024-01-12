@@ -95,7 +95,7 @@ export class Client {
   }
 
   createPost(params: {
-    content?: string;
+    metadata?: PostType["metadata"];
     targetType?: string;
     targetId?: string;
   }): Promise<PostType> {
