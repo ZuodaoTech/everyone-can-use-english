@@ -17,9 +17,9 @@
 
 - [Enjoy App](./enjoy/README.md)
 
-### 本地启动
+## * 开发者
 
-#### * 开发者
+### 本地启动
 
 ```bash
 yarn install
@@ -32,13 +32,13 @@ yarn start:enjoy
 yarn make:enjoy
 ```
 
-#### * 普通小白用户
+## * 普通小白用户
 
 方法一：这是**最直接简单的方法**是去 [releases 页面](https://github.com/xiaolai/everyone-can-use-english/tags)下载相应的安装文件。
 
 方法二：如果想要随时**试用更新版本**的话，请按一下步骤操作。
 
-##### MacOS 用户
+### MacOS 用户
 
 1. 打开命令行工具 Terminal
 
@@ -61,7 +61,7 @@ yarn make:enjoy
    yarn start:enjoy
    ```
 
-##### Windows 用户
+### Windows 用户
 
 系统要求：Windows 10 22H2 以上版本、 [Windows PowerShell 5.1](https://aka.ms/wmf5download) 以上版本、互联网网络连接正常。
 
