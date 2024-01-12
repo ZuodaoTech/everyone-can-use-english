@@ -23,13 +23,13 @@ export default () => {
           <span>{t("sidebar.community")}</span>
         </div>
 
-        <Tabs defaultValue="activities">
+        <Tabs defaultValue="square">
           <TabsList className="mb-6">
-            <TabsTrigger value="activities">{t("activities")}</TabsTrigger>
+            <TabsTrigger value="square">{t("square")}</TabsTrigger>
             <TabsTrigger value="rankings">{t("rankings")}</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="activities">
+          <TabsContent value="square">
             <Posts />
           </TabsContent>
 
