@@ -20,7 +20,7 @@ export const PostCard = (props: { post: PostType }) => {
   const { post } = props;
 
   return (
-    <div className="rounded p-4 bg-white space-y-2">
+    <div className="rounded p-4 bg-white space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Avatar>
@@ -40,7 +40,7 @@ export const PostCard = (props: { post: PostType }) => {
 
       {post.metadata?.type === "prompt" && (
         <>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-xs text-muted-foreground">
             {t("sharedPrompt")}
           </div>
           <Markdown className="prose prose-slate prose-pre:whitespace-normal select-text">
@@ -66,7 +66,7 @@ const PostMedium = (props: { medium: MediumType }) => {
     <div className="space-y-2">
       {medium.mediumType == "Video" && (
         <>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-xs text-muted-foreground">
             {t("sharedAudio")}
           </div>
           <MediaPlayer
@@ -86,7 +86,7 @@ const PostMedium = (props: { medium: MediumType }) => {
 
       {medium.mediumType == "Audio" && (
         <>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-xs text-muted-foreground">
             {t("sharedAudio")}
           </div>
           <PostAudioPlayer src={medium.sourceUrl} />

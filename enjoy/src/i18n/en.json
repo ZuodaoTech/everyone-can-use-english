@@ -333,9 +333,20 @@
   "sharedSuccessfully": "Shared successfully",
   "shareFailed": "Share failed",
   "shareAudio": "Share audio",
+  "sharedAudio": "Shared an audio resource",
   "areYouSureToShareThisAudioToCommunity": "Are you sure to share this audio to community?",
   "shareVideo": "Share video",
+  "sharedVideo": "Shared a video resource",
   "areYouSureToShareThisVideoToCommunity": "Are you sure to share this video to community?",
   "sharePrompt": "Share prompt",
-  "areYouSureToShareThisPromptToCommunity": "Are you sure to share this prompt to community?"
+  "sharedPrompt": "Shared a prompt",
+  "areYouSureToShareThisPromptToCommunity": "Are you sure to share this prompt to community?",
+  "addToLibary": "Add to library",
+  "areYouSureToAddThisVideoToYourLibrary": "Are you sure to add this video to library?",
+  "areYouSureToAddThisAudioToYourLibrary": "Are you sure to add this audio to library?",
+  "audioAlreadyAddedToLibrary": "Audio already added to library",
+  "videoAlreadyAddedToLibrary": "Video already added to library",
+  "audioSuccessfullyAddedToLibrary": "Audio successfully added to library",
+  "videoSuccessfullyAddedToLibrary": "Video successfully added to library",
+  "sendToAIAssistant": "Send to AI assistant"
 }

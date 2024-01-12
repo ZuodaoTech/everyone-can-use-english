@@ -94,6 +94,7 @@ class VideosHandler {
     params: {
       name?: string;
       coverUrl?: string;
+      md5?: string;
     } = {}
   ) {
     let file = uri;

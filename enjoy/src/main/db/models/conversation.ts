@@ -13,7 +13,7 @@ import {
   AllowNull,
 } from "sequelize-typescript";
 import { Message, Speech } from "@main/db/models";
-import { ChatMessageHistory , BufferMemory } from "langchain/memory";
+import { ChatMessageHistory, BufferMemory } from "langchain/memory";
 import { ConversationChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { ChatOllama } from "langchain/chat_models/ollama";
@@ -294,9 +294,9 @@ export class Conversation extends Model<Conversation> {
       }
     );
 
-    await Promise.all(
+    const replies = await Promise.all(
       response.map(async (generation) => {
-        await Message.create(
+        return await Message.create(
           {
             conversationId: this.id,
             role: "assistant",
@@ -330,5 +330,7 @@ export class Conversation extends Model<Conversation> {
     }
 
     await transaction.commit();
+
+    return replies.map((reply) => reply.toJSON());
   }
 }

@@ -102,8 +102,8 @@ type EnjoyAppType = {
   videos: {
     findAll: (params: object) => Promise<VideoType[]>;
     findOne: (params: object) => Promise<VideoType>;
-    create: (uri: string, params?: object) => Promise<VideoType>;
-    update: (id: string, params: object) => Promise<VideoType | undefined>;
+    create: (uri: string, params?: any) => Promise<VideoType>;
+    update: (id: string, params: any) => Promise<VideoType | undefined>;
     destroy: (id: string) => Promise<undefined>;
     transcribe: (id: string) => Promise<void>;
     upload: (id: string) => Promise<void>;
@@ -143,9 +143,9 @@ type EnjoyAppType = {
     ) => Promise<SegementRecordingStatsType>;
   };
   conversations: {
-    findAll: (params: object) => Promise<ConversationType[]>;
-    findOne: (params: object) => Promise<ConversationType>;
-    create: (params: object) => Promise<ConversationType>;
+    findAll: (params: any) => Promise<ConversationType[]>;
+    findOne: (params: any) => Promise<ConversationType>;
+    create: (params: any) => Promise<ConversationType>;
     update: (id: string, params: object) => Promise<ConversationType>;
     destroy: (id: string) => Promise<void>;
     ask: (
@@ -159,7 +159,7 @@ type EnjoyAppType = {
           arrayBuffer: ArrayBuffer;
         };
       }
-    ) => Promise<MessageType>;
+    ) => Promise<MessageType[]>;
   };
   messages: {
     findAll: (params: object) => Promise<MessageType[]>;

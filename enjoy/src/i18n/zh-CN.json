@@ -333,9 +333,20 @@
   "sharedSuccessfully": "分享成功",
   "sharedFailed": "分享失败",
   "shareAudio": "分享音频",
+  "sharedAudio": "分享了一个音频材料",
   "areYouSureToShareThisAudioToCommunity": "您确定要分享此音频到社区吗？",
   "shareVideo": "分享视频",
+  "sharedVideo": "分享了一个视频材料",
   "areYouSureToShareThisVideoToCommunity": "您确定要分享此视频到社区吗？",
   "sharePrompt": "分享提示语",
-  "areYouSureToShareThisPromptToCommunity": "您确定要分享此提示语到社区吗？"
+  "sharedPrompt": "分享了一条提示语",
+  "areYouSureToShareThisPromptToCommunity": "您确定要分享此提示语到社区吗？",
+  "addToLibary": "添加到资源库",
+  "areYouSureToAddThisVideoToYourLibrary": "您确定要添加此视频到资料库吗？",
+  "areYouSureToAddThisAudioToYourLibrary": "您确定要添加此音频到资料库吗？",
+  "audioAlreadyAddedToLibrary": "资料库已经存在此音频",
+  "videoAlreadyAddedToLibrary": "资料库已经存在此视频",
+  "audioSuccessfullyAddedToLibrary": "音频成功添加到资料库",
+  "videoSuccessfullyAddedToLibrary": "视频成功添加到资料库",
+  "sendToAIAssistant": "发送到智能助手"
 }
