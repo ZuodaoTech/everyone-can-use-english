@@ -19,6 +19,8 @@
 
 ### 本地启动
 
+#### * 开发者
+
 ```bash
 yarn install
 yarn start:enjoy
@@ -29,3 +31,31 @@ yarn start:enjoy
 ```bash
 yarn make:enjoy
 ```
+
+#### * 普通小白用户
+
+##### MacOS 用户
+
+1. 打开命令行工具 Terminal
+
+2. 安装 Homebrew（请参阅这篇文章：《[从 Terminal 开始…](https://github.com/xiaolai/apple-computer-literacy/blob/main/start-from-terminal.md)》）
+
+3. 安装 yarn：
+   ```bash
+   brew install yarn
+   ```
+
+4. 克隆此仓库至本地，而后安装、启动：
+
+   ```bash
+   cd ~
+   mkdir github
+   git clone https://github.com/xiaolai/everyone-can-use-english
+   cd everyone-can-use-english
+   yarn install
+   yarn start:enjoy
+   ```
+
+##### Windows 用户
+
+（我没有 Windows 机器…… 请使用 Windows 的高级用户写个 “小白指南”，然后提交 pull request —— 谢谢！）
