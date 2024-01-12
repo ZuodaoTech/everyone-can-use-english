@@ -34,6 +34,10 @@ yarn make:enjoy
 
 #### * 普通小白用户
 
+最直接的方法是去 [releases 页面](https://github.com/xiaolai/everyone-can-use-english/tags)下载相应的安装文件。
+
+如果想要随时试用更新版本的话，请按一下步骤操作。
+
 ##### MacOS 用户
 
 1. 打开命令行工具 Terminal
