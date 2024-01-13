@@ -267,13 +267,14 @@ export class Conversation extends Model<Conversation> {
 
     const chain = await this.chain();
     let response: Generation[] = [];
-    await chain.call({ input: content }, [
+    const result = await chain.call({ input: content }, [
       {
         handleLLMEnd: async (output) => {
           response = output.generations[0];
         },
       },
     ]);
+    logger.debug("LLM result:", result);
 
     if (!response) {
       throw new Error(t("models.conversation.failedToGenerateResponse"));

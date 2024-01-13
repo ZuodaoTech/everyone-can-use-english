@@ -86,7 +86,8 @@
       "ttsVoice": "TTS 声音",
       "ttsBaseUrl": "TTS 请求地址",
       "notFound": "未找到对话",
-      "contentRequired": "对话内容不能为空"
+      "contentRequired": "对话内容不能为空",
+      "failedToGenerateResponse": "生成失败"
     },
     "pronunciationAssessment": {
       "pronunciationScore": "发音得分",
