@@ -34,7 +34,7 @@ export const WHISPER_MODELS_OPTIONS = [
     type: "large",
     name: "ggml-large.bin",
     size: "3.09 GB",
-    url: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large.bin",
+    url: "https://huggingface.co/ggerganov/whisper.cpp/blob/main/ggml-large-v3.bin",
   },
 ];
 
