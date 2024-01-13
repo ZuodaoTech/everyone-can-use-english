@@ -14,7 +14,7 @@ import {
   CardContent,
   CardFooter,
   ScrollArea,
-  useToast,
+  toast,
   Progress,
 } from "@renderer/components/ui";
 import { t } from "i18next";
@@ -67,10 +67,8 @@ export const WhisperModelOptionsPanel = () => {
 export const WhisperModelOptions = () => {
   const [selectingModel, setSelectingModel] = useState<ModelType | null>(null);
   const [availableModels, setAvailableModels] = useState<ModelType[]>([]);
-  const { whisperModelsPath, whisperModel, setWhisperModel, EnjoyApp } = useContext(
-    AppSettingsProviderContext
-  );
-  const { toast } = useToast();
+  const { whisperModelsPath, whisperModel, setWhisperModel, EnjoyApp } =
+    useContext(AppSettingsProviderContext);
 
   useEffect(() => {
     updateAvailableModels();
@@ -126,10 +124,7 @@ export const WhisperModelOptions = () => {
                 if (option.downloaded) {
                   setWhisperModel(option.name);
                 } else if (option.downloadState) {
-                  toast({
-                    title: "Downloading",
-                    description: `${option.name} is downloading...`,
-                  });
+                  toast.warning(t("downloading", { file: option.name }));
                 } else {
                   setSelectingModel(option);
                 }

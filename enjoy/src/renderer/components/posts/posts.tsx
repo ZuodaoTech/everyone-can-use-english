@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { PostCard, LoaderSpin } from "@renderer/components";
-import { useToast, Button } from "@renderer/components//ui";
+import { toast, Button } from "@renderer/components//ui";
 import { t } from "i18next";
 
 export const Posts = () => {
@@ -9,23 +9,16 @@ export const Posts = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [nextPage, setNextPage] = useState(1);
-  const { toast } = useToast();
 
   const handleDelete = (id: string) => {
     webApi
       .deletePost(id)
       .then(() => {
-        toast({
-          description: t("removeSharingSuccessfully"),
-        });
+        toast.success(t("removeSharingSuccessfully"));
         setPosts(posts.filter((post) => post.id !== id));
       })
       .catch((error) => {
-        toast({
-          title: t("removeSharingFailed"),
-          description: error.message,
-          variant: "destructive",
-        });
+        toast.error(t("removeSharingFailed"), { description: error.message });
       });
   };
 
@@ -42,10 +35,7 @@ export const Posts = () => {
         setNextPage(res.next);
       })
       .catch((err) => {
-        toast({
-          description: err.message,
-          variant: "destructive",
-        });
+        toast.error(err.message);
       })
       .finally(() => {
         setLoading(false);

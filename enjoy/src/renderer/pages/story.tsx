@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { ScrollArea, useToast } from "@renderer/components/ui";
+import { ScrollArea, toast } from "@renderer/components/ui";
 import {
   LoaderSpin,
   PagePlaceholder,
@@ -24,7 +24,6 @@ export default () => {
   const [scanning, setScanning] = useState<boolean>(false);
   const [marked, setMarked] = useState<boolean>(true);
   const [doc, setDoc] = useState<any>(null);
-  const { toast } = useToast();
 
   const fetchStory = async () => {
     webApi
@@ -123,15 +122,11 @@ export default () => {
     webApi
       .createPost({ targetId: story.id, targetType: "Story" })
       .then(() => {
-        toast({
-          description: t("sharedStory"),
-        });
+        toast.success(t("sharedStory"));
       })
       .catch((error) => {
-        toast({
-          title: t("shareFailed"),
+        toast.error(t("shareFailed"), {
           description: error.message,
-          variant: "destructive",
         });
       });
   };

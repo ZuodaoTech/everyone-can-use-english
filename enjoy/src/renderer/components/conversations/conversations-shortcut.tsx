@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { ScrollArea } from "@renderer/components/ui";
+import { ScrollArea, toast } from "@renderer/components/ui";
 import { LoaderSpin } from "@renderer/components";
 import { MessageCircleIcon } from "lucide-react";
 
@@ -20,11 +20,10 @@ export const ConversationsShortcut = (props: {
         content: prompt,
       })
       .then((replies) => {
-        console.log(replies);
         onReply(replies);
       })
       .catch((error) => {
-        console.error(error);
+        toast.error(error.message);
       })
       .finally(() => {
         setLoading(false);

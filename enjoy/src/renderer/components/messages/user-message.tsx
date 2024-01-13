@@ -17,7 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  useToast,
+  toast,
 } from "@renderer/components/ui";
 import { SpeechPlayer } from "@renderer/components";
 import { useContext, useState } from "react";
@@ -45,7 +45,6 @@ export const UserMessageComponent = (props: {
   const { user, webApi } = useContext(AppSettingsProviderContext);
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
-  const { toast } = useToast();
 
   const handleShare = async () => {
     if (message.role === "user") {
@@ -58,15 +57,10 @@ export const UserMessageComponent = (props: {
           },
         })
         .then(() => {
-          toast({
-            description: t("sharedPrompt"),
-          });
+          toast(t("sharedSuccessfully"), { description: t("sharedPrompt") });
         })
         .catch((err) => {
-          toast({
-            title: t("shareFailed"),
-            description: err.message,
-          });
+          toast.error(t("shareFailed"), { description: err.message });
         });
     }
   };

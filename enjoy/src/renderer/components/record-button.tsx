@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record";
 import WaveSurfer from "wavesurfer.js";
 import { cn } from "@renderer/lib/utils";
-import { RadialProgress, useToast } from "@renderer/components/ui";
+import { RadialProgress, toast } from "@renderer/components/ui";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const RecordButton = (props: {
@@ -16,7 +16,6 @@ export const RecordButton = (props: {
   const { className, disabled, onRecordBegin, onRecordEnd } = props;
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
-  const { toast } = useToast();
 
   useHotkeys(["command+alt+r", "control+alt+r"], () => {
     if (disabled) return;
@@ -67,10 +66,7 @@ export const RecordButton = (props: {
               if (duration > 1000) {
                 onRecordEnd(blob, duration);
               } else {
-                toast({
-                  description: t("recordTooShort"),
-                  variant: "warning",
-                });
+                toast.warning(t("recordTooShort"));
               }
             }}
           />

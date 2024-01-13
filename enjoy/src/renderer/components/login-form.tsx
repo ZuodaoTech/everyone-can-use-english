@@ -1,10 +1,9 @@
-import { Button, useToast } from "@renderer/components/ui";
+import { Button, toast } from "@renderer/components/ui";
 import { useContext, useEffect } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 
 export const LoginForm = () => {
-  const { toast } = useToast();
   const { EnjoyApp, login, webApi } = useContext(AppSettingsProviderContext);
 
   const handleMixinLogin = () => {
@@ -21,11 +20,7 @@ export const LoginForm = () => {
     const { state, url, error } = event;
 
     if (error) {
-      toast({
-        title: t("error"),
-        description: error,
-        variant: "destructive",
-      });
+      toast.error(error);
       EnjoyApp.view.hide();
       return;
     }
@@ -35,11 +30,7 @@ export const LoginForm = () => {
       const code = new URL(url).searchParams.get("code");
 
       if (!url.startsWith(webApi.baseUrl)) {
-        toast({
-          title: t("error"),
-          description: t("invalidRedirectUrl"),
-          variant: "destructive",
-        });
+        toast.error(t("invalidRedirectUrl"));
         EnjoyApp.view.hide();
       }
 
@@ -53,11 +44,7 @@ export const LoginForm = () => {
             EnjoyApp.view.hide();
           });
       } else {
-        toast({
-          title: t("error"),
-          description: t("failedToLogin"),
-          variant: "destructive",
-        });
+        toast.error(t("failedToLogin"));
         EnjoyApp.view.hide();
       }
     }

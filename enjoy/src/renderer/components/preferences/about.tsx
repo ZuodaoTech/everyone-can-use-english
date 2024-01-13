@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { Button, useToast } from "@renderer/components/ui";
+import { Button, toast } from "@renderer/components/ui";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { useState, useContext } from "react";
 import { LoaderIcon } from "lucide-react";
@@ -7,14 +7,11 @@ import { LoaderIcon } from "lucide-react";
 export const About = () => {
   const { version } = useContext(AppSettingsProviderContext);
   const [checking, setChecking] = useState<boolean>(false);
-  const { toast } = useToast();
   const checkUpdate = () => {
     setChecking(true);
     setTimeout(() => {
       setChecking(false);
-      toast({
-        description: t("alreadyLatestVersion"),
-      });
+      toast.info(t("alreadyLatestVersion"));
     }, 1000);
   };
 

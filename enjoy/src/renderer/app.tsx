@@ -6,19 +6,29 @@ import {
 } from "@renderer/context";
 import router from "./router";
 import { RouterProvider } from "react-router-dom";
-import { Toaster, useToast } from "@renderer/components/ui";
-import { t } from "i18next";
+import { Toaster, toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
 import { useHotkeys } from "react-hotkeys-hook";
 
 function App() {
-  const { toast } = useToast();
   window.__ENJOY_APP__.onNotification((_event, notification) => {
-    toast({
-      title: t(notification.type),
-      description: notification.message,
-      variant: notification.type === "error" ? "destructive" : "default",
-    });
+    switch (notification.type) {
+      case "success":
+        toast.success(notification.message);
+        break;
+      case "error":
+        toast.error(notification.message);
+        break;
+      case "info":
+        toast.info(notification.message);
+        break;
+      case "warning":
+        toast.warning(notification.message);
+        break;
+      default:
+        toast.message(notification.message);
+        break;
+    }
   });
 
   const ControlOrCommand = navigator.platform.includes("Mac")
@@ -43,7 +53,7 @@ function App() {
         <AISettingsProvider>
           <DbProvider>
             <RouterProvider router={router} />
-            <Toaster />
+            <Toaster richColors />
             <Tooltip id="global-tooltip" />
           </DbProvider>
         </AISettingsProvider>

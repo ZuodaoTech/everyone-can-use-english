@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { ConversationsShortcut } from "@renderer/components";
 import {
@@ -18,7 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
   ScrollArea,
-  useToast,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import Markdown from "react-markdown";
@@ -37,7 +37,6 @@ export const PostActions = (props: { post: PostType }) => {
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { toast } = useToast();
   const [asking, setAsking] = useState<boolean>(false);
   const [aiReplies, setAiReplies] = useState<MessageType[]>([]);
 
@@ -50,9 +49,7 @@ export const PostActions = (props: { post: PostType }) => {
       try {
         const video = await EnjoyApp.videos.findOne({ md5: medium.md5 });
         if (video) {
-          toast({
-            description: t("videoAlreadyAddedToLibrary"),
-          });
+          toast.info(t("videoAlreadyAddedToLibrary"));
           return;
         }
       } catch (error) {
@@ -65,21 +62,17 @@ export const PostActions = (props: { post: PostType }) => {
           md5: medium.md5,
         })
         .then(() => {
-          toast({
-            description: t("videoSuccessfullyAddedToLibrary"),
-          });
+          toast.success(t("videoSuccessfullyAddedToLibrary"));
         });
     } else if (medium.mediumType === "Audio") {
       try {
         const audio = await EnjoyApp.audios.findOne({ md5: medium.md5 });
         if (audio) {
-          toast({
-            description: t("audioAlreadyAddedToLibrary"),
-          });
+          toast.info(t("audioAlreadyAddedToLibrary"));
           return;
         }
       } catch (error) {
-        console.error(error);
+        toast.error(error.message);
       }
 
       EnjoyApp.audios
@@ -88,9 +81,7 @@ export const PostActions = (props: { post: PostType }) => {
           md5: medium.md5,
         })
         .then(() => {
-          toast({
-            description: t("audioSuccessfullyAddedToLibrary"),
-          });
+          toast.success(t("audioSuccessfullyAddedToLibrary"));
         });
     }
   };

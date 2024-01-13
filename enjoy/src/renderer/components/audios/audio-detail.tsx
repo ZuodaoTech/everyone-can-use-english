@@ -21,13 +21,12 @@ import {
   AlertDialogCancel,
   Button,
   ScrollArea,
-  useToast,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 
 export const AudioDetail = (props: { id?: string; md5?: string }) => {
   const { id, md5 } = props;
-  const { toast } = useToast();
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
 
@@ -62,8 +61,7 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
       try {
         await EnjoyApp.audios.upload(audio.id);
       } catch (err) {
-        toast({
-          title: t("shareFailed"),
+        toast.error(t("shareFailed"), {
           description: err.message,
         });
         return;
@@ -75,14 +73,12 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
         targetId: audio.id,
       })
       .then(() => {
-        toast({
-          title: t("shared"),
+        toast.success(t("sharedSuccessfully"), {
           description: t("sharedAudio"),
         });
       })
       .catch((err) => {
-        toast({
-          title: t("shareFailed"),
+        toast.error(t("shareFailed"), {
           description: err.message,
         });
       });

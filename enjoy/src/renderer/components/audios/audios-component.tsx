@@ -25,7 +25,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  useToast,
+  toast,
 } from "@renderer/components/ui";
 import {
   DbProviderContext,
@@ -48,7 +48,6 @@ export const AudiosComponent = () => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [offset, setOffest] = useState(0);
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
 
   const navigate = useNavigate();
 
@@ -87,10 +86,7 @@ export const AudiosComponent = () => {
         dispatchAudios({ type: "append", records: _audios });
       })
       .catch((err) => {
-        toast({
-          description: err.message,
-          variant: "destructive",
-        });
+        toast.error(err.message);
       })
       .finally(() => {
         setLoading(false);

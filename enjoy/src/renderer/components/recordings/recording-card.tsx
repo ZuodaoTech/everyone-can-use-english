@@ -16,7 +16,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  useToast,
+  toast,
 } from "@renderer/components/ui";
 import {
   MoreHorizontalIcon,
@@ -36,7 +36,6 @@ export const RecordingCard = (props: {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const [isPlaying, setIsPlaying] = useState(false);
-  const { toast } = useToast();
 
   const handleDelete = () => {
     EnjoyApp.recordings.destroy(recording.id);
@@ -46,11 +45,7 @@ export const RecordingCard = (props: {
       try {
         await EnjoyApp.recordings.upload(recording.id);
       } catch (error) {
-        toast({
-          title: t("shareFailed"),
-          description: error.message,
-          variant: "destructive",
-        });
+        toast.error(t("shareFailed"), { description: error.message });
         return;
       }
     }
@@ -61,14 +56,13 @@ export const RecordingCard = (props: {
         targetType: "Recording",
       })
       .then(() => {
-        toast({
+        toast.success(t("sharedSuccessfully"), {
           description: t("sharedRecording"),
         });
       })
       .catch((error) => {
-        toast({
+        toast.error(t("shareFailed"), {
           description: error.message,
-          variant: "destructive",
         });
       });
   };

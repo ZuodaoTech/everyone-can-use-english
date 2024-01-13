@@ -21,13 +21,12 @@ import {
   AlertDialogCancel,
   Button,
   ScrollArea,
-  useToast,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 
 export const VideoDetail = (props: { id?: string; md5?: string }) => {
   const { id, md5 } = props;
-  const { toast } = useToast();
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
 
@@ -61,8 +60,7 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
 
   const handleShare = async () => {
     if (!video.source.startsWith("http")) {
-      toast({
-        title: t("shareFailed"),
+      toast.error(t("shareFailed"), {
         description: t("cannotShareLocalVideo"),
       });
       return;
@@ -72,10 +70,7 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
       try {
         await EnjoyApp.videos.upload(video.id);
       } catch (err) {
-        toast({
-          title: t("shareFailed"),
-          description: err.message,
-        });
+        toast.error(t("shareFailed"), { description: err.message });
         return;
       }
     }
@@ -86,15 +81,10 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
         targetId: video.id,
       })
       .then(() => {
-        toast({
-          description: t("sharedVideo"),
-        });
+        toast.success(t("sharedSuccessfully"), { description: t("sharedVideo") });
       })
       .catch((err) => {
-        toast({
-          title: t("shareFailed"),
-          description: err.message,
-        });
+        toast.error(t("shareFailed"), { description: err.message });
       });
     setSharing(false);
   };
