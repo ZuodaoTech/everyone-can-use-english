@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { PostCard } from "@renderer/components";
+import { PostCard, LoaderSpin } from "@renderer/components";
 import { useToast } from "@renderer/components//ui";
 import { t } from "i18next";
 
 export const Posts = () => {
   const { webApi } = useContext(AppSettingsProviderContext);
+  const [loading, setLoading] = useState<boolean>(true);
   const [posts, setPosts] = useState<PostType[]>([]);
   const { toast } = useToast();
 
@@ -28,19 +29,29 @@ export const Posts = () => {
   };
 
   const fetchPosts = async () => {
-    webApi.posts().then(
-      (res) => {
+    webApi
+      .posts()
+      .then((res) => {
         setPosts(res.posts);
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
+      })
+      .catch((err) => {
+        toast({
+          description: err.message,
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  if (loading) {
+    return <LoaderSpin />;
+  }
 
   return (
     <div className="max-w-screen-sm mx-auto">
