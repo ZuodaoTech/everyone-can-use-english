@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useContext } from "react";
+import { AppSettingsProviderContext } from "@renderer/context";
 import { PitchContour } from "@renderer/components";
 import WaveSurfer from "wavesurfer.js";
 import { Button, Skeleton } from "@renderer/components/ui";
@@ -19,6 +20,15 @@ export const PostAudio = (props: {
     threshold: 1,
   });
   const [duration, setDuration] = useState<number>(0);
+  const { webApi } = useContext(AppSettingsProviderContext);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [transcription, setTranscription] = useState<TranscriptionType>();
+
+  const currentTranscription = (transcription?.result || []).find(
+    (s) =>
+      currentTime >= s.offsets.from / 1000.0 &&
+      currentTime <= s.offsets.to / 1000.0
+  );
 
   const onPlayClick = useCallback(() => {
     wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
@@ -59,6 +69,9 @@ export const PostAudio = (props: {
       wavesurfer.on("pause", () => {
         setIsPlaying(false);
       }),
+      wavesurfer.on("timeupdate", (time: number) => {
+        setCurrentTime(time);
+      }),
       wavesurfer.on("decode", () => {
         setDuration(wavesurfer.getDuration());
         const peaks = wavesurfer.getDecodedData().getChannelData(0);
@@ -79,6 +92,16 @@ export const PostAudio = (props: {
       wavesurfer?.destroy();
     };
   }, [wavesurfer]);
+
+  useEffect(() => {
+    webApi
+      .transcriptions({
+        targetMd5: audio.md5,
+      })
+      .then((response) => {
+        setTranscription(response?.transcriptions?.[0]);
+      });
+  }, [audio.md5]);
 
   return (
     <div className="w-full">
@@ -118,6 +141,14 @@ export const PostAudio = (props: {
           ref={containerRef}
         ></div>
       </div>
+
+      {currentTranscription && (
+        <div className="mt-2 bg-muted px-4 py-2 rounded">
+          <div className="text-muted-foreground text-center font-serif">
+            {currentTranscription.text}
+          </div>
+        </div>
+      )}
 
       {audio.coverUrl && (
         <div className="">

@@ -110,6 +110,22 @@ export class Client {
     return this.api.delete(`/api/posts/${id}`);
   }
 
+  transcriptions(params?: {
+    page?: number;
+    items?: number;
+    targetId?: string;
+    targetType?: string;
+    targetMd5?: string;
+  }): Promise<
+    {
+      transcriptions: TranscriptionType[];
+    } & PagyResponseType
+  > {
+    return this.api.get("/api/transcriptions", {
+      params: decamelizeKeys(params),
+    });
+  }
+
   syncAudio(audio: Partial<AudioType>) {
     return this.api.post("/api/mine/audios", decamelizeKeys(audio));
   }
