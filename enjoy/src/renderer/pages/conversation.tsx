@@ -6,7 +6,7 @@ import {
   Sheet,
   SheetContent,
   SheetTrigger,
-  useToast,
+  toast,
 } from "@renderer/components/ui";
 import { MessageComponent, ConversationForm } from "@renderer/components";
 import { SendIcon, BotIcon, LoaderIcon, SettingsIcon } from "lucide-react";
@@ -28,8 +28,6 @@ export default () => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [content, setConent] = useState<string>("");
   const [submitting, setSubmitting] = useState<boolean>(false);
-
-  const { toast } = useToast();
 
   const [messages, dispatchMessages] = useReducer(messagesReducer, []);
   const [offset, setOffest] = useState(0);
@@ -79,10 +77,7 @@ export default () => {
 
   const handleSubmit = async (text?: string, file?: string) => {
     if (submitting) {
-      toast({
-        title: t("warning"),
-        description: t("anotherRequestIsPending"),
-      });
+      toast.warning(t("anotherRequestIsPending"));
     }
     text = text ? text : content;
 

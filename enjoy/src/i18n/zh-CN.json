@@ -197,6 +197,7 @@
   "youAreReadyToGo": "您已准备就绪",
   "welcomeBack": "欢迎回来, {{name}}",
   "download": "下载",
+  "downloading": "正在下载 {{file}}",
   "chooseAIModelDependingOnYourHardware": "根据您的硬件选择合适的 AI 模型",
   "areYouSureToDownload": "您确定要下载 {{name}} 吗？",
   "yourModelsWillBeDownloadedTo": "您的模型将下载到目录 {{path}}",

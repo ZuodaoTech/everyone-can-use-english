@@ -22,7 +22,7 @@ import {
   Input,
   Label,
   Separator,
-  useToast,
+  toast,
 } from "@renderer/components/ui";
 import { WhisperModelOptions } from "@renderer/components";
 import {
@@ -196,7 +196,6 @@ const OpenaiSettings = () => {
   const { openai, setOpenai } = useContext(AISettingsProviderContext);
   const [editing, setEditing] = useState(false);
   const ref = useRef<HTMLInputElement>();
-  const { toast } = useToast();
 
   const handleSave = () => {
     if (!ref.current) return;
@@ -206,10 +205,7 @@ const OpenaiSettings = () => {
     });
     setEditing(false);
 
-    toast({
-      title: t("success"),
-      description: t("openaiKeySaved"),
-    });
+    toast.success(t("openaiKeySaved"));
   };
 
   useEffect(() => {
@@ -264,7 +260,6 @@ const GoogleGenerativeAiSettings = () => {
   );
   const [editing, setEditing] = useState(false);
   const ref = useRef<HTMLInputElement>();
-  const { toast } = useToast();
 
   const handleSave = () => {
     if (!ref.current) return;
@@ -274,10 +269,7 @@ const GoogleGenerativeAiSettings = () => {
     });
     setEditing(false);
 
-    toast({
-      title: t("success"),
-      description: t("googleGenerativeAiKeySaved"),
-    });
+    toast.success(t("googleGenerativeAiKeySaved"));
   };
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { Input, Button, ScrollArea, useToast } from "@renderer/components/ui";
+import { Input, Button, ScrollArea, toast } from "@renderer/components/ui";
 import {
   LoaderSpin,
   StoryViewer,
@@ -27,7 +27,6 @@ export default () => {
   const [loading, setLoading] = useState(true);
   const [readable, setReadable] = useState(true);
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
-  const { toast } = useToast();
   const [meanings, setMeanings] = useState<MeaningType[]>([]);
   const [marked, setMarked] = useState<boolean>(false);
   const [doc, setDoc] = useState<any>(null);
@@ -73,10 +72,7 @@ export default () => {
     if (state == "did-fail-load") {
       setLoading(false);
       if (error) {
-        toast({
-          title: error,
-          variant: "destructive",
-        });
+        toast.error(error);
         setError(error);
       }
 

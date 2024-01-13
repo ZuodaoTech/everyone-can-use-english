@@ -37,7 +37,7 @@ export const PostMedium = (props: { medium: MediumType }) => {
           <div className="text-xs text-muted-foreground">
             {t("sharedAudio")}
           </div>
-          <PostAudio audio={medium as Partial<AudioType>} />
+          <PostAudio audio={medium} />
         </>
       )}
     </div>

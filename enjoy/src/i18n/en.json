@@ -197,6 +197,7 @@
   "youAreReadyToGo": "You are ready to go",
   "welcomeBack": "Welcome back! {{name}}",
   "download": "Download",
+  "downloading": "Downloading {{file}}",
   "chooseAIModelDependingOnYourHardware": "Choose AI Model depending on your hardware",
   "areYouSureToDownload": "Are you sure to download {{name}}?",
   "yourModelsWillBeDownloadedTo": "Your models will be downloaded to {{path}}",
