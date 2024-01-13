@@ -1,16 +1,23 @@
+import { useContext } from "react";
+import { AppSettingsProviderContext } from "@renderer/context";
 import {
   PostRecording,
   PostActions,
   PostMedium,
   PostStory,
+  PostOptions,
 } from "@renderer/components";
 import { Avatar, AvatarImage, AvatarFallback } from "@renderer/components/ui";
 import { formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
 import Markdown from "react-markdown";
 
-export const PostCard = (props: { post: PostType }) => {
-  const { post } = props;
+export const PostCard = (props: {
+  post: PostType;
+  handleDelete: (id: string) => void;
+}) => {
+  const { post, handleDelete } = props;
+  const { user } = useContext(AppSettingsProviderContext);
 
   return (
     <div className="rounded p-4 bg-white space-y-3">
@@ -29,6 +36,10 @@ export const PostCard = (props: { post: PostType }) => {
             </div>
           </div>
         </div>
+
+        {post.user.id == user.id && (
+          <PostOptions handleDelete={() => handleDelete(post.id)} />
+        )}
       </div>
 
       {post.metadata?.type === "prompt" && (
@@ -68,5 +79,3 @@ export const PostCard = (props: { post: PostType }) => {
     </div>
   );
 };
-
-const PostOptions = (props: { post: PostType }) => {};

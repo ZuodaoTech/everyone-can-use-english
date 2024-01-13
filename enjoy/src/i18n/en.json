@@ -355,5 +355,9 @@
   "videoAlreadyAddedToLibrary": "Video already added to library",
   "audioSuccessfullyAddedToLibrary": "Audio successfully added to library",
   "videoSuccessfullyAddedToLibrary": "Video successfully added to library",
-  "sendToAIAssistant": "Send to AI assistant"
+  "sendToAIAssistant": "Send to AI assistant",
+  "removeSharing": "Remove sharing",
+  "areYouSureToRemoveThisSharing": "Are you sure to remove this sharing?",
+  "removeSharingSuccessfully": "Remove sharing successfully",
+  "removeSharingFailed": "Remove sharing failed"
 }

@@ -355,5 +355,9 @@
   "videoAlreadyAddedToLibrary": "资料库已经存在此视频",
   "audioSuccessfullyAddedToLibrary": "音频成功添加到资料库",
   "videoSuccessfullyAddedToLibrary": "视频成功添加到资料库",
-  "sendToAIAssistant": "发送到智能助手"
+  "sendToAIAssistant": "发送到智能助手",
+  "removeSharing": "取消分享",
+  "areYouSureToRemoveThisSharing": "您确定要取消分享吗？",
+  "removeSharingSuccessfully": "取消分享成功",
+  "removeSharingFailed": "取消分享失败"
 }
