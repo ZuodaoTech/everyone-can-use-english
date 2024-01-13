@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { PostCard, LoaderSpin } from "@renderer/components";
-import { useToast } from "@renderer/components//ui";
+import { useToast, Button } from "@renderer/components//ui";
 import { t } from "i18next";
 
 export const Posts = () => {
   const { webApi } = useContext(AppSettingsProviderContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [posts, setPosts] = useState<PostType[]>([]);
+  const [nextPage, setNextPage] = useState(1);
   const { toast } = useToast();
 
   const handleDelete = (id: string) => {
@@ -28,11 +29,17 @@ export const Posts = () => {
       });
   };
 
-  const fetchPosts = async () => {
+  const fetchPosts = async (page: number = nextPage) => {
+    if (!page) return;
+
     webApi
-      .posts()
+      .posts({
+        page,
+        items: 10,
+      })
       .then((res) => {
-        setPosts(res.posts);
+        setPosts([...posts, ...res.posts]);
+        setNextPage(res.next);
       })
       .catch((err) => {
         toast({
@@ -64,6 +71,14 @@ export const Posts = () => {
           <PostCard key={post.id} post={post} handleDelete={handleDelete} />
         ))}
       </div>
+
+      {nextPage && (
+        <div className="py-4 flex justify-center">
+          <Button variant="link" onClick={() => fetchPosts(nextPage)}>
+            {t("loadMore")}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
