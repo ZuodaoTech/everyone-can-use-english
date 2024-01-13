@@ -15,7 +15,7 @@ export default () => {
 
   return (
     <div className="bg-muted h-full px-4 lg:px-8 py-6">
-      <div className="max-w-screen-md mx-auto">
+      <div className="max-w-screen-md mx-auto mb-6">
         <div className="flex space-x-1 items-center mb-4">
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
             <ChevronLeftIcon className="w-5 h-5" />
@@ -24,7 +24,7 @@ export default () => {
         </div>
 
         <Tabs defaultValue="square">
-          <TabsList className="mb-6">
+          <TabsList className="mb-4">
             <TabsTrigger value="square">{t("square")}</TabsTrigger>
             <TabsTrigger
               value="rankings"

@@ -19,10 +19,10 @@ import {
   useToast,
 } from "@renderer/components/ui";
 import {
-  ChevronDownIcon,
+  MoreHorizontalIcon,
   Trash2Icon,
-  InfoIcon,
   Share2Icon,
+  GaugeCircleIcon,
 } from "lucide-react";
 import { formatDateTime, secondsToTimestamp } from "@renderer/lib/utils";
 import { t } from "i18next";
@@ -91,12 +91,15 @@ export const RecordingCard = (props: {
 
           <div className="flex items-center justify-end space-x-2">
             <Button
+              data-tooltip-id="global-tooltip"
+              data-tooltip-content={t("pronunciationAssessment")}
+              data-tooltip-place="bottom"
               onClick={onSelect}
               variant="ghost"
               size="sm"
               className="p-1 h-6"
             >
-              <InfoIcon
+              <GaugeCircleIcon
                 className={`w-4 h-4
                     ${
                       recording.pronunciationAssessment
@@ -115,7 +118,14 @@ export const RecordingCard = (props: {
 
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="p-1 h-6">
+                <Button
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("share")}
+                  data-tooltip-place="bottom"
+                  variant="ghost"
+                  size="sm"
+                  className="p-1 h-6"
+                >
                   <Share2Icon className="w-4 h-4 text-muted-foreground" />
                 </Button>
               </AlertDialogTrigger>
@@ -128,7 +138,7 @@ export const RecordingCard = (props: {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-                  <AlertDialogAction>
+                  <AlertDialogAction asChild>
                     <Button onClick={handleShare}>{t("share")}</Button>
                   </AlertDialogAction>
                 </AlertDialogFooter>
@@ -137,7 +147,7 @@ export const RecordingCard = (props: {
 
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <ChevronDownIcon className="w-4 h-4 text-muted-foreground" />
+                <MoreHorizontalIcon className="w-4 h-4 text-muted-foreground" />
               </DropdownMenuTrigger>
 
               <DropdownMenuContent>
