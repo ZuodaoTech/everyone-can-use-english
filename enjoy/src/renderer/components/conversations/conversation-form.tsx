@@ -627,8 +627,6 @@ export const LLM_PROVIDERS: { [key: string]: any } = {
   openai: {
     name: "OpenAI",
     description: t("youNeedToSetupApiKeyBeforeUsingOpenAI"),
-    baseUrl:
-      "https://gateway.ai.cloudflare.com/v1/11d43ab275eb7e1b271ba4089ecc3864/enjoy/openai",
     models: [
       "gpt-3.5-turbo-1106",
       "gpt-3.5-turbo",
