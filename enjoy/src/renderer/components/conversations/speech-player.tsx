@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { PitchContour } from "@renderer/components";
 import WaveSurfer from "wavesurfer.js";
-import { Button } from "@renderer/components/ui";
+import { Button, Skeleton } from "@renderer/components/ui";
 import { PlayIcon, PauseIcon } from "lucide-react";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { secondsToTimestamp } from "@renderer/lib/utils";
@@ -18,6 +18,7 @@ export const SpeechPlayer = (props: {
     threshold: 1,
   });
   const [duration, setDuration] = useState<number>(0);
+  const [initialized, setInitialized] = useState(false);
 
   const onPlayClick = useCallback(() => {
     wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
@@ -69,6 +70,7 @@ export const SpeechPlayer = (props: {
             height,
           })
         );
+        setInitialized(true);
       }),
     ];
 
@@ -89,7 +91,15 @@ export const SpeechPlayer = (props: {
         ref={ref}
         className="bg-white rounded-lg grid grid-cols-9 items-center relative pl-2 h-[100px]"
       >
-        <div className="flex justify-center">
+        {!initialized && (
+          <div className="col-span-9 flex flex-col justify-around h-[80px]">
+            <Skeleton className="h-3 w-full rounded-full" />
+            <Skeleton className="h-3 w-full rounded-full" />
+            <Skeleton className="h-3 w-full rounded-full" />
+          </div>
+        )}
+
+        <div className={`flex justify-center ${initialized ? "" : "hidden"}`}>
           <Button
             onClick={onPlayClick}
             className="aspect-square rounded-full p-2 w-12 h-12 bg-blue-600 hover:bg-blue-500"
@@ -102,7 +112,10 @@ export const SpeechPlayer = (props: {
           </Button>
         </div>
 
-        <div className="col-span-8" ref={containerRef}></div>
+        <div
+          className={`col-span-8 ${initialized ? "" : "hidden"}`}
+          ref={containerRef}
+        ></div>
       </div>
     </div>
   );
