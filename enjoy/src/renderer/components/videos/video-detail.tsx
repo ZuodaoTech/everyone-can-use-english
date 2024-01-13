@@ -60,6 +60,14 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
   };
 
   const handleShare = async () => {
+    if (!video.source.startsWith("http")) {
+      toast({
+        title: t("shareFailed"),
+        description: t("cannotShareLocalVideo"),
+      });
+      return;
+    }
+
     if (!video.source && !video.isUploaded) {
       try {
         await EnjoyApp.videos.upload(video.id);

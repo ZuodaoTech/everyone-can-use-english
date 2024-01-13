@@ -338,6 +338,7 @@
   "areYouSureToShareThisAudioToCommunity": "Are you sure to share this audio to community?",
   "shareVideo": "Share video",
   "sharedVideo": "Shared a video resource",
+  "cannotShareLocalVideo": "Cannot share local video",
   "areYouSureToShareThisVideoToCommunity": "Are you sure to share this video to community?",
   "sharePrompt": "Share prompt",
   "sharedPrompt": "Shared a prompt",
