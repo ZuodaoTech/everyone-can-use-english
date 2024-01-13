@@ -1,6 +1,9 @@
 import { createContext, useEffect, useState } from "react";
+import { WEB_API_URL } from "@/constants";
+import { Client } from "@/api";
 
 type AppSettingsProviderState = {
+  webApi: Client;
   user: UserType | null;
   initialized: boolean;
   version?: string;
@@ -17,6 +20,7 @@ type AppSettingsProviderState = {
 };
 
 const initialState: AppSettingsProviderState = {
+  webApi: null,
   user: null,
   initialized: false,
 };
@@ -31,6 +35,8 @@ export const AppSettingsProvider = ({
 }) => {
   const [initialized, setInitialized] = useState<boolean>(false);
   const [version, setVersion] = useState<string>("");
+  const [apiUrl, setApiUrl] = useState<string>(WEB_API_URL);
+  const [webApi, setWebApi] = useState<Client>(null);
   const [user, setUser] = useState<UserType | null>(null);
   const [libraryPath, setLibraryPath] = useState("");
   const [whisperModelsPath, setWhisperModelsPath] = useState<string>("");
@@ -54,6 +60,17 @@ export const AppSettingsProvider = ({
     validate();
   }, [user, libraryPath, whisperModel, ffmpegConfig]);
 
+  useEffect(() => {
+    if (!apiUrl) return;
+
+    setWebApi(
+      new Client({
+        baseUrl: apiUrl,
+        accessToken: user?.accessToken,
+      })
+    );
+  }, [user, apiUrl]);
+
   const fetchFfmpegConfig = async () => {
     const config = await EnjoyApp.settings.getFfmpegConfig();
     setFfmegConfig(config);
@@ -65,10 +82,18 @@ export const AppSettingsProvider = ({
   };
 
   const fetchUser = async () => {
+    const apiUrl = await EnjoyApp.app.apiUrl();
+    setApiUrl(apiUrl);
+
     const currentUser = await EnjoyApp.settings.getUser();
     if (!currentUser) return;
 
-    EnjoyApp.webApi.me().then((user) => {
+    const client = new Client({
+      baseUrl: apiUrl,
+      accessToken: currentUser.accessToken,
+    });
+
+    client.me().then((user) => {
       if (user?.id) {
         login(currentUser);
       } else {
@@ -107,6 +132,10 @@ export const AppSettingsProvider = ({
     setWhisperModel(whisperModel);
   };
 
+  const fetchApiUrl = async () => {
+    return apiUrl;
+  };
+
   const setModelHandler = async (name: string) => {
     await EnjoyApp.settings.setWhisperModel(name);
     setWhisperModel(name);
@@ -123,6 +152,7 @@ export const AppSettingsProvider = ({
       value={{
         EnjoyApp,
         version,
+        webApi,
         user,
         login,
         logout,

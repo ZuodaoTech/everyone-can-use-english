@@ -3,4 +3,6 @@ type UserType = {
   name: string;
   avatarUrl?: string;
   accessToken?: string;
+  recordingsCount?: number;
+  recordingsDuration?: number;
 };

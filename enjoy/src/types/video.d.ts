@@ -12,6 +12,7 @@ type VideoType = {
   transcribing: boolean;
   recordingsCount?: number;
   recordingsDuration?: number;
+  isUploaded?: boolean;
   uploadedAt?: Date;
   createdAt: Date;
   updatedAt: Date;

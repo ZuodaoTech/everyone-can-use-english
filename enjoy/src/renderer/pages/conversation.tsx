@@ -8,11 +8,7 @@ import {
   SheetTrigger,
   useToast,
 } from "@renderer/components/ui";
-import {
-  MessageComponent,
-  ConversationForm,
-  SpeechForm,
-} from "@renderer/components";
+import { MessageComponent, ConversationForm } from "@renderer/components";
 import { SendIcon, BotIcon, LoaderIcon, SettingsIcon } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { t } from "i18next";
@@ -32,6 +28,7 @@ export default () => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [content, setConent] = useState<string>("");
   const [submitting, setSubmitting] = useState<boolean>(false);
+
   const { toast } = useToast();
 
   const [messages, dispatchMessages] = useReducer(messagesReducer, []);

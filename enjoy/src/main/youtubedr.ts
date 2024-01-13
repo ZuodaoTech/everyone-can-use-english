@@ -204,7 +204,7 @@ class Youtubedr {
       this.getYtVideoId(url);
       return true;
     } catch (error) {
-      console.error(error);
+      logger.warn(error);
       return false;
     }
   };

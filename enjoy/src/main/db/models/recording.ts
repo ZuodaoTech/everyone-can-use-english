@@ -23,11 +23,18 @@ import { hashFile } from "@/utils";
 import log from "electron-log/main";
 import storage from "@main/storage";
 import Ffmpeg from "@main/ffmpeg";
-import webApi from "@main/web-api";
+import { Client } from "@/api";
+import { WEB_API_URL } from "@/constants";
 import { AzureSpeechSdk } from "@main/azure-speech-sdk";
 import camelcaseKeys from "camelcase-keys";
 
 const logger = log.scope("db/models/recording");
+
+const webApi = new Client({
+  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+  accessToken: settings.getSync("user.accessToken") as string,
+  logger: log.scope("api/client"),
+});
 
 @Table({
   modelName: "Recording",
@@ -36,7 +43,7 @@ const logger = log.scope("db/models/recording");
   timestamps: true,
 })
 export class Recording extends Model<Recording> {
-  @IsUUID('all')
+  @IsUUID("all")
   @Default(DataType.UUIDV4)
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;

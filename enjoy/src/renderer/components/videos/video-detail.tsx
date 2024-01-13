@@ -11,16 +11,30 @@ import {
   MediaTranscription,
 } from "@renderer/components";
 import { LoaderIcon } from "lucide-react";
-import { ScrollArea } from "@renderer/components/ui";
+import {
+  AlertDialog,
+  AlertDialogHeader,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  Button,
+  ScrollArea,
+  useToast,
+} from "@renderer/components/ui";
+import { t } from "i18next";
 
 export const VideoDetail = (props: { id?: string; md5?: string }) => {
   const { id, md5 } = props;
+  const { toast } = useToast();
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
 
   const [video, setVideo] = useState<VideoType | null>(null);
   const [transcription, setTranscription] = useState<TranscriptionType>(null);
   const [initialized, setInitialized] = useState<boolean>(false);
+  const [sharing, setSharing] = useState<boolean>(false);
 
   // Player controls
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -35,12 +49,54 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
   const [playBackRate, setPlaybackRate] = useState<number>(1);
+  const [displayInlineCaption, setDisplayInlineCaption] =
+    useState<boolean>(true);
 
   const onTransactionUpdate = (event: CustomEvent) => {
     const { model, action, record } = event.detail || {};
     if (model === "Transcription" && action === "update") {
       setTranscription(record);
     }
+  };
+
+  const handleShare = async () => {
+    if (!video.source.startsWith("http")) {
+      toast({
+        title: t("shareFailed"),
+        description: t("cannotShareLocalVideo"),
+      });
+      return;
+    }
+
+    if (!video.source && !video.isUploaded) {
+      try {
+        await EnjoyApp.videos.upload(video.id);
+      } catch (err) {
+        toast({
+          title: t("shareFailed"),
+          description: err.message,
+        });
+        return;
+      }
+    }
+
+    webApi
+      .createPost({
+        targetType: "Video",
+        targetId: video.id,
+      })
+      .then(() => {
+        toast({
+          description: t("sharedVideo"),
+        });
+      })
+      .catch((err) => {
+        toast({
+          title: t("shareFailed"),
+          description: err.message,
+        });
+      });
+    setSharing(false);
   };
 
   useEffect(() => {
@@ -109,6 +165,9 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
             setIsLooping={setIsLooping}
             playBackRate={playBackRate}
             setPlaybackRate={setPlaybackRate}
+            displayInlineCaption={displayInlineCaption}
+            setDisplayInlineCaption={setDisplayInlineCaption}
+            onShare={() => setSharing(true)}
           />
 
           <ScrollArea
@@ -148,6 +207,23 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
           />
         </div>
       </div>
+
+      <AlertDialog open={sharing} onOpenChange={(value) => setSharing(value)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("shareAudio")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("areYouSureToShareThisAudioToCommunity")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+            <Button variant="default" onClick={handleShare}>
+              {t("share")}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {!initialized && (
         <div className="top-0 w-full h-full absolute z-30 bg-white/10 flex items-center justify-center">

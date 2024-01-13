@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import WaveSurfer from "wavesurfer.js";
 import { PitchContour } from "@renderer/components";
-import { Button } from "@renderer/components/ui";
+import { Button, Skeleton } from "@renderer/components/ui";
 import { PlayIcon, PauseIcon } from "lucide-react";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 
@@ -30,6 +30,7 @@ export const RecordingPlayer = (props: {
   const [ref, entry] = useIntersectionObserver({
     threshold: 0,
   });
+  const [initialized, setInitialized] = useState(false);
 
   const onPlayClick = useCallback(() => {
     wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
@@ -40,6 +41,7 @@ export const RecordingPlayer = (props: {
     // when the player is visible
     if (!entry?.isIntersecting) return;
     if (!recording?.src) return;
+    if (wavesurfer) return;
 
     const ws = WaveSurfer.create({
       container: containerRef.current,
@@ -78,6 +80,7 @@ export const RecordingPlayer = (props: {
             height,
           })
         );
+        setInitialized(true);
       }),
     ];
 
@@ -105,7 +108,15 @@ export const RecordingPlayer = (props: {
 
   return (
     <div ref={ref} className="grid grid-cols-11 xl:grid-cols-12 items-center">
-      <div className="flex justify-center">
+      {!initialized && (
+        <div className="col-span-9 flex flex-col justify-around h-[80px]">
+          <Skeleton className="h-3 w-full rounded-full" />
+          <Skeleton className="h-3 w-full rounded-full" />
+          <Skeleton className="h-3 w-full rounded-full" />
+        </div>
+      )}
+
+      <div className={`flex justify-center ${initialized ? "" : "hidden"}`}>
         <Button
           onClick={onPlayClick}
           className="aspect-square rounded-full p-2 w-12 h-12 bg-blue-600 hover:bg-blue-500"
@@ -118,7 +129,10 @@ export const RecordingPlayer = (props: {
         </Button>
       </div>
 
-      <div className="col-span-10 xl:col-span-11" ref={containerRef}></div>
+      <div
+        className={`col-span-10 xl:col-span-11 ${initialized ? "" : "hidden"}`}
+        ref={containerRef}
+      ></div>
     </div>
   );
 };

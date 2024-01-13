@@ -93,7 +93,7 @@ type EnjoyAppType = {
   audios: {
     findAll: (params: object) => Promise<AudioType[]>;
     findOne: (params: object) => Promise<AudioType>;
-    create: (source: string, params?: object) => Promise<AudioType>;
+    create: (uri: string, params?: object) => Promise<AudioType>;
     update: (id: string, params: object) => Promise<AudioType | undefined>;
     destroy: (id: string) => Promise<undefined>;
     transcribe: (id: string) => Promise<void>;
@@ -102,8 +102,8 @@ type EnjoyAppType = {
   videos: {
     findAll: (params: object) => Promise<VideoType[]>;
     findOne: (params: object) => Promise<VideoType>;
-    create: (source: string, params?: object) => Promise<VideoType>;
-    update: (id: string, params: object) => Promise<VideoType | undefined>;
+    create: (uri: string, params?: any) => Promise<VideoType>;
+    update: (id: string, params: any) => Promise<VideoType | undefined>;
     destroy: (id: string) => Promise<undefined>;
     transcribe: (id: string) => Promise<void>;
     upload: (id: string) => Promise<void>;
@@ -143,9 +143,9 @@ type EnjoyAppType = {
     ) => Promise<SegementRecordingStatsType>;
   };
   conversations: {
-    findAll: (params: object) => Promise<ConversationType[]>;
-    findOne: (params: object) => Promise<ConversationType>;
-    create: (params: object) => Promise<ConversationType>;
+    findAll: (params: any) => Promise<ConversationType[]>;
+    findOne: (params: any) => Promise<ConversationType>;
+    create: (params: any) => Promise<ConversationType>;
     update: (id: string, params: object) => Promise<ConversationType>;
     destroy: (id: string) => Promise<void>;
     ask: (
@@ -159,7 +159,7 @@ type EnjoyAppType = {
           arrayBuffer: ArrayBuffer;
         };
       }
-    ) => Promise<MessageType>;
+    ) => Promise<MessageType[]>;
   };
   messages: {
     findAll: (params: object) => Promise<MessageType[]>;
@@ -184,70 +184,6 @@ type EnjoyAppType = {
     cancelAll: () => void;
     dashboard: () => Promise<DownloadStateType[]>;
     removeAllListeners: () => void;
-  };
-  webApi: {
-    auth: (params: { provider: string; code: string }) => Promise<UserType>;
-    me: () => Promise<UserType>;
-    lookup: (params: {
-      word: string;
-      context?: string;
-      sourceId?: string;
-      sourceType?: string;
-    }) => Promise<LookupType>;
-    lookupInBatch: (
-      params: {
-        word: string;
-        context?: string;
-        sourceId?: string;
-        sourceType?: string;
-      }[]
-    ) => Promise<{ successCount: number; errors: string[]; total: number }>;
-    mineMeanings: (params?: {
-      page?: number;
-      items?: number;
-      sourceId?: string;
-      sourceType?: string;
-    }) => Promise<
-      {
-        meanings: MeaningType[];
-      } & PagyResponseType
-    >;
-    createStory: (params: {
-      title: string;
-      content: string;
-      url: string;
-      metadata: {
-        [key: string]: any;
-      };
-    }) => Promise<StoryType>;
-    extractVocabularyFromStory: (id: string) => Promise<string[]>;
-    story: (id: string) => Promise<StoryType>;
-    stories: (params?: { page: number }) => Promise<{
-      stories: StoryType[];
-      page: number;
-      next: number | null;
-    }>;
-    mineStories: (params?: { page: number }) => Promise<{
-      stories: StoryType[];
-      page: number;
-      next: number | null;
-    }>;
-    storyMeanings: (
-      storyId: string,
-      params?: {
-        page?: number;
-        items?: number;
-        sourceId?: string;
-        sourceType?: string;
-      }
-    ) => Promise<
-      {
-        meanings: MeaningType[];
-        pendingLookups: LookupType[];
-      } & PagyResponseType
-    >;
-    starStory: (id: string) => Promise<{ starred: boolean }>;
-    unstarStory: (id: string) => Promise<{ starred: boolean }>;
   };
   cacheObjects: {
     get: (key: string) => Promise<any>;

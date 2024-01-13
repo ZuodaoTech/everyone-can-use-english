@@ -175,8 +175,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findOne: (params: object) => {
       return ipcRenderer.invoke("audios-find-one", params);
     },
-    create: (source: string, params?: object) => {
-      return ipcRenderer.invoke("audios-create", source, params);
+    create: (uri: string, params?: object) => {
+      return ipcRenderer.invoke("audios-create", uri, params);
     },
     update: (id: string, params: object) => {
       return ipcRenderer.invoke("audios-update", id, params);
@@ -201,8 +201,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findOne: (params: object) => {
       return ipcRenderer.invoke("videos-find-one", params);
     },
-    create: (source: string, params?: object) => {
-      return ipcRenderer.invoke("videos-create", source, params);
+    create: (uri: string, params?: object) => {
+      return ipcRenderer.invoke("videos-create", uri, params);
     },
     update: (id: string, params: object) => {
       return ipcRenderer.invoke("videos-update", id, params);
@@ -354,50 +354,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     removeAllListeners: () => {
       ipcRenderer.removeAllListeners("download-on-error");
-    },
-  },
-  webApi: {
-    auth: (params: object) => {
-      return ipcRenderer.invoke("web-api-auth", params);
-    },
-    me: () => {
-      return ipcRenderer.invoke("web-api-me");
-    },
-    lookup: (params: object) => {
-      return ipcRenderer.invoke("web-api-lookup", params);
-    },
-    lookupInBatch: (params: object[]) => {
-      return ipcRenderer.invoke("web-api-lookup-in-batch", params);
-    },
-    createStory: (params: object) => {
-      return ipcRenderer.invoke("web-api-create-story", params);
-    },
-    starStory: (storyId: string) => {
-      return ipcRenderer.invoke("web-api-star-story", storyId);
-    },
-    unstarStory: (storyId: string) => {
-      return ipcRenderer.invoke("web-api-unstar-story", storyId);
-    },
-    extractVocabularyFromStory: (storyId: string) => {
-      return ipcRenderer.invoke(
-        "web-api-extract-vocabulary-from-story",
-        storyId
-      );
-    },
-    storyMeanings: (storyId: string, params: object) => {
-      return ipcRenderer.invoke("web-api-story-meanings", storyId, params);
-    },
-    story: (id: string) => {
-      return ipcRenderer.invoke("web-api-story", id);
-    },
-    stories: (params: object) => {
-      return ipcRenderer.invoke("web-api-stories", params);
-    },
-    mineStories: (params: object) => {
-      return ipcRenderer.invoke("web-api-mine-stories", params);
-    },
-    mineMeanings: (params: object) => {
-      return ipcRenderer.invoke("web-api-mine-meanings", params);
     },
   },
   cacheObjects: {

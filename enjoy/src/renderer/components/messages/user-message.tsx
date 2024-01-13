@@ -1,12 +1,23 @@
 import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogHeader,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
   Avatar,
   AvatarImage,
   AvatarFallback,
+  Button,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  useToast,
 } from "@renderer/components/ui";
 import { SpeechPlayer } from "@renderer/components";
 import { useContext, useState } from "react";
@@ -17,6 +28,7 @@ import {
   AlertCircleIcon,
   CopyIcon,
   CheckIcon,
+  Share2Icon,
 } from "lucide-react";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
@@ -30,9 +42,34 @@ export const UserMessageComponent = (props: {
 }) => {
   const { message, onResend, onRemove } = props;
   const speech = message.speeches?.[0];
-  const { user } = useContext(AppSettingsProviderContext);
+  const { user, webApi } = useContext(AppSettingsProviderContext);
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
+  const { toast } = useToast();
+
+  const handleShare = async () => {
+    if (message.role === "user") {
+      const content = message.content;
+      webApi
+        .createPost({
+          metadata: {
+            type: "prompt",
+            content,
+          },
+        })
+        .then(() => {
+          toast({
+            description: t("sharedPrompt"),
+          });
+        })
+        .catch((err) => {
+          toast({
+            title: t("shareFailed"),
+            description: err.message,
+          });
+        });
+    }
+  };
 
   return (
     <div
@@ -41,7 +78,7 @@ export const UserMessageComponent = (props: {
     >
       <DropdownMenu>
         <div className="flex flex-col gap-2 px-4 py-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full">
-          <Markdown className="select-text">{message.content}</Markdown>
+          <Markdown className="select-text prose">{message.content}</Markdown>
 
           {Boolean(speech) && <SpeechPlayer speech={speech} />}
 
@@ -80,6 +117,34 @@ export const UserMessageComponent = (props: {
                   }, 3000);
                 }}
               />
+            )}
+
+            {message.createdAt && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Share2Icon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("share")}
+                    className="w-3 h-3 cursor-pointer"
+                  />
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t("sharePrompt")}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {t("areYouSureToShareThisPromptToCommunity")}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                      <Button variant="default" onClick={handleShare}>
+                        {t("share")}
+                      </Button>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             )}
           </div>
         </div>

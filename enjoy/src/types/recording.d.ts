@@ -1,12 +1,12 @@
 type RecordingType = {
   id: string;
-  filename: string;
+  filename?: string;
   target?: AudioType | (MessageType & any);
   targetId: string;
   targetType: string;
   pronunciationAssessment?: PronunciationAssessmentType & any;
-  segmentIndex: number;
-  segmentText?: string;
+  referenceId: number;
+  referenceText?: string;
   duration?: number;
   src?: string;
   md5: string;

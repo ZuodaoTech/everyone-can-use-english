@@ -7,10 +7,10 @@ import { AppSettingsProviderContext } from "@renderer/context";
 
 export const StoriesSegment = () => {
   const [stories, setStorys] = useState<StoryType[]>([]);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { webApi } = useContext(AppSettingsProviderContext);
 
   const fetchStorys = async () => {
-    EnjoyApp.webApi.mineStories().then((response) => {
+    webApi.mineStories().then((response) => {
       if (response?.stories) {
         setStorys(response.stories);
       }

@@ -11,14 +11,14 @@ export default () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [meanings, setMeanings] = useState<MeaningType[]>([]);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { webApi } = useContext(AppSettingsProviderContext);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [nextPage, setNextPage] = useState(1);
 
   const fetchMeanings = async (page: number = nextPage) => {
     if (!page) return;
 
-    EnjoyApp.webApi
+    webApi
       .mineMeanings({ page, items: 10 })
       .then((response) => {
         setMeanings([...meanings, ...response.meanings]);

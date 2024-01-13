@@ -1,12 +1,19 @@
 export const videosReducer = (
   videos: VideoType[],
   action: {
-    type: "create" | "update" | "destroy" | "set";
+    type: "append" | "create" | "update" | "destroy" | "set";
     record?: Partial<VideoType>;
     records?: Partial<VideoType>[];
   }
 ) => {
   switch (action.type) {
+    case "append": {
+      if (action.record) {
+        return [...videos, action.record];
+      } else if (action.records) {
+        return [...videos, ...action.records];
+      }
+    }
     case "create": {
       return [action.record, ...videos];
     }

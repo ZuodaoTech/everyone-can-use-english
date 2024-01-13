@@ -60,6 +60,7 @@ export const MediaPlayer = (props: {
   setPlaybackRate: (value: number) => void;
   displayInlineCaption?: boolean;
   setDisplayInlineCaption?: (value: boolean) => void;
+  onShare?: () => void;
 }) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const {
@@ -88,6 +89,7 @@ export const MediaPlayer = (props: {
     setPlaybackRate,
     displayInlineCaption,
     setDisplayInlineCaption,
+    onShare,
   } = props;
   if (!mediaUrl) return;
 
@@ -536,6 +538,7 @@ export const MediaPlayer = (props: {
           setWavesurferOptions={(options) => wavesurfer?.setOptions(options)}
           displayInlineCaption={displayInlineCaption}
           setDisplayInlineCaption={setDisplayInlineCaption}
+          onShare={onShare}
         />
       </div>
 

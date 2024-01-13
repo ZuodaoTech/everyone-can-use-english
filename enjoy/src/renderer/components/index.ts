@@ -10,6 +10,9 @@ export * from "./videos";
 
 export * from "./medias";
 
+export * from "./posts";
+export * from "./users";
+
 export * from "./db-state";
 
 export * from "./layout";

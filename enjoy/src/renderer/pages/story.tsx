@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { ScrollArea } from "@renderer/components/ui";
+import { ScrollArea, useToast } from "@renderer/components/ui";
 import {
   LoaderSpin,
   PagePlaceholder,
@@ -16,7 +16,7 @@ nlp.plugin(paragraphs);
 let timeout: NodeJS.Timeout = null;
 export default () => {
   const { id } = useParams<{ id: string }>();
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { webApi } = useContext(AppSettingsProviderContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [story, setStory] = useState<StoryType>();
   const [meanings, setMeanings] = useState<MeaningType[]>([]);
@@ -24,9 +24,10 @@ export default () => {
   const [scanning, setScanning] = useState<boolean>(false);
   const [marked, setMarked] = useState<boolean>(true);
   const [doc, setDoc] = useState<any>(null);
+  const { toast } = useToast();
 
   const fetchStory = async () => {
-    EnjoyApp.webApi
+    webApi
       .story(id)
       .then((story) => {
         setStory(story);
@@ -41,7 +42,7 @@ export default () => {
 
   const fetchMeanings = async () => {
     setScanning(true);
-    EnjoyApp.webApi
+    webApi
       .storyMeanings(id, { items: 500 })
       .then((response) => {
         if (!response) return;
@@ -88,14 +89,14 @@ export default () => {
       });
     });
 
-    EnjoyApp.webApi.lookupInBatch(vocabulary).then((response) => {
+    webApi.lookupInBatch(vocabulary).then((response) => {
       const { errors } = response;
       if (errors.length > 0) {
         console.warn(errors);
         return;
       }
 
-      EnjoyApp.webApi.extractVocabularyFromStory(id).then(() => {
+      webApi.extractVocabularyFromStory(id).then(() => {
         fetchStory();
         if (pendingLookups.length > 0) return;
 
@@ -108,14 +109,31 @@ export default () => {
     if (!story) return;
 
     if (story.starred) {
-      EnjoyApp.webApi.unstarStory(id).then((result) => {
+      webApi.unstarStory(id).then((result) => {
         setStory({ ...story, starred: result.starred });
       });
     } else {
-      EnjoyApp.webApi.starStory(id).then((result) => {
+      webApi.starStory(id).then((result) => {
         setStory({ ...story, starred: result.starred });
       });
     }
+  };
+
+  const handleShare = async () => {
+    webApi
+      .createPost({ targetId: story.id, targetType: "Story" })
+      .then(() => {
+        toast({
+          description: t("sharedStory"),
+        });
+      })
+      .catch((error) => {
+        toast({
+          title: t("shareFailed"),
+          description: error.message,
+          variant: "destructive",
+        });
+      });
   };
 
   useEffect(() => {
@@ -162,6 +180,7 @@ export default () => {
           starred={story.starred}
           toggleStarred={toggleStarred}
           pendingLookups={pendingLookups}
+          handleShare={handleShare}
         />
 
         <StoryViewer

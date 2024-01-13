@@ -2,6 +2,7 @@ import {
   AfterCreate,
   AfterUpdate,
   AfterDestroy,
+  AfterFind,
   BelongsTo,
   Table,
   Column,
@@ -15,9 +16,17 @@ import { Audio, Video } from "@main/db/models";
 import whisper from "@main/whisper";
 import mainWindow from "@main/window";
 import log from "electron-log/main";
-import webApi from "@main/web-api";
+import { Client } from "@/api";
+import { WEB_API_URL, PROCESS_TIMEOUT } from "@/constants";
+import settings from "@main/settings";
 
 const logger = log.scope("db/models/transcription");
+const webApi = new Client({
+  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+  accessToken: settings.getSync("user.accessToken") as string,
+  logger: log.scope("api/client"),
+});
+
 @Table({
   modelName: "Transcription",
   tableName: "transcriptions",
@@ -25,7 +34,7 @@ const logger = log.scope("db/models/transcription");
   timestamps: true,
 })
 export class Transcription extends Model<Transcription> {
-  @IsUUID('all')
+  @IsUUID("all")
   @Default(DataType.UUIDV4)
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;
@@ -144,6 +153,23 @@ export class Transcription extends Model<Transcription> {
   @AfterDestroy
   static notifyForDestroy(transcription: Transcription) {
     this.notify(transcription, "destroy");
+  }
+
+  @AfterFind
+  static expireProcessingState(transcription: Transcription) {
+    if (transcription?.state !== "processing") return;
+
+    if (transcription.updatedAt.getTime() + PROCESS_TIMEOUT < Date.now()) {
+      if (transcription.result) {
+        transcription.update({
+          state: "finished",
+        });
+      } else {
+        transcription.update({
+          state: "pending",
+        });
+      }
+    }
   }
 
   static notify(
