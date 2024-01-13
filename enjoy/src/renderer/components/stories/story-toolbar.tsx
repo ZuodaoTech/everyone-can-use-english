@@ -2,6 +2,16 @@ import {
   Alert,
   AlertTitle,
   AlertDescription,
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+  Button,
   ScrollArea,
   Separator,
   Sheet,
@@ -17,6 +27,7 @@ import {
   ScanTextIcon,
   LoaderIcon,
   StarIcon,
+  Share2Icon,
 } from "lucide-react";
 import { t } from "i18next";
 
@@ -36,6 +47,7 @@ export const StoryToolbar = (props: {
   marked?: boolean;
   toggleMarked?: () => void;
   pendingLookups?: LookupType[];
+  handleShare?: () => void;
 }) => {
   const {
     starred,
@@ -47,6 +59,7 @@ export const StoryToolbar = (props: {
     toggleMarked,
     meanings = [],
     pendingLookups = [],
+    handleShare,
   } = props;
 
   const [vocabularyVisible, setVocabularyVisible] = useState<boolean>(
@@ -76,6 +89,27 @@ export const StoryToolbar = (props: {
         <ToolbarButton toggled={starred} onClick={toggleStarred}>
           <StarIcon className="w-6 h-6" />
         </ToolbarButton>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <ToolbarButton toggled={false} onClick={toggleStarred}>
+              <Share2Icon className="w-6 h-6" />
+            </ToolbarButton>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t("shareStory")}</AlertDialogTitle>
+              <AlertDialogDescription>
+                {t("areYouSureToShareThisStoryToCommunity")}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+              <AlertDialogAction>
+                <Button onClick={handleShare}>{t("share")}</Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </FloatingToolbar>
 
       <Sheet

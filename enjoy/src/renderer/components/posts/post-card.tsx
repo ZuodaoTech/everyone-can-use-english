@@ -1,10 +1,10 @@
-import { PostRecording, PostActions, PostMedium } from "@renderer/components";
 import {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-  Button,
-} from "@renderer/components/ui";
+  PostRecording,
+  PostActions,
+  PostMedium,
+  PostStory,
+} from "@renderer/components";
+import { Avatar, AvatarImage, AvatarFallback } from "@renderer/components/ui";
 import { formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
 import Markdown from "react-markdown";
@@ -52,6 +52,15 @@ export const PostCard = (props: { post: PostType }) => {
             {t("sharedRecording")}
           </div>
           <PostRecording recording={post.target as RecordingType} />
+        </>
+      )}
+
+      {post.targetType == "Story" && (
+        <>
+          <div className="text-xs text-muted-foreground">
+            {t("sharedStory")}
+          </div>
+          <PostStory story={post.target as StoryType} />
         </>
       )}
 
