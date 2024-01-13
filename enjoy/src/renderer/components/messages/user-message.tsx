@@ -1,12 +1,23 @@
 import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogHeader,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
   Avatar,
   AvatarImage,
   AvatarFallback,
+  Button,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  useToast,
 } from "@renderer/components/ui";
 import { SpeechPlayer } from "@renderer/components";
 import { useContext, useState } from "react";
@@ -28,13 +39,37 @@ export const UserMessageComponent = (props: {
   configuration?: { [key: string]: any };
   onResend?: () => void;
   onRemove?: () => void;
-  onShare?: () => void;
 }) => {
-  const { message, onResend, onRemove, onShare } = props;
+  const { message, onResend, onRemove } = props;
   const speech = message.speeches?.[0];
-  const { user } = useContext(AppSettingsProviderContext);
+  const { user, webApi } = useContext(AppSettingsProviderContext);
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
+  const { toast } = useToast();
+
+  const handleShare = async () => {
+    if (message.role === "user") {
+      const content = message.content;
+      webApi
+        .createPost({
+          metadata: {
+            type: "prompt",
+            content,
+          },
+        })
+        .then(() => {
+          toast({
+            description: t("sharedPrompt"),
+          });
+        })
+        .catch((err) => {
+          toast({
+            title: t("shareFailed"),
+            description: err.message,
+          });
+        });
+    }
+  };
 
   return (
     <div
@@ -85,12 +120,31 @@ export const UserMessageComponent = (props: {
             )}
 
             {message.createdAt && (
-              <Share2Icon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("share")}
-                className="w-3 h-3 cursor-pointer"
-                onClick={onShare}
-              />
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Share2Icon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("share")}
+                    className="w-3 h-3 cursor-pointer"
+                  />
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t("sharePrompt")}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {t("areYouSureToShareThisPromptToCommunity")}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                      <Button variant="default" onClick={handleShare}>
+                        {t("share")}
+                      </Button>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             )}
           </div>
         </div>

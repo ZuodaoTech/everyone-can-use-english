@@ -47,6 +47,7 @@ export const RecordingCard = (props: {
         await EnjoyApp.recordings.upload(recording.id);
       } catch (error) {
         toast({
+          title: t("shareFailed"),
           description: error.message,
           variant: "destructive",
         });
@@ -61,7 +62,7 @@ export const RecordingCard = (props: {
       })
       .then(() => {
         toast({
-          description: t("recordingShared"),
+          description: t("sharedRecording"),
         });
       })
       .catch((error) => {

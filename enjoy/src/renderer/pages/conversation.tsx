@@ -1,12 +1,5 @@
 import { useState, useEffect, useReducer, useContext, useRef } from "react";
 import {
-  AlertDialog,
-  AlertDialogHeader,
-  AlertDialogDescription,
-  AlertDialogTitle,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogCancel,
   Button,
   ScrollArea,
   Textarea,
@@ -32,10 +25,9 @@ export default () => {
   const [editting, setEditting] = useState<boolean>(false);
   const [conversation, setConversation] = useState<ConversationType>();
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
-  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [content, setConent] = useState<string>("");
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [sharing, setSharing] = useState<MessageType>();
 
   const { toast } = useToast();
 
@@ -174,31 +166,6 @@ export default () => {
     }, 500);
   };
 
-  const handleShare = async (message: MessageType) => {
-    if (message.role === "user") {
-      const content = message.content;
-      webApi
-        .createPost({
-          metadata: {
-            type: "prompt",
-            content,
-          },
-        })
-        .then(() => {
-          toast({
-            description: t("sharedSuccessfully"),
-          });
-        })
-        .catch((err) => {
-          toast({
-            title: t("shareFailed"),
-            description: err.message,
-          });
-        });
-      setSharing(null);
-    }
-  };
-
   useEffect(() => {
     fetchConversation();
     fetchMessages();
@@ -288,7 +255,6 @@ export default () => {
 
                   dispatchMessages({ type: "destroy", record: message });
                 }}
-                onShare={() => setSharing(message)}
               />
             ))}
             {offset > -1 && (
@@ -308,26 +274,6 @@ export default () => {
             )}
           </div>
         </ScrollArea>
-
-        <AlertDialog
-          open={Boolean(sharing)}
-          onOpenChange={() => setSharing(null)}
-        >
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{t("sharePrompt")}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {t("areYouSureToShareThisPromptToCommunity")}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-              <Button variant="default" onClick={() => handleShare(sharing)}>
-                {t("share")}
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
 
         <div className="px-4 absolute w-full bottom-0 left-0 h-14 bg-muted z-50">
           <div className="focus-within:bg-white px-4 py-2 flex items-center space-x-4 rounded-lg border">

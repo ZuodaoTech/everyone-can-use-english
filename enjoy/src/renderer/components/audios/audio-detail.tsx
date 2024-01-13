@@ -77,7 +77,7 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
       .then(() => {
         toast({
           title: t("shared"),
-          description: t("sharedSuccessfully"),
+          description: t("sharedAudio"),
         });
       })
       .catch((err) => {

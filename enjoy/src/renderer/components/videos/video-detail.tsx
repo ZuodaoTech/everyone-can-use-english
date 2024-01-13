@@ -87,7 +87,7 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
       })
       .then(() => {
         toast({
-          description: t("sharedSuccessfully"),
+          description: t("sharedVideo"),
         });
       })
       .catch((err) => {
