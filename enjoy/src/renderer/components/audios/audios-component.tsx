@@ -4,9 +4,11 @@ import {
   AddMediaButton,
   AudiosTable,
   AudioEditForm,
+  LoaderSpin,
 } from "@renderer/components";
 import { t } from "i18next";
 import {
+  Button,
   Tabs,
   TabsContent,
   TabsList,
@@ -23,6 +25,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  useToast,
 } from "@renderer/components/ui";
 import {
   DbProviderContext,
@@ -43,28 +46,55 @@ export const AudiosComponent = () => {
 
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const [offset, setOffest] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchResources();
-  }, []);
-
-  useEffect(() => {
     addDblistener(onAudiosUpdate);
-    fetchResources();
+    fetchAudios();
 
     return () => {
       removeDbListener(onAudiosUpdate);
     };
   }, []);
 
-  const fetchResources = async () => {
-    const audios = await EnjoyApp.audios.findAll({
-      limit: 10,
-    });
-    if (!audios) return;
+  const fetchAudios = async () => {
+    if (loading) return;
+    if (offset === -1) return;
 
-    dispatchAudios({ type: "set", records: audios });
+    setLoading(true);
+    const limit = 10;
+    EnjoyApp.audios
+      .findAll({
+        offset,
+        limit,
+      })
+      .then((_audios) => {
+        if (_audios.length === 0) {
+          setOffest(-1);
+          return;
+        }
+
+        if (_audios.length < limit) {
+          setOffest(-1);
+        } else {
+          setOffest(offset + _audios.length);
+        }
+
+        dispatchAudios({ type: "append", records: _audios });
+      })
+      .catch((err) => {
+        toast({
+          description: err.message,
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const onAudiosUpdate = (event: CustomEvent) => {
@@ -79,7 +109,7 @@ export const AudiosComponent = () => {
         dispatchAudios({ type: "destroy", record });
       }
     } else if (model === "Video" && action === "create") {
-        navigate(`/videos/${record.id}`);
+      navigate(`/videos/${record.id}`);
     } else if (model === "Transcription" && action === "update") {
       dispatchAudios({
         type: "update",
@@ -93,6 +123,8 @@ export const AudiosComponent = () => {
   };
 
   if (audios.length === 0) {
+    if (loading) return <LoaderSpin />;
+
     return (
       <div className="flex items-center justify-center h-48 border border-dashed rounded-lg">
         <AddMediaButton />
@@ -134,6 +166,14 @@ export const AudiosComponent = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {offset > -1 && (
+        <div className="flex items-center justify-center my-4">
+          <Button variant="link" onClick={fetchAudios}>
+            {t("loadMore")}
+          </Button>
+        </div>
+      )}
 
       <Dialog
         open={!!editing}

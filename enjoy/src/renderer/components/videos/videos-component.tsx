@@ -4,6 +4,7 @@ import {
   VideosTable,
   VideoEditForm,
   AddMediaButton,
+  LoaderSpin,
 } from "@renderer/components";
 import { t } from "i18next";
 import {
@@ -19,10 +20,12 @@ import {
   AlertDialogDescription,
   AlertDialogCancel,
   AlertDialogAction,
+  Button,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  useToast,
 } from "@renderer/components/ui";
 import {
   DbProviderContext,
@@ -43,11 +46,11 @@ export const VideosComponent = () => {
 
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const navigate = useNavigate();
+  const [offset, setOffest] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
-  useEffect(() => {
-    fetchVideos();
-  }, []);
+  const navigate = useNavigate();
 
   useEffect(() => {
     addDblistener(onVideosUpdate);
@@ -59,12 +62,39 @@ export const VideosComponent = () => {
   }, []);
 
   const fetchVideos = async () => {
-    const videos = await EnjoyApp.videos.findAll({
-      limit: 10,
-    });
-    if (!videos) return;
+    if (loading) return;
+    if (offset === -1) return;
 
-    dispatchVideos({ type: "set", records: videos });
+    setLoading(true);
+    const limit = 10;
+    EnjoyApp.videos
+      .findAll({
+        offset,
+        limit,
+      })
+      .then((_videos) => {
+        if (_videos.length === 0) {
+          setOffest(-1);
+          return;
+        }
+
+        if (_videos.length < limit) {
+          setOffest(-1);
+        } else {
+          setOffest(offset + _videos.length);
+        }
+
+        dispatchVideos({ type: "append", records: _videos });
+      })
+      .catch((err) => {
+        toast({
+          description: err.message,
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const onVideosUpdate = (event: CustomEvent) => {
@@ -93,6 +123,8 @@ export const VideosComponent = () => {
   };
 
   if (videos.length === 0) {
+    if (loading) return <LoaderSpin />;
+
     return (
       <div className="flex items-center justify-center h-48 border border-dashed rounded-lg">
         <AddMediaButton />
@@ -134,6 +166,14 @@ export const VideosComponent = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {offset > -1 && (
+        <div className="flex items-center justify-center my-4">
+          <Button variant="link" onClick={fetchVideos}>
+            {t("loadMore")}
+          </Button>
+        </div>
+      )}
 
       <Dialog
         open={!!editing}
