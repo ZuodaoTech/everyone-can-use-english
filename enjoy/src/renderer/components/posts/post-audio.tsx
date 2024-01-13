@@ -151,7 +151,7 @@ export const PostAudio = (props: {
       )}
 
       {audio.coverUrl && (
-        <div className="">
+        <div className="mt-2">
           <img src={audio.coverUrl} className="w-full rounded" />
         </div>
       )}
