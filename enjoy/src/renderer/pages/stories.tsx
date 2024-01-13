@@ -1,19 +1,25 @@
+import { Button } from "@renderer/components/ui";
 import { StoryForm, StoryCard, LoaderSpin } from "@renderer/components";
 import { useState, useContext, useEffect } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
+import { t } from "i18next";
 
 export default () => {
   const [stories, setStorys] = useState<StoryType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { webApi } = useContext(AppSettingsProviderContext);
+  const [nextPage, setNextPage] = useState(1);
 
-  const fetchStorys = async () => {
+  const fetchStories = async (page: number = nextPage) => {
+    if (!page) return;
+
     webApi
       .mineStories()
       .then((response) => {
         if (response?.stories) {
-          setStorys(response.stories);
+          setStorys([...stories, ...response.stories]);
         }
+        setNextPage(response.next);
       })
       .finally(() => {
         setLoading(false);
@@ -21,7 +27,7 @@ export default () => {
   };
 
   useEffect(() => {
-    fetchStorys();
+    fetchStories();
   }, []);
 
   return (
@@ -36,6 +42,14 @@ export default () => {
           {stories.map((story) => (
             <StoryCard key={story.id} story={story} />
           ))}
+        </div>
+      )}
+
+      {nextPage && (
+        <div className="py-4 flex justify-center">
+          <Button variant="link" onClick={() => fetchStories(nextPage)}>
+            {t("loadMore")}
+          </Button>
         </div>
       )}
     </div>
