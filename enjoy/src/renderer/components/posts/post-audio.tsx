@@ -6,8 +6,11 @@ import { PlayIcon, PauseIcon } from "lucide-react";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { secondsToTimestamp } from "@renderer/lib/utils";
 
-export const PostAudioPlayer = (props: { src: string; height?: number }) => {
-  const { src, height = 80 } = props;
+export const PostAudio = (props: {
+  audio: Partial<MediumType>;
+  height?: number;
+}) => {
+  const { audio, height = 80 } = props;
   const [initialized, setInitialized] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [wavesurfer, setWavesurfer] = useState(null);
@@ -25,12 +28,12 @@ export const PostAudioPlayer = (props: { src: string; height?: number }) => {
     // use the intersection observer to only create the wavesurfer instance
     // when the player is visible
     if (!entry?.isIntersecting) return;
-    if (!src) return;
+    if (!audio.sourceUrl) return;
     if (wavesurfer) return;
 
     const ws = WaveSurfer.create({
       container: containerRef.current,
-      url: src,
+      url: audio.sourceUrl,
       height,
       barWidth: 1,
       cursorWidth: 0,
@@ -41,11 +44,10 @@ export const PostAudioPlayer = (props: { src: string; height?: number }) => {
       minPxPerSec: 100,
       waveColor: "#ddd",
       progressColor: "rgba(0, 0, 0, 0.25)",
-      normalize: true,
     });
 
     setWavesurfer(ws);
-  }, [src, entry]);
+  }, [audio.sourceUrl, entry]);
 
   useEffect(() => {
     if (!wavesurfer) return;
@@ -81,7 +83,7 @@ export const PostAudioPlayer = (props: { src: string; height?: number }) => {
   return (
     <div className="w-full">
       <div className="flex justify-end">
-        <span className="text-xs text-muted-foreground mb-1">
+        <span className="text-xs text-muted-foreground">
           {secondsToTimestamp(duration)}
         </span>
       </div>
@@ -116,6 +118,12 @@ export const PostAudioPlayer = (props: { src: string; height?: number }) => {
           ref={containerRef}
         ></div>
       </div>
+
+      {audio.coverUrl && (
+        <div className="">
+          <img src={audio.coverUrl} className="w-full rounded" />
+        </div>
+      )}
     </div>
   );
 };

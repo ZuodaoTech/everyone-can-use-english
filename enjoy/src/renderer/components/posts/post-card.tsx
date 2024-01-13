@@ -1,6 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import { AppSettingsProviderContext } from "@renderer/context";
-import { PostAudioPlayer, PostActions } from "@renderer/components";
+import { PostRecording, PostActions, PostMedium } from "@renderer/components";
 import {
   Avatar,
   AvatarImage,
@@ -9,11 +7,6 @@ import {
 } from "@renderer/components/ui";
 import { formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
-import { MediaPlayer, MediaProvider } from "@vidstack/react";
-import {
-  DefaultVideoLayout,
-  defaultLayoutIcons,
-} from "@vidstack/react/player/layouts/default";
 import Markdown from "react-markdown";
 
 export const PostCard = (props: { post: PostType }) => {
@@ -53,51 +46,16 @@ export const PostCard = (props: { post: PostType }) => {
         <PostMedium medium={post.target as MediumType} />
       )}
 
+      {post.targetType == "Recording" && (
+        <>
+          <div className="text-xs text-muted-foreground">
+            {t("sharedRecording")}
+          </div>
+          <PostRecording recording={post.target as RecordingType} />
+        </>
+      )}
+
       <PostActions post={post} />
-    </div>
-  );
-};
-
-const PostMedium = (props: { medium: MediumType }) => {
-  const { medium } = props;
-  if (!medium.sourceUrl) return null;
-
-  return (
-    <div className="space-y-2">
-      {medium.mediumType == "Video" && (
-        <>
-          <div className="text-xs text-muted-foreground">
-            {t("sharedAudio")}
-          </div>
-          <MediaPlayer
-            poster={medium.coverUrl}
-            src={{
-              type: `${medium.mediumType.toLowerCase()}/${
-                medium.extname.replace(".", "") || "mp4"
-              }`,
-              src: medium.sourceUrl,
-            }}
-          >
-            <MediaProvider />
-            <DefaultVideoLayout icons={defaultLayoutIcons} />
-          </MediaPlayer>
-        </>
-      )}
-
-      {medium.mediumType == "Audio" && (
-        <>
-          <div className="text-xs text-muted-foreground">
-            {t("sharedAudio")}
-          </div>
-          <PostAudioPlayer src={medium.sourceUrl} />
-        </>
-      )}
-
-      {medium.coverUrl && medium.mediumType == "Audio" && (
-        <div className="">
-          <img src={medium.coverUrl} className="w-full rounded" />
-        </div>
-      )}
     </div>
   );
 };

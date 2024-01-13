@@ -11,7 +11,7 @@ type PostType = {
   user: UserType;
   targetType?: string;
   targetId?: string;
-  target?: MediumType | StoryType;
+  target?: MediumType | StoryType | RecordingType;
   createdAt: Date;
   updatedAt: Date;
 };
