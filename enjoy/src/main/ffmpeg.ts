@@ -7,8 +7,10 @@ import fs from "fs-extra";
 import AdmZip from "adm-zip";
 import downloader from "@main/downloader";
 import storage from "@main/storage";
+import readdirp from "readdirp";
+import { t } from "i18next";
 
-const logger = log.scope("ffmepg");
+const logger = log.scope("ffmpeg");
 export default class FfmpegWrapper {
   public ffmpeg: Ffmpeg.FfmpegCommand;
   public config: any;
@@ -319,17 +321,94 @@ export class FfmpegDownloader {
       if (valid) {
         event.sender.send("on-notification", {
           type: "success",
-          message: `FFmpeg command valid, you're ready to go.`,
+          message: t("ffmpegCommandIsWorking"),
         });
       } else {
         logger.error("FFmpeg command not valid", ffmpeg.config);
         event.sender.send("on-notification", {
           type: "warning",
-          message: `FFmpeg command not valid, please check the log for detail.`,
+          message: t("ffmpegCommandIsNotWorking"),
         });
       }
 
       return valid;
     });
+
+    ipcMain.handle("ffmpeg-discover-command", async (event) => {
+      try {
+        return await discoverFfmpeg();
+      } catch (err) {
+        logger.error(err);
+        event.sender.send("on-notification", {
+          type: "error",
+          message: `FFmpeg discover failed: ${err.message}`,
+        });
+      }
+    });
   }
 }
+
+export const discoverFfmpeg = async () => {
+  const platform = process.platform;
+  let ffmpegPath: string;
+  let ffprobePath: string;
+  const libraryFfmpegPath = path.join(settings.libraryPath(), "ffmpeg");
+
+  await Promise.all(
+    [...COMMAND_SCAN_DIR[platform], libraryFfmpegPath].map(
+      async (dir: string) => {
+        if (!fs.existsSync(dir)) return;
+
+        dir = path.resolve(dir);
+        log.info("FFmpeg scanning: " + dir);
+
+        const fileStream = readdirp(dir, {
+          depth: 3,
+        });
+
+        for await (const entry of fileStream) {
+          const appName = entry.basename
+            .replace(".app", "")
+            .replace(".exe", "")
+            .toLowerCase();
+
+          if (appName === "ffmpeg") {
+            logger.info("Found ffmpeg: ", entry.fullPath);
+            ffmpegPath = entry.fullPath;
+          }
+
+          if (appName === "ffprobe") {
+            logger.info("Found ffprobe: ", entry.fullPath);
+            ffprobePath = entry.fullPath;
+          }
+
+          if (ffmpegPath && ffprobePath) break;
+        }
+      }
+    )
+  );
+
+  if (ffmpegPath && ffprobePath) {
+    settings.setSync("ffmpeg", {
+      ffmpegPath,
+      ffprobePath,
+    });
+  } else {
+    settings.setSync("ffmpeg", null);
+  }
+
+  return {
+    ffmpegPath,
+    ffprobePath,
+  };
+};
+
+export const COMMAND_SCAN_DIR: { [key: string]: string[] } = {
+  darwin: ["/Applications", process.env.HOME + "/Applications"],
+  linux: ["/usr/bin", "/usr/local/bin", "/snap/bin"],
+  win32: [
+    process.env.SystemDrive + "\\Program Files\\",
+    process.env.SystemDrive + "\\Program Files (x86)\\",
+    process.env.LOCALAPPDATA + "\\Apps\\2.0\\",
+  ],
+};

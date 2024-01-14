@@ -36,7 +36,7 @@ import {
 } from "@renderer/context";
 import { useContext, useState, useRef, useEffect } from "react";
 import { redirect } from "react-router-dom";
-import { InfoIcon } from "lucide-react";
+import { InfoIcon, EditIcon } from "lucide-react";
 
 export const BasicSettings = () => {
   return (
@@ -188,7 +188,11 @@ const LibraryPathSettings = () => {
           <Button variant="secondary" size="sm" onClick={openLibraryPath}>
             {t("open")}
           </Button>
-          <Button variant="default" size="sm" onClick={handleChooseLibraryPath}>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleChooseLibraryPath}
+          >
             {t("edit")}
           </Button>
         </div>
@@ -202,49 +206,111 @@ const LibraryPathSettings = () => {
 };
 
 const FfmpegSettings = () => {
-  const { libraryPath, EnjoyApp } = useContext(AppSettingsProviderContext);
-  const [config, setConfig] = useState<FfmpegConfigType>();
+  const { EnjoyApp, setFfmegConfig, ffmpegConfig } = useContext(
+    AppSettingsProviderContext
+  );
+  const [editing, setEditing] = useState(false);
 
-  useEffect(() => {
-    EnjoyApp.settings.getFfmpegConfig().then((_config) => {
-      setConfig(_config);
+  const refreshFfmpegConfig = async () => {
+    EnjoyApp.settings.getFfmpegConfig().then((config) => {
+      setFfmegConfig(config);
     });
-  }, []);
+  };
+
+  const handleChooseFfmpeg = async () => {
+    const filePaths = await EnjoyApp.dialog.showOpenDialog({
+      properties: ["openFile"],
+    });
+
+    const path = filePaths?.[0];
+
+    if (path.includes("ffmpeg")) {
+      EnjoyApp.settings.setFfmpegConfig({
+        ...ffmpegConfig,
+        ffmpegPath: path,
+      });
+      refreshFfmpegConfig();
+    } else if (path.includes("ffprobe")) {
+      EnjoyApp.settings.setFfmpegConfig({
+        ...ffmpegConfig,
+        ffprobePath: path,
+      });
+      refreshFfmpegConfig();
+    } else {
+      toast.error(t("invalidFfmpegPath"));
+    }
+  };
 
   return (
-    <div className="flex items-start justify-between py-4">
-      <div className="">
-        <div className="mb-2">FFmpeg</div>
-        <div className="text-sm text-muted-foreground mb-2">
-          {config?.commandExists && t("usingInstalledFFmpeg")}
-          {!config?.commandExists &&
-            `${t("usingDownloadedFFmpeg")}: ${config?.ffmpegPath}`}
+    <>
+      <div className="flex items-start justify-between py-4">
+        <div className="">
+          <div className="mb-2">FFmpeg</div>
+          <div className="flex items-center space-x-4">
+            <span className=" text-sm text-muted-foreground">
+              <b>ffmpeg</b>: {ffmpegConfig?.ffmpegPath || ""}
+            </span>
+            {editing && (
+              <Button onClick={handleChooseFfmpeg} variant="ghost" size="icon">
+                <EditIcon className="w-4 h-4 text-muted-foreground" />
+              </Button>
+            )}
+          </div>
+          <div className="flex items-center space-x-4">
+            <span className=" text-sm text-muted-foreground">
+              <b>ffprobe</b>: {ffmpegConfig?.ffprobePath || ""}
+            </span>
+            {editing && (
+              <Button onClick={handleChooseFfmpeg} variant="ghost" size="icon">
+                <EditIcon className="w-4 h-4 text-muted-foreground" />
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="">
-        <div className="flex items-center justify-end space-x-2 mb-2">
-          {config?.ffmpegPath && (
+        <div className="">
+          <div className="flex items-center justify-end space-x-2 mb-2">
             <Button
               variant="secondary"
               size="sm"
               onClick={() => {
-                EnjoyApp.shell.openPath(libraryPath);
+                EnjoyApp.ffmpeg
+                  .discover()
+                  .then(({ ffmpegPath, ffprobePath }) => {
+                    if (ffmpegPath && ffprobePath) {
+                      toast.success(
+                        t("ffmpegFoundAt", {
+                          path: ffmpegPath + ", " + ffprobePath,
+                        })
+                      );
+                    } else {
+                      toast.warning(t("ffmpegNotFound"));
+                    }
+                    refreshFfmpegConfig();
+                  });
               }}
             >
-              {t("open")}
+              {t("scan")}
             </Button>
-          )}
-          <Button
-            size="sm"
-            onClick={() => {
-              EnjoyApp.ffmpeg.check();
-            }}
-          >
-            {t("check")}
-          </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                EnjoyApp.ffmpeg.check();
+              }}
+            >
+              {t("check")}
+            </Button>
+            <Button
+              variant={editing ? "outline" : "secondary"}
+              size="sm"
+              onClick={() => setEditing(!editing)}
+            >
+              {editing ? t("cancel") : t("edit")}
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -262,7 +328,9 @@ const WhisperSettings = () => {
 
       <Dialog>
         <DialogTrigger asChild>
-          <Button size="sm">{t("edit")}</Button>
+          <Button variant="secondary" size="sm">
+            {t("edit")}
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>{t("sttAiModel")}</DialogHeader>
@@ -339,7 +407,7 @@ const OpenaiSettings = () => {
       </div>
       <div className="">
         <Button
-          variant={editing ? "secondary" : "default"}
+          variant={editing ? "outline" : "secondary"}
           size="sm"
           onClick={() => setEditing(!editing)}
         >
@@ -403,7 +471,7 @@ const GoogleGenerativeAiSettings = () => {
       </div>
       <div className="">
         <Button
-          variant={editing ? "secondary" : "default"}
+          variant={editing ? "outline" : "secondary"}
           size="sm"
           onClick={() => setEditing(!editing)}
         >

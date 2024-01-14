@@ -12,8 +12,10 @@ export const FfmpegCheck = () => {
   const [progress, setProgress] = useState(0);
 
   const refreshFfmpegConfig = async () => {
-    EnjoyApp.settings.getFfmpegConfig().then((config) => {
-      setFfmegConfig(config);
+    EnjoyApp.ffmpeg.discover().then((_config) => {
+      EnjoyApp.settings.getFfmpegConfig().then((config) => {
+        setFfmegConfig(config);
+      });
     });
   };
 
@@ -59,6 +61,7 @@ export const FfmpegCheck = () => {
           </div>
           <div className="text-center text-sm opacity-70">
             {t("ffmpegInstalled")}
+            {ffmpegConfig.ffmpegPath}
           </div>
         </>
       ) : (
