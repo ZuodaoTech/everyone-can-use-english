@@ -177,6 +177,7 @@ type EnjoyAppType = {
   };
   ffmpeg: {
     download: () => Promise<FfmpegConfigType>;
+    check: () => Promise<boolean>;
   };
   download: {
     onState: (callback: (event, state) => void) => void;

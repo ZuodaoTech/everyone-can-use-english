@@ -338,6 +338,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     download: () => {
       return ipcRenderer.invoke("ffmpeg-download");
     },
+    check: () => {
+      return ipcRenderer.invoke("ffmpeg-check-command");
+    },
   },
   download: {
     onState: (

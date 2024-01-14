@@ -27,6 +27,20 @@ export default class FfmpegWrapper {
     }
   }
 
+  checkCommand() {
+    return new Promise((resolve, _reject) => {
+      this.ffmpeg.getAvailableFormats((err, formats) => {
+        if (err) {
+          logger.error("Command not valid:", err);
+          resolve(false);
+        } else {
+          logger.info("Command valid, available formats:", formats);
+          resolve(true);
+        }
+      });
+    });
+  }
+
   generateMetadata(input: string): Promise<Ffmpeg.FfprobeData> {
     return new Promise((resolve, reject) => {
       this.ffmpeg
@@ -292,9 +306,28 @@ export class FfmpegDownloader {
         logger.error(err);
         event.sender.send("on-notification", {
           type: "error",
-          title: `FFmpeg download failed: ${err.message}`,
+          message: `FFmpeg download failed: ${err.message}`,
         });
       }
+    });
+
+    ipcMain.handle("ffmpeg-check-command", async (event) => {
+      const ffmpeg = new FfmpegWrapper();
+      const valid = await ffmpeg.checkCommand();
+
+      if (valid) {
+        event.sender.send("on-notification", {
+          type: "success",
+          message: `FFmpeg command valid, you're ready to go.`,
+        });
+      } else {
+        event.sender.send("on-notification", {
+          type: "warning",
+          message: `FFmpeg command not valid, please check the log for detail.`,
+        });
+      }
+
+      return valid;
     });
   }
 }
