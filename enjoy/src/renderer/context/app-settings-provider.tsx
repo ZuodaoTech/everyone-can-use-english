@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { WEB_API_URL } from "@/constants";
 import { Client } from "@/api";
+import i18n from "@renderer/i18n";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -17,6 +18,8 @@ type AppSettingsProviderState = {
   ffmpegConfig?: FfmpegConfigType;
   setFfmegConfig?: (config: FfmpegConfigType) => void;
   EnjoyApp?: EnjoyAppType;
+  language?: "en" | "zh-CN";
+  switchLanguage?: (language: "en" | "zh-CN") => void;
 };
 
 const initialState: AppSettingsProviderState = {
@@ -42,6 +45,7 @@ export const AppSettingsProvider = ({
   const [whisperModelsPath, setWhisperModelsPath] = useState<string>("");
   const [whisperModel, setWhisperModel] = useState<string>(null);
   const [ffmpegConfig, setFfmegConfig] = useState<FfmpegConfigType>(null);
+  const [language, setLanguage] = useState<"en" | "zh-CN">();
   const EnjoyApp = window.__ENJOY_APP__;
 
   useEffect(() => {
@@ -50,6 +54,7 @@ export const AppSettingsProvider = ({
     fetchLibraryPath();
     fetchModel();
     fetchFfmpegConfig();
+    fetchLanguage();
   }, []);
 
   useEffect(() => {
@@ -70,6 +75,20 @@ export const AppSettingsProvider = ({
       })
     );
   }, [user, apiUrl]);
+
+  const fetchLanguage = async () => {
+    const language = await EnjoyApp.settings.getLanguage();
+    console.log(language);
+    setLanguage(language as "en" | "zh-CN");
+    i18n.changeLanguage(language);
+  };
+
+  const switchLanguage = (language: "en" | "zh-CN") => {
+    EnjoyApp.settings.switchLanguage(language).then(() => {
+      i18n.changeLanguage(language);
+      setLanguage(language);
+    });
+  };
 
   const fetchFfmpegConfig = async () => {
     const config = await EnjoyApp.settings.getFfmpegConfig();
@@ -150,6 +169,8 @@ export const AppSettingsProvider = ({
   return (
     <AppSettingsProviderContext.Provider
       value={{
+        language,
+        switchLanguage,
         EnjoyApp,
         version,
         webApi,

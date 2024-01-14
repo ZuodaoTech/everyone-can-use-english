@@ -6,8 +6,24 @@ import fs from "fs-extra";
 import os from "os";
 import commandExists from "command-exists";
 import log from "electron-log";
+import * as i18n from "i18next";
 
 const logger = log.scope("settings");
+
+const language = () => {
+  const _language = settings.getSync("language");
+
+  if (!_language || typeof _language !== "string") {
+    settings.setSync("language", "en");
+  }
+
+  return settings.getSync("language") as string;
+};
+
+const switchLanguage = (language: string) => {
+  settings.setSync("language", language);
+  i18n.changeLanguage(language);
+};
 
 const libraryPath = () => {
   const _library = settings.getSync("library");
@@ -178,6 +194,14 @@ export default {
       settings.setSync("ffmpeg.ffmpegPath", config.ffmpegPath);
       settings.setSync("ffmpeg.ffprobePath", config.ffrobePath);
     });
+
+    ipcMain.handle("settings-get-language", (_event) => {
+      return language();
+    });
+
+    ipcMain.handle("settings-switch-language", (_event, language) => {
+      switchLanguage(language);
+    });
   },
   cachePath,
   libraryPath,
@@ -188,5 +212,7 @@ export default {
   userDataPath,
   dbPath,
   ffmpegConfig,
+  language,
+  switchLanguage,
   ...settings,
 };

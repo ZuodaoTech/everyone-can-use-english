@@ -143,6 +143,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     getFfmpegConfig: () => {
       return ipcRenderer.invoke("settings-get-ffmpeg-config");
     },
+    getLanguage: (language: string) => {
+      return ipcRenderer.invoke("settings-get-language", language);
+    },
+    switchLanguage: (language: string) => {
+      return ipcRenderer.invoke("settings-switch-language", language);
+    }
   },
   path: {
     join: (...paths: string[]) => {
@@ -337,6 +343,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   ffmpeg: {
     download: () => {
       return ipcRenderer.invoke("ffmpeg-download");
+    },
+    check: () => {
+      return ipcRenderer.invoke("ffmpeg-check-command");
     },
   },
   download: {
