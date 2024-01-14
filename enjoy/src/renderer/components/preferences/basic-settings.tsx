@@ -223,6 +223,7 @@ const FfmpegSettings = () => {
     });
 
     const path = filePaths?.[0];
+    if (!path) return;
 
     if (path.includes("ffmpeg")) {
       EnjoyApp.settings.setFfmpegConfig({
