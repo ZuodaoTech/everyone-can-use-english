@@ -143,6 +143,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     getFfmpegConfig: () => {
       return ipcRenderer.invoke("settings-get-ffmpeg-config");
     },
+    getLanguage: (language: string) => {
+      return ipcRenderer.invoke("settings-get-language", language);
+    },
+    switchLanguage: (language: string) => {
+      return ipcRenderer.invoke("settings-switch-language", language);
+    }
   },
   path: {
     join: (...paths: string[]) => {

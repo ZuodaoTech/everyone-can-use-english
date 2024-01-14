@@ -23,6 +23,11 @@ import {
   Label,
   Separator,
   toast,
+  Select,
+  SelectTrigger,
+  SelectItem,
+  SelectValue,
+  SelectContent,
 } from "@renderer/components/ui";
 import { WhisperModelOptions } from "@renderer/components";
 import {
@@ -39,7 +44,11 @@ export const BasicSettings = () => {
       <div className="font-semibold mb-4 capitilized">{t("basicSettings")}</div>
       <UserSettings />
       <Separator />
+      <LanguageSettings />
+      <Separator />
       <LibraryPathSettings />
+      <Separator />
+      <FfmpegSettings />
       <Separator />
       <WhisperSettings />
       <Separator />
@@ -104,6 +113,40 @@ const UserSettings = () => {
   );
 };
 
+const LanguageSettings = () => {
+  const { language, switchLanguage } = useContext(AppSettingsProviderContext);
+
+  return (
+    <div className="flex items-start justify-between py-4">
+      <div className="">
+        <div className="mb-2">{t("language")}</div>
+        <div className="text-sm text-muted-foreground mb-2">{}</div>
+      </div>
+
+      <div className="">
+        <div className="flex items-center justify-end space-x-2 mb-2">
+          <Select
+            value={language}
+            onValueChange={(value: "en" | "zh-CN") => {
+              switchLanguage(value);
+            }}
+          >
+            <SelectTrigger className="text-xs">
+              <SelectValue>
+                {language === "en" ? "English" : "简体中文"}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem className="text-xs" value="en">English</SelectItem>
+              <SelectItem className="text-xs" value="zh-CN">简体中文</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const LibraryPathSettings = () => {
   const { libraryPath, EnjoyApp } = useContext(AppSettingsProviderContext);
 
@@ -146,6 +189,53 @@ const LibraryPathSettings = () => {
         <div className="text-xs text-muted-foreground">
           <InfoIcon className="mr-1 w-3 h-3 inline" />
           <span>{t("relaunchIsNeededAfterChanged")}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FfmpegSettings = () => {
+  const { libraryPath, EnjoyApp } = useContext(AppSettingsProviderContext);
+  const [config, setConfig] = useState<FfmpegConfigType>();
+
+  useEffect(() => {
+    EnjoyApp.settings.getFfmpegConfig().then((_config) => {
+      setConfig(_config);
+    });
+  }, []);
+
+  return (
+    <div className="flex items-start justify-between py-4">
+      <div className="">
+        <div className="mb-2">FFmpeg</div>
+        <div className="text-sm text-muted-foreground mb-2">
+          {config?.commandExists && t("usingInstalledFFmpeg")}
+          {!config?.commandExists &&
+            `${t("usingDownloadedFFmpeg")}: ${config?.ffmpegPath}`}
+        </div>
+      </div>
+      <div className="">
+        <div className="flex items-center justify-end space-x-2 mb-2">
+          {config?.ffmpegPath && (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                EnjoyApp.shell.openPath(libraryPath);
+              }}
+            >
+              {t("open")}
+            </Button>
+          )}
+          <Button
+            size="sm"
+            onClick={() => {
+              EnjoyApp.ffmpeg.check();
+            }}
+          >
+            {t("check")}
+          </Button>
         </div>
       </div>
     </div>

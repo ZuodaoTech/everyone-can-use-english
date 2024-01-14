@@ -11,18 +11,19 @@ import storage from "@main/storage";
 const logger = log.scope("ffmepg");
 export default class FfmpegWrapper {
   public ffmpeg: Ffmpeg.FfmpegCommand;
+  public config: any;
 
   constructor() {
-    const config = settings.ffmpegConfig();
+    this.config = settings.ffmpegConfig();
 
-    if (config.commandExists) {
+    if (this.config.commandExists) {
       logger.info("Using system ffmpeg");
       this.ffmpeg = Ffmpeg();
     } else {
       logger.info("Using downloaded ffmpeg");
       const ff = Ffmpeg();
-      ff.setFfmpegPath(config.ffmpegPath);
-      ff.setFfprobePath(config.ffprobePath);
+      ff.setFfmpegPath(this.config.ffmpegPath);
+      ff.setFfprobePath(this.config.ffprobePath);
       this.ffmpeg = ff;
     }
   }
@@ -321,6 +322,7 @@ export class FfmpegDownloader {
           message: `FFmpeg command valid, you're ready to go.`,
         });
       } else {
+        logger.error("FFmpeg command not valid", ffmpeg.config);
         event.sender.send("on-notification", {
           type: "warning",
           message: `FFmpeg command not valid, please check the log for detail.`,

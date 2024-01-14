@@ -76,6 +76,8 @@ type EnjoyAppType = {
     ) => Promise<void>;
     getFfmpegConfig: () => Promise<FfmpegConfigType>;
     setFfmpegConfig: () => Promise<void>;
+    getLanguage: () => Promise<string>;
+    switchLanguage: (language: string) => Promise<void>;
   };
   fs: {
     ensureDir: (path: string) => Promise<boolean>;
