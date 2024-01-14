@@ -120,7 +120,9 @@ const LanguageSettings = () => {
     <div className="flex items-start justify-between py-4">
       <div className="">
         <div className="mb-2">{t("language")}</div>
-        <div className="text-sm text-muted-foreground mb-2">{}</div>
+        <div className="text-sm text-muted-foreground mb-2">
+          {language === "en" ? "English" : "简体中文"}
+        </div>
       </div>
 
       <div className="">
@@ -137,8 +139,12 @@ const LanguageSettings = () => {
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem className="text-xs" value="en">English</SelectItem>
-              <SelectItem className="text-xs" value="zh-CN">简体中文</SelectItem>
+              <SelectItem className="text-xs" value="en">
+                English
+              </SelectItem>
+              <SelectItem className="text-xs" value="zh-CN">
+                简体中文
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
