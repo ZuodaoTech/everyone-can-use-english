@@ -18,3 +18,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
         run: yarn publish:enjoy
+      - if: matrix.os == 'macos-latest'
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+        run: yarn run publish --arch=arm64
