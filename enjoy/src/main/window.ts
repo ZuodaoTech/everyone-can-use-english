@@ -216,6 +216,14 @@ main.init = () => {
   // App options
   ipcMain.handle("app-reset", () => {
     fs.removeSync(settings.userDataPath());
+    fs.removeSync(settings.file());
+
+    app.relaunch();
+    app.exit();
+  });
+
+  ipcMain.handle("app-reset-settings", () => {
+    fs.removeSync(settings.file());
 
     app.relaunch();
     app.exit();

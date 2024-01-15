@@ -8,6 +8,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     reset: () => {
       ipcRenderer.invoke("app-reset");
     },
+    resetSettings: () => {
+      ipcRenderer.invoke("app-reset-settings");
+    },
     relaunch: () => {
       ipcRenderer.invoke("app-relaunch");
     },
@@ -143,12 +146,15 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     getFfmpegConfig: () => {
       return ipcRenderer.invoke("settings-get-ffmpeg-config");
     },
+    setFfmpegConfig: (config: FfmpegConfigType) => {
+      return ipcRenderer.invoke("settings-set-ffmpeg-config", config);
+    },
     getLanguage: (language: string) => {
       return ipcRenderer.invoke("settings-get-language", language);
     },
     switchLanguage: (language: string) => {
       return ipcRenderer.invoke("settings-switch-language", language);
-    }
+    },
   },
   path: {
     join: (...paths: string[]) => {
@@ -343,6 +349,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   ffmpeg: {
     download: () => {
       return ipcRenderer.invoke("ffmpeg-download");
+    },
+    discover: () => {
+      return ipcRenderer.invoke("ffmpeg-discover-command");
     },
     check: () => {
       return ipcRenderer.invoke("ffmpeg-check-command");

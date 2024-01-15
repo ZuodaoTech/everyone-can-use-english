@@ -2,6 +2,7 @@ import type { ForgeConfig } from "@electron-forge/shared-types";
 import { MakerSquirrel } from "@electron-forge/maker-squirrel";
 import { MakerZIP } from "@electron-forge/maker-zip";
 import { MakerDeb } from "@electron-forge/maker-deb";
+import { MakerRpm } from "@electron-forge/maker-rpm";
 import { VitePlugin } from "@electron-forge/plugin-vite";
 import { dirname } from "node:path";
 import { Walker, DepType, type Module } from "flora-colossus";
@@ -37,6 +38,14 @@ const config: ForgeConfig = {
     }),
     new MakerZIP({}, ["darwin", "win32"]),
     new MakerDeb({
+      options: {
+        name: "enjoy",
+        productName: "Enjoy",
+        icon: "./assets/icon.png",
+        mimeType: ["x-scheme-handler/enjoy"],
+      },
+    }),
+    new MakerRpm({
       options: {
         name: "enjoy",
         productName: "Enjoy",
