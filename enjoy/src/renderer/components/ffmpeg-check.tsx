@@ -91,7 +91,7 @@ export const FfmpegCheck = () => {
             </div>
 
             {scanResult && (
-              <div className="text-center text-sm mb-2">
+              <div className="text-center text-xs text-muted-foreground mb-2">
                 {t("tryingToFindValidFFmepgInTheseDirectories", {
                   dirs: scanResult.scanDirs.join(", "),
                 })}
@@ -126,7 +126,7 @@ export const FfmpegCheck = () => {
             <div className="my-6 select-text prose mx-auto border rounded-lg p-4">
               <h3 className="text-center">{t("ffmpegInstallSteps")}</h3>
               <h4>
-                1. {t('install')}{" "}
+                1. {t("install")}{" "}
                 <a
                   className="cursor-pointer text-blue-500 hover:underline"
                   onClick={() => {
@@ -136,7 +136,7 @@ export const FfmpegCheck = () => {
                   Homebrew
                 </a>
               </h4>
-              <p>{t('runTheFollowingCommandInTerminal')} </p>
+              <p>{t("runTheFollowingCommandInTerminal")} </p>
               <pre>
                 <code>
                   /bin/bash -c "$(curl -fsSL
@@ -144,16 +144,16 @@ export const FfmpegCheck = () => {
                 </code>
               </pre>
 
-              <h4>2. {t('install')} FFmpeg</h4>
+              <h4>2. {t("install")} FFmpeg</h4>
 
-              <p>{t('runTheFollowingCommandInTerminal')} </p>
+              <p>{t("runTheFollowingCommandInTerminal")} </p>
               <pre>
                 <code>brew install ffmpeg</code>
               </pre>
 
-              <h4>3. 扫描 FFmpeg</h4>
+              <h4>3. {t("scan")} FFmpeg</h4>
               <p>
-                点击
+                {t("click")}
                 <Button
                   onClick={discoverFfmpeg}
                   variant="default"
@@ -162,7 +162,7 @@ export const FfmpegCheck = () => {
                 >
                   {t("scan")}
                 </Button>
-                按钮，Enjoy 将会自动扫描 FFmpeg 的安装位置。
+                , {t("willAutomaticallyFindFFmpeg")}
               </p>
             </div>
           )}

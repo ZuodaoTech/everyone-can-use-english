@@ -6,7 +6,6 @@ import {
   LoginForm,
   ChooseLibraryPathInput,
   WhisperModelOptionsPanel,
-  UserCard,
   FfmpegCheck,
 } from "@renderer/components";
 import { AppSettingsProviderContext } from "@renderer/context";
@@ -93,7 +92,7 @@ export default () => {
         </div>
       </div>
       <div className="flex-1 flex justify-center items-center">
-        {currentStep == 1 && (user ? <UserCard user={user} /> : <LoginForm />)}
+        {currentStep == 1 && <LoginForm />}
         {currentStep == 2 && <ChooseLibraryPathInput />}
         {currentStep == 3 && <WhisperModelOptionsPanel />}
         {currentStep == 4 && <FfmpegCheck />}

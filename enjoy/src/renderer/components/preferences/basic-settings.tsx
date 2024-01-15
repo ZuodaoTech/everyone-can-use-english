@@ -60,7 +60,7 @@ export const BasicSettings = () => {
   );
 };
 
-const UserSettings = () => {
+export const UserSettings = () => {
   const { user, logout } = useContext(AppSettingsProviderContext);
 
   if (!user) return null;
@@ -113,7 +113,7 @@ const UserSettings = () => {
   );
 };
 
-const LanguageSettings = () => {
+export const LanguageSettings = () => {
   const { language, switchLanguage } = useContext(AppSettingsProviderContext);
 
   return (

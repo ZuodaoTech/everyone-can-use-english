@@ -201,7 +201,7 @@
   "Install": "Install",
   "runTheFollowingCommandInTerminal": "Run the following command in terminal",
   "click": "Click",
-  "willAutomaticallyScanFFmpeg": "Enjoy will automatically scan FFmpeg",
+  "willAutomaticallyFindFFmpeg": "Enjoy will automatically find FFmpeg",
   "tryingToFindValidFFmepgInTheseDirectories": "Trying to find valid FFmpeg in these directories: {{dirs}}",
   "invalidFfmpegPath": "Invalid FFmpeg path",
   "usingInstalledFFmpeg": "Using installed FFmpeg",
