@@ -1,6 +1,11 @@
 import { t } from "i18next";
 import { Button, ScrollArea } from "@renderer/components/ui";
-import { BasicSettings, AdvancedSettings, About, Hotkeys } from "@renderer/components";
+import {
+  BasicSettings,
+  AdvancedSettings,
+  About,
+  Hotkeys,
+} from "@renderer/components";
 import { useState } from "react";
 
 export const Preferences = () => {
@@ -30,8 +35,8 @@ export const Preferences = () => {
   const [activeTab, setActiveTab] = useState<string>("basic");
 
   return (
-    <div className="grid grid-cols-5">
-      <ScrollArea className="col-span-1 h-full bg-muted/50 p-4">
+    <div className="grid grid-cols-5 overflow-hidden h-full">
+      <ScrollArea className="h-full col-span-1 bg-muted/50 p-4">
         <div className="py-2 text-muted-foreground mb-4">
           {t("sidebar.preferences")}
         </div>
@@ -50,7 +55,7 @@ export const Preferences = () => {
           </Button>
         ))}
       </ScrollArea>
-      <ScrollArea className="col-span-4 p-6">
+      <ScrollArea className="h-full col-span-4 py-6 px-10">
         {TABS.find((tab) => tab.value === activeTab)?.component()}
       </ScrollArea>
     </div>
