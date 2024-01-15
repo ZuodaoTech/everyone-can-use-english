@@ -13,7 +13,7 @@ import { debounce , uniq } from "lodash";
 import Mark from "mark.js";
 
 export const StoryViewer = (props: {
-  story: StoryType & Partial<CreateStoryParamsType>;
+  story: Partial<StoryType> & Partial<CreateStoryParamsType>;
   marked?: boolean;
   meanings?: MeaningType[];
   setMeanings: (meanings: MeaningType[]) => void;
@@ -96,7 +96,7 @@ export const StoryViewer = (props: {
 
   return (
     <>
-      <div className="w-full max-w-2xl xl:max-w-3xl mx-auto sticky bg-white top-0 z-30 px-4 py-2 border-b">
+      <div className="w-full max-w-2xl xl:max-w-3xl mx-auto sticky bg-background top-0 z-30 px-4 py-2 border-b">
         <div className="w-full flex items-center space-x-4">
           <Button
             variant="ghost"
@@ -130,10 +130,10 @@ export const StoryViewer = (props: {
           </div>
         </div>
       </div>
-      <div className="bg-white py-6 px-8 max-w-2xl xl:max-w-3xl mx-auto relative shadow-lg">
+      <div className="bg-background py-6 px-8 max-w-2xl xl:max-w-3xl mx-auto relative shadow-lg">
         <article
           ref={ref}
-          className="relative select-text prose prose-lg xl:prose-xl font-serif text-lg"
+          className="relative select-text prose dark:prose-invert prose-lg xl:prose-xl font-serif text-lg"
         >
           <h2>
             {story.title.split(" ").map((word, i) => (

@@ -165,7 +165,7 @@ const WavesurferPlayer = (props: {
 
       <div
         ref={ref}
-        className="bg-white rounded-lg grid grid-cols-9 items-center relative h-[80px]"
+        className="bg-background rounded-lg grid grid-cols-9 items-center relative h-[80px]"
       >
         {!initialized && (
           <div className="col-span-9 flex flex-col justify-around h-[80px]">

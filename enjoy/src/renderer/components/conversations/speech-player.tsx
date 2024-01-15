@@ -89,7 +89,7 @@ export const SpeechPlayer = (props: {
       </div>
       <div
         ref={ref}
-        className="bg-white rounded-lg grid grid-cols-9 items-center relative pl-2 h-[100px]"
+        className="bg-background rounded-lg grid grid-cols-9 items-center relative pl-2 h-[100px]"
       >
         {!initialized && (
           <div className="col-span-9 flex flex-col justify-around h-[80px]">

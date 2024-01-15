@@ -34,7 +34,7 @@ export const MediaPlayer = (props: {
   mediaId: string;
   mediaType: "Audio" | "Video";
   mediaUrl: string;
-  waveformCacheKey: string;
+  mediaMd5?: string;
   transcription: TranscriptionType;
   // player controls
   currentTime: number;
@@ -67,7 +67,7 @@ export const MediaPlayer = (props: {
     mediaId,
     mediaType,
     mediaUrl,
-    waveformCacheKey,
+    mediaMd5,
     transcription,
     height = 200,
     currentTime,
@@ -94,12 +94,7 @@ export const MediaPlayer = (props: {
   if (!mediaUrl) return;
 
   const [wavesurfer, setWavesurfer] = useState(null);
-  const [waveform, setWaveForm] = useState<{
-    peaks: number[];
-    duration: number;
-    frequencies: number[];
-    sampleRate: number;
-  }>(null);
+  const [waveform, setWaveForm] = useState<WaveFormDataType>(null);
   const containerRef = useRef<HTMLDivElement>();
   const [mediaProvider, setMediaProvider] = useState<
     HTMLAudioElement | HTMLVideoElement
@@ -181,7 +176,7 @@ export const MediaPlayer = (props: {
 
   const renderPitchContour = (region: RegionType) => {
     if (!region) return;
-    if (!waveform.frequencies.length) return;
+    if (!waveform?.frequencies?.length) return;
     if (!wavesurfer) return;
 
     const duration = wavesurfer.getDuration();
@@ -280,7 +275,6 @@ export const MediaPlayer = (props: {
     const ws = WaveSurfer.create({
       container: containerRef.current,
       height,
-      url: mediaUrl,
       waveColor: "#ddd",
       progressColor: "rgba(0, 0, 0, 0.25)",
       cursorColor: "#dc143c",
@@ -324,6 +318,7 @@ export const MediaPlayer = (props: {
     const subscriptions = [
       wavesurfer.on("play", () => setIsPlaying(true)),
       wavesurfer.on("pause", () => setIsPlaying(false)),
+      wavesurfer.on("loading", (percent: number) => console.log(percent)),
       wavesurfer.on("timeupdate", (time: number) => setCurrentTime(time)),
       wavesurfer.on("decode", () => {
         if (waveform?.frequencies) return;
@@ -340,7 +335,7 @@ export const MediaPlayer = (props: {
           sampleRate,
           frequencies: _frequencies,
         };
-        EnjoyApp.cacheObjects.set(waveformCacheKey, _waveform);
+        EnjoyApp.waveforms.save(mediaMd5, _waveform);
         setWaveForm(_waveform);
       }),
       wavesurfer.on("ready", () => {
@@ -479,10 +474,8 @@ export const MediaPlayer = (props: {
   }, [wavesurfer, isPlaying]);
 
   useEffect(() => {
-    EnjoyApp.cacheObjects.get(waveformCacheKey).then((cached) => {
-      if (!cached) return;
-
-      setWaveForm(cached);
+    EnjoyApp.waveforms.find(mediaMd5).then((waveform) => {
+      setWaveForm(waveform);
     });
   }, []);
 
