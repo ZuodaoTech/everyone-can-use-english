@@ -70,7 +70,7 @@ export const RecordingCard = (props: {
   return (
     <div id={id} className="flex items-center justify-end px-4 transition-all">
       <div className="w-full">
-        <div className="bg-white rounded-lg py-2 px-4 relative mb-1">
+        <div className="bg-background rounded-lg py-2 px-4 relative mb-1">
           <div className="flex items-center justify-end space-x-2">
             <span className="text-xs text-muted-foreground">
               {secondsToTimestamp(recording.duration / 1000)}

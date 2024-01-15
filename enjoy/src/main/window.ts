@@ -18,6 +18,7 @@ import log from "electron-log/main";
 import { WEB_API_URL } from "@/constants";
 import { AudibleProvider, TedProvider } from "@main/providers";
 import { FfmpegDownloader } from "@main/ffmpeg";
+import { Waveform } from "./waveform";
 
 log.initialize({ preload: true });
 const logger = log.scope("window");
@@ -25,6 +26,7 @@ const logger = log.scope("window");
 const audibleProvider = new AudibleProvider();
 const tedProvider = new TedProvider();
 const ffmpegDownloader = new FfmpegDownloader();
+const waveform = new Waveform();
 
 const main = {
   win: null as BrowserWindow | null,
@@ -45,6 +47,9 @@ main.init = () => {
 
   // Whisper
   whisper.registerIpcHandlers();
+
+  // Waveform
+  waveform.registerIpcHandlers();
 
   // Downloader
   downloader.registerIpcHandlers();

@@ -271,7 +271,7 @@ export default () => {
         </ScrollArea>
 
         <div className="px-4 absolute w-full bottom-0 left-0 h-14 bg-muted z-50">
-          <div className="focus-within:bg-white px-4 py-2 flex items-center space-x-4 rounded-lg border">
+          <div className="focus-within:bg-background px-4 py-2 flex items-center space-x-4 rounded-lg border">
             <Textarea
               rows={1}
               ref={inputRef}
@@ -279,7 +279,7 @@ export default () => {
               value={content}
               onChange={(e) => setConent(e.target.value)}
               placeholder={t("pressEnterToSend")}
-              className="px-0 py-0 shadow-none border-none focus-visible:outline-0 focus-visible:ring-0 border-none bg-muted focus:bg-white min-h-[1.25rem] max-h-[3.5rem] !overflow-x-hidden"
+              className="px-0 py-0 shadow-none border-none focus-visible:outline-0 focus-visible:ring-0 border-none bg-muted focus:bg-background min-h-[1.25rem] max-h-[3.5rem] !overflow-x-hidden"
             />
             <Button
               type="submit"

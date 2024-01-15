@@ -41,8 +41,8 @@ export const ToolbarButton = (props: {
       className={cn(
         `rounded-full p-3 h-12 w-12 ${
           toggled
-            ? "bg-primary text-white"
-            : "bg-white text-muted-foreground hover:text-white "
+            ? "bg-primary dark:bg-background text-background dark:text-foreground"
+            : "bg-background dark:bg-muted text-muted-foreground hover:text-background "
         }`,
         className
       )}

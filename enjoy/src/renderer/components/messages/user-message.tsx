@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
+import { useNavigate } from "react-router-dom";
 import Markdown from "react-markdown";
 
 export const UserMessageComponent = (props: {
@@ -45,6 +46,7 @@ export const UserMessageComponent = (props: {
   const { user, webApi } = useContext(AppSettingsProviderContext);
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleShare = async () => {
     if (message.role === "user") {
@@ -57,7 +59,18 @@ export const UserMessageComponent = (props: {
           },
         })
         .then(() => {
-          toast(t("sharedSuccessfully"), { description: t("sharedPrompt") });
+          toast.success(t("sharedSuccessfully"), {
+            description: t("sharedPrompt"),
+            action: {
+              label: t("view"),
+              onClick: () => {
+                navigate("/community");
+              },
+            },
+            actionButtonStyle: {
+              backgroundColor: "var(--primary)",
+            },
+          });
         })
         .catch((err) => {
           toast.error(t("shareFailed"), { description: err.message });
@@ -155,7 +168,7 @@ export const UserMessageComponent = (props: {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Avatar className="w-8 h-8 bg-white">
+      <Avatar className="w-8 h-8 bg-background">
         <AvatarImage src={user.avatarUrl} />
         <AvatarFallback className="bg-primary text-white capitalize">
           {user.name[0]}
