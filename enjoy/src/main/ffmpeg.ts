@@ -15,8 +15,12 @@ export default class FfmpegWrapper {
   public ffmpeg: Ffmpeg.FfmpegCommand;
   public config: any;
 
-  constructor() {
-    this.config = settings.ffmpegConfig();
+  constructor(config?: {
+    ffmpegPath: string;
+    ffprobePath: string;
+    commandExists?: boolean;
+  }) {
+    this.config = config || settings.ffmpegConfig();
 
     if (this.config.commandExists) {
       logger.info("Using system ffmpeg");
@@ -30,7 +34,7 @@ export default class FfmpegWrapper {
     }
   }
 
-  checkCommand() {
+  checkCommand(): Promise<boolean> {
     return new Promise((resolve, _reject) => {
       this.ffmpeg.getAvailableFormats((err, formats) => {
         if (err) {
@@ -353,53 +357,61 @@ export const discoverFfmpeg = async () => {
   let ffmpegPath: string;
   let ffprobePath: string;
   const libraryFfmpegPath = path.join(settings.libraryPath(), "ffmpeg");
+  const scanDirs = [...COMMAND_SCAN_DIR[platform], libraryFfmpegPath];
 
   await Promise.all(
-    [...COMMAND_SCAN_DIR[platform], libraryFfmpegPath].map(
-      async (dir: string) => {
-        if (!fs.existsSync(dir)) return;
+    scanDirs.map(async (dir: string) => {
+      if (!fs.existsSync(dir)) return;
 
-        dir = path.resolve(dir);
-        log.info("FFmpeg scanning: " + dir);
+      dir = path.resolve(dir);
+      log.info("FFmpeg scanning: " + dir);
 
-        const fileStream = readdirp(dir, {
-          depth: 3,
-        });
+      const fileStream = readdirp(dir, {
+        depth: 3,
+      });
 
-        for await (const entry of fileStream) {
-          const appName = entry.basename
-            .replace(".app", "")
-            .replace(".exe", "")
-            .toLowerCase();
+      for await (const entry of fileStream) {
+        const appName = entry.basename
+          .replace(".app", "")
+          .replace(".exe", "")
+          .toLowerCase();
 
-          if (appName === "ffmpeg") {
-            logger.info("Found ffmpeg: ", entry.fullPath);
-            ffmpegPath = entry.fullPath;
-          }
-
-          if (appName === "ffprobe") {
-            logger.info("Found ffprobe: ", entry.fullPath);
-            ffprobePath = entry.fullPath;
-          }
-
-          if (ffmpegPath && ffprobePath) break;
+        if (appName === "ffmpeg") {
+          logger.info("Found ffmpeg: ", entry.fullPath);
+          ffmpegPath = entry.fullPath;
         }
+
+        if (appName === "ffprobe") {
+          logger.info("Found ffprobe: ", entry.fullPath);
+          ffprobePath = entry.fullPath;
+        }
+
+        if (ffmpegPath && ffprobePath) break;
       }
-    )
+    })
   );
 
+  let valid = false;
   if (ffmpegPath && ffprobePath) {
+    const ffmepg = new FfmpegWrapper({ ffmpegPath, ffprobePath });
+    valid = await ffmepg.checkCommand();
+  }
+
+  if (valid) {
     settings.setSync("ffmpeg", {
       ffmpegPath,
       ffprobePath,
     });
   } else {
+    ffmpegPath = undefined;
+    ffprobePath = undefined;
     settings.setSync("ffmpeg", null);
   }
 
   return {
     ffmpegPath,
     ffprobePath,
+    scanDirs,
   };
 };
 

@@ -102,15 +102,13 @@ const ffmpegConfig = () => {
   const _commandExists =
     commandExists.sync("ffmpeg") && commandExists.sync("ffprobe");
 
-  const ready = Boolean(_commandExists || (ffmpegPath && ffprobePath));
-
   const config = {
     os: os.platform(),
     arch: os.arch(),
     commandExists: _commandExists,
     ffmpegPath,
     ffprobePath,
-    ready,
+    ready: Boolean(_commandExists || (ffmpegPath && ffprobePath)),
   };
 
   logger.info("ffmpeg config", config);

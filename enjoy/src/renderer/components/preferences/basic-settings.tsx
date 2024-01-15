@@ -293,15 +293,6 @@ const FfmpegSettings = () => {
               {t("scan")}
             </Button>
             <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => {
-                EnjoyApp.ffmpeg.check();
-              }}
-            >
-              {t("check")}
-            </Button>
-            <Button
               variant={editing ? "outline" : "secondary"}
               size="sm"
               onClick={() => setEditing(!editing)}

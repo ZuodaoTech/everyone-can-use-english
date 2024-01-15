@@ -181,7 +181,11 @@ type EnjoyAppType = {
   ffmpeg: {
     download: () => Promise<FfmpegConfigType>;
     check: () => Promise<boolean>;
-    discover: () => Promise<{ ffmpegPath?: string; ffprobePath?: string }>;
+    discover: () => Promise<{
+      ffmpegPath: string;
+      ffprobePath: string;
+      scanDirs: string[];
+    }>;
   };
   download: {
     onState: (callback: (event, state) => void) => void;

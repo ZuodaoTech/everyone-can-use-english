@@ -75,11 +75,13 @@ type TransactionStateType = {
   record?: AudioType | UserType | RecordingType;
 };
 
-
 type FfmpegConfigType = {
+  os: string;
+  arch: string;
   commandExists: boolean;
   ffmpegPath?: string;
   ffprobePath?: string;
+  scanDirs: string[];
   ready: boolean;
 };
 
@@ -109,7 +111,6 @@ type PagyResponseType = {
   page: number;
   next: number | null;
 };
-
 
 type AudibleBookType = {
   title: string;
