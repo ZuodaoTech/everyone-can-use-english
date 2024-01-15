@@ -51,9 +51,6 @@ db.connect = async () => {
 
   db.connection = sequelize;
 
-  // vacuum the database
-  await sequelize.query("VACUUM");
-
   const umzug = new Umzug({
     migrations: { glob: __dirname + "/migrations/*.js" },
     context: sequelize.getQueryInterface(),
@@ -67,6 +64,23 @@ db.connect = async () => {
   await sequelize.query("PRAGMA foreign_keys = false;");
   await sequelize.sync();
   await sequelize.authenticate();
+
+  // TODO:
+  // clear the large waveform data in DB.
+  // Remove this in next release
+  const caches = await CacheObject.findAll({
+    attributes: ["id", "key"],
+  });
+  const cacheIds: string[] = [];
+  caches.forEach((cache) => {
+    if (cache.key.startsWith("waveform")) {
+      cacheIds.push(cache.id);
+    }
+  });
+  await CacheObject.destroy({ where: { id: cacheIds } });
+
+  // vacuum the database
+  await sequelize.query("VACUUM");
 
   // register handlers
   audiosHandler.register();
