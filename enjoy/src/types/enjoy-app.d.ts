@@ -205,4 +205,8 @@ type EnjoyAppType = {
     process: (params: any) => Promise<void>;
     update: (id: string, params: any) => Promise<void>;
   };
+  waveforms: {
+    find: (id: string) => Promise<WaveFormDataType>;
+    save: (id: string, data: WaveFormDataType) => Promise<void>;
+  };
 };

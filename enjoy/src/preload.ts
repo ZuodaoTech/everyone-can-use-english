@@ -399,4 +399,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       return ipcRenderer.invoke("transcriptions-update", id, params);
     },
   },
+  waveforms: {
+    find: (id: string) => {
+      return ipcRenderer.invoke("waveforms-find", id);
+    },
+    save: (id: string, data: WaveFormDataType) => {
+      return ipcRenderer.invoke("waveforms-save", id, data);
+    },
+  }
 });

@@ -81,7 +81,9 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
         targetId: video.id,
       })
       .then(() => {
-        toast.success(t("sharedSuccessfully"), { description: t("sharedVideo") });
+        toast.success(t("sharedSuccessfully"), {
+          description: t("sharedVideo"),
+        });
       })
       .catch((err) => {
         toast.error(t("shareFailed"), { description: err.message });
@@ -136,7 +138,7 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
             mediaId={video.id}
             mediaType="Video"
             mediaUrl={video.src}
-            waveformCacheKey={`waveform-video-${video.md5}`}
+            mediaMd5={video.md5}
             transcription={transcription}
             currentTime={currentTime}
             setCurrentTime={setCurrentTime}

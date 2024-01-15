@@ -132,7 +132,7 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
             mediaId={audio.id}
             mediaType="Audio"
             mediaUrl={audio.src}
-            waveformCacheKey={`waveform-audio-${audio.md5}`}
+            mediaMd5={audio.md5}
             transcription={transcription}
             currentTime={currentTime}
             setCurrentTime={setCurrentTime}
