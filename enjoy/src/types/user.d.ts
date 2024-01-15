@@ -5,4 +5,5 @@ type UserType = {
   accessToken?: string;
   recordingsCount?: number;
   recordingsDuration?: number;
+  createdAt?: string;
 };

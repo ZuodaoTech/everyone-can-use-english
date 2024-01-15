@@ -101,7 +101,7 @@ export const RecordingCalendar = (props: {
         _stats.forEach((a) => {
           if (a.count === 0) {
             a.level = 0;
-          } else if (a.count > 40) {
+          } else if (a.count >= 40) {
             a.level = 4;
           } else {
             a.level = Math.floor(a.count / 10) + 1;
