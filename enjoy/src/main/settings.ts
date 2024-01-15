@@ -96,24 +96,11 @@ const userDataPath = () => {
 };
 
 const ffmpegConfig = () => {
-  const _ffmpegPath = path.join(
-    libraryPath(),
-    "ffmpeg",
-    os.platform() === "win32" ? "ffmpeg.exe" : "ffmpeg"
-  );
-  const _ffprobePath = path.join(
-    libraryPath(),
-    "ffmpeg",
-    os.platform() === "win32" ? "ffprobe.exe" : "ffprobe"
-  );
-
-  const ffmpegPath = fs.existsSync(_ffmpegPath) ? _ffmpegPath : "";
-  const ffprobePath = fs.existsSync(_ffprobePath) ? _ffprobePath : "";
+  const ffmpegPath = settings.getSync("ffmpeg.ffmpegPath");
+  const ffprobePath = settings.getSync("ffmpeg.ffprobePath");
 
   const _commandExists =
     commandExists.sync("ffmpeg") && commandExists.sync("ffprobe");
-
-  const ready = Boolean(_commandExists || (ffmpegPath && ffprobePath));
 
   const config = {
     os: os.platform(),
@@ -121,7 +108,7 @@ const ffmpegConfig = () => {
     commandExists: _commandExists,
     ffmpegPath,
     ffprobePath,
-    ready,
+    ready: Boolean(_commandExists || (ffmpegPath && ffprobePath)),
   };
 
   logger.info("ffmpeg config", config);

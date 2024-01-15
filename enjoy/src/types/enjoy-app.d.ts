@@ -1,6 +1,7 @@
 type EnjoyAppType = {
   app: {
     reset: () => Promise<void>;
+    resetSettings: () => Promise<void>;
     relaunch: () => Promise<void>;
     reload: () => Promise<void>;
     isPackaged: () => Promise<boolean>;
@@ -75,7 +76,7 @@ type EnjoyAppType = {
       LlmProviderType
     ) => Promise<void>;
     getFfmpegConfig: () => Promise<FfmpegConfigType>;
-    setFfmpegConfig: () => Promise<void>;
+    setFfmpegConfig: (config: FfmpegConfigType) => Promise<void>;
     getLanguage: () => Promise<string>;
     switchLanguage: (language: string) => Promise<void>;
   };
@@ -180,6 +181,11 @@ type EnjoyAppType = {
   ffmpeg: {
     download: () => Promise<FfmpegConfigType>;
     check: () => Promise<boolean>;
+    discover: () => Promise<{
+      ffmpegPath: string;
+      ffprobePath: string;
+      scanDirs: string[];
+    }>;
   };
   download: {
     onState: (callback: (event, state) => void) => void;

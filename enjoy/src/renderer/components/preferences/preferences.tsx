@@ -7,12 +7,12 @@ export const Preferences = () => {
   const TABS = [
     {
       value: "basic",
-      label: t("basicSettings"),
+      label: t("basicSettingsShort"),
       component: () => <BasicSettings />,
     },
     {
       value: "advanced",
-      label: t("advancedSettings"),
+      label: t("advancedSettingsShort"),
       component: () => <AdvancedSettings />,
     },
     {

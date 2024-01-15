@@ -1,10 +1,13 @@
-import { Button, toast } from "@renderer/components/ui";
+import { Button, toast, Separator } from "@renderer/components/ui";
 import { useContext, useEffect } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
+import { UserSettings, LanguageSettings } from "@renderer/components";
 
 export const LoginForm = () => {
-  const { EnjoyApp, login, webApi } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, login, webApi, user } = useContext(
+    AppSettingsProviderContext
+  );
 
   const handleMixinLogin = () => {
     const url = `${webApi.baseUrl}/sessions/new?provider=mixin`;
@@ -58,6 +61,16 @@ export const LoginForm = () => {
       EnjoyApp.view.remove();
     };
   }, [webApi]);
+
+  if (user) {
+    return (
+      <div className="px-4 py-2 border rounded-lg w-full max-w-sm">
+        <UserSettings />
+        <Separator />
+        <LanguageSettings />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-sm px-6 flex flex-col space-y-4">

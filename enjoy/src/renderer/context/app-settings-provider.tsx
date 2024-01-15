@@ -78,7 +78,6 @@ export const AppSettingsProvider = ({
 
   const fetchLanguage = async () => {
     const language = await EnjoyApp.settings.getLanguage();
-    console.log(language);
     setLanguage(language as "en" | "zh-CN");
     i18n.changeLanguage(language);
   };
