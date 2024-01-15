@@ -114,7 +114,7 @@
     "i18next": "^23.7.16",
     "langchain": "^0.1.2",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.308.0",
+    "lucide-react": "^0.309.0",
     "mark.js": "^8.11.1",
     "microsoft-cognitiveservices-speech-sdk": "^1.34.0",
     "next-themes": "^0.2.1",
