@@ -8,6 +8,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     reset: () => {
       ipcRenderer.invoke("app-reset");
     },
+    resetSettings: () => {
+      ipcRenderer.invoke("app-reset-settings");
+    },
     relaunch: () => {
       ipcRenderer.invoke("app-relaunch");
     },

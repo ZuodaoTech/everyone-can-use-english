@@ -1,6 +1,7 @@
 type EnjoyAppType = {
   app: {
     reset: () => Promise<void>;
+    resetSettings: () => Promise<void>;
     relaunch: () => Promise<void>;
     reload: () => Promise<void>;
     isPackaged: () => Promise<boolean>;

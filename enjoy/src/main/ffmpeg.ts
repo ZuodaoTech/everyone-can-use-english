@@ -404,7 +404,11 @@ export const discoverFfmpeg = async () => {
 };
 
 export const COMMAND_SCAN_DIR: { [key: string]: string[] } = {
-  darwin: ["/Applications", process.env.HOME + "/Applications"],
+  darwin: [
+    "/Applications",
+    process.env.HOME + "/Applications",
+    "/opt/homebrew/bin",
+  ],
   linux: ["/usr/bin", "/usr/local/bin", "/snap/bin"],
   win32: [
     process.env.SystemDrive + "\\Program Files\\",
