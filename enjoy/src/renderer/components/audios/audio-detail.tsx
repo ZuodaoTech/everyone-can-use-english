@@ -207,7 +207,7 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
       </AlertDialog>
 
       {!initialized && (
-        <div className="top-0 w-full h-full absolute z-30 bg-white/10 flex items-center justify-center">
+        <div className="top-0 w-full h-full absolute z-30 bg-background/10 flex items-center justify-center">
           <LoaderIcon className="text-muted-foreground animate-spin w-8 h-8" />
         </div>
       )}

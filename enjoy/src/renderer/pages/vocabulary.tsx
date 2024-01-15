@@ -38,7 +38,8 @@ export default () => {
   }
 
   return (
-    <div className="h-[100vh] max-w-screen-md mx-auto px-4 py-6">
+    <div className="h-[100vh] bg-muted">
+    <div className="max-w-screen-md mx-auto px-4 py-6">
       <div className="flex space-x-1 items-center mb-4">
         <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
           <ChevronLeftIcon className="w-5 h-5" />
@@ -62,7 +63,7 @@ export default () => {
           >
             <ChevronLeftIcon className="w-5 h-5" />
           </Button>
-          <div className="flex-1 h-5/6 border p-6 rounded-xl shadow-lg">
+          <div className="bg-background flex-1 h-5/6 border p-6 rounded-xl shadow-lg">
             <MeaningMemorizingCard meaning={meanings[currentIndex]} />
           </div>
           <Button
@@ -82,6 +83,7 @@ export default () => {
           </Button>
         </div>
       )}
+    </div>
     </div>
   );
 };

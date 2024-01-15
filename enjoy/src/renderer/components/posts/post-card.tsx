@@ -20,7 +20,7 @@ export const PostCard = (props: {
   const { user } = useContext(AppSettingsProviderContext);
 
   return (
-    <div className="rounded p-4 bg-white space-y-3">
+    <div className="rounded p-4 bg-background space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Avatar>

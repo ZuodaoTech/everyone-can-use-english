@@ -90,11 +90,11 @@ export const AssistantMessageComponent = (props: {
       id={`message-${message.id}`}
       className="flex items-end space-x-2 pr-10"
     >
-      <Avatar className="w-8 h-8 bg-white avatar">
+      <Avatar className="w-8 h-8 bg-background avatar">
         <AvatarImage></AvatarImage>
-        <AvatarFallback className="bg-white">AI</AvatarFallback>
+        <AvatarFallback className="bg-background">AI</AvatarFallback>
       </Avatar>
-      <div className="flex flex-col gap-2 px-4 py-2 bg-white border rounded-lg shadow-sm w-full">
+      <div className="flex flex-col gap-2 px-4 py-2 bg-background border rounded-lg shadow-sm w-full">
         {configuration?.autoSpeech && speeching ? (
           <div className="p-4">
             <LoaderIcon className="w-8 h-8 animate-spin" />
