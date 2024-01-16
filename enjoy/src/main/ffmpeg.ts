@@ -139,15 +139,23 @@ export default class FfmpegWrapper {
           ...options
         )
         .on("start", (commandLine) => {
+          logger.debug(`Trying to convert ${input} to ${output}`);
           logger.info("Spawned FFmpeg with command: " + commandLine);
           fs.ensureDirSync(path.dirname(output));
         })
-        .on("end", (_stdout, stderr) => {
+        .on("end", (stdout, stderr) => {
+          if (stdout) {
+            logger.debug(stdout);
+          }
+
           if (stderr) {
             logger.error(stderr);
-            reject(stderr);
-          } else {
+          }
+
+          if (fs.existsSync(output)) {
             resolve(output);
+          } else {
+            reject(new Error("FFmpeg command failed"));
           }
         })
         .on("error", (err: Error) => {
@@ -173,11 +181,9 @@ export default class FfmpegWrapper {
       }
     }
 
-    logger.info(
-      `[WHISPER] Trying to convert ${input} to 16-bit WAVE file ${output}`
-    );
+    logger.info(`Trying to convert ${input} to 16-bit WAVE file ${output}`);
     if (fs.pathExistsSync(output)) {
-      logger.warn(`[WHISPER] File ${output} already exists, deleting.`);
+      logger.warn(`File ${output} already exists, deleting.`);
       fs.removeSync(output);
     }
 
