@@ -116,3 +116,23 @@ yarn make:enjoy
    ```powershell
    yarn start:enjoy
    ```
+
+## * 更新Enjoy
+
+更新并使用最新版本的Enjoy：
+
+1. 将仓库最新内容拉取到本地，在命令行工具中执行：
+
+   ```bash
+   git pull
+   ```
+   结果显示为：
+
+   ```shell
+   Already up to date.
+   ```
+2. 运行Enjoy APP：
+
+   ```shell
+   yarn start:enjoy
+   ```
