@@ -145,8 +145,10 @@ export default class FfmpegWrapper {
         .on("end", (_stdout, stderr) => {
           if (stderr) {
             logger.error(stderr);
+            reject(stderr);
+          } else {
+            resolve(output);
           }
-          resolve(output);
         })
         .on("error", (err: Error) => {
           logger.error(err);
