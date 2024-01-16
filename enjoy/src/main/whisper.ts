@@ -105,7 +105,10 @@ class Whipser {
             logger.debug(stdout);
           }
 
-          reject(new Error("Whisper transcribe failed: unknown error"));
+          reject(
+            error ||
+              new Error(stderr || "Whisper transcribe failed: unknown error")
+          );
         }
       );
     });

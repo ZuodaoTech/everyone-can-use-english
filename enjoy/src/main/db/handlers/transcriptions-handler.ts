@@ -30,12 +30,16 @@ class TranscriptionsHandler {
       });
 
       if (transcription.state === "pending") {
-        transcription.process();
+        transcription.process().catch((err) => {
+          event.sender.send("on-notification", {
+            type: "error",
+            message: err.message,
+          });
+        });
       }
 
       return transcription.toJSON();
     } catch (err) {
-      logger.error(err);
       event.sender.send("on-notification", {
         type: "error",
         message: err.message,
