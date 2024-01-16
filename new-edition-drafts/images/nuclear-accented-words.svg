@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="640px" height="300px" viewBox="0 0 640 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>nuclear-accented-words</title>
+    <g id="nuclear-accented-words" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(72, 38)">
+            <text id="Marianna-made-the-ma" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="18" font-weight="normal" fill="#000000">
+                <tspan x="60" y="117">Marianna made the marmalade</tspan>
+                <tspan x="351.6" y="117" font-family="PingFangSC-Regular, PingFang SC">…</tspan>
+            </text>
+            <text id="这两个单词被-“强读”-了" font-family="STKaiti" font-size="18" font-weight="normal" fill="#000000">
+                <tspan x="0" y="19">这两个单词被 “强读” 了</tspan>
+            </text>
+            <path id="Line" d="M73.6570048,32.8105441 L73.9232304,33.2337744 L108.397,88.039 L111.783239,85.9090536 L112.766226,95.9232304 L104.165092,90.7011136 L107.551,88.571 L73.0767696,33.7662256 L72.8105441,33.3429952 L73.6570048,32.8105441 Z" fill="#979797" fill-rule="nonzero"></path>
+            <path id="Line-Copy" d="M73.1817532,32.868558 L73.6565976,33.0251556 L253.584,92.363 L254.837024,88.5642411 L261.974844,95.6565976 L252.018267,97.11144 L253.271,93.312 L73.3434024,33.9748444 L72.868558,33.8182468 L73.1817532,32.868558 Z" fill="#979797" fill-rule="nonzero"></path>
+            <path id="Line-Copy-4" d="M186.516928,129.233244 L187.477631,129.510822 L187.338842,129.991174 L170.339,188.825 L174.182581,189.935512 L167.361211,197.332736 L165.536254,187.437306 L169.379,188.547 L186.378139,129.713595 L186.516928,129.233244 Z" transform="translate(177.6169, 163.1762) scale(1, -1) translate(-177.6169, -163.1762)" fill="#979797" fill-rule="nonzero"></path>
+            <path id="Line-Copy-3" d="M187.049503,128.819181 L187.294406,129.255097 L220.772,188.844 L224.259884,186.885306 L224.744903,196.935916 L216.413404,191.293565 L219.9,189.334 L186.422575,129.744903 L186.177672,129.308988 L187.049503,128.819181 Z" transform="translate(205.6792, 163) scale(1, -1) translate(-205.6792, -163)" fill="#979797" fill-rule="nonzero"></path>
+            <path id="Line-Copy-2" d="M382.494251,32.7929166 L383.207083,33.4942514 L382.856416,33.8506674 L327.817,89.791 L330.66909,92.596934 L321.149333,95.856416 L324.253601,86.284921 L327.105,89.089 L382.143584,33.1493326 L382.494251,32.7929166 Z" fill="#979797" fill-rule="nonzero"></path>
+            <path id="Line-Copy-5" d="M313,168 L313,172 L375,172 L375,173 L313,173 L313,177 L304,172.5 L313,168 Z" fill="#979797" fill-rule="nonzero"></path>
+            <text id="这个词-“句内最强”" font-family="STKaiti" font-size="18" font-weight="normal" fill="#000000">
+                <tspan x="310" y="19">这个词 “句内最强”</tspan>
+            </text>
+            <text id="这两个词没有被-“强读”" font-family="STKaiti" font-size="18" font-weight="normal" fill="#000000">
+                <tspan x="96" y="221">这两个词没有被 “强读”</tspan>
+            </text>
+            <line x1="108.5" y1="130.5" x2="108.5" y2="155.5" id="Line-2" stroke="#979797" stroke-linecap="square"></line>
+            <text id="H*" font-family="STKaiti" font-size="18" font-weight="normal" fill="#000000">
+                <tspan x="97" y="181">H*</tspan>
+            </text>
+            <line x1="270.5" y1="130.5" x2="270.5" y2="155.5" id="Line-2-Copy" stroke="#979797" stroke-linecap="square"></line>
+            <text id="H*-Copy" font-family="STKaiti" font-size="18" font-weight="normal" fill="#000000">
+                <tspan x="259" y="181">H*</tspan>
+            </text>
+            <text id="这两个音节的-“音高”-更高" font-family="STKaiti" font-size="18" font-weight="normal" fill="#000000">
+                <tspan x="388" y="170">这两个音节的</tspan>
+                <tspan x="388" y="192">“音高” 更高 </tspan>
+            </text>
+        </g>
+    </g>
+</svg>
