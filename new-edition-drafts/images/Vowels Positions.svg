@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="2187px" height="800px" viewBox="0 0 2187 800" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Vowels Positions</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Vowels-Positions">
+            <rect id="Rectangle" stroke="#979797" x="907.5" y="0.5" width="1279" height="799"></rect>
+            <g id="Group" transform="translate(1170, 114)" stroke="#979797" stroke-dasharray="5,10" stroke-linecap="square">
+                <line x1="0.5" y1="0.5" x2="800.5" y2="0.5" id="Line"></line>
+                <line x1="400.5" y1="569.5" x2="800.5" y2="569.5" id="Line-Copy"></line>
+                <line x1="800.5" y1="0.5" x2="800.5" y2="569.5" id="Line-4"></line>
+                <line x1="801.5" y1="192.5" x2="133.5" y2="192.5" id="Line-5"></line>
+                <line x1="801.5" y1="381.5" x2="268.5" y2="380.5" id="Line-5-Copy"></line>
+                <line x1="0.5" y1="0.5" x2="400.5" y2="569.5" id="Line-2"></line>
+                <line x1="400.5" y1="0.5" x2="600.5" y2="569.5" id="Line-3"></line>
+            </g>
+            <text id="i" font-family="PTMono-Regular, PT Mono" font-size="40" font-weight="normal" fill="#000000">
+                <tspan x="1158" y="127">i</tspan>
+            </text>
+            <text id="ɛ" font-family="Menlo-Regular, Menlo" font-size="40" font-weight="normal" fill="#000000">
+                <tspan x="1422" y="504">ɛ</tspan>
+            </text>
+            <text id="æ" font-family="PTMono-Regular, PT Mono" font-size="40" font-weight="normal" fill="#000000">
+                <tspan x="1557" y="690">æ</tspan>
+            </text>
+            <text id="ə" font-family="Menlo-Regular, Menlo" font-size="40" font-weight="normal" fill="#000000">
+                <tspan x="1654" y="397">ə</tspan>
+            </text>
+            <text id="ʌ-ɔ" font-family="Menlo-Regular, Menlo" font-size="40" font-weight="normal" fill="#000000">
+                <tspan x="1936" y="504">ʌ ɔ</tspan>
+            </text>
+            <text id="ɑ" font-family="Menlo-Regular, Menlo" font-size="40" font-weight="normal" fill="#000000">
+                <tspan x="1960" y="691">ɑ</tspan>
+            </text>
+            <text id="u" font-family="PTMono-Regular, PT Mono" font-size="40" font-weight="normal" fill="#000000">
+                <tspan x="1960" y="127">u</tspan>
+            </text>
+            <path id="Line-6" d="M51.4767063,154.600641 L56.399359,155.476706 L55.9613263,157.938033 L37.4643549,261.873754 C43.9680592,264.234508 48.0294455,270.995694 46.7756928,278.040589 C45.372564,285.924837 37.843658,291.178822 29.9594106,289.775693 C22.0751632,288.372564 16.8211784,280.843658 18.2243072,272.959411 C19.4780433,265.914608 25.6225626,260.96979 32.5413053,260.997666 L51.0386737,157.061967 L51.4767063,154.600641 Z" fill="#0E568D" fill-rule="nonzero"></path>
+            <path id="Line-6-Copy" d="M9.58538611,311.421579 C11.837836,303.73675 19.8935923,299.332936 27.5784213,301.585386 C34.4448703,303.597966 38.6919045,310.243644 37.9118393,317.118118 L82.2031761,330.100929 L84.6022474,330.804105 L83.1958953,335.602247 L80.7968239,334.899071 L36.5056791,321.916516 C33.4516402,328.125238 26.2885224,331.427339 19.4215787,329.414614 C11.7367496,327.162164 7.33293622,319.106408 9.58538611,311.421579 Z" fill="#0E568D" fill-rule="nonzero"></path>
+            <text id="/t/,-/d/,-/s/,-/l/" font-family="STKaiti" font-size="24" font-weight="normal" fill="#000000">
+                <tspan x="0" y="133">/t/, /d/, /s/, /l/</tspan>
+            </text>
+            <text id="/θ/,-/ð/" font-family="STKaiti" font-size="24" font-weight="normal" fill="#000000">
+                <tspan x="94" y="324">/θ/, /ð</tspan>
+                <tspan x="163.528" y="324" font-family="LucidaGrande, Lucida Grande">/</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

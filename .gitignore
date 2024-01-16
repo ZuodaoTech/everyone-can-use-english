@@ -107,3 +107,6 @@ package-lock.json
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# sketch file excluded.
+*.sketch*
