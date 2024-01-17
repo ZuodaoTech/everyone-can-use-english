@@ -36,12 +36,25 @@ yarn make:enjoy
 
 方法一：这是**最直接简单的方法**是去 [releases 页面](https://github.com/xiaolai/everyone-can-use-english/tags)下载相应的安装文件。
 
+> 如果你需要**详细下载操作指导**[点这里](find-compatible-software-version.md)
+
+```markdown
+> [!TIP]
+>如果你是普通用户，并不想为本项目提供代码，按上面的操作就可以正常使用 Enjoy APP ！
+```
+
+
+
 方法二：如果想要随时**试用更新版本**的话，请按一下步骤操作。
+
+
 
 ### MacOS 用户
 
 1. 打开命令行工具 Terminal
+
 2. 安装 Homebrew（请参阅这篇文章：《[从 Terminal 开始…](https://github.com/xiaolai/apple-computer-literacy/blob/main/start-from-terminal.md)》）
+
 3. 安装 `nodejs` 以及 `yarn`：
 
    ```bash
@@ -49,7 +62,15 @@ yarn make:enjoy
    nvm install 20.5.1 
    brew install yarn
    ```
-4. 克隆此仓库至本地，而后安装、启动：
+
+4. 设置 yarn 环境变量以及 Node.js 配置
+
+   ```bash
+   export ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
+   corepack enable
+   ```
+
+5. 克隆此仓库至本地，而后安装、启动：
 
    ```bash
    cd ~
@@ -61,6 +82,8 @@ yarn make:enjoy
    yarn start:enjoy
    ```
 
+
+
 ### Windows 用户
 
 系统要求：Windows 10 22H2 以上版本、 [Windows PowerShell 5.1](https://aka.ms/wmf5download) 以上版本、互联网网络连接正常。
@@ -71,6 +94,7 @@ yarn make:enjoy
    >
    > tips 2 ：不能用管理员权限运行 PowerShell ，否则会导致 Scoop 安装失败
    >
+
 2. 在弹出的 PowerShell 窗口中依次执行运行以下命令，安装Scoop：
 
    ```powershell
@@ -84,18 +108,26 @@ yarn make:enjoy
 
    如果出现下面的错误：
 
-   > `<span style="color:red">`irm : 未能解析此远程名称: 'raw.githubusercontent.com'
-   >
+   > <span style="color:red">irm : 未能解析此远程名称: 'raw.githubusercontent.com'</span>
 
    说明你的**网络连接**有问题，请自行研究解决：
+
 3. 安装 Nodejs 和 yarn 以及其他依赖环境 ：
 
    ```powershell
    scoop install nodejs
    scoop install git
-   npm install yarn -D
+   npm install yarn -g
    ```
-4. 克隆此仓库至本地，而后安装 Enjoy APP：
+
+4. 设置 yarn 环境变量以及 Node.js 配置
+
+   ```powershell
+   $env:ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
+   corepack enable
+   ```
+
+5. 克隆此仓库至本地，而后安装 Enjoy APP：
 
    ```powershell
    cd ~
@@ -103,17 +135,18 @@ yarn make:enjoy
    cd github
    git clone https://github.com/xiaolai/everyone-can-use-english
    cd everyone-can-use-english
-   cd enjoy
    yarn install
-   yarn start:enjoy
    ```
 
-   出现 `Completed in XXXXXXXXXX` 类似字样说明安装成功！
-5. 运行 Enjoy APP ，在终端执行下列命令：
+   出现 `“YN0000: · Done …… ” ` 类似字样说明安装成功！
+
+6. 运行 Enjoy APP ，在终端执行下列命令：
 
    ```powershell
    yarn start:enjoy
    ```
+
+
 
 ## 更新Enjoy
 
