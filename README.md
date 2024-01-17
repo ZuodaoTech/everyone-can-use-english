@@ -42,9 +42,11 @@ yarn make:enjoy
 
 1. 打开命令行工具 Terminal
 2. 安装 Homebrew（请参阅这篇文章：《[从 Terminal 开始…](https://github.com/xiaolai/apple-computer-literacy/blob/main/start-from-terminal.md)》）
-3. 安装 yarn：
+3. 安装 `nodejs` 以及 `yarn`：
 
    ```bash
+   brew install nvm
+   nvm install 20.5.1 
    brew install yarn
    ```
 4. 克隆此仓库至本地，而后安装、启动：
@@ -127,6 +129,13 @@ yarn make:enjoy
    ```shell
    Already up to date.
    ```
+
+   若非如此，那么意味着代码有所更新，那么就要运行以下命令：
+
+   ```bash
+   yarn install
+   ```
+
 2. 运行Enjoy APP：
 
    ```shell
