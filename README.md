@@ -41,14 +41,12 @@ yarn make:enjoy
 ### MacOS 用户
 
 1. 打开命令行工具 Terminal
-
 2. 安装 Homebrew（请参阅这篇文章：《[从 Terminal 开始…](https://github.com/xiaolai/apple-computer-literacy/blob/main/start-from-terminal.md)》）
-
 3. 安装 yarn：
+
    ```bash
    brew install yarn
    ```
-
 4. 克隆此仓库至本地，而后安装、启动：
 
    ```bash
@@ -70,7 +68,7 @@ yarn make:enjoy
    > tips 1 ：在最新的 Windows 11 上，你看不到 “PowerShell” 选项，只有 “终端”
    >
    > tips 2 ：不能用管理员权限运行 PowerShell ，否则会导致 Scoop 安装失败
-
+   >
 2. 在弹出的 PowerShell 窗口中依次执行运行以下命令，安装Scoop：
 
    ```powershell
@@ -84,10 +82,10 @@ yarn make:enjoy
 
    如果出现下面的错误：
 
-   > <span style="color:red">irm : 未能解析此远程名称: 'raw.githubusercontent.com'</span>
+   > `<span style="color:red">`irm : 未能解析此远程名称: 'raw.githubusercontent.com'
+   >
 
    说明你的**网络连接**有问题，请自行研究解决：
-
 3. 安装 Nodejs 和 yarn 以及其他依赖环境 ：
 
    ```powershell
@@ -95,7 +93,6 @@ yarn make:enjoy
    scoop install git
    npm install yarn -D
    ```
-
 4. 克隆此仓库至本地，而后安装 Enjoy APP：
 
    ```powershell
@@ -110,9 +107,28 @@ yarn make:enjoy
    ```
 
    出现 `Completed in XXXXXXXXXX` 类似字样说明安装成功！
-
 5. 运行 Enjoy APP ，在终端执行下列命令：
 
    ```powershell
+   yarn start:enjoy
+   ```
+
+## 更新Enjoy
+
+更新并使用最新版本的Enjoy：
+
+1. 将仓库最新内容拉取到本地，在命令行工具中执行：
+
+   ```bash
+   git pull
+   ```
+   结果显示为：
+
+   ```shell
+   Already up to date.
+   ```
+2. 运行Enjoy APP：
+
+   ```shell
    yarn start:enjoy
    ```
