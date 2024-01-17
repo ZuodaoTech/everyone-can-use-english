@@ -42,9 +42,11 @@ Method 2: If you want to **try out updated versions** at any time, follow these 
 
 1. Open the Terminal command line tool.
 2. Install Homebrew (refer to this article: 《[从 Terminal 开始…](https://github.com/xiaolai/apple-computer-literacy/blob/main/start-from-terminal.md)》）
-3. Install yarn:
+3. Install `nodejs` and `yarn`:
 
    ```bash
+   brew install nvm
+   nvm install 20.5.1 
    brew install yarn
    ```
 
@@ -73,22 +75,13 @@ System requirements: Windows 10 version 22H2 or later, [Windows PowerShell 5.1](
 2. In the opened PowerShell window, execute the following commands to install Scoop:
 
    ```powershell
-
-   ```
-
-# Set PowerShell execution policy
-
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-
-# Download installation script
-
-irm get.scoop.sh -outfile 'install.ps1'
-
-# Execute installation, --ScoopDir parameter specifies the Scoop installation path
-
-.\install.ps1 -ScoopDir 'C:\Scoop'
-
-````
+   # Set PowerShell execution policy
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   # Download installation script
+   irm get.scoop.sh -outfile 'install.ps1'
+   # Execute installation, --ScoopDir parameter specifies the Scoop installation path
+   .\install.ps1 -ScoopDir 'C:\Scoop'
+   ````
 
 If you encounter the error:
 
