@@ -1,5 +1,7 @@
 # 人人都能用英语
 
+中文 | [English](README.en-US.md)
+
 ## 目录
 
 - [简介](./book/README.md)
