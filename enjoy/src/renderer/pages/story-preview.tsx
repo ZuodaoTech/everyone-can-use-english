@@ -53,8 +53,8 @@ export default () => {
 
     webApi
       .createStory({
-        url: story.metadata?.url || story.url,
         ...story,
+        url: story.metadata?.url || story.url,
       } as CreateStoryParamsType)
       .then((story) => {
         navigate(`/stories/${story.id}`);

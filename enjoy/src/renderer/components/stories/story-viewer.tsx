@@ -17,7 +17,7 @@ export const StoryViewer = (props: {
   marked?: boolean;
   meanings?: MeaningType[];
   setMeanings: (meanings: MeaningType[]) => void;
-  pendingLookups?: LookupType[];
+  pendingLookups?: Partial<LookupType>[];
   doc: any;
 }) => {
   const navigate = useNavigate();

@@ -185,8 +185,17 @@ export class Client {
     });
   }
 
-  extractVocabularyFromStory(storyId: string): Promise<string[]> {
-    return this.api.post(`/api/stories/${storyId}/extract_vocabulary`);
+  extractVocabularyFromStory(
+    storyId: string,
+    extraction?: {
+      words?: string[];
+      idioms?: string[];
+    }
+  ): Promise<string[]> {
+    return this.api.post(
+      `/api/stories/${storyId}/extract_vocabulary`,
+      decamelizeKeys({ extraction })
+    );
   }
 
   storyMeanings(

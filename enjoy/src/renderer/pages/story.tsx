@@ -9,18 +9,20 @@ import {
 import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { AppSettingsProviderContext } from "@renderer/context";
+import { extractStoryCommand } from "@/commands";
 import nlp from "compromise";
 import paragraphs from "compromise-paragraphs";
 nlp.plugin(paragraphs);
 
-let timeout: NodeJS.Timeout = null;
 export default () => {
   const { id } = useParams<{ id: string }>();
-  const { webApi } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [story, setStory] = useState<StoryType>();
   const [meanings, setMeanings] = useState<MeaningType[]>([]);
-  const [pendingLookups, setPendingLookups] = useState<LookupType[]>([]);
+  const [pendingLookups, setPendingLookups] = useState<Partial<LookupType>[]>(
+    []
+  );
   const [scanning, setScanning] = useState<boolean>(false);
   const [marked, setMarked] = useState<boolean>(true);
   const [doc, setDoc] = useState<any>(null);
@@ -29,6 +31,7 @@ export default () => {
     webApi
       .story(id)
       .then((story) => {
+        console.log(story);
         setStory(story);
         const doc = nlp(story.content);
         doc.cache();
@@ -47,28 +50,72 @@ export default () => {
         if (!response) return;
 
         setMeanings(response.meanings);
-        setPendingLookups(response.pendingLookups);
-
-        if (response.pendingLookups.length > 0) {
-          if (timeout) clearTimeout(timeout);
-
-          timeout = setTimeout(() => {
-            fetchMeanings();
-          }, 3000);
-        }
       })
       .finally(() => {
         setScanning(false);
       });
   };
 
-  const lookupVocabulary = () => {
-    if (story?.extracted) return;
+  const extractVocabulary = async () => {
+    if (!story) return;
+
+    let { words, idioms } = story?.extraction || {};
+    if (story?.extracted && (words.length > 0 || idioms.length > 0)) return;
+
+    toast.promise(
+      async () => {
+        if (words.length === 0 && idioms.length === 0) {
+          const openAIConfig = await EnjoyApp.settings.getLlm("openai");
+          if (!openAIConfig?.key) {
+            toast.error(t("openaiApiKeyRequired"));
+            return;
+          }
+
+          try {
+            const res = await extractStoryCommand(story.content, {
+              key: openAIConfig.key,
+            });
+
+            words = res.words || [];
+            idioms = res.idioms || [];
+          } catch (error) {
+            toast.error(t("extractionFailed"), {
+              description: error.message,
+            });
+            return;
+          }
+        }
+
+        webApi
+          .extractVocabularyFromStory(id, {
+            words,
+            idioms,
+          })
+          .then(() => {
+            fetchStory();
+          })
+          .finally(() => {
+            setScanning(false);
+          });
+      },
+      {
+        loading: t("extracting"),
+        success: t("extracted"),
+        error: (err) => t("extractionFailed", { error: err.message }),
+        position: "bottom-right",
+      }
+    );
+  };
+
+  const buildVocabulary = () => {
     if (!doc) return;
+    if (!story?.extraction) return;
 
-    const vocabulary: any[] = [];
+    const { words = [], idioms = [] } = story.extraction || {};
 
-    story.vocabulary.forEach((word) => {
+    const lookups: any[] = [];
+
+    [...words, ...idioms].forEach((word) => {
       const m = doc.lookup(word);
 
       const sentences = m.sentences().json();
@@ -79,7 +126,7 @@ export default () => {
           return;
         }
 
-        vocabulary.push({
+        lookups.push({
           word,
           context,
           sourceId: story.id,
@@ -88,20 +135,9 @@ export default () => {
       });
     });
 
-    webApi.lookupInBatch(vocabulary).then((response) => {
-      const { errors } = response;
-      if (errors.length > 0) {
-        console.warn(errors);
-        return;
-      }
-
-      webApi.extractVocabularyFromStory(id).then(() => {
-        fetchStory();
-        if (pendingLookups.length > 0) return;
-
-        fetchMeanings();
-      });
-    });
+    setPendingLookups(
+      lookups.filter((v) => meanings.findIndex((m) => m.word === v.word) < 0)
+    );
   };
 
   const toggleStarred = () => {
@@ -134,15 +170,15 @@ export default () => {
   useEffect(() => {
     fetchStory();
     fetchMeanings();
-
-    return () => {
-      if (timeout) clearTimeout(timeout);
-    };
   }, [id]);
 
   useEffect(() => {
-    lookupVocabulary();
-  }, [story]);
+    extractVocabulary();
+  }, [story?.extracted]);
+
+  useEffect(() => {
+    buildVocabulary();
+  }, [meanings, story?.extraction]);
 
   if (loading) {
     return (
@@ -174,15 +210,14 @@ export default () => {
           extracted={story.extracted}
           starred={story.starred}
           toggleStarred={toggleStarred}
-          pendingLookups={pendingLookups}
           handleShare={handleShare}
         />
 
         <StoryViewer
           story={story}
           marked={marked}
-          meanings={meanings}
           pendingLookups={pendingLookups}
+          meanings={meanings}
           setMeanings={setMeanings}
           doc={doc}
         />
