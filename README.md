@@ -38,10 +38,9 @@ yarn make:enjoy
 
 > 如果你需要**详细下载操作指导**[点这里](find-compatible-software-version.md)
 
-```markdown
+
 > [!TIP]
 > 如果你是普通用户，并不想为本项目提供代码，按上面的操作就可以正常使用 Enjoy APP ！
-```
 
 
 
