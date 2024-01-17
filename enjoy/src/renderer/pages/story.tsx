@@ -5,11 +5,12 @@ import {
   PagePlaceholder,
   StoryToolbar,
   StoryViewer,
+  StoryVocabularySheet,
 } from "@renderer/components";
 import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { extractStoryCommand } from "@/commands";
+import { extractStoryCommand, lookupCommand } from "@/commands";
 import nlp from "compromise";
 import paragraphs from "compromise-paragraphs";
 nlp.plugin(paragraphs);
@@ -23,16 +24,17 @@ export default () => {
   const [pendingLookups, setPendingLookups] = useState<Partial<LookupType>[]>(
     []
   );
-  const [scanning, setScanning] = useState<boolean>(false);
+  const [scanning, setScanning] = useState<boolean>(true);
   const [marked, setMarked] = useState<boolean>(true);
   const [doc, setDoc] = useState<any>(null);
+  const [vocabularyVisible, setVocabularyVisible] = useState<boolean>(false);
 
   const fetchStory = async () => {
     webApi
       .story(id)
       .then((story) => {
-        console.log(story);
         setStory(story);
+        setVocabularyVisible(!story.extracted);
         const doc = nlp(story.content);
         doc.cache();
         setDoc(doc);
@@ -50,6 +52,7 @@ export default () => {
         if (!response) return;
 
         setMeanings(response.meanings);
+        setPendingLookups(response.pendingLookups || []);
       })
       .finally(() => {
         setScanning(false);
@@ -110,6 +113,7 @@ export default () => {
   const buildVocabulary = () => {
     if (!doc) return;
     if (!story?.extraction) return;
+    if (scanning) return;
 
     const { words = [], idioms = [] } = story.extraction || {};
 
@@ -135,9 +139,25 @@ export default () => {
       });
     });
 
-    setPendingLookups(
-      lookups.filter((v) => meanings.findIndex((m) => m.word === v.word) < 0)
-    );
+    const pendings = lookups
+      .filter(
+        (v) =>
+          meanings.findIndex(
+            (m) => m.word.toLowerCase() === v.word.toLowerCase()
+          ) < 0
+      )
+      .filter(
+        (v) =>
+          pendingLookups.findIndex(
+            (l) => l.word.toLowerCase() === v.word.toLowerCase()
+          ) < 0
+      );
+
+    if (pendings.length === 0) return;
+
+    webApi.lookupInBatch(pendings).then(() => {
+      fetchMeanings();
+    });
   };
 
   const toggleStarred = () => {
@@ -167,6 +187,50 @@ export default () => {
       });
   };
 
+  const processLookup = async (pendingLookup: Partial<LookupType>) => {
+    const { meaningOptions = [] } = await webApi.lookup({
+      word: pendingLookup.word,
+      context: pendingLookup.context,
+      sourceId: story.id,
+      sourceType: "Story",
+    });
+    const openAIConfig = await EnjoyApp.settings.getLlm("openai");
+    if (!openAIConfig?.key) {
+      toast.error(t("openaiApiKeyRequired"));
+      return;
+    }
+
+    try {
+      const res = await lookupCommand(
+        {
+          word: pendingLookup.word,
+          context: pendingLookup.context,
+          meaningOptions,
+        },
+        {
+          key: openAIConfig.key,
+        }
+      );
+
+      if (res.context_translation.trim()) {
+        webApi
+          .updateLookup(pendingLookup.id, {
+            meaning: res,
+            sourceId: story.id,
+            sourceType: "Story",
+          })
+          .then(() => {
+            fetchMeanings();
+          });
+      }
+    } catch (error) {
+      toast.error(t("lookupFailed"), {
+        description: error.message,
+      });
+      return;
+    }
+  };
+
   useEffect(() => {
     fetchStory();
     fetchMeanings();
@@ -178,7 +242,12 @@ export default () => {
 
   useEffect(() => {
     buildVocabulary();
-  }, [meanings, story?.extraction]);
+  }, [pendingLookups, story?.extraction]);
+
+  useEffect(() => {
+    if (pendingLookups.length === 0) return;
+    processLookup(pendingLookups.shift());
+  }, [pendingLookups]);
 
   if (loading) {
     return (
@@ -211,6 +280,8 @@ export default () => {
           starred={story.starred}
           toggleStarred={toggleStarred}
           handleShare={handleShare}
+          vocabularyVisible={vocabularyVisible}
+          setVocabularyVisible={setVocabularyVisible}
         />
 
         <StoryViewer
@@ -222,6 +293,13 @@ export default () => {
           doc={doc}
         />
       </ScrollArea>
+      <StoryVocabularySheet
+        pendingLookups={pendingLookups}
+        extracted={story.extracted}
+        meanings={meanings}
+        vocabularyVisible={vocabularyVisible}
+        setVocabularyVisible={setVocabularyVisible}
+      />
     </>
   );
 };

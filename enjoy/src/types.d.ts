@@ -92,6 +92,7 @@ type LookupType = {
   contextTranslation: string;
   status?: "pending" | "completed" | "failed";
   meaning?: MeaningType;
+  meaningOptions?: MeaningType[];
   createdAt: string;
   updatedAt: string;
 };

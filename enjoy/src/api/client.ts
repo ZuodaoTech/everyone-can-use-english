@@ -172,6 +172,17 @@ export class Client {
     return this.api.post("/api/lookups", decamelizeKeys(params));
   }
 
+  updateLookup(
+    id: string,
+    params: {
+      meaning: Partial<MeaningType>;
+      sourceId?: string;
+      sourceType?: string;
+    }
+  ): Promise<LookupType> {
+    return this.api.put(`/api/lookups/${id}`, decamelizeKeys(params));
+  }
+
   lookupInBatch(
     lookups: {
       word: string;

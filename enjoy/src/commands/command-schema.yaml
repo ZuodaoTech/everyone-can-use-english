@@ -1,4 +1,0 @@
-engine: 'openai'
-model: ''
-prompt_template:
-response_formate: 'json'
