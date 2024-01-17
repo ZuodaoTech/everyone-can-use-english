@@ -2,9 +2,9 @@
 
 看完这篇指南，你将学会如何在 GitHub 下载软件。
 
-[Windwos 用户点这里](#Windows 用户：)
+[Windwos 用户点这里](Windows用户下载以及安装)
 
-### MacOS 用户下载以及安装：
+### MacOS用户下载以及安装
 
 点击屏幕左上方的  符号，在弹出来的菜单中，选择第一个选项 “关于本机（About This Mac）”
 
@@ -52,10 +52,10 @@
 sudo xattr -rd com.apple.quarantine 
 ```
 
-```markdown
+
 > [!IMPORTANT]
 > 注意：`sudo xattr -rd com.apple.quarantine` 这行命令后面，**要加一个 “空格”**
-```
+
 
 然后把刚才解压出来的 Enjoy 程序拖到这行命令后面
 
@@ -69,7 +69,7 @@ sudo xattr -rd com.apple.quarantine
 
 自此，你就可以正常的使用 Enjoy 软件了！
 
-### Windows 用户：
+### Windows用户下载以及安装
 
 点击[这里](https://github.com/xiaolai/everyone-can-use-english/tags)跳转到 [releases 页面](https://github.com/xiaolai/everyone-can-use-english/tags)下载软件。
 
