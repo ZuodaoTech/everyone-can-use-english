@@ -56,6 +56,11 @@ sudo xattr -rd com.apple.quarantine
 > [!IMPORTANT]
 > 注意：`sudo xattr -rd com.apple.quarantine` 这行命令后面，**要加一个 “空格”**
 
+> [!CAUTION]
+> 执行此命令将跳过 macOS 的安全检查机制，请不要在**其他任何软件中使用此方**法绕过安全检查，这可能导致**未知的安全风险**。
+> Executing this command bypasses macOS’s security checks. Do not use this method to circumvent security checks in any other software, as it may lead to unknown security risks.
+
+
 
 然后把刚才解压出来的 Enjoy 程序拖到这行命令后面
 
