@@ -346,6 +346,7 @@
   "thereAreLookupsProcessing": "There are {{count}} lookups processing",
   "thereAreLookupsPending": "There are {{count}} lookups waiting",
   "lookupFailed": "Lookup failed",
+  "lookedUpSuccessfully": "Looked up successfully",
   "noRecordsFound": "No records found",
   "pleaseTryLater": "Please try later",
   "author": "author",

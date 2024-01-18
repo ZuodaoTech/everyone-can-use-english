@@ -345,6 +345,7 @@
   "thereAreLookupsProcessing": "有{{count}}个单词正在查询",
   "thereAreLookupsPending": "有{{count}}个单词正在等待查询",
   "lookupFailed": "查询失败",
+  "lookedUpSuccessfully": "查询成功",
   "noRecordsFound": "没有找到记录",
   "pleaseTryLater": "请稍后再试",
   "author": "作者",

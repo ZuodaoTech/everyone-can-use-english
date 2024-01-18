@@ -44,41 +44,36 @@ export const LookupResult = (props: {
         return;
       }
 
-      toast.promise(
-        lookupCommand(
-          {
-            word,
-            context,
-            meaningOptions: lookup.meaningOptions,
-          },
-          {
-            key: openAIConfig.key,
-          }
-        )
-          .then((res) => {
-            if (res.context_translation?.trim()) {
-              webApi
-                .updateLookup(lookup.id, {
-                  meaning: res,
-                  sourceId,
-                  sourceType,
-                })
-                .then((lookup) => {
-                  setResult(lookup);
-                  onResult && onResult(lookup.meaning);
-                });
-            }
-          })
-          .finally(() => {
-            setLoading(false);
-          }),
+      lookupCommand(
         {
-          loading: t("lookingUp"),
-          success: t("lookedUpSuccessfully"),
-          error: (err) => t("lookupFailed", { error: err.message }),
-          position: "bottom-right",
+          word,
+          context,
+          meaningOptions: lookup.meaningOptions,
+        },
+        {
+          key: openAIConfig.key,
         }
-      );
+      )
+        .then((res) => {
+          if (res.context_translation?.trim()) {
+            webApi
+              .updateLookup(lookup.id, {
+                meaning: res,
+                sourceId,
+                sourceType,
+              })
+              .then((lookup) => {
+                setResult(lookup);
+                onResult && onResult(lookup.meaning);
+              });
+          }
+        })
+        .catch((err) => {
+          toast.error(`${t("lookupFailed")}: ${err.message}`);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   };
 
