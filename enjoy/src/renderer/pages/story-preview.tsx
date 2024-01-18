@@ -168,7 +168,7 @@ export default () => {
 
   useEffect(() => {
     if (readable) {
-      EnjoyApp.view.hide();
+      EnjoyApp.view.hide().catch(console.error);
     } else if (!loading) {
       const rect = containerRef.current.getBoundingClientRect();
       EnjoyApp.view.show({

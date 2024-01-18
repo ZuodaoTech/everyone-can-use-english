@@ -2,6 +2,7 @@ import {
   Alert,
   AlertTitle,
   AlertDescription,
+  Button,
   ScrollArea,
   Separator,
   Sheet,
@@ -9,7 +10,7 @@ import {
   SheetContent,
 } from "@renderer/components/ui";
 import { MeaningCard, NoRecordsFound, LoaderSpin } from "@renderer/components";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, LanguagesIcon } from "lucide-react";
 import { t } from "i18next";
 
 export const StoryVocabularySheet = (props: {
@@ -18,6 +19,8 @@ export const StoryVocabularySheet = (props: {
   pendingLookups?: Partial<LookupType>[];
   vocabularyVisible?: boolean;
   setVocabularyVisible?: (value: boolean) => void;
+  lookingUpInBatch?: boolean;
+  setLookupInBatch?: (value: boolean) => void;
 }) => {
   const {
     extracted,
@@ -25,6 +28,8 @@ export const StoryVocabularySheet = (props: {
     pendingLookups = [],
     vocabularyVisible,
     setVocabularyVisible,
+    lookingUpInBatch,
+    setLookupInBatch,
   } = props;
 
   return (
@@ -51,13 +56,49 @@ export const StoryVocabularySheet = (props: {
               <>
                 {pendingLookups.length > 0 && (
                   <Alert className="mb-4">
-                    <LoaderIcon className="w-5 h-5 text-muted-foreground animate-spin" />
-                    <AlertTitle>{t("lookingUp")}</AlertTitle>
-                    <AlertDescription>
-                      {t("thereAreLookupsPending", {
-                        count: pendingLookups.length,
-                      })}
-                    </AlertDescription>
+                    <LanguagesIcon className="w-5 h-5" />
+                    {lookingUpInBatch ? (
+                      <>
+                        <LoaderIcon className="w-5 h-5 text-muted-foreground animate-spin" />
+                        <AlertTitle>{t("lookingUp")}</AlertTitle>
+                        <AlertDescription className="flex items-start">
+                          <div className="flex-1">
+                            {t("thereAreLookupsPending", {
+                              count: pendingLookups.length,
+                            })}
+                          </div>
+                          <div className="">
+                            <Button
+                              variant="secondary"
+                              onClick={() => setLookupInBatch(false)}
+                              size="sm"
+                            >
+                              {t("cancel")}
+                            </Button>
+                          </div>
+                        </AlertDescription>
+                      </>
+                    ) : (
+                      <>
+                        <AlertTitle>{t("pending")}</AlertTitle>
+                        <AlertDescription className="flex items-start">
+                          <div className="flex-1">
+                            {t("thereAreLookupsPending", {
+                              count: pendingLookups.length,
+                            })}
+                          </div>
+                          <div className="">
+                            <Button
+                              variant="outline"
+                              onClick={() => setLookupInBatch(true)}
+                              size="sm"
+                            >
+                              {t("lookUpAll")}
+                            </Button>
+                          </div>
+                        </AlertDescription>
+                      </>
+                    )}
                   </Alert>
                 )}
 

@@ -214,7 +214,6 @@ export class Client {
     params?: {
       page?: number;
       items?: number;
-      storyId?: string;
     }
   ): Promise<
     {

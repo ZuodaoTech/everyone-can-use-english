@@ -28,6 +28,7 @@ export default () => {
   const [marked, setMarked] = useState<boolean>(true);
   const [doc, setDoc] = useState<any>(null);
   const [vocabularyVisible, setVocabularyVisible] = useState<boolean>(false);
+  const [lookingUpInBatch, setLookupInBatch] = useState<boolean>(false);
 
   const fetchStory = async () => {
     webApi
@@ -62,7 +63,7 @@ export default () => {
   const extractVocabulary = async () => {
     if (!story) return;
 
-    let { words, idioms } = story?.extraction || {};
+    let { words = [], idioms = [] } = story?.extraction || {};
     if (story?.extracted && (words.length > 0 || idioms.length > 0)) return;
 
     toast.promise(
@@ -82,6 +83,7 @@ export default () => {
             words = res.words || [];
             idioms = res.idioms || [];
           } catch (error) {
+            console.error(error);
             toast.error(t("extractionFailed"), {
               description: error.message,
             });
@@ -111,8 +113,9 @@ export default () => {
   };
 
   const buildVocabulary = () => {
-    if (!doc) return;
     if (!story?.extraction) return;
+    if (meanings.length > 0 || pendingLookups.length > 0) return;
+    if (!doc) return;
     if (scanning) return;
 
     const { words = [], idioms = [] } = story.extraction || {};
@@ -212,7 +215,7 @@ export default () => {
         }
       );
 
-      if (res.context_translation.trim()) {
+      if (res.context_translation?.trim()) {
         webApi
           .updateLookup(pendingLookup.id, {
             meaning: res,
@@ -242,12 +245,14 @@ export default () => {
 
   useEffect(() => {
     buildVocabulary();
-  }, [pendingLookups, story?.extraction]);
+  }, [pendingLookups, meanings, story?.extraction]);
 
   useEffect(() => {
+    if (!lookingUpInBatch) return;
     if (pendingLookups.length === 0) return;
-    processLookup(pendingLookups.shift());
-  }, [pendingLookups]);
+
+    processLookup(pendingLookups[0]);
+  }, [pendingLookups, lookingUpInBatch]);
 
   if (loading) {
     return (
@@ -299,6 +304,8 @@ export default () => {
         meanings={meanings}
         vocabularyVisible={vocabularyVisible}
         setVocabularyVisible={setVocabularyVisible}
+        lookingUpInBatch={lookingUpInBatch}
+        setLookupInBatch={setLookupInBatch}
       />
     </>
   );
