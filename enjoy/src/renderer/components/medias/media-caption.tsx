@@ -10,7 +10,10 @@ import {
 import { LookupResult } from "@renderer/components";
 import { LanguagesIcon, PlayIcon, LoaderIcon } from "lucide-react";
 import { translateCommand } from "@commands";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  AISettingsProviderContext,
+} from "@renderer/context";
 import { t } from "i18next";
 import { md5 } from "js-md5";
 
@@ -44,6 +47,7 @@ export const MediaCaption = (props: {
   const [translation, setTranslation] = useState<string>();
   const [translating, setTranslating] = useState<boolean>(false);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { openai } = useContext(AISettingsProviderContext);
 
   const translate = async () => {
     if (translating) return;
@@ -57,15 +61,14 @@ export const MediaCaption = (props: {
       return;
     }
 
-    const openAIConfig = await EnjoyApp.settings.getLlm("openai");
-    if (!openAIConfig?.key) {
+    if (!openai?.key) {
       toast.error(t("openaiApiKeyRequired"));
       return;
     }
     setTranslating(true);
 
     translateCommand(transcription.text, {
-      key: openAIConfig.key,
+      key: openai.key,
     })
       .then((result) => {
         if (result) {
