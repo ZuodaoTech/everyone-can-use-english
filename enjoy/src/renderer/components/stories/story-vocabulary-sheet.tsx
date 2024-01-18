@@ -51,12 +51,11 @@ export const StoryVocabularySheet = (props: {
           </div>
         </SheetHeader>
         <div className="w-full max-w-prose mx-auto h-full overflow-hidden px-4">
-          <ScrollArea className="h-full pb-12">
+          <ScrollArea className="h-full px-4 pb-12">
             {extracted ? (
               <>
                 {pendingLookups.length > 0 && (
                   <Alert className="mb-4">
-                    <LanguagesIcon className="w-5 h-5" />
                     {lookingUpInBatch ? (
                       <>
                         <LoaderIcon className="w-5 h-5 text-muted-foreground animate-spin" />
@@ -80,6 +79,7 @@ export const StoryVocabularySheet = (props: {
                       </>
                     ) : (
                       <>
+                        <LanguagesIcon className="w-5 h-5" />
                         <AlertTitle>{t("pending")}</AlertTitle>
                         <AlertDescription className="flex items-start">
                           <div className="flex-1">

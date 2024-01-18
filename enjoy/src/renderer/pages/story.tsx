@@ -71,7 +71,7 @@ export default () => {
         if (words.length === 0 && idioms.length === 0) {
           const openAIConfig = await EnjoyApp.settings.getLlm("openai");
           if (!openAIConfig?.key) {
-            toast.error(t("openaiApiKeyRequired"));
+            toast.error(t("openaiKeyRequired"));
             return;
           }
 
@@ -105,7 +105,7 @@ export default () => {
       },
       {
         loading: t("extracting"),
-        success: t("extracted"),
+        success: t("extractedSuccessfully"),
         error: (err) => t("extractionFailed", { error: err.message }),
         position: "bottom-right",
       }
