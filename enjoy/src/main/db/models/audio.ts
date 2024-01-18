@@ -257,6 +257,16 @@ export class Audio extends Model<Audio> {
 
     const md5 = await hashFile(filePath, { algo: "md5" });
 
+    // check if file already exists
+    const existing = await Audio.findOne({
+      where: {
+        md5,
+      },
+    });
+    if (existing) {
+      throw new Error(t("audioAlreadyAddedToLibrary", { file: filePath }));
+    }
+
     // Generate ID
     const userId = settings.getSync("user.id");
     const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);

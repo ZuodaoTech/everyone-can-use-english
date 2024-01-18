@@ -31,15 +31,21 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: `lib/whisper.cpp/${os.arch()}/${os.platform()}/*`,
+          src: `lib/whisper.cpp/${
+            process.env.PACKAGE_OS_ARCH || os.arch()
+          }/${os.platform()}/*`,
           dest: "lib/whisper",
         },
         {
-          src: `lib/youtubedr/${os.arch()}/${os.platform()}/*`,
+          src: `lib/youtubedr/${
+            process.env.PACKAGE_OS_ARCH || os.arch()
+          }/${os.platform()}/*`,
           dest: "lib/youtubedr",
         },
         {
-          src: `lib/ffmpeg//${os.arch()}/${os.platform()}/*`,
+          src: `lib/ffmpeg//${
+            process.env.PACKAGE_OS_ARCH || os.arch()
+          }/${os.platform()}/*`,
           dest: "lib/ffmpeg",
         },
         {
