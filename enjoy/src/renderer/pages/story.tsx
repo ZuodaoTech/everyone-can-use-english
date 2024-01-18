@@ -9,7 +9,10 @@ import {
 } from "@renderer/components";
 import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  AISettingsProviderContext,
+} from "@renderer/context";
 import { extractStoryCommand, lookupCommand } from "@/commands";
 import nlp from "compromise";
 import paragraphs from "compromise-paragraphs";
@@ -17,7 +20,8 @@ nlp.plugin(paragraphs);
 
 export default () => {
   const { id } = useParams<{ id: string }>();
-  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
+  const { webApi } = useContext(AppSettingsProviderContext);
+  const { openai } = useContext(AISettingsProviderContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [story, setStory] = useState<StoryType>();
   const [meanings, setMeanings] = useState<MeaningType[]>([]);
@@ -70,15 +74,14 @@ export default () => {
     toast.promise(
       async () => {
         if (words.length === 0 && idioms.length === 0) {
-          const openAIConfig = await EnjoyApp.settings.getLlm("openai");
-          if (!openAIConfig?.key) {
+          if (!openai?.key) {
             toast.error(t("openaiKeyRequired"));
             return;
           }
 
           try {
             const res = await extractStoryCommand(story.content, {
-              key: openAIConfig.key,
+              key: openai.key,
             });
 
             words = res.words || [];
@@ -200,8 +203,7 @@ export default () => {
       sourceId: story.id,
       sourceType: "Story",
     });
-    const openAIConfig = await EnjoyApp.settings.getLlm("openai");
-    if (!openAIConfig?.key) {
+    if (!openai?.key) {
       toast.error(t("openaiApiKeyRequired"));
       return;
     }
@@ -215,7 +217,7 @@ export default () => {
           meaningOptions,
         },
         {
-          key: openAIConfig.key,
+          key: openai.key,
         }
       )
         .then((res) => {

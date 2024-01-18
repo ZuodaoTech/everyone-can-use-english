@@ -1,4 +1,7 @@
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  AISettingsProviderContext,
+} from "@renderer/context";
 import { useState, useContext, useEffect } from "react";
 import { LoaderSpin, MeaningCard } from "@renderer/components";
 import { Button } from "@renderer/components/ui";
@@ -19,7 +22,8 @@ export const LookupResult = (props: {
   const [loading, setLoading] = useState<boolean>(true);
   if (!word) return null;
 
-  const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { webApi } = useContext(AppSettingsProviderContext);
+  const { openai } = useContext(AISettingsProviderContext);
 
   const processLookup = async () => {
     if (!word) return;
@@ -38,8 +42,7 @@ export const LookupResult = (props: {
       setLoading(false);
       onResult && onResult(lookup.meaning);
     } else {
-      const openAIConfig = await EnjoyApp.settings.getLlm("openai");
-      if (!openAIConfig?.key) {
+      if (!openai?.key) {
         toast.error(t("openaiApiKeyRequired"));
         return;
       }
@@ -51,7 +54,7 @@ export const LookupResult = (props: {
           meaningOptions: lookup.meaningOptions,
         },
         {
-          key: openAIConfig.key,
+          key: openai.key,
         }
       )
         .then((res) => {
