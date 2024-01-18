@@ -65,19 +65,20 @@ db.connect = async () => {
   await sequelize.sync();
   await sequelize.authenticate();
 
-  // TODO:
-  // clear the large waveform data in DB.
-  // Remove this in next release
-  const caches = await CacheObject.findAll({
-    attributes: ["id", "key"],
+  // kill the zombie transcribe processes
+  Transcription.findAll({
+    where: {
+      state: "processing",
+    },
+  }).then((transcriptions) => {
+    transcriptions.forEach((transcription) => {
+      if (transcription.result) {
+        transcription.update({ state: "finished" });
+      } else {
+        transcription.update({ state: "pending" });
+      }
+    });
   });
-  const cacheIds: string[] = [];
-  caches.forEach((cache) => {
-    if (cache.key.startsWith("waveform")) {
-      cacheIds.push(cache.id);
-    }
-  });
-  await CacheObject.destroy({ where: { id: cacheIds } });
 
   // vacuum the database
   await sequelize.query("VACUUM");
