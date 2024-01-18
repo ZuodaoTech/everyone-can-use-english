@@ -12,6 +12,7 @@ import { LanguagesIcon, PlayIcon, LoaderIcon } from "lucide-react";
 import { translateCommand } from "@commands";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
+import { md5 } from "js-md5";
 
 export const MediaCaption = (props: {
   mediaId: string;
@@ -42,10 +43,19 @@ export const MediaCaption = (props: {
   }>();
   const [translation, setTranslation] = useState<string>();
   const [translating, setTranslating] = useState<boolean>(false);
-  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const translate = async () => {
     if (translating) return;
+
+    const hash = md5.create();
+    hash.update(transcription.text);
+    const cacheKey = `translate-${hash.hex()}`;
+    const cached = await EnjoyApp.cacheObjects.get(cacheKey);
+    if (cached) {
+      setTranslation(cached);
+      return;
+    }
 
     const openAIConfig = await EnjoyApp.settings.getLlm("openai");
     if (!openAIConfig?.key) {
@@ -60,6 +70,7 @@ export const MediaCaption = (props: {
       .then((result) => {
         if (result) {
           setTranslation(result);
+          EnjoyApp.cacheObjects.set(cacheKey, result);
         }
       })
       .finally(() => {
