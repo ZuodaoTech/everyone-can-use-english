@@ -73,11 +73,11 @@ class Whipser {
     );
 
     const command = [
-      this.binMain,
+      `"${this.binMain}"`,
       `--file "${waveFile}"`,
-      `--model ${settings.whisperModelPath()}`,
+      `--model "${settings.whisperModelPath()}"`,
       "--output-json",
-      `--output-file ${path.join(tmpDir, filename)}`,
+      `--output-file "${path.join(tmpDir, filename)}"`,
       ...extra,
     ].join(" ");
 
