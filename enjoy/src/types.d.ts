@@ -10,6 +10,7 @@ type SupportedLlmProviderType = "openai" | "googleGenerativeAi";
 type LlmProviderType = {
   key?: string;
   model?: string;
+  baseUrl?: string;
 };
 
 type DownloadStateType = {

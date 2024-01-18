@@ -1,3 +1,6 @@
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "i18next";
 import {
   AlertDialog,
@@ -19,6 +22,12 @@ import {
   DialogHeader,
   DialogDescription,
   DialogFooter,
+  FormField,
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
   Input,
   Label,
   Separator,
@@ -29,7 +38,7 @@ import {
   SelectValue,
   SelectContent,
 } from "@renderer/components/ui";
-import { WhisperModelOptions } from "@renderer/components";
+import { WhisperModelOptions, LLM_PROVIDERS } from "@renderer/components";
 import {
   AppSettingsProviderContext,
   AISettingsProviderContext,
@@ -364,62 +373,129 @@ const WhisperSettings = () => {
 const OpenaiSettings = () => {
   const { openai, setOpenai } = useContext(AISettingsProviderContext);
   const [editing, setEditing] = useState(false);
-  const ref = useRef<HTMLInputElement>();
 
-  const handleSave = () => {
-    if (!ref.current) return;
+  const openAiConfigSchema = z.object({
+    key: z.string().optional(),
+    model: z.enum(LLM_PROVIDERS.openai.models),
+    baseUrl: z.string().optional(),
+  });
 
+  const form = useForm<z.infer<typeof openAiConfigSchema>>({
+    resolver: zodResolver(openAiConfigSchema),
+    values: {
+      key: openai?.key,
+      model: openai?.model,
+      baseUrl: openai?.baseUrl,
+    },
+  });
+
+  const onSubmit = async (data: z.infer<typeof openAiConfigSchema>) => {
     setOpenai({
-      key: ref.current.value,
+      ...data,
     });
     setEditing(false);
-
-    toast.success(t("openaiKeySaved"));
+    toast.success(t("openaiConfigSaved"));
   };
 
-  useEffect(() => {
-    if (editing) {
-      ref.current?.focus();
-    }
-  }, [editing]);
-
   return (
-    <div className="flex items-start justify-between py-4">
-      <div className="">
-        <div className="mb-2">Open AI</div>
-        <div className="text-sm text-muted-foreground">
-          <div className="flex items-center space-x-4">
-            <Label>{t("key")}:</Label>
-            <Input
-              ref={ref}
-              type="password"
-              defaultValue={openai?.key}
-              placeholder="sk-*********"
-              disabled={!editing}
-              className="focus-visible:outline-0 focus-visible:ring-0 shadow-none"
-            />
-            {editing && (
-              <Button
-                size="sm"
-                className="min-w-max text-md"
-                onClick={handleSave}
-              >
-                {t("save")}
-              </Button>
-            )}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="flex items-start justify-between py-4">
+          <div className="">
+            <div className="mb-2">Open AI</div>
+            <div className="text-sm text-muted-foreground space-y-1">
+              <FormField
+                control={form.control}
+                name="key"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-2">
+                      <FormLabel>{t("key")}:</FormLabel>
+                      <Input
+                        disabled={!editing}
+                        type="password"
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="model"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-2">
+                      <FormLabel>{t("model")}:</FormLabel>
+                      <Select
+                        disabled={!editing}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t("selectAiModel")} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {(LLM_PROVIDERS.openai.models || []).map(
+                            (option: string) => (
+                              <SelectItem key={option} value={option}>
+                                {option}
+                              </SelectItem>
+                            )
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="baseUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-2">
+                      <FormLabel>{t("baseUrl")}:</FormLabel>
+                      <Input
+                        disabled={!editing}
+                        placeholder={t("leaveEmptyToUseDefault")}
+                        defaultValue=""
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Button
+              variant={editing ? "outline" : "secondary"}
+              size="sm"
+              type="reset"
+              onClick={(event) => {
+                event.preventDefault();
+                form.reset();
+                setEditing(!editing);
+              }}
+            >
+              {editing ? t("cancel") : t("edit")}
+            </Button>
+            <Button className={editing ? "" : "hidden"} size="sm" type="submit">
+              {t("save")}
+            </Button>
           </div>
         </div>
-      </div>
-      <div className="">
-        <Button
-          variant={editing ? "outline" : "secondary"}
-          size="sm"
-          onClick={() => setEditing(!editing)}
-        >
-          {editing ? t("cancel") : t("edit")}
-        </Button>
-      </div>
-    </div>
+      </form>
+    </Form>
   );
 };
 
