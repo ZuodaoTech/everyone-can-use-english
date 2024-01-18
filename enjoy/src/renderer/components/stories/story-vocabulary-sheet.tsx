@@ -21,6 +21,8 @@ export const StoryVocabularySheet = (props: {
   setVocabularyVisible?: (value: boolean) => void;
   lookingUpInBatch?: boolean;
   setLookupInBatch?: (value: boolean) => void;
+  processLookup?: (lookup: Partial<LookupType>) => void;
+  lookingUp?: boolean;
 }) => {
   const {
     extracted,
@@ -30,6 +32,8 @@ export const StoryVocabularySheet = (props: {
     setVocabularyVisible,
     lookingUpInBatch,
     setLookupInBatch,
+    processLookup,
+    lookingUp,
   } = props;
 
   return (
@@ -102,14 +106,41 @@ export const StoryVocabularySheet = (props: {
                   </Alert>
                 )}
 
-                {meanings.length > 0 ? (
+                {meanings.length > 0 &&
                   meanings.map((meaning) => (
                     <div key={meaning.id} className="">
                       <MeaningCard meaning={meaning} />
                       <Separator className="my-4" />
                     </div>
-                  ))
-                ) : (
+                  ))}
+
+                {pendingLookups.length > 0 &&
+                  pendingLookups.map((lookup) => (
+                    <div key={lookup.id} className="">
+                      <div className="flex items-center justify-between">
+                        <div className="font-bold mb-2">{lookup.word}</div>
+                        <Button
+                          disabled={lookingUp}
+                          onClick={() => processLookup(lookup)}
+                          variant="secondary"
+                          size="sm"
+                        >
+                          {t("lookUp")}
+                        </Button>
+                      </div>
+                      <div className="text-sm mb-2">
+                        <div className="uppercase font-semibold my-2">
+                          {t("context")}:
+                        </div>
+                        <div className="mb-2 text-muted-foreground">
+                          {lookup.context}
+                        </div>
+                      </div>
+                      <Separator className="my-4" />
+                    </div>
+                  ))}
+
+                {meanings.length === 0 && pendingLookups.length === 0 && (
                   <NoRecordsFound />
                 )}
               </>

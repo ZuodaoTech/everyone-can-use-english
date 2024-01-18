@@ -29,6 +29,7 @@ export default () => {
   const [doc, setDoc] = useState<any>(null);
   const [vocabularyVisible, setVocabularyVisible] = useState<boolean>(false);
   const [lookingUpInBatch, setLookupInBatch] = useState<boolean>(false);
+  const [lookingUp, setLookingUp] = useState<boolean>(false);
 
   const fetchStory = async () => {
     webApi
@@ -191,6 +192,8 @@ export default () => {
   };
 
   const processLookup = async (pendingLookup: Partial<LookupType>) => {
+    if (lookingUp) return;
+
     const { meaningOptions = [] } = await webApi.lookup({
       word: pendingLookup.word,
       context: pendingLookup.context,
@@ -203,8 +206,9 @@ export default () => {
       return;
     }
 
-    try {
-      const res = await lookupCommand(
+    setLookingUp(true);
+    toast.promise(
+      lookupCommand(
         {
           word: pendingLookup.word,
           context: pendingLookup.context,
@@ -213,25 +217,30 @@ export default () => {
         {
           key: openAIConfig.key,
         }
-      );
-
-      if (res.context_translation?.trim()) {
-        webApi
-          .updateLookup(pendingLookup.id, {
-            meaning: res,
-            sourceId: story.id,
-            sourceType: "Story",
-          })
-          .then(() => {
-            fetchMeanings();
-          });
+      )
+        .then((res) => {
+          if (res.context_translation?.trim()) {
+            webApi
+              .updateLookup(pendingLookup.id, {
+                meaning: res,
+                sourceId: story.id,
+                sourceType: "Story",
+              })
+              .then(() => {
+                fetchMeanings();
+              });
+          }
+        })
+        .finally(() => {
+          setLookingUp(false);
+        }),
+      {
+        loading: t("lookingUp"),
+        success: t("lookedUpSuccessfully"),
+        error: (err) => t("lookupFailed", { error: err.message }),
+        position: "bottom-right",
       }
-    } catch (error) {
-      toast.error(t("lookupFailed"), {
-        description: error.message,
-      });
-      return;
-    }
+    );
   };
 
   useEffect(() => {
@@ -306,6 +315,8 @@ export default () => {
         setVocabularyVisible={setVocabularyVisible}
         lookingUpInBatch={lookingUpInBatch}
         setLookupInBatch={setLookupInBatch}
+        processLookup={processLookup}
+        lookingUp={lookingUp}
       />
     </>
   );
