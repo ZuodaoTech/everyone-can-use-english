@@ -279,6 +279,16 @@ export class Video extends Model<Video> {
 
     const md5 = await hashFile(filePath, { algo: "md5" });
 
+    // check if file already exists
+    const existing = await Video.findOne({
+      where: {
+        md5,
+      },
+    });
+    if (existing) {
+      throw new Error(t("videoAlreadyAddedToLibrary", { file: filePath }));
+    }
+
     // Generate ID
     const userId = settings.getSync("user.id");
     const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);
