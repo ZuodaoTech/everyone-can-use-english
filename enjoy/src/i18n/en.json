@@ -178,6 +178,7 @@
   "failedToLogin": "Failed to login",
   "invalidRedirectUrl": "Invalid redirect url",
   "transcribe": "Transcribe",
+  "stillTranscribing": "AI is still working on the transcription. Please wait or switch to a smaller model to make it faster.",
   "unableToSetLibraryPath": "Unable to set library path to {{path}}",
   "nthStep": "{{current}}/{{totalSteps}} Step",
   "open": "Open",

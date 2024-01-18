@@ -1,6 +1,7 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { Transcription, Audio, Video } from "@main/db/models";
 import { WhereOptions, Attributes } from "sequelize";
+import { t } from "i18next";
 import log from "electron-log/main";
 
 const logger = log.scope("db/handlers/transcriptions-handler");
@@ -30,12 +31,24 @@ class TranscriptionsHandler {
       });
 
       if (transcription.state === "pending") {
-        transcription.process().catch((err) => {
+        const timeout = setTimeout(() => {
           event.sender.send("on-notification", {
-            type: "error",
-            message: err.message,
+            type: "warning",
+            message: t("stillTranscribing"),
           });
-        });
+        }, 1000 * 10);
+
+        transcription
+          .process()
+          .catch((err) => {
+            event.sender.send("on-notification", {
+              type: "error",
+              message: err.message,
+            });
+          })
+          .finally(() => {
+            clearTimeout(timeout);
+          });
       }
 
       return transcription.toJSON();
@@ -86,7 +99,24 @@ class TranscriptionsHandler {
           throw new Error("models.transcription.notFound");
         }
 
-        transcription.process({ force: true });
+        const timeout = setTimeout(() => {
+          event.sender.send("on-notification", {
+            type: "warning",
+            message: t("stillTranscribing"),
+          });
+        }, 1000 * 10);
+
+        transcription
+          .process({ force: true })
+          .catch((err) => {
+            event.sender.send("on-notification", {
+              type: "error",
+              message: err.message,
+            });
+          })
+          .finally(() => {
+            clearTimeout(timeout);
+          });
       })
       .catch((err) => {
         logger.error(err);

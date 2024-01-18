@@ -80,12 +80,25 @@ class AudiosHandler {
       });
     }
 
-    audio.transcribe().catch((err) => {
+    const timeout = setTimeout(() => {
       event.sender.send("on-notification", {
-        type: "error",
-        message: err.message,
+        type: "warning",
+        message: t("stillTranscribing"),
       });
-    });
+    }, 1000 * 10);
+
+    audio
+      .transcribe()
+      .catch((err) => {
+        event.sender.send("on-notification", {
+          type: "error",
+          message: err.message,
+        });
+      })
+      .finally(() => {
+        logger.debug("clearing timeout");
+        clearTimeout(timeout);
+      });
   }
 
   private async create(
