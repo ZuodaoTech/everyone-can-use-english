@@ -15,7 +15,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@renderer/*": ["./src/renderer/*"],
-      "@main/*": ["./src/main/*"]
+      "@main/*": ["./src/main/*"],
+      "@commands": ["./src/commands"]
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

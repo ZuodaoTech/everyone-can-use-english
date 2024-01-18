@@ -12,6 +12,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@main": path.resolve(__dirname, "./src/main"),
+      "@commands": path.resolve(__dirname, "./src/commands"),
     },
   },
   build: {

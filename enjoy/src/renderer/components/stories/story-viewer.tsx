@@ -48,6 +48,8 @@ export const StoryViewer = (props: {
 
   const handleSelectionChanged = debounce(() => {
     const selection = document.getSelection();
+    if (!ref.current?.contains(selection.anchorNode.parentElement)) return;
+
     const word = selection
       .toString()
       .trim()
@@ -73,7 +75,7 @@ export const StoryViewer = (props: {
     return () => {
       document.removeEventListener("selectionchange", handleSelectionChanged);
     };
-  }, [story]);
+  }, [story, ref]);
 
   useEffect(() => {
     const marker = new Mark(ref.current);
