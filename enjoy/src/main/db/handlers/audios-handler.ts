@@ -96,7 +96,6 @@ class AudiosHandler {
         });
       })
       .finally(() => {
-        logger.debug("clearing timeout");
         clearTimeout(timeout);
       });
   }

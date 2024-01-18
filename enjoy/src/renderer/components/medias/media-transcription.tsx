@@ -95,7 +95,7 @@ export const MediaTranscription = (props: {
           ) : (
             <PingPoint colorClassName="bg-mute" />
           )}
-          <span className="">{t("transcription")}</span>
+          <span className="capitalize">{t("transcript")}</span>
         </div>
         <AlertDialog>
           <AlertDialogTrigger asChild>
@@ -121,7 +121,6 @@ export const MediaTranscription = (props: {
             <AlertDialogFooter>
               <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
               <AlertDialogAction
-                className="bg-destructive"
                 onClick={regenerate}
               >
                 {t("transcribe")}
@@ -132,7 +131,7 @@ export const MediaTranscription = (props: {
       </div>
 
       {transcription?.result ? (
-        <ScrollArea ref={containerRef} className="flex-1">
+        <ScrollArea ref={containerRef} className="flex-1 px-2">
           {transcription.result.map((t, index) => (
             <div
               key={index}

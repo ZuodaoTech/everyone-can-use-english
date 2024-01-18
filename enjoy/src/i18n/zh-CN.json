@@ -266,6 +266,7 @@
   "allResources": "所有资源",
   "playbackRate": "播放速度",
   "transcription": "语音文本",
+  "transcript": "字幕",
   "regenerate": "重新生成",
   "holdAndSpeak": "按住并说话",
   "releaseToStop": "松开停止",
