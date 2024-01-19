@@ -1,3 +1,5 @@
+/** @format */
+
 import { useState, useEffect, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import {
@@ -16,24 +18,30 @@ import { useNavigate } from "react-router-dom";
 import { LoaderIcon } from "lucide-react";
 import { secondsToTimestamp } from "@renderer/lib/utils";
 
+enum DownloadType {
+  audio = "audio",
+  video = "video",
+}
 export const TedTalksSegment = () => {
   const navigate = useNavigate();
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [talks, setTalks] = useState<TedTalkType[]>([]);
   const [selectedTalk, setSelectedTalk] = useState<TedTalkType | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [submittingType, setSubmittingType] = useState<DownloadType | null>();
   const [downloadUrl, setDownloadUrl] = useState<{
     audio: string;
     video: string;
   }>();
 
-  const addToLibrary = (type: "audio" | "video") => {
+  const addToLibrary = (type: DownloadType) => {
     if (!downloadUrl) return;
     if (!selectedTalk) return;
 
     let url = downloadUrl.audio;
-    if (type === "video") url = downloadUrl.video;
+    if (type === DownloadType.video) url = downloadUrl.video;
     setSubmitting(true);
+    setSubmittingType(type);
 
     EnjoyApp.videos
       .create(url, {
@@ -49,6 +57,7 @@ export const TedTalksSegment = () => {
       })
       .finally(() => {
         setSubmitting(false);
+        setSubmittingType(null);
       });
   };
 
@@ -169,10 +178,11 @@ export const TedTalksSegment = () => {
               </Button>
               {downloadUrl.audio && (
                 <Button
-                  onClick={() => addToLibrary("audio")}
+                  onClick={() => addToLibrary(DownloadType.audio)}
                   disabled={submitting}
                 >
-                  {submitting && (
+                  {submittingType === DownloadType.audio && (
+
                     <LoaderIcon className="w-4 h-4 animate-spin mr-2" />
                   )}
                   {t("downloadAudio")}
@@ -180,10 +190,10 @@ export const TedTalksSegment = () => {
               )}
               {downloadUrl.video && (
                 <Button
-                  onClick={() => addToLibrary("video")}
+                  onClick={() => addToLibrary(DownloadType.video)}
                   disabled={submitting}
                 >
-                  {submitting && (
+                  {submittingType === DownloadType.video && (
                     <LoaderIcon className="w-4 h-4 animate-spin mr-2" />
                   )}
                   {t("downloadVideo")}
