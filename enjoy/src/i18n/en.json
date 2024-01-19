@@ -87,7 +87,7 @@
       "ttsBaseUrl": "TTS base URL",
       "notFound": "Conversation not found",
       "contentRequired": "Content required",
-      "failedToGenerateResponse": "Failed to generate response"
+      "failedToGenerateResponse": "Failed to generate response, please retry"
     },
     "pronunciationAssessment": {
       "pronunciationScore": "Pronunciation Score",

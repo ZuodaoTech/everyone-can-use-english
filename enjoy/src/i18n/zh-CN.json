@@ -87,7 +87,7 @@
       "ttsBaseUrl": "TTS 请求地址",
       "notFound": "未找到对话",
       "contentRequired": "对话内容不能为空",
-      "failedToGenerateResponse": "生成失败"
+      "failedToGenerateResponse": "生成失败，请重试"
     },
     "pronunciationAssessment": {
       "pronunciationScore": "发音得分",
@@ -156,6 +156,8 @@
   "autoCenter": "自动居中",
   "inlineCaption": "内联字幕",
   "autoScroll": "自动滚动",
+  "translate:": "翻译",
+  "displayIpa": "标注音标",
   "detail": "详情",
   "remove": "删除",
   "share": "分享",
