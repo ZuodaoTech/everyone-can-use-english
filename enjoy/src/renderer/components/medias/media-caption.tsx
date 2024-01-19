@@ -8,8 +8,8 @@ import {
   toast,
 } from "@renderer/components/ui";
 import { LookupResult } from "@renderer/components";
-import { LanguagesIcon, PlayIcon, LoaderIcon } from "lucide-react";
-import { translateCommand } from "@commands";
+import { LanguagesIcon, PlayIcon, LoaderIcon, SpeechIcon } from "lucide-react";
+import { translateCommand, ipaCommand } from "@commands";
 import {
   AppSettingsProviderContext,
   AISettingsProviderContext,
@@ -46,11 +46,60 @@ export const MediaCaption = (props: {
   }>();
   const [translation, setTranslation] = useState<string>();
   const [translating, setTranslating] = useState<boolean>(false);
+  const [displayTranslation, setDisplayTranslation] = useState<boolean>(false);
+
+  const [ipa, setIpa] = useState<{ word?: string; ipa?: string }[]>([]);
+  const [ipaGenerating, setIpaGenerating] = useState<boolean>(false);
+  const [displayIpa, setDisplayIpa] = useState<boolean>(false);
+
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
 
+  const toogleIPA = async () => {
+    if (ipaGenerating) return;
+
+    if (ipa.length > 0) {
+      setDisplayIpa(!displayIpa);
+      return;
+    }
+
+    const hash = md5.create();
+    hash.update(transcription.text);
+    const cacheKey = `ipa-${hash.hex()}`;
+    const cached = await EnjoyApp.cacheObjects.get(cacheKey);
+    if (cached) {
+      setIpa(cached);
+      return;
+    }
+
+    if (!openai?.key) {
+      toast.error(t("openaiApiKeyRequired"));
+      return;
+    }
+    setIpaGenerating(true);
+
+    ipaCommand(transcription.text, {
+      key: openai.key,
+    })
+      .then((result) => {
+        if (result?.words?.length > 0) {
+          setIpa(result.words);
+          EnjoyApp.cacheObjects.set(cacheKey, result.words);
+          setDisplayIpa(true);
+        }
+      })
+      .finally(() => {
+        setIpaGenerating(false);
+      });
+  };
+
   const translate = async () => {
     if (translating) return;
+
+    if (translation) {
+      setDisplayTranslation(!displayTranslation);
+      return;
+    }
 
     const hash = md5.create();
     hash.update(transcription.text);
@@ -74,6 +123,7 @@ export const MediaCaption = (props: {
         if (result) {
           setTranslation(result);
           EnjoyApp.cacheObjects.set(cacheKey, result);
+          setDisplayTranslation(true);
         }
       })
       .finally(() => {
@@ -102,7 +152,7 @@ export const MediaCaption = (props: {
         <div className="flex-1">
           <div className="flex flex-wrap">
             {(transcription.segments || []).map((w, index) => (
-              <span
+              <div
                 key={index}
                 className={`mr-1 cursor-pointer hover:bg-red-500/10 ${
                   index === activeIndex ? "text-red-500" : ""
@@ -123,28 +173,59 @@ export const MediaCaption = (props: {
                   if (onSeek) onSeek(w.offsets.from / 1000);
                 }}
               >
-                {w.text}
-              </span>
+                <div>{w.text}</div>
+                {displayIpa &&
+                  ipa.find(
+                    (i) =>
+                      i.word.trim() === w.text.replace(/[\.,?!]/g, "").trim()
+                  )?.ipa && (
+                    <div className="text-sm text-foreground/70 font-serif">
+                      {
+                        ipa.find(
+                          (i) =>
+                            i.word.trim() ===
+                            w.text.replace(/[\.,?!]/g, "").trim()
+                        )?.ipa
+                      }
+                    </div>
+                  )}
+              </div>
             ))}
           </div>
-          <div className="select-text py-2 text-sm text-foreground/70">
-            {translation}
-          </div>
+          {displayTranslation && translation && (
+            <div className="select-text py-2 text-sm text-foreground/70">
+              {translation}
+            </div>
+          )}
         </div>
 
-        <div className="">
+        <div className="flex items-center space-x-1">
           <Button
             data-tooltip-id="media-player-controls-tooltip"
             data-tooltip-content={t("translate")}
-            disabled={translating || Boolean(translation)}
+            disabled={translating}
             onClick={translate}
-            variant="ghost"
+            variant={displayTranslation ? "secondary" : "ghost"}
             size="icon"
           >
             {translating ? (
               <LoaderIcon className="w-4 h-4 animate-spin" />
             ) : (
               <LanguagesIcon className="w-4 h-4" />
+            )}
+          </Button>
+          <Button
+            data-tooltip-id="media-player-controls-tooltip"
+            data-tooltip-content={t("displayIpa")}
+            disabled={ipaGenerating}
+            onClick={toogleIPA}
+            variant={displayIpa ? "secondary" : "ghost"}
+            size="icon"
+          >
+            {ipaGenerating ? (
+              <LoaderIcon className="w-4 h-4 animate-spin" />
+            ) : (
+              <SpeechIcon className="w-4 h-4" />
             )}
           </Button>
         </div>
