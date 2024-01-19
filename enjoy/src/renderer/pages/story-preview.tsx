@@ -53,8 +53,8 @@ export default () => {
 
     webApi
       .createStory({
-        url: story.metadata?.url || story.url,
         ...story,
+        url: story.metadata?.url || story.url,
       } as CreateStoryParamsType)
       .then((story) => {
         navigate(`/stories/${story.id}`);
@@ -168,7 +168,7 @@ export default () => {
 
   useEffect(() => {
     if (readable) {
-      EnjoyApp.view.hide();
+      EnjoyApp.view.hide().catch(console.error);
     } else if (!loading) {
       const rect = containerRef.current.getBoundingClientRect();
       EnjoyApp.view.show({

@@ -1,9 +1,14 @@
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  AISettingsProviderContext,
+} from "@renderer/context";
 import { useState, useContext, useEffect } from "react";
 import { LoaderSpin, MeaningCard } from "@renderer/components";
 import { Button } from "@renderer/components/ui";
 import { t } from "i18next";
 import { XCircleIcon } from "lucide-react";
+import { toast } from "@renderer/components/ui";
+import { lookupCommand } from "@commands";
 
 export const LookupResult = (props: {
   word: string;
@@ -13,49 +18,70 @@ export const LookupResult = (props: {
   onResult?: (meaning: MeaningType) => void;
 }) => {
   const { word, context, sourceId, sourceType, onResult } = props;
-  const [timer, setTimer] = useState<NodeJS.Timeout>();
   const [result, setResult] = useState<LookupType>();
   const [loading, setLoading] = useState<boolean>(true);
   if (!word) return null;
 
   const { webApi } = useContext(AppSettingsProviderContext);
+  const { openai } = useContext(AISettingsProviderContext);
 
-  const lookup = (retries = 0) => {
+  const processLookup = async () => {
     if (!word) return;
-    if (retries > 3) {
-      setLoading(false);
-      return;
-    }
+    if (!loading) return;
 
-    retries += 1;
-    webApi
-      .lookup({
-        word,
-        context,
-        sourceId,
-        sourceType,
-      })
-      .then((res) => {
-        if (res?.meaning) {
-          setResult(res);
-          setLoading(false);
-          onResult && onResult(res.meaning);
-        } else {
-          // Retry after 1.5s
-          const _timeout = setTimeout(() => {
-            lookup(retries);
-          }, 1500);
-          setTimer(_timeout);
+    setLoading(true);
+    const lookup = await webApi.lookup({
+      word,
+      context,
+      sourceId,
+      sourceType,
+    });
+
+    if (lookup.meaning) {
+      setResult(lookup);
+      setLoading(false);
+      onResult && onResult(lookup.meaning);
+    } else {
+      if (!openai?.key) {
+        toast.error(t("openaiApiKeyRequired"));
+        return;
+      }
+
+      lookupCommand(
+        {
+          word,
+          context,
+          meaningOptions: lookup.meaningOptions,
+        },
+        {
+          key: openai.key,
         }
-      });
+      )
+        .then((res) => {
+          if (res.context_translation?.trim()) {
+            webApi
+              .updateLookup(lookup.id, {
+                meaning: res,
+                sourceId,
+                sourceType,
+              })
+              .then((lookup) => {
+                setResult(lookup);
+                onResult && onResult(lookup.meaning);
+              });
+          }
+        })
+        .catch((err) => {
+          toast.error(`${t("lookupFailed")}: ${err.message}`);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   useEffect(() => {
-    lookup();
-
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
+    processLookup();
   }, [word, context]);
 
   if (result?.meaning) {
@@ -95,14 +121,7 @@ export const LookupResult = (props: {
     <div className="px-4 py-2">
       <div className="font-bold mb-4">{word}</div>
       <div className="flex justify-center">
-        <Button
-          onClick={() => {
-            setLoading(true);
-            lookup();
-          }}
-          variant="default"
-          size="sm"
-        >
+        <Button onClick={processLookup} variant="default" size="sm">
           {t("retry")}
         </Button>
       </div>

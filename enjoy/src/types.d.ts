@@ -10,6 +10,7 @@ type SupportedLlmProviderType = "openai" | "googleGenerativeAi";
 type LlmProviderType = {
   key?: string;
   model?: string;
+  baseUrl?: string;
 };
 
 type DownloadStateType = {
@@ -92,6 +93,7 @@ type LookupType = {
   contextTranslation: string;
   status?: "pending" | "completed" | "failed";
   meaning?: MeaningType;
+  meaningOptions?: MeaningType[];
   createdAt: string;
   updatedAt: string;
 };

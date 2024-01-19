@@ -6,6 +6,10 @@ type StoryType = {
   metadata: {
     [key: string]: string;
   };
+  extraction?: {
+    words?: string[];
+    idioms?: string[];
+  };
   vocabulary?: string[];
   extracted?: boolean;
   starred?: boolean;
@@ -21,4 +25,8 @@ type CreateStoryParamsType = {
   metadata: {
     [key: string]: string;
   };
+  extraction?: {
+    words?: string[];
+    idioms?: string[];
+  }
 };

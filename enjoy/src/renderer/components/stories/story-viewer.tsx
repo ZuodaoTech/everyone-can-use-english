@@ -9,7 +9,7 @@ import {
   PopoverAnchor,
 } from "@renderer/components/ui";
 import { SelectionMenu } from "@renderer/components";
-import { debounce , uniq } from "lodash";
+import { debounce, uniq } from "lodash";
 import Mark from "mark.js";
 
 export const StoryViewer = (props: {
@@ -17,7 +17,7 @@ export const StoryViewer = (props: {
   marked?: boolean;
   meanings?: MeaningType[];
   setMeanings: (meanings: MeaningType[]) => void;
-  pendingLookups?: LookupType[];
+  pendingLookups?: Partial<LookupType>[];
   doc: any;
 }) => {
   const navigate = useNavigate();
@@ -48,6 +48,8 @@ export const StoryViewer = (props: {
 
   const handleSelectionChanged = debounce(() => {
     const selection = document.getSelection();
+    if (!ref.current?.contains(selection.anchorNode.parentElement)) return;
+
     const word = selection
       .toString()
       .trim()
@@ -73,17 +75,16 @@ export const StoryViewer = (props: {
     return () => {
       document.removeEventListener("selectionchange", handleSelectionChanged);
     };
-  }, [story]);
+  }, [story, ref]);
 
   useEffect(() => {
-    const words = uniq([
-      ...meanings.map((m) => m.word),
-      ...pendingLookups.map((l) => l.word),
-    ]);
-    if (words.length === 0) return;
-
     const marker = new Mark(ref.current);
     if (marked) {
+      const words = uniq([
+        ...meanings.map((m) => m.word),
+        ...pendingLookups.map((l) => l.word),
+      ]);
+      if (words.length === 0) return;
       marker.mark(words, {
         separateWordSearch: false,
         caseSensitive: false,
@@ -92,6 +93,10 @@ export const StoryViewer = (props: {
     } else {
       marker.unmark();
     }
+
+    return () => {
+      marker.unmark();
+    };
   }, [meanings, pendingLookups, marked]);
 
   return (

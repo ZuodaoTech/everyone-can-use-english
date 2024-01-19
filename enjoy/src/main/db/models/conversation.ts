@@ -297,6 +297,9 @@ export class Conversation extends Model<Conversation> {
 
     const replies = await Promise.all(
       response.map(async (generation) => {
+        if (!generation?.text) {
+          throw new Error(t("models.conversation.failedToGenerateResponse"));
+        }
         return await Message.create(
           {
             conversationId: this.id,

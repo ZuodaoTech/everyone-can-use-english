@@ -172,6 +172,17 @@ export class Client {
     return this.api.post("/api/lookups", decamelizeKeys(params));
   }
 
+  updateLookup(
+    id: string,
+    params: {
+      meaning: Partial<MeaningType>;
+      sourceId?: string;
+      sourceType?: string;
+    }
+  ): Promise<LookupType> {
+    return this.api.put(`/api/lookups/${id}`, decamelizeKeys(params));
+  }
+
   lookupInBatch(
     lookups: {
       word: string;
@@ -185,8 +196,17 @@ export class Client {
     });
   }
 
-  extractVocabularyFromStory(storyId: string): Promise<string[]> {
-    return this.api.post(`/api/stories/${storyId}/extract_vocabulary`);
+  extractVocabularyFromStory(
+    storyId: string,
+    extraction?: {
+      words?: string[];
+      idioms?: string[];
+    }
+  ): Promise<string[]> {
+    return this.api.post(
+      `/api/stories/${storyId}/extract_vocabulary`,
+      decamelizeKeys({ extraction })
+    );
   }
 
   storyMeanings(
@@ -194,7 +214,6 @@ export class Client {
     params?: {
       page?: number;
       items?: number;
-      storyId?: string;
     }
   ): Promise<
     {

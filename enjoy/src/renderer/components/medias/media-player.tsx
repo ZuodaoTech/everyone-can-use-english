@@ -538,6 +538,7 @@ export const MediaPlayer = (props: {
       {initialized && (
         <div className={recordButtonVisible && mediaProvider ? "" : "hidden"}>
           <MediaCaption
+            key={`${mediaId}-${currentSegmentIndex}`}
             mediaId={mediaId}
             mediaType={mediaType}
             currentTime={currentTime}
