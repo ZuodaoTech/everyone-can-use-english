@@ -1,3 +1,5 @@
+/** @format */
+
 import { useState, useEffect, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import {
@@ -26,6 +28,7 @@ export const TedTalksSegment = () => {
   const [talks, setTalks] = useState<TedTalkType[]>([]);
   const [selectedTalk, setSelectedTalk] = useState<TedTalkType | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [submittingType, setSubmittingType] = useState<DownloadType | null>();
   const [downloadUrl, setDownloadUrl] = useState<{
     audio: string;
     video: string;
@@ -38,6 +41,7 @@ export const TedTalksSegment = () => {
     let url = downloadUrl.audio;
     if (type === DownloadType.video) url = downloadUrl.video;
     setSubmitting(true);
+    setSubmittingType(type);
 
     EnjoyApp.videos
       .create(url, {
@@ -53,6 +57,7 @@ export const TedTalksSegment = () => {
       })
       .finally(() => {
         setSubmitting(false);
+        setSubmittingType(null);
       });
   };
 
@@ -176,7 +181,8 @@ export const TedTalksSegment = () => {
                   onClick={() => addToLibrary(DownloadType.audio)}
                   disabled={submitting}
                 >
-                  {submitting && (
+                  {submittingType === DownloadType.audio && (
+
                     <LoaderIcon className="w-4 h-4 animate-spin mr-2" />
                   )}
                   {t("downloadAudio")}
@@ -187,7 +193,7 @@ export const TedTalksSegment = () => {
                   onClick={() => addToLibrary(DownloadType.video)}
                   disabled={submitting}
                 >
-                  {submitting && (
+                  {submittingType === DownloadType.video && (
                     <LoaderIcon className="w-4 h-4 animate-spin mr-2" />
                   )}
                   {t("downloadVideo")}
