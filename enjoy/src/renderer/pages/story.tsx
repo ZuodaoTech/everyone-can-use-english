@@ -82,6 +82,7 @@ export default () => {
           try {
             const res = await extractStoryCommand(story.content, {
               key: openai.key,
+              modelName: openai.model,
             });
 
             words = res.words || [];

@@ -35,6 +35,7 @@ export const ipaCommand = async (
   const fixParser = OutputFixingParser.fromLLM(
     new ChatOpenAI({
       openAIApiKey: key,
+      modelName,
       temperature: 0,
       configuration: {
         baseURL: baseUrl,
