@@ -16,6 +16,10 @@ import { useNavigate } from "react-router-dom";
 import { LoaderIcon } from "lucide-react";
 import { secondsToTimestamp } from "@renderer/lib/utils";
 
+enum DownloadType {
+  audio = "audio",
+  video = "video",
+}
 export const TedTalksSegment = () => {
   const navigate = useNavigate();
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
