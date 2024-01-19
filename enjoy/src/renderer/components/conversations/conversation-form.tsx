@@ -30,7 +30,10 @@ import {
   Textarea,
 } from "@renderer/components/ui";
 import { useState, useEffect, useContext } from "react";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  AISettingsProviderContext,
+} from "@renderer/context";
 import { LoaderIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -68,6 +71,7 @@ export const ConversationForm = (props: {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [providers, setProviders] = useState<any>(LLM_PROVIDERS);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { openai } = useContext(AISettingsProviderContext);
   const navigate = useNavigate();
 
   const refreshProviders = async () => {
@@ -94,6 +98,15 @@ export const ConversationForm = (props: {
     refreshProviders();
   }, []);
 
+  const defaultConfig = conversationDefaultConfiguration;
+  if (defaultConfig.engine === "openai" && openai) {
+    defaultConfig.configuration.model = openai.model;
+    defaultConfig.configuration.baseUrl = openai.baseUrl;
+  }
+  if (defaultConfig.configuration.tts.engine === "openai" && openai) {
+    defaultConfig.configuration.tts.baseUrl = openai.baseUrl;
+  }
+
   const form = useForm<z.infer<typeof conversationFormSchema>>({
     resolver: zodResolver(conversationFormSchema),
     // @ts-ignore
@@ -109,10 +122,10 @@ export const ConversationForm = (props: {
           },
         }
       : {
-          name: conversationDefaultConfiguration.name,
-          engine: conversationDefaultConfiguration.engine,
+          name: defaultConfig.name,
+          engine: defaultConfig.engine,
           configuration: {
-            ...conversationDefaultConfiguration.configuration,
+            ...defaultConfig.configuration,
           },
         },
   });
@@ -697,6 +710,7 @@ const conversationDefaultConfiguration = {
   engine: "openai",
   configuration: {
     model: "gpt-4-1106-preview",
+    baseUrl: "",
     roleDefinition: `你是我的英语教练。
 请将我的话改写成英文。
 不需要逐字翻译。

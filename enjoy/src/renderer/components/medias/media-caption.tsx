@@ -90,6 +90,7 @@ export const MediaCaption = (props: {
 
     ipaCommand(transcription.text, {
       key: openai.key,
+      modelName: openai.model,
     })
       .then((result) => {
         if (result?.words?.length > 0) {
@@ -128,6 +129,7 @@ export const MediaCaption = (props: {
 
     translateCommand(transcription.text, {
       key: openai.key,
+      modelName: openai.model,
     })
       .then((result) => {
         if (result) {

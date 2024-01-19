@@ -55,6 +55,7 @@ export const LookupResult = (props: {
         },
         {
           key: openai.key,
+          modelName: openai.model,
         }
       )
         .then((res) => {
