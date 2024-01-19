@@ -2,13 +2,23 @@ import { useState, useEffect, useContext } from "react";
 import { cn } from "@renderer/lib/utils";
 import {
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Popover,
   PopoverContent,
   PopoverAnchor,
   toast,
 } from "@renderer/components/ui";
 import { LookupResult } from "@renderer/components";
-import { LanguagesIcon, PlayIcon, LoaderIcon, SpeechIcon } from "lucide-react";
+import {
+  ChevronDownIcon,
+  LanguagesIcon,
+  PlayIcon,
+  LoaderIcon,
+  SpeechIcon,
+} from "lucide-react";
 import { translateCommand, ipaCommand } from "@commands";
 import {
   AppSettingsProviderContext,
@@ -199,36 +209,31 @@ export const MediaCaption = (props: {
           )}
         </div>
 
-        <div className="flex items-center space-x-1">
-          <Button
-            data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("translate")}
-            disabled={translating}
-            onClick={translate}
-            variant={displayTranslation ? "secondary" : "ghost"}
-            size="icon"
-          >
-            {translating ? (
-              <LoaderIcon className="w-4 h-4 animate-spin" />
-            ) : (
-              <LanguagesIcon className="w-4 h-4" />
-            )}
-          </Button>
-          <Button
-            data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("displayIpa")}
-            disabled={ipaGenerating}
-            onClick={toogleIPA}
-            variant={displayIpa ? "secondary" : "ghost"}
-            size="icon"
-          >
-            {ipaGenerating ? (
-              <LoaderIcon className="w-4 h-4 animate-spin" />
-            ) : (
-              <SpeechIcon className="w-4 h-4" />
-            )}
-          </Button>
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <ChevronDownIcon className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem disabled={translating} onClick={translate}>
+              {translating ? (
+                <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <LanguagesIcon className="w-4 h-4 mr-2" />
+              )}
+              <span>{t("translate")}</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled={ipaGenerating} onClick={toogleIPA}>
+              {ipaGenerating ? (
+                <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <SpeechIcon className="w-4 h-4 mr-2" />
+              )}
+              <span>{t("displayIpa")}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <Popover
