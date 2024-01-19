@@ -1380,7 +1380,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/core@npm:~0.1.13, @langchain/core@npm:~0.1.16, @langchain/core@npm:~0.1.5":
+"@langchain/core@npm:~0.1.13, @langchain/core@npm:~0.1.16":
   version: 0.1.16
   resolution: "@langchain/core@npm:0.1.16"
   dependencies:
@@ -1396,6 +1396,24 @@ __metadata:
     zod: "npm:^3.22.4"
     zod-to-json-schema: "npm:^3.22.3"
   checksum: 5c366f55fe499b536ca5f4a0e0347928b20b5cefca1122bb2eecbbcb565755958251ab36ea4e5acebe5efbe6b7765c74fc0fc07beb65b184d896f8391c23c877
+  languageName: node
+  linkType: hard
+
+"@langchain/core@npm:~0.1.5":
+  version: 0.1.11
+  resolution: "@langchain/core@npm:0.1.11"
+  dependencies:
+    ansi-styles: "npm:^5.0.0"
+    camelcase: "npm:6"
+    decamelize: "npm:1.2.0"
+    js-tiktoken: "npm:^1.0.8"
+    langsmith: "npm:~0.0.48"
+    ml-distance: "npm:^4.0.0"
+    p-queue: "npm:^6.6.2"
+    p-retry: "npm:4"
+    uuid: "npm:^9.0.0"
+    zod: "npm:^3.22.3"
+  checksum: 1029e53e166e023e1aa4c3f427e9df0f4b2229ce07e20103b6093cd9852dcffd4147cb9522ae978ca173049e8c453bc268a7c395343d694dc140d6666c7fb866
   languageName: node
   linkType: hard
 
@@ -3580,10 +3598,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/validator@npm:^13.11.8, @types/validator@npm:^13.7.17":
+"@types/validator@npm:^13.11.8":
   version: 13.11.8
   resolution: "@types/validator@npm:13.11.8"
   checksum: 9e96e96b25a4ed2234fa081b9d99bcbd29e8714b7c48446ff386e3c47ea9c3bb482b5d03e4cb68da636c80c63350aee06a71f7c74bd7a8e3a08a1d75ec817d8a
+  languageName: node
+  linkType: hard
+
+"@types/validator@npm:^13.7.17":
+  version: 13.11.7
+  resolution: "@types/validator@npm:13.11.7"
+  checksum: 9ca2a047d6e7c1d718c6dd28b12d6d893c4ac2acdb8a557b8d448dab17aaa044e92c7a13c8476601078f4c907ed66259e3b20525f7fa849378fbaf53a971d574
   languageName: node
   linkType: hard
 
