@@ -15,11 +15,11 @@
 - [第八章：叮嘱](./book/chapter8.md)
 - [后记](./book/end.md)
 
-## 应用
+---
 
-- [Enjoy App](./enjoy/README.md)
+# Enjoy App
 
-## * 开发者
+## \* 开发者
 
 ### 本地启动
 
@@ -34,21 +34,16 @@ yarn start:enjoy
 yarn make:enjoy
 ```
 
-## * 普通小白用户
+## \* 普通小白用户
 
-方法一：这是**最直接简单的方法**是去 [releases 页面](https://github.com/xiaolai/everyone-can-use-english/tags)下载相应的安装文件。
+方法一：**最直接简单的方法**是去 [releases 页面](https://github.com/xiaolai/everyone-can-use-english/tags)下载相应的安装文件。
 
 > 如果你需要**详细下载操作指导**[点这里](find-compatible-software-version.md)
-
 
 > [!TIP]
 > 如果你是普通用户，并不想为本项目提供代码，按上面的操作就可以正常使用 Enjoy APP ！
 
-
-
 方法二：如果想要随时**试用更新版本**的话，请按一下步骤操作。
-
-
 
 ### MacOS 用户
 
@@ -60,7 +55,7 @@ yarn make:enjoy
 
    ```bash
    brew install nvm
-   nvm install 20.5.1 
+   nvm install 20.5.1
    brew install yarn
    ```
 
@@ -83,8 +78,6 @@ yarn make:enjoy
    yarn start:enjoy
    ```
 
-
-
 ### Windows 用户
 
 系统要求：Windows 10 22H2 以上版本、 [Windows PowerShell 5.1](https://aka.ms/wmf5download) 以上版本、互联网网络连接正常。
@@ -94,9 +87,8 @@ yarn make:enjoy
    > tips 1 ：在最新的 Windows 11 上，你看不到 “PowerShell” 选项，只有 “终端”
    >
    > tips 2 ：不能用管理员权限运行 PowerShell ，否则会导致 Scoop 安装失败
-   >
 
-2. 在弹出的 PowerShell 窗口中依次执行运行以下命令，安装Scoop：
+2. 在弹出的 PowerShell 窗口中依次执行运行以下命令，安装 Scoop：
 
    ```powershell
    # 设置 PowerShell 执行策略
@@ -147,17 +139,16 @@ yarn make:enjoy
    yarn start:enjoy
    ```
 
+### 更新 Enjoy
 
-
-## 更新Enjoy
-
-更新并使用最新版本的Enjoy：
+更新并使用最新版本的 Enjoy：
 
 1. 将仓库最新内容拉取到本地，在命令行工具中执行：
 
    ```bash
    git pull
    ```
+
    结果显示为：
 
    ```shell
@@ -170,8 +161,34 @@ yarn make:enjoy
    yarn install
    ```
 
-2. 运行Enjoy APP：
+2. 运行 Enjoy APP：
 
    ```shell
    yarn start:enjoy
    ```
+
+## FAQ（常见问题）
+
+**Q: 我该下载哪个版本？**
+
+> A: [点这里](find-compatible-software-version.md) 有详细说明。
+
+**Q: 如何确定安装成功了？**
+
+> A: 目前 Enjoy 的核心功能依赖两个服务，一个是 Whisper，用来语音转文字，在 软件设置 -> STT 语音转文字 -> 检查，提示工作正常表示 Whisper 安装成功。另一个是 FFmpeg，在 软件设置 -> FFmpeg -> 查找，确保提示成功。
+
+**Q: 我用 Mac，安装不了 FFmpeg**
+
+> A: 安装 FFmpeg 要先安装 [Homebrew](https://brew.sh)，如果安装失败，多数是因为网络问题导致 Github 服务连接失败。
+
+**Q: 无法语音转文字**
+
+> A: 先确定选择了哪个模型，如果选了 medium 以上的，试试换一个小一点的模型，电脑配置不够高可能会导致失败。如果是相对老版本 Windows 用户，可以是缺少一些依赖，到 [这里](https://aka.ms/vs/17/release/vc_redist.x64.exe) 下载这个软件然后安装，再重新打开 Enjoy 试试。
+
+**Q: 智能助手一直转圈**
+
+> A: 绝大多数是网络问题，请确保网络环境能正常访问 OpenAI 接口。如果网络有困难，请等待后续提供其他更易用的方案。
+
+**Q: 还有 bug，怎么办？**
+
+> A: 可以提 [Issue](https://github.com/xiaolai/everyone-can-use-english/issues/new)，也可以 Mixin 开发者（Mixin ID: 1051445）。
