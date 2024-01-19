@@ -9,6 +9,7 @@ import downloader from "@main/downloader";
 import storage from "@main/storage";
 import readdirp from "readdirp";
 import { t } from "i18next";
+import { uniq } from "lodash";
 
 const logger = log.scope("ffmpeg");
 export default class FfmpegWrapper {
@@ -35,13 +36,14 @@ export default class FfmpegWrapper {
   }
 
   checkCommand(): Promise<boolean> {
+    const sampleFile = path.join(__dirname, "samples", "jfk.wav");
     return new Promise((resolve, _reject) => {
-      this.ffmpeg.getAvailableFormats((err, formats) => {
+      this.ffmpeg.input(sampleFile).getAvailableFormats((err, _formats) => {
         if (err) {
           logger.error("Command not valid:", err);
           resolve(false);
         } else {
-          logger.info("Command valid, available formats:", formats);
+          logger.info("Command valid, available formats");
           resolve(true);
         }
       });
@@ -365,7 +367,20 @@ export const discoverFfmpeg = async () => {
   let ffmpegPath: string;
   let ffprobePath: string;
   const libraryFfmpegPath = path.join(settings.libraryPath(), "ffmpeg");
-  const scanDirs = [...COMMAND_SCAN_DIR[platform], libraryFfmpegPath];
+
+  let scanDirs = [...COMMAND_SCAN_DIR[platform], libraryFfmpegPath];
+
+  const currentFfmpegPath = settings.ffmpegConfig().ffmpegPath as string;
+  const currentFfprobePath = settings.ffmpegConfig().ffprobePath as string;
+
+  if (currentFfmpegPath) {
+    scanDirs.push(path.dirname(currentFfmpegPath));
+  }
+  if (currentFfprobePath) {
+    scanDirs.push(path.dirname(currentFfprobePath));
+  }
+
+  scanDirs = uniq(scanDirs);
 
   await Promise.all(
     scanDirs.map(async (dir: string) => {
@@ -425,6 +440,8 @@ export const discoverFfmpeg = async () => {
 
 export const COMMAND_SCAN_DIR: { [key: string]: string[] } = {
   darwin: [
+    "/usr/bin",
+    "/usr/local/bin",
     "/Applications",
     process.env.HOME + "/Applications",
     "/opt/homebrew/bin",
