@@ -171,7 +171,7 @@ yarn make:enjoy
 
 **Q: 我该下载哪个版本？**
 
-A: [点这里](find-compatible-software-version.md) 有详细说明。
+> A: [点这里](find-compatible-software-version.md) 有详细说明。
 
 **Q: 如何确定安装成功了？**
 
