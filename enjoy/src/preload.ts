@@ -339,6 +339,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     downloadModel: (name: string) => {
       return ipcRenderer.invoke("whisper-download-model", name);
     },
+    check: () => {
+      return ipcRenderer.invoke("whisper-check");
+    },
     transcribe: (
       blob: { type: string; arrayBuffer: ArrayBuffer },
       prompt?: string
@@ -406,5 +409,5 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     save: (id: string, data: WaveFormDataType) => {
       return ipcRenderer.invoke("waveforms-save", id, data);
     },
-  }
+  },
 });

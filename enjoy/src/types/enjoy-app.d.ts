@@ -173,6 +173,7 @@ type EnjoyAppType = {
   whisper: {
     availableModels: () => Promise<string[]>;
     downloadModel: (name: string) => Promise<any>;
+    check: () => Promise<boolean>;
     transcribe: (
       blob: { type: string; arrayBuffer: ArrayBuffer },
       prompt?: string
