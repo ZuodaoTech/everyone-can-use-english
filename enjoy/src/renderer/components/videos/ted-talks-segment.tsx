@@ -31,12 +31,12 @@ export const TedTalksSegment = () => {
     video: string;
   }>();
 
-  const addToLibrary = (type: "audio" | "video") => {
+  const addToLibrary = (type: DownloadType) => {
     if (!downloadUrl) return;
     if (!selectedTalk) return;
 
     let url = downloadUrl.audio;
-    if (type === "video") url = downloadUrl.video;
+    if (type === DownloadType.video) url = downloadUrl.video;
     setSubmitting(true);
 
     EnjoyApp.videos
@@ -173,7 +173,7 @@ export const TedTalksSegment = () => {
               </Button>
               {downloadUrl.audio && (
                 <Button
-                  onClick={() => addToLibrary("audio")}
+                  onClick={() => addToLibrary(DownloadType.audio)}
                   disabled={submitting}
                 >
                   {submitting && (
@@ -184,7 +184,7 @@ export const TedTalksSegment = () => {
               )}
               {downloadUrl.video && (
                 <Button
-                  onClick={() => addToLibrary("video")}
+                  onClick={() => addToLibrary(DownloadType.video)}
                   disabled={submitting}
                 >
                   {submitting && (
