@@ -27,7 +27,11 @@ export const FfmpegCheck = () => {
     EnjoyApp.ffmpeg.discover().then((config) => {
       setScanResult(config);
       if (config.ffmpegPath && config.ffprobePath) {
-        toast.success(t("ffmpegFound"));
+        toast.success(
+          t("ffmpegFoundAt", {
+            path: [config.ffmpegPath, config.ffprobePath].join(", "),
+          })
+        );
         refreshFfmpegConfig();
       } else {
         toast.error(t("ffmpegNotFound"));
