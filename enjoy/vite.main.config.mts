@@ -52,6 +52,10 @@ export default defineConfig({
           src: "src/main/db/migrations/*",
           dest: "migrations",
         },
+        {
+          src: "samples/*",
+          dest: "samples",
+        },
       ],
     }),
   ],

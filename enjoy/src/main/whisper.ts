@@ -17,6 +17,51 @@ class Whipser {
 
   constructor() {}
 
+  async check() {
+    const sampleFile = path.join(__dirname, "samples", "jfk.wav");
+    const tmpDir = settings.cachePath();
+    const outputFile = path.join(tmpDir, "jfk.json");
+    return new Promise((resolve, reject) => {
+      const commands = [
+        `"${this.binMain}"`,
+        `--file "${sampleFile}"`,
+        `--model "${settings.whisperModelPath()}"`,
+        "--output-json",
+        `--output-file "${path.join(tmpDir, "jfk")}"`,
+      ];
+      logger.debug(`Running command: ${commands.join(" ")}`);
+      exec(
+        commands.join(" "),
+        {
+          timeout: PROCESS_TIMEOUT,
+        },
+        (error, stdout, stderr) => {
+          if (error) {
+            logger.error("error", error);
+          }
+
+          if (stderr) {
+            logger.error("stderr", stderr);
+          }
+
+          if (stdout) {
+            logger.debug(stdout);
+          }
+
+          if (fs.existsSync(outputFile)) {
+            resolve(true);
+          } else {
+            reject(
+              error ||
+                new Error(stderr || "Whisper check failed: unknown error")
+                  .message
+            );
+          }
+        }
+      );
+    });
+  }
+
   async transcribeBlob(
     blob: { type: string; arrayBuffer: ArrayBuffer },
     prompt?: string
@@ -197,6 +242,15 @@ class Whipser {
       downloader.download(model.url, {
         webContents: event.sender,
         savePath: path.join(settings.whisperModelsPath(), model.name),
+      });
+    });
+
+    ipcMain.handle("whisper-check", async (event) => {
+      return this.check().catch((err) => {
+        event.sender.send("on-notification", {
+          type: "error",
+          message: err.message,
+        });
       });
     });
 
