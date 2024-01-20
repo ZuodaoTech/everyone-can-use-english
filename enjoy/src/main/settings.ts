@@ -7,7 +7,6 @@ import os from "os";
 import commandExists from "command-exists";
 import log from "electron-log";
 import * as i18n from "i18next";
-import { WHISPER_MODELS_OPTIONS, PROCESS_TIMEOUT } from "@/constants";
 
 const logger = log.scope("settings");
 
