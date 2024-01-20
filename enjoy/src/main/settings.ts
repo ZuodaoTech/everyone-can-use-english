@@ -166,15 +166,6 @@ export default {
       return settings.setSync(provider, config);
     });
 
-    ipcMain.handle("settings-get-ffmpeg-config", (_event) => {
-      return ffmpegConfig();
-    });
-
-    ipcMain.handle("settings-set-ffmpeg-config", (_event, config) => {
-      settings.setSync("ffmpeg.ffmpegPath", config.ffmpegPath);
-      settings.setSync("ffmpeg.ffprobePath", config.ffrobePath);
-    });
-
     ipcMain.handle("settings-get-language", (_event) => {
       return language();
     });

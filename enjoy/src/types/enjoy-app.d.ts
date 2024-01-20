@@ -77,8 +77,6 @@ type EnjoyAppType = {
       provider: SupportedLlmProviderType,
       LlmProviderType
     ) => Promise<void>;
-    getFfmpegConfig: () => Promise<FfmpegConfigType>;
-    setFfmpegConfig: (config: FfmpegConfigType) => Promise<void>;
     getLanguage: () => Promise<string>;
     switchLanguage: (language: string) => Promise<void>;
   };
@@ -182,6 +180,8 @@ type EnjoyAppType = {
     ) => Promise<{ file: string; content: string }>;
   };
   ffmpeg: {
+    config: () => Promise<FfmpegConfigType>;
+    setConfig: (config: FfmpegConfigType) => Promise<FfmpegConfigType>;
     download: () => Promise<FfmpegConfigType>;
     check: () => Promise<boolean>;
     discover: () => Promise<{

@@ -88,7 +88,7 @@ export const AppSettingsProvider = ({
   };
 
   const fetchFfmpegConfig = async () => {
-    const config = await EnjoyApp.settings.getFfmpegConfig();
+    const config = await EnjoyApp.ffmpeg.config();
     setFfmegConfig(config);
   };
 

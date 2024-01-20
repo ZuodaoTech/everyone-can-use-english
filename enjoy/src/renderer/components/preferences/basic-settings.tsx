@@ -221,7 +221,7 @@ const FfmpegSettings = () => {
   const [editing, setEditing] = useState(false);
 
   const refreshFfmpegConfig = async () => {
-    EnjoyApp.settings.getFfmpegConfig().then((config) => {
+    EnjoyApp.ffmpeg.config().then((config) => {
       setFfmegConfig(config);
     });
   };
@@ -235,13 +235,13 @@ const FfmpegSettings = () => {
     if (!path) return;
 
     if (path.includes("ffmpeg")) {
-      EnjoyApp.settings.setFfmpegConfig({
+      EnjoyApp.ffmpeg.setConfig({
         ...ffmpegConfig,
         ffmpegPath: path,
       });
       refreshFfmpegConfig();
     } else if (path.includes("ffprobe")) {
-      EnjoyApp.settings.setFfmpegConfig({
+      EnjoyApp.ffmpeg.setConfig({
         ...ffmpegConfig,
         ffprobePath: path,
       });
