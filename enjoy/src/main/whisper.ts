@@ -2,7 +2,6 @@ import { ipcMain } from "electron";
 import settings from "@main/settings";
 import path from "path";
 import { WHISPER_MODELS_OPTIONS, PROCESS_TIMEOUT } from "@/constants";
-import Ffmpeg from "@main/ffmpeg";
 import { exec } from "child_process";
 import fs from "fs-extra";
 import log from "electron-log/main";
@@ -125,35 +124,42 @@ class Whipser {
 
   async transcribeBlob(
     blob: { type: string; arrayBuffer: ArrayBuffer },
-    prompt?: string
-  ) {
-    const filename = `${Date.now()}.wav`;
-    const format = blob.type.split("/")[1];
-    const tempfile = path.join(settings.cachePath(), `${Date.now()}.${format}`);
-    await fs.outputFile(tempfile, Buffer.from(blob.arrayBuffer));
-    const wavFile = path.join(settings.cachePath(), filename);
+    options?: {
+      prompt?: string;
+      group?: boolean;
+    }
+  ): Promise<
+    TranscriptionSegmentType[] | TranscriptionResultSegmentGroupType[]
+  > {
+    const { prompt, group = false } = options || {};
 
-    const ffmpeg = new Ffmpeg();
-    await ffmpeg.convertToWav(tempfile, wavFile);
+    const format = blob.type.split("/")[1];
+
+    if (format !== "wav") {
+      throw new Error("Only wav format is supported");
+    }
+
+    const tempfile = path.join(settings.cachePath(), `${Date.now()}.${format}`);
+
     const extra = [];
     if (prompt) {
       extra.push(`--prompt "${prompt.replace(/"/g, '\\"')}"`);
     }
-    const { transcription } = await this.transcribe(wavFile, {
+    const { transcription } = await this.transcribe(tempfile, {
       force: true,
       extra,
     });
-    const content = transcription
-      .map((t: TranscriptionSegmentType) => t.text)
-      .join(" ")
-      .trim();
 
-    return {
-      file: wavFile,
-      content,
-    };
+    if (group) {
+      return this.groupTranscription(transcription);
+    } else {
+      return transcription;
+    }
   }
 
+  /* Ensure the file is in wav format
+   * and 16kHz sample rate
+   */
   async transcribe(
     file: string,
     options: {
@@ -172,15 +178,9 @@ class Whipser {
       return fs.readJson(outputFile);
     }
 
-    const ffmpeg = new Ffmpeg();
-    const waveFile = await ffmpeg.prepareForWhisper(
-      file,
-      path.join(tmpDir, filename + ".wav")
-    );
-
     const command = [
       `"${this.binMain}"`,
-      `--file "${waveFile}"`,
+      `--file "${file}"`,
       `--model "${this.currentModel()}"`,
       "--output-json",
       `--output-file "${path.join(tmpDir, filename)}"`,
@@ -220,7 +220,9 @@ class Whipser {
     });
   }
 
-  groupTranscription(transcription: TranscriptionSegmentType[]) {
+  groupTranscription(
+    transcription: TranscriptionSegmentType[]
+  ): TranscriptionResultSegmentGroupType[] {
     const generateGroup = (group?: TranscriptionSegmentType[]) => {
       if (!group || group.length === 0) return;
 

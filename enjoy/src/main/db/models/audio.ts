@@ -189,9 +189,11 @@ export class Audio extends Model<Audio> {
 
   @AfterCreate
   static transcribeAsync(audio: Audio) {
-    setTimeout(() => {
-      audio.transcribe();
-    }, 500);
+    if (settings.ffmpegConfig().ready) {
+      setTimeout(() => {
+        audio.transcribe();
+      }, 500);
+    }
   }
 
   @AfterCreate

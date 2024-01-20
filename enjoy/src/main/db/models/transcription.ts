@@ -19,6 +19,8 @@ import log from "electron-log/main";
 import { Client } from "@/api";
 import { WEB_API_URL, PROCESS_TIMEOUT } from "@/constants";
 import settings from "@main/settings";
+import Ffmpeg from "@main/ffmpeg";
+import path from "path";
 
 const logger = log.scope("db/models/transcription");
 const webApi = new Client({
@@ -86,6 +88,8 @@ export class Transcription extends Model<Transcription> {
 
   // STT using whisper
   async process(options: { force?: boolean } = {}) {
+    if (!settings.ffmpegConfig().ready) return;
+
     if (this.getDataValue("state") === "processing") return;
     const { force = false } = options;
 
@@ -104,10 +108,20 @@ export class Transcription extends Model<Transcription> {
     }
 
     try {
+      const ffmpeg = new Ffmpeg();
+      const tmpDir = settings.cachePath();
+      const wavFile = await ffmpeg.prepareForWhisper(
+        filePath,
+        path.join(
+          tmpDir,
+          path.basename(filePath, path.extname(filePath)) + ".wav"
+        )
+      );
+
       await this.update({
         state: "processing",
       });
-      const { model, transcription } = await whisper.transcribe(filePath, {
+      const { model, transcription } = await whisper.transcribe(wavFile, {
         force,
         extra: [
           "--split-on-word",

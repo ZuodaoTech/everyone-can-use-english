@@ -210,9 +210,11 @@ export class Video extends Model<Video> {
 
   @AfterCreate
   static transcribeAsync(video: Video) {
-    setTimeout(() => {
-      video.transcribe();
-    }, 500);
+    if (settings.ffmpegConfig().ready) {
+      setTimeout(() => {
+        video.transcribe();
+      }, 500);
+    }
   }
 
   @AfterCreate
