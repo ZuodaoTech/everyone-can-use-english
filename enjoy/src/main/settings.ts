@@ -68,20 +68,6 @@ const whisperConfig = (): WhisperConfigType => {
   };
 };
 
-const llamaModelsPath = () => {
-  const dir = path.join(libraryPath(), "llama", "models");
-  fs.ensureDirSync(dir);
-
-  return dir;
-};
-
-const llamaModelPath = () => {
-  return path.join(
-    llamaModelsPath(),
-    settings.getSync("llama.model") as string
-  );
-};
-
 const userDataPath = () => {
   const userData = path.join(
     libraryPath(),
@@ -146,14 +132,6 @@ export default {
       settings.setSync("whisper.model", model);
     });
 
-    ipcMain.handle("settings-set-llama-model", (_event, model) => {
-      settings.setSync("whisper.model", model);
-    });
-
-    ipcMain.handle("settings-get-llama-models-path", (_event) => {
-      return llamaModelsPath();
-    });
-
     ipcMain.handle("settings-get-user-data-path", (_event) => {
       return userDataPath();
     });
@@ -176,8 +154,6 @@ export default {
   },
   cachePath,
   libraryPath,
-  llamaModelsPath,
-  llamaModelPath,
   userDataPath,
   dbPath,
   whisperConfig,
