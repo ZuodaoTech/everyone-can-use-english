@@ -9,13 +9,12 @@ type AppSettingsProviderState = {
   initialized: boolean;
   version?: string;
   libraryPath?: string;
-  whisperModelsPath?: string;
-  whisperModel?: string;
   login?: (user: UserType) => void;
   logout?: () => void;
   setLibraryPath?: (path: string) => Promise<void>;
-  setWhisperModel?: (name: string) => void;
+  setWhisperModel?: (name: string) => Promise<void>;
   ffmpegConfig?: FfmpegConfigType;
+  whisperConfig?: WhisperConfigType;
   setFfmegConfig?: (config: FfmpegConfigType) => void;
   EnjoyApp?: EnjoyAppType;
   language?: "en" | "zh-CN";
@@ -42,8 +41,7 @@ export const AppSettingsProvider = ({
   const [webApi, setWebApi] = useState<Client>(null);
   const [user, setUser] = useState<UserType | null>(null);
   const [libraryPath, setLibraryPath] = useState("");
-  const [whisperModelsPath, setWhisperModelsPath] = useState<string>("");
-  const [whisperModel, setWhisperModel] = useState<string>(null);
+  const [whisperConfig, setWhisperConfig] = useState<WhisperConfigType>(null);
   const [ffmpegConfig, setFfmegConfig] = useState<FfmpegConfigType>(null);
   const [language, setLanguage] = useState<"en" | "zh-CN">();
   const EnjoyApp = window.__ENJOY_APP__;
@@ -52,18 +50,18 @@ export const AppSettingsProvider = ({
     fetchVersion();
     fetchUser();
     fetchLibraryPath();
-    fetchModel();
     fetchFfmpegConfig();
+    fetchWhisperConfig();
     fetchLanguage();
   }, []);
 
   useEffect(() => {
-    updatePaths();
+    fetchWhisperConfig();
   }, [libraryPath]);
 
   useEffect(() => {
     validate();
-  }, [user, libraryPath, whisperModel, ffmpegConfig]);
+  }, [user, libraryPath]);
 
   useEffect(() => {
     if (!apiUrl) return;
@@ -92,6 +90,11 @@ export const AppSettingsProvider = ({
   const fetchFfmpegConfig = async () => {
     const config = await EnjoyApp.settings.getFfmpegConfig();
     setFfmegConfig(config);
+  };
+
+  const fetchWhisperConfig = async () => {
+    const config = await EnjoyApp.whisper.config();
+    setWhisperConfig(config);
   };
 
   const fetchVersion = async () => {
@@ -140,29 +143,14 @@ export const AppSettingsProvider = ({
     setLibraryPath(dir);
   };
 
-  const updatePaths = async () => {
-    const _path = await EnjoyApp.settings.getWhisperModelsPath();
-    setWhisperModelsPath(_path);
-  };
-
-  const fetchModel = async () => {
-    const whisperModel = await EnjoyApp.settings.getWhisperModel();
-    setWhisperModel(whisperModel);
-  };
-
-  const fetchApiUrl = async () => {
-    return apiUrl;
-  };
-
-  const setModelHandler = async (name: string) => {
-    await EnjoyApp.settings.setWhisperModel(name);
-    setWhisperModel(name);
+  const setWhisperModel = async (name: string) => {
+    return EnjoyApp.whisper
+      .setModel(name)
+      .then((config) => setWhisperConfig(config));
   };
 
   const validate = async () => {
-    setInitialized(
-      !!(user && libraryPath && whisperModel && ffmpegConfig?.ready)
-    );
+    setInitialized(Boolean(user && libraryPath));
   };
 
   return (
@@ -178,10 +166,9 @@ export const AppSettingsProvider = ({
         logout,
         libraryPath,
         setLibraryPath: setLibraryPathHandler,
-        whisperModelsPath,
-        whisperModel,
-        setWhisperModel: setModelHandler,
+        setWhisperModel,
         ffmpegConfig,
+        whisperConfig,
         setFfmegConfig,
         initialized,
       }}

@@ -71,9 +71,6 @@ type EnjoyAppType = {
     setLibrary: (library: string) => Promise<void>;
     getUser: () => Promise<UserType>;
     setUser: (user: UserType) => Promise<void>;
-    getWhisperModel: () => Promise<string>;
-    setWhisperModel: (model: string) => Promise<void>;
-    getWhisperModelsPath: () => Promise<string>;
     getUserDataPath: () => Promise<string>;
     getLlm: (provider: SupportedLlmProviderType) => Promise<LlmProviderType>;
     setLlm: (
@@ -176,10 +173,10 @@ type EnjoyAppType = {
     createSpeech: (id: string, configuration?: any) => Promise<SpeechType>;
   };
   whisper: {
-    availableModels: () => Promise<string[]>;
-    downloadModel: (name: string) => Promise<any>;
+    config: () => Promise<WhisperConfigType>;
     check: () => Promise<boolean>;
-    transcribe: (
+    setModel: (model: string) => Promise<WhisperConfigType>;
+    transcribeBlob: (
       blob: { type: string; arrayBuffer: ArrayBuffer },
       prompt?: string
     ) => Promise<{ file: string; content: string }>;
@@ -195,6 +192,7 @@ type EnjoyAppType = {
   };
   download: {
     onState: (callback: (event, state) => void) => void;
+    start: (url: string, savePath?: string) => void;
     cancel: (filename: string) => void;
     cancelAll: () => void;
     dashboard: () => Promise<DownloadStateType[]>;

@@ -33,7 +33,7 @@ type ModelType = {
 };
 
 export const WhisperModelOptionsPanel = () => {
-  const { whisperModelsPath } = useContext(AppSettingsProviderContext);
+  const { libraryPath } = useContext(AppSettingsProviderContext);
 
   return (
     <>
@@ -54,7 +54,7 @@ export const WhisperModelOptionsPanel = () => {
             <InfoIcon className="mr-1.5 w-4 h-4" />
             <span className="flex-1">
               {t("yourModelsWillBeDownloadedTo", {
-                path: whisperModelsPath,
+                path: libraryPath,
               })}
             </span>
           </div>
@@ -67,20 +67,22 @@ export const WhisperModelOptionsPanel = () => {
 export const WhisperModelOptions = () => {
   const [selectingModel, setSelectingModel] = useState<ModelType | null>(null);
   const [availableModels, setAvailableModels] = useState<ModelType[]>([]);
-  const { whisperModelsPath, whisperModel, setWhisperModel, EnjoyApp } =
-    useContext(AppSettingsProviderContext);
+  const { whisperConfig, setWhisperModel, EnjoyApp } = useContext(
+    AppSettingsProviderContext
+  );
 
   useEffect(() => {
     updateAvailableModels();
 
     return EnjoyApp.download.removeAllListeners();
-  }, [whisperModelsPath]);
+  }, [whisperConfig]);
 
   const updateAvailableModels = async () => {
-    const models = await EnjoyApp.whisper.availableModels();
+    const models = whisperConfig.availableModels;
     const options: ModelType[] = WHISPER_MODELS_OPTIONS;
+
     options.forEach((o) => {
-      o.downloaded = models.findIndex((m) => m === o.name) > -1;
+      o.downloaded = models.findIndex((m) => m.name === o.name) > -1;
     });
     setAvailableModels(options);
   };
@@ -88,7 +90,10 @@ export const WhisperModelOptions = () => {
   const downloadModel = async () => {
     if (!selectingModel) return;
 
-    EnjoyApp.whisper.downloadModel(selectingModel.name);
+    const model = whisperConfig.availableModels.find(
+      (m) => m.name === selectingModel.name
+    );
+    EnjoyApp.download.start(model.url, model.savePath);
     listenToDownloadState();
 
     setSelectingModel(null);
@@ -118,11 +123,15 @@ export const WhisperModelOptions = () => {
             <div
               key={option.name}
               className={`cursor-pointer hover:bg-secondary px-4 py-2 rounded ${
-                whisperModel === option.name ? "bg-secondary" : ""
+                whisperConfig.model === option.name ? "bg-secondary" : ""
               }`}
               onClick={() => {
                 if (option.downloaded) {
-                  setWhisperModel(option.name);
+                  toast.promise(setWhisperModel(option.name), {
+                    loading: t("checkingWhisperModel"),
+                    success: t("whisperModelIsWorkingGood"),
+                    error: t("whisperModelIsNotWorking"),
+                  });
                 } else if (option.downloadState) {
                   toast.warning(t("downloading", { file: option.name }));
                 } else {
@@ -135,7 +144,9 @@ export const WhisperModelOptions = () => {
                 {option.downloaded ? (
                   <CheckCircle
                     className={`w-4 ${
-                      whisperModel === option.name ? "text-green-500" : ""
+                      whisperConfig.model === option.name
+                        ? "text-green-500"
+                        : ""
                     }`}
                   />
                 ) : (

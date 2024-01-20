@@ -93,6 +93,12 @@ class Downloader {
   }
 
   registerIpcHandlers() {
+    ipcMain.handle("download-start", (event, url, savePath) => {
+      this.download(url, {
+        webContents: event.sender,
+        savePath,
+      });
+    });
     ipcMain.handle("download-cancel", (_event, filename) => {
       this.cancel(filename);
     });

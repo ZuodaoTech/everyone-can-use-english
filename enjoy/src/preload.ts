@@ -340,20 +340,20 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   whisper: {
-    availableModels: () => {
-      return ipcRenderer.invoke("whisper-available-models");
+    config: () => {
+      return ipcRenderer.invoke("whisper-config");
     },
-    downloadModel: (name: string) => {
-      return ipcRenderer.invoke("whisper-download-model", name);
+    setModel: (model: string) => {
+      return ipcRenderer.invoke("whisper-set-model", model);
     },
     check: () => {
       return ipcRenderer.invoke("whisper-check");
     },
-    transcribe: (
+    transcribeBlob: (
       blob: { type: string; arrayBuffer: ArrayBuffer },
       prompt?: string
     ) => {
-      return ipcRenderer.invoke("whisper-transcribe", blob, prompt);
+      return ipcRenderer.invoke("whisper-transcribe-blob", blob, prompt);
     },
   },
   ffmpeg: {
@@ -371,6 +371,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     onState: (
       callback: (event: IpcRendererEvent, state: DownloadStateType) => void
     ) => ipcRenderer.on("download-on-state", callback),
+    start: (url: string, savePath?: string) => {
+      ipcRenderer.invoke("download-start", url, savePath);
+    },
     cancel: (filename: string) => {
       ipcRenderer.invoke("download-cancel", filename);
     },

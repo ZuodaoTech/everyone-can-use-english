@@ -7,6 +7,7 @@ import os from "os";
 import commandExists from "command-exists";
 import log from "electron-log";
 import * as i18n from "i18next";
+import { WHISPER_MODELS_OPTIONS, PROCESS_TIMEOUT } from "@/constants";
 
 const logger = log.scope("settings");
 
@@ -57,18 +58,14 @@ const dbPath = () => {
   return path.join(userDataPath(), dbName);
 };
 
-const whisperModelsPath = () => {
-  const dir = path.join(libraryPath(), "whisper", "models");
-  fs.ensureDirSync(dir);
-
-  return dir;
-};
-
-const whisperModelPath = () => {
-  return path.join(
-    whisperModelsPath(),
-    settings.getSync("whisper.model") as string
-  );
+const whisperConfig = (): WhisperConfigType => {
+  return {
+    availableModels: settings.getSync(
+      "whisper.availableModels"
+    ) as WhisperConfigType["availableModels"],
+    modelsPath: settings.getSync("whisper.modelsPath") as string,
+    model: settings.getSync("whisper.model") as string,
+  };
 };
 
 const llamaModelsPath = () => {
@@ -149,10 +146,6 @@ export default {
       settings.setSync("whisper.model", model);
     });
 
-    ipcMain.handle("settings-get-whisper-models-path", (_event) => {
-      return whisperModelsPath();
-    });
-
     ipcMain.handle("settings-set-llama-model", (_event, model) => {
       settings.setSync("whisper.model", model);
     });
@@ -192,12 +185,11 @@ export default {
   },
   cachePath,
   libraryPath,
-  whisperModelsPath,
-  whisperModelPath,
   llamaModelsPath,
   llamaModelPath,
   userDataPath,
   dbPath,
+  whisperConfig,
   ffmpegConfig,
   language,
   switchLanguage,
