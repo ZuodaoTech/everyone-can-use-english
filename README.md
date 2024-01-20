@@ -39,6 +39,7 @@ yarn make:enjoy
 方法一：**最直接简单的方法**是去 [releases 页面](https://github.com/xiaolai/everyone-can-use-english/tags)下载相应的安装文件。
 
 > 如果你需要**详细下载操作指导**[点这里](find-compatible-software-version.md)
+> 
 > Enjoy APP 第一次使用的**设置**及**使用指南**[点这里](enjoy-software-setup-guide.md)
 
 > [!TIP]
