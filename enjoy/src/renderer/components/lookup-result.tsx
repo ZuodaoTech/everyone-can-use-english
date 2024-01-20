@@ -56,6 +56,7 @@ export const LookupResult = (props: {
         {
           key: openai.key,
           modelName: openai.model,
+          baseUrl: openai.baseUrl,
         }
       )
         .then((res) => {
