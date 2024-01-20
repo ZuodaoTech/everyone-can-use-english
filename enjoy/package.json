@@ -63,6 +63,8 @@
     "zx": "^7.2.3"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.10",
+    "@ffmpeg/util": "^0.12.1",
     "@hookform/resolvers": "^3.3.4",
     "@langchain/google-genai": "^0.0.7",
     "@mozilla/readability": "^0.5.0",
