@@ -31,6 +31,13 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     version,
   },
+  system: {
+    preferences: {
+      mediaAccess: (mediaType: "microphone" | "camera") => {
+        return ipcRenderer.invoke("system-preferences-media-access", mediaType);
+      },
+    },
+  },
   providers: {
     audible: {
       categories: () => {

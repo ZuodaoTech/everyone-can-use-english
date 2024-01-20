@@ -1,6 +1,7 @@
 import { t } from "i18next";
-import { MicIcon } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { MicIcon, LockIcon } from "lucide-react";
+import { useState, useEffect, useRef, useContext } from "react";
+import { AppSettingsProviderContext } from "@renderer/context";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record";
 import WaveSurfer from "wavesurfer.js";
 import { cn } from "@renderer/lib/utils";
@@ -16,6 +17,19 @@ export const RecordButton = (props: {
   const { className, disabled, onRecordBegin, onRecordEnd } = props;
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const [access, setAccess] = useState<boolean>(false);
+
+  const askForMediaAccess = () => {
+    EnjoyApp.system.preferences.mediaAccess("microphone").then((access) => {
+      if (access) {
+        setAccess(true);
+      } else {
+        setAccess(false);
+        toast.warning(t("noMicrophoneAccess"));
+      }
+    });
+  };
 
   useHotkeys(["command+alt+r", "control+alt+r"], () => {
     if (disabled) return;
@@ -41,6 +55,10 @@ export const RecordButton = (props: {
     };
   }, [isRecording]);
 
+  useEffect(() => {
+    askForMediaAccess();
+  }, []);
+
   return (
     <div
       className={cn(
@@ -55,7 +73,11 @@ export const RecordButton = (props: {
       )}
       onClick={() => {
         if (disabled) return;
-        setIsRecording((isRecording) => !isRecording);
+        if (access) {
+          setIsRecording((isRecording) => !isRecording);
+        } else {
+          askForMediaAccess();
+        }
       }}
     >
       {isRecording ? (
@@ -82,6 +104,9 @@ export const RecordButton = (props: {
       ) : (
         <div className="flex items-center  justify-center space-x-4 h-10">
           <MicIcon className="w-10 h-10" />
+          {!access && (
+            <LockIcon className="w-4 h-4 absolute right-3 bottom-4" />
+          )}
         </div>
       )}
     </div>
