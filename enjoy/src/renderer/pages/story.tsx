@@ -83,6 +83,7 @@ export default () => {
             const res = await extractStoryCommand(story.content, {
               key: openai.key,
               modelName: openai.model,
+              baseUrl: openai.baseUrl,
             });
 
             words = res.words || [];
@@ -219,6 +220,8 @@ export default () => {
         },
         {
           key: openai.key,
+          modelName: openai.model,
+          baseUrl: openai.baseUrl,
         }
       )
         .then((res) => {
