@@ -87,8 +87,16 @@ class TranscriptionsHandler {
 
   private async process(
     event: IpcMainEvent,
-    where: WhereOptions<Attributes<Transcription>>
+    where: WhereOptions<Attributes<Transcription>>,
+    options?: {
+      force?: boolean;
+      blob: {
+        type: string;
+        arrayBuffer: ArrayBuffer;
+      };
+    }
   ) {
+    const { force = true, blob } = options || {};
     return Transcription.findOne({
       where: {
         ...where,
@@ -107,7 +115,7 @@ class TranscriptionsHandler {
         }, 1000 * 10);
 
         transcription
-          .process({ force: true })
+          .process({ force, wavFileBlob: blob })
           .catch((err) => {
             event.sender.send("on-notification", {
               type: "error",

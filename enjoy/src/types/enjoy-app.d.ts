@@ -206,7 +206,7 @@ type EnjoyAppType = {
   };
   transcriptions: {
     findOrCreate: (params: any) => Promise<TranscriptionType>;
-    process: (params: any) => Promise<void>;
+    process: (params: any, options: any) => Promise<void>;
     update: (id: string, params: any) => Promise<void>;
   };
   waveforms: {

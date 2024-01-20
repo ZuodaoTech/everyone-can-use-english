@@ -49,12 +49,18 @@ export const MediaTranscription = (props: {
 
   const regenerate = async () => {
     const blob = await transcode();
-    console.log(blob);
-    return;
-    EnjoyApp.transcriptions.process({
-      targetId: mediaId,
-      targetType: mediaType,
-    });
+    EnjoyApp.transcriptions.process(
+      {
+        targetId: mediaId,
+        targetType: mediaType,
+      },
+      {
+        blob: {
+          type: blob.type.split(";")[0],
+          arrayBuffer: await blob.arrayBuffer(),
+        },
+      }
+    );
   };
 
   const transcode = async () => {

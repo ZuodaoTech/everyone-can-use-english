@@ -94,8 +94,6 @@ export class Transcription extends Model<Transcription> {
       wavFileBlob?: { type: string; arrayBuffer: ArrayBuffer };
     } = {}
   ) {
-    if (!settings.ffmpegConfig().ready) return;
-
     if (this.getDataValue("state") === "processing") return;
 
     const { force = false, wavFileBlob } = options;

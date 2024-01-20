@@ -387,8 +387,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findOrCreate: (params: any) => {
       return ipcRenderer.invoke("transcriptions-find-or-create", params);
     },
-    process: (params: any) => {
-      return ipcRenderer.invoke("transcriptions-process", params);
+    process: (params: any, options: any) => {
+      return ipcRenderer.invoke("transcriptions-process", params, options);
     },
     update: (id: string, params: any) => {
       return ipcRenderer.invoke("transcriptions-update", id, params);
