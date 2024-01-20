@@ -10,6 +10,11 @@ type EnjoyAppType = {
     openDevTools: () => Promise<void>;
     version: string;
   };
+  system: {
+    preferences: {
+      mediaAccess: (mediaType: "microphone") => Promise<boolean>;
+    };
+  };
   providers: {
     audible: {
       bestsellers: (params?: {

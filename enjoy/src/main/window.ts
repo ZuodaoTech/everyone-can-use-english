@@ -6,6 +6,7 @@ import {
   ipcMain,
   shell,
   dialog,
+  systemPreferences,
 } from "electron";
 import path from "path";
 import db from "@main/db";
@@ -264,6 +265,25 @@ main.init = () => {
   ipcMain.handle("app-open-dev-tools", () => {
     mainWindow.webContents.openDevTools();
   });
+
+  ipcMain.handle(
+    "system-preferences-media-access",
+    async (_event, mediaType: "microphone" | "camera") => {
+      if (process.platform === "linux") return true;
+      if (process.platform === "win32")
+        return systemPreferences.getMediaAccessStatus(mediaType) === "granted";
+
+      if (process.platform === "darwin") {
+        const status = systemPreferences.getMediaAccessStatus(mediaType);
+        if (status !== "granted") {
+          const result = await systemPreferences.askForMediaAccess(mediaType);
+          return result;
+        } else {
+          return true;
+        }
+      }
+    }
+  );
 
   // Shell
   ipcMain.handle("shell-open-external", (_event, url) => {
