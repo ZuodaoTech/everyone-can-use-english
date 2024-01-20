@@ -21,6 +21,7 @@ import { WEB_API_URL, PROCESS_TIMEOUT } from "@/constants";
 import settings from "@main/settings";
 import Ffmpeg from "@main/ffmpeg";
 import path from "path";
+import fs from "fs-extra";
 
 const logger = log.scope("db/models/transcription");
 const webApi = new Client({
@@ -87,11 +88,17 @@ export class Transcription extends Model<Transcription> {
   }
 
   // STT using whisper
-  async process(options: { force?: boolean } = {}) {
+  async process(
+    options: {
+      force?: boolean;
+      wavFileBlob?: { type: string; arrayBuffer: ArrayBuffer };
+    } = {}
+  ) {
     if (!settings.ffmpegConfig().ready) return;
 
     if (this.getDataValue("state") === "processing") return;
-    const { force = false } = options;
+
+    const { force = false, wavFileBlob } = options;
 
     logger.info(`[${this.getDataValue("id")}]`, "Start to transcribe.");
 
@@ -107,17 +114,30 @@ export class Transcription extends Model<Transcription> {
       throw new Error("No file path.");
     }
 
-    try {
+    let wavFile: string;
+
+    if (wavFileBlob) {
+      const format = wavFileBlob.type.split("/")[1];
+
+      if (format !== "wav") {
+        throw new Error("Only wav format is supported");
+      }
+
+      wavFile = path.join(settings.cachePath(), `${Date.now()}.${format}`);
+      await fs.outputFile(wavFile, Buffer.from(wavFileBlob.arrayBuffer));
+    } else {
       const ffmpeg = new Ffmpeg();
       const tmpDir = settings.cachePath();
-      const wavFile = await ffmpeg.prepareForWhisper(
+      wavFile = await ffmpeg.prepareForWhisper(
         filePath,
         path.join(
           tmpDir,
           path.basename(filePath, path.extname(filePath)) + ".wav"
         )
       );
+    }
 
+    try {
       await this.update({
         state: "processing",
       });

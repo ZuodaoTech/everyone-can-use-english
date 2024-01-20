@@ -140,6 +140,7 @@ class Whipser {
     }
 
     const tempfile = path.join(settings.cachePath(), `${Date.now()}.${format}`);
+    await fs.outputFile(tempfile, Buffer.from(blob.arrayBuffer));
 
     const extra = [];
     if (prompt) {

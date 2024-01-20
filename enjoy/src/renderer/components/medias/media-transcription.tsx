@@ -20,22 +20,25 @@ import {
   DbProviderContext,
   AppSettingsProviderContext,
 } from "@renderer/context";
+import { fetchFile } from "@ffmpeg/util";
 
 export const MediaTranscription = (props: {
   transcription: TranscriptionType;
   mediaId: string;
   mediaType: "Audio" | "Video";
   mediaName?: string;
+  mediaUrl: string;
   currentSegmentIndex?: number;
   onSelectSegment?: (index: number) => void;
 }) => {
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, ffmpeg } = useContext(AppSettingsProviderContext);
   const {
     transcription,
     mediaId,
     mediaType,
     mediaName,
+    mediaUrl,
     currentSegmentIndex,
     onSelectSegment,
   } = props;
@@ -45,10 +48,34 @@ export const MediaTranscription = (props: {
     useState<SegementRecordingStatsType>([]);
 
   const regenerate = async () => {
+    const blob = await transcode();
+    console.log(blob);
+    return;
     EnjoyApp.transcriptions.process({
       targetId: mediaId,
       targetType: mediaType,
     });
+  };
+
+  const transcode = async () => {
+    const uri = new URL(mediaUrl);
+    const input = uri.pathname.split("/").pop();
+    const output = input.replace(/\.[^/.]+$/, ".wav");
+    console.log(ffmpeg.loaded);
+    await ffmpeg.writeFile(input, await fetchFile(mediaUrl));
+    await ffmpeg.exec([
+      "-i",
+      input,
+      "-ar",
+      "16000",
+      "-ac",
+      "1",
+      "-c:a",
+      "pcm_s16le",
+      output,
+    ]);
+    const data = await ffmpeg.readFile(output);
+    return new Blob([data], { type: "audio/wav" });
   };
 
   const fetchSegmentStats = async () => {
@@ -120,9 +147,7 @@ export const MediaTranscription = (props: {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={regenerate}
-              >
+              <AlertDialogAction onClick={regenerate}>
                 {t("transcribe")}
               </AlertDialogAction>
             </AlertDialogFooter>

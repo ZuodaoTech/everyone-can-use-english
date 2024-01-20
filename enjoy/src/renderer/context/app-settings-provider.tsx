@@ -1,7 +1,9 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useRef } from "react";
 import { WEB_API_URL } from "@/constants";
 import { Client } from "@/api";
 import i18n from "@renderer/i18n";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { fetchFile, toBlobURL } from "@ffmpeg/util";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -14,6 +16,7 @@ type AppSettingsProviderState = {
   setLibraryPath?: (path: string) => Promise<void>;
   setWhisperModel?: (name: string) => Promise<void>;
   ffmpegConfig?: FfmpegConfigType;
+  ffmpeg?: FFmpeg;
   whisperConfig?: WhisperConfigType;
   setFfmegConfig?: (config: FfmpegConfigType) => void;
   EnjoyApp?: EnjoyAppType;
@@ -44,7 +47,10 @@ export const AppSettingsProvider = ({
   const [whisperConfig, setWhisperConfig] = useState<WhisperConfigType>(null);
   const [ffmpegConfig, setFfmegConfig] = useState<FfmpegConfigType>(null);
   const [language, setLanguage] = useState<"en" | "zh-CN">();
+  const [ffmpeg, setFfmpeg] = useState<FFmpeg>(null);
   const EnjoyApp = window.__ENJOY_APP__;
+
+  const ffmpegRef = useRef(new FFmpeg());
 
   useEffect(() => {
     fetchVersion();
@@ -53,6 +59,7 @@ export const AppSettingsProvider = ({
     fetchFfmpegConfig();
     fetchWhisperConfig();
     fetchLanguage();
+    loadFfmpegWASM();
   }, []);
 
   useEffect(() => {
@@ -73,6 +80,33 @@ export const AppSettingsProvider = ({
       })
     );
   }, [user, apiUrl]);
+
+  const loadFfmpegWASM = async () => {
+    const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm";
+    ffmpegRef.current.on("log", ({ message }) => {
+      console.log(message);
+    });
+
+    const coreURL = await toBlobURL(
+      `${baseURL}/ffmpeg-core.js`,
+      "text/javascript"
+    );
+    const wasmURL = await toBlobURL(
+      `${baseURL}/ffmpeg-core.wasm`,
+      "application/wasm"
+    );
+    const workerURL = await toBlobURL(
+      `${baseURL}/ffmpeg-core.worker.js`,
+      "text/javascript"
+    );
+
+    await ffmpegRef.current.load({
+      coreURL,
+      wasmURL,
+      workerURL,
+    });
+    setFfmpeg(ffmpegRef.current);
+  };
 
   const fetchLanguage = async () => {
     const language = await EnjoyApp.settings.getLanguage();
@@ -168,6 +202,7 @@ export const AppSettingsProvider = ({
         setLibraryPath: setLibraryPathHandler,
         setWhisperModel,
         ffmpegConfig,
+        ffmpeg,
         whisperConfig,
         setFfmegConfig,
         initialized,
