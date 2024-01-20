@@ -171,6 +171,8 @@
   "error": "错误",
   "errors": "错误",
   "cancel": "取消",
+  "cancelled": "已取消",
+  "canceling": "正在取消",
   "confirm": "确认",
   "continue": "继续",
   "save": "保存",

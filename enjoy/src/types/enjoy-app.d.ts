@@ -193,7 +193,7 @@ type EnjoyAppType = {
   download: {
     onState: (callback: (event, state) => void) => void;
     start: (url: string, savePath?: string) => void;
-    cancel: (filename: string) => void;
+    cancel: (filename: string) => Promise<void>;
     cancelAll: () => void;
     dashboard: () => Promise<DownloadStateType[]>;
     removeAllListeners: () => void;

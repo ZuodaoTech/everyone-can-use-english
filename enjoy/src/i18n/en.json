@@ -171,6 +171,8 @@
   "error": "Error",
   "errors": "Errors",
   "cancel": "Cancel",
+  "cancelled": "Cancelled",
+  "canceling": "Canceling",
   "confirm": "Confirm",
   "continue": "continue",
   "save": "Save",
