@@ -2,7 +2,7 @@
 
 看完这篇指南，你将学会如何在 GitHub 下载软件。
 
-[Windwos 用户点这里](#Windows用户下载以及安装)
+[Windows 用户点这里](#Windows用户下载以及安装)
 
 ### MacOS用户下载以及安装
 
