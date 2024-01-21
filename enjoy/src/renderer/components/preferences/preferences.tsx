@@ -1,10 +1,17 @@
 import { t } from "i18next";
-import { Button, ScrollArea } from "@renderer/components/ui";
+import { Button, ScrollArea, Separator } from "@renderer/components/ui";
 import {
-  BasicSettings,
-  AdvancedSettings,
   About,
   Hotkeys,
+  UserSettings,
+  LanguageSettings,
+  LibrarySettings,
+  FfmpegSettings,
+  WhisperSettings,
+  OpenaiSettings,
+  GoogleGenerativeAiSettings,
+  ResetSettings,
+  ResetAllSettings,
 } from "@renderer/components";
 import { useState } from "react";
 
@@ -13,12 +20,42 @@ export const Preferences = () => {
     {
       value: "basic",
       label: t("basicSettingsShort"),
-      component: () => <BasicSettings />,
+      component: () => (
+        <div className="">
+          <div className="font-semibold mb-4 capitilized">
+            {t("basicSettings")}
+          </div>
+          <UserSettings />
+          <Separator />
+          <LanguageSettings />
+          <Separator />
+          <LibrarySettings />
+          <Separator />
+          <FfmpegSettings />
+          <Separator />
+          <WhisperSettings />
+          <Separator />
+          <OpenaiSettings />
+          <Separator />
+          <GoogleGenerativeAiSettings />
+          <Separator />
+        </div>
+      ),
     },
     {
       value: "advanced",
       label: t("advancedSettingsShort"),
-      component: () => <AdvancedSettings />,
+      component: () => (
+        <>
+          <div className="font-semibold mb-4 capitilized">
+            {t("advancedSettings")}
+          </div>
+          <ResetSettings />
+          <Separator />
+          <ResetAllSettings />
+          <Separator />
+        </>
+      ),
     },
     {
       value: "hotkeys",

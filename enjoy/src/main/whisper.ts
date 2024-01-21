@@ -59,12 +59,12 @@ class Whipser {
             logger.debug("stdout", stdout);
           }
 
-          if (error) {
+          if (stderr || stdout) {
+            resolve(true);
+          } else {
             reject(
               error || new Error("Whisper check failed: unknown error").message
             );
-          } else {
-            resolve(true);
           }
         }
       );
