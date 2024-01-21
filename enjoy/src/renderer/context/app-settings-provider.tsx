@@ -82,7 +82,7 @@ export const AppSettingsProvider = ({
   }, [user, apiUrl]);
 
   const loadFfmpegWASM = async () => {
-    const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
+    const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm";
     ffmpegRef.current.on("log", ({ message }) => {
       console.log(message);
     });
@@ -95,15 +95,15 @@ export const AppSettingsProvider = ({
       `${baseURL}/ffmpeg-core.wasm`,
       "application/wasm"
     );
-    // const workerURL = await toBlobURL(
-    //   `${baseURL}/ffmpeg-core.worker.js`,
-    //   "text/javascript"
-    // );
+    const workerURL = await toBlobURL(
+      `${baseURL}/ffmpeg-core.worker.js`,
+      "text/javascript"
+    );
 
     await ffmpegRef.current.load({
       coreURL,
       wasmURL,
-      // workerURL,
+      workerURL,
     });
     setFfmpeg(ffmpegRef.current);
   };

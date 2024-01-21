@@ -183,6 +183,7 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
           <MediaTranscription
             mediaId={video.id}
             mediaType="Video"
+            mediaUrl={video.src}
             mediaName={video.name}
             transcription={transcription}
             currentSegmentIndex={currentSegmentIndex}

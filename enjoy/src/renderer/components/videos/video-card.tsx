@@ -2,7 +2,10 @@ import { Link } from "react-router-dom";
 import { cn } from "@renderer/lib/utils";
 import { VideoIcon } from "lucide-react";
 
-export const VideoCard = (props: { video: Partial<VideoType>; className?: string }) => {
+export const VideoCard = (props: {
+  video: Partial<VideoType>;
+  className?: string;
+}) => {
   const { video, className } = props;
 
   return (
@@ -19,6 +22,7 @@ export const VideoCard = (props: { video: Partial<VideoType>; className?: string
             <VideoIcon className="w-12 h-12" />
             <img
               src={video.coverUrl}
+              crossOrigin="anonymous"
               className="absolute top-0 left-0 hover:scale-105 object-cover w-full h-full bg-cover bg-center"
             />
           </div>
