@@ -5822,7 +5822,7 @@ __metadata:
     react-i18next: "npm:^14.0.0"
     react-markdown: "npm:^9.0.1"
     react-router-dom: "npm:^6.21.3"
-    react-tooltip: "npm:^5.25.2"
+    react-tooltip: "npm:^5.26.0"
     reflect-metadata: "npm:^0.2.1"
     rimraf: "npm:^5.0.5"
     sequelize: "npm:^6.35.2"
@@ -10815,16 +10815,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-tooltip@npm:^5.25.2":
-  version: 5.25.2
-  resolution: "react-tooltip@npm:5.25.2"
+"react-tooltip@npm:^5.26.0":
+  version: 5.26.0
+  resolution: "react-tooltip@npm:5.26.0"
   dependencies:
     "@floating-ui/dom": "npm:^1.0.0"
     classnames: "npm:^2.3.0"
   peerDependencies:
     react: ">=16.14.0"
     react-dom: ">=16.14.0"
-  checksum: 11eadec3590fdad0ae3e3d575e65418415aa2780fa117842721dc0d05b2d03b63e99f19514637b21e8e2a8fdc2f647af149f9e050a6d0b4b4e809f1b401cbaa6
+  checksum: 7bae47df14958be169f969e7d5e56d6ad9f294acedd6905c58af44d1e2c6123b4debb373f94f68c25a9d92256668970803e2ebcf3f9e7243786d2923866a43b9
   languageName: node
   linkType: hard
 
