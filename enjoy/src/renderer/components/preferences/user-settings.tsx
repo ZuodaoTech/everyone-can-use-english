@@ -27,7 +27,7 @@ export const UserSettings = () => {
       <div className="">
         <div className="flex items-center space-x-2">
           <Avatar>
-            <AvatarImage src={user.avatarUrl} />
+            <AvatarImage crossOrigin="anonymous" src={user.avatarUrl} />
             <AvatarFallback className="text-xl">
               {user.name[0].toUpperCase()}
             </AvatarFallback>

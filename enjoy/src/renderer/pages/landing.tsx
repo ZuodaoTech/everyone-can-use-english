@@ -6,7 +6,6 @@ import {
   LoginForm,
   ChooseLibraryPathInput,
   WhisperModelOptionsPanel,
-  FfmpegCheck,
 } from "@renderer/components";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { CheckCircle2Icon } from "lucide-react";
@@ -33,7 +32,7 @@ export default () => {
         setCurrentStepValid(!!libraryPath);
         break;
       case 3:
-        setCurrentStepValid(!!whisperConfig.model);
+        setCurrentStepValid(true);
         break;
       case 4:
         setCurrentStepValid(initialized);
