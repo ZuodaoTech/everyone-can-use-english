@@ -14,6 +14,8 @@ log.errorHandler.startCatching();
 // Fix "getRandomValues() not supported"
 global.crypto = crypto;
 
+app.commandLine.appendSwitch('enable-features','SharedArrayBuffer')
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
   app.quit();

@@ -71,7 +71,7 @@ export const MediaTranscription = (props: {
   };
 
   const transcode = async () => {
-    if (!ffmpeg.loaded) return;
+    if (!ffmpeg?.loaded) return;
     if (transcoding) return;
 
     try {

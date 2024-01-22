@@ -102,12 +102,16 @@ export const AppSettingsProvider = ({
       "text/javascript"
     );
 
-    await ffmpegRef.current.load({
-      coreURL,
-      wasmURL,
-      workerURL,
-    });
-    setFfmpeg(ffmpegRef.current);
+    try {
+      await ffmpegRef.current.load({
+        coreURL,
+        wasmURL,
+        workerURL,
+      });
+      setFfmpeg(ffmpegRef.current);
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   const fetchLanguage = async () => {
