@@ -112,7 +112,13 @@ export class Transcription extends Model<Transcription> {
       throw new Error("No file path.");
     }
 
-    let wavFile: string;
+    let wavFile: string = filePath;
+
+    const tmpDir = settings.cachePath();
+    const outputFile = path.join(
+      tmpDir,
+      path.basename(filePath, path.extname(filePath)) + ".wav"
+    );
 
     if (wavFileBlob) {
       const format = wavFileBlob.type.split("/")[1];
@@ -121,18 +127,21 @@ export class Transcription extends Model<Transcription> {
         throw new Error("Only wav format is supported");
       }
 
-      wavFile = path.join(settings.cachePath(), `${Date.now()}.${format}`);
-      await fs.outputFile(wavFile, Buffer.from(wavFileBlob.arrayBuffer));
-    } else {
+      await fs.outputFile(outputFile, Buffer.from(wavFileBlob.arrayBuffer));
+      wavFile = outputFile;
+    } else if (settings.ffmpegConfig().ready) {
       const ffmpeg = new Ffmpeg();
-      const tmpDir = settings.cachePath();
-      wavFile = await ffmpeg.prepareForWhisper(
-        filePath,
-        path.join(
-          tmpDir,
-          path.basename(filePath, path.extname(filePath)) + ".wav"
-        )
-      );
+      try {
+        wavFile = await ffmpeg.prepareForWhisper(
+          filePath,
+          path.join(
+            tmpDir,
+            path.basename(filePath, path.extname(filePath)) + ".wav"
+          )
+        );
+      } catch (err) {
+        logger.error("ffmpeg error", err);
+      }
     }
 
     try {

@@ -150,6 +150,7 @@ export class Video extends Model<Video> {
   // generate cover and upload
   async generateCover() {
     if (this.coverUrl) return;
+    if (!settings.ffmpegConfig().ready) return;
 
     const ffmpeg = new Ffmpeg();
     const coverFile = await ffmpeg.generateCover(
@@ -199,6 +200,8 @@ export class Video extends Model<Video> {
 
   @BeforeCreate
   static async setupDefaultAttributes(video: Video) {
+    if (!settings.ffmpegConfig().ready) return;
+
     try {
       const ffmpeg = new Ffmpeg();
       const fileMetadata = await ffmpeg.generateMetadata(video.filePath);
