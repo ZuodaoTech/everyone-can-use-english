@@ -6,7 +6,6 @@ import {
   UserSettings,
   LanguageSettings,
   LibrarySettings,
-  FfmpegSettings,
   WhisperSettings,
   OpenaiSettings,
   GoogleGenerativeAiSettings,
@@ -30,8 +29,6 @@ export const Preferences = () => {
           <LanguageSettings />
           <Separator />
           <LibrarySettings />
-          <Separator />
-          <FfmpegSettings />
           <Separator />
           <WhisperSettings />
           <Separator />
