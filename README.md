@@ -193,7 +193,7 @@ yarn make:enjoy
 
 > A: 可以提 [Issue](https://github.com/xiaolai/everyone-can-use-english/issues/new)，也可以 Mixin 开发者（Mixin ID: 1051445）。
 
-**Q: 很多解决不了的问题，怎么办？
+**Q: 很多解决不了的问题，怎么办？**
 
 其实，可能还有很多其它问题，比如，本软件安装、OpenAI（注册、支付）、美国线路…… 
 
