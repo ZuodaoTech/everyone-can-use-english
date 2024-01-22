@@ -5804,7 +5804,7 @@ __metadata:
     html-to-text: "npm:^9.0.5"
     i18next: "npm:^23.7.16"
     js-md5: "npm:^0.8.3"
-    langchain: "npm:^0.1.4"
+    langchain: "npm:^0.1.5"
     lodash: "npm:^4.17.21"
     lucide-react: "npm:^0.312.0"
     mark.js: "npm:^8.11.1"
@@ -8134,9 +8134,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"langchain@npm:^0.1.4":
-  version: 0.1.4
-  resolution: "langchain@npm:0.1.4"
+"langchain@npm:^0.1.5":
+  version: 0.1.5
+  resolution: "langchain@npm:0.1.5"
   dependencies:
     "@anthropic-ai/sdk": "npm:^0.9.1"
     "@langchain/community": "npm:~0.0.17"
@@ -8313,7 +8313,7 @@ __metadata:
       optional: true
     youtubei.js:
       optional: true
-  checksum: cee2e20268a718e58acbc11b98def9d0badd2f215749bfbed26a8e89c257f6904ee775156b711c075c8aa202bd8be2995c1b166bef54a77d1ae81e7d1012dcde
+  checksum: a1cc0b725033efea19b7d97f77f6974bd49929cab38358c83538e1712fabb3beaadc43435c87ee16e158b797d08582ead4a1d4deefea40cbeb629618ffc1d8bd
   languageName: node
   linkType: hard
 
