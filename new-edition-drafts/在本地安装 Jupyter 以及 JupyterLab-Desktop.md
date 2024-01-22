@@ -24,7 +24,7 @@ brew install miniconda
 conda init "$(basename "${SHELL}")"
 ```
 
-这一步很重要，这个命令会更改一些必要的系统文件，以便 `conda` 能够正常使用。在我的机器上，以上的命令更改了我的 `~/.zshrc` 文件，添加了以下内容：
+这一步很重要，这个命令会更改一些必要的系统文件，以便 `conda` 能够正常使用。在我的机器上，以上的命令更改了我的 `~/.zshrc` 文件，添加了以下内容（你也可以手动添加）：
 
 ```bash
 # conda init "$(basename "${SHELL}")"
@@ -56,6 +56,8 @@ conda --version
 ```bash
 which -a python
 # 应该可以看到至少两个 Python 的位置
+# 将来用 JupyterLab-Desktop 安装的 Python 版本（目前默认是 v3.8.17）不会被检索到
+# ~/Library/jupyterlab-desktop/jlab_server/bin/python
 python --version
 # 应该给出的是 Miniconda 安装的版本，比如，Python 3.11.5
 ```
@@ -83,7 +85,7 @@ sudo chmod 755 /Applications/JupyterLab.app/Contents/Resources/app/jlab
 sudo ln -s /Applications/JupyterLab.app/Contents/Resources/app/jlab /usr/local/bin/jlab
 ```
 
-可以选择使用 Jupyterlab-Desktop 自带的 “Bundled Python environment”，不过，它的 Python 版本是 3.8.17。这个 “Bundle” 中，Python 解释器是 `/Users/joker/Library/jupyterlab-desktop/jlab_server/bin/python`；所有相关组件安装在 `/Users/joker/Library/jupyterlab-desktop/jlab_server/` 文件夹之内。
+可以选择使用 Jupyterlab-Desktop 自带的 “Bundled Python environment”，不过，它的 Python 版本是 3.8.17。这个 “Bundle” 中，Python 解释器是 `~/Library/jupyterlab-desktop/jlab_server/bin/python`；所有相关组件安装在 `~/Library/jupyterlab-desktop/jlab_server/` 文件夹之内。
 
 ![](images/jld-3.8.png)
 
@@ -134,3 +136,7 @@ jlab sample.ipynb &
 * 连续按 `d` 两次：删除某个单元格；
 * 指针拖拽：可以移动某个单元格，改变代码执行顺序；
 * ……
+
+## 8. 关于 Python 的基本使用
+
+可以参照《[自学是门手艺](https://github.com/selfteaching/the-craft-of-selfteaching)》，也可以参照 [Python Cheatshee in Jupyter Notebookst](https://github.com/xiaolai/Python-Cheatsheets-in-Jupyter-Notebooks)。
