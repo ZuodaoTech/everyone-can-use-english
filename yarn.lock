@@ -5802,7 +5802,7 @@ __metadata:
     fluent-ffmpeg: "npm:^2.1.2"
     fs-extra: "npm:^11.2.0"
     html-to-text: "npm:^9.0.5"
-    i18next: "npm:^23.7.16"
+    i18next: "npm:^23.7.18"
     js-md5: "npm:^0.8.3"
     langchain: "npm:^0.1.4"
     lodash: "npm:^4.17.21"
@@ -7450,12 +7450,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^23.7.16":
-  version: 23.7.16
-  resolution: "i18next@npm:23.7.16"
+"i18next@npm:^23.7.18":
+  version: 23.7.18
+  resolution: "i18next@npm:23.7.18"
   dependencies:
     "@babel/runtime": "npm:^7.23.2"
-  checksum: 8e18d56970a468e0c3f38cf105d2eb22c2b275b596ecd3ac7193fe6e73a57705f3415b510ea761b702163278b975bcab6c15187f254d350fb0501baf66927168
+  checksum: 7ff20eaaf6b5b6ff31c0bde2907149caecd7d63c6106e06afc9dd23b543b281733c50a45c6f19627338a3212426976fd7dfdfeece305ffbb7d3d4dcefe69c97c
   languageName: node
   linkType: hard
 

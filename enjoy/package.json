@@ -111,7 +111,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^11.2.0",
     "html-to-text": "^9.0.5",
-    "i18next": "^23.7.16",
+    "i18next": "^23.7.18",
     "js-md5": "^0.8.3",
     "langchain": "^0.1.4",
     "lodash": "^4.17.21",
