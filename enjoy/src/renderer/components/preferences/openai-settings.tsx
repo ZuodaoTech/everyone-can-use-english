@@ -62,7 +62,7 @@ export const OpenaiSettings = () => {
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex items-center space-x-2">
-                      <FormLabel>{t("key")}:</FormLabel>
+                      <FormLabel className="min-w-max">{t("key")}:</FormLabel>
                       <Input
                         disabled={!editing}
                         type="password"
@@ -80,7 +80,7 @@ export const OpenaiSettings = () => {
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex items-center space-x-2">
-                      <FormLabel>{t("model")}:</FormLabel>
+                      <FormLabel className="min-w-max">{t("model")}:</FormLabel>
                       <Select
                         disabled={!editing}
                         onValueChange={field.onChange}
@@ -112,7 +112,7 @@ export const OpenaiSettings = () => {
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex items-center space-x-2">
-                      <FormLabel>{t("baseUrl")}:</FormLabel>
+                      <FormLabel className="min-w-max">{t("baseUrl")}:</FormLabel>
                       <Input
                         disabled={!editing}
                         placeholder={t("leaveEmptyToUseDefault")}

@@ -59,13 +59,22 @@ export const WhisperSettings = () => {
             <WhisperModelOptions />
 
             <DialogFooter>
-              <div className="text-xs opacity-70 flex items-start">
+              <div className="text-xs flex items-start space-x-2">
                 <InfoIcon className="mr-1.5 w-4 h-4" />
-                <span className="flex-1">
+                <span className="flex-1 opacity-70">
                   {t("yourModelsWillBeDownloadedTo", {
                     path: whisperConfig.modelsPath,
                   })}
                 </span>
+                <Button
+                  onClick={() => {
+                    EnjoyApp.shell.openPath(whisperConfig.modelsPath);
+                  }}
+                  variant="default"
+                  size="sm"
+                >
+                  {t("open")}
+                </Button>
               </div>
             </DialogFooter>
           </DialogContent>

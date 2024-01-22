@@ -33,7 +33,7 @@ export const GoogleGenerativeAiSettings = () => {
         <div className="mb-2">Google Generative AI</div>
         <div className="text-sm text-muted-foreground">
           <div className="flex items-center space-x-4">
-            <Label>{t("key")}:</Label>
+            <Label className="min-w-max">{t("key")}:</Label>
             <Input
               ref={ref}
               type="password"

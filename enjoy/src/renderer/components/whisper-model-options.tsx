@@ -34,7 +34,13 @@ type ModelType = {
 };
 
 export const WhisperModelOptionsPanel = () => {
-  const { whisperConfig, EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { whisperConfig, refreshWhisperConfig, EnjoyApp } = useContext(
+    AppSettingsProviderContext
+  );
+
+  useEffect(() => {
+    refreshWhisperConfig();
+  }, []);
 
   return (
     <>
@@ -51,7 +57,7 @@ export const WhisperModelOptionsPanel = () => {
         </CardContent>
 
         <CardFooter>
-          <div className="text-xs flex items-start">
+          <div className="text-xs flex items-start space-x-2">
             <InfoIcon className="mr-1.5 w-4 h-4" />
             <span className="flex-1 opacity-70">
               {t("yourModelsWillBeDownloadedTo", {
@@ -62,7 +68,7 @@ export const WhisperModelOptionsPanel = () => {
               onClick={() => {
                 EnjoyApp.shell.openPath(whisperConfig.modelsPath);
               }}
-              variant="secondary"
+              variant="default"
               size="sm"
             >
               {t("open")}
