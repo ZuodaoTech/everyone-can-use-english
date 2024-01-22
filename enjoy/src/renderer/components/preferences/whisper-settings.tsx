@@ -11,11 +11,17 @@ import {
 } from "@renderer/components/ui";
 import { WhisperModelOptions } from "@renderer/components";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { InfoIcon } from "lucide-react";
 
 export const WhisperSettings = () => {
-  const { whisperConfig, EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { whisperConfig, refreshWhisperConfig, EnjoyApp } = useContext(
+    AppSettingsProviderContext
+  );
+
+  useEffect(() => {
+    refreshWhisperConfig();
+  }, []);
 
   const handleCheck = async () => {
     toast.promise(EnjoyApp.whisper.check(), {

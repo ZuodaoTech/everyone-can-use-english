@@ -1,9 +1,10 @@
 import { createContext, useEffect, useState, useRef } from "react";
+import { toast } from "@renderer/components/ui";
 import { WEB_API_URL } from "@/constants";
 import { Client } from "@/api";
 import i18n from "@renderer/i18n";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import { toBlobURL } from "@ffmpeg/util";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -18,6 +19,7 @@ type AppSettingsProviderState = {
   ffmpegConfig?: FfmpegConfigType;
   ffmpeg?: FFmpeg;
   whisperConfig?: WhisperConfigType;
+  refreshWhisperConfig?: () => void;
   setFfmegConfig?: (config: FfmpegConfigType) => void;
   EnjoyApp?: EnjoyAppType;
   language?: "en" | "zh-CN";
@@ -57,13 +59,13 @@ export const AppSettingsProvider = ({
     fetchUser();
     fetchLibraryPath();
     fetchFfmpegConfig();
-    fetchWhisperConfig();
+    refreshWhisperConfig();
     fetchLanguage();
     loadFfmpegWASM();
   }, []);
 
   useEffect(() => {
-    fetchWhisperConfig();
+    refreshWhisperConfig();
   }, [libraryPath]);
 
   useEffect(() => {
@@ -126,7 +128,7 @@ export const AppSettingsProvider = ({
     setFfmegConfig(config);
   };
 
-  const fetchWhisperConfig = async () => {
+  const refreshWhisperConfig = async () => {
     const config = await EnjoyApp.whisper.config();
     setWhisperConfig(config);
   };
@@ -178,9 +180,10 @@ export const AppSettingsProvider = ({
   };
 
   const setWhisperModel = async (name: string) => {
-    return EnjoyApp.whisper
-      .setModel(name)
-      .then((config) => setWhisperConfig(config));
+    return EnjoyApp.whisper.setModel(name).then((config) => {
+      if (!config) return;
+      setWhisperConfig(config);
+    });
   };
 
   const validate = async () => {
@@ -204,6 +207,7 @@ export const AppSettingsProvider = ({
         ffmpegConfig,
         ffmpeg,
         whisperConfig,
+        refreshWhisperConfig,
         setFfmegConfig,
         initialized,
       }}

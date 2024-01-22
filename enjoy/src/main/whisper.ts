@@ -81,6 +81,7 @@ class Whipser {
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
     const tmpDir = settings.cachePath();
     const outputFile = path.join(tmpDir, "jfk.json");
+    fs.rmSync(outputFile, { force: true });
     return new Promise((resolve, reject) => {
       const commands = [
         `"${this.binMain}"`,
@@ -292,13 +293,11 @@ class Whipser {
           return Object.assign({}, this.config, { ready: true });
         })
         .catch((err) => {
-          settings.setSync("whisper.model", model);
           settings.setSync("whisper.model", originalModel);
           event.sender.send("on-notification", {
             type: "error",
             message: err.message,
           });
-          return Object.assign({}, this.config, { ready: false });
         });
     });
 
