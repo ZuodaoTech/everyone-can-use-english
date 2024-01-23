@@ -152,9 +152,11 @@ jlab sample.ipynb &
 ### 1、下载安装文件
 
 1.[下载 Anaconda Python 环境管理器](https://www.anaconda.com/download#downloads)
+
 点击 Windows 图标下面的 `64-Bit Graphical Installer ......` 下载文件
 
 2.[下载 JupyterLab Desktop](https://github.com/jupyterlab/jupyterlab-desktop/releases)
+
 点击  `...... Setup-Windows.exe` 下载文件
 
 ### 2、安装 Anaconda
