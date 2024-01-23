@@ -49,9 +49,8 @@ class AudiosHandler {
       },
     })
       .then((audio) => {
-        if (!audio) {
-          throw new Error(t("models.audio.notFound"));
-        }
+        if (!audio) return;
+
         if (!audio.isSynced) {
           audio.sync().catch(() => {});
         }

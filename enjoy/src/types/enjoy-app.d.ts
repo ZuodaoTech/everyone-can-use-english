@@ -8,6 +8,7 @@ type EnjoyAppType = {
     apiUrl: () => Promise<string>;
     quit: () => Promise<void>;
     openDevTools: () => Promise<void>;
+    createIssue: (title: string, body: string) => Promise<void>;
     version: string;
   };
   system: {
@@ -71,17 +72,12 @@ type EnjoyAppType = {
     setLibrary: (library: string) => Promise<void>;
     getUser: () => Promise<UserType>;
     setUser: (user: UserType) => Promise<void>;
-    getWhisperModel: () => Promise<string>;
-    setWhisperModel: (model: string) => Promise<void>;
-    getWhisperModelsPath: () => Promise<string>;
     getUserDataPath: () => Promise<string>;
     getLlm: (provider: SupportedLlmProviderType) => Promise<LlmProviderType>;
     setLlm: (
       provider: SupportedLlmProviderType,
       LlmProviderType
     ) => Promise<void>;
-    getFfmpegConfig: () => Promise<FfmpegConfigType>;
-    setFfmpegConfig: (config: FfmpegConfigType) => Promise<void>;
     getLanguage: () => Promise<string>;
     switchLanguage: (language: string) => Promise<void>;
   };
@@ -176,15 +172,17 @@ type EnjoyAppType = {
     createSpeech: (id: string, configuration?: any) => Promise<SpeechType>;
   };
   whisper: {
-    availableModels: () => Promise<string[]>;
-    downloadModel: (name: string) => Promise<any>;
-    check: () => Promise<boolean>;
-    transcribe: (
+    config: () => Promise<WhisperConfigType>;
+    check: () => Promise<{ success: boolean; log: string }>;
+    setModel: (model: string) => Promise<WhisperConfigType>;
+    transcribeBlob: (
       blob: { type: string; arrayBuffer: ArrayBuffer },
       prompt?: string
     ) => Promise<{ file: string; content: string }>;
   };
   ffmpeg: {
+    config: () => Promise<FfmpegConfigType>;
+    setConfig: (config: FfmpegConfigType) => Promise<FfmpegConfigType>;
     download: () => Promise<FfmpegConfigType>;
     check: () => Promise<boolean>;
     discover: () => Promise<{
@@ -195,7 +193,8 @@ type EnjoyAppType = {
   };
   download: {
     onState: (callback: (event, state) => void) => void;
-    cancel: (filename: string) => void;
+    start: (url: string, savePath?: string) => void;
+    cancel: (filename: string) => Promise<void>;
     cancelAll: () => void;
     dashboard: () => Promise<DownloadStateType[]>;
     removeAllListeners: () => void;
@@ -208,7 +207,7 @@ type EnjoyAppType = {
   };
   transcriptions: {
     findOrCreate: (params: any) => Promise<TranscriptionType>;
-    process: (params: any) => Promise<void>;
+    process: (params: any, options: any) => Promise<void>;
     update: (id: string, params: any) => Promise<void>;
   };
   waveforms: {

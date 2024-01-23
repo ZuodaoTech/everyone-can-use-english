@@ -30,27 +30,6 @@ class TranscriptionsHandler {
         },
       });
 
-      if (transcription.state === "pending") {
-        const timeout = setTimeout(() => {
-          event.sender.send("on-notification", {
-            type: "warning",
-            message: t("stillTranscribing"),
-          });
-        }, 1000 * 10);
-
-        transcription
-          .process()
-          .catch((err) => {
-            event.sender.send("on-notification", {
-              type: "error",
-              message: err.message,
-            });
-          })
-          .finally(() => {
-            clearTimeout(timeout);
-          });
-      }
-
       return transcription.toJSON();
     } catch (err) {
       event.sender.send("on-notification", {
@@ -87,8 +66,16 @@ class TranscriptionsHandler {
 
   private async process(
     event: IpcMainEvent,
-    where: WhereOptions<Attributes<Transcription>>
+    where: WhereOptions<Attributes<Transcription>>,
+    options?: {
+      force?: boolean;
+      blob: {
+        type: string;
+        arrayBuffer: ArrayBuffer;
+      };
+    }
   ) {
+    const { force = true, blob } = options || {};
     return Transcription.findOne({
       where: {
         ...where,
@@ -107,7 +94,7 @@ class TranscriptionsHandler {
         }, 1000 * 10);
 
         transcription
-          .process({ force: true })
+          .process({ force, wavFileBlob: blob })
           .catch((err) => {
             event.sender.send("on-notification", {
               type: "error",

@@ -316,6 +316,15 @@ export class FfmpegDownloader {
   }
 
   registerIpcHandlers() {
+    ipcMain.handle("ffmpeg-config", async (_event) => {
+      return settings.ffmpegConfig();
+    });
+
+    ipcMain.handle("ffmpeg-set-config", async (_event, config) => {
+      settings.setSync("ffmpeg.ffmpegPath", config.ffmpegPath);
+      settings.setSync("ffmpeg.ffprobePath", config.ffrobePath);
+    });
+
     ipcMain.handle("ffmpeg-download", async (event) => {
       try {
         return await this.download(event.sender);

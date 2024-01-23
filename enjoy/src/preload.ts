@@ -29,6 +29,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     openDevTools: () => {
       ipcRenderer.invoke("app-open-dev-tools");
     },
+    createIssue: (title: string, body: string) => {
+      return ipcRenderer.invoke("app-create-issue", title, body);
+    },
     version,
   },
   system: {
@@ -123,24 +126,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     setUser: (user: UserType) => {
       return ipcRenderer.invoke("settings-set-user", user);
     },
-    getWhisperModel: () => {
-      return ipcRenderer.invoke("settings-get-whisper-model");
-    },
-    setWhisperModel: (model: string) => {
-      return ipcRenderer.invoke("settings-set-whisper-model", model);
-    },
-    getWhisperModelsPath: () => {
-      return ipcRenderer.invoke("settings-get-whisper-models-path");
-    },
-    getLlamaModel: () => {
-      return ipcRenderer.invoke("settings-get-llama-model");
-    },
-    setLlamaModel: (model: string) => {
-      return ipcRenderer.invoke("settings-set-llama-model", model);
-    },
-    getLlamaModelsPath: () => {
-      return ipcRenderer.invoke("settings-get-llama-models-path");
-    },
     getUserDataPath: () => {
       return ipcRenderer.invoke("settings-get-user-data-path");
     },
@@ -149,12 +134,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     setLlm: (provider: string, config: LlmProviderType) => {
       return ipcRenderer.invoke("settings-set-llm", provider, config);
-    },
-    getFfmpegConfig: () => {
-      return ipcRenderer.invoke("settings-get-ffmpeg-config");
-    },
-    setFfmpegConfig: (config: FfmpegConfigType) => {
-      return ipcRenderer.invoke("settings-set-ffmpeg-config", config);
     },
     getLanguage: (language: string) => {
       return ipcRenderer.invoke("settings-get-language", language);
@@ -340,23 +319,29 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   whisper: {
-    availableModels: () => {
-      return ipcRenderer.invoke("whisper-available-models");
+    config: () => {
+      return ipcRenderer.invoke("whisper-config");
     },
-    downloadModel: (name: string) => {
-      return ipcRenderer.invoke("whisper-download-model", name);
+    setModel: (model: string) => {
+      return ipcRenderer.invoke("whisper-set-model", model);
     },
     check: () => {
       return ipcRenderer.invoke("whisper-check");
     },
-    transcribe: (
+    transcribeBlob: (
       blob: { type: string; arrayBuffer: ArrayBuffer },
       prompt?: string
     ) => {
-      return ipcRenderer.invoke("whisper-transcribe", blob, prompt);
+      return ipcRenderer.invoke("whisper-transcribe-blob", blob, prompt);
     },
   },
   ffmpeg: {
+    config: () => {
+      return ipcRenderer.invoke("ffmpeg-config");
+    },
+    setConfig: (config: FfmpegConfigType) => {
+      return ipcRenderer.invoke("ffmpeg-set-config", config);
+    },
     download: () => {
       return ipcRenderer.invoke("ffmpeg-download");
     },
@@ -371,6 +356,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     onState: (
       callback: (event: IpcRendererEvent, state: DownloadStateType) => void
     ) => ipcRenderer.on("download-on-state", callback),
+    start: (url: string, savePath?: string) => {
+      ipcRenderer.invoke("download-start", url, savePath);
+    },
     cancel: (filename: string) => {
       ipcRenderer.invoke("download-cancel", filename);
     },
@@ -402,8 +390,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findOrCreate: (params: any) => {
       return ipcRenderer.invoke("transcriptions-find-or-create", params);
     },
-    process: (params: any) => {
-      return ipcRenderer.invoke("transcriptions-process", params);
+    process: (params: any, options: any) => {
+      return ipcRenderer.invoke("transcriptions-process", params, options);
     },
     update: (id: string, params: any) => {
       return ipcRenderer.invoke("transcriptions-update", id, params);

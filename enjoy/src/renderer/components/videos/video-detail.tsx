@@ -94,9 +94,11 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
   useEffect(() => {
     const where = id ? { id } : { md5 };
     EnjoyApp.videos.findOne(where).then((video) => {
-      if (!video) return;
-
-      setVideo(video);
+      if (video) {
+        setVideo(video);
+      } else {
+        toast.error(t("models.video.notFound"));
+      }
     });
   }, [id, md5]);
 
@@ -181,6 +183,7 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
           <MediaTranscription
             mediaId={video.id}
             mediaType="Video"
+            mediaUrl={video.src}
             mediaName={video.name}
             transcription={transcription}
             currentSegmentIndex={currentSegmentIndex}

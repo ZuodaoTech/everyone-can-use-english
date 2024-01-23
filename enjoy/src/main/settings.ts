@@ -57,32 +57,14 @@ const dbPath = () => {
   return path.join(userDataPath(), dbName);
 };
 
-const whisperModelsPath = () => {
-  const dir = path.join(libraryPath(), "whisper", "models");
-  fs.ensureDirSync(dir);
-
-  return dir;
-};
-
-const whisperModelPath = () => {
-  return path.join(
-    whisperModelsPath(),
-    settings.getSync("whisper.model") as string
-  );
-};
-
-const llamaModelsPath = () => {
-  const dir = path.join(libraryPath(), "llama", "models");
-  fs.ensureDirSync(dir);
-
-  return dir;
-};
-
-const llamaModelPath = () => {
-  return path.join(
-    llamaModelsPath(),
-    settings.getSync("llama.model") as string
-  );
+const whisperConfig = (): WhisperConfigType => {
+  return {
+    availableModels: settings.getSync(
+      "whisper.availableModels"
+    ) as WhisperConfigType["availableModels"],
+    modelsPath: settings.getSync("whisper.modelsPath") as string,
+    model: settings.getSync("whisper.model") as string,
+  };
 };
 
 const userDataPath = () => {
@@ -149,18 +131,6 @@ export default {
       settings.setSync("whisper.model", model);
     });
 
-    ipcMain.handle("settings-get-whisper-models-path", (_event) => {
-      return whisperModelsPath();
-    });
-
-    ipcMain.handle("settings-set-llama-model", (_event, model) => {
-      settings.setSync("whisper.model", model);
-    });
-
-    ipcMain.handle("settings-get-llama-models-path", (_event) => {
-      return llamaModelsPath();
-    });
-
     ipcMain.handle("settings-get-user-data-path", (_event) => {
       return userDataPath();
     });
@@ -173,15 +143,6 @@ export default {
       return settings.setSync(provider, config);
     });
 
-    ipcMain.handle("settings-get-ffmpeg-config", (_event) => {
-      return ffmpegConfig();
-    });
-
-    ipcMain.handle("settings-set-ffmpeg-config", (_event, config) => {
-      settings.setSync("ffmpeg.ffmpegPath", config.ffmpegPath);
-      settings.setSync("ffmpeg.ffprobePath", config.ffrobePath);
-    });
-
     ipcMain.handle("settings-get-language", (_event) => {
       return language();
     });
@@ -192,12 +153,9 @@ export default {
   },
   cachePath,
   libraryPath,
-  whisperModelsPath,
-  whisperModelPath,
-  llamaModelsPath,
-  llamaModelPath,
   userDataPath,
   dbPath,
+  whisperConfig,
   ffmpegConfig,
   language,
   switchLanguage,

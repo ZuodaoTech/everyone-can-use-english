@@ -16,7 +16,7 @@ import whisper from "@main/whisper";
 import fs from "fs-extra";
 import "@main/i18n";
 import log from "electron-log/main";
-import { WEB_API_URL } from "@/constants";
+import { WEB_API_URL, REPO_URL } from "@/constants";
 import { AudibleProvider, TedProvider } from "@main/providers";
 import { FfmpegDownloader } from "@main/ffmpeg";
 import { Waveform } from "./waveform";
@@ -264,6 +264,31 @@ main.init = () => {
 
   ipcMain.handle("app-open-dev-tools", () => {
     mainWindow.webContents.openDevTools();
+  });
+
+  ipcMain.handle("app-create-issue", (_event, title, log) => {
+    const body = `**Version**
+
+${app.getVersion()}
+
+**Platform**
+
+${process.platform} ${process.arch} ${process.getSystemVersion()}
+
+**Log**
+\`\`\`
+${log}
+\`\`\`
+  `;
+
+    const params = {
+      title,
+      body,
+    };
+
+    shell.openExternal(
+      `${REPO_URL}/issues/new?${new URLSearchParams(params).toString()}`
+    );
   });
 
   ipcMain.handle(

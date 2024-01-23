@@ -169,10 +169,12 @@ export const RecordingsList = (props: {
         </div>
 
         <div className="z-50 bottom-16 left-1/2 w-0 h-0 absolute flex items-center justify-center">
-          <RecordButton
-            disabled={referenceId == undefined || !Boolean(referenceText)}
-            onRecordEnd={createRecording}
-          />
+          {referenceId !== undefined && Boolean(referenceText) && (
+            <RecordButton
+              disabled={referenceId == undefined || !Boolean(referenceText)}
+              onRecordEnd={createRecording}
+            />
+          )}
         </div>
       </div>
 

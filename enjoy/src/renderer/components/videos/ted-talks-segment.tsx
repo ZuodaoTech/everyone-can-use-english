@@ -144,6 +144,7 @@ export const TedTalksSegment = () => {
             <div className="aspect-square h-28 overflow-hidden rounded-l-lg">
               <img
                 src={selectedTalk?.primaryImageSet[0].url}
+                crossOrigin="anonymous"
                 alt={selectedTalk?.title}
                 className="w-full h-full object-cover"
               />
@@ -182,7 +183,6 @@ export const TedTalksSegment = () => {
                   disabled={submitting}
                 >
                   {submittingType === DownloadType.audio && (
-
                     <LoaderIcon className="w-4 h-4 animate-spin mr-2" />
                   )}
                   {t("downloadAudio")}
@@ -216,6 +216,7 @@ const TedTalkCard = (props: { talk: TedTalkType; onClick?: () => void }) => {
     <div onClick={onClick} className="w-56 cursor-pointer">
       <div className="aspect-[4/3] border rounded-lg overflow-hidden relative">
         <img
+          crossOrigin="anonymous"
           src={talk.primaryImageSet[0].url}
           alt={talk.title}
           className="hover:scale-105 object-cover w-full h-full"

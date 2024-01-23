@@ -117,6 +117,7 @@ export const AudibleBooksSegment = () => {
           <div className="flex items-center mb-4 bg-muted rounded-lg">
             <div className="aspect-square h-28 overflow-hidden rounded-l-lg">
               <img
+                crossOrigin="anonymous"
                 src={selectedBook?.cover}
                 alt={selectedBook?.title}
                 className="w-full h-full object-cover"
@@ -183,6 +184,7 @@ const AudioBookCard = (props: {
     <div onClick={onClick} className="w-36 cursor-pointer">
       <div className="aspect-square border rounded-lg overflow-hidden">
         <img
+          crossOrigin="anonymous"
           src={book.cover}
           alt={book.title}
           className="hover:scale-105 object-cover w-full h-full"

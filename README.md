@@ -192,3 +192,9 @@ yarn make:enjoy
 **Q: 还有 bug，怎么办？**
 
 > A: 可以提 [Issue](https://github.com/xiaolai/everyone-can-use-english/issues/new)，也可以 Mixin 开发者（Mixin ID: 1051445）。
+
+**Q: 很多解决不了的问题，怎么办？**
+
+其实，可能还有很多其它问题，比如，本软件安装、OpenAI（注册、支付）、美国线路…… 
+
+> A: 1）文本生成，可以暂时用各种翻译工具，比如 Google Translate，或者其它的替代方案；2）语音生成，可以暂时用开源免费的 [Edge-TTS-record](https://github.com/LuckyHookin/edge-TTS-record)
