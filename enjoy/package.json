@@ -113,11 +113,11 @@
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^11.2.0",
     "html-to-text": "^9.0.5",
-    "i18next": "^23.7.16",
+    "i18next": "^23.7.18",
     "js-md5": "^0.8.3",
-    "langchain": "^0.1.4",
+    "langchain": "^0.1.5",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.312.0",
+    "lucide-react": "^0.314.0",
     "mark.js": "^8.11.1",
     "microsoft-cognitiveservices-speech-sdk": "^1.34.0",
     "next-themes": "^0.2.1",
@@ -132,7 +132,7 @@
     "react-i18next": "^14.0.0",
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.21.3",
-    "react-tooltip": "^5.25.2",
+    "react-tooltip": "^5.26.0",
     "reflect-metadata": "^0.2.1",
     "rimraf": "^5.0.5",
     "sequelize": "^6.35.2",
@@ -141,7 +141,7 @@
     "sqlite3": "^5.1.7",
     "tailwind-scrollbar-hide": "^1.1.7",
     "umzug": "^3.5.1",
-    "wavesurfer.js": "^7.6.4",
+    "wavesurfer.js": "^7.6.5",
     "zod": "^3.22.4"
   }
 }
