@@ -29,6 +29,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     openDevTools: () => {
       ipcRenderer.invoke("app-open-dev-tools");
     },
+    createIssue: (title: string, body: string) => {
+      return ipcRenderer.invoke("app-create-issue", title, body);
+    },
     version,
   },
   system: {

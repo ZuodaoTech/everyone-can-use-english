@@ -15,6 +15,7 @@ class Whipser {
 
   constructor(config?: WhisperConfigType) {
     this.config = config;
+    this.initialize();
   }
 
   currentModel() {
@@ -59,7 +60,8 @@ class Whipser {
             logger.debug("stdout", stdout);
           }
 
-          if (stderr || stdout) {
+          const std = (stdout || stderr).toString()?.trim();
+          if (std.startsWith("usage:")) {
             resolve(true);
           } else {
             reject(
@@ -82,7 +84,7 @@ class Whipser {
     const tmpDir = settings.cachePath();
     const outputFile = path.join(tmpDir, "jfk.json");
     fs.rmSync(outputFile, { force: true });
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
       const commands = [
         `"${this.binMain}"`,
         `--file "${sampleFile}"`,
@@ -109,15 +111,10 @@ class Whipser {
             logger.debug(stdout);
           }
 
-          if (fs.existsSync(outputFile)) {
-            resolve(true);
-          } else {
-            reject(
-              error ||
-                new Error(stderr || "Whisper check failed: unknown error")
-                  .message
-            );
-          }
+          resolve({
+            success: fs.existsSync(outputFile),
+            log: `${error?.message || ""}\n${stderr}\n${stdout}`,
+          });
         }
       );
     });
@@ -302,12 +299,7 @@ class Whipser {
     });
 
     ipcMain.handle("whisper-check", async (event) => {
-      return this.check().catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+      return await this.check();
     });
 
     ipcMain.handle("whisper-transcribe-blob", async (event, blob, prompt) => {

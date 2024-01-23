@@ -11,30 +11,57 @@ import {
 } from "@renderer/components/ui";
 import { WhisperModelOptions } from "@renderer/components";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { useContext, useEffect } from "react";
-import { InfoIcon } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
+import { InfoIcon, AlertCircleIcon } from "lucide-react";
 
 export const WhisperSettings = () => {
   const { whisperConfig, refreshWhisperConfig, EnjoyApp } = useContext(
     AppSettingsProviderContext
   );
+  const [stderr, setStderr] = useState("");
 
   useEffect(() => {
     refreshWhisperConfig();
   }, []);
 
   const handleCheck = async () => {
-    toast.promise(EnjoyApp.whisper.check(), {
-      loading: t("checkingWhisper"),
-      success: t("whisperIsWorkingGood"),
-      error: t("whisperIsNotWorking"),
-    });
+    toast.promise(
+      async () => {
+        const { success, log } = await EnjoyApp.whisper.check();
+        setStderr(log);
+        if (success) {
+          // setStderr("");
+          return Promise.resolve();
+        } else {
+          setStderr(log);
+          return Promise.reject();
+        }
+      },
+      {
+        loading: t("checkingWhisper"),
+        success: t("whisperIsWorkingGood"),
+        error: t("whisperIsNotWorking"),
+      }
+    );
   };
 
   return (
     <div className="flex items-start justify-between py-4">
       <div className="">
-        <div className="mb-2">{t("sttAiModel")}</div>
+        <div className="flex items-center mb-2">
+          <span>{t("sttAiModel")}</span>
+          {stderr && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                EnjoyApp.app.createIssue("Whisper is not working", stderr);
+              }}
+            >
+              <AlertCircleIcon className="w-4 h-4 text-yellow-500" />
+            </Button>
+          )}
+        </div>
         <div className="text-sm text-muted-foreground">
           {whisperConfig.model}
         </div>

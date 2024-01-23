@@ -8,6 +8,7 @@ type EnjoyAppType = {
     apiUrl: () => Promise<string>;
     quit: () => Promise<void>;
     openDevTools: () => Promise<void>;
+    createIssue: (title: string, body: string) => Promise<void>;
     version: string;
   };
   system: {
@@ -172,7 +173,7 @@ type EnjoyAppType = {
   };
   whisper: {
     config: () => Promise<WhisperConfigType>;
-    check: () => Promise<boolean>;
+    check: () => Promise<{ success: boolean; log: string }>;
     setModel: (model: string) => Promise<WhisperConfigType>;
     transcribeBlob: (
       blob: { type: string; arrayBuffer: ArrayBuffer },
