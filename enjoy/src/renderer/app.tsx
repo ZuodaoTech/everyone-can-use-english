@@ -53,7 +53,7 @@ function App() {
         <AISettingsProvider>
           <DbProvider>
             <RouterProvider router={router} />
-            <Toaster richColors closeButton position="top-center" />
+            <Toaster richColors position="top-center" />
             <Tooltip id="global-tooltip" />
           </DbProvider>
         </AISettingsProvider>

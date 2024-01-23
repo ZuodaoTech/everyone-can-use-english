@@ -7,14 +7,18 @@ import {
   LanguageSettings,
   LibrarySettings,
   WhisperSettings,
+  FfmpegSettings,
   OpenaiSettings,
   GoogleGenerativeAiSettings,
   ResetSettings,
   ResetAllSettings,
 } from "@renderer/components";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AppSettingsProviderContext } from "@renderer/context";
 
 export const Preferences = () => {
+  const { ffmpegConfig } = useContext(AppSettingsProviderContext);
+
   const TABS = [
     {
       value: "basic",
@@ -32,6 +36,12 @@ export const Preferences = () => {
           <Separator />
           <WhisperSettings />
           <Separator />
+          {ffmpegConfig.ready && (
+            <>
+              <FfmpegSettings />
+              <Separator />
+            </>
+          )}
           <OpenaiSettings />
           <Separator />
           <GoogleGenerativeAiSettings />

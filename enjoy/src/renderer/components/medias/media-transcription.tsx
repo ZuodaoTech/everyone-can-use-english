@@ -49,7 +49,7 @@ export const MediaTranscription = (props: {
   const [recordingStats, setRecordingStats] =
     useState<SegementRecordingStatsType>([]);
 
-  const regenerate = async () => {
+  const generate = async () => {
     const data = await transcode();
     let blob;
     if (data) {
@@ -126,6 +126,12 @@ export const MediaTranscription = (props: {
       } as ScrollIntoViewOptions);
   }, [currentSegmentIndex, transcription]);
 
+  useEffect(() => {
+    if (transcription?.state !== "pending") return;
+
+    generate();
+  }, [transcription]);
+
   if (!transcription)
     return (
       <div className="p-4 w-full">
@@ -169,7 +175,7 @@ export const MediaTranscription = (props: {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-              <AlertDialogAction onClick={regenerate}>
+              <AlertDialogAction onClick={generate}>
                 {t("transcribe")}
               </AlertDialogAction>
             </AlertDialogFooter>

@@ -28,9 +28,8 @@ export const WhisperSettings = () => {
     toast.promise(
       async () => {
         const { success, log } = await EnjoyApp.whisper.check();
-        setStderr(log);
         if (success) {
-          // setStderr("");
+          setStderr("");
           return Promise.resolve();
         } else {
           setStderr(log);

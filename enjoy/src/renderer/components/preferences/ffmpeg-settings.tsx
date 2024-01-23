@@ -1,11 +1,6 @@
 import { t } from "i18next";
-import {
-  Button,
-  toast,
-} from "@renderer/components/ui";
-import {
-  AppSettingsProviderContext,
-} from "@renderer/context";
+import { Button, toast } from "@renderer/components/ui";
+import { AppSettingsProviderContext } from "@renderer/context";
 import { useContext, useState } from "react";
 import { EditIcon } from "lucide-react";
 
@@ -51,26 +46,42 @@ export const FfmpegSettings = () => {
       <div className="flex items-start justify-between py-4">
         <div className="">
           <div className="mb-2">FFmpeg</div>
-          <div className="flex items-center space-x-4">
-            <span className=" text-sm text-muted-foreground">
-              <b>ffmpeg</b>: {ffmpegConfig?.ffmpegPath || ""}
-            </span>
-            {editing && (
-              <Button onClick={handleChooseFfmpeg} variant="ghost" size="icon">
-                <EditIcon className="w-4 h-4 text-muted-foreground" />
-              </Button>
-            )}
-          </div>
-          <div className="flex items-center space-x-4">
-            <span className=" text-sm text-muted-foreground">
-              <b>ffprobe</b>: {ffmpegConfig?.ffprobePath || ""}
-            </span>
-            {editing && (
-              <Button onClick={handleChooseFfmpeg} variant="ghost" size="icon">
-                <EditIcon className="w-4 h-4 text-muted-foreground" />
-              </Button>
-            )}
-          </div>
+          {editing ? (
+            <>
+              <div className="flex items-center space-x-4">
+                <span className=" text-sm text-muted-foreground">
+                  <b>ffmpeg</b>: {ffmpegConfig?.ffmpegPath || ""}
+                </span>
+                <Button
+                  onClick={handleChooseFfmpeg}
+                  variant="ghost"
+                  size="icon"
+                >
+                  <EditIcon className="w-4 h-4 text-muted-foreground" />
+                </Button>
+              </div>
+              <div className="flex items-center space-x-4">
+                <span className=" text-sm text-muted-foreground">
+                  <b>ffprobe</b>: {ffmpegConfig?.ffprobePath || ""}
+                </span>
+                <Button
+                  onClick={handleChooseFfmpeg}
+                  variant="ghost"
+                  size="icon"
+                >
+                  <EditIcon className="w-4 h-4 text-muted-foreground" />
+                </Button>
+              </div>
+            </>
+          ) : (
+            <div className="text-xs text-muted-foreground">
+              {ffmpegConfig.ready ? (
+                <span>{t("ffmpegCommandIsWorking")}</span>
+              ) : (
+                <span>{t("ffmpegCommandIsNotWorking")}</span>
+              )}
+            </div>
+          )}
         </div>
         <div className="">
           <div className="flex items-center justify-end space-x-2 mb-2">

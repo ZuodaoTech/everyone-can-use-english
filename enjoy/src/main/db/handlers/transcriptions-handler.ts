@@ -30,27 +30,6 @@ class TranscriptionsHandler {
         },
       });
 
-      if (transcription.state === "pending") {
-        const timeout = setTimeout(() => {
-          event.sender.send("on-notification", {
-            type: "warning",
-            message: t("stillTranscribing"),
-          });
-        }, 1000 * 10);
-
-        transcription
-          .process()
-          .catch((err) => {
-            event.sender.send("on-notification", {
-              type: "error",
-              message: err.message,
-            });
-          })
-          .finally(() => {
-            clearTimeout(timeout);
-          });
-      }
-
       return transcription.toJSON();
     } catch (err) {
       event.sender.send("on-notification", {
