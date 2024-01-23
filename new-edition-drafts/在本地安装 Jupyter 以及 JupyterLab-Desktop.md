@@ -1,6 +1,6 @@
 ## 在本地安装 Jupyter 以及 JupyterLab-Desktop
 
-[Windows 用户安装方法点这里](#‘Windows 用户’)
+[Windows 用户安装方法点这里](#Windows用户)
 
 ### macOS 用户
 
@@ -145,7 +145,7 @@ jlab sample.ipynb &
 
 可以参照《[自学是门手艺](https://github.com/selfteaching/the-craft-of-selfteaching)》，也可以参照 [Python Cheatshee in Jupyter Notebookst](https://github.com/xiaolai/Python-Cheatsheets-in-Jupyter-Notebooks)。
 
-### Windows 用户
+### Windows用户
 
 准备工作：网络通信正常
 
