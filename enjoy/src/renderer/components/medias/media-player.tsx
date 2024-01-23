@@ -375,6 +375,12 @@ export const MediaPlayer = (props: {
     if (!regions) return;
 
     const subscriptions = [
+      wavesurfer.on("finish", () => {
+        if (!isLooping) return;
+
+        regions?.getRegions()[0]?.play();
+      }),
+
       regions.on("region-updated", (region) => {
         const from = region.start;
         const to = region.end;
