@@ -14,8 +14,7 @@ class Whipser {
   public config: WhisperConfigType;
 
   constructor(config?: WhisperConfigType) {
-    this.config = config;
-    this.initialize();
+    this.config = config || settings.whisperConfig();
   }
 
   currentModel() {
@@ -26,6 +25,7 @@ class Whipser {
 
   async initialize() {
     const dir = path.join(settings.libraryPath(), "whisper", "models");
+    fs.ensureDirSync(dir);
     const files = fs.readdirSync(dir);
     const models = [];
     for (const file of files) {
@@ -298,7 +298,7 @@ class Whipser {
         });
     });
 
-    ipcMain.handle("whisper-check", async (event) => {
+    ipcMain.handle("whisper-check", async (_event) => {
       return await this.check();
     });
 
