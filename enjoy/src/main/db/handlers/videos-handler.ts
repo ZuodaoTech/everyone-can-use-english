@@ -49,9 +49,8 @@ class VideosHandler {
       },
     })
       .then((video) => {
-        if (!video) {
-          throw new Error(t("models.video.notFound"));
-        }
+        if (!video) return;
+
         if (!video.isSynced) {
           video.sync().catch(() => {});
         }

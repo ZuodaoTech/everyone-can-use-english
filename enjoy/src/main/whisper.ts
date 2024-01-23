@@ -2,9 +2,6 @@ import { ipcMain } from "electron";
 import settings from "@main/settings";
 import path from "path";
 import { WHISPER_MODELS_OPTIONS, PROCESS_TIMEOUT } from "@/constants";
-import { readdir } from "fs/promises";
-import downloader from "@main/downloader";
-import Ffmpeg from "@main/ffmpeg";
 import { exec } from "child_process";
 import fs from "fs-extra";
 import log from "electron-log/main";
@@ -14,18 +11,84 @@ const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
 const END_OF_WORD_REGEX = /[^\.!,\?][\.!\?]/g;
 class Whipser {
   private binMain = path.join(__dirname, "lib", "whisper", "main");
+  public config: WhisperConfigType;
 
-  constructor() {}
+  constructor(config?: WhisperConfigType) {
+    this.config = config;
+    this.initialize();
+  }
+
+  currentModel() {
+    return (this.config.availableModels || []).find(
+      (m) => m.name === this.config.model
+    )?.savePath;
+  }
+
+  async initialize() {
+    const dir = path.join(settings.libraryPath(), "whisper", "models");
+    const files = fs.readdirSync(dir);
+    const models = [];
+    for (const file of files) {
+      const model = WHISPER_MODELS_OPTIONS.find((m) => m.name == file);
+      if (!model) continue;
+
+      models.push({
+        ...model,
+        savePath: path.join(dir, file),
+      });
+    }
+    settings.setSync("whisper.availableModels", models);
+    settings.setSync("whisper.modelsPath", dir);
+    this.config = settings.whisperConfig();
+
+    return new Promise((resolve, reject) => {
+      exec(
+        `"${this.binMain}" --help`,
+        {
+          timeout: PROCESS_TIMEOUT,
+        },
+        (error, stdout, stderr) => {
+          if (error) {
+            logger.error("error", error);
+          }
+
+          if (stderr) {
+            logger.debug("stderr", stderr);
+          }
+
+          if (stdout) {
+            logger.debug("stdout", stdout);
+          }
+
+          const std = (stdout || stderr).toString()?.trim();
+          if (std.startsWith("usage:")) {
+            resolve(true);
+          } else {
+            reject(
+              error || new Error("Whisper check failed: unknown error").message
+            );
+          }
+        }
+      );
+    });
+  }
 
   async check() {
+    await this.initialize();
+
+    if (!this.currentModel()) {
+      throw new Error("No model selected");
+    }
+
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
     const tmpDir = settings.cachePath();
     const outputFile = path.join(tmpDir, "jfk.json");
-    return new Promise((resolve, reject) => {
+    fs.rmSync(outputFile, { force: true });
+    return new Promise((resolve, _reject) => {
       const commands = [
         `"${this.binMain}"`,
         `--file "${sampleFile}"`,
-        `--model "${settings.whisperModelPath()}"`,
+        `--model "${this.currentModel()}"`,
         "--output-json",
         `--output-file "${path.join(tmpDir, "jfk")}"`,
       ];
@@ -48,15 +111,10 @@ class Whipser {
             logger.debug(stdout);
           }
 
-          if (fs.existsSync(outputFile)) {
-            resolve(true);
-          } else {
-            reject(
-              error ||
-                new Error(stderr || "Whisper check failed: unknown error")
-                  .message
-            );
-          }
+          resolve({
+            success: fs.existsSync(outputFile),
+            log: `${error?.message || ""}\n${stderr}\n${stdout}`,
+          });
         }
       );
     });
@@ -64,35 +122,43 @@ class Whipser {
 
   async transcribeBlob(
     blob: { type: string; arrayBuffer: ArrayBuffer },
-    prompt?: string
-  ) {
-    const filename = `${Date.now()}.wav`;
+    options?: {
+      prompt?: string;
+      group?: boolean;
+    }
+  ): Promise<
+    TranscriptionSegmentType[] | TranscriptionResultSegmentGroupType[]
+  > {
+    const { prompt, group = false } = options || {};
+
     const format = blob.type.split("/")[1];
+
+    if (format !== "wav") {
+      throw new Error("Only wav format is supported");
+    }
+
     const tempfile = path.join(settings.cachePath(), `${Date.now()}.${format}`);
     await fs.outputFile(tempfile, Buffer.from(blob.arrayBuffer));
-    const wavFile = path.join(settings.cachePath(), filename);
 
-    const ffmpeg = new Ffmpeg();
-    await ffmpeg.convertToWav(tempfile, wavFile);
     const extra = [];
     if (prompt) {
       extra.push(`--prompt "${prompt.replace(/"/g, '\\"')}"`);
     }
-    const { transcription } = await this.transcribe(wavFile, {
+    const { transcription } = await this.transcribe(tempfile, {
       force: true,
       extra,
     });
-    const content = transcription
-      .map((t: TranscriptionSegmentType) => t.text)
-      .join(" ")
-      .trim();
 
-    return {
-      file: wavFile,
-      content,
-    };
+    if (group) {
+      return this.groupTranscription(transcription);
+    } else {
+      return transcription;
+    }
   }
 
+  /* Ensure the file is in wav format
+   * and 16kHz sample rate
+   */
   async transcribe(
     file: string,
     options: {
@@ -111,16 +177,10 @@ class Whipser {
       return fs.readJson(outputFile);
     }
 
-    const ffmpeg = new Ffmpeg();
-    const waveFile = await ffmpeg.prepareForWhisper(
-      file,
-      path.join(tmpDir, filename + ".wav")
-    );
-
     const command = [
       `"${this.binMain}"`,
-      `--file "${waveFile}"`,
-      `--model "${settings.whisperModelPath()}"`,
+      `--file "${file}"`,
+      `--model "${this.currentModel()}"`,
       "--output-json",
       `--output-file "${path.join(tmpDir, filename)}"`,
       ...extra,
@@ -159,7 +219,9 @@ class Whipser {
     });
   }
 
-  groupTranscription(transcription: TranscriptionSegmentType[]) {
+  groupTranscription(
+    transcription: TranscriptionSegmentType[]
+  ): TranscriptionResultSegmentGroupType[] {
     const generateGroup = (group?: TranscriptionSegmentType[]) => {
       if (!group || group.length === 0) return;
 
@@ -209,52 +271,38 @@ class Whipser {
   }
 
   registerIpcHandlers() {
-    ipcMain.handle("whisper-available-models", async (event) => {
-      const models: string[] = [];
-
+    ipcMain.handle("whisper-config", async () => {
       try {
-        const files = await readdir(settings.whisperModelsPath());
-        for (const file of files) {
-          if (WHISPER_MODELS_OPTIONS.find((m) => m.name == file)) {
-            models.push(file);
-          }
-        }
-      } catch (err) {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
+        await this.initialize();
+        return Object.assign({}, this.config, { ready: true });
+      } catch (_err) {
+        return Object.assign({}, this.config, { ready: false });
       }
-
-      return models;
     });
 
-    ipcMain.handle("whisper-download-model", (event, name) => {
-      const model = WHISPER_MODELS_OPTIONS.find((m) => m.name === name);
-      if (!model) {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: `Model ${name} not supported`,
-        });
-        return;
-      }
+    ipcMain.handle("whisper-set-model", async (event, model) => {
+      const originalModel = settings.getSync("whisper.model");
+      settings.setSync("whisper.model", model);
+      this.config = settings.whisperConfig();
 
-      downloader.download(model.url, {
-        webContents: event.sender,
-        savePath: path.join(settings.whisperModelsPath(), model.name),
-      });
+      return this.check()
+        .then(() => {
+          return Object.assign({}, this.config, { ready: true });
+        })
+        .catch((err) => {
+          settings.setSync("whisper.model", originalModel);
+          event.sender.send("on-notification", {
+            type: "error",
+            message: err.message,
+          });
+        });
     });
 
     ipcMain.handle("whisper-check", async (event) => {
-      return this.check().catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+      return await this.check();
     });
 
-    ipcMain.handle("whisper-transcribe", async (event, blob, prompt) => {
+    ipcMain.handle("whisper-transcribe-blob", async (event, blob, prompt) => {
       try {
         return await this.transcribeBlob(blob, prompt);
       } catch (err) {

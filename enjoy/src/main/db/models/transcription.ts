@@ -19,6 +19,9 @@ import log from "electron-log/main";
 import { Client } from "@/api";
 import { WEB_API_URL, PROCESS_TIMEOUT } from "@/constants";
 import settings from "@main/settings";
+import Ffmpeg from "@main/ffmpeg";
+import path from "path";
+import fs from "fs-extra";
 
 const logger = log.scope("db/models/transcription");
 const webApi = new Client({
@@ -85,9 +88,15 @@ export class Transcription extends Model<Transcription> {
   }
 
   // STT using whisper
-  async process(options: { force?: boolean } = {}) {
+  async process(
+    options: {
+      force?: boolean;
+      wavFileBlob?: { type: string; arrayBuffer: ArrayBuffer };
+    } = {}
+  ) {
     if (this.getDataValue("state") === "processing") return;
-    const { force = false } = options;
+
+    const { force = false, wavFileBlob } = options;
 
     logger.info(`[${this.getDataValue("id")}]`, "Start to transcribe.");
 
@@ -103,11 +112,43 @@ export class Transcription extends Model<Transcription> {
       throw new Error("No file path.");
     }
 
+    let wavFile: string = filePath;
+
+    const tmpDir = settings.cachePath();
+    const outputFile = path.join(
+      tmpDir,
+      path.basename(filePath, path.extname(filePath)) + ".wav"
+    );
+
+    if (wavFileBlob) {
+      const format = wavFileBlob.type.split("/")[1];
+
+      if (format !== "wav") {
+        throw new Error("Only wav format is supported");
+      }
+
+      await fs.outputFile(outputFile, Buffer.from(wavFileBlob.arrayBuffer));
+      wavFile = outputFile;
+    } else if (settings.ffmpegConfig().ready) {
+      const ffmpeg = new Ffmpeg();
+      try {
+        wavFile = await ffmpeg.prepareForWhisper(
+          filePath,
+          path.join(
+            tmpDir,
+            path.basename(filePath, path.extname(filePath)) + ".wav"
+          )
+        );
+      } catch (err) {
+        logger.error("ffmpeg error", err);
+      }
+    }
+
     try {
       await this.update({
         state: "processing",
       });
-      const { model, transcription } = await whisper.transcribe(filePath, {
+      const { model, transcription } = await whisper.transcribe(wavFile, {
         force,
         extra: [
           "--split-on-word",

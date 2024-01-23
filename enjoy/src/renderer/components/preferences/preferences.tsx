@@ -1,24 +1,68 @@
 import { t } from "i18next";
-import { Button, ScrollArea } from "@renderer/components/ui";
+import { Button, ScrollArea, Separator } from "@renderer/components/ui";
 import {
-  BasicSettings,
-  AdvancedSettings,
   About,
   Hotkeys,
+  UserSettings,
+  LanguageSettings,
+  LibrarySettings,
+  WhisperSettings,
+  FfmpegSettings,
+  OpenaiSettings,
+  GoogleGenerativeAiSettings,
+  ResetSettings,
+  ResetAllSettings,
 } from "@renderer/components";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AppSettingsProviderContext } from "@renderer/context";
 
 export const Preferences = () => {
+  const { ffmpegConfig } = useContext(AppSettingsProviderContext);
+
   const TABS = [
     {
       value: "basic",
       label: t("basicSettingsShort"),
-      component: () => <BasicSettings />,
+      component: () => (
+        <div className="">
+          <div className="font-semibold mb-4 capitilized">
+            {t("basicSettings")}
+          </div>
+          <UserSettings />
+          <Separator />
+          <LanguageSettings />
+          <Separator />
+          <LibrarySettings />
+          <Separator />
+          <WhisperSettings />
+          <Separator />
+          {ffmpegConfig.ready && (
+            <>
+              <FfmpegSettings />
+              <Separator />
+            </>
+          )}
+          <OpenaiSettings />
+          <Separator />
+          <GoogleGenerativeAiSettings />
+          <Separator />
+        </div>
+      ),
     },
     {
       value: "advanced",
       label: t("advancedSettingsShort"),
-      component: () => <AdvancedSettings />,
+      component: () => (
+        <>
+          <div className="font-semibold mb-4 capitilized">
+            {t("advancedSettings")}
+          </div>
+          <ResetSettings />
+          <Separator />
+          <ResetAllSettings />
+          <Separator />
+        </>
+      ),
     },
     {
       value: "hotkeys",

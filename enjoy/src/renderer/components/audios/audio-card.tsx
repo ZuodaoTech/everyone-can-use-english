@@ -19,6 +19,7 @@ export const AudioCard = (props: {
         >
           <img
             src={audio.coverUrl ? audio.coverUrl : "./assets/sound-waves.png"}
+            crossOrigin="anonymous"
             className="hover:scale-105 object-cover w-full h-full"
           />
           )

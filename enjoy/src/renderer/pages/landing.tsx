@@ -6,7 +6,6 @@ import {
   LoginForm,
   ChooseLibraryPathInput,
   WhisperModelOptionsPanel,
-  FfmpegCheck,
 } from "@renderer/components";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { CheckCircle2Icon } from "lucide-react";
@@ -15,13 +14,14 @@ export default () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [currentStepValid, setCurrentStepValid] = useState<boolean>(false);
 
-  const { user, libraryPath, whisperModel, ffmpegConfig, initialized } =
-    useContext(AppSettingsProviderContext);
-  const totalSteps = 5;
+  const { user, libraryPath, whisperConfig, initialized } = useContext(
+    AppSettingsProviderContext
+  );
+  const totalSteps = 4;
 
   useEffect(() => {
     validateCurrentStep();
-  }, [currentStep, user, whisperModel, ffmpegConfig]);
+  }, [currentStep, user, whisperConfig]);
 
   const validateCurrentStep = async () => {
     switch (currentStep) {
@@ -32,12 +32,9 @@ export default () => {
         setCurrentStepValid(!!libraryPath);
         break;
       case 3:
-        setCurrentStepValid(!!whisperModel);
+        setCurrentStepValid(true);
         break;
       case 4:
-        setCurrentStepValid(ffmpegConfig?.ready);
-        break;
-      case 5:
         setCurrentStepValid(initialized);
         break;
       default:
@@ -71,10 +68,6 @@ export default () => {
       subtitle: t("chooseAIModelToDownload"),
     },
     4: {
-      title: t("ffmpegCheck"),
-      subtitle: t("checkIfFfmpegIsInstalled"),
-    },
-    5: {
       title: t("finish"),
       subtitle: t("youAreReadyToGo"),
     },
@@ -95,8 +88,7 @@ export default () => {
         {currentStep == 1 && <LoginForm />}
         {currentStep == 2 && <ChooseLibraryPathInput />}
         {currentStep == 3 && <WhisperModelOptionsPanel />}
-        {currentStep == 4 && <FfmpegCheck />}
-        {currentStep == 5 && (
+        {currentStep == 4 && (
           <div className="flex justify-center items-center">
             <CheckCircle2Icon className="text-green-500 w-24 h-24" />
           </div>

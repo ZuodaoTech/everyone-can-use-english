@@ -88,9 +88,11 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
   useEffect(() => {
     const where = id ? { id } : { md5 };
     EnjoyApp.audios.findOne(where).then((audio) => {
-      if (!audio) return;
-
-      setAudio(audio);
+      if (audio) {
+        setAudio(audio);
+      } else {
+        toast.error(t("models.audio.notFound"));
+      }
     });
   }, [id, md5]);
 
@@ -171,6 +173,7 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
             mediaId={audio.id}
             mediaType="Audio"
             mediaName={audio.name}
+            mediaUrl={audio.src}
             transcription={transcription}
             currentSegmentIndex={currentSegmentIndex}
             onSelectSegment={(index) => {
