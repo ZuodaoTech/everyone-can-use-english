@@ -52,7 +52,7 @@ export const LoginForm = () => {
 
     if (error) {
       toast.error(error);
-      EnjoyApp.view.hide();
+      setWebviewVisible(false);
       return;
     }
 
@@ -196,9 +196,7 @@ const PandoLoginForm = () => {
   const [code, setCode] = useState<string>("");
   const [codeSent, setCodeSent] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(0);
-  const { login, webApi } = useContext(
-    AppSettingsProviderContext
-  );
+  const { login, webApi } = useContext(AppSettingsProviderContext);
 
   const validatePhone = () => {
     if (
@@ -227,6 +225,10 @@ const PandoLoginForm = () => {
   }, [ref]);
 
   useEffect(() => {
+    iti?.setCountry("cn");
+  }, [iti]);
+
+  useEffect(() => {
     if (countdown > 0) {
       setTimeout(() => {
         setCountdown(countdown - 1);
@@ -240,77 +242,79 @@ const PandoLoginForm = () => {
         <img src="assets/bandu-logo.svg" className="w-20 h-20" alt="bandu" />
       </div>
 
-      <div className="mb-2">
-        <input
-          onInput={validatePhone}
-          onBlur={validatePhone}
-          className="border text-lg py-2 px-4 rounded"
-          ref={ref}
-        />
-      </div>
-
-      {phoneNumber && (
-        <div className="mb-8">
-          <Button
-            variant="default"
-            size="lg"
-            className="w-full"
-            disabled={countdown > 0}
-            onClick={() => {
-              webApi
-                .loginCode({ phoneNumber })
-                .then(() => {
-                  toast.success(t("codeSent"));
-                  setCodeSent(true);
-                  setCountdown(60);
-                })
-                .catch((err) => {
-                  toast.error(err.message);
-                });
-            }}
-          >
-            {countdown > 0 && <span className="mr-2">{countdown}</span>}
-            <span>{codeSent ? t("resend") : t("sendCode")}</span>
-          </Button>
-        </div>
-      )}
-
-      {codeSent && (
-        <div className="mb-2 w-full">
-          <Input
-            className="border py-2 h-10 px-4 rounded"
-            type="text"
-            minLength={5}
-            maxLength={5}
-            placeholder={t("verificationCode")}
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
+      <div className="mb-12">
+        <div className="mb-2">
+          <input
+            onInput={validatePhone}
+            onBlur={validatePhone}
+            className="border text-lg py-2 px-4 rounded"
+            ref={ref}
           />
         </div>
-      )}
 
-      {code && (
-        <div>
-          <Button
-            variant="default"
-            size="lg"
-            className="w-full"
-            disabled={!code || code.length < 5 || !phoneNumber}
-            onClick={() => {
-              webApi
-                .auth({ provider: "bandu", code, phoneNumber })
-                .then((user) => {
-                  if (user?.id && user?.accessToken) login(user);
-                })
-                .catch((err) => {
-                  toast.error(err.message);
-                });
-            }}
-          >
-            {t("login")}
-          </Button>
-        </div>
-      )}
+        {phoneNumber && (
+          <div className="mb-8">
+            <Button
+              variant="default"
+              size="lg"
+              className="w-full"
+              disabled={countdown > 0}
+              onClick={() => {
+                webApi
+                  .loginCode({ phoneNumber })
+                  .then(() => {
+                    toast.success(t("codeSent"));
+                    setCodeSent(true);
+                    setCountdown(60);
+                  })
+                  .catch((err) => {
+                    toast.error(err.message);
+                  });
+              }}
+            >
+              {countdown > 0 && <span className="mr-2">{countdown}</span>}
+              <span>{codeSent ? t("resend") : t("sendCode")}</span>
+            </Button>
+          </div>
+        )}
+
+        {codeSent && (
+          <div className="mb-2 w-full">
+            <Input
+              className="border py-2 h-10 px-4 rounded"
+              type="text"
+              minLength={5}
+              maxLength={5}
+              placeholder={t("verificationCode")}
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
+          </div>
+        )}
+
+        {code && (
+          <div>
+            <Button
+              variant="default"
+              size="lg"
+              className="w-full"
+              disabled={!code || code.length < 5 || !phoneNumber}
+              onClick={() => {
+                webApi
+                  .auth({ provider: "bandu", code, phoneNumber })
+                  .then((user) => {
+                    if (user?.id && user?.accessToken) login(user);
+                  })
+                  .catch((err) => {
+                    toast.error(err.message);
+                  });
+              }}
+            >
+              {t("login")}
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
