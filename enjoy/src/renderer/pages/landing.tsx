@@ -32,7 +32,7 @@ export default () => {
         setCurrentStepValid(!!libraryPath);
         break;
       case 3:
-        setCurrentStepValid(true);
+        setCurrentStepValid(Boolean(whisperConfig.model));
         break;
       case 4:
         setCurrentStepValid(initialized);
