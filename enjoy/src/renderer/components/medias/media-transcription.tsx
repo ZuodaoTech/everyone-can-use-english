@@ -112,6 +112,10 @@ export const MediaTranscription = (props: {
     addDblistener(fetchSegmentStats);
     fetchSegmentStats();
 
+    if (transcription?.state == "pending") {
+      generate();
+    }
+
     return () => {
       removeDbListener(fetchSegmentStats);
     };
@@ -125,12 +129,6 @@ export const MediaTranscription = (props: {
         inline: "center",
       } as ScrollIntoViewOptions);
   }, [currentSegmentIndex, transcription]);
-
-  useEffect(() => {
-    if (transcription?.state !== "pending") return;
-
-    generate();
-  }, [transcription]);
 
   if (!transcription)
     return (
