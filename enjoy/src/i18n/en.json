@@ -295,6 +295,7 @@
   "language": "Language",
   "sttAiModel": "STT AI model",
   "checkingWhisper": "Checking whisper status",
+  "pleaseDownloadWhisperModelFirst": "Please download whisper model first",
   "whisperIsWorkingGood": "Whisper is working good",
   "whisperIsNotWorking": "Whisper is not working",
   "checkingWhisperModel": "Checking whisper model",
