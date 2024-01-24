@@ -192,11 +192,11 @@ export const LoginForm = () => {
 const PandoLoginForm = () => {
   const ref = useRef<HTMLInputElement>(null);
   const [iti, setIti] = useState<any>(null);
-  const [phone, setPhone] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [code, setCode] = useState<string>("");
   const [codeSent, setCodeSent] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(0);
-  const { EnjoyApp, login, webApi, user } = useContext(
+  const { login, webApi } = useContext(
     AppSettingsProviderContext
   );
 
@@ -205,9 +205,9 @@ const PandoLoginForm = () => {
       iti?.isValidNumber() &&
       iti?.getNumberType() === intlTelInputUtils.numberType.MOBILE
     ) {
-      setPhone(iti.getNumber());
+      setPhoneNumber(iti.getNumber());
     } else {
-      setPhone("");
+      setPhoneNumber("");
     }
   };
 
@@ -249,7 +249,7 @@ const PandoLoginForm = () => {
         />
       </div>
 
-      {phone && (
+      {phoneNumber && (
         <div className="mb-8">
           <Button
             variant="default"
@@ -258,7 +258,7 @@ const PandoLoginForm = () => {
             disabled={countdown > 0}
             onClick={() => {
               webApi
-                .loginCode({ phoneNumber: phone })
+                .loginCode({ phoneNumber })
                 .then(() => {
                   toast.success(t("codeSent"));
                   setCodeSent(true);
@@ -295,10 +295,10 @@ const PandoLoginForm = () => {
             variant="default"
             size="lg"
             className="w-full"
-            disabled={!code || code.length < 5 || !phone}
+            disabled={!code || code.length < 5 || !phoneNumber}
             onClick={() => {
               webApi
-                .auth({ provider: "bandu", code, phoneNumber: phone })
+                .auth({ provider: "bandu", code, phoneNumber })
                 .then((user) => {
                   if (user?.id && user?.accessToken) login(user);
                 })
