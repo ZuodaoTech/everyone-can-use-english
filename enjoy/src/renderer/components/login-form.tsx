@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import { UserSettings, LanguageSettings } from "@renderer/components";
+import { ChevronLeftIcon } from "lucide-react";
 
 export const LoginForm = () => {
   const { EnjoyApp, login, webApi, user } = useContext(
@@ -14,16 +15,21 @@ export const LoginForm = () => {
 
   const handleLogin = (provider: "mixin" | "github") => {
     const url = `${webApi.baseUrl}/sessions/new?provider=${provider}`;
-    EnjoyApp.view.load(url, { x: 0, y: 0 });
     setWebviewVisible(true);
 
     const rect = containerRef.current.getBoundingClientRect();
-    EnjoyApp.view.load(url, {
-      x: rect.x,
-      y: rect.y,
-      width: rect.width,
-      height: rect.height,
-    });
+    EnjoyApp.view.load(
+      url,
+      {
+        x: rect.x,
+        y: rect.y,
+        width: rect.width,
+        height: rect.height,
+      },
+      {
+        navigatable: true,
+      }
+    );
   };
 
   const onViewState = (event: {
@@ -40,7 +46,7 @@ export const LoginForm = () => {
       return;
     }
 
-    if (state === "will-navigate") {
+    if (state === "will-navigate" || state === "will-redirect") {
       if (!url.startsWith(webApi.baseUrl)) {
         return;
       }
@@ -54,10 +60,13 @@ export const LoginForm = () => {
         webApi
           .auth({ provider, code })
           .then((user) => {
-            login(user);
+            if (user?.id && user?.accessToken) login(user);
+          })
+          .catch((err) => {
+            toast.error(err.message);
           })
           .finally(() => {
-            EnjoyApp.view.hide();
+            setWebviewVisible(false);
           });
       } else {
         toast.error(t("failedToLogin"));
@@ -77,6 +86,18 @@ export const LoginForm = () => {
     };
   }, [webApi, webviewVisible]);
 
+  useEffect(() => {
+    if (!webviewVisible) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    EnjoyApp.view.show({
+      x: rect.x,
+      y: rect.y,
+      width: rect.width,
+      height: rect.height,
+    });
+  }, [webviewVisible]);
+
   if (user) {
     return (
       <div className="px-4 py-2 border rounded-lg w-full max-w-sm">
@@ -88,13 +109,8 @@ export const LoginForm = () => {
   }
 
   return (
-    <div className="w-full">
-      <div className=""></div>
-
-      <div
-        ref={containerRef}
-        className="w-full max-w-sm px-6 flex flex-col space-y-4"
-      >
+    <>
+      <div className="w-full max-w-sm px-6 flex flex-col space-y-4">
         <Button
           variant="secondary"
           size="lg"
@@ -123,6 +139,20 @@ export const LoginForm = () => {
           <span className="text-lg">Mixin Messenger</span>
         </Button>
       </div>
-    </div>
+
+      <div
+        className={`absolute top-0 left-0 w-screen h-screen z-10 flex flex-col overflow-hidden ${
+          webviewVisible ? "" : "hidden"
+        }`}
+      >
+        <div className="flex items-center py-2 px-6">
+          <Button variant="ghost" onClick={() => setWebviewVisible(false)}>
+            <ChevronLeftIcon className="w-5 h-5" />
+            <span className="ml-2">{t("goBack")}</span>
+          </Button>
+        </div>
+        <div ref={containerRef} className="w-full flex-1"></div>
+      </div>
+    </>
   );
 };

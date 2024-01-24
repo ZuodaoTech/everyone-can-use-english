@@ -35,7 +35,18 @@ type EnjoyAppType = {
     };
   };
   view: {
-    load: (url: string, bounds?: object) => Promise<void>;
+    load: (
+      url: string,
+      bounds?: {
+        x?: number;
+        y?: number;
+        width?: number;
+        height?: number;
+      },
+      options?: {
+        navigatable?: boolean;
+      }
+    ) => Promise<void>;
     show: (bounds: object) => Promise<void>;
     hide: () => Promise<void>;
     remove: () => Promise<void>;
