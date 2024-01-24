@@ -1,9 +1,19 @@
-import { Button, toast, Separator } from "@renderer/components/ui";
+import {
+  Button,
+  toast,
+  Input,
+  Separator,
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@renderer/components/ui";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import { UserSettings, LanguageSettings } from "@renderer/components";
 import { ChevronLeftIcon } from "lucide-react";
+import intlTelInput from "intl-tel-input";
+import "intl-tel-input/build/css/intlTelInput.css";
 
 export const LoginForm = () => {
   const { EnjoyApp, login, webApi, user } = useContext(
@@ -70,7 +80,7 @@ export const LoginForm = () => {
           });
       } else {
         toast.error(t("failedToLogin"));
-        EnjoyApp.view.hide();
+        setWebviewVisible(false);
       }
     }
   };
@@ -112,9 +122,9 @@ export const LoginForm = () => {
     <>
       <div className="w-full max-w-sm px-6 flex flex-col space-y-4">
         <Button
-          variant="secondary"
+          variant="outline"
           size="lg"
-          className="w-full h-12 relative"
+          className="w-full h-12 relative rounded-full"
           onClick={() => handleLogin("github")}
         >
           <img
@@ -124,11 +134,10 @@ export const LoginForm = () => {
           />
           <span className="text-lg">GitHub</span>
         </Button>
-
         <Button
-          variant="secondary"
+          variant="outline"
           size="lg"
-          className="w-full h-12 relative"
+          className="w-full h-12 relative rounded-full"
           onClick={() => handleLogin("mixin")}
         >
           <img
@@ -138,6 +147,29 @@ export const LoginForm = () => {
           />
           <span className="text-lg">Mixin Messenger</span>
         </Button>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full h-12 relative rounded-full"
+            >
+              <img
+                src="assets/bandu-logo.svg"
+                className="w-10 h-10 absolute left-4"
+                alt="bandu-logo"
+              />
+              <span className="text-lg">学升</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="bottom" className="h-screen">
+            <div className="w-full h-full flex">
+              <div className="m-auto">
+                <PandoLoginForm />
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
 
       <div
@@ -154,5 +186,131 @@ export const LoginForm = () => {
         <div ref={containerRef} className="w-full flex-1"></div>
       </div>
     </>
+  );
+};
+
+const PandoLoginForm = () => {
+  const ref = useRef<HTMLInputElement>(null);
+  const [iti, setIti] = useState<any>(null);
+  const [phone, setPhone] = useState<string>("");
+  const [code, setCode] = useState<string>("");
+  const [codeSent, setCodeSent] = useState<boolean>(false);
+  const [countdown, setCountdown] = useState<number>(0);
+  const { EnjoyApp, login, webApi, user } = useContext(
+    AppSettingsProviderContext
+  );
+
+  const validatePhone = () => {
+    if (
+      iti?.isValidNumber() &&
+      iti?.getNumberType() === intlTelInputUtils.numberType.MOBILE
+    ) {
+      setPhone(iti.getNumber());
+    } else {
+      setPhone("");
+    }
+  };
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    intlTelInput(ref.current, {
+      initialCountry: "cn",
+      utilsScript:
+        "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.12/build/js/utils.js",
+    });
+    setIti(intlTelInput(ref.current));
+
+    return () => {
+      iti?.destroy();
+    };
+  }, [ref]);
+
+  useEffect(() => {
+    if (countdown > 0) {
+      setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+    }
+  }, [countdown]);
+
+  return (
+    <div>
+      <div className="flex items-center justify-center mb-4">
+        <img src="assets/bandu-logo.svg" className="w-20 h-20" alt="bandu" />
+      </div>
+
+      <div className="mb-2">
+        <input
+          onInput={validatePhone}
+          onBlur={validatePhone}
+          className="border text-lg py-2 px-4 rounded"
+          ref={ref}
+        />
+      </div>
+
+      {phone && (
+        <div className="mb-8">
+          <Button
+            variant="default"
+            size="lg"
+            className="w-full"
+            disabled={countdown > 0}
+            onClick={() => {
+              webApi
+                .loginCode({ phoneNumber: phone })
+                .then(() => {
+                  toast.success(t("codeSent"));
+                  setCodeSent(true);
+                  setCountdown(60);
+                })
+                .catch((err) => {
+                  toast.error(err.message);
+                });
+            }}
+          >
+            {countdown > 0 && <span className="mr-2">{countdown}</span>}
+            <span>{codeSent ? t("resend") : t("sendCode")}</span>
+          </Button>
+        </div>
+      )}
+
+      {codeSent && (
+        <div className="mb-2 w-full">
+          <Input
+            className="border py-2 h-10 px-4 rounded"
+            type="text"
+            minLength={5}
+            maxLength={5}
+            placeholder={t("verificationCode")}
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          />
+        </div>
+      )}
+
+      {code && (
+        <div>
+          <Button
+            variant="default"
+            size="lg"
+            className="w-full"
+            disabled={!code || code.length < 5 || !phone}
+            onClick={() => {
+              webApi
+                .auth({ provider: "bandu", code, phoneNumber: phone })
+                .then((user) => {
+                  if (user?.id && user?.accessToken) login(user);
+                })
+                .catch((err) => {
+                  toast.error(err.message);
+                });
+            }}
+          >
+            {t("login")}
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
