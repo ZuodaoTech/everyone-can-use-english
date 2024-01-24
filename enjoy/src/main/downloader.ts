@@ -24,7 +24,11 @@ class Downloader {
       webContents.downloadURL(url);
       webContents.session.on("will-download", (_event, item, _webContents) => {
         if (savePath) {
-          item.setSavePath(savePath);
+          if (fs.statSync(savePath).isDirectory()) {
+            item.setSavePath(path.join(savePath, item.getFilename()));
+          } else {
+            item.setSavePath(savePath);
+          }
         } else {
           item.setSavePath(
             path.join(app.getPath("downloads"), item.getFilename())
