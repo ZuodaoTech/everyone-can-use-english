@@ -282,12 +282,16 @@ export class Recording extends Model<Recording> {
       params;
 
     const format = blob.type.split("/")[1];
-    const tempfile = path.join(settings.cachePath(), `${Date.now()}.${format}`);
-    await fs.outputFile(tempfile, Buffer.from(blob.arrayBuffer));
+    const file = path.join(
+      settings.userDataPath(),
+      "recordings",
+      `${Date.now()}.${format}`
+    );
+    await fs.outputFile(file, Buffer.from(blob.arrayBuffer));
 
-    const md5 = await hashFile(tempfile, { algo: "md5" });
+    const md5 = await hashFile(file, { algo: "md5" });
     const filename = `${md5}.${format}`;
-    fs.renameSync(tempfile, path.join(path.dirname(tempfile), filename));
+    fs.renameSync(file, path.join(path.dirname(file), filename));
 
     return this.create(
       {

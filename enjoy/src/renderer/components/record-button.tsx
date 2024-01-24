@@ -7,6 +7,7 @@ import WaveSurfer from "wavesurfer.js";
 import { cn } from "@renderer/lib/utils";
 import { RadialProgress, toast } from "@renderer/components/ui";
 import { useHotkeys } from "react-hotkeys-hook";
+import { fetchFile } from "@ffmpeg/util";
 
 export const RecordButton = (props: {
   className?: string;
@@ -117,6 +118,26 @@ const RecordButtonPopover = (props: {
   onRecordEnd: (blob: Blob, duration: number) => void;
 }) => {
   const containerRef = useRef<HTMLDivElement>();
+  const { ffmpeg } = useContext(AppSettingsProviderContext);
+
+  const transcode = async (blob: Blob) => {
+    const input = `input.${blob.type.split("/")[1]}`;
+    const output = input.replace(/\.[^/.]+$/, ".wav");
+    await ffmpeg.writeFile(input, await fetchFile(blob));
+    await ffmpeg.exec([
+      "-i",
+      input,
+      "-ar",
+      "16000",
+      "-ac",
+      "1",
+      "-c:a",
+      "pcm_s16le",
+      output,
+    ]);
+    const data = await ffmpeg.readFile(output);
+    return new Blob([data], { type: "audio/wav" });
+  };
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -136,9 +157,10 @@ const RecordButtonPopover = (props: {
       startAt = Date.now();
     });
 
-    record.on("record-end", (blob: Blob) => {
+    record.on("record-end", async (blob: Blob) => {
       const duration = Date.now() - startAt;
-      props.onRecordEnd(blob, duration);
+      const output = await transcode(blob);
+      props.onRecordEnd(output, duration);
     });
 
     RecordPlugin.getAvailableAudioDevices()
