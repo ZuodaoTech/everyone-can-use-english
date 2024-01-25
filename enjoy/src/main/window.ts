@@ -70,7 +70,10 @@ main.init = () => {
     (
       event,
       url,
-      bounds: { x: number; y: number; width: number; height: number }
+      bounds: { x: number; y: number; width: number; height: number },
+      options?: {
+        navigatable?: boolean;
+      }
     ) => {
       const {
         x = 0,
@@ -78,6 +81,7 @@ main.init = () => {
         width = mainWindow.getBounds().width,
         height = mainWindow.getBounds().height,
       } = bounds;
+      const { navigatable = false } = options || {};
 
       logger.debug("view-load", url);
       const view = new BrowserView();
@@ -124,14 +128,27 @@ main.init = () => {
             });
           });
       });
+
+      view.webContents.on("will-redirect", (detail) => {
+        event.sender.send("view-on-state", {
+          state: "will-redirect",
+          url: detail.url,
+        });
+
+        logger.debug("will-redirect", detail.url);
+      });
+
       view.webContents.on("will-navigate", (detail) => {
         event.sender.send("view-on-state", {
           state: "will-navigate",
           url: detail.url,
         });
 
-        logger.debug("prevent navigation", detail.url);
-        detail.preventDefault();
+        logger.debug("will-navigate", detail.url);
+        if (!navigatable) {
+          logger.debug("prevent navigation", detail.url);
+          detail.preventDefault();
+        }
       });
       view.webContents.loadURL(url);
     }

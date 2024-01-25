@@ -69,9 +69,10 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   view: {
     load: (
       url: string,
-      bounds?: { x: number; y: number; width: number; height: number }
+      bounds?: { x: number; y: number; width: number; height: number },
+      options?: { navigatable?: boolean }
     ) => {
-      return ipcRenderer.invoke("view-load", url, bounds);
+      return ipcRenderer.invoke("view-load", url, bounds, options);
     },
     hide: () => {
       return ipcRenderer.invoke("view-hide");
