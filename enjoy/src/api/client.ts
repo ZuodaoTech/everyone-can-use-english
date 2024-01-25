@@ -67,12 +67,20 @@ export class Client {
     );
   }
 
-  auth(params: { provider: string; code: string }): Promise<UserType> {
+  auth(params: {
+    provider: "mixin" | "github" | "bandu";
+    code: string;
+    phoneNumber?: string;
+  }): Promise<UserType> {
     return this.api.post("/api/sessions", decamelizeKeys(params));
   }
 
   me(): Promise<UserType> {
     return this.api.get("/api/me");
+  }
+
+  loginCode(params: { phoneNumber: string }): Promise<void> {
+    return this.api.post("/api/sessions/login_code", decamelizeKeys(params));
   }
 
   rankings(range: "day" | "week" | "month" | "year" | "all" = "day"): Promise<{

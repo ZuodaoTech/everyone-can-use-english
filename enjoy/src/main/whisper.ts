@@ -5,6 +5,7 @@ import { WHISPER_MODELS_OPTIONS, PROCESS_TIMEOUT } from "@/constants";
 import { exec } from "child_process";
 import fs from "fs-extra";
 import log from "electron-log/main";
+import { t } from "i18next";
 
 const logger = log.scope("whisper");
 const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
@@ -18,6 +19,13 @@ class Whipser {
   }
 
   currentModel() {
+    if (!this.config.availableModels) return;
+    if (!this.config.model) {
+      const model = this.config.availableModels[0];
+      settings.setSync("whisper.model", this.config.availableModels[0].name);
+      return model.savePath;
+    }
+
     return (this.config.availableModels || []).find(
       (m) => m.name === this.config.model
     )?.savePath;
@@ -175,6 +183,10 @@ class Whipser {
     if (fs.pathExistsSync(outputFile) && !force) {
       logger.info(`File ${outputFile} already exists`);
       return fs.readJson(outputFile);
+    }
+
+    if (!this.currentModel()) {
+      throw new Error(t("pleaseDownloadWhisperModelFirst"));
     }
 
     const command = [

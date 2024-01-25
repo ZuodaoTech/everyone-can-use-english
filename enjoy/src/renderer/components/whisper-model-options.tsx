@@ -132,7 +132,7 @@ export const WhisperModelOptions = () => {
       if (state.state === "completed") {
         model.downloaded = true;
         setWhisperModel(model.name);
-      } else if (state.state === "cancelled") {
+      } else if (state.state === "cancelled" || state.state === "interrupted") {
         model.downloaded = false;
         model.downloadState = null;
       }

@@ -22,7 +22,6 @@ import settings from "@main/settings";
 import { hashFile } from "@/utils";
 import log from "electron-log/main";
 import storage from "@main/storage";
-import Ffmpeg from "@main/ffmpeg";
 import { Client } from "@/api";
 import { WEB_API_URL } from "@/constants";
 import { AzureSpeechSdk } from "@main/azure-speech-sdk";
@@ -283,20 +282,16 @@ export class Recording extends Model<Recording> {
       params;
 
     const format = blob.type.split("/")[1];
-    const tempfile = path.join(settings.cachePath(), `${Date.now()}.${format}`);
-    await fs.outputFile(tempfile, Buffer.from(blob.arrayBuffer));
-    const wavFile = path.join(
+    const file = path.join(
       settings.userDataPath(),
       "recordings",
-      `${Date.now()}.wav`
+      `${Date.now()}.${format}`
     );
+    await fs.outputFile(file, Buffer.from(blob.arrayBuffer));
 
-    const ffmpeg = new Ffmpeg();
-    await ffmpeg.convertToWav(tempfile, wavFile);
-
-    const md5 = await hashFile(wavFile, { algo: "md5" });
-    const filename = `${md5}.wav`;
-    fs.renameSync(wavFile, path.join(path.dirname(wavFile), filename));
+    const md5 = await hashFile(file, { algo: "md5" });
+    const filename = `${md5}.${format}`;
+    fs.renameSync(file, path.join(path.dirname(file), filename));
 
     return this.create(
       {

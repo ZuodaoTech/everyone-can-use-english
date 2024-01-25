@@ -1,8 +1,12 @@
-## 在本地安装 Jupyter 以及 JupyterLab-Desktop（MacOS）
+## 在本地安装 Jupyter 以及 JupyterLab-Desktop
+
+[Windows 用户安装方法点这里](#Windows用户)
+
+### macOS 用户
 
 macOS 系统自带的 Python 版本是 2.7，路径（path）通常是 `/usr/local/bin/python`；想要使用更高版本的 Python，必须自己动手安装。
 
-## 1. 安装 Homebrew
+### 1. 安装 Homebrew
 
 先在 Terminal 里安装 `Homebrew`，以便将来用 `brew` 命令安装更多的软件：
 
@@ -10,7 +14,7 @@ macOS 系统自带的 Python 版本是 2.7，路径（path）通常是 `/usr/loc
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-## 2. 安装 Miniconda
+### 2. 安装 Miniconda
 
 随后，就去可以用 `brew` 安装 Miniconda 了，它是一个小型的 Python 管理工具。
 
@@ -51,7 +55,7 @@ which conda
 conda --version
 ```
 
-## 3. 确认 Python 版本
+### 3. 确认 Python 版本
 
 ```bash
 which -a python
@@ -66,13 +70,13 @@ python --version
 
 例如，`/opt/homebrew/Caskroom/miniconda/base/bin/python` 这个 python 解释器，调用的就是 `/opt/homebrew/Caskroom/miniconda/base/` 这个目录下的 Python 组件，而这个 “环境” 的名称就是 `base`，可以用 `conda activate base` 启用。
 
-## 4. 安装 Jupyterlab Module
+### 4. 安装 Jupyterlab Module
 
 ```bash
 python -m pip install jupyterlab 
 ```
 
-## 5. 安装 JupyterLab-Desktop
+### 5. 安装 JupyterLab-Desktop
 
 ```bash
 brew install --cask jupyterlab
@@ -112,7 +116,7 @@ which python
 
 ![](images/jld-default-env.png)
 
-## 6. jlab 命令使用
+### 6. jlab 命令使用
 
 在 Terminal 里，使用以下命令 “以当前路径为工作路径打开 JupyterLab Desktop”（注意末尾的 `&`）：
 
@@ -128,7 +132,7 @@ jlab . &
 jlab sample.ipynb &
 ```
 
-## 7. 使用 JupyterLab-Desktop 图形界面
+### 7. 使用 JupyterLab-Desktop 图形界面
 
 当然，普通用户最适应的是 “图形界面”，JupyterLab-Desktop 的图形界面相对比较直观，很快就可以学会。最基础的，无非是几个最常用操作：
 
@@ -137,6 +141,170 @@ jlab sample.ipynb &
 * 指针拖拽：可以移动某个单元格，改变代码执行顺序；
 * ……
 
-## 8. 关于 Python 的基本使用
+### 8. 关于 Python 的基本使用
+
+可以参照《[自学是门手艺](https://github.com/selfteaching/the-craft-of-selfteaching)》，也可以参照 [Python Cheatshee in Jupyter Notebookst](https://github.com/xiaolai/Python-Cheatsheets-in-Jupyter-Notebooks)。
+
+### Windows用户
+
+准备工作：网络通信正常
+
+### 1、下载安装文件
+
+1.[下载 Anaconda Python 环境管理器](https://www.anaconda.com/download#downloads)
+
+点击 Windows 图标下面的 `64-Bit Graphical Installer ......` 下载文件
+
+2.[下载 JupyterLab Desktop](https://github.com/jupyterlab/jupyterlab-desktop/releases)
+
+点击  `...... Setup-Windows.exe` 下载文件
+
+### 2、安装 Anaconda
+
+找到下载的文件 `Anaconda3 ...... .exe` 双击运行安装向导，需要注意的是**下面这几个地方不要选错**：
+
+![installJL-2](images/win-installJL-2.png)
+
+![installJL-3](images/win-installJL-3.png)
+
+确认无误再点击 Install 安装：
+
+![installJL-4](images/win-installJL-4.png)
+
+> 在安装过程的最后一小段，电脑反应可能会变慢，感觉好像是卡住了，无需紧张，静静等待就好，因为安装过程中会执行各种解压、下载和安装命令。
+
+当出现 Completed 字样，说明安装成功，我们 Next ：
+
+![installJL-6](images/win-installJL-5.png)
+
+最后 Finish 的时候记得取消这个对勾：
+
+![installJL-6](images/win-installJL-6.png)
+
+点击 Finish
+
+### 3、配置 Anaconda Python 环境
+
+安装完成后，系统会自动启动 Anaconda Navigator：
+
+![installJL-7](images/win-installJL-7.png)
+
+Anaconda Navigator 提示有新版本，点击 No, remind me later 暂不升级：
+
+![installJL-8](images/win-installJL-8.png)
+
+> 如果你对你的网络很有信心，你也可以现在升级，无论你是否升级，都不影响后续操作
+
+点击窗口左侧的 Environments 进入环境配置：
+
+![installJL-9](images/win-installJL-9.png)
+
+点击屏幕左下部分的 Create 按钮，新建一个新的 Python 环境，专门用于英语训练：
+
+![installJL-10](images/win-installJL-10.png)
+
+> 尽可能不要破坏系统的 Python 环境，以防其他使用Python 的 APP 出问题
+
+在弹出的对话框中，在 Name 这一行输入这个虚拟环境的名称  EnTrainEVM ：
+
+![installJL-11](images/win-installJL-11.png)
+
+> 这个名称随便填啥都可以，只要自己看着顺眼即可；只是**不能**整成**中文或者纯数字** 
+>
+
+在 Packages 选择 **Python 3.11.7** 
+
+点击 Create 创建环境
+
+![installJL-12](images/win-installJL-12.png)
+
+这个时候你会看到右下角的进度条在蠕动，说明你创建的 Python 环境正在创建中
+
+> 需要注意的是，整个创建过程中都需要通畅的网络链接，如果创建失败，99.9999% 都是网的问题。
+
+看到下面这样的画面，说明环境创建成功！
+
+![installJL-13](images/win-installJL-13.png)
+
+
+
+> 如果一开始你没有更新 Anaconda Navigator 可能会弹出新版本提示，我们同样点击 No, remind me later 暂不升级
+>
+> ![installJL-8](images/win-installJL-8.png)
+
+点击窗口左边的 Home 进入主页，往下滑，找到 Jupyter Lab 点击 Install 安装：
+
+![installJL-17](images/win-installJL-17.png)
+
+![installJL-18](images/win-installJL-19.png)
+
+等右下角的进度条走完，说明安装成功！可以关闭 Anaconda Navigator 程序了。
+
+此时，你用于英语训练的 Python 环境就**配置完成啦！**
+
+### 4、安装 JupyterLab Desktop
+
+找到下载目录，双击 `JupyterLab-Setup-Windows` 运行安装向导，此时系统会提示安装程序需要管理员权限，我们点 `是` 授权运行：
+
+![installJL-15](images/win-installJL-15.png)
+
+点击我同意，安装立即开始
+
+![installJL-14](images/win-installJL-14.png)
+
+安装完成，点击完成
+
+### 5、配置 JupyterLab Desktop
+
+系统会自动运行 JupyterLab Desktop 程序：
+
+![installJL-16](images/win-installJL-16.png)
+
+我们点击 Open Folder 打开文件夹，找到存放学习资料的地方，点击 Open：
+
+![installJL-21](images/win-installJL-21.png)
+
+在窗口的右上方，有一个蓝色的图标，点一下：
+
+![installJL-23](images/win-installJL-23.png)
+
+在弹出的菜单里，选择我们刚才创建的 EnTrainEVM 英语练习环境：
+
+![installJL-24](images/win-installJL-24.png)
+
+看到这个画面需要稍微等一下：
+
+![installJL-25](images/win-installJL-25.png)
+
+当你看到这个画面，说明 JupyterLab Desktop 已经安装成功啦！
+
+![installJL-26](images/win-installJL-26.png)
+
+### 6. jlab 命令使用
+
+在 PowerShell 里，使用以下命令 “以当前路径为工作路径打开 JupyterLab Desktop” ：
+
+```bash
+jlab . 
+```
+
+注意，用 PowerShell 里用 `jlab` 命令打开 JupyterLab-Desktop 的时候，PowerShell 窗口不能关闭（可以最小化）。
+
+使用以下命令 “用 JupyterLab Desktop 打开某个 `.ipynb` 文件”，比如：
+
+```bash
+jlab sample.ipynb 
+```
+
+### 7. 使用 JupyterLab-Desktop 图形界面
+
+当然，普通用户最适应的是 “图形界面”，JupyterLab-Desktop 的图形界面相对比较直观，很快就可以学会。最基础的，无非是几个最常用操作：
+
+* `Shift+Enter`：执行某个单元格的代码；
+* 连续按 `d` 两次：删除某个单元格；
+* 指针拖拽：可以移动某个单元格，改变代码执行顺序；
+* ……
+
+### 8. 关于 Python 的基本使用
 
 可以参照《[自学是门手艺](https://github.com/selfteaching/the-craft-of-selfteaching)》，也可以参照 [Python Cheatshee in Jupyter Notebookst](https://github.com/xiaolai/Python-Cheatsheets-in-Jupyter-Notebooks)。
