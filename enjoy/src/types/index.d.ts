@@ -26,6 +26,7 @@ type NotificationType = {
 };
 
 type WhisperConfigType = {
+  service: "local" | "web";
   availableModels: {
     type: string;
     name: string;
@@ -40,23 +41,23 @@ type WhisperConfigType = {
 
 type WhisperOutputType = {
   model: {
-    audio: {
+    audio?: {
       cts: number;
       head: number;
       layer: number;
       state: number;
     };
-    ftype: number;
-    mels: number;
-    multilingual: number;
-    text: {
+    ftype?: number;
+    mels?: number;
+    multilingual?: number;
+    text?: {
       cts: number;
       head: number;
       layer: number;
       state: number;
     };
     type: string;
-    vocab: number;
+    vocab?: number;
   };
   params: {
     language: string;
@@ -76,10 +77,20 @@ type TranscriptionSegmentType = {
     to: number;
   };
   text: string;
-  timestamps: {
+  timestamps?: {
     from: string;
     to: string;
   };
+};
+
+type CfWhipserOutputType = {
+  text: string;
+  words_count: number;
+  words: {
+    word: string;
+    start: number;
+    end: number;
+  }[];
 };
 
 type TransactionStateType = {

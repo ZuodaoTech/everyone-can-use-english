@@ -58,7 +58,15 @@ const dbPath = () => {
 };
 
 const whisperConfig = (): WhisperConfigType => {
+  let service = settings.getSync("whisper.service") as "local" | "web";
+
+  if (!service) {
+    settings.setSync("whisper.service", "web");
+    service = "local";
+  }
+
   return {
+    service,
     availableModels: settings.getSync(
       "whisper.availableModels"
     ) as WhisperConfigType["availableModels"],

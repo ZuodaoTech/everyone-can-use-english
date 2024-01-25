@@ -1,11 +1,16 @@
 import { ipcMain } from "electron";
 import settings from "@main/settings";
 import path from "path";
-import { WHISPER_MODELS_OPTIONS, PROCESS_TIMEOUT } from "@/constants";
+import {
+  WHISPER_MODELS_OPTIONS,
+  PROCESS_TIMEOUT,
+  AI_WORKER_ENDPOINT,
+} from "@/constants";
 import { exec } from "child_process";
 import fs from "fs-extra";
 import log from "electron-log/main";
 import { t } from "i18next";
+import axios from "axios";
 
 const logger = log.scope("whisper");
 const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
@@ -164,17 +169,56 @@ class Whipser {
     }
   }
 
+  async transcribe(
+    file: string,
+    options?: {
+      force?: boolean;
+      extra?: string[];
+    }
+  ): Promise<Partial<WhisperOutputType>> {
+    if (this.config.service === "local") {
+      return this.transcribeFromLocal(file, options);
+    } else {
+      return this.transcribeFromWeb(file);
+    }
+  }
+
+  async transcribeFromWeb(file: string): Promise<Partial<WhisperOutputType>> {
+    const data = fs.readFileSync(file);
+    const res: CfWhipserOutputType = await axios.postForm(
+      `${AI_WORKER_ENDPOINT}/audio/transcriptions`,
+      data
+    );
+
+    const transcription = res.words.map((word) => {
+      return {
+        offsets: {
+          from: word.start * 1000,
+          to: word.end * 1000,
+        },
+        text: word.word,
+      };
+    });
+
+    return {
+      model: {
+        type: "@cf/openai/whisper",
+      },
+      transcription,
+    };
+  }
+
   /* Ensure the file is in wav format
    * and 16kHz sample rate
    */
-  async transcribe(
+  async transcribeFromLocal(
     file: string,
-    options: {
+    options?: {
       force?: boolean;
       extra?: string[];
-    } = {}
-  ) {
-    const { force = false, extra = [] } = options;
+    }
+  ): Promise<Partial<WhisperOutputType>> {
+    const { force = false, extra = [] } = options || {};
     const filename = path.basename(file, path.extname(file));
     const tmpDir = settings.cachePath();
     const outputFile = path.join(tmpDir, filename + ".json");
