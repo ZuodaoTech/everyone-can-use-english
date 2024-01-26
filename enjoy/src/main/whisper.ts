@@ -12,8 +12,18 @@ import log from "electron-log/main";
 import { t } from "i18next";
 import axios from "axios";
 import { milisecondsToTimestamp } from "@/utils";
+import { AzureSpeechSdk } from "@main/azure-speech-sdk";
+import { Client } from "@/api";
+import { WEB_API_URL } from "@/constants";
 
 const logger = log.scope("whisper");
+
+const webApi = new Client({
+  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+  accessToken: settings.getSync("user.accessToken") as string,
+  logger: log.scope("api/client"),
+});
+
 const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
 const END_OF_WORD_REGEX = /[^\.!,\?][\.!\?]/g;
 class Whipser {
@@ -180,11 +190,47 @@ class Whipser {
     if (this.config.service === "local") {
       return this.transcribeFromLocal(file, options);
     } else {
-      return this.transcribeFromWeb(file);
+      return this.transcribeFromCfWorker(file);
+      // return this.transcribeFromAzure(file);
     }
   }
 
-  async transcribeFromWeb(file: string): Promise<Partial<WhisperOutputType>> {
+  async transcribeFromAzure(file: string): Promise<Partial<WhisperOutputType>> {
+    const { token, region } = await webApi.generateSpeechToken();
+    const sdk = new AzureSpeechSdk(token, region);
+
+    const result = await sdk.transcribe({
+      filePath: file,
+    });
+
+    logger.debug(result);
+
+    const transcription: TranscriptionResultSegmentType[] =
+      result.NBest[0].Words.map((word) => {
+        return {
+          offsets: {
+            from: word.Offset / 1e4,
+            to: (word.Offset + word.Duration) / 1e4,
+          },
+          timestamps: {
+            from: milisecondsToTimestamp(word.Offset / 1e4),
+            to: milisecondsToTimestamp((word.Offset + word.Duration) / 1e4),
+          },
+          text: word.Word,
+        };
+      });
+
+    return {
+      model: {
+        type: "Azure AI Speech",
+      },
+      transcription,
+    };
+  }
+
+  async transcribeFromCfWorker(
+    file: string
+  ): Promise<Partial<WhisperOutputType>> {
     logger.debug("transcribing from Web");
 
     const data = fs.readFileSync(file);

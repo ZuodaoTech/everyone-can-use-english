@@ -71,4 +71,55 @@ export class AzureSpeechSdk {
       });
     });
   }
+
+  async transcribe(params: {
+    filePath: string;
+    language?: string;
+  }): Promise<SpeechRecognitionResultType> {
+    const { filePath, language = "en-US" } = params;
+
+    const audioConfig = sdk.AudioConfig.fromWavFileInput(
+      fs.readFileSync(filePath)
+    );
+
+    // setting the recognition language to English.
+    this.config.speechRecognitionLanguage = language;
+    this.config.requestWordLevelTimestamps();
+    this.config.outputFormat = sdk.OutputFormat.Detailed;
+
+    // create the speech recognizer.
+    const reco = new sdk.SpeechRecognizer(this.config, audioConfig);
+
+    logger.debug("Start transcribe.");
+    return new Promise((resolve, reject) => {
+      reco.recognizeOnceAsync((result) => {
+        reco.close();
+
+        switch (result.reason) {
+          case sdk.ResultReason.RecognizedSpeech:
+            const json = result.properties.getProperty(
+              sdk.PropertyId.SpeechServiceResponse_JsonResult
+            );
+            resolve(JSON.parse(json));
+            break;
+          case sdk.ResultReason.NoMatch:
+            reject(new Error("No speech could be recognized."));
+            break;
+          case sdk.ResultReason.Canceled:
+            const cancellationDetails =
+              sdk.CancellationDetails.fromResult(result);
+            logger.debug(
+              "CANCELED: Reason=" +
+                cancellationDetails.reason +
+                " ErrorDetails=" +
+                cancellationDetails.errorDetails
+            );
+            reject(new Error(cancellationDetails.errorDetails));
+            break;
+          default:
+            reject(result);
+        }
+      });
+    });
+  }
 }
