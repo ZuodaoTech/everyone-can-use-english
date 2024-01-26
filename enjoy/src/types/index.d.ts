@@ -26,7 +26,7 @@ type NotificationType = {
 };
 
 type WhisperConfigType = {
-  service: "local" | "web";
+  service: "local" | "azure" | "cloudflare";
   availableModels: {
     type: string;
     name: string;

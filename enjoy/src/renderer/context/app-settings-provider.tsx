@@ -16,6 +16,7 @@ type AppSettingsProviderState = {
   logout?: () => void;
   setLibraryPath?: (path: string) => Promise<void>;
   setWhisperModel?: (name: string) => Promise<void>;
+  setWhisperService?: (name: string) => Promise<void>;
   ffmpegConfig?: FfmpegConfigType;
   ffmpeg?: FFmpeg;
   whisperConfig?: WhisperConfigType;
@@ -190,6 +191,13 @@ export const AppSettingsProvider = ({
     });
   };
 
+  const setWhisperService = async (name: WhisperConfigType["service"]) => {
+    return EnjoyApp.whisper.setService(name).then((config) => {
+      if (!config) return;
+      setWhisperConfig(config);
+    });
+  };
+
   const validate = async () => {
     setInitialized(Boolean(user && libraryPath));
   };
@@ -208,6 +216,7 @@ export const AppSettingsProvider = ({
         libraryPath,
         setLibraryPath: setLibraryPathHandler,
         setWhisperModel,
+        setWhisperService,
         ffmpegConfig,
         ffmpeg,
         whisperConfig,

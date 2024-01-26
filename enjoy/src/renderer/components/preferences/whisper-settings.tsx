@@ -20,9 +20,8 @@ import { useContext, useEffect, useState } from "react";
 import { InfoIcon, AlertCircleIcon } from "lucide-react";
 
 export const WhisperSettings = () => {
-  const { whisperConfig, refreshWhisperConfig, EnjoyApp } = useContext(
-    AppSettingsProviderContext
-  );
+  const { whisperConfig, refreshWhisperConfig, EnjoyApp, setWhisperService } =
+    useContext(AppSettingsProviderContext);
   const [stderr, setStderr] = useState("");
 
   useEffect(() => {
@@ -53,7 +52,7 @@ export const WhisperSettings = () => {
     <div className="flex items-start justify-between py-4">
       <div className="">
         <div className="flex items-center mb-2">
-          <span>{t("sttAiModel")}</span>
+          <span>{t("sttAiService")}</span>
           {stderr && (
             <Button
               variant="ghost"
@@ -67,22 +66,29 @@ export const WhisperSettings = () => {
           )}
         </div>
         <div className="text-sm text-muted-foreground">
-          {whisperConfig.service === "web"
-            ? "@cf/openai/whisper"
-            : whisperConfig.model}
+          {whisperConfig?.service === "local" &&
+            t("localSpeechToTextDescription")}
+          {whisperConfig?.service === "azure" &&
+            t("azureSpeechToTextDescription")}
+          {whisperConfig?.service === "cloudflare" &&
+            t("cloudflareSpeechToTextDescription")}
         </div>
       </div>
 
       <div className="flex items-center space-x-2">
-        <Select value={whisperConfig.service} onValueChange={(value) => {
-          console.log(value);
-        }}>
-          <SelectTrigger className="w-20">
+        <Select
+          value={whisperConfig.service}
+          onValueChange={(value) => {
+            setWhisperService(value);
+          }}
+        >
+          <SelectTrigger className="min-w-fit">
             <SelectValue placeholder="service"></SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="local">{t("local")}</SelectItem>
-            <SelectItem value="web">{t("web")}</SelectItem>
+            <SelectItem value="azure">{t("azureAi")}</SelectItem>
+            <SelectItem value="cloudflare">{t("cloudflareAi")}</SelectItem>
           </SelectContent>
         </Select>
 
@@ -94,11 +100,11 @@ export const WhisperSettings = () => {
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="secondary" size="sm">
-                  {t("edit")}
+                  {t("model")}
                 </Button>
               </DialogTrigger>
               <DialogContent>
-                <DialogHeader>{t("sttAiModel")}</DialogHeader>
+                <DialogHeader>{t("sttAiService")}</DialogHeader>
                 <DialogDescription>
                   {t("chooseAIModelDependingOnYourHardware")}
                 </DialogDescription>
@@ -117,7 +123,7 @@ export const WhisperSettings = () => {
                       onClick={() => {
                         EnjoyApp.shell.openPath(whisperConfig.modelsPath);
                       }}
-                      variant="default"
+                      variant="outline"
                       size="sm"
                     >
                       {t("open")}

@@ -190,9 +190,12 @@ class Whipser {
   ): Promise<Partial<WhisperOutputType>> {
     if (this.config.service === "local") {
       return this.transcribeFromLocal(file, options);
-    } else {
-      // return this.transcribeFromCfWorker(file);
+    } else if (this.config.service === "azure") {
       return this.transcribeFromAzure(file);
+    } else if (this.config.service === "cloudflare") {
+      return this.transcribeFromCloudflare(file);
+    } else {
+      throw new Error("Unknown service");
     }
   }
 
@@ -246,7 +249,7 @@ class Whipser {
     };
   }
 
-  async transcribeFromCfWorker(
+  async transcribeFromCloudflare(
     file: string
   ): Promise<Partial<WhisperOutputType>> {
     logger.debug("transcribing from CloudFlare");
@@ -428,6 +431,31 @@ class Whipser {
             message: err.message,
           });
         });
+    });
+
+    ipcMain.handle("whisper-set-service", async (event, service) => {
+      if (service === "local") {
+        try {
+          await this.initialize();
+          settings.setSync("whisper.service", service);
+          this.config.service = service;
+          return this.config;
+        } catch (err) {
+          event.sender.send("on-notification", {
+            type: "error",
+            message: err.message,
+          });
+        }
+      } else if (["cloudflare", "azure"].includes(service)) {
+        settings.setSync("whisper.service", service);
+        this.config.service = service;
+        return this.config;
+      } else {
+        event.sender.send("on-notification", {
+          type: "error",
+          message: "Unknown service",
+        });
+      }
     });
 
     ipcMain.handle("whisper-check", async (_event) => {
