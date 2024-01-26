@@ -186,6 +186,9 @@ type EnjoyAppType = {
     config: () => Promise<WhisperConfigType>;
     check: () => Promise<{ success: boolean; log: string }>;
     setModel: (model: string) => Promise<WhisperConfigType>;
+    setService: (
+      service: WhisperConfigType["service"]
+    ) => Promise<WhisperConfigType>;
     transcribeBlob: (
       blob: { type: string; arrayBuffer: ArrayBuffer },
       prompt?: string

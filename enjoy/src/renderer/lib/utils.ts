@@ -16,8 +16,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function secondsToTimestamp(seconds: number) {
-  const date = new Date(seconds * 1000);
-  return date.toISOString().substr(11, 8);
+  const h = Math.floor(seconds / 3600).toString();
+  const m = Math.floor((seconds % 3600) / 60).toString();
+  const s = Math.floor((seconds % 3600) % 60).toString();
+
+  return `${h.padStart(2, "0")}:${m.padStart(2, "0")}:${s.padStart(2, "0")}`;
 }
 
 export function humanizeDuration(

@@ -148,7 +148,11 @@ export class Transcription extends Model<Transcription> {
       await this.update({
         state: "processing",
       });
-      const { model, transcription } = await whisper.transcribe(wavFile, {
+      const {
+        engine = "whisper",
+        model,
+        transcription,
+      } = await whisper.transcribe(wavFile, {
         force,
         extra: [
           "--split-on-word",
@@ -158,7 +162,7 @@ export class Transcription extends Model<Transcription> {
       });
       const result = whisper.groupTranscription(transcription);
       this.update({
-        engine: "whisper",
+        engine,
         model: model?.type,
         result,
         state: "finished",
