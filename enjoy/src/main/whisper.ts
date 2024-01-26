@@ -11,6 +11,7 @@ import fs from "fs-extra";
 import log from "electron-log/main";
 import { t } from "i18next";
 import axios from "axios";
+import { milisecondsToTimestamp } from "@/utils";
 
 const logger = log.scope("whisper");
 const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
@@ -140,7 +141,7 @@ class Whipser {
       group?: boolean;
     }
   ): Promise<
-    TranscriptionSegmentType[] | TranscriptionResultSegmentGroupType[]
+    TranscriptionResultSegmentType[] | TranscriptionResultSegmentGroupType[]
   > {
     const { prompt, group = false } = options || {};
 
@@ -184,21 +185,30 @@ class Whipser {
   }
 
   async transcribeFromWeb(file: string): Promise<Partial<WhisperOutputType>> {
-    const data = fs.readFileSync(file);
-    const res: CfWhipserOutputType = await axios.postForm(
-      `${AI_WORKER_ENDPOINT}/audio/transcriptions`,
-      data
-    );
+    logger.debug("transcribing from Web");
 
-    const transcription = res.words.map((word) => {
-      return {
-        offsets: {
-          from: word.start * 1000,
-          to: word.end * 1000,
-        },
-        text: word.word,
-      };
-    });
+    const data = fs.readFileSync(file);
+    const res: CfWhipserOutputType = (
+      await axios.postForm(`${AI_WORKER_ENDPOINT}/audio/transcriptions`, data)
+    ).data;
+    logger.debug("transcription from Web,", res);
+
+    const transcription: TranscriptionResultSegmentType[] = res.words.map(
+      (word) => {
+        return {
+          offsets: {
+            from: word.start * 1000,
+            to: word.end * 1000,
+          },
+          timestamps: {
+            from: milisecondsToTimestamp(word.start * 1000),
+            to: milisecondsToTimestamp(word.end * 1000),
+          },
+          text: word.word,
+        };
+      }
+    );
+    logger.debug("converted transcription,", transcription);
 
     return {
       model: {
@@ -218,6 +228,7 @@ class Whipser {
       extra?: string[];
     }
   ): Promise<Partial<WhisperOutputType>> {
+    logger.debug("transcribing from local");
     const { force = false, extra = [] } = options || {};
     const filename = path.basename(file, path.extname(file));
     const tmpDir = settings.cachePath();
@@ -276,9 +287,9 @@ class Whipser {
   }
 
   groupTranscription(
-    transcription: TranscriptionSegmentType[]
+    transcription: TranscriptionResultSegmentType[]
   ): TranscriptionResultSegmentGroupType[] {
-    const generateGroup = (group?: TranscriptionSegmentType[]) => {
+    const generateGroup = (group?: TranscriptionResultSegmentType[]) => {
       if (!group || group.length === 0) return;
 
       const firstWord = group[0];
@@ -299,7 +310,7 @@ class Whipser {
     };
 
     const groups: TranscriptionResultSegmentGroupType[] = [];
-    let group: TranscriptionSegmentType[] = [];
+    let group: TranscriptionResultSegmentType[] = [];
 
     transcription.forEach((segment) => {
       const text = segment.text.trim();

@@ -8,6 +8,11 @@ import {
   DialogDescription,
   DialogFooter,
   toast,
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
 } from "@renderer/components/ui";
 import { WhisperModelOptions } from "@renderer/components";
 import { AppSettingsProviderContext } from "@renderer/context";
@@ -62,49 +67,67 @@ export const WhisperSettings = () => {
           )}
         </div>
         <div className="text-sm text-muted-foreground">
-          {whisperConfig.model}
+          {whisperConfig.service === "web"
+            ? "@cf/openai/whisper"
+            : whisperConfig.model}
         </div>
       </div>
 
       <div className="flex items-center space-x-2">
-        <Button onClick={handleCheck} variant="secondary" size="sm">
-          {t("check")}
-        </Button>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="secondary" size="sm">
-              {t("edit")}
+        <Select value={whisperConfig.service} onValueChange={(value) => {
+          console.log(value);
+        }}>
+          <SelectTrigger className="w-20">
+            <SelectValue placeholder="service"></SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="local">{t("local")}</SelectItem>
+            <SelectItem value="web">{t("web")}</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {whisperConfig.service === "local" && (
+          <>
+            <Button onClick={handleCheck} variant="secondary" size="sm">
+              {t("check")}
             </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>{t("sttAiModel")}</DialogHeader>
-            <DialogDescription>
-              {t("chooseAIModelDependingOnYourHardware")}
-            </DialogDescription>
-
-            <WhisperModelOptions />
-
-            <DialogFooter>
-              <div className="text-xs flex items-start space-x-2">
-                <InfoIcon className="mr-1.5 w-4 h-4" />
-                <span className="flex-1 opacity-70">
-                  {t("yourModelsWillBeDownloadedTo", {
-                    path: whisperConfig.modelsPath,
-                  })}
-                </span>
-                <Button
-                  onClick={() => {
-                    EnjoyApp.shell.openPath(whisperConfig.modelsPath);
-                  }}
-                  variant="default"
-                  size="sm"
-                >
-                  {t("open")}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="secondary" size="sm">
+                  {t("edit")}
                 </Button>
-              </div>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>{t("sttAiModel")}</DialogHeader>
+                <DialogDescription>
+                  {t("chooseAIModelDependingOnYourHardware")}
+                </DialogDescription>
+
+                <WhisperModelOptions />
+
+                <DialogFooter>
+                  <div className="text-xs flex items-start space-x-2">
+                    <InfoIcon className="mr-1.5 w-4 h-4" />
+                    <span className="flex-1 opacity-70">
+                      {t("yourModelsWillBeDownloadedTo", {
+                        path: whisperConfig.modelsPath,
+                      })}
+                    </span>
+                    <Button
+                      onClick={() => {
+                        EnjoyApp.shell.openPath(whisperConfig.modelsPath);
+                      }}
+                      variant="default"
+                      size="sm"
+                    >
+                      {t("open")}
+                    </Button>
+                  </div>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </>
+        )}
       </div>
     </div>
   );

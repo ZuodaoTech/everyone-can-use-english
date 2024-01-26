@@ -68,19 +68,7 @@ type WhisperOutputType = {
     languate: string;
   };
   systeminfo: string;
-  transcription: TranscriptionSegmentType[];
-};
-
-type TranscriptionSegmentType = {
-  offsets: {
-    from: number;
-    to: number;
-  };
-  text: string;
-  timestamps?: {
-    from: string;
-    to: string;
-  };
+  transcription: TranscriptionResultSegmentType[];
 };
 
 type CfWhipserOutputType = {
