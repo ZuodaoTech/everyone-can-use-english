@@ -80,7 +80,7 @@ const whisperConfig = (): WhisperConfigType => {
       "whisper.availableModels"
     ) as WhisperConfigType["availableModels"],
     modelsPath: settings.getSync("whisper.modelsPath") as string,
-    model: settings.getSync("whisper.model") as string,
+    model,
   };
 };
 
