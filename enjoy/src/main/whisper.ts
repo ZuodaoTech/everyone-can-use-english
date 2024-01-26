@@ -15,6 +15,7 @@ import { milisecondsToTimestamp } from "@/utils";
 import { AzureSpeechSdk } from "@main/azure-speech-sdk";
 import { Client } from "@/api";
 import { WEB_API_URL } from "@/constants";
+import { sortedUniqBy, take } from "lodash";
 
 const logger = log.scope("whisper");
 
@@ -190,8 +191,8 @@ class Whipser {
     if (this.config.service === "local") {
       return this.transcribeFromLocal(file, options);
     } else {
-      return this.transcribeFromCfWorker(file);
-      // return this.transcribeFromAzure(file);
+      // return this.transcribeFromCfWorker(file);
+      return this.transcribeFromAzure(file);
     }
   }
 
@@ -199,28 +200,45 @@ class Whipser {
     const { token, region } = await webApi.generateSpeechToken();
     const sdk = new AzureSpeechSdk(token, region);
 
-    const result = await sdk.transcribe({
+    const results = await sdk.transcribe({
       filePath: file,
     });
 
-    logger.debug(result);
+    const transcription: TranscriptionResultSegmentType[] = [];
+    results.forEach((result) => {
+      logger.debug(result);
+      const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
+      const words = best.Display.trim().split(" ");
 
-    const transcription: TranscriptionResultSegmentType[] =
-      result.NBest[0].Words.map((word) => {
-        return {
+      best.Words.map((word, index) => {
+        let text = word.Word;
+        if (words.length === best.Words.length) {
+          text = words[index];
+        }
+
+        if (
+          index === best.Words.length - 1 &&
+          !text.trim().match(END_OF_WORD_REGEX)
+        ) {
+          text = text + ".";
+        }
+
+        transcription.push({
           offsets: {
             from: word.Offset / 1e4,
             to: (word.Offset + word.Duration) / 1e4,
           },
           timestamps: {
             from: milisecondsToTimestamp(word.Offset / 1e4),
-            to: milisecondsToTimestamp((word.Offset + word.Duration) / 1e4),
+            to: milisecondsToTimestamp((word.Offset + word.Duration) * 1e4),
           },
-          text: word.Word,
-        };
+          text,
+        });
       });
+    });
 
     return {
+      engine: "azure",
       model: {
         type: "Azure AI Speech",
       },
@@ -231,7 +249,7 @@ class Whipser {
   async transcribeFromCfWorker(
     file: string
   ): Promise<Partial<WhisperOutputType>> {
-    logger.debug("transcribing from Web");
+    logger.debug("transcribing from CloudFlare");
 
     const data = fs.readFileSync(file);
     const res: CfWhipserOutputType = (
@@ -257,6 +275,7 @@ class Whipser {
     logger.debug("converted transcription,", transcription);
 
     return {
+      engine: "cloudflare",
       model: {
         type: "@cf/openai/whisper",
       },

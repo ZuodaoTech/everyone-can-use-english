@@ -40,6 +40,7 @@ type WhisperConfigType = {
 };
 
 type WhisperOutputType = {
+  engine?: string;
   model: {
     audio?: {
       cts: number;

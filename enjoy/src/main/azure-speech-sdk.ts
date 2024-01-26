@@ -75,7 +75,7 @@ export class AzureSpeechSdk {
   async transcribe(params: {
     filePath: string;
     language?: string;
-  }): Promise<SpeechRecognitionResultType> {
+  }): Promise<SpeechRecognitionResultType[]> {
     const { filePath, language = "en-US" } = params;
 
     const audioConfig = sdk.AudioConfig.fromWavFileInput(
@@ -91,35 +91,38 @@ export class AzureSpeechSdk {
     const reco = new sdk.SpeechRecognizer(this.config, audioConfig);
 
     logger.debug("Start transcribe.");
-    return new Promise((resolve, reject) => {
-      reco.recognizeOnceAsync((result) => {
-        reco.close();
 
-        switch (result.reason) {
-          case sdk.ResultReason.RecognizedSpeech:
-            const json = result.properties.getProperty(
-              sdk.PropertyId.SpeechServiceResponse_JsonResult
-            );
-            resolve(JSON.parse(json));
-            break;
-          case sdk.ResultReason.NoMatch:
-            reject(new Error("No speech could be recognized."));
-            break;
-          case sdk.ResultReason.Canceled:
-            const cancellationDetails =
-              sdk.CancellationDetails.fromResult(result);
-            logger.debug(
-              "CANCELED: Reason=" +
-                cancellationDetails.reason +
-                " ErrorDetails=" +
-                cancellationDetails.errorDetails
-            );
-            reject(new Error(cancellationDetails.errorDetails));
-            break;
-          default:
-            reject(result);
+    let results: SpeechRecognitionResultType[] = [];
+    return new Promise((resolve, reject) => {
+      reco.recognizing = (_s, e) => {
+        logger.debug("Intermediate result received: ", e.result.text);
+      };
+      reco.recognized = (_s, e) => {
+        logger.debug("Got final result", e.result.text);
+        const json = e.result.properties.getProperty(
+          sdk.PropertyId.SpeechServiceResponse_JsonResult
+        );
+        const result = JSON.parse(json);
+        results = results.concat(result);
+      };
+      reco.canceled = (_s, e) => {
+        logger.debug("CANCELED: Reason=" + e.reason);
+
+        if (e.reason === sdk.CancellationReason.Error) {
+          logger.debug(`"CANCELED: ErrorCode=${e.errorCode}`);
+          logger.debug("CANCELED: ErrorDetails=" + e.errorDetails);
+          return reject(new Error(e.errorDetails));
         }
-      });
+
+        reco.stopContinuousRecognitionAsync();
+      };
+      reco.sessionStopped = (_s, _e) => {
+        logger.debug("\n    Session stopped event.");
+        reco.stopContinuousRecognitionAsync();
+        return resolve(results);
+      };
+
+      reco.startContinuousRecognitionAsync();
     });
   }
 }
