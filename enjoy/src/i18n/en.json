@@ -156,7 +156,7 @@
   "autoCenter": "auto center",
   "inlineCaption": "inline caption",
   "autoScroll": "auto scroll",
-  "translate:": "translate",
+  "translate": "translate",
   "displayIpa": "display IPA",
   "detail": "detail",
   "remove": "remove",
