@@ -230,7 +230,7 @@ export const MediaCaption = (props: {
               ) : (
                 <LanguagesIcon className="w-4 h-4 mr-2" />
               )}
-              <span>{t('translate')}</span>
+              <span>{t("translate")}</span>
             </DropdownMenuItem>
             <DropdownMenuItem
               className="cursor-pointer capitalize"
