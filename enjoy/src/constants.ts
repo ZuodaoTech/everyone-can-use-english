@@ -5,7 +5,7 @@ export const STORAGE_WORKER_ENDPOINT = "https://enjoy-storage.baizhiheizi.com";
 export const AI_WORKER_ENDPOINT = "https://enjoy-ai.baizhiheizi.com";
 export const WEB_API_URL = "https://enjoy-web.fly.dev";
 
-export const REPO_URL = "https://github.com/xiaolai/everyone-can-use-english"
+export const REPO_URL = "https://github.com/xiaolai/everyone-can-use-english";
 
 // https://huggingface.co/ggerganov/whisper.cpp/tree/main
 export const WHISPER_MODELS_OPTIONS = [
