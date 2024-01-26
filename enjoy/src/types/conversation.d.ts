@@ -1,6 +1,6 @@
 type ConversationType = {
   id: string;
-  engine: "openai" | "ollama" | "googleGenerativeAi";
+  engine: "enjoyai" | "openai" | "ollama" | "googleGenerativeAi";
   name: string;
   configuration: { [key: string]: any };
   model: string;

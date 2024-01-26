@@ -505,84 +505,96 @@ export const ConversationForm = (props: {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="configuration.tts.model"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("models.conversation.ttsModel")}</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    value={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t("selectTtsModel")} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {(
-                        TTS_PROVIDERS[form.watch("configuration.tts.engine")]
-                          ?.models || []
-                      ).map((model: string) => (
-                        <SelectItem key={model} value={model}>
-                          {model}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {TTS_PROVIDERS[
+              form.watch("configuration.tts.engine")
+            ]?.configurable.includes("model") && (
+              <FormField
+                control={form.control}
+                name="configuration.tts.model"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("models.conversation.ttsModel")}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder={t("selectTtsModel")} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {(
+                          TTS_PROVIDERS[form.watch("configuration.tts.engine")]
+                            ?.models || []
+                        ).map((model: string) => (
+                          <SelectItem key={model} value={model}>
+                            {model}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
-            <FormField
-              control={form.control}
-              name="configuration.tts.voice"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("models.conversation.ttsVoice")}</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    value={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t("selectTtsVoice")} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {(
-                        TTS_PROVIDERS[form.watch("configuration.tts.engine")]
-                          ?.voices || []
-                      ).map((voice: string) => (
-                        <SelectItem key={voice} value={voice}>
-                          <span className="capitalize">{voice}</span>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {TTS_PROVIDERS[
+              form.watch("configuration.tts.engine")
+            ]?.configurable.includes("voice") && (
+              <FormField
+                control={form.control}
+                name="configuration.tts.voice"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("models.conversation.ttsVoice")}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder={t("selectTtsVoice")} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {(
+                          TTS_PROVIDERS[form.watch("configuration.tts.engine")]
+                            ?.voices || []
+                        ).map((voice: string) => (
+                          <SelectItem key={voice} value={voice}>
+                            <span className="capitalize">{voice}</span>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
-            <FormField
-              control={form.control}
-              name="configuration.tts.baseUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("models.conversation.ttsBaseUrl")}</FormLabel>
-                  <Input {...field} />
-                  <FormDescription>
-                    {t("models.conversation.baseUrl")}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {TTS_PROVIDERS[
+              form.watch("configuration.tts.engine")
+            ]?.configurable.includes("baseUrl") && (
+              <FormField
+                control={form.control}
+                name="configuration.tts.baseUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("models.conversation.ttsBaseUrl")}</FormLabel>
+                    <Input {...field} />
+                    <FormDescription>
+                      {t("models.conversation.baseUrl")}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </div>
         </ScrollArea>
 
@@ -637,6 +649,32 @@ export const ConversationForm = (props: {
 };
 
 export const LLM_PROVIDERS: { [key: string]: any } = {
+  enjoyai: {
+    name: "EnjoyAI",
+    models: [
+      "gpt-3.5-turbo-1106",
+      "gpt-3.5-turbo",
+      "gpt-3.5-turbo-16k",
+      "gpt-3.5-turbo-instruct",
+      "gpt-4-1106-preview",
+      "gpt-4-vision-preview",
+      "gpt-4",
+      "gpt-4-32k",
+      "gpt-4-0613",
+      "gpt-4-32k-0613",
+    ],
+    configurable: [
+      "model",
+      "roleDefinition",
+      "temperature",
+      "numberOfChoices",
+      "maxTokens",
+      "frequencyPenalty",
+      "presencePenalty",
+      "historyBufferSize",
+      "tts",
+    ],
+  },
   openai: {
     name: "OpenAI",
     description: t("youNeedToSetupApiKeyBeforeUsingOpenAI"),
@@ -697,11 +735,18 @@ export const LLM_PROVIDERS: { [key: string]: any } = {
 };
 
 export const TTS_PROVIDERS: { [key: string]: any } = {
+  enjoyai: {
+    name: "EnjoyAI",
+    models: ["tts-1"],
+    voices: ["alloy", "echo", "fable", "onyx", "nova", "shimmer"],
+    configurable: ["voice"],
+  },
   openai: {
     name: "OpenAI",
     description: t("youNeedToSetupApiKeyBeforeUsingOpenAI"),
     models: ["tts-1"],
     voices: ["alloy", "echo", "fable", "onyx", "nova", "shimmer"],
+    configurable: ["model", "voice", "baseUrl"],
   },
 };
 
