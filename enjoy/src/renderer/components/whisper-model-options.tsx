@@ -68,7 +68,7 @@ export const WhisperModelOptionsPanel = () => {
               onClick={() => {
                 EnjoyApp.shell.openPath(whisperConfig.modelsPath);
               }}
-              variant="default"
+              variant="outline"
               size="sm"
             >
               {t("open")}

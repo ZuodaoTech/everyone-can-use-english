@@ -62,3 +62,24 @@ type PronunciationAssessmentWordResultType = {
     };
   };
 };
+
+type SpeechRecognitionResultType = {
+  Id: string;
+  RecognitionStatus: string;
+  Offset: number;
+  Duration: number;
+  Channel: number;
+  DisplayText: string;
+  NBest: {
+    Confidence: number;
+    Lexical: string;
+    ITN: string;
+    MaskedITN: string;
+    Display: string;
+    Words: {
+      Word: string;
+      Offset: number;
+      Duration: number;
+    }[];
+  }[];
+};

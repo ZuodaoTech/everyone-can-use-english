@@ -26,6 +26,7 @@ type NotificationType = {
 };
 
 type WhisperConfigType = {
+  service: "local" | "azure" | "cloudflare";
   availableModels: {
     type: string;
     name: string;
@@ -39,24 +40,25 @@ type WhisperConfigType = {
 };
 
 type WhisperOutputType = {
+  engine?: string;
   model: {
-    audio: {
+    audio?: {
       cts: number;
       head: number;
       layer: number;
       state: number;
     };
-    ftype: number;
-    mels: number;
-    multilingual: number;
-    text: {
+    ftype?: number;
+    mels?: number;
+    multilingual?: number;
+    text?: {
       cts: number;
       head: number;
       layer: number;
       state: number;
     };
     type: string;
-    vocab: number;
+    vocab?: number;
   };
   params: {
     language: string;
@@ -67,19 +69,17 @@ type WhisperOutputType = {
     languate: string;
   };
   systeminfo: string;
-  transcription: TranscriptionSegmentType[];
+  transcription: TranscriptionResultSegmentType[];
 };
 
-type TranscriptionSegmentType = {
-  offsets: {
-    from: number;
-    to: number;
-  };
+type CfWhipserOutputType = {
   text: string;
-  timestamps: {
-    from: string;
-    to: string;
-  };
+  words_count: number;
+  words: {
+    word: string;
+    start: number;
+    end: number;
+  }[];
 };
 
 type TransactionStateType = {

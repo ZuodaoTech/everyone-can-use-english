@@ -1,13 +1,30 @@
 import { ipcMain } from "electron";
 import settings from "@main/settings";
 import path from "path";
-import { WHISPER_MODELS_OPTIONS, PROCESS_TIMEOUT } from "@/constants";
+import {
+  WHISPER_MODELS_OPTIONS,
+  PROCESS_TIMEOUT,
+  AI_WORKER_ENDPOINT,
+} from "@/constants";
 import { exec } from "child_process";
 import fs from "fs-extra";
 import log from "electron-log/main";
 import { t } from "i18next";
+import axios from "axios";
+import { milisecondsToTimestamp } from "@/utils";
+import { AzureSpeechSdk } from "@main/azure-speech-sdk";
+import { Client } from "@/api";
+import { WEB_API_URL } from "@/constants";
+import { sortedUniqBy, take } from "lodash";
 
 const logger = log.scope("whisper");
+
+const webApi = new Client({
+  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+  accessToken: settings.getSync("user.accessToken") as string,
+  logger: log.scope("api/client"),
+});
+
 const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
 const END_OF_WORD_REGEX = /[^\.!,\?][\.!\?]/g;
 class Whipser {
@@ -135,7 +152,7 @@ class Whipser {
       group?: boolean;
     }
   ): Promise<
-    TranscriptionSegmentType[] | TranscriptionResultSegmentGroupType[]
+    TranscriptionResultSegmentType[] | TranscriptionResultSegmentGroupType[]
   > {
     const { prompt, group = false } = options || {};
 
@@ -164,17 +181,123 @@ class Whipser {
     }
   }
 
+  async transcribe(
+    file: string,
+    options?: {
+      force?: boolean;
+      extra?: string[];
+    }
+  ): Promise<Partial<WhisperOutputType>> {
+    if (this.config.service === "local") {
+      return this.transcribeFromLocal(file, options);
+    } else if (this.config.service === "azure") {
+      return this.transcribeFromAzure(file);
+    } else if (this.config.service === "cloudflare") {
+      return this.transcribeFromCloudflare(file);
+    } else {
+      throw new Error("Unknown service");
+    }
+  }
+
+  async transcribeFromAzure(file: string): Promise<Partial<WhisperOutputType>> {
+    const { token, region } = await webApi.generateSpeechToken();
+    const sdk = new AzureSpeechSdk(token, region);
+
+    const results = await sdk.transcribe({
+      filePath: file,
+    });
+
+    const transcription: TranscriptionResultSegmentType[] = [];
+    results.forEach((result) => {
+      logger.debug(result);
+      const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
+      const words = best.Display.trim().split(" ");
+
+      best.Words.map((word, index) => {
+        let text = word.Word;
+        if (words.length === best.Words.length) {
+          text = words[index];
+        }
+
+        if (
+          index === best.Words.length - 1 &&
+          !text.trim().match(END_OF_WORD_REGEX)
+        ) {
+          text = text + ".";
+        }
+
+        transcription.push({
+          offsets: {
+            from: word.Offset / 1e4,
+            to: (word.Offset + word.Duration) / 1e4,
+          },
+          timestamps: {
+            from: milisecondsToTimestamp(word.Offset / 1e4),
+            to: milisecondsToTimestamp((word.Offset + word.Duration) * 1e4),
+          },
+          text,
+        });
+      });
+    });
+
+    return {
+      engine: "azure",
+      model: {
+        type: "Azure AI Speech",
+      },
+      transcription,
+    };
+  }
+
+  async transcribeFromCloudflare(
+    file: string
+  ): Promise<Partial<WhisperOutputType>> {
+    logger.debug("transcribing from CloudFlare");
+
+    const data = fs.readFileSync(file);
+    const res: CfWhipserOutputType = (
+      await axios.postForm(`${AI_WORKER_ENDPOINT}/audio/transcriptions`, data)
+    ).data;
+    logger.debug("transcription from Web,", res);
+
+    const transcription: TranscriptionResultSegmentType[] = res.words.map(
+      (word) => {
+        return {
+          offsets: {
+            from: word.start * 1000,
+            to: word.end * 1000,
+          },
+          timestamps: {
+            from: milisecondsToTimestamp(word.start * 1000),
+            to: milisecondsToTimestamp(word.end * 1000),
+          },
+          text: word.word,
+        };
+      }
+    );
+    logger.debug("converted transcription,", transcription);
+
+    return {
+      engine: "cloudflare",
+      model: {
+        type: "@cf/openai/whisper",
+      },
+      transcription,
+    };
+  }
+
   /* Ensure the file is in wav format
    * and 16kHz sample rate
    */
-  async transcribe(
+  async transcribeFromLocal(
     file: string,
-    options: {
+    options?: {
       force?: boolean;
       extra?: string[];
-    } = {}
-  ) {
-    const { force = false, extra = [] } = options;
+    }
+  ): Promise<Partial<WhisperOutputType>> {
+    logger.debug("transcribing from local");
+    const { force = false, extra = [] } = options || {};
     const filename = path.basename(file, path.extname(file));
     const tmpDir = settings.cachePath();
     const outputFile = path.join(tmpDir, filename + ".json");
@@ -232,9 +355,9 @@ class Whipser {
   }
 
   groupTranscription(
-    transcription: TranscriptionSegmentType[]
+    transcription: TranscriptionResultSegmentType[]
   ): TranscriptionResultSegmentGroupType[] {
-    const generateGroup = (group?: TranscriptionSegmentType[]) => {
+    const generateGroup = (group?: TranscriptionResultSegmentType[]) => {
       if (!group || group.length === 0) return;
 
       const firstWord = group[0];
@@ -255,7 +378,7 @@ class Whipser {
     };
 
     const groups: TranscriptionResultSegmentGroupType[] = [];
-    let group: TranscriptionSegmentType[] = [];
+    let group: TranscriptionResultSegmentType[] = [];
 
     transcription.forEach((segment) => {
       const text = segment.text.trim();
@@ -308,6 +431,31 @@ class Whipser {
             message: err.message,
           });
         });
+    });
+
+    ipcMain.handle("whisper-set-service", async (event, service) => {
+      if (service === "local") {
+        try {
+          await this.initialize();
+          settings.setSync("whisper.service", service);
+          this.config.service = service;
+          return this.config;
+        } catch (err) {
+          event.sender.send("on-notification", {
+            type: "error",
+            message: err.message,
+          });
+        }
+      } else if (["cloudflare", "azure"].includes(service)) {
+        settings.setSync("whisper.service", service);
+        this.config.service = service;
+        return this.config;
+      } else {
+        event.sender.send("on-notification", {
+          type: "error",
+          message: "Unknown service",
+        });
+      }
     });
 
     ipcMain.handle("whisper-check", async (_event) => {

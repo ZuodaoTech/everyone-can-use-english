@@ -220,7 +220,11 @@ export const MediaCaption = (props: {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem disabled={translating} onClick={translate}>
+            <DropdownMenuItem
+              className="cursor-pointer capitalize"
+              disabled={translating}
+              onClick={translate}
+            >
               {translating ? (
                 <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
               ) : (
@@ -228,7 +232,11 @@ export const MediaCaption = (props: {
               )}
               <span>{t("translate")}</span>
             </DropdownMenuItem>
-            <DropdownMenuItem disabled={ipaGenerating} onClick={toogleIPA}>
+            <DropdownMenuItem
+              className="cursor-pointer capitalize"
+              disabled={ipaGenerating}
+              onClick={toogleIPA}
+            >
               {ipaGenerating ? (
                 <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
               ) : (
