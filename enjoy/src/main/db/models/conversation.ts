@@ -30,6 +30,7 @@ import path from "path";
 import Ffmpeg from "@main/ffmpeg";
 import whisper from "@main/whisper";
 import { hashFile } from "@/utils";
+import { WEB_API_URL } from "@/constants";
 
 const logger = log.scope("db/models/conversation");
 @Table({
@@ -136,7 +137,22 @@ export class Conversation extends Model<Conversation> {
 
   // choose llm based on engine
   llm() {
-    if (this.engine == "openai") {
+    if (this.engine === "enjoyai") {
+      return new ChatOpenAI({
+        modelName: this.model,
+        configuration: {
+          baseURL: `${WEB_API_URL}/api/ai`,
+          defaultHeaders: {
+            "Authorization": `Bearer ${settings.getSync("user.accessToken")}`
+          }
+        },
+        temperature: this.configuration.temperature,
+        n: this.configuration.numberOfChoices,
+        maxTokens: this.configuration.maxTokens,
+        frequencyPenalty: this.configuration.frequencyPenalty,
+        presencePenalty: this.configuration.presencePenalty,
+      });
+    } else if (this.engine === "openai") {
       const key = settings.getSync("openai.key") as string;
       if (!key) {
         throw new Error(t("openaiKeyRequired"));
