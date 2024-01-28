@@ -174,7 +174,7 @@ export class Speech extends Model<Speech> {
     let openaiConfig = {};
     if (engine === "enjoyai") {
       openaiConfig = {
-        baseURL: `${WEB_API_URL}/api/ai`,
+        baseURL: `${process.env.WEB_API_URL || WEB_API_URL}/api/ai`,
         defaultHeaders: {
           Authorization: `Bearer ${settings.getSync("user.accessToken")}`,
         },

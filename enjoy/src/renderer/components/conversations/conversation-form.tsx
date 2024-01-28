@@ -39,7 +39,7 @@ import { useNavigate } from "react-router-dom";
 
 const conversationFormSchema = z.object({
   name: z.string().optional(),
-  engine: z.enum(["openai", "ollama", "googleGenerativeAi"]).default("openai"),
+  engine: z.enum(["enjoyai", "openai", "ollama", "googleGenerativeAi"]).default("openai"),
   configuration: z
     .object({
       model: z.string().nonempty(),
@@ -53,7 +53,7 @@ const conversationFormSchema = z.object({
       historyBufferSize: z.number().min(0).default(10),
       tts: z
         .object({
-          engine: z.enum(["openai"]).default("openai"),
+          engine: z.enum(["openai", "enjoyai"]).default("openai"),
           model: z.string().default("tts-1"),
           voice: z.string().optional(),
           baseUrl: z.string().optional(),

@@ -141,10 +141,10 @@ export class Conversation extends Model<Conversation> {
       return new ChatOpenAI({
         modelName: this.model,
         configuration: {
-          baseURL: `${WEB_API_URL}/api/ai`,
+          baseURL: `${process.env.WEB_API_URL || WEB_API_URL}/api/ai`,
           defaultHeaders: {
-            "Authorization": `Bearer ${settings.getSync("user.accessToken")}`
-          }
+            Authorization: `Bearer ${settings.getSync("user.accessToken")}`,
+          },
         },
         temperature: this.configuration.temperature,
         n: this.configuration.numberOfChoices,
