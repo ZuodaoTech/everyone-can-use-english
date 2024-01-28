@@ -57,6 +57,7 @@ yarn make:enjoy
    brew install nvm
    nvm install 20.5.1
    brew install yarn
+   brew install ffmpeg
    ```
 
 4. 设置 yarn 环境变量以及 Node.js 配置
@@ -73,7 +74,16 @@ yarn make:enjoy
    mkdir github
    cd github
    git clone https://github.com/xiaolai/everyone-can-use-english
-   cd everyone-can-use-english
+   cd ~/github/everyone-can-use-english
+   yarn install
+   yarn start:enjoy
+   ```
+
+6. 以后重新启动用 Terminal 
+
+   ```bash
+   cd ~/github/everyone-can-use-english
+   git pull
    yarn install
    yarn start:enjoy
    ```

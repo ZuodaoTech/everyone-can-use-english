@@ -47,6 +47,7 @@ Method 2: If you want to **try out updated versions** at any time, follow these 
    ```bash
    brew install nvm
    nvm install 20.5.1 
+   brew install ffmpeg
    brew install yarn
    ```
 
@@ -57,7 +58,16 @@ Method 2: If you want to **try out updated versions** at any time, follow these 
    mkdir github
    cd github
    git clone https://github.com/xiaolai/everyone-can-use-english
-   cd everyone-can-use-english
+   cd ~/github/everyone-can-use-english
+   yarn install
+   yarn start:enjoy
+   ```
+
+5. To restart the application, use Terminal:
+
+   ```bash
+   cd ~/github/everyone-can-use-english
+   git pull
    yarn install
    yarn start:enjoy
    ```
