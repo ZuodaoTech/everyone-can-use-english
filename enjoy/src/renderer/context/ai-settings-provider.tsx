@@ -2,6 +2,10 @@ import { createContext, useEffect, useState, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 
 type AISettingsProviderState = {
+  setWhisperModel?: (name: string) => Promise<void>;
+  setWhisperService?: (name: string) => Promise<void>;
+  whisperConfig?: WhisperConfigType;
+  refreshWhisperConfig?: () => void;
   openai?: LlmProviderType;
   setOpenai?: (config: LlmProviderType) => void;
   googleGenerativeAi?: LlmProviderType;
@@ -25,11 +29,38 @@ export const AISettingsProvider = ({
   const [openai, setOpenai] = useState<LlmProviderType>(null);
   const [googleGenerativeAi, setGoogleGenerativeAi] =
     useState<LlmProviderType>(null);
-  const { EnjoyApp, apiUrl, user } = useContext(AppSettingsProviderContext);
+  const [whisperConfig, setWhisperConfig] = useState<WhisperConfigType>(null);
+  const { EnjoyApp, apiUrl, user, libraryPath } = useContext(
+    AppSettingsProviderContext
+  );
 
   useEffect(() => {
     fetchSettings();
+    refreshWhisperConfig();
   }, []);
+
+  useEffect(() => {
+    refreshWhisperConfig();
+  }, [libraryPath]);
+
+  const refreshWhisperConfig = async () => {
+    const config = await EnjoyApp.whisper.config();
+    setWhisperConfig(config);
+  };
+
+  const setWhisperModel = async (name: string) => {
+    return EnjoyApp.whisper.setModel(name).then((config) => {
+      if (!config) return;
+      setWhisperConfig(config);
+    });
+  };
+
+  const setWhisperService = async (name: WhisperConfigType["service"]) => {
+    return EnjoyApp.whisper.setService(name).then((config) => {
+      if (!config) return;
+      setWhisperConfig(config);
+    });
+  };
 
   const fetchSettings = async () => {
     const _openai = await EnjoyApp.settings.getLlm("openai");
@@ -83,7 +114,7 @@ export const AISettingsProvider = ({
         currentEngine: {
           openai: openai,
           enjoyai: {
-            key: user.accessToken,
+            key: user?.accessToken,
             baseUrl: `${apiUrl}/api/ai`,
           },
         }[defaultEngine],
@@ -92,6 +123,10 @@ export const AISettingsProvider = ({
         googleGenerativeAi,
         setGoogleGenerativeAi: (config: LlmProviderType) =>
           handleSetLlm("googleGenerativeAi", config),
+        whisperConfig,
+        refreshWhisperConfig,
+        setWhisperModel,
+        setWhisperService,
       }}
     >
       {children}

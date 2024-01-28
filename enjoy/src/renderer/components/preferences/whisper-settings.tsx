@@ -15,13 +15,18 @@ import {
   SelectValue,
 } from "@renderer/components/ui";
 import { WhisperModelOptions } from "@renderer/components";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  AISettingsProviderContext,
+} from "@renderer/context";
 import { useContext, useEffect, useState } from "react";
 import { InfoIcon, AlertCircleIcon } from "lucide-react";
 
 export const WhisperSettings = () => {
-  const { whisperConfig, refreshWhisperConfig, EnjoyApp, setWhisperService } =
-    useContext(AppSettingsProviderContext);
+  const { whisperConfig, refreshWhisperConfig, setWhisperService } = useContext(
+    AISettingsProviderContext
+  );
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [stderr, setStderr] = useState("");
 
   useEffect(() => {
