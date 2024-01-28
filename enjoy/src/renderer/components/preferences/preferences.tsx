@@ -29,10 +29,6 @@ export const Preferences = () => {
           <div className="font-semibold mb-4 capitilized">
             {t("basicSettings")}
           </div>
-          <UserSettings />
-          <Separator />
-          <LanguageSettings />
-          <Separator />
           <LibrarySettings />
           <Separator />
           <WhisperSettings />
@@ -65,6 +61,21 @@ export const Preferences = () => {
           <ResetAllSettings />
           <Separator />
         </>
+      ),
+    },
+    {
+      value: "account",
+      label: t("accountSettingsShort"),
+      component: () => (
+        <div className="">
+          <div className="font-semibold mb-4 capitilized">
+            {t("accountSettings")}
+          </div>
+          <UserSettings />
+          <Separator />
+          <LanguageSettings />
+          <Separator />
+        </div>
       ),
     },
     {
