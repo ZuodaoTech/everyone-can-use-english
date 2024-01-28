@@ -9,7 +9,6 @@ import {
   Popover,
   PopoverContent,
   PopoverAnchor,
-  toast,
 } from "@renderer/components/ui";
 import { LookupResult } from "@renderer/components";
 import {
@@ -63,7 +62,7 @@ export const MediaCaption = (props: {
   const [displayIpa, setDisplayIpa] = useState<boolean>(false);
 
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { openai } = useContext(AISettingsProviderContext);
+  const { currentEngine } = useContext(AISettingsProviderContext);
 
   const toogleIPA = async () => {
     if (ipaGenerating) return;
@@ -82,16 +81,12 @@ export const MediaCaption = (props: {
       return;
     }
 
-    if (!openai?.key) {
-      toast.error(t("openaiApiKeyRequired"));
-      return;
-    }
     setIpaGenerating(true);
 
     ipaCommand(transcription.text, {
-      key: openai.key,
-      modelName: openai.model,
-      baseUrl: openai.baseUrl,
+      key: currentEngine.key,
+      modelName: currentEngine.model,
+      baseUrl: currentEngine.baseUrl,
     })
       .then((result) => {
         if (result?.words?.length > 0) {
@@ -122,16 +117,12 @@ export const MediaCaption = (props: {
       return;
     }
 
-    if (!openai?.key) {
-      toast.error(t("openaiApiKeyRequired"));
-      return;
-    }
     setTranslating(true);
 
     translateCommand(transcription.text, {
-      key: openai.key,
-      modelName: openai.model,
-      baseUrl: openai.baseUrl,
+      key: currentEngine.key,
+      modelName: currentEngine.model,
+      baseUrl: currentEngine.baseUrl,
     })
       .then((result) => {
         if (result) {

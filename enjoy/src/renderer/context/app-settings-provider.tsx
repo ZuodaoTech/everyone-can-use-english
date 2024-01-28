@@ -8,6 +8,7 @@ import { toBlobURL } from "@ffmpeg/util";
 
 type AppSettingsProviderState = {
   webApi: Client;
+  apiUrl?: string;
   user: UserType | null;
   initialized: boolean;
   version?: string;
@@ -210,6 +211,7 @@ export const AppSettingsProvider = ({
         EnjoyApp,
         version,
         webApi,
+        apiUrl,
         user,
         login,
         logout,

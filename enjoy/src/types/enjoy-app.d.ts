@@ -84,6 +84,8 @@ type EnjoyAppType = {
     getUser: () => Promise<UserType>;
     setUser: (user: UserType) => Promise<void>;
     getUserDataPath: () => Promise<string>;
+    getDefaultEngine: () => Promise<string>;
+    setDefaultEngine: (engine: "enjoyai" | "openai") => Promise<void>;
     getLlm: (provider: SupportedLlmProviderType) => Promise<LlmProviderType>;
     setLlm: (
       provider: SupportedLlmProviderType,

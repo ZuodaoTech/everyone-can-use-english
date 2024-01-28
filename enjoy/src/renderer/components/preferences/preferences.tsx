@@ -2,6 +2,7 @@ import { t } from "i18next";
 import { Button, ScrollArea, Separator } from "@renderer/components/ui";
 import {
   About,
+  DefaultEngineSettings,
   Hotkeys,
   UserSettings,
   LanguageSettings,
@@ -36,16 +37,18 @@ export const Preferences = () => {
           <Separator />
           <WhisperSettings />
           <Separator />
+          <DefaultEngineSettings />
+          <Separator />
+          <OpenaiSettings />
+          <Separator />
+          <GoogleGenerativeAiSettings />
+          <Separator />
           {ffmpegConfig.ready && (
             <>
               <FfmpegSettings />
               <Separator />
             </>
           )}
-          <OpenaiSettings />
-          <Separator />
-          <GoogleGenerativeAiSettings />
-          <Separator />
         </div>
       ),
     },

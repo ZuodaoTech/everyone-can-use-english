@@ -23,7 +23,7 @@ export const LookupResult = (props: {
   if (!word) return null;
 
   const { webApi } = useContext(AppSettingsProviderContext);
-  const { openai } = useContext(AISettingsProviderContext);
+  const { currentEngine } = useContext(AISettingsProviderContext);
 
   const processLookup = async () => {
     if (!word) return;
@@ -42,11 +42,6 @@ export const LookupResult = (props: {
       setLoading(false);
       onResult && onResult(lookup.meaning);
     } else {
-      if (!openai?.key) {
-        toast.error(t("openaiApiKeyRequired"));
-        return;
-      }
-
       lookupCommand(
         {
           word,
@@ -54,9 +49,9 @@ export const LookupResult = (props: {
           meaningOptions: lookup.meaningOptions,
         },
         {
-          key: openai.key,
-          modelName: openai.model,
-          baseUrl: openai.baseUrl,
+          key: currentEngine.key,
+          modelName: currentEngine.model,
+          baseUrl: currentEngine.baseUrl,
         }
       )
         .then((res) => {

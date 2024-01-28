@@ -6,6 +6,9 @@ type AISettingsProviderState = {
   setOpenai?: (config: LlmProviderType) => void;
   googleGenerativeAi?: LlmProviderType;
   setGoogleGenerativeAi?: (config: LlmProviderType) => void;
+  defaultEngine?: string;
+  setDefaultEngine?: (engine: string) => void;
+  currentEngine?: LlmProviderType;
 };
 
 const initialState: AISettingsProviderState = {};
@@ -18,10 +21,11 @@ export const AISettingsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const [defaultEngine, setDefaultEngine] = useState<string>(null);
   const [openai, setOpenai] = useState<LlmProviderType>(null);
   const [googleGenerativeAi, setGoogleGenerativeAi] =
     useState<LlmProviderType>(null);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, apiUrl, user } = useContext(AppSettingsProviderContext);
 
   useEffect(() => {
     fetchSettings();
@@ -35,6 +39,19 @@ export const AISettingsProvider = ({
       "googleGenerativeAi"
     );
     if (_googleGenerativeAi) setGoogleGenerativeAi(_googleGenerativeAi);
+
+    const _defaultEngine = await EnjoyApp.settings.getDefaultEngine();
+    if (_defaultEngine) {
+      setDefaultEngine(_defaultEngine);
+    } else if (_openai.key) {
+      EnjoyApp.settings.setDefaultEngine("openai").then(() => {
+        setDefaultEngine("openai");
+      });
+    } else {
+      EnjoyApp.settings.setDefaultEngine("enjoyai").then(() => {
+        setDefaultEngine("enjoyai");
+      });
+    }
   };
 
   const handleSetLlm = async (
@@ -57,6 +74,19 @@ export const AISettingsProvider = ({
   return (
     <AISettingsProviderContext.Provider
       value={{
+        defaultEngine,
+        setDefaultEngine: (engine: "openai" | "enjoyai") => {
+          EnjoyApp.settings.setDefaultEngine(engine).then(() => {
+            setDefaultEngine(engine);
+          });
+        },
+        currentEngine: {
+          openai: openai,
+          enjoyai: {
+            key: user.accessToken,
+            baseUrl: `${apiUrl}/api/ai`,
+          },
+        }[defaultEngine],
         openai,
         setOpenai: (config: LlmProviderType) => handleSetLlm("openai", config),
         googleGenerativeAi,

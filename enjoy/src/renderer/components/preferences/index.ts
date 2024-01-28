@@ -2,6 +2,7 @@ export * from "./preferences";
 export * from "./about";
 export * from "./hotkeys";
 
+export * from "./default-engine-settings";
 export * from "./openai-settings";
 export * from "./user-settings";
 export * from "./language-settings";
