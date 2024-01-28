@@ -316,7 +316,7 @@
   "enjoyAiEngineTips": "使用 EnjoyAI 作为默认 AI 引擎。这是一个收费服务。",
   "openaiKeySaved": "OpenAI 密钥已保存",
   "openaiConfigSaved": "OpenAI 配置已保存",
-  "openaiKeyRequired": "未提供 OpenAI 密钥",
+  "openaiKeyRequired": "未配置 OpenAI 密钥",
   "baseUrl": "接口地址",
   "model": "模型",
   "key": "密钥",

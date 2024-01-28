@@ -5,16 +5,15 @@ import {
   SelectContent,
   SelectItem,
   SelectValue,
+  toast,
 } from "@renderer/components/ui";
 import { AISettingsProviderContext } from "@renderer/context";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 export const DefaultEngineSettings = () => {
-  const { defaultEngine, setDefaultEngine } = useContext(
+  const { defaultEngine, setDefaultEngine, openai } = useContext(
     AISettingsProviderContext
   );
-
-  useEffect(() => {}, []);
 
   return (
     <div className="flex items-start justify-between py-4">
@@ -23,8 +22,8 @@ export const DefaultEngineSettings = () => {
           <span>{t("defaultAiEngine")}</span>
         </div>
         <div className="text-sm text-muted-foreground">
-          { defaultEngine === 'openai' && t("openAiEngineTips")}
-          { defaultEngine === 'enjoyai' && t("enjoyAiEngineTips")}
+          {defaultEngine === "openai" && t("openAiEngineTips")}
+          {defaultEngine === "enjoyai" && t("enjoyAiEngineTips")}
         </div>
       </div>
 
@@ -33,6 +32,9 @@ export const DefaultEngineSettings = () => {
           value={defaultEngine}
           onValueChange={(value) => {
             setDefaultEngine(value);
+            if (value === "openai" && !openai.key) {
+              toast.warning(t("openaiKeyRequired"));
+            }
           }}
         >
           <SelectTrigger className="min-w-fit">
