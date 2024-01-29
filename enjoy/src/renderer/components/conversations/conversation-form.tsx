@@ -39,7 +39,9 @@ import { useNavigate } from "react-router-dom";
 
 const conversationFormSchema = z.object({
   name: z.string().optional(),
-  engine: z.enum(["enjoyai", "openai", "ollama", "googleGenerativeAi"]).default("openai"),
+  engine: z
+    .enum(["enjoyai", "openai", "ollama", "googleGenerativeAi"])
+    .default("openai"),
   configuration: z
     .object({
       model: z.string().nonempty(),
@@ -98,12 +100,13 @@ export const ConversationForm = (props: {
     refreshProviders();
   }, []);
 
-  const defaultConfig = conversationDefaultConfiguration;
+  const defaultConfig = conversation || {};
+
   if (defaultConfig.engine === "openai" && openai) {
     defaultConfig.configuration.model = openai.model;
     defaultConfig.configuration.baseUrl = openai.baseUrl;
   }
-  if (defaultConfig.configuration.tts.engine === "openai" && openai) {
+  if (defaultConfig.configuration?.tts?.engine === "openai" && openai) {
     defaultConfig.configuration.tts.baseUrl = openai.baseUrl;
   }
 
@@ -267,7 +270,13 @@ export const ConversationForm = (props: {
                   <FormLabel>
                     {t("models.conversation.roleDefinition")}
                   </FormLabel>
-                  <Textarea className="h-64" {...field} />
+                  <Textarea
+                    placeholder={t(
+                      "models.conversation.roleDefinitionPlaceholder"
+                    )}
+                    className="h-64"
+                    {...field}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -468,7 +477,7 @@ export const ConversationForm = (props: {
                     <FormLabel>{t("models.conversation.baseUrl")}</FormLabel>
                     <Input {...field} />
                     <FormDescription>
-                      {t("models.conversation.baseUrl")}
+                      {t("models.conversation.baseUrlDescription")}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -588,7 +597,7 @@ export const ConversationForm = (props: {
                     <FormLabel>{t("models.conversation.ttsBaseUrl")}</FormLabel>
                     <Input {...field} />
                     <FormDescription>
-                      {t("models.conversation.baseUrl")}
+                      {t("models.conversation.ttsBaseUrlDescription")}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -747,33 +756,5 @@ export const TTS_PROVIDERS: { [key: string]: any } = {
     models: ["tts-1"],
     voices: ["alloy", "echo", "fable", "onyx", "nova", "shimmer"],
     configurable: ["model", "voice", "baseUrl"],
-  },
-};
-
-const conversationDefaultConfiguration = {
-  name: "英语教练",
-  engine: "openai",
-  configuration: {
-    model: "gpt-4-1106-preview",
-    baseUrl: "",
-    roleDefinition: `你是我的英语教练。
-请将我的话改写成英文。
-不需要逐字翻译。
-请分析清楚我的内容，而后用英文重新逻辑清晰地组织它。
-请使用地道的美式英语，纽约腔调。
-请尽量使用日常词汇，尽量优先使用短语动词或者习惯用语。
-每个句子最长不应该超过 20 个单词。`,
-    temperature: 0.2,
-    numberOfChoices: 1,
-    maxTokens: 2048,
-    presencePenalty: 0,
-    frequencyPenalty: 0,
-    historyBufferSize: 0,
-    tts: {
-      baseUrl: "",
-      engine: "openai",
-      model: "tts-1",
-      voice: "alloy",
-    },
   },
 };

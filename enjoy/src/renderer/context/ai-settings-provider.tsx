@@ -64,12 +64,18 @@ export const AISettingsProvider = ({
 
   const fetchSettings = async () => {
     const _openai = await EnjoyApp.settings.getLlm("openai");
-    if (_openai) setOpenai(_openai);
+    if (_openai) {
+      setOpenai(Object.assign({ name: "openai" }, _openai));
+    }
 
     const _googleGenerativeAi = await EnjoyApp.settings.getLlm(
       "googleGenerativeAi"
     );
-    if (_googleGenerativeAi) setGoogleGenerativeAi(_googleGenerativeAi);
+    if (_googleGenerativeAi) {
+      setGoogleGenerativeAi(
+        Object.assign({ name: "googleGenerativeAi" }, _googleGenerativeAi)
+      );
+    }
 
     const _defaultEngine = await EnjoyApp.settings.getDefaultEngine();
     if (_defaultEngine) {
@@ -94,10 +100,12 @@ export const AISettingsProvider = ({
 
     switch (name) {
       case "openai":
-        setOpenai(_config);
+        setOpenai(Object.assign({ name: "openai" }, _config));
         break;
       case "googleGenerativeAi":
-        setGoogleGenerativeAi(_config);
+        setGoogleGenerativeAi(
+          Object.assign({ name: "googleGenerativeAi" }, _config)
+        );
         break;
     }
   };
@@ -114,6 +122,7 @@ export const AISettingsProvider = ({
         currentEngine: {
           openai: openai,
           enjoyai: {
+            name: "enjoyai" as LlmProviderType["name"],
             key: user?.accessToken,
             baseUrl: `${apiUrl}/api/ai`,
           },

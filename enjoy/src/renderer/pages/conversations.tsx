@@ -1,25 +1,32 @@
 import { t } from "i18next";
 import {
   Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
   Sheet,
   SheetContent,
-  SheetTrigger,
 } from "@renderer/components/ui";
 import { ConversationForm } from "@renderer/components";
 import { useState, useEffect, useContext, useReducer } from "react";
-import { ChevronLeftIcon, LoaderIcon, MessageCircleIcon } from "lucide-react";
+import { ChevronLeftIcon, MessageCircleIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   DbProviderContext,
   AppSettingsProviderContext,
+  AISettingsProviderContext,
 } from "@renderer/context";
 import { conversationsReducer } from "@renderer/reducers";
 import dayjs from "dayjs";
 
 export default () => {
-  const [editting, setEditting] = useState<boolean>(false);
+  const [creating, setCreating] = useState<boolean>(false);
+  const [preset, setPreset] = useState<any>({});
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { currentEngine } = useContext(AISettingsProviderContext);
   const [conversations, dispatchConversations] = useReducer(
     conversationsReducer,
     []
@@ -53,6 +60,57 @@ export default () => {
     }
   };
 
+  const PRESETS = [
+    {
+      name: "英语教练",
+      engine: currentEngine.name,
+      configuration: {
+        model: "gpt-4-1106-preview",
+        baseUrl: "",
+        roleDefinition: `你是我的英语教练。
+请将我的话改写成英文。
+不需要逐字翻译。
+请分析清楚我的内容，而后用英文重新逻辑清晰地组织它。
+请使用地道的美式英语，纽约腔调。
+请尽量使用日常词汇，尽量优先使用短语动词或者习惯用语。
+每个句子最长不应该超过 20 个单词。`,
+        temperature: 0.2,
+        numberOfChoices: 1,
+        maxTokens: 2048,
+        presencePenalty: 0,
+        frequencyPenalty: 0,
+        historyBufferSize: 0,
+        tts: {
+          baseUrl: "",
+          engine: currentEngine.name,
+          model: "tts-1",
+          voice: "alloy",
+        },
+      },
+    },
+    {
+      name: t("custom"),
+      engine: currentEngine.name,
+      configuration: {
+        model: "gpt-4-1106-preview",
+        baseUrl: "",
+        roleDefinition: "",
+        temperature: 0.2,
+        numberOfChoices: 1,
+        maxTokens: 2048,
+        presencePenalty: 0,
+        frequencyPenalty: 0,
+        historyBufferSize: 0,
+        tts: {
+          baseUrl: "",
+          engine: currentEngine.name,
+          model: "tts-1",
+          voice: "alloy",
+        },
+      },
+    },
+  ];
+
   return (
     <div className="h-full px-4 py-6 lg:px-8 bg-muted flex flex-col">
       <div className="w-full max-w-screen-md mx-auto flex-1">
@@ -64,19 +122,47 @@ export default () => {
         </div>
 
         <div className="my-6 flex justify-center">
-          <Sheet open={editting} onOpenChange={(value) => setEditting(value)}>
-            <SheetTrigger asChild>
-              <Button className="h-12 rounded-lg w-96" disabled={editting}>
-                {editting && <LoaderIcon className="animate-spin mr-2" />}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="h-12 rounded-lg w-96">
                 {t("newConversation")}
               </Button>
-            </SheetTrigger>
+            </DialogTrigger>
 
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{t("selectAiRole")}</DialogTitle>
+              </DialogHeader>
+              <div className="grid grid-cols-2 gap-4">
+                {PRESETS.map((preset) => (
+                  <DialogTrigger
+                    key={preset.name}
+                    className="p-4 border hover:shadow rounded-lg cursor-pointer space-y-2"
+                    onClick={() => {
+                      setPreset(preset);
+                      setCreating(true);
+                    }}
+                  >
+                    <div className="capitalize text-center line-clamp-1">
+                      {preset.name}
+                    </div>
+                    {preset.configuration.roleDefinition && (
+                      <div className="line-clamp-3 text-sm text-foreground/70">
+                        {preset.configuration.roleDefinition}
+                      </div>
+                    )}
+                  </DialogTrigger>
+                ))}
+              </div>
+            </DialogContent>
+          </Dialog>
+
+          <Sheet open={creating} onOpenChange={(value) => setCreating(value)}>
             <SheetContent className="p-0">
               <div className="h-screen">
                 <ConversationForm
-                  conversation={{}}
-                  onFinish={() => setEditting(false)}
+                  conversation={preset}
+                  onFinish={() => setCreating(false)}
                 />
               </div>
             </SheetContent>
