@@ -108,7 +108,7 @@
     "dayjs": "^1.11.10",
     "decamelize": "^6.0.0",
     "decamelize-keys": "^2.0.1",
-    "electron-log": "^5.0.4",
+    "electron-log": "^5.1.0",
     "electron-settings": "^4.0.2",
     "electron-squirrel-startup": "^1.0.0",
     "fluent-ffmpeg": "^2.1.2",
