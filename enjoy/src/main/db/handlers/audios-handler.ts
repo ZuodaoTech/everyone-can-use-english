@@ -148,7 +148,7 @@ class AudiosHandler {
     id: string,
     params: Attributes<Audio>
   ) {
-    const { name, description, transcription } = params;
+    const { name, description, metadata } = params;
 
     return Audio.findOne({
       where: { id },
@@ -157,7 +157,7 @@ class AudiosHandler {
         if (!audio) {
           throw new Error(t("models.audio.notFound"));
         }
-        audio.update({ name, description, transcription });
+        audio.update({ name, description, metadata });
       })
       .catch((err) => {
         event.sender.send("on-notification", {

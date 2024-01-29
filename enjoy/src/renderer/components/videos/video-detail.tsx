@@ -162,6 +162,16 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
             displayInlineCaption={displayInlineCaption}
             setDisplayInlineCaption={setDisplayInlineCaption}
             onShare={() => setSharing(true)}
+            onDecoded={({ duration, sampleRate }) => {
+              if (video.duration) return;
+
+              EnjoyApp.videos.update(video.id, {
+                metadata: Object.assign({}, video.metadata, {
+                  duration,
+                  sampleRate,
+                }),
+              });
+            }}
           />
 
           <ScrollArea

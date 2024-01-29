@@ -131,6 +131,13 @@ export class Audio extends Model<Audio> {
     )}`;
   }
 
+  @Column(DataType.VIRTUAL)
+  get duration(): number {
+    return (
+      this.getDataValue("metadata").duration
+    );
+  }
+
   get extname(): string {
     return (
       this.getDataValue("metadata").extname ||
@@ -167,9 +174,7 @@ export class Audio extends Model<Audio> {
   }
 
   async sync() {
-    if (!this.isUploaded) {
-      this.upload();
-    }
+    if (this.isSynced) return;
 
     return webApi.syncAudio(this.toJSON()).then(() => {
       this.update({ syncedAt: new Date() });
@@ -212,6 +217,7 @@ export class Audio extends Model<Audio> {
   @AfterUpdate
   static notifyForUpdate(audio: Audio) {
     this.notify(audio, "update");
+    audio.sync().catch(() => {});
   }
 
   @AfterDestroy

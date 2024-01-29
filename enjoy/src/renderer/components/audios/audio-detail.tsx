@@ -155,6 +155,16 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
             displayInlineCaption={displayInlineCaption}
             setDisplayInlineCaption={setDisplayInlineCaption}
             onShare={() => setSharing(true)}
+            onDecoded={({ duration, sampleRate }) => {
+              if (audio.duration) return;
+
+              EnjoyApp.audios.update(audio.id, {
+                metadata: Object.assign({}, audio.metadata, {
+                  duration,
+                  sampleRate,
+                }),
+              });
+            }}
           />
 
           <ScrollArea className={`flex-1 relative bg-muted`}>

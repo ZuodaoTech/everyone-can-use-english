@@ -149,7 +149,7 @@ class VideosHandler {
     id: string,
     params: Attributes<Video>
   ) {
-    const { name, description, transcription } = params;
+    const { name, description, metadata } = params;
 
     return Video.findOne({
       where: { id },
@@ -158,7 +158,7 @@ class VideosHandler {
         if (!video) {
           throw new Error(t("models.video.notFound"));
         }
-        video.update({ name, description, transcription });
+        video.update({ name, description, metadata });
       })
       .catch((err) => {
         event.sender.send("on-notification", {

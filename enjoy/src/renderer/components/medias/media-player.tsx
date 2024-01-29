@@ -61,6 +61,7 @@ export const MediaPlayer = (props: {
   displayInlineCaption?: boolean;
   setDisplayInlineCaption?: (value: boolean) => void;
   onShare?: () => void;
+  onDecoded?: (data: { duration: number; sampleRate: number }) => void;
 }) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const {
@@ -90,6 +91,7 @@ export const MediaPlayer = (props: {
     displayInlineCaption,
     setDisplayInlineCaption,
     onShare,
+    onDecoded,
   } = props;
   if (!mediaUrl) return;
 
@@ -336,6 +338,11 @@ export const MediaPlayer = (props: {
         };
         EnjoyApp.waveforms.save(mediaMd5, _waveform);
         setWaveForm(_waveform);
+        onDecoded &&
+          onDecoded({
+            duration,
+            sampleRate,
+          });
       }),
       wavesurfer.on("ready", () => {
         setInitialized(true);
@@ -481,6 +488,11 @@ export const MediaPlayer = (props: {
   useEffect(() => {
     EnjoyApp.waveforms.find(mediaMd5).then((waveform) => {
       setWaveForm(waveform);
+      onDecoded &&
+        onDecoded({
+          duration: waveform.duration,
+          sampleRate: waveform.sampleRate,
+        });
     });
   }, []);
 
