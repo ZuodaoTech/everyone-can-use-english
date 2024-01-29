@@ -30,6 +30,7 @@ import path from "path";
 import Ffmpeg from "@main/ffmpeg";
 import whisper from "@main/whisper";
 import { hashFile } from "@/utils";
+import fetch from 'electron-fetch';
 
 const logger = log.scope("db/models/conversation");
 @Table({
@@ -146,6 +147,7 @@ export class Conversation extends Model<Conversation> {
         modelName: this.model,
         configuration: {
           baseURL: this.configuration.baseUrl,
+          fetch
         },
         temperature: this.configuration.temperature,
         n: this.configuration.numberOfChoices,
