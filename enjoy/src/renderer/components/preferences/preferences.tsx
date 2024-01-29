@@ -5,6 +5,7 @@ import {
   DefaultEngineSettings,
   Hotkeys,
   UserSettings,
+  BalanceSettings,
   LanguageSettings,
   LibrarySettings,
   WhisperSettings,
@@ -16,6 +17,7 @@ import {
 } from "@renderer/components";
 import { useState, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
+import { Tooltip } from "react-tooltip";
 
 export const Preferences = () => {
   const { ffmpegConfig } = useContext(AppSettingsProviderContext);
@@ -73,6 +75,8 @@ export const Preferences = () => {
           </div>
           <UserSettings />
           <Separator />
+          <BalanceSettings />
+          <Separator />
           <LanguageSettings />
           <Separator />
         </div>
@@ -93,29 +97,32 @@ export const Preferences = () => {
   const [activeTab, setActiveTab] = useState<string>("basic");
 
   return (
-    <div className="grid grid-cols-5 overflow-hidden h-full">
-      <ScrollArea className="h-full col-span-1 bg-muted/50 p-4">
-        <div className="py-2 text-muted-foreground mb-4">
-          {t("sidebar.preferences")}
-        </div>
+    <>
+      <div className="grid grid-cols-5 overflow-hidden h-full">
+        <ScrollArea className="h-full col-span-1 bg-muted/50 p-4">
+          <div className="py-2 text-muted-foreground mb-4">
+            {t("sidebar.preferences")}
+          </div>
 
-        {TABS.map((tab) => (
-          <Button
-            key={tab.value}
-            variant={activeTab === tab.value ? "default" : "ghost"}
-            size="sm"
-            className={`capitilized w-full justify-start mb-2 ${
-              activeTab === tab.value ? "" : "hover:bg-muted"
-            }`}
-            onClick={() => setActiveTab(tab.value)}
-          >
-            <span className="text-sm">{tab.label}</span>
-          </Button>
-        ))}
-      </ScrollArea>
-      <ScrollArea className="h-full col-span-4 py-6 px-10">
-        {TABS.find((tab) => tab.value === activeTab)?.component()}
-      </ScrollArea>
-    </div>
+          {TABS.map((tab) => (
+            <Button
+              key={tab.value}
+              variant={activeTab === tab.value ? "default" : "ghost"}
+              size="sm"
+              className={`capitilized w-full justify-start mb-2 ${
+                activeTab === tab.value ? "" : "hover:bg-muted"
+              }`}
+              onClick={() => setActiveTab(tab.value)}
+            >
+              <span className="text-sm">{tab.label}</span>
+            </Button>
+          ))}
+        </ScrollArea>
+        <ScrollArea className="h-full col-span-4 py-6 px-10">
+          {TABS.find((tab) => tab.value === activeTab)?.component()}
+        </ScrollArea>
+      </div>
+      <Tooltip id="preferences-tooltip" />
+    </>
   );
 };

@@ -71,9 +71,10 @@ export const AppSettingsProvider = ({
       new Client({
         baseUrl: apiUrl,
         accessToken: user?.accessToken,
+        locale: language,
       })
     );
-  }, [user, apiUrl]);
+  }, [user, apiUrl, language]);
 
   const loadFfmpegWASM = async () => {
     const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm";
