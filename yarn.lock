@@ -6016,7 +6016,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:^7.49.3"
     react-hotkeys-hook: "npm:^4.4.4"
-    react-i18next: "npm:^14.0.0"
+    react-i18next: "npm:^14.0.1"
     react-markdown: "npm:^9.0.1"
     react-router-dom: "npm:^6.21.3"
     react-tooltip: "npm:^5.26.0"
@@ -10993,9 +10993,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^14.0.0":
-  version: 14.0.0
-  resolution: "react-i18next@npm:14.0.0"
+"react-i18next@npm:^14.0.1":
+  version: 14.0.1
+  resolution: "react-i18next@npm:14.0.1"
   dependencies:
     "@babel/runtime": "npm:^7.22.5"
     html-parse-stringify: "npm:^3.0.1"
@@ -11007,7 +11007,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 923990e941cdc9ca73bb34fca8a408f850c6ce7ca490661d83c808c5a91f33997882d40e0d2da64664c91a064e12002164c8dd843d75542a7e7e261a3d4198d8
+  checksum: 9104c51c5d185e6d1b8ad71714b9ef490286f87b8833c7f67949da34f46f65ebcc994f6f3d087ffe180b7f811ba367c64e5e500c8e442fedbdf54c193bad0257
   languageName: node
   linkType: hard
 
