@@ -340,6 +340,7 @@
   "editConversation": "Edit conversation",
   "deleteConversation": "Delete conversation",
   "deleteConversationConfirmation": "Are you sure to delete this conversation inclcuding all messages?",
+  "noConversationsYet": "No conversations yet",
   "translation": "Translation",
   "pressEnterToSend": "Press enter to send",
   "send": "Send",
