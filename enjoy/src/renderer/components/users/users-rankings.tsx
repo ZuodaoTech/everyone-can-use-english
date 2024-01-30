@@ -10,7 +10,7 @@ import {
 } from "@renderer/components/ui";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
-import { formatDuration } from "@renderer/lib/utils";
+import { secondsToTimestamp } from "@renderer/lib/utils";
 
 export const UsersRankings = () => {
   return (
@@ -59,7 +59,7 @@ const RankingsCard = (props: {
 
         {rankings.map((user, index) => (
           <div key={user.id} className="flex items-center space-x-4 p-2">
-            <div className="font-mono text-sm">#{index + 1}</div>
+            <div className="font-mono text-sm w-5">#{index + 1}</div>
 
             <div className="flex items-center space-x-2">
               <Avatar className="w-8 h-8">
@@ -73,7 +73,7 @@ const RankingsCard = (props: {
             </div>
 
             <div className="flex-1 font-serif text-right">
-              {formatDuration(user.recordingsDuration, "millisecond")}
+              {secondsToTimestamp(user.recordingsDuration / 1000.0)}
             </div>
           </div>
         ))}
