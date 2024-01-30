@@ -31,6 +31,7 @@ import Ffmpeg from "@main/ffmpeg";
 import whisper from "@main/whisper";
 import { hashFile } from "@/utils";
 import { WEB_API_URL } from "@/constants";
+import { HttpsProxyAgent } from "https-proxy-agent";
 
 const logger = log.scope("db/models/conversation");
 @Table({
@@ -137,12 +138,14 @@ export class Conversation extends Model<Conversation> {
 
   // choose llm based on engine
   llm() {
+    const proxy = settings.getSync("proxy") as string;
     if (this.engine === "enjoyai") {
       return new ChatOpenAI({
         openAIApiKey: settings.getSync("user.accessToken") as string,
         modelName: this.model,
         configuration: {
           baseURL: `${process.env.WEB_API_URL || WEB_API_URL}/api/ai`,
+          httpAgent: proxy ? new HttpsProxyAgent(proxy) : undefined,
         },
         temperature: this.configuration.temperature,
         n: this.configuration.numberOfChoices,
@@ -160,6 +163,7 @@ export class Conversation extends Model<Conversation> {
         modelName: this.model,
         configuration: {
           baseURL: this.configuration.baseUrl,
+          httpAgent: proxy ? new HttpsProxyAgent(proxy) : undefined,
         },
         temperature: this.configuration.temperature,
         n: this.configuration.numberOfChoices,

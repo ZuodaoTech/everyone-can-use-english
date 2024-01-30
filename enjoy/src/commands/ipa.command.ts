@@ -5,6 +5,7 @@ import {
   StructuredOutputParser,
   OutputFixingParser,
 } from "langchain/output_parsers";
+import { HttpsProxyAgent } from "https-proxy-agent";
 
 export const ipaCommand = async (
   text: string,
@@ -13,6 +14,7 @@ export const ipaCommand = async (
     modelName?: string;
     temperature?: number;
     baseUrl?: string;
+    proxy?: string;
   }
 ): Promise<{ words?: { word?: string; ipa?: string }[] }> => {
   const {
@@ -20,6 +22,7 @@ export const ipaCommand = async (
     modelName = "gpt-3.5-turbo-1106",
     temperature = 0,
     baseUrl,
+    proxy,
   } = options;
 
   const responseSchema = z.object({
@@ -39,6 +42,7 @@ export const ipaCommand = async (
       temperature: 0,
       configuration: {
         baseURL: baseUrl,
+        httpAgent: proxy ? new HttpsProxyAgent(proxy) : undefined,
       },
     }),
     parser
@@ -50,6 +54,7 @@ export const ipaCommand = async (
     temperature,
     configuration: {
       baseURL: baseUrl,
+      httpAgent: proxy ? new HttpsProxyAgent(proxy) : undefined,
     },
     modelKwargs: {
       response_format: {

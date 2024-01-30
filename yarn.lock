@@ -6022,6 +6022,7 @@ __metadata:
     fluent-ffmpeg: "npm:^2.1.2"
     fs-extra: "npm:^11.2.0"
     html-to-text: "npm:^9.0.5"
+    https-proxy-agent: "npm:^7.0.2"
     i18next: "npm:^23.8.1"
     intl-tel-input: "npm:^19.2.15"
     js-md5: "npm:^0.8.3"
@@ -7732,7 +7733,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"https-proxy-agent@npm:^7.0.1":
+"https-proxy-agent@npm:^7.0.1, https-proxy-agent@npm:^7.0.2":
   version: 7.0.2
   resolution: "https-proxy-agent@npm:7.0.2"
   dependencies:

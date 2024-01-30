@@ -5,6 +5,7 @@ import {
   StructuredOutputParser,
   OutputFixingParser,
 } from "langchain/output_parsers";
+import { HttpsProxyAgent } from "https-proxy-agent";
 
 export const lookupCommand = async (
   params: {
@@ -17,6 +18,7 @@ export const lookupCommand = async (
     modelName?: string;
     temperature?: number;
     baseUrl?: string;
+    proxy?: string;
   }
 ): Promise<{
   id?: string;
@@ -33,6 +35,7 @@ export const lookupCommand = async (
     modelName = "gpt-3.5-turbo-1106",
     temperature = 0,
     baseUrl,
+    proxy,
   } = options;
   const { word, context, meaningOptions } = params;
 
@@ -55,6 +58,7 @@ export const lookupCommand = async (
       temperature: 0,
       configuration: {
         baseURL: baseUrl,
+        httpAgent: proxy ? new HttpsProxyAgent(proxy) : undefined,
       },
     }),
     parser
