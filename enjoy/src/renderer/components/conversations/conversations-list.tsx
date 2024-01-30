@@ -61,6 +61,13 @@ export const ConversationsList = (props: {
 
   return (
     <ScrollArea>
+      {conversations.filter((c) => !excludedIds.includes(c.id)).length ===
+        0 && (
+        <div className="text-center text-sm text-muted-foreground py-4">
+          {t("noConversationsYet")}
+        </div>
+      )}
+
       {conversations
         .filter((c) => !excludedIds.includes(c.id))
         .map((conversation) => {

@@ -339,6 +339,7 @@
   "editConversation": "编辑对话",
   "deleteConversation": "删除对话",
   "deleteConversationConfirmation": "您确定要删除此对话，以及对话中的所有消息吗？",
+  "noConversationsYet": "还没有对话",
   "translation": "翻译",
   "pressEnterToSend": "按 Enter 发送",
   "send": "发送",

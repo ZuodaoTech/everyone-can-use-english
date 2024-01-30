@@ -174,10 +174,8 @@ export class Speech extends Model<Speech> {
     let openaiConfig = {};
     if (engine === "enjoyai") {
       openaiConfig = {
+        apiKey: settings.getSync("user.accessToken"),
         baseURL: `${process.env.WEB_API_URL || WEB_API_URL}/api/ai`,
-        defaultHeaders: {
-          Authorization: `Bearer ${settings.getSync("user.accessToken")}`,
-        },
       };
     } else if (engine === "openai") {
       const defaultConfig = settings.getSync("openai") as LlmProviderType;

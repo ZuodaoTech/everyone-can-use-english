@@ -76,6 +76,12 @@ export const ConversationsShortcut = (props: {
 
   return (
     <ScrollArea>
+      {conversations.length === 0 && (
+        <div className="text-center text-sm text-muted-foreground py-4">
+          {t("noConversationsYet")}
+        </div>
+      )}
+
       {conversations.map((conversation) => {
         return (
           <div

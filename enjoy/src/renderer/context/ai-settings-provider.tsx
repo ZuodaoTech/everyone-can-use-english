@@ -80,7 +80,7 @@ export const AISettingsProvider = ({
     const _defaultEngine = await EnjoyApp.settings.getDefaultEngine();
     if (_defaultEngine) {
       setDefaultEngine(_defaultEngine);
-    } else if (_openai.key) {
+    } else if (_openai?.key) {
       EnjoyApp.settings.setDefaultEngine("openai").then(() => {
         setDefaultEngine("openai");
       });

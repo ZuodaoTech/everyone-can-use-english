@@ -139,12 +139,10 @@ export class Conversation extends Model<Conversation> {
   llm() {
     if (this.engine === "enjoyai") {
       return new ChatOpenAI({
+        openAIApiKey: settings.getSync("user.accessToken") as string,
         modelName: this.model,
         configuration: {
           baseURL: `${process.env.WEB_API_URL || WEB_API_URL}/api/ai`,
-          defaultHeaders: {
-            Authorization: `Bearer ${settings.getSync("user.accessToken")}`,
-          },
         },
         temperature: this.configuration.temperature,
         n: this.configuration.numberOfChoices,
