@@ -32,7 +32,7 @@ export const DefaultEngineSettings = () => {
           value={defaultEngine}
           onValueChange={(value) => {
             setDefaultEngine(value);
-            if (value === "openai" && !openai.key) {
+            if (value === "openai" && !openai?.key) {
               toast.warning(t("openaiKeyRequired"));
             }
           }}
