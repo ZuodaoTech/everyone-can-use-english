@@ -1,19 +1,10 @@
 import { t } from "i18next";
-import { Button, toast } from "@renderer/components/ui";
+import { Button } from "@renderer/components/ui";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { useState, useContext } from "react";
-import { LoaderIcon } from "lucide-react";
+import { useContext } from "react";
 
 export const About = () => {
-  const { version } = useContext(AppSettingsProviderContext);
-  const [checking, setChecking] = useState<boolean>(false);
-  const checkUpdate = () => {
-    setChecking(true);
-    setTimeout(() => {
-      setChecking(false);
-      toast.info(t("alreadyLatestVersion"));
-    }, 1000);
-  };
+  const { version, EnjoyApp } = useContext(AppSettingsProviderContext);
 
   return (
     <>
@@ -24,8 +15,13 @@ export const About = () => {
           <div className="mb-2">{t("currentVersion")}</div>
           <div className="text-sm text-muted-foreground mb-2">v{version}</div>
         </div>
-        <Button disabled={checking} onClick={checkUpdate}>
-          {checking && <LoaderIcon className="animate-spin mr-1 w-4 h-4" />}
+        <Button
+          onClick={() => {
+            EnjoyApp.shell.openExternal(
+              "https://github.com/xiaolai/everyone-can-use-english/releases/latest"
+            );
+          }}
+        >
           {t("checkUpdate")}
         </Button>
       </div>

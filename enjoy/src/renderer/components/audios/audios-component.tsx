@@ -34,6 +34,7 @@ import {
 import { LayoutGridIcon, LayoutListIcon } from "lucide-react";
 import { audiosReducer } from "@renderer/reducers";
 import { useNavigate } from "react-router-dom";
+import { useTranscribe } from "@renderer/hooks";
 
 export const AudiosComponent = () => {
   const [audios, dispatchAudios] = useReducer(audiosReducer, []);
@@ -43,6 +44,7 @@ export const AudiosComponent = () => {
   const [transcribing, setTranscribing] = useState<Partial<AudioType> | null>(
     null
   );
+  const { transcribe } = useTranscribe();
 
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -237,7 +239,7 @@ export const AudiosComponent = () => {
             <AlertDialogTitle>{t("transcribe")}</AlertDialogTitle>
             <AlertDialogDescription>
               <p className="break-all">
-                {t("transcribeResourceConfirmation", {
+                {t("transcribeAudioConfirmation", {
                   name: transcribing?.name || "",
                 })}
               </p>
@@ -249,8 +251,14 @@ export const AudiosComponent = () => {
               className="bg-destructive"
               onClick={async () => {
                 if (!transcribing) return;
-                await EnjoyApp.audios.transcribe(transcribing.id);
-                setTranscribing(null);
+
+                transcribe({
+                  mediaId: transcribing.id,
+                  mediaSrc: transcribing.src,
+                  mediaType: "Audio",
+                }).finally(() => {
+                  setTranscribing(null);
+                });
               }}
             >
               {t("transcribe")}

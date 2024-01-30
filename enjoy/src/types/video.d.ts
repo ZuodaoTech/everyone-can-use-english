@@ -8,6 +8,7 @@ type VideoType = {
   md5: string;
   src?: string;
   metadata?: Ffmpeg.FfprobeData;
+  duration?: number;
   transcribed: boolean;
   transcribing: boolean;
   recordingsCount?: number;

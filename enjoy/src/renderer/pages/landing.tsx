@@ -7,16 +7,20 @@ import {
   ChooseLibraryPathInput,
   WhisperModelOptionsPanel,
 } from "@renderer/components";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  AISettingsProviderContext,
+} from "@renderer/context";
 import { CheckCircle2Icon } from "lucide-react";
 
 export default () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [currentStepValid, setCurrentStepValid] = useState<boolean>(false);
 
-  const { user, libraryPath, whisperConfig, initialized } = useContext(
+  const { user, libraryPath, initialized } = useContext(
     AppSettingsProviderContext
   );
+  const { whisperConfig } = useContext(AISettingsProviderContext);
   const totalSteps = 4;
 
   useEffect(() => {
@@ -32,7 +36,7 @@ export default () => {
         setCurrentStepValid(!!libraryPath);
         break;
       case 3:
-        setCurrentStepValid(Boolean(whisperConfig.model));
+        setCurrentStepValid(true);
         break;
       case 4:
         setCurrentStepValid(initialized);

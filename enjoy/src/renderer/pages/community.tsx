@@ -26,22 +26,16 @@ export default () => {
         <Tabs defaultValue="square">
           <TabsList className="mb-4">
             <TabsTrigger value="square">{t("square")}</TabsTrigger>
-            <TabsTrigger
-              value="rankings"
-              disabled
-              className="cursor-not-allowed"
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("comingSoon")}
-            >
-              {t("rankings")}
-            </TabsTrigger>
+            <TabsTrigger value="rankings">{t("rankings")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="square">
             <Posts />
           </TabsContent>
 
-          <TabsContent value="rankings"></TabsContent>
+          <TabsContent value="rankings">
+            <UsersRankings />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

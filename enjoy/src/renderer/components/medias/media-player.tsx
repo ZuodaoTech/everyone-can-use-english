@@ -54,13 +54,14 @@ export const MediaPlayer = (props: {
   setZoomRatio: (value: number) => void;
   isPlaying: boolean;
   setIsPlaying: (value: boolean) => void;
-  isLooping: boolean;
-  setIsLooping: (value: boolean) => void;
+  playMode?: "loop" | "single" | "all";
+  setPlayMode?: (value: "loop" | "single" | "all") => void;
   playBackRate: number;
   setPlaybackRate: (value: number) => void;
   displayInlineCaption?: boolean;
   setDisplayInlineCaption?: (value: boolean) => void;
   onShare?: () => void;
+  onDecoded?: (data: { duration: number; sampleRate: number }) => void;
 }) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const {
@@ -83,13 +84,14 @@ export const MediaPlayer = (props: {
     setZoomRatio,
     isPlaying,
     setIsPlaying,
-    isLooping,
-    setIsLooping,
+    playMode,
+    setPlayMode,
     playBackRate,
     setPlaybackRate,
     displayInlineCaption,
     setDisplayInlineCaption,
     onShare,
+    onDecoded,
   } = props;
   if (!mediaUrl) return;
 
@@ -141,13 +143,13 @@ export const MediaPlayer = (props: {
 
   const findCurrentSegment = (time: number) => {
     if (!transcription) return;
-    if (isPlaying && isLooping) return;
+    if (isPlaying && playMode === "loop") return;
 
     time = Math.round(time * 1000);
     const index = transcriptionResult.findIndex(
       (t) => time >= t.offsets.from && time < t.offsets.to
     );
-
+    if (index === -1) return;
     setCurrentSegmentIndex(index);
   };
 
@@ -336,6 +338,11 @@ export const MediaPlayer = (props: {
         };
         EnjoyApp.waveforms.save(mediaMd5, _waveform);
         setWaveForm(_waveform);
+        onDecoded &&
+          onDecoded({
+            duration,
+            sampleRate,
+          });
       }),
       wavesurfer.on("ready", () => {
         setInitialized(true);
@@ -376,7 +383,7 @@ export const MediaPlayer = (props: {
 
     const subscriptions = [
       wavesurfer.on("finish", () => {
-        if (!isLooping) return;
+        if (playMode !== "loop") return;
 
         regions?.getRegions()[0]?.play();
       }),
@@ -426,8 +433,11 @@ export const MediaPlayer = (props: {
         renderPitchContour(region);
       }),
       regions.on("region-out", (region: Region) => {
-        if (isPlaying && isLooping) {
+        if (isPlaying && playMode === "loop") {
           region.play();
+        } else if (isPlaying && playMode === "single") {
+          wavesurfer.pause();
+          wavesurfer.seekTo(region.start / wavesurfer.getDuration());
         } else {
           resetTranscription();
         }
@@ -437,7 +447,7 @@ export const MediaPlayer = (props: {
     return () => {
       subscriptions.forEach((unsub) => unsub());
     };
-  }, [regions, isPlaying, isLooping, currentSegmentIndex, transcriptionDirty]);
+  }, [regions, isPlaying, playMode, currentSegmentIndex, transcriptionDirty]);
 
   useEffect(() => {
     if (!wavesurfer) return;
@@ -481,6 +491,11 @@ export const MediaPlayer = (props: {
   useEffect(() => {
     EnjoyApp.waveforms.find(mediaMd5).then((waveform) => {
       setWaveForm(waveform);
+      onDecoded &&
+        onDecoded({
+          duration: waveform.duration,
+          sampleRate: waveform.sampleRate,
+        });
     });
   }, []);
 
@@ -518,10 +533,24 @@ export const MediaPlayer = (props: {
         <MediaPlayerControls
           isPlaying={isPlaying}
           onPlayOrPause={onPlayClick}
-          isLooping={isLooping}
-          onLoop={() => {
-            setIsLooping(!isLooping);
+          onNext={() => {
+            if (!transcription) return;
+
+            const segment = transcription?.result?.[currentSegmentIndex + 1];
+            if (!segment) return;
+
+            wavesurfer.seekTo(segment.offsets.from / 1000 / wavesurfer.getDuration());
           }}
+          onPrev={() => {
+            if (!transcription) return;
+
+            const segment = transcription?.result?.[currentSegmentIndex - 1];
+            if (!segment) return;
+
+            wavesurfer.seekTo(segment.offsets.from / 1000 / wavesurfer.getDuration());
+          }}
+          playMode={playMode}
+          setPlayMode={setPlayMode}
           playbackRate={playBackRate}
           setPlaybackRate={handlePlaybackRateChange}
           zoomRatio={zoomRatio}

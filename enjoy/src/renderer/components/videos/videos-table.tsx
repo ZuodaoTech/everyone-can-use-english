@@ -35,9 +35,7 @@ export const VideosTable = (props: {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="capitalize">
-            {t("models.video.name")}
-          </TableHead>
+          <TableHead className="capitalize">{t("models.video.name")}</TableHead>
           <TableHead className="capitalize">
             {t("models.video.duration")}
           </TableHead>
@@ -78,9 +76,7 @@ export const VideosTable = (props: {
               </TooltipProvider>
             </TableCell>
             <TableCell>
-              {video.metadata?.format?.duration
-                ? secondsToTimestamp(video.metadata.format.duration)
-                : "-"}
+              {video.duration ? secondsToTimestamp(video.duration) : "-"}
             </TableCell>
             <TableCell>{video.recordingsCount}</TableCell>
             <TableCell>

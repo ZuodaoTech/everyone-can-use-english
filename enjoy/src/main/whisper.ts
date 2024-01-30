@@ -19,12 +19,6 @@ import { sortedUniqBy, take } from "lodash";
 
 const logger = log.scope("whisper");
 
-const webApi = new Client({
-  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
-  accessToken: settings.getSync("user.accessToken") as string,
-  logger: log.scope("api/client"),
-});
-
 const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
 const END_OF_WORD_REGEX = /[^\.!,\?][\.!\?]/g;
 class Whipser {
@@ -200,6 +194,11 @@ class Whipser {
   }
 
   async transcribeFromAzure(file: string): Promise<Partial<WhisperOutputType>> {
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("api/client"),
+    });
     const { token, region } = await webApi.generateSpeechToken();
     const sdk = new AzureSpeechSdk(token, region);
 
@@ -256,7 +255,11 @@ class Whipser {
 
     const data = fs.readFileSync(file);
     const res: CfWhipserOutputType = (
-      await axios.postForm(`${AI_WORKER_ENDPOINT}/audio/transcriptions`, data)
+      await axios.postForm(`${AI_WORKER_ENDPOINT}/audio/transcriptions`, data, {
+        headers: {
+          Authorization: `Bearer ${settings.getSync("user.accessToken")}`,
+        },
+      })
     ).data;
     logger.debug("transcription from Web,", res);
 

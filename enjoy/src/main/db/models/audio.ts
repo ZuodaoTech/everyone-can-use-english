@@ -34,12 +34,6 @@ const SIZE_LIMIT = 1024 * 1024 * 50; // 50MB
 
 const logger = log.scope("db/models/audio");
 
-const webApi = new Client({
-  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
-  accessToken: settings.getSync("user.accessToken") as string,
-  logger: log.scope("api/client"),
-});
-
 @Table({
   modelName: "Audio",
   tableName: "audios",
@@ -119,7 +113,7 @@ export class Audio extends Model<Audio> {
 
   @Column(DataType.VIRTUAL)
   get transcribed(): boolean {
-    return this.transcription?.state === "finished";
+    return Boolean(this.transcription?.result);
   }
 
   @Column(DataType.VIRTUAL)
@@ -129,6 +123,11 @@ export class Audio extends Model<Audio> {
       "audios",
       this.getDataValue("md5") + this.extname
     )}`;
+  }
+
+  @Column(DataType.VIRTUAL)
+  get duration(): number {
+    return this.getDataValue("metadata").duration;
   }
 
   get extname(): string {
@@ -167,9 +166,13 @@ export class Audio extends Model<Audio> {
   }
 
   async sync() {
-    if (!this.isUploaded) {
-      this.upload();
-    }
+    if (this.isSynced) return;
+
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("api/client"),
+    });
 
     return webApi.syncAudio(this.toJSON()).then(() => {
       this.update({ syncedAt: new Date() });
@@ -212,6 +215,7 @@ export class Audio extends Model<Audio> {
   @AfterUpdate
   static notifyForUpdate(audio: Audio) {
     this.notify(audio, "update");
+    audio.sync().catch(() => {});
   }
 
   @AfterDestroy

@@ -130,6 +130,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     getUserDataPath: () => {
       return ipcRenderer.invoke("settings-get-user-data-path");
     },
+    getDefaultEngine: () => {
+      return ipcRenderer.invoke("settings-get-default-engine");
+    },
+    setDefaultEngine: (engine: "enjoyai" | "openai") => {
+      return ipcRenderer.invoke("settings-set-default-engine", engine);
+    },
     getLlm: (provider: string) => {
       return ipcRenderer.invoke("settings-get-llm", provider);
     },
@@ -183,9 +189,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     destroy: (id: string) => {
       return ipcRenderer.invoke("audios-destroy", id);
     },
-    transcribe: (id: string) => {
-      return ipcRenderer.invoke("audios-transcribe", id);
-    },
     upload: (id: string) => {
       return ipcRenderer.invoke("audios-upload", id);
     },
@@ -208,9 +211,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     destroy: (id: string) => {
       return ipcRenderer.invoke("videos-destroy", id);
-    },
-    transcribe: (id: string) => {
-      return ipcRenderer.invoke("videos-transcribe", id);
     },
     upload: (id: string) => {
       return ipcRenderer.invoke("videos-upload", id);

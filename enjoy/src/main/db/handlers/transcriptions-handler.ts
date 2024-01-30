@@ -86,7 +86,7 @@ class TranscriptionsHandler {
           throw new Error("models.transcription.notFound");
         }
 
-        const timeout = setTimeout(() => {
+        const interval = setInterval(() => {
           event.sender.send("on-notification", {
             type: "warning",
             message: t("stillTranscribing"),
@@ -102,7 +102,7 @@ class TranscriptionsHandler {
             });
           })
           .finally(() => {
-            clearTimeout(timeout);
+            clearInterval(interval);
           });
       })
       .catch((err) => {
