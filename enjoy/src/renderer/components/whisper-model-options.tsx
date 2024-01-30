@@ -50,7 +50,7 @@ export const WhisperModelOptionsPanel = () => {
     <>
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>{t("sttAiModel")}</CardTitle>
+          <CardTitle>{t("whisperModel")}</CardTitle>
           <CardDescription>
             {t("chooseAIModelDependingOnYourHardware")}
           </CardDescription>
