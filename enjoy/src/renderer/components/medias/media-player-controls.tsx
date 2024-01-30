@@ -22,9 +22,10 @@ import { t } from "i18next";
 import { type WaveSurferOptions } from "wavesurfer.js";
 import { Tooltip } from "react-tooltip";
 
-const PLAYBACK_RATE_OPTIONS = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75];
+const PLAYBACK_RATE_OPTIONS = [0.8, 0.9, 1.0];
+const ZOOM_RATIO_OPTIONS = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
 const MIN_ZOOM_RATIO = 0.25;
-const MAX_ZOOM_RATIO = 5.0;
+const MAX_ZOOM_RATIO = 2.0;
 
 export const MediaPlayerControls = (props: {
   isPlaying: boolean;
@@ -145,11 +146,7 @@ export const MediaPlayerControls = (props: {
                   setPlaybackRate(rate);
                 }}
               >
-                {[0.5, 1.0, 1.5].includes(rate) || rate === playbackRate ? (
-                  <span className="">{rate}</span>
-                ) : (
-                  <div className="h-2 w-[1px] bg-black/50"></div>
-                )}
+                <span className="">{rate}</span>
               </div>
             ))}
           </div>
@@ -163,7 +160,7 @@ export const MediaPlayerControls = (props: {
         className="relative aspect-square p-0 h-10"
         onClick={() => {
           if (zoomRatio < MAX_ZOOM_RATIO) {
-            const nextZoomRatio = PLAYBACK_RATE_OPTIONS.find(
+            const nextZoomRatio = ZOOM_RATIO_OPTIONS.find(
               (rate) => rate > zoomRatio
             );
             setZoomRatio(nextZoomRatio || MAX_ZOOM_RATIO);
@@ -180,7 +177,7 @@ export const MediaPlayerControls = (props: {
         className="relative aspect-square p-0 h-10"
         onClick={() => {
           if (zoomRatio > MIN_ZOOM_RATIO) {
-            const nextZoomRatio = PLAYBACK_RATE_OPTIONS.reverse().find(
+            const nextZoomRatio = ZOOM_RATIO_OPTIONS.reverse().find(
               (rate) => rate < zoomRatio
             );
             setZoomRatio(nextZoomRatio || MIN_ZOOM_RATIO);
