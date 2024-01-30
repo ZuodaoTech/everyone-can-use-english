@@ -113,7 +113,6 @@ type EnjoyAppType = {
     create: (uri: string, params?: object) => Promise<AudioType>;
     update: (id: string, params: object) => Promise<AudioType | undefined>;
     destroy: (id: string) => Promise<undefined>;
-    transcribe: (id: string) => Promise<void>;
     upload: (id: string) => Promise<void>;
   };
   videos: {
@@ -122,7 +121,6 @@ type EnjoyAppType = {
     create: (uri: string, params?: any) => Promise<VideoType>;
     update: (id: string, params: any) => Promise<VideoType | undefined>;
     destroy: (id: string) => Promise<undefined>;
-    transcribe: (id: string) => Promise<void>;
     upload: (id: string) => Promise<void>;
   };
   recordings: {

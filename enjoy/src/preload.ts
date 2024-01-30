@@ -189,9 +189,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     destroy: (id: string) => {
       return ipcRenderer.invoke("audios-destroy", id);
     },
-    transcribe: (id: string) => {
-      return ipcRenderer.invoke("audios-transcribe", id);
-    },
     upload: (id: string) => {
       return ipcRenderer.invoke("audios-upload", id);
     },
@@ -214,9 +211,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     destroy: (id: string) => {
       return ipcRenderer.invoke("videos-destroy", id);
-    },
-    transcribe: (id: string) => {
-      return ipcRenderer.invoke("videos-transcribe", id);
     },
     upload: (id: string) => {
       return ipcRenderer.invoke("videos-upload", id);

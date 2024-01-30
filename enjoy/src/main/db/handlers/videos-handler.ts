@@ -66,39 +66,6 @@ class VideosHandler {
       });
   }
 
-  private async transcribe(event: IpcMainEvent, id: string) {
-    const video = await Video.findOne({
-      where: {
-        id,
-      },
-    });
-    if (!video) {
-      event.sender.send("on-notification", {
-        type: "error",
-        message: t("models.video.notFound"),
-      });
-    }
-
-    const timeout = setTimeout(() => {
-      event.sender.send("on-notification", {
-        type: "warning",
-        message: t("stillTranscribing"),
-      });
-    }, 1000 * 10);
-
-    video
-      .transcribe()
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      })
-      .finally(() => {
-        clearTimeout(timeout);
-      });
-  }
-
   private async create(
     event: IpcMainEvent,
     uri: string,
@@ -209,7 +176,6 @@ class VideosHandler {
   register() {
     ipcMain.handle("videos-find-all", this.findAll);
     ipcMain.handle("videos-find-one", this.findOne);
-    ipcMain.handle("videos-transcribe", this.transcribe);
     ipcMain.handle("videos-create", this.create);
     ipcMain.handle("videos-update", this.update);
     ipcMain.handle("videos-destroy", this.destroy);

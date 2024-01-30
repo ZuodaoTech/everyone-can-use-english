@@ -119,7 +119,7 @@ export class Audio extends Model<Audio> {
 
   @Column(DataType.VIRTUAL)
   get transcribed(): boolean {
-    return this.transcription?.state === "finished";
+    return Boolean(this.transcription?.result);
   }
 
   @Column(DataType.VIRTUAL)
@@ -133,9 +133,7 @@ export class Audio extends Model<Audio> {
 
   @Column(DataType.VIRTUAL)
   get duration(): number {
-    return (
-      this.getDataValue("metadata").duration
-    );
+    return this.getDataValue("metadata").duration;
   }
 
   get extname(): string {

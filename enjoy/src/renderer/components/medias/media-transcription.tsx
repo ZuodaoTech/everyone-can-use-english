@@ -21,7 +21,7 @@ import {
   DbProviderContext,
   AppSettingsProviderContext,
 } from "@renderer/context";
-import { fetchFile } from "@ffmpeg/util";
+import { useTranscribe } from "@renderer/hooks";
 
 export const MediaTranscription = (props: {
   transcription: TranscriptionType;
@@ -33,7 +33,7 @@ export const MediaTranscription = (props: {
   onSelectSegment?: (index: number) => void;
 }) => {
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
-  const { EnjoyApp, ffmpeg } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const {
     transcription,
     mediaId,
@@ -44,60 +44,23 @@ export const MediaTranscription = (props: {
     onSelectSegment,
   } = props;
   const containerRef = React.createRef<HTMLDivElement>();
-  const [transcoding, setTranscoding] = useState<boolean>(false);
+  const [transcribing, setTranscribing] = useState<boolean>(false);
+  const { transcribe } = useTranscribe();
 
   const [recordingStats, setRecordingStats] =
     useState<SegementRecordingStatsType>([]);
 
   const generate = async () => {
-    const data = await transcode();
-    let blob;
-    if (data) {
-      blob = {
-        type: data.type.split(";")[0],
-        arrayBuffer: await data.arrayBuffer(),
-      };
-    }
+    if (transcribing) return;
 
-    EnjoyApp.transcriptions.process(
-      {
-        targetId: mediaId,
-        targetType: mediaType,
-      },
-      {
-        blob,
-      }
-    );
-  };
-
-  const transcode = async () => {
-    if (!ffmpeg?.loaded) return;
-    if (transcoding) return;
-
-    try {
-      setTranscoding(true);
-      const uri = new URL(mediaUrl);
-      const input = uri.pathname.split("/").pop();
-      const output = input.replace(/\.[^/.]+$/, ".wav");
-      await ffmpeg.writeFile(input, await fetchFile(mediaUrl));
-      await ffmpeg.exec([
-        "-i",
-        input,
-        "-ar",
-        "16000",
-        "-ac",
-        "1",
-        "-c:a",
-        "pcm_s16le",
-        output,
-      ]);
-      const data = await ffmpeg.readFile(output);
-      setTranscoding(false);
-      return new Blob([data], { type: "audio/wav" });
-    } catch (e) {
-      setTranscoding(false);
-      toast.error(t("transcodeError"));
-    }
+    setTranscribing(true);
+    transcribe({
+      mediaId,
+      mediaType,
+      mediaSrc: mediaUrl,
+    }).finally(() => {
+      setTranscribing(false);
+    });
   };
 
   const fetchSegmentStats = async () => {
@@ -141,7 +104,7 @@ export const MediaTranscription = (props: {
     <div className="w-full h-full flex flex-col">
       <div className="mb-4 flex items-cener justify-between">
         <div className="flex items-center space-x-2">
-          {transcoding || transcription.state === "processing" ? (
+          {transcribing || transcription.state === "processing" ? (
             <PingPoint colorClassName="bg-yellow-500" />
           ) : transcription.state === "finished" ? (
             <CheckCircleIcon className="text-green-500 w-4 h-4" />
@@ -153,10 +116,10 @@ export const MediaTranscription = (props: {
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button
-              disabled={transcoding || transcription.state === "processing"}
+              disabled={transcribing || transcription.state === "processing"}
               className="capitalize"
             >
-              {(transcoding || transcription.state === "processing") && (
+              {(transcribing || transcription.state === "processing") && (
                 <LoaderIcon className="animate-spin w-4 mr-2" />
               )}
               {transcription.result ? t("regenerate") : t("transcribe")}

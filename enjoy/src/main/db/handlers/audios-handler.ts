@@ -66,39 +66,6 @@ class AudiosHandler {
       });
   }
 
-  private async transcribe(event: IpcMainEvent, id: string) {
-    const audio = await Audio.findOne({
-      where: {
-        id,
-      },
-    });
-    if (!audio) {
-      event.sender.send("on-notification", {
-        type: "error",
-        message: t("models.audio.notFound"),
-      });
-    }
-
-    const timeout = setTimeout(() => {
-      event.sender.send("on-notification", {
-        type: "warning",
-        message: t("stillTranscribing"),
-      });
-    }, 1000 * 10);
-
-    audio
-      .transcribe()
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      })
-      .finally(() => {
-        clearTimeout(timeout);
-      });
-  }
-
   private async create(
     event: IpcMainEvent,
     uri: string,
@@ -208,7 +175,6 @@ class AudiosHandler {
   register() {
     ipcMain.handle("audios-find-all", this.findAll);
     ipcMain.handle("audios-find-one", this.findOne);
-    ipcMain.handle("audios-transcribe", this.transcribe);
     ipcMain.handle("audios-create", this.create);
     ipcMain.handle("audios-update", this.update);
     ipcMain.handle("audios-destroy", this.destroy);
