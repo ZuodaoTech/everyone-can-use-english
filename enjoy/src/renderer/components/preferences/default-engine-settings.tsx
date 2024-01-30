@@ -31,9 +31,10 @@ export const DefaultEngineSettings = () => {
         <Select
           value={defaultEngine}
           onValueChange={(value) => {
-            setDefaultEngine(value);
             if (value === "openai" && !openai?.key) {
               toast.warning(t("openaiKeyRequired"));
+            } else {
+              setDefaultEngine(value);
             }
           }}
         >

@@ -255,7 +255,11 @@ class Whipser {
 
     const data = fs.readFileSync(file);
     const res: CfWhipserOutputType = (
-      await axios.postForm(`${AI_WORKER_ENDPOINT}/audio/transcriptions`, data)
+      await axios.postForm(`${AI_WORKER_ENDPOINT}/audio/transcriptions`, data, {
+        headers: {
+          Authorization: `Bearer ${settings.getSync("user.accessToken")}`,
+        },
+      })
     ).data;
     logger.debug("transcription from Web,", res);
 

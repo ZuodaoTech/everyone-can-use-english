@@ -180,6 +180,8 @@ export default () => {
   }, [id]);
 
   useEffect(() => {
+    if (!conversation) return;
+
     fetchMessages();
   }, [conversation]);
 
@@ -285,7 +287,6 @@ export default () => {
         <div className="px-4 absolute w-full bottom-0 left-0 h-14 bg-muted z-50">
           <div className="focus-within:bg-background px-4 py-2 flex items-center space-x-4 rounded-lg border">
             <Textarea
-              rows={1}
               ref={inputRef}
               disabled={submitting}
               value={content}
