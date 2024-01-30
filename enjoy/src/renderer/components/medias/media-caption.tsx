@@ -65,7 +65,7 @@ export const MediaCaption = (props: {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
 
-  const toogleIPA = async () => {
+  const toggleIPA = async () => {
     if (ipaGenerating) return;
 
     if (ipa.length > 0) {
@@ -79,6 +79,7 @@ export const MediaCaption = (props: {
     const cached = await EnjoyApp.cacheObjects.get(cacheKey);
     if (cached) {
       setIpa(cached);
+      setDisplayIpa(true);
       return;
     }
 
@@ -119,6 +120,7 @@ export const MediaCaption = (props: {
     const cached = await EnjoyApp.cacheObjects.get(cacheKey);
     if (cached) {
       setTranslation(cached);
+      setDisplayTranslation(true);
       return;
     }
 
@@ -235,7 +237,7 @@ export const MediaCaption = (props: {
             <DropdownMenuItem
               className="cursor-pointer capitalize"
               disabled={ipaGenerating}
-              onClick={toogleIPA}
+              onClick={toggleIPA}
             >
               {ipaGenerating ? (
                 <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
