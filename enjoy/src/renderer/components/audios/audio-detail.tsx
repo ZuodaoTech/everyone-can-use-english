@@ -44,7 +44,7 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
   const [currentSegmentIndex, setCurrentSegmentIndex] = useState<number>(0);
   const [zoomRatio, setZoomRatio] = useState<number>(1.0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLooping, setIsLooping] = useState(false);
+  const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("all");
   const [playBackRate, setPlaybackRate] = useState<number>(1);
   const [displayInlineCaption, setDisplayInlineCaption] =
     useState<boolean>(true);
@@ -148,8 +148,8 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
             setZoomRatio={setZoomRatio}
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
-            isLooping={isLooping}
-            setIsLooping={setIsLooping}
+            playMode={playMode}
+            setPlayMode={setPlayMode}
             playBackRate={playBackRate}
             setPlaybackRate={setPlaybackRate}
             displayInlineCaption={displayInlineCaption}
@@ -192,7 +192,7 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
               const segment = transcription?.result?.[index];
               if (!segment) return;
 
-              if (isLooping && isPlaying) setIsPlaying(false);
+              if (playMode === "loop" && isPlaying) setIsPlaying(false);
               setSeek({
                 seekTo: segment.offsets.from / 1000,
                 timestamp: Date.now(),

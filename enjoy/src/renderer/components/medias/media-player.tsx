@@ -54,8 +54,8 @@ export const MediaPlayer = (props: {
   setZoomRatio: (value: number) => void;
   isPlaying: boolean;
   setIsPlaying: (value: boolean) => void;
-  isLooping: boolean;
-  setIsLooping: (value: boolean) => void;
+  playMode?: "loop" | "single" | "all";
+  setPlayMode?: (value: "loop" | "single" | "all") => void;
   playBackRate: number;
   setPlaybackRate: (value: number) => void;
   displayInlineCaption?: boolean;
@@ -84,8 +84,8 @@ export const MediaPlayer = (props: {
     setZoomRatio,
     isPlaying,
     setIsPlaying,
-    isLooping,
-    setIsLooping,
+    playMode,
+    setPlayMode,
     playBackRate,
     setPlaybackRate,
     displayInlineCaption,
@@ -143,7 +143,7 @@ export const MediaPlayer = (props: {
 
   const findCurrentSegment = (time: number) => {
     if (!transcription) return;
-    if (isPlaying && isLooping) return;
+    if (isPlaying && playMode === "loop") return;
 
     time = Math.round(time * 1000);
     const index = transcriptionResult.findIndex(
@@ -383,7 +383,7 @@ export const MediaPlayer = (props: {
 
     const subscriptions = [
       wavesurfer.on("finish", () => {
-        if (!isLooping) return;
+        if (playMode !== "loop") return;
 
         regions?.getRegions()[0]?.play();
       }),
@@ -433,8 +433,11 @@ export const MediaPlayer = (props: {
         renderPitchContour(region);
       }),
       regions.on("region-out", (region: Region) => {
-        if (isPlaying && isLooping) {
+        if (isPlaying && playMode === "loop") {
           region.play();
+        } else if (isPlaying && playMode === "single") {
+          wavesurfer.pause();
+          wavesurfer.seekTo(region.start / wavesurfer.getDuration());
         } else {
           resetTranscription();
         }
@@ -444,7 +447,7 @@ export const MediaPlayer = (props: {
     return () => {
       subscriptions.forEach((unsub) => unsub());
     };
-  }, [regions, isPlaying, isLooping, currentSegmentIndex, transcriptionDirty]);
+  }, [regions, isPlaying, playMode, currentSegmentIndex, transcriptionDirty]);
 
   useEffect(() => {
     if (!wavesurfer) return;
@@ -530,10 +533,24 @@ export const MediaPlayer = (props: {
         <MediaPlayerControls
           isPlaying={isPlaying}
           onPlayOrPause={onPlayClick}
-          isLooping={isLooping}
-          onLoop={() => {
-            setIsLooping(!isLooping);
+          onNext={() => {
+            if (!transcription) return;
+
+            const segment = transcription?.result?.[currentSegmentIndex + 1];
+            if (!segment) return;
+
+            wavesurfer.seekTo(segment.offsets.from / 1000 / wavesurfer.getDuration());
           }}
+          onPrev={() => {
+            if (!transcription) return;
+
+            const segment = transcription?.result?.[currentSegmentIndex - 1];
+            if (!segment) return;
+
+            wavesurfer.seekTo(segment.offsets.from / 1000 / wavesurfer.getDuration());
+          }}
+          playMode={playMode}
+          setPlayMode={setPlayMode}
           playbackRate={playBackRate}
           setPlaybackRate={handlePlaybackRateChange}
           zoomRatio={zoomRatio}
