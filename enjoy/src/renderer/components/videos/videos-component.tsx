@@ -34,6 +34,7 @@ import {
 import { LayoutGridIcon, LayoutListIcon } from "lucide-react";
 import { videosReducer } from "@renderer/reducers";
 import { useNavigate } from "react-router-dom";
+import { useTranscribe } from "@renderer/hooks";
 
 export const VideosComponent = () => {
   const [videos, dispatchVideos] = useReducer(videosReducer, []);
@@ -43,6 +44,7 @@ export const VideosComponent = () => {
   const [transcribing, setTranscribing] = useState<Partial<VideoType> | null>(
     null
   );
+  const { transcribe } = useTranscribe();
 
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -249,8 +251,14 @@ export const VideosComponent = () => {
               className="bg-destructive"
               onClick={async () => {
                 if (!transcribing) return;
-                await EnjoyApp.videos.transcribe(transcribing.id);
-                setTranscribing(null);
+
+                transcribe({
+                  mediaId: transcribing.id,
+                  mediaSrc: transcribing.src,
+                  mediaType: "Video",
+                }).finally(() => {
+                  setTranscribing(null);
+                });
               }}
             >
               {t("transcribe")}

@@ -14,7 +14,7 @@ class VideosHandler {
     options: FindOptions<Attributes<Video>>
   ) {
     return Video.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [["updatedAt", "DESC"]],
       include: [
         {
           association: "transcription",
@@ -63,39 +63,6 @@ class VideosHandler {
           type: "error",
           message: err.message,
         });
-      });
-  }
-
-  private async transcribe(event: IpcMainEvent, id: string) {
-    const video = await Video.findOne({
-      where: {
-        id,
-      },
-    });
-    if (!video) {
-      event.sender.send("on-notification", {
-        type: "error",
-        message: t("models.video.notFound"),
-      });
-    }
-
-    const timeout = setTimeout(() => {
-      event.sender.send("on-notification", {
-        type: "warning",
-        message: t("stillTranscribing"),
-      });
-    }, 1000 * 10);
-
-    video
-      .transcribe()
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      })
-      .finally(() => {
-        clearTimeout(timeout);
       });
   }
 
@@ -149,7 +116,7 @@ class VideosHandler {
     id: string,
     params: Attributes<Video>
   ) {
-    const { name, description, transcription } = params;
+    const { name, description, metadata } = params;
 
     return Video.findOne({
       where: { id },
@@ -158,7 +125,7 @@ class VideosHandler {
         if (!video) {
           throw new Error(t("models.video.notFound"));
         }
-        video.update({ name, description, transcription });
+        video.update({ name, description, metadata });
       })
       .catch((err) => {
         event.sender.send("on-notification", {
@@ -209,7 +176,6 @@ class VideosHandler {
   register() {
     ipcMain.handle("videos-find-all", this.findAll);
     ipcMain.handle("videos-find-one", this.findOne);
-    ipcMain.handle("videos-transcribe", this.transcribe);
     ipcMain.handle("videos-create", this.create);
     ipcMain.handle("videos-update", this.update);
     ipcMain.handle("videos-destroy", this.destroy);

@@ -22,7 +22,10 @@ import { t } from "i18next";
 import { InfoIcon, CheckCircle, DownloadIcon, XCircleIcon } from "lucide-react";
 import { WHISPER_MODELS_OPTIONS } from "@/constants";
 import { useState, useContext, useEffect } from "react";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  AISettingsProviderContext,
+} from "@renderer/context";
 
 type ModelType = {
   type: string;
@@ -34,8 +37,9 @@ type ModelType = {
 };
 
 export const WhisperModelOptionsPanel = () => {
-  const { whisperConfig, refreshWhisperConfig, EnjoyApp } = useContext(
-    AppSettingsProviderContext
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { whisperConfig, refreshWhisperConfig } = useContext(
+    AISettingsProviderContext
   );
 
   useEffect(() => {
@@ -46,7 +50,7 @@ export const WhisperModelOptionsPanel = () => {
     <>
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>{t("sttAiModel")}</CardTitle>
+          <CardTitle>{t("whisperModel")}</CardTitle>
           <CardDescription>
             {t("chooseAIModelDependingOnYourHardware")}
           </CardDescription>
@@ -83,8 +87,9 @@ export const WhisperModelOptionsPanel = () => {
 export const WhisperModelOptions = () => {
   const [selectingModel, setSelectingModel] = useState<ModelType | null>(null);
   const [availableModels, setAvailableModels] = useState<ModelType[]>([]);
-  const { whisperConfig, setWhisperModel, EnjoyApp } = useContext(
-    AppSettingsProviderContext
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { whisperConfig, setWhisperModel } = useContext(
+    AISettingsProviderContext
   );
 
   useEffect(() => {

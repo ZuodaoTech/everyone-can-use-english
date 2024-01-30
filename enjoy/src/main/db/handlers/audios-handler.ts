@@ -14,7 +14,7 @@ class AudiosHandler {
     options: FindOptions<Attributes<Audio>>
   ) {
     return Audio.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [["updatedAt", "DESC"]],
       include: [
         {
           association: "transcription",
@@ -63,39 +63,6 @@ class AudiosHandler {
           type: "error",
           message: err.message,
         });
-      });
-  }
-
-  private async transcribe(event: IpcMainEvent, id: string) {
-    const audio = await Audio.findOne({
-      where: {
-        id,
-      },
-    });
-    if (!audio) {
-      event.sender.send("on-notification", {
-        type: "error",
-        message: t("models.audio.notFound"),
-      });
-    }
-
-    const timeout = setTimeout(() => {
-      event.sender.send("on-notification", {
-        type: "warning",
-        message: t("stillTranscribing"),
-      });
-    }, 1000 * 10);
-
-    audio
-      .transcribe()
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      })
-      .finally(() => {
-        clearTimeout(timeout);
       });
   }
 
@@ -148,7 +115,7 @@ class AudiosHandler {
     id: string,
     params: Attributes<Audio>
   ) {
-    const { name, description, transcription } = params;
+    const { name, description, metadata } = params;
 
     return Audio.findOne({
       where: { id },
@@ -157,7 +124,7 @@ class AudiosHandler {
         if (!audio) {
           throw new Error(t("models.audio.notFound"));
         }
-        audio.update({ name, description, transcription });
+        audio.update({ name, description, metadata });
       })
       .catch((err) => {
         event.sender.send("on-notification", {
@@ -208,7 +175,6 @@ class AudiosHandler {
   register() {
     ipcMain.handle("audios-find-all", this.findAll);
     ipcMain.handle("audios-find-one", this.findOne);
-    ipcMain.handle("audios-transcribe", this.transcribe);
     ipcMain.handle("audios-create", this.create);
     ipcMain.handle("audios-update", this.update);
     ipcMain.handle("audios-destroy", this.destroy);

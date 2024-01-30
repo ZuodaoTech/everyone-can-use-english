@@ -167,6 +167,14 @@ export default {
     ipcMain.handle("settings-switch-language", (_event, language) => {
       switchLanguage(language);
     });
+
+    ipcMain.handle("settings-get-default-engine", (_event) => {
+      return settings.getSync("defaultEngine");
+    });
+
+    ipcMain.handle("settings-set-default-engine", (_event, engine) => {
+      return settings.setSync("defaultEngine", engine);
+    });
   },
   cachePath,
   libraryPath,

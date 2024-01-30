@@ -76,9 +76,7 @@ export const AudiosTable = (props: {
               </TooltipProvider>
             </TableCell>
             <TableCell>
-              {audio.metadata?.format?.duration
-                ? secondsToTimestamp(audio.metadata.format.duration)
-                : "-"}
+              {audio.duration ? secondsToTimestamp(audio.duration) : "-"}
             </TableCell>
             <TableCell>{audio.recordingsCount}</TableCell>
             <TableCell>

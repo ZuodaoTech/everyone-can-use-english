@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@renderer/lib/utils";
 import {
   Button,
@@ -19,13 +19,8 @@ import {
   LoaderIcon,
   SpeechIcon,
 } from "lucide-react";
-import { translateCommand, ipaCommand } from "@commands";
-import {
-  AppSettingsProviderContext,
-  AISettingsProviderContext,
-} from "@renderer/context";
 import { t } from "i18next";
-import { md5 } from "js-md5";
+import { useAiCommand } from "@renderer/hooks";
 
 export const MediaCaption = (props: {
   mediaId: string;
@@ -62,8 +57,7 @@ export const MediaCaption = (props: {
   const [ipaGenerating, setIpaGenerating] = useState<boolean>(false);
   const [displayIpa, setDisplayIpa] = useState<boolean>(false);
 
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { openai } = useContext(AISettingsProviderContext);
+  const { translate, pronounce } = useAiCommand();
 
   const toogleIPA = async () => {
     if (ipaGenerating) return;
@@ -73,39 +67,28 @@ export const MediaCaption = (props: {
       return;
     }
 
-    const hash = md5.create();
-    hash.update(transcription.text);
-    const cacheKey = `ipa-${hash.hex()}`;
-    const cached = await EnjoyApp.cacheObjects.get(cacheKey);
-    if (cached) {
-      setIpa(cached);
-      return;
-    }
-
-    if (!openai?.key) {
-      toast.error(t("openaiApiKeyRequired"));
-      return;
-    }
     setIpaGenerating(true);
-
-    ipaCommand(transcription.text, {
-      key: openai.key,
-      modelName: openai.model,
-      baseUrl: openai.baseUrl,
-    })
-      .then((result) => {
-        if (result?.words?.length > 0) {
-          setIpa(result.words);
-          EnjoyApp.cacheObjects.set(cacheKey, result.words);
-          setDisplayIpa(true);
-        }
-      })
-      .finally(() => {
-        setIpaGenerating(false);
-      });
+    toast.promise(
+      pronounce(transcription.text)
+        .then((words) => {
+          if (words?.length > 0) {
+            setIpa(words);
+            setDisplayIpa(true);
+          }
+        })
+        .finally(() => {
+          setIpaGenerating(false);
+        }),
+      {
+        loading: t("generatingIpa"),
+        success: t("generatedIpaSuccessfully"),
+        error: (err) => t("generatingIpaFailed", { error: err.message }),
+        position: "bottom-right",
+      }
+    );
   };
 
-  const translate = async () => {
+  const toggleTranslation = async () => {
     if (translating) return;
 
     if (translation) {
@@ -113,36 +96,24 @@ export const MediaCaption = (props: {
       return;
     }
 
-    const hash = md5.create();
-    hash.update(transcription.text);
-    const cacheKey = `translate-${hash.hex()}`;
-    const cached = await EnjoyApp.cacheObjects.get(cacheKey);
-    if (cached) {
-      setTranslation(cached);
-      return;
-    }
-
-    if (!openai?.key) {
-      toast.error(t("openaiApiKeyRequired"));
-      return;
-    }
-    setTranslating(true);
-
-    translateCommand(transcription.text, {
-      key: openai.key,
-      modelName: openai.model,
-      baseUrl: openai.baseUrl,
-    })
-      .then((result) => {
-        if (result) {
-          setTranslation(result);
-          EnjoyApp.cacheObjects.set(cacheKey, result);
-          setDisplayTranslation(true);
-        }
-      })
-      .finally(() => {
-        setTranslating(false);
-      });
+    toast.promise(
+      translate(transcription.text)
+        .then((result) => {
+          if (result) {
+            setTranslation(result);
+            setDisplayTranslation(true);
+          }
+        })
+        .finally(() => {
+          setTranslating(false);
+        }),
+      {
+        loading: t("translating"),
+        success: t("translatedSuccessfully"),
+        error: (err) => t("translationFailed", { error: err.message }),
+        position: "bottom-right",
+      }
+    );
   };
 
   useEffect(() => {
@@ -223,7 +194,7 @@ export const MediaCaption = (props: {
             <DropdownMenuItem
               className="cursor-pointer capitalize"
               disabled={translating}
-              onClick={translate}
+              onClick={toggleTranslation}
             >
               {translating ? (
                 <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
