@@ -165,22 +165,6 @@ export const AssistantMessageComponent = (props: {
               />
             ))}
 
-          {Boolean(speech) &&
-            (resourcing ? (
-              <LoaderIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("addingResource")}
-                className="w-3 h-3 animate-spin"
-              />
-            ) : (
-              <MicIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("shadowingExercise")}
-                onClick={startShadow}
-                className="w-3 h-3 cursor-pointer"
-              />
-            ))}
-
           <Dialog>
             <DialogTrigger>
               <ForwardIcon
@@ -201,6 +185,22 @@ export const AssistantMessageComponent = (props: {
               </div>
             </DialogContent>
           </Dialog>
+
+          {Boolean(speech) &&
+            (resourcing ? (
+              <LoaderIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("addingResource")}
+                className="w-3 h-3 animate-spin"
+              />
+            ) : (
+              <MicIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("shadowingExercise")}
+                onClick={startShadow}
+                className="w-3 h-3 cursor-pointer"
+              />
+            ))}
         </div>
       </div>
 
