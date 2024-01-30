@@ -162,14 +162,14 @@ export const MediaCaption = (props: {
                 {displayIpa &&
                   ipa.find(
                     (i) =>
-                      i.word.trim() === w.text.replace(/[\.,?!]/g, "").trim()
+                      i.word.trim() === w.text.replace(/[\.",?!]/g, "").trim()
                   )?.ipa && (
                     <div className="text-sm text-foreground/70 font-serif">
                       {
                         ipa.find(
                           (i) =>
                             i.word.trim() ===
-                            w.text.replace(/[\.,?!]/g, "").trim()
+                            w.text.replace(/[\.",?!]/g, "").trim()
                         )?.ipa
                       }
                     </div>
