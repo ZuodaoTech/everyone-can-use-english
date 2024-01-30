@@ -59,7 +59,7 @@ export const MediaCaption = (props: {
 
   const { translate, pronounce } = useAiCommand();
 
-  const toogleIPA = async () => {
+  const toggleIpa = async () => {
     if (ipaGenerating) return;
 
     if (ipa.length > 0) {
@@ -206,7 +206,7 @@ export const MediaCaption = (props: {
             <DropdownMenuItem
               className="cursor-pointer capitalize"
               disabled={ipaGenerating}
-              onClick={toogleIPA}
+              onClick={toggleIpa}
             >
               {ipaGenerating ? (
                 <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
