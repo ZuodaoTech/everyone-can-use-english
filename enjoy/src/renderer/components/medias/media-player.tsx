@@ -147,7 +147,7 @@ export const MediaPlayer = (props: {
     const index = transcriptionResult.findIndex(
       (t) => time >= t.offsets.from && time < t.offsets.to
     );
-
+    if (index === -1) return;
     setCurrentSegmentIndex(index);
   };
 
