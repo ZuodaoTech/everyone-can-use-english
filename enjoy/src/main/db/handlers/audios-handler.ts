@@ -14,7 +14,7 @@ class AudiosHandler {
     options: FindOptions<Attributes<Audio>>
   ) {
     return Audio.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [["updatedAt", "DESC"]],
       include: [
         {
           association: "transcription",

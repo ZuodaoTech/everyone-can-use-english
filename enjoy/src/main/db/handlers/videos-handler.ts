@@ -14,7 +14,7 @@ class VideosHandler {
     options: FindOptions<Attributes<Video>>
   ) {
     return Video.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [["updatedAt", "DESC"]],
       include: [
         {
           association: "transcription",
