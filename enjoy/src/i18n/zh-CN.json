@@ -430,5 +430,11 @@
   "removeSharing": "取消分享",
   "areYouSureToRemoveThisSharing": "您确定要取消分享吗？",
   "removeSharingSuccessfully": "取消分享成功",
-  "removeSharingFailed": "取消分享失败"
+  "removeSharingFailed": "取消分享失败",
+  "generatingIpa": "正在生成音标",
+  "generatedIpaSuccessfully": "音标生成成功",
+  "generatingIpaFailed": "音标生成失败",
+  "translating": "正在翻译",
+  "translatedSuccessfully": "翻译成功",
+  "translationFailed": "翻译失败"
 }

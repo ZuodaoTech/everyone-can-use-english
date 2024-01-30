@@ -11,9 +11,8 @@ import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   AppSettingsProviderContext,
-  AISettingsProviderContext,
 } from "@renderer/context";
-import { extractStoryCommand, lookupCommand } from "@commands";
+import { useAiCommand } from "@renderer/hooks";
 import nlp from "compromise";
 import paragraphs from "compromise-paragraphs";
 nlp.plugin(paragraphs);
@@ -21,7 +20,6 @@ nlp.plugin(paragraphs);
 export default () => {
   const { id } = useParams<{ id: string }>();
   const { webApi } = useContext(AppSettingsProviderContext);
-  const { currentEngine } = useContext(AISettingsProviderContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [story, setStory] = useState<StoryType>();
   const [meanings, setMeanings] = useState<MeaningType[]>([]);
@@ -34,6 +32,7 @@ export default () => {
   const [vocabularyVisible, setVocabularyVisible] = useState<boolean>(false);
   const [lookingUpInBatch, setLookupInBatch] = useState<boolean>(false);
   const [lookingUp, setLookingUp] = useState<boolean>(false);
+  const { lookupWord, extractStory } = useAiCommand();
 
   const fetchStory = async () => {
     webApi
@@ -72,30 +71,13 @@ export default () => {
     if (story?.extracted && (words.length > 0 || idioms.length > 0)) return;
 
     toast.promise(
-      async () => {
-        if (words.length === 0 && idioms.length === 0) {
-          const res = await extractStoryCommand(story.content, {
-            key: currentEngine.key,
-            modelName: currentEngine.model,
-            baseUrl: currentEngine.baseUrl,
-          });
-
-          words = res.words || [];
-          idioms = res.idioms || [];
-        }
-
-        webApi
-          .extractVocabularyFromStory(id, {
-            words,
-            idioms,
-          })
-          .then(() => {
-            fetchStory();
-          })
-          .finally(() => {
-            setScanning(false);
-          });
-      },
+      extractStory(story)
+        .then(() => {
+          fetchStory();
+        })
+        .finally(() => {
+          setScanning(false);
+        }),
       {
         loading: t("extracting"),
         success: t("extractedSuccessfully"),
@@ -186,38 +168,16 @@ export default () => {
   const processLookup = async (pendingLookup: Partial<LookupType>) => {
     if (lookingUp) return;
 
-    const { meaningOptions = [] } = await webApi.lookup({
-      word: pendingLookup.word,
-      context: pendingLookup.context,
-      sourceId: story.id,
-      sourceType: "Story",
-    });
     setLookingUp(true);
     toast.promise(
-      lookupCommand(
-        {
-          word: pendingLookup.word,
-          context: pendingLookup.context,
-          meaningOptions,
-        },
-        {
-          key: currentEngine.key,
-          modelName: currentEngine.model,
-          baseUrl: currentEngine.baseUrl,
-        }
-      )
-        .then((res) => {
-          if (res.context_translation?.trim()) {
-            webApi
-              .updateLookup(pendingLookup.id, {
-                meaning: res,
-                sourceId: story.id,
-                sourceType: "Story",
-              })
-              .then(() => {
-                fetchMeanings();
-              });
-          }
+      lookupWord({
+        word: pendingLookup.word,
+        context: pendingLookup.context,
+        sourceId: story.id,
+        sourceType: "Story",
+      })
+        .then(() => {
+          fetchMeanings();
         })
         .finally(() => {
           setLookingUp(false);

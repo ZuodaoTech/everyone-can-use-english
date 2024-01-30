@@ -431,5 +431,11 @@
   "removeSharing": "Remove sharing",
   "areYouSureToRemoveThisSharing": "Are you sure to remove this sharing?",
   "removeSharingSuccessfully": "Remove sharing successfully",
-  "removeSharingFailed": "Remove sharing failed"
+  "removeSharingFailed": "Remove sharing failed",
+  "generatingIpa": "Generating IPA",
+  "generatedIpaSuccessfully": "Generated IPA successfully",
+  "generatingIpaFailed": "Generating IPA failed",
+  "translating": "Translating",
+  "translatedSuccessfully": "Translated successfully",
+  "translationFailed": "Translation failed"
 }
