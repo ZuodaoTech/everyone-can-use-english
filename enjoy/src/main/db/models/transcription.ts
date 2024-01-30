@@ -24,11 +24,6 @@ import path from "path";
 import fs from "fs-extra";
 
 const logger = log.scope("db/models/transcription");
-const webApi = new Client({
-  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
-  accessToken: settings.getSync("user.accessToken") as string,
-  logger: log.scope("api/client"),
-});
 
 @Table({
   modelName: "Transcription",
@@ -82,6 +77,11 @@ export class Transcription extends Model<Transcription> {
   async sync() {
     if (this.getDataValue("state") !== "finished") return;
 
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("api/client"),
+    });
     return webApi.syncTranscription(this.toJSON()).then(() => {
       this.update({ syncedAt: new Date() });
     });

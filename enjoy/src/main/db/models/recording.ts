@@ -29,12 +29,6 @@ import camelcaseKeys from "camelcase-keys";
 
 const logger = log.scope("db/models/recording");
 
-const webApi = new Client({
-  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
-  accessToken: settings.getSync("user.accessToken") as string,
-  logger: log.scope("api/client"),
-});
-
 @Table({
   modelName: "Recording",
   tableName: "recordings",
@@ -144,6 +138,12 @@ export class Recording extends Model<Recording> {
       await this.upload();
     }
 
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("api/client"),
+    });
+
     return webApi.syncRecording(this.toJSON()).then(() => {
       this.update({ syncedAt: new Date() });
     });
@@ -157,6 +157,12 @@ export class Recording extends Model<Recording> {
     if (assessment) {
       return assessment;
     }
+
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("api/client"),
+    });
 
     const { token, region } = await webApi.generateSpeechToken();
     const sdk = new AzureSpeechSdk(token, region);

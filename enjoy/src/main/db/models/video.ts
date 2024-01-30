@@ -34,12 +34,6 @@ const SIZE_LIMIT = 1024 * 1024 * 100; // 100MB
 
 const logger = log.scope("db/models/video");
 
-const webApi = new Client({
-  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
-  accessToken: settings.getSync("user.accessToken") as string,
-  logger: log.scope("api/client"),
-});
-
 @Table({
   modelName: "Video",
   tableName: "videos",
@@ -133,9 +127,7 @@ export class Video extends Model<Video> {
 
   @Column(DataType.VIRTUAL)
   get duration(): number {
-    return (
-      this.getDataValue("metadata").duration
-    );
+    return this.getDataValue("metadata").duration;
   }
 
   get extname(): string {
@@ -197,6 +189,12 @@ export class Video extends Model<Video> {
 
   async sync() {
     if (this.isSynced) return;
+
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("api/client"),
+    });
 
     return webApi.syncVideo(this.toJSON()).then(() => {
       this.update({ syncedAt: new Date() });

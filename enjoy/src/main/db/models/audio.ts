@@ -34,12 +34,6 @@ const SIZE_LIMIT = 1024 * 1024 * 50; // 50MB
 
 const logger = log.scope("db/models/audio");
 
-const webApi = new Client({
-  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
-  accessToken: settings.getSync("user.accessToken") as string,
-  logger: log.scope("api/client"),
-});
-
 @Table({
   modelName: "Audio",
   tableName: "audios",
@@ -173,6 +167,12 @@ export class Audio extends Model<Audio> {
 
   async sync() {
     if (this.isSynced) return;
+
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("api/client"),
+    });
 
     return webApi.syncAudio(this.toJSON()).then(() => {
       this.update({ syncedAt: new Date() });

@@ -19,12 +19,6 @@ import { WEB_API_URL } from "@/constants";
 import settings from "@main/settings";
 import log from "electron-log/main";
 
-const webApi = new Client({
-  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
-  accessToken: settings.getSync("user.accessToken") as string,
-  logger: log.scope("api/client"),
-});
-
 @Table({
   modelName: "PronunciationAssessment",
   tableName: "pronunciation_assessments",
@@ -40,7 +34,7 @@ const webApi = new Client({
   },
 }))
 export class PronunciationAssessment extends Model<PronunciationAssessment> {
-  @IsUUID('all')
+  @IsUUID("all")
   @Default(DataType.UUIDV4)
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;
@@ -100,6 +94,12 @@ export class PronunciationAssessment extends Model<PronunciationAssessment> {
   }
 
   async sync() {
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("api/client"),
+    });
+
     return webApi.syncPronunciationAssessment(this.toJSON()).then(() => {
       this.update({ syncedAt: new Date() });
     });
