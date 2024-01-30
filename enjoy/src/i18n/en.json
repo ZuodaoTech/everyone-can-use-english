@@ -164,6 +164,7 @@
   "detail": "detail",
   "remove": "remove",
   "share": "share",
+  "forward": "forward",
   "loadMore": "Load more",
   "databaseError": "Failed to connect to database {{url}}",
   "somethingWentWrong": "Something went wrong",

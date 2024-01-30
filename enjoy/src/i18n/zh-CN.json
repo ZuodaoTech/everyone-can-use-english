@@ -164,6 +164,7 @@
   "detail": "详情",
   "remove": "删除",
   "share": "分享",
+  "forward": "转发",
   "loadMore": "加载更多",
   "databaseError": "数据库错误 {{url}}",
   "somethingWentWrong": "出错了",

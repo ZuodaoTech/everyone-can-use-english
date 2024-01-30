@@ -2,12 +2,21 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   Sheet,
   SheetContent,
   SheetHeader,
   SheetClose,
 } from "@renderer/components/ui";
-import { SpeechPlayer, AudioDetail } from "@renderer/components";
+import {
+  SpeechPlayer,
+  AudioDetail,
+  ConversationsList,
+} from "@renderer/components";
 import { useState, useEffect, useContext } from "react";
 import {
   LoaderIcon,
@@ -16,6 +25,7 @@ import {
   SpeechIcon,
   MicIcon,
   ChevronDownIcon,
+  ForwardIcon,
 } from "lucide-react";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
@@ -170,6 +180,27 @@ export const AssistantMessageComponent = (props: {
                 className="w-3 h-3 cursor-pointer"
               />
             ))}
+
+          <Dialog>
+            <DialogTrigger>
+              <ForwardIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("forward")}
+                className="w-3 h-3 cursor-pointer"
+              />
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{t("forward")}</DialogTitle>
+              </DialogHeader>
+              <div className="">
+                <ConversationsList
+                  prompt={message.content}
+                  excludedIds={[message.conversationId]}
+                />
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
