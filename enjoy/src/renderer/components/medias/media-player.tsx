@@ -13,7 +13,7 @@ import { secondsToTimestamp } from "@renderer/lib/utils";
 import WaveSurfer from "wavesurfer.js";
 import { useDebounce } from "@uidotdev/usehooks";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import {
   MediaPlayer as VidstackMediaPlayer,
   MediaProvider,

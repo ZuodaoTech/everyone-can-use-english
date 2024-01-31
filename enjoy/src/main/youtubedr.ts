@@ -4,7 +4,7 @@ import { exec } from "child_process";
 import fs from "fs-extra";
 import os from "os";
 import log from "electron-log/main";
-import { snakeCase } from "lodash";
+import snakeCase from "lodash/snakeCase";
 import settings from "@main/settings";
 
 const logger = log.scope("YOUTUBEDR");
