@@ -1,6 +1,5 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "langchain/prompts";
-import { HttpsProxyAgent } from "https-proxy-agent";
 
 export const translateCommand = async (
   text: string,
@@ -9,7 +8,6 @@ export const translateCommand = async (
     modelName?: string;
     temperature?: number;
     baseUrl?: string;
-    proxy?: string;
   }
 ): Promise<string> => {
   const {
@@ -17,7 +15,6 @@ export const translateCommand = async (
     modelName = "gpt-3.5-turbo-1106",
     temperature = 0,
     baseUrl,
-    proxy,
   } = options;
 
   const chatModel = new ChatOpenAI({
@@ -26,7 +23,6 @@ export const translateCommand = async (
     temperature,
     configuration: {
       baseURL: baseUrl,
-      httpAgent: proxy ? new HttpsProxyAgent(proxy) : undefined,
     },
     cache: true,
     verbose: true,

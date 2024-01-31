@@ -138,7 +138,7 @@ export class Conversation extends Model<Conversation> {
 
   // choose llm based on engine
   llm() {
-    const proxy = settings.getSync("proxy") as string;
+    const proxy = settings.getSync("proxy.host") as string;
     if (this.engine === "enjoyai") {
       return new ChatOpenAI({
         openAIApiKey: settings.getSync("user.accessToken") as string,

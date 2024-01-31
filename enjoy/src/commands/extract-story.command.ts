@@ -2,7 +2,6 @@ import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "langchain/prompts";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { z } from "zod";
-import { HttpsProxyAgent } from "https-proxy-agent";
 
 export const extractStoryCommand = async (
   content: string,
@@ -11,7 +10,6 @@ export const extractStoryCommand = async (
     modelName?: string;
     temperature?: number;
     baseUrl?: string;
-    proxy?: string;
   }
 ): Promise<{ words: string[]; idioms: string[] }> => {
   const {
@@ -19,7 +17,6 @@ export const extractStoryCommand = async (
     modelName = "gpt-3.5-turbo-1106",
     temperature = 0,
     baseUrl,
-    proxy,
   } = options;
 
   const saveExtraction = z.object({
@@ -38,7 +35,6 @@ export const extractStoryCommand = async (
     },
     configuration: {
       baseURL: baseUrl,
-      httpAgent: proxy ? new HttpsProxyAgent(proxy) : undefined,
     },
     cache: true,
     verbose: true,
