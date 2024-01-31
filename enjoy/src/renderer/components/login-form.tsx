@@ -78,9 +78,6 @@ export const LoginForm = () => {
           .finally(() => {
             setWebviewVisible(false);
           });
-      } else {
-        toast.error(t("failedToLogin"));
-        setWebviewVisible(false);
       }
     }
   };
