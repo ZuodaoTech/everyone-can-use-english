@@ -100,14 +100,22 @@ export const ConversationForm = (props: {
     refreshProviders();
   }, []);
 
-  const defaultConfig = conversation || {};
-
+  const defaultConfig = JSON.parse(JSON.stringify(conversation || {}));
   if (defaultConfig.engine === "openai" && openai) {
-    defaultConfig.configuration.model = openai.model;
-    defaultConfig.configuration.baseUrl = openai.baseUrl;
+    if (!defaultConfig.configuration) {
+      defaultConfig.configuration = {};
+    }
+    if (!defaultConfig.configuration.model) {
+      defaultConfig.configuration.model = openai.model;
+    }
+    if (!defaultConfig.configuration.baseUrl) {
+      defaultConfig.configuration.baseUrl = openai.baseUrl;
+    }
   }
-  if (defaultConfig.configuration?.tts?.engine === "openai" && openai) {
-    defaultConfig.configuration.tts.baseUrl = openai.baseUrl;
+  if (defaultConfig.configuration.tts.engine === "openai" && openai) {
+    if (!defaultConfig.configuration.tts.baseUrl) {
+      defaultConfig.configuration.tts.baseUrl = openai.baseUrl;
+    }
   }
 
   const form = useForm<z.infer<typeof conversationFormSchema>>({
