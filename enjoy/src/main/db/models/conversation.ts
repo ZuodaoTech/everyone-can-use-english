@@ -31,8 +31,7 @@ import Ffmpeg from "@main/ffmpeg";
 import whisper from "@main/whisper";
 import { hashFile } from "@/utils";
 import { WEB_API_URL } from "@/constants";
-import { HttpsProxyAgent } from "https-proxy-agent";
-import fetch from "node-fetch";
+import proxyAgent from "@main/proxy-agent";
 
 const logger = log.scope("db/models/conversation");
 @Table({
@@ -139,8 +138,7 @@ export class Conversation extends Model<Conversation> {
 
   // choose llm based on engine
   llm() {
-    const proxy = settings.getSync("proxy") as ProxyConfigType;
-    logger.debug("proxy", proxy);
+    const { httpAgent, fetch } = proxyAgent();
     if (this.engine === "enjoyai") {
       return new ChatOpenAI(
         {
@@ -156,9 +154,7 @@ export class Conversation extends Model<Conversation> {
           presencePenalty: this.configuration.presencePenalty,
         },
         {
-          httpAgent: proxy?.enabled
-            ? new HttpsProxyAgent(proxy.url)
-            : undefined,
+          httpAgent,
           // @ts-ignore
           fetch,
         }
@@ -182,9 +178,7 @@ export class Conversation extends Model<Conversation> {
           presencePenalty: this.configuration.presencePenalty,
         },
         {
-          httpAgent: proxy?.enabled
-            ? new HttpsProxyAgent(proxy.url)
-            : undefined,
+          httpAgent,
           // @ts-ignore
           fetch,
         }

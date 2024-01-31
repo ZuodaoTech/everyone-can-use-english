@@ -64,6 +64,32 @@ main.init = () => {
   // TedProvider
   tedProvider.registerIpcHandlers();
 
+  // proxy
+  ipcMain.handle("settings-get-proxy", (_event) => {
+    return settings.getSync("proxy");
+  });
+
+  ipcMain.handle("settings-set-proxy", (_event, proxy) => {
+    if (proxy) {
+      const { url, enabled } = proxy;
+      if (!url || !enabled) {
+        throw new Error("Invalid proxy config");
+      }
+
+      if (!url) {
+        proxy.enabled = false;
+      }
+    }
+
+    if (proxy.enabled) {
+      mainWindow.webContents.session.setProxy({
+        proxyRules: proxy.url,
+      });
+    }
+
+    return settings.setSync("proxy", proxy);
+  });
+
   // BrowserView
   ipcMain.handle(
     "view-load",

@@ -24,8 +24,7 @@ import { hashFile } from "@/utils";
 import { Audio, Message } from "@main/db/models";
 import log from "electron-log/main";
 import { WEB_API_URL } from "@/constants";
-import { HttpsProxyAgent } from "https-proxy-agent";
-import fetch from "node-fetch";
+import proxyAgent from "@main/proxy-agent";
 
 const logger = log.scope("db/models/speech");
 @Table({
@@ -190,16 +189,13 @@ export class Speech extends Model<Speech> {
       };
     }
 
-    const proxy = settings.getSync("proxy") as ProxyConfigType;
-    if (proxy.enabled) {
-      openaiConfig = {
-        ...openaiConfig,
-        httpAgent: new HttpsProxyAgent(proxy.url),
-        // @ts-ignore
-        fetch,
-      };
-    }
-    const openai = new OpenAI(openaiConfig);
+    const { httpAgent, fetch } = proxyAgent();
+    const openai = new OpenAI({
+      ...openaiConfig,
+      httpAgent,
+      // @ts-ignore
+      fetch,
+    });
 
     const file = await openai.audio.speech.create({
       input: text,
