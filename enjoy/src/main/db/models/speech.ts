@@ -18,12 +18,14 @@ import mainWindow from "@main/window";
 import fs from "fs-extra";
 import path from "path";
 import settings from "@main/settings";
-import OpenAI from "openai";
+import OpenAI, { type ClientOptions } from "openai";
 import { t } from "i18next";
 import { hashFile } from "@/utils";
 import { Audio, Message } from "@main/db/models";
 import log from "electron-log/main";
 import { WEB_API_URL } from "@/constants";
+import { HttpsProxyAgent } from "https-proxy-agent";
+import fetch from "node-fetch";
 
 const logger = log.scope("db/models/speech");
 @Table({
@@ -171,10 +173,10 @@ export class Speech extends Model<Speech> {
     const filename = `${Date.now()}${extname}`;
     const filePath = path.join(settings.userDataPath(), "speeches", filename);
 
-    let openaiConfig = {};
+    let openaiConfig: ClientOptions = {};
     if (engine === "enjoyai") {
       openaiConfig = {
-        apiKey: settings.getSync("user.accessToken"),
+        apiKey: settings.getSync("user.accessToken") as string,
         baseURL: `${process.env.WEB_API_URL || WEB_API_URL}/api/ai`,
       };
     } else if (engine === "openai") {
@@ -185,6 +187,16 @@ export class Speech extends Model<Speech> {
       openaiConfig = {
         apiKey: defaultConfig.key,
         baseURL: baseUrl || defaultConfig.baseUrl,
+      };
+    }
+
+    const proxy = settings.getSync("proxy") as ProxyConfigType;
+    if (proxy.enabled) {
+      openaiConfig = {
+        ...openaiConfig,
+        httpAgent: new HttpsProxyAgent(proxy.url),
+        // @ts-ignore
+        fetch,
       };
     }
     const openai = new OpenAI(openaiConfig);
