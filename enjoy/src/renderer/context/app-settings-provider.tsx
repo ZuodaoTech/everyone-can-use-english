@@ -22,6 +22,8 @@ type AppSettingsProviderState = {
   EnjoyApp?: EnjoyAppType;
   language?: "en" | "zh-CN";
   switchLanguage?: (language: "en" | "zh-CN") => void;
+  proxy?: ProxyConfigType;
+  setProxy?: (config: ProxyConfigType) => Promise<void>;
 };
 
 const initialState: AppSettingsProviderState = {
@@ -47,6 +49,7 @@ export const AppSettingsProvider = ({
   const [ffmpegConfig, setFfmegConfig] = useState<FfmpegConfigType>(null);
   const [ffmpeg, setFfmpeg] = useState<FFmpeg>(null);
   const [language, setLanguage] = useState<"en" | "zh-CN">();
+  const [proxy, setProxy] = useState<ProxyConfigType>();
   const EnjoyApp = window.__ENJOY_APP__;
 
   const ffmpegRef = useRef(new FFmpeg());
@@ -58,6 +61,7 @@ export const AppSettingsProvider = ({
     fetchFfmpegConfig();
     fetchLanguage();
     loadFfmpegWASM();
+    fetchProxyConfig();
   }, []);
 
   useEffect(() => {
@@ -171,6 +175,17 @@ export const AppSettingsProvider = ({
     setLibraryPath(dir);
   };
 
+  const fetchProxyConfig = async () => {
+    const config = await EnjoyApp.system.proxy.get();
+    setProxy(config);
+  };
+
+  const setProxyConfigHandler = async (config: ProxyConfigType) => {
+    EnjoyApp.system.proxy.set(config).then(() => {
+      setProxy(config);
+    });
+  };
+
   const validate = async () => {
     setInitialized(Boolean(user && libraryPath));
   };
@@ -192,6 +207,8 @@ export const AppSettingsProvider = ({
         ffmpegConfig,
         ffmpeg,
         setFfmegConfig,
+        proxy,
+        setProxy: setProxyConfigHandler,
         initialized,
       }}
     >

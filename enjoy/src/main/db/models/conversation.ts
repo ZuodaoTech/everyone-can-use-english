@@ -31,6 +31,7 @@ import Ffmpeg from "@main/ffmpeg";
 import whisper from "@main/whisper";
 import { hashFile } from "@/utils";
 import { WEB_API_URL } from "@/constants";
+import proxyAgent from "@main/proxy-agent";
 
 const logger = log.scope("db/models/conversation");
 @Table({
@@ -137,36 +138,51 @@ export class Conversation extends Model<Conversation> {
 
   // choose llm based on engine
   llm() {
+    const { httpAgent, fetch } = proxyAgent();
     if (this.engine === "enjoyai") {
-      return new ChatOpenAI({
-        openAIApiKey: settings.getSync("user.accessToken") as string,
-        modelName: this.model,
-        configuration: {
-          baseURL: `${process.env.WEB_API_URL || WEB_API_URL}/api/ai`,
+      return new ChatOpenAI(
+        {
+          openAIApiKey: settings.getSync("user.accessToken") as string,
+          modelName: this.model,
+          configuration: {
+            baseURL: `${process.env.WEB_API_URL || WEB_API_URL}/api/ai`,
+          },
+          temperature: this.configuration.temperature,
+          n: this.configuration.numberOfChoices,
+          maxTokens: this.configuration.maxTokens,
+          frequencyPenalty: this.configuration.frequencyPenalty,
+          presencePenalty: this.configuration.presencePenalty,
         },
-        temperature: this.configuration.temperature,
-        n: this.configuration.numberOfChoices,
-        maxTokens: this.configuration.maxTokens,
-        frequencyPenalty: this.configuration.frequencyPenalty,
-        presencePenalty: this.configuration.presencePenalty,
-      });
+        {
+          httpAgent,
+          // @ts-ignore
+          fetch,
+        }
+      );
     } else if (this.engine === "openai") {
       const key = settings.getSync("openai.key") as string;
       if (!key) {
         throw new Error(t("openaiKeyRequired"));
       }
-      return new ChatOpenAI({
-        openAIApiKey: key,
-        modelName: this.model,
-        configuration: {
-          baseURL: this.configuration.baseUrl,
+      return new ChatOpenAI(
+        {
+          openAIApiKey: key,
+          modelName: this.model,
+          configuration: {
+            baseURL: this.configuration.baseUrl,
+          },
+          temperature: this.configuration.temperature,
+          n: this.configuration.numberOfChoices,
+          maxTokens: this.configuration.maxTokens,
+          frequencyPenalty: this.configuration.frequencyPenalty,
+          presencePenalty: this.configuration.presencePenalty,
         },
-        temperature: this.configuration.temperature,
-        n: this.configuration.numberOfChoices,
-        maxTokens: this.configuration.maxTokens,
-        frequencyPenalty: this.configuration.frequencyPenalty,
-        presencePenalty: this.configuration.presencePenalty,
-      });
+        {
+          httpAgent,
+          // @ts-ignore
+          fetch,
+        }
+      );
     } else if (this.engine === "googleGenerativeAi") {
       const key = settings.getSync("googleGenerativeAi.key") as string;
       if (!key) {
