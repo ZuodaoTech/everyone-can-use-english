@@ -18,12 +18,13 @@ import mainWindow from "@main/window";
 import fs from "fs-extra";
 import path from "path";
 import settings from "@main/settings";
-import OpenAI from "openai";
+import OpenAI, { type ClientOptions } from "openai";
 import { t } from "i18next";
 import { hashFile } from "@/utils";
 import { Audio, Message } from "@main/db/models";
 import log from "electron-log/main";
 import { WEB_API_URL } from "@/constants";
+import proxyAgent from "@main/proxy-agent";
 
 const logger = log.scope("db/models/speech");
 @Table({
@@ -171,10 +172,10 @@ export class Speech extends Model<Speech> {
     const filename = `${Date.now()}${extname}`;
     const filePath = path.join(settings.userDataPath(), "speeches", filename);
 
-    let openaiConfig = {};
+    let openaiConfig: ClientOptions = {};
     if (engine === "enjoyai") {
       openaiConfig = {
-        apiKey: settings.getSync("user.accessToken"),
+        apiKey: settings.getSync("user.accessToken") as string,
         baseURL: `${process.env.WEB_API_URL || WEB_API_URL}/api/ai`,
       };
     } else if (engine === "openai") {
@@ -187,7 +188,14 @@ export class Speech extends Model<Speech> {
         baseURL: baseUrl || defaultConfig.baseUrl,
       };
     }
-    const openai = new OpenAI(openaiConfig);
+
+    const { httpAgent, fetch } = proxyAgent();
+    const openai = new OpenAI({
+      ...openaiConfig,
+      httpAgent,
+      // @ts-ignore
+      fetch,
+    });
 
     const file = await openai.audio.speech.create({
       input: text,

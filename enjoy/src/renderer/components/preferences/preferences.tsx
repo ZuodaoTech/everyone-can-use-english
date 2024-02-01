@@ -11,6 +11,7 @@ import {
   WhisperSettings,
   FfmpegSettings,
   OpenaiSettings,
+  ProxySettings,
   GoogleGenerativeAiSettings,
   ResetSettings,
   ResetAllSettings,
@@ -58,6 +59,8 @@ export const Preferences = () => {
           <div className="font-semibold mb-4 capitilized">
             {t("advancedSettings")}
           </div>
+          <ProxySettings />
+          <Separator />
           <ResetSettings />
           <Separator />
           <ResetAllSettings />
