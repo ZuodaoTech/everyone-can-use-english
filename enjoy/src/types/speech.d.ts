@@ -10,6 +10,7 @@ type SpeechType = {
   md5: string;
   filename: string;
   filePath: string;
+  configuration: {[key: string]: any};
   src?: string;
   createdAt: Date;
   updatedAt: Date;

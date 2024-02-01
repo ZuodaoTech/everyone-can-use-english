@@ -92,7 +92,7 @@ export class Speech extends Model<Speech> {
 
   @Column(DataType.VIRTUAL)
   get voice(): string {
-    return this.getDataValue("configuration").model;
+    return this.getDataValue("configuration").voice;
   }
 
   @Column(DataType.VIRTUAL)

@@ -9,12 +9,15 @@ import { ChatOpenAI } from "langchain/chat_models/openai";
 import { ChatOllama } from "langchain/chat_models/ollama";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatPromptTemplate, MessagesPlaceholder } from "langchain/prompts";
+import OpenAI, { type ClientOptions } from "openai";
 import { type Generation } from "langchain/dist/schema";
 import { v4 } from "uuid";
 
 export const useConversation = () => {
   const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
-  const { openai, googleGenerativeAi } = useContext(AISettingsProviderContext);
+  const { openai, googleGenerativeAi, currentEngine } = useContext(
+    AISettingsProviderContext
+  );
 
   const pickLlm = (conversation: ConversationType) => {
     const {
@@ -153,7 +156,55 @@ export const useConversation = () => {
     return replies;
   };
 
-  const tts = (text: string) => {};
+  const tts = async (params: Partial<SpeechType>) => {
+    const { configuration } = params;
+    const {
+      engine = currentEngine.name,
+      model = "tts-1",
+      voice = "alloy",
+      baseUrl = currentEngine.baseUrl,
+    } = configuration || {};
+
+    let client: OpenAI;
+
+    if (engine === "enjoyai") {
+      client = new OpenAI({
+        apiKey: user.accessToken,
+        baseURL: `${apiUrl}/api/ai`,
+        dangerouslyAllowBrowser: true,
+      });
+    } else {
+      client = new OpenAI({
+        apiKey: openai.key,
+        baseURL: baseUrl,
+        dangerouslyAllowBrowser: true,
+      });
+    }
+
+    const file = await client.audio.speech.create({
+      input: params.text,
+      model,
+      voice,
+    });
+    const buffer = await file.arrayBuffer();
+
+    return EnjoyApp.speeches.create(
+      {
+        text: params.text,
+        sourceType: params.sourceType,
+        sourceId: params.sourceId,
+        configuration: {
+          engine,
+          model,
+          voice,
+        },
+      },
+      {
+        type: "audio/mp3",
+        arrayBuffer: buffer,
+      }
+    );
+  };
 
   return {
     chat,

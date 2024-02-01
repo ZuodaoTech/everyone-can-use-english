@@ -316,6 +316,23 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       return ipcRenderer.invoke("messages-create-speech", id, configuration);
     },
   },
+  speeches: {
+    create: (
+      params: {
+        sourceId: string;
+        sourceType: string;
+        text: string;
+        configuration: {
+          engine: string;
+          model: string;
+          voice: string;
+        };
+      },
+      blob: { type: string; arrayBuffer: ArrayBuffer }
+    ) => {
+      return ipcRenderer.invoke("speeches-create", params, blob);
+    },
+  },
   audiowaveform: {
     generate: (
       file: string,
