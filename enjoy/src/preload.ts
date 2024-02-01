@@ -306,11 +306,31 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findOne: (params: object) => {
       return ipcRenderer.invoke("messages-find-one", params);
     },
+    createInBatch: (messages: Partial<MessageType>[]) => {
+      return ipcRenderer.invoke("messages-create-in-batch", messages);
+    },
     destroy: (id: string) => {
       return ipcRenderer.invoke("messages-destroy", id);
     },
     createSpeech: (id: string, configuration?: { [key: string]: any }) => {
       return ipcRenderer.invoke("messages-create-speech", id, configuration);
+    },
+  },
+  speeches: {
+    create: (
+      params: {
+        sourceId: string;
+        sourceType: string;
+        text: string;
+        configuration: {
+          engine: string;
+          model: string;
+          voice: string;
+        };
+      },
+      blob: { type: string; arrayBuffer: ArrayBuffer }
+    ) => {
+      return ipcRenderer.invoke("speeches-create", params, blob);
     },
   },
   audiowaveform: {

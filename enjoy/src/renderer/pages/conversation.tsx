@@ -19,6 +19,7 @@ import {
 import { messagesReducer } from "@renderer/reducers";
 import { v4 as uuidv4 } from "uuid";
 import autosize from "autosize";
+import { useConversation } from "@renderer/hooks";
 
 export default () => {
   const { id } = useParams<{ id: string }>();
@@ -35,6 +36,7 @@ export default () => {
   const [messages, dispatchMessages] = useReducer(messagesReducer, []);
   const [offset, setOffest] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const { chat } = useConversation();
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
@@ -91,7 +93,7 @@ export default () => {
     const message: MessageType = {
       id: uuidv4(),
       content: text,
-      role: "user",
+      role: "user" as MessageRoleEnum,
       conversationId: id,
       status: "pending",
     };
@@ -118,15 +120,8 @@ export default () => {
       setSubmitting(false);
     }, 1000 * 60 * 5);
 
-    EnjoyApp.conversations
-      .ask(conversation.id, {
-        messageId: message.id,
-        content: message.content,
-        file,
-      })
-      .then((reply) => {
-        if (reply) return;
-
+    chat(message, { conversation })
+      .catch(() => {
         message.status = "error";
         dispatchMessages({ type: "update", record: message });
       })

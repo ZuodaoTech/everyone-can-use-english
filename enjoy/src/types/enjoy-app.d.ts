@@ -183,8 +183,27 @@ type EnjoyAppType = {
   messages: {
     findAll: (params: object) => Promise<MessageType[]>;
     findOne: (params: object) => Promise<MessageType>;
+    createInBatch: (messages: Partial<MessageType>[]) => Promise<void>;
     destroy: (id: string) => Promise<void>;
     createSpeech: (id: string, configuration?: any) => Promise<SpeechType>;
+  };
+  speeches: {
+    create: (
+      params: {
+        sourceId: string;
+        sourceType: string;
+        text: string;
+        configuration: {
+          engine: string;
+          model: string;
+          voice: string;
+        };
+      },
+      blob: {
+        type: string;
+        arrayBuffer: ArrayBuffer;
+      }
+    ) => Promise<SpeechType>;
   };
   whisper: {
     config: () => Promise<WhisperConfigType>;

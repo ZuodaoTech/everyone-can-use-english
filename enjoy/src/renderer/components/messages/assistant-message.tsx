@@ -31,6 +31,7 @@ import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
 import { AppSettingsProviderContext } from "@renderer/context";
 import Markdown from "react-markdown";
+import { useConversation } from "@renderer/hooks";
 
 export const AssistantMessageComponent = (props: {
   message: MessageType;
@@ -46,6 +47,7 @@ export const AssistantMessageComponent = (props: {
   const [resourcing, setResourcing] = useState<boolean>(false);
   const [shadowing, setShadowing] = useState<boolean>(false);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { tts } = useConversation();
 
   useEffect(() => {
     if (speech) return;
@@ -59,13 +61,12 @@ export const AssistantMessageComponent = (props: {
 
     setSpeeching(true);
 
-    EnjoyApp.messages
-      .createSpeech(message.id, {
-        engine: configuration?.tts?.engine,
-        model: configuration?.tts?.model,
-        voice: configuration?.tts?.voice,
-        baseUrl: configuration?.tts?.baseUrl,
-      })
+    tts({
+      sourceType: "Message",
+      sourceId: message.id,
+      text: message.content,
+      configuration: configuration.tts,
+    })
       .then((speech) => {
         setSpeech(speech);
       })
