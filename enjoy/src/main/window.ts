@@ -65,29 +65,46 @@ main.init = () => {
   tedProvider.registerIpcHandlers();
 
   // proxy
-  ipcMain.handle("settings-get-proxy", (_event) => {
-    return settings.getSync("proxy");
+  ipcMain.handle("system-proxy-get", (_event) => {
+    let proxy = settings.getSync("proxy");
+    if (!proxy) {
+      proxy = {
+        enabled: false,
+        url: "",
+      };
+      settings.setSync("proxy", proxy);
+    }
+
+    return proxy;
   });
 
-  ipcMain.handle("settings-set-proxy", (_event, proxy) => {
-    if (proxy) {
-      const { url, enabled } = proxy;
-      if (!url || !enabled) {
-        throw new Error("Invalid proxy config");
-      }
+  ipcMain.handle("system-proxy-set", (_event, config) => {
+    if (!config) {
+      throw new Error("Invalid proxy config");
+    }
 
-      if (!url) {
-        proxy.enabled = false;
+    if (config) {
+      if (!config.url) {
+        config.enabled = false;
       }
     }
 
-    if (proxy.enabled) {
+    if (config.enabled && config.url) {
+      const uri = new URL(config.url);
+      const proxyRules = `http=${uri.host};https=${uri.host}`;
+
       mainWindow.webContents.session.setProxy({
-        proxyRules: proxy.url,
+        proxyRules,
       });
+      mainWindow.webContents.session.closeAllConnections();
+    } else {
+      mainWindow.webContents.session.setProxy({
+        mode: "system",
+      });
+      mainWindow.webContents.session.closeAllConnections();
     }
 
-    return settings.setSync("proxy", proxy);
+    return settings.setSync("proxy", config);
   });
 
   // BrowserView

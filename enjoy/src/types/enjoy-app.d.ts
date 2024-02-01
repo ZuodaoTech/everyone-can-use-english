@@ -15,6 +15,10 @@ type EnjoyAppType = {
     preferences: {
       mediaAccess: (mediaType: "microphone") => Promise<boolean>;
     };
+    proxy: {
+      get: () => Promise<ProxyConfigType>;
+      set: (config: ProxyConfigType) => Promise<void>;
+    };
   };
   providers: {
     audible: {
