@@ -19,6 +19,7 @@ import {
   conversationsHandler,
   messagesHandler,
   recordingsHandler,
+  speechesHandler,
   transcriptionsHandler,
   videosHandler,
 } from "./handlers";
@@ -89,6 +90,7 @@ db.connect = async () => {
   recordingsHandler.register();
   conversationsHandler.register();
   messagesHandler.register();
+  speechesHandler.register();
   transcriptionsHandler.register();
   videosHandler.register();
 };
