@@ -14,14 +14,14 @@ export const LookupResult = (props: {
 }) => {
   const { word, context, sourceId, sourceType, onResult } = props;
   const [result, setResult] = useState<LookupType>();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   if (!word) return null;
 
   const { lookupWord } = useAiCommand();
 
   const processLookup = async () => {
     if (!word) return;
-    if (!loading) return;
+    if (loading) return;
 
     setLoading(true);
     lookupWord({
@@ -31,8 +31,10 @@ export const LookupResult = (props: {
       sourceType,
     })
       .then((lookup) => {
-        setResult(lookup);
-        onResult && onResult(lookup.meaning);
+        if (lookup?.meaning) {
+          setResult(lookup);
+          onResult && onResult(lookup.meaning);
+        }
       })
       .finally(() => {
         setLoading(false);
