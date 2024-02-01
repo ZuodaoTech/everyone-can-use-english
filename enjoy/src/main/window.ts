@@ -179,6 +179,14 @@ main.init = () => {
         });
 
         logger.debug("will-redirect", detail.url);
+        if (
+          detail.url.startsWith(
+            `${process.env.WEB_API_URL || WEB_API_URL}/oauth`
+          )
+        ) {
+          logger.debug("prevent redirect", detail.url);
+          detail.preventDefault();
+        }
       });
 
       view.webContents.on("will-navigate", (detail) => {

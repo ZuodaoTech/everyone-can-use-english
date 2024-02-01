@@ -10,7 +10,11 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
-import { UserSettings, LanguageSettings } from "@renderer/components";
+import {
+  UserSettings,
+  LanguageSettings,
+  LoaderSpin,
+} from "@renderer/components";
 import { ChevronLeftIcon } from "lucide-react";
 import intlTelInput from "intl-tel-input";
 import "intl-tel-input/build/css/intlTelInput.css";
@@ -67,7 +71,6 @@ export const LoginForm = () => {
       const code = new URL(url).searchParams.get("code");
 
       if (provider && code) {
-        setWebviewVisible(false);
         webApi
           .auth({ provider, code })
           .then((user) => {
@@ -75,6 +78,9 @@ export const LoginForm = () => {
           })
           .catch((err) => {
             toast.error(err.message);
+          })
+          .finally(() => {
+            setWebviewVisible(false);
           });
       }
     }
@@ -178,7 +184,9 @@ export const LoginForm = () => {
             <span className="ml-2">{t("goBack")}</span>
           </Button>
         </div>
-        <div ref={containerRef} className="w-full flex-1"></div>
+        <div ref={containerRef} className="w-full h-full flex-1 bg-muted">
+          <LoaderSpin />
+        </div>
       </div>
     </>
   );
