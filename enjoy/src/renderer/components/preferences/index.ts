@@ -15,3 +15,5 @@ export * from "./balance-settings";
 
 export * from "./reset-settings";
 export * from "./reset-all-settings";
+
+export * from "./proxy-settings";

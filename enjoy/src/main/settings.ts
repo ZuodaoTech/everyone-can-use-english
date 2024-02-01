@@ -7,6 +7,7 @@ import os from "os";
 import commandExists from "command-exists";
 import log from "electron-log";
 import * as i18n from "i18next";
+import mainWin from "@main/window";
 
 const logger = log.scope("settings");
 
