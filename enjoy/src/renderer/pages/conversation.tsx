@@ -36,7 +36,7 @@ export default () => {
   const [messages, dispatchMessages] = useReducer(messagesReducer, []);
   const [offset, setOffest] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
-  const { chat } = useConversation(conversation);
+  const { chat } = useConversation();
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
@@ -93,7 +93,7 @@ export default () => {
     const message: MessageType = {
       id: uuidv4(),
       content: text,
-      role: 'user' as MessageRoleEnum,
+      role: "user" as MessageRoleEnum,
       conversationId: id,
       status: "pending",
     };
@@ -120,7 +120,7 @@ export default () => {
       setSubmitting(false);
     }, 1000 * 60 * 5);
 
-    chat(message)
+    chat(message, { conversation })
       .catch(() => {
         message.status = "error";
         dispatchMessages({ type: "update", record: message });
@@ -130,24 +130,6 @@ export default () => {
         setContent("");
         clearTimeout(timeout);
       });
-
-    // EnjoyApp.conversations
-    //   .ask(conversation.id, {
-    //     messageId: message.id,
-    //     content: message.content,
-    //     file,
-    //   })
-    //   .then((reply) => {
-    //     if (reply) return;
-    //
-    //     message.status = "error";
-    //     dispatchMessages({ type: "update", record: message });
-    //   })
-    //   .finally(() => {
-    //     setSubmitting(false);
-    //     setContent("");
-    //     clearTimeout(timeout);
-    //   });
   };
 
   const onMessagesUpdate = (event: CustomEvent) => {

@@ -4,16 +4,18 @@ import { Button, ScrollArea, toast } from "@renderer/components/ui";
 import { LoaderSpin } from "@renderer/components";
 import { MessageCircleIcon, LoaderIcon } from "lucide-react";
 import { t } from "i18next";
+import { useConversation } from "@renderer/hooks";
 
 export const ConversationsShortcut = (props: {
   prompt: string;
-  onReply?: (reply: MessageType[]) => void;
+  onReply?: (reply: Partial<MessageType>[]) => void;
 }) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { prompt, onReply } = props;
   const [conversations, setConversations] = useState<ConversationType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [offset, setOffset] = useState<number>(0);
+  const { chat } = useConversation();
 
   const fetchConversations = () => {
     if (offset === -1) return;
@@ -51,10 +53,8 @@ export const ConversationsShortcut = (props: {
 
   const ask = (conversation: ConversationType) => {
     setLoading(true);
-    EnjoyApp.conversations
-      .ask(conversation.id, {
-        content: prompt,
-      })
+
+    chat({ content: prompt }, { conversation })
       .then((replies) => {
         onReply(replies);
       })

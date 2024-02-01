@@ -10,12 +10,13 @@ import { ChatOllama } from "langchain/chat_models/ollama";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatPromptTemplate, MessagesPlaceholder } from "langchain/prompts";
 import { type Generation } from "langchain/dist/schema";
+import { v4 } from "uuid";
 
-export const useConversation = (conversation: ConversationType) => {
+export const useConversation = () => {
   const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
   const { openai, googleGenerativeAi } = useContext(AISettingsProviderContext);
 
-  const pickLlm = () => {
+  const pickLlm = (conversation: ConversationType) => {
     const {
       baseUrl,
       model,
@@ -70,7 +71,7 @@ export const useConversation = (conversation: ConversationType) => {
     }
   };
 
-  const fetchChatHistory = async () => {
+  const fetchChatHistory = async (conversation: ConversationType) => {
     const chatMessageHistory = new ChatMessageHistory();
     let limit = conversation.configuration.historyBufferSize;
     if (!limit || limit < 0) {
@@ -99,8 +100,14 @@ export const useConversation = (conversation: ConversationType) => {
     return chatMessageHistory;
   };
 
-  const chat = async (message: Partial<MessageType>) => {
-    const chatHistory = await fetchChatHistory();
+  const chat = async (
+    message: Partial<MessageType>,
+    params: {
+      conversation: ConversationType;
+    }
+  ): Promise<Partial<MessageType>[]> => {
+    const { conversation } = params;
+    const chatHistory = await fetchChatHistory(conversation);
     const memory = new BufferMemory({
       chatHistory,
       memoryKey: "history",
@@ -112,7 +119,7 @@ export const useConversation = (conversation: ConversationType) => {
       ["human", "{input}"],
     ]);
 
-    const llm = pickLlm();
+    const llm = pickLlm(conversation);
     const chain = new ConversationChain({
       // @ts-ignore
       llm,
@@ -131,13 +138,19 @@ export const useConversation = (conversation: ConversationType) => {
 
     const replies = response.map((r) => {
       return {
+        id: v4(),
         content: r.text,
         role: "assistant" as MessageRoleEnum,
         conversationId: conversation.id,
       };
     });
 
-    return EnjoyApp.messages.createInBatch([message, ...replies]);
+    message.role = "user" as MessageRoleEnum;
+    message.conversationId = conversation.id;
+
+    await EnjoyApp.messages.createInBatch([message, ...replies]);
+
+    return replies;
   };
 
   const tts = (text: string) => {};
