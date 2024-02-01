@@ -35,7 +35,10 @@ export const ProxySettings = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof proxyConfigSchema>) => {
-    console.log(data);
+    if (!data.url) {
+      data.enabled = false;
+    }
+
     setProxy({
       enabled: data.enabled,
       url: data.url,
@@ -78,6 +81,7 @@ export const ProxySettings = () => {
                   <FormItem>
                     <FormControl>
                       <Input
+                        placeholder="http://proxy:port"
                         disabled={!editing}
                         value={field.value || ""}
                         onChange={field.onChange}
@@ -87,12 +91,11 @@ export const ProxySettings = () => {
                 )}
               />
             </div>
-            {ipData && (
+            {form.getValues("enabled") && ipData && (
               <div className="text-sm text-muted-foreground mb-2 ml-1">
                 <div className="flex items-center space-x-2">
                   <div>
-                    IP: {ipData.ip} ({ipData.city},{" "}
-                    {ipData.country_name})
+                    IP: {ipData.ip} ({ipData.city}, {ipData.country_name})
                   </div>
                   <div>
                     <InfoIcon size={16} className="cursor-pointer" />
@@ -104,13 +107,25 @@ export const ProxySettings = () => {
 
           <div className="flex items-center space-x-2 justify-end">
             {editing ? (
-              <Button
-                variant="default"
-                onClick={() => setEditing(!editing)}
-                size="sm"
-              >
-                {t("save")}
-              </Button>
+              <>
+                <Button
+                  variant="secondary"
+                  onClick={(e) => {
+                    setEditing(!editing);
+                    e.preventDefault();
+                  }}
+                  size="sm"
+                >
+                  {t("cancel")}
+                </Button>
+                <Button
+                  variant="default"
+                  onClick={() => setEditing(!editing)}
+                  size="sm"
+                >
+                  {t("save")}
+                </Button>
+              </>
             ) : (
               <Button
                 variant="secondary"
@@ -130,6 +145,7 @@ export const ProxySettings = () => {
                 <FormItem>
                   <FormControl>
                     <Switch
+                      disabled={!form.getValues("url")}
                       checked={field.value}
                       onCheckedChange={(e) => {
                         field.onChange(e);
