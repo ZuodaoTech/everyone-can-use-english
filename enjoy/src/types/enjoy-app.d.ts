@@ -183,6 +183,7 @@ type EnjoyAppType = {
   messages: {
     findAll: (params: object) => Promise<MessageType[]>;
     findOne: (params: object) => Promise<MessageType>;
+    createInBatch: (messages: Partial<MessageType>[]) => Promise<void>;
     destroy: (id: string) => Promise<void>;
     createSpeech: (id: string, configuration?: any) => Promise<SpeechType>;
   };

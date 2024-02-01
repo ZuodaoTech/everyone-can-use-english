@@ -288,7 +288,7 @@ export class Conversation extends Model<Conversation> {
         extra: [`--prompt "${prompt}"`],
       });
       content = transcription
-        .map((t: TranscriptionSegmentType) => t.text)
+        .map((t: TranscriptionResultSegmentType) => t.text)
         .join(" ")
         .trim();
 

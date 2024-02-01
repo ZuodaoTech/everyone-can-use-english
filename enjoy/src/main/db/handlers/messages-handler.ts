@@ -3,6 +3,7 @@ import { Message, Speech, Conversation } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes } from "sequelize";
 import log from "electron-log/main";
 import { t } from "i18next";
+import db from "@main/db";
 
 class MessagesHandler {
   private async findAll(
@@ -16,7 +17,7 @@ class MessagesHandler {
           model: Speech,
           where: { sourceType: "Message" },
           required: false,
-        }
+        },
       ],
       order: [["createdAt", "DESC"]],
       ...options,
@@ -77,6 +78,25 @@ class MessagesHandler {
           message: err.message,
         });
       });
+  }
+
+  private async createInBatch(event: IpcMainEvent, messages: Message[]) {
+    try {
+      const transcription = await db.connection.transaction();
+      messages.forEach(async (message) => {
+        await Message.create(message, {
+          include: [Conversation],
+          transaction: transcription,
+        });
+      });
+
+      await transcription.commit();
+    } catch (err) {
+      event.sender.send("on-notification", {
+        type: "error",
+        message: err.message,
+      });
+    }
   }
 
   private async update(
@@ -150,6 +170,7 @@ class MessagesHandler {
     ipcMain.handle("messages-find-all", this.findAll);
     ipcMain.handle("messages-find-one", this.findOne);
     ipcMain.handle("messages-create", this.create);
+    ipcMain.handle("messages-create-in-batch", this.createInBatch);
     ipcMain.handle("messages-update", this.update);
     ipcMain.handle("messages-destroy", this.destroy);
     ipcMain.handle("messages-create-speech", this.createSpeech);

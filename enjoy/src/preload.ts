@@ -306,6 +306,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findOne: (params: object) => {
       return ipcRenderer.invoke("messages-find-one", params);
     },
+    createInBatch: (messages: Partial<MessageType>[]) => {
+      return ipcRenderer.invoke("messages-create-in-batch", messages);
+    },
     destroy: (id: string) => {
       return ipcRenderer.invoke("messages-destroy", id);
     },
