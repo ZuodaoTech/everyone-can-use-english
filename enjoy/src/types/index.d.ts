@@ -158,3 +158,8 @@ type TedIdeaType = {
   title: string;
   description: string;
 };
+
+type ProxyConfigType = {
+  enabled: boolean;
+  url: string;
+};

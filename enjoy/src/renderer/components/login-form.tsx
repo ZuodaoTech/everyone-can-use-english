@@ -67,6 +67,7 @@ export const LoginForm = () => {
       const code = new URL(url).searchParams.get("code");
 
       if (provider && code) {
+        setWebviewVisible(false);
         webApi
           .auth({ provider, code })
           .then((user) => {
@@ -74,13 +75,7 @@ export const LoginForm = () => {
           })
           .catch((err) => {
             toast.error(err.message);
-          })
-          .finally(() => {
-            setWebviewVisible(false);
           });
-      } else {
-        toast.error(t("failedToLogin"));
-        setWebviewVisible(false);
       }
     }
   };

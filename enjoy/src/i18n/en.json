@@ -235,6 +235,8 @@
   "resetAllConfirmation": "It will remove all of your personal data, are you sure?",
   "resetSettings": "Reset Settings",
   "resetSettingsConfirmation": "It will reset all of your settings, are you sure? The library will not be affected.",
+  "proxySettings": "Proxy Settings",
+  "proxyConfigUpdated": "Proxy config updated",
   "logoutAndRemoveAllPersonalData": "Logout and remove all personal data",
   "logoutAndRemoveAllPersonalSettings": "Logout and remove all personal settings",
   "hotkeys": "Hotkeys",

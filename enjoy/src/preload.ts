@@ -40,6 +40,14 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
         return ipcRenderer.invoke("system-preferences-media-access", mediaType);
       },
     },
+    proxy: {
+      get: () => {
+        return ipcRenderer.invoke("system-proxy-get");
+      },
+      set: (config: ProxyConfigType) => {
+        return ipcRenderer.invoke("system-proxy-set", config);
+      },
+    },
   },
   providers: {
     audible: {
