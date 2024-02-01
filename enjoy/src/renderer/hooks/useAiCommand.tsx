@@ -36,7 +36,7 @@ export const useAiCommand = () => {
       return lookup;
     }
 
-    lookupCommand(
+    const res = await lookupCommand(
       {
         word,
         context,
@@ -47,23 +47,15 @@ export const useAiCommand = () => {
         modelName: currentEngine.model,
         baseUrl: currentEngine.baseUrl,
       }
-    )
-      .then((res) => {
-        if (res.context_translation?.trim()) {
-          webApi
-            .updateLookup(lookup.id, {
-              meaning: res,
-              sourceId,
-              sourceType,
-            })
-            .then((lookup) => {
-              return lookup;
-            });
-        }
-      })
-      .catch((err) => {
-        toast.error(`${t("lookupFailed")}: ${err.message}`);
+    );
+
+    if (res.context_translation?.trim()) {
+      return webApi.updateLookup(lookup.id, {
+        meaning: res,
+        sourceId,
+        sourceType,
       });
+    }
   };
 
   const extractStory = async (story: StoryType) => {

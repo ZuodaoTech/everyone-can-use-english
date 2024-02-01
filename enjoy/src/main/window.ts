@@ -196,7 +196,12 @@ main.init = () => {
         });
 
         logger.debug("will-navigate", detail.url);
-        if (!navigatable) {
+        if (
+          !navigatable ||
+          detail.url.startsWith(
+            `${process.env.WEB_API_URL || WEB_API_URL}/oauth`
+          )
+        ) {
           logger.debug("prevent navigation", detail.url);
           detail.preventDefault();
         }
