@@ -23,14 +23,14 @@ class SpeechesHandler {
       arrayBuffer: ArrayBuffer;
     }
   ) {
-    const extname = blob.type.split("/")[1];
-    const filename = `${Date.now()}.${extname}`;
+    const format = blob.type.split("/")[1];
+    const filename = `${Date.now()}.${format}`;
     const file = path.join(settings.userDataPath(), "speeches", filename);
     await fs.outputFile(file, Buffer.from(blob.arrayBuffer));
     const md5 = await hashFile(file, { algo: "md5" });
-    fs.renameSync(file, path.join(path.dirname(file), `${md5}${extname}`));
+    fs.renameSync(file, path.join(path.dirname(file), `${md5}.${format}`));
 
-    return Speech.create({ ...params, extname, md5 })
+    return Speech.create({ ...params, extname: `.${format}`, md5 })
       .then((speech) => {
         return speech.toJSON();
       })
