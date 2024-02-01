@@ -82,15 +82,15 @@ class MessagesHandler {
 
   private async createInBatch(event: IpcMainEvent, messages: Message[]) {
     try {
-      const transcription = await db.connection.transaction();
-      messages.forEach(async (message) => {
+      const transaction = await db.connection.transaction();
+      for (const message of messages) {
         await Message.create(message, {
           include: [Conversation],
-          transaction: transcription,
+          transaction,
         });
-      });
+      }
 
-      await transcription.commit();
+      await transaction.commit();
     } catch (err) {
       event.sender.send("on-notification", {
         type: "error",
