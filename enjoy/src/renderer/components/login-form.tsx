@@ -77,15 +77,6 @@ export const LoginForm = () => {
 
     EnjoyApp.view.onViewState((_event, state) => onViewState(state));
 
-    return () => {
-      EnjoyApp.view.removeViewStateListeners();
-      EnjoyApp.view.remove();
-    };
-  }, [webApi, webviewUrl]);
-
-  useEffect(() => {
-    if (!webviewUrl) return;
-
     const rect = containerRef.current.getBoundingClientRect();
     EnjoyApp.view.load(
       webviewUrl,
@@ -99,7 +90,12 @@ export const LoginForm = () => {
         navigatable: true,
       }
     );
-  }, [webviewUrl]);
+
+    return () => {
+      EnjoyApp.view.removeViewStateListeners();
+      EnjoyApp.view.remove();
+    };
+  }, [webApi, webviewUrl]);
 
   if (user) {
     return (
