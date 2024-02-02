@@ -105,7 +105,7 @@ export const PostActions = (props: { post: PostType }) => {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>{t("addRecourse")}</AlertDialogTitle>
+                <AlertDialogTitle>{t("addResource")}</AlertDialogTitle>
                 <AlertDialogDescription>
                   {(post.target as MediumType).mediumType === "Video" &&
                     t("areYouSureToAddThisVideoToYourLibrary")}
