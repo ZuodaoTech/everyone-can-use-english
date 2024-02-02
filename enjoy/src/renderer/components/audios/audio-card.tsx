@@ -22,7 +22,6 @@ export const AudioCard = (props: {
             crossOrigin="anonymous"
             className="hover:scale-105 object-cover w-full h-full"
           />
-          )
         </div>
       </Link>
       <div className="text-sm font-semibold mt-2 max-w-full line-clamp-2 h-10">
