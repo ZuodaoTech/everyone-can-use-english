@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { LoaderSpin, MeaningCard } from "@renderer/components";
-import { Button } from "@renderer/components/ui";
+import { Button, toast } from "@renderer/components/ui";
 import { t } from "i18next";
 import { XCircleIcon } from "lucide-react";
 import { useAiCommand } from "@renderer/hooks";
@@ -35,6 +35,9 @@ export const LookupResult = (props: {
           setResult(lookup);
           onResult && onResult(lookup.meaning);
         }
+      })
+      .catch((error) => {
+        toast.error(error.message);
       })
       .finally(() => {
         setLoading(false);
