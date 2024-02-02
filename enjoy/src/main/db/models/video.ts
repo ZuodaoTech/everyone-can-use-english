@@ -16,7 +16,7 @@ import {
 } from "sequelize-typescript";
 import { Audio, Recording, Speech, Transcription } from "@main/db/models";
 import settings from "@main/settings";
-import { AudioFormats, VideoFormats } from "@/constants";
+import { AudioFormats, VideoFormats , WEB_API_URL } from "@/constants";
 import { hashFile } from "@/utils";
 import path from "path";
 import fs from "fs-extra";
@@ -26,7 +26,6 @@ import log from "electron-log/main";
 import storage from "@main/storage";
 import Ffmpeg from "@main/ffmpeg";
 import { Client } from "@/api";
-import { WEB_API_URL } from "@/constants";
 import startCase from "lodash/startCase";
 import { v5 as uuidv5 } from "uuid";
 

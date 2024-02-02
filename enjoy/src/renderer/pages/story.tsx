@@ -67,7 +67,7 @@ export default () => {
   const extractVocabulary = async () => {
     if (!story) return;
 
-    let { words = [], idioms = [] } = story?.extraction || {};
+    const { words = [], idioms = [] } = story?.extraction || {};
     if (story?.extracted && (words.length > 0 || idioms.length > 0)) return;
 
     toast.promise(
