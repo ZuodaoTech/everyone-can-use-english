@@ -87,11 +87,12 @@ export const useConversation = () => {
     });
 
     _messages
-      .sort(
-        (a, b) =>
+      .sort((a, b) => {
+        return (
           new Date(a.createdAt).getUTCMilliseconds() -
           new Date(b.createdAt).getUTCMilliseconds()
-      )
+        );
+      })
       .forEach((message) => {
         if (message.role === "user") {
           chatMessageHistory.addUserMessage(message.content);
