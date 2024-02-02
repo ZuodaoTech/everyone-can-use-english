@@ -15,7 +15,8 @@ import { milisecondsToTimestamp } from "@/utils";
 import { AzureSpeechSdk } from "@main/azure-speech-sdk";
 import { Client } from "@/api";
 import { WEB_API_URL } from "@/constants";
-import { sortedUniqBy, take } from "lodash";
+import take from "lodash/take";
+import sortedUniqBy from "lodash/sortedUniqBy";
 
 const logger = log.scope("whisper");
 

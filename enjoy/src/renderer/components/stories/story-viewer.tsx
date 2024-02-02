@@ -9,7 +9,8 @@ import {
   PopoverAnchor,
 } from "@renderer/components/ui";
 import { SelectionMenu } from "@renderer/components";
-import { debounce, uniq } from "lodash";
+import uniq from "lodash/uniq";
+import debounce from "lodash/debounce";
 import Mark from "mark.js";
 
 export const StoryViewer = (props: {

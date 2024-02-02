@@ -27,7 +27,7 @@ import storage from "@main/storage";
 import Ffmpeg from "@main/ffmpeg";
 import { Client } from "@/api";
 import { WEB_API_URL } from "@/constants";
-import { startCase } from "lodash";
+import startCase from "lodash/startCase";
 import { v5 as uuidv5 } from "uuid";
 
 const SIZE_LIMIT = 1024 * 1024 * 100; // 100MB
