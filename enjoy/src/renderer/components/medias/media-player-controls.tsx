@@ -82,15 +82,15 @@ export const MediaPlayerControls = (props: {
     <div className="w-full flex items-center justify-center space-x-1 relative">
       {
         onPrev && (
-          <Button
-            variant="ghost"
-            onClick={onPrev}
-            data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("playPreviousSegment")}
-            className="aspect-square p-0 h-10"
-          >
-            <SkipBackIcon className="w-6 h-6" />
-          </Button>
+        <Button
+          variant="ghost"
+          onClick={onPrev}
+          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-content={t("playPreviousSegment")}
+          className="aspect-square p-0 h-10"
+        >
+          <SkipBackIcon className="w-6 h-6" />
+        </Button>
         )
       }
 
@@ -118,15 +118,15 @@ export const MediaPlayerControls = (props: {
 
       {
         onNext && (
-          <Button
-            variant="ghost"
-            onClick={onNext}
-            data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("playNextSegment")}
-            className="aspect-square p-0 h-10"
-          >
-            <SkipForwardIcon className="w-6 h-6" />
-          </Button>
+        <Button
+          variant="ghost"
+          onClick={onNext}
+          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-content={t("playNextSegment")}
+          className="aspect-square p-0 h-10"
+        >
+          <SkipForwardIcon className="w-6 h-6" />
+        </Button>
         )
       }
 
@@ -174,8 +174,8 @@ export const MediaPlayerControls = (props: {
           >
             <GaugeIcon className="w-6 h-6" />
             {playbackRate != 1.0 && (
-              <span className="absolute left-[0.9rem] bottom-0 text-[0.70rem] text-white">
-                {playbackRate.toFixed(2)}
+              <span className="absolute left-[1.25rem] top-6 text-[0.70rem] font-bold text-gray-400">
+                {playbackRate.toFixed(1)}
               </span>
             )}
           </Button>
