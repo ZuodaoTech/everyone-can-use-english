@@ -5,7 +5,7 @@ import {
   WHISPER_MODELS_OPTIONS,
   PROCESS_TIMEOUT,
   AI_WORKER_ENDPOINT,
-} from "@/constants";
+ WEB_API_URL } from "@/constants";
 import { exec } from "child_process";
 import fs from "fs-extra";
 import log from "electron-log/main";
@@ -14,7 +14,6 @@ import axios from "axios";
 import { milisecondsToTimestamp } from "@/utils";
 import { AzureSpeechSdk } from "@main/azure-speech-sdk";
 import { Client } from "@/api";
-import { WEB_API_URL } from "@/constants";
 import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
 

@@ -225,6 +225,7 @@ main.init = () => {
 
     const bounds = view.getBounds();
     logger.debug("current view bounds", bounds);
+    if (bounds.width === 0 && bounds.height === 0) return;
 
     view.setBounds({
       x: -Math.round(bounds.width),

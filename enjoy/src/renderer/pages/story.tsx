@@ -9,9 +9,7 @@ import {
 } from "@renderer/components";
 import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-  AppSettingsProviderContext,
-} from "@renderer/context";
+import { AppSettingsProviderContext } from "@renderer/context";
 import { useAiCommand } from "@renderer/hooks";
 import nlp from "compromise";
 import paragraphs from "compromise-paragraphs";
@@ -67,7 +65,7 @@ export default () => {
   const extractVocabulary = async () => {
     if (!story) return;
 
-    let { words = [], idioms = [] } = story?.extraction || {};
+    const { words = [], idioms = [] } = story?.extraction || {};
     if (story?.extracted && (words.length > 0 || idioms.length > 0)) return;
 
     toast.promise(

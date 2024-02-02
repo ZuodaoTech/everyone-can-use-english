@@ -9,8 +9,6 @@ import {
   translateCommand,
   ipaCommand,
 } from "@commands";
-import { toast } from "@renderer/components/ui";
-import { t } from "i18next";
 import { md5 } from "js-md5";
 
 export const useAiCommand = () => {

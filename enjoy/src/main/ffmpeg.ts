@@ -9,7 +9,7 @@ import downloader from "@main/downloader";
 import storage from "@main/storage";
 import readdirp from "readdirp";
 import { t } from "i18next";
-import  uniq  from "lodash/uniq";
+import uniq from "lodash/uniq";
 
 const logger = log.scope("ffmpeg");
 export default class FfmpegWrapper {

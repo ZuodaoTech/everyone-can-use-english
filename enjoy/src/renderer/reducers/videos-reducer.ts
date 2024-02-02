@@ -12,6 +12,8 @@ export const videosReducer = (
         return [...videos, action.record];
       } else if (action.records) {
         return [...videos, ...action.records];
+      } else {
+        return videos;
       }
     }
     case "create": {
