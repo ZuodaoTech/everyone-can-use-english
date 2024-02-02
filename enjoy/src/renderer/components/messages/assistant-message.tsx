@@ -11,6 +11,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetClose,
+  toast,
 } from "@renderer/components/ui";
 import {
   SpeechPlayer,
@@ -69,6 +70,9 @@ export const AssistantMessageComponent = (props: {
     })
       .then((speech) => {
         setSpeech(speech);
+      })
+      .catch((err) => {
+        toast.error(err.message);
       })
       .finally(() => {
         setSpeeching(false);

@@ -47,7 +47,7 @@ export const useConversation = () => {
       return new ChatOpenAI({
         openAIApiKey: openai.key,
         configuration: {
-          baseURL: baseUrl,
+          baseURL: baseUrl || openai.baseUrl,
         },
         modelName: model,
         temperature,
@@ -162,7 +162,7 @@ export const useConversation = () => {
       engine = currentEngine.name,
       model = "tts-1",
       voice = "alloy",
-      baseUrl = currentEngine.baseUrl,
+      baseUrl,
     } = configuration || {};
 
     let client: OpenAI;
@@ -176,7 +176,7 @@ export const useConversation = () => {
     } else {
       client = new OpenAI({
         apiKey: openai.key,
-        baseURL: baseUrl,
+        baseURL: baseUrl || openai.baseUrl,
         dangerouslyAllowBrowser: true,
       });
     }

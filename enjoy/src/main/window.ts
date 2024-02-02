@@ -132,10 +132,10 @@ main.init = () => {
       mainWindow.setBrowserView(view);
 
       view.setBounds({
-        x,
-        y,
-        width,
-        height,
+        x: Math.round(x),
+        y: Math.round(y),
+        width: Math.round(width),
+        height: Math.round(height),
       });
       view.setAutoResize({
         width: true,
@@ -227,8 +227,8 @@ main.init = () => {
     logger.debug("current view bounds", bounds);
 
     view.setBounds({
-      x: -bounds.width,
-      y: -bounds.height,
+      x: -Math.round(bounds.width),
+      y: -Math.round(bounds.height),
       width: 0,
       height: 0,
     });
@@ -247,9 +247,16 @@ main.init = () => {
     ) => {
       const view = mainWindow.getBrowserView();
       if (!view) return;
+      if (!bounds) return;
 
       logger.debug("view-show", bounds);
-      view.setBounds(bounds);
+      const { x = 0, y = 0, width = 0, height = 0 } = bounds || {};
+      view.setBounds({
+        x: Math.round(x),
+        y: Math.round(y),
+        width: Math.round(width),
+        height: Math.round(height),
+      });
     }
   );
 
