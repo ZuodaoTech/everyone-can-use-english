@@ -1,14 +1,9 @@
-import {
-  AppSettingsProviderContext,
-  AISettingsProviderContext,
-} from "@renderer/context";
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { LoaderSpin, MeaningCard } from "@renderer/components";
-import { Button } from "@renderer/components/ui";
+import { Button, toast } from "@renderer/components/ui";
 import { t } from "i18next";
 import { XCircleIcon } from "lucide-react";
-import { toast } from "@renderer/components/ui";
-import { lookupCommand } from "@commands";
+import { useAiCommand } from "@renderer/hooks";
 
 export const LookupResult = (props: {
   word: string;
@@ -19,67 +14,34 @@ export const LookupResult = (props: {
 }) => {
   const { word, context, sourceId, sourceType, onResult } = props;
   const [result, setResult] = useState<LookupType>();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   if (!word) return null;
 
-  const { webApi } = useContext(AppSettingsProviderContext);
-  const { openai } = useContext(AISettingsProviderContext);
+  const { lookupWord } = useAiCommand();
 
   const processLookup = async () => {
     if (!word) return;
-    if (!loading) return;
+    if (loading) return;
 
     setLoading(true);
-    const lookup = await webApi.lookup({
+    lookupWord({
       word,
       context,
       sourceId,
       sourceType,
-    });
-
-    if (lookup.meaning) {
-      setResult(lookup);
-      setLoading(false);
-      onResult && onResult(lookup.meaning);
-    } else {
-      if (!openai?.key) {
-        toast.error(t("openaiApiKeyRequired"));
-        return;
-      }
-
-      lookupCommand(
-        {
-          word,
-          context,
-          meaningOptions: lookup.meaningOptions,
-        },
-        {
-          key: openai.key,
-          modelName: openai.model,
-          baseUrl: openai.baseUrl,
+    })
+      .then((lookup) => {
+        if (lookup?.meaning) {
+          setResult(lookup);
+          onResult && onResult(lookup.meaning);
         }
-      )
-        .then((res) => {
-          if (res.context_translation?.trim()) {
-            webApi
-              .updateLookup(lookup.id, {
-                meaning: res,
-                sourceId,
-                sourceType,
-              })
-              .then((lookup) => {
-                setResult(lookup);
-                onResult && onResult(lookup.meaning);
-              });
-          }
-        })
-        .catch((err) => {
-          toast.error(`${t("lookupFailed")}: ${err.message}`);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {

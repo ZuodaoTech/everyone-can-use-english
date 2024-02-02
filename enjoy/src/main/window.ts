@@ -64,6 +64,49 @@ main.init = () => {
   // TedProvider
   tedProvider.registerIpcHandlers();
 
+  // proxy
+  ipcMain.handle("system-proxy-get", (_event) => {
+    let proxy = settings.getSync("proxy");
+    if (!proxy) {
+      proxy = {
+        enabled: false,
+        url: "",
+      };
+      settings.setSync("proxy", proxy);
+    }
+
+    return proxy;
+  });
+
+  ipcMain.handle("system-proxy-set", (_event, config) => {
+    if (!config) {
+      throw new Error("Invalid proxy config");
+    }
+
+    if (config) {
+      if (!config.url) {
+        config.enabled = false;
+      }
+    }
+
+    if (config.enabled && config.url) {
+      const uri = new URL(config.url);
+      const proxyRules = `http=${uri.host};https=${uri.host}`;
+
+      mainWindow.webContents.session.setProxy({
+        proxyRules,
+      });
+      mainWindow.webContents.session.closeAllConnections();
+    } else {
+      mainWindow.webContents.session.setProxy({
+        mode: "system",
+      });
+      mainWindow.webContents.session.closeAllConnections();
+    }
+
+    return settings.setSync("proxy", config);
+  });
+
   // BrowserView
   ipcMain.handle(
     "view-load",
@@ -89,10 +132,10 @@ main.init = () => {
       mainWindow.setBrowserView(view);
 
       view.setBounds({
-        x,
-        y,
-        width,
-        height,
+        x: Math.round(x),
+        y: Math.round(y),
+        width: Math.round(width),
+        height: Math.round(height),
       });
       view.setAutoResize({
         width: true,
@@ -136,6 +179,14 @@ main.init = () => {
         });
 
         logger.debug("will-redirect", detail.url);
+        if (
+          detail.url.startsWith(
+            `${process.env.WEB_API_URL || WEB_API_URL}/oauth`
+          )
+        ) {
+          logger.debug("prevent redirect", detail.url);
+          detail.preventDefault();
+        }
       });
 
       view.webContents.on("will-navigate", (detail) => {
@@ -145,7 +196,12 @@ main.init = () => {
         });
 
         logger.debug("will-navigate", detail.url);
-        if (!navigatable) {
+        if (
+          !navigatable ||
+          detail.url.startsWith(
+            `${process.env.WEB_API_URL || WEB_API_URL}/oauth`
+          )
+        ) {
           logger.debug("prevent navigation", detail.url);
           detail.preventDefault();
         }
@@ -169,10 +225,11 @@ main.init = () => {
 
     const bounds = view.getBounds();
     logger.debug("current view bounds", bounds);
+    if (bounds.width === 0 && bounds.height === 0) return;
 
     view.setBounds({
-      x: -bounds.width,
-      y: -bounds.height,
+      x: -Math.round(bounds.width),
+      y: -Math.round(bounds.height),
       width: 0,
       height: 0,
     });
@@ -191,9 +248,16 @@ main.init = () => {
     ) => {
       const view = mainWindow.getBrowserView();
       if (!view) return;
+      if (!bounds) return;
 
       logger.debug("view-show", bounds);
-      view.setBounds(bounds);
+      const { x = 0, y = 0, width = 0, height = 0 } = bounds || {};
+      view.setBounds({
+        x: Math.round(x),
+        y: Math.round(y),
+        width: Math.round(width),
+        height: Math.round(height),
+      });
     }
   );
 

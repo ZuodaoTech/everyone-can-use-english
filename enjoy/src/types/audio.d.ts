@@ -7,6 +7,7 @@ type AudioType = {
   coverUrl?: string;
   md5: string;
   metadata?: Ffmpeg.FfprobeData;
+  duration?: number;
   transcribed?: boolean;
   transcribing?: boolean;
   recordingsCount?: number;

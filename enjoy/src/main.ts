@@ -1,4 +1,4 @@
-import { app, BrowserWindow, globalShortcut, protocol, net } from "electron";
+import { app, BrowserWindow, protocol, net } from "electron";
 import path from "path";
 import settings from "@main/settings";
 import "@main/i18n";
@@ -14,7 +14,7 @@ log.errorHandler.startCatching();
 // Fix "getRandomValues() not supported"
 global.crypto = crypto;
 
-app.commandLine.appendSwitch('enable-features','SharedArrayBuffer')
+app.commandLine.appendSwitch("enable-features", "SharedArrayBuffer");
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -58,9 +58,7 @@ app.on("ready", async () => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
+  app.quit();
 });
 
 app.on("activate", () => {

@@ -2,12 +2,22 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   Sheet,
   SheetContent,
   SheetHeader,
   SheetClose,
+  toast,
 } from "@renderer/components/ui";
-import { SpeechPlayer, AudioDetail } from "@renderer/components";
+import {
+  SpeechPlayer,
+  AudioDetail,
+  ConversationsList,
+} from "@renderer/components";
 import { useState, useEffect, useContext } from "react";
 import {
   LoaderIcon,
@@ -16,11 +26,13 @@ import {
   SpeechIcon,
   MicIcon,
   ChevronDownIcon,
+  ForwardIcon,
 } from "lucide-react";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
 import { AppSettingsProviderContext } from "@renderer/context";
 import Markdown from "react-markdown";
+import { useConversation } from "@renderer/hooks";
 
 export const AssistantMessageComponent = (props: {
   message: MessageType;
@@ -36,6 +48,7 @@ export const AssistantMessageComponent = (props: {
   const [resourcing, setResourcing] = useState<boolean>(false);
   const [shadowing, setShadowing] = useState<boolean>(false);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { tts } = useConversation();
 
   useEffect(() => {
     if (speech) return;
@@ -49,15 +62,17 @@ export const AssistantMessageComponent = (props: {
 
     setSpeeching(true);
 
-    EnjoyApp.messages
-      .createSpeech(message.id, {
-        engine: configuration?.tts?.engine,
-        model: configuration?.tts?.model,
-        voice: configuration?.tts?.voice,
-        baseUrl: configuration?.tts?.baseUrl,
-      })
+    tts({
+      sourceType: "Message",
+      sourceId: message.id,
+      text: message.content,
+      configuration: configuration.tts,
+    })
       .then((speech) => {
         setSpeech(speech);
+      })
+      .catch((err) => {
+        toast.error(err.message);
       })
       .finally(() => {
         setSpeeching(false);
@@ -154,6 +169,27 @@ export const AssistantMessageComponent = (props: {
                 className="w-3 h-3 cursor-pointer"
               />
             ))}
+
+          <Dialog>
+            <DialogTrigger>
+              <ForwardIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("forward")}
+                className="w-3 h-3 cursor-pointer"
+              />
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{t("forward")}</DialogTitle>
+              </DialogHeader>
+              <div className="">
+                <ConversationsList
+                  prompt={message.content}
+                  excludedIds={[message.conversationId]}
+                />
+              </div>
+            </DialogContent>
+          </Dialog>
 
           {Boolean(speech) &&
             (resourcing ? (

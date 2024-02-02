@@ -29,12 +29,6 @@ import camelcaseKeys from "camelcase-keys";
 
 const logger = log.scope("db/models/recording");
 
-const webApi = new Client({
-  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
-  accessToken: settings.getSync("user.accessToken") as string,
-  logger: log.scope("api/client"),
-});
-
 @Table({
   modelName: "Recording",
   tableName: "recordings",
@@ -140,9 +134,13 @@ export class Recording extends Model<Recording> {
   }
 
   async sync() {
-    if (!this.uploadedAt) {
-      await this.upload();
-    }
+    this.upload().catch(() => {});
+
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("api/client"),
+    });
 
     return webApi.syncRecording(this.toJSON()).then(() => {
       this.update({ syncedAt: new Date() });
@@ -158,6 +156,13 @@ export class Recording extends Model<Recording> {
       return assessment;
     }
 
+    await this.sync();
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("api/client"),
+    });
+
     const { token, region } = await webApi.generateSpeechToken();
     const sdk = new AzureSpeechSdk(token, region);
 
@@ -165,6 +170,14 @@ export class Recording extends Model<Recording> {
       filePath: this.filePath,
       reference: this.referenceText,
     });
+
+    const resultJson = camelcaseKeys(
+      JSON.parse(JSON.stringify(result.detailResult)),
+      {
+        deep: true,
+      }
+    );
+    resultJson.duration = this.duration;
 
     const _pronunciationAssessment = await PronunciationAssessment.create(
       {
@@ -178,9 +191,7 @@ export class Recording extends Model<Recording> {
         grammarScore: result.contentAssessmentResult?.grammarScore,
         vocabularyScore: result.contentAssessmentResult?.vocabularyScore,
         topicScore: result.contentAssessmentResult?.topicScore,
-        result: camelcaseKeys(JSON.parse(JSON.stringify(result.detailResult)), {
-          deep: true,
-        }),
+        result: resultJson,
       },
       {
         include: Recording,

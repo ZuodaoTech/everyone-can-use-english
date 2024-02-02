@@ -8,6 +8,7 @@ import { toBlobURL } from "@ffmpeg/util";
 
 type AppSettingsProviderState = {
   webApi: Client;
+  apiUrl?: string;
   user: UserType | null;
   initialized: boolean;
   version?: string;
@@ -15,16 +16,14 @@ type AppSettingsProviderState = {
   login?: (user: UserType) => void;
   logout?: () => void;
   setLibraryPath?: (path: string) => Promise<void>;
-  setWhisperModel?: (name: string) => Promise<void>;
-  setWhisperService?: (name: string) => Promise<void>;
   ffmpegConfig?: FfmpegConfigType;
   ffmpeg?: FFmpeg;
-  whisperConfig?: WhisperConfigType;
-  refreshWhisperConfig?: () => void;
   setFfmegConfig?: (config: FfmpegConfigType) => void;
   EnjoyApp?: EnjoyAppType;
   language?: "en" | "zh-CN";
   switchLanguage?: (language: "en" | "zh-CN") => void;
+  proxy?: ProxyConfigType;
+  setProxy?: (config: ProxyConfigType) => Promise<void>;
 };
 
 const initialState: AppSettingsProviderState = {
@@ -47,10 +46,10 @@ export const AppSettingsProvider = ({
   const [webApi, setWebApi] = useState<Client>(null);
   const [user, setUser] = useState<UserType | null>(null);
   const [libraryPath, setLibraryPath] = useState("");
-  const [whisperConfig, setWhisperConfig] = useState<WhisperConfigType>(null);
   const [ffmpegConfig, setFfmegConfig] = useState<FfmpegConfigType>(null);
-  const [language, setLanguage] = useState<"en" | "zh-CN">();
   const [ffmpeg, setFfmpeg] = useState<FFmpeg>(null);
+  const [language, setLanguage] = useState<"en" | "zh-CN">();
+  const [proxy, setProxy] = useState<ProxyConfigType>();
   const EnjoyApp = window.__ENJOY_APP__;
 
   const ffmpegRef = useRef(new FFmpeg());
@@ -60,14 +59,10 @@ export const AppSettingsProvider = ({
     fetchUser();
     fetchLibraryPath();
     fetchFfmpegConfig();
-    refreshWhisperConfig();
     fetchLanguage();
     loadFfmpegWASM();
+    fetchProxyConfig();
   }, []);
-
-  useEffect(() => {
-    refreshWhisperConfig();
-  }, [libraryPath]);
 
   useEffect(() => {
     validate();
@@ -80,9 +75,10 @@ export const AppSettingsProvider = ({
       new Client({
         baseUrl: apiUrl,
         accessToken: user?.accessToken,
+        locale: language,
       })
     );
-  }, [user, apiUrl]);
+  }, [user, apiUrl, language]);
 
   const loadFfmpegWASM = async () => {
     const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm";
@@ -133,11 +129,6 @@ export const AppSettingsProvider = ({
     setFfmegConfig(config);
   };
 
-  const refreshWhisperConfig = async () => {
-    const config = await EnjoyApp.whisper.config();
-    setWhisperConfig(config);
-  };
-
   const fetchVersion = async () => {
     const version = EnjoyApp.app.version;
     setVersion(version);
@@ -184,17 +175,14 @@ export const AppSettingsProvider = ({
     setLibraryPath(dir);
   };
 
-  const setWhisperModel = async (name: string) => {
-    return EnjoyApp.whisper.setModel(name).then((config) => {
-      if (!config) return;
-      setWhisperConfig(config);
-    });
+  const fetchProxyConfig = async () => {
+    const config = await EnjoyApp.system.proxy.get();
+    setProxy(config);
   };
 
-  const setWhisperService = async (name: WhisperConfigType["service"]) => {
-    return EnjoyApp.whisper.setService(name).then((config) => {
-      if (!config) return;
-      setWhisperConfig(config);
+  const setProxyConfigHandler = async (config: ProxyConfigType) => {
+    EnjoyApp.system.proxy.set(config).then(() => {
+      setProxy(config);
     });
   };
 
@@ -210,18 +198,17 @@ export const AppSettingsProvider = ({
         EnjoyApp,
         version,
         webApi,
+        apiUrl,
         user,
         login,
         logout,
         libraryPath,
         setLibraryPath: setLibraryPathHandler,
-        setWhisperModel,
-        setWhisperService,
         ffmpegConfig,
         ffmpeg,
-        whisperConfig,
-        refreshWhisperConfig,
         setFfmegConfig,
+        proxy,
+        setProxy: setProxyConfigHandler,
         initialized,
       }}
     >

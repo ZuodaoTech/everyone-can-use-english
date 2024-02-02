@@ -18,11 +18,13 @@ import mainWindow from "@main/window";
 import fs from "fs-extra";
 import path from "path";
 import settings from "@main/settings";
-import OpenAI from "openai";
+import OpenAI, { type ClientOptions } from "openai";
 import { t } from "i18next";
 import { hashFile } from "@/utils";
 import { Audio, Message } from "@main/db/models";
 import log from "electron-log/main";
+import { WEB_API_URL } from "@/constants";
+import proxyAgent from "@main/proxy-agent";
 
 const logger = log.scope("db/models/speech");
 @Table({
@@ -90,7 +92,7 @@ export class Speech extends Model<Speech> {
 
   @Column(DataType.VIRTUAL)
   get voice(): string {
-    return this.getDataValue("configuration").model;
+    return this.getDataValue("configuration").voice;
   }
 
   @Column(DataType.VIRTUAL)
@@ -170,26 +172,39 @@ export class Speech extends Model<Speech> {
     const filename = `${Date.now()}${extname}`;
     const filePath = path.join(settings.userDataPath(), "speeches", filename);
 
-    if (engine === "openai") {
-      const key = settings.getSync("openai.key") as string;
-      if (!key) {
+    let openaiConfig: ClientOptions = {};
+    if (engine === "enjoyai") {
+      openaiConfig = {
+        apiKey: settings.getSync("user.accessToken") as string,
+        baseURL: `${process.env.WEB_API_URL || WEB_API_URL}/api/ai`,
+      };
+    } else if (engine === "openai") {
+      const defaultConfig = settings.getSync("openai") as LlmProviderType;
+      if (!defaultConfig.key) {
         throw new Error(t("openaiKeyRequired"));
       }
-      const openai = new OpenAI({
-        apiKey: key,
-        baseURL: baseUrl,
-      });
-      logger.debug("baseURL", openai.baseURL);
-
-      const file = await openai.audio.speech.create({
-        input: text,
-        model,
-        voice,
-      });
-
-      const buffer = Buffer.from(await file.arrayBuffer());
-      await fs.outputFile(filePath, buffer);
+      openaiConfig = {
+        apiKey: defaultConfig.key,
+        baseURL: baseUrl || defaultConfig.baseUrl,
+      };
     }
+
+    const { httpAgent, fetch } = proxyAgent();
+    const openai = new OpenAI({
+      ...openaiConfig,
+      httpAgent,
+      // @ts-ignore
+      fetch,
+    });
+
+    const file = await openai.audio.speech.create({
+      input: text,
+      model,
+      voice,
+    });
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+    await fs.outputFile(filePath, buffer);
 
     const md5 = await hashFile(filePath, { algo: "md5" });
     fs.renameSync(

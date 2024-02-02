@@ -40,6 +40,14 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
         return ipcRenderer.invoke("system-preferences-media-access", mediaType);
       },
     },
+    proxy: {
+      get: () => {
+        return ipcRenderer.invoke("system-proxy-get");
+      },
+      set: (config: ProxyConfigType) => {
+        return ipcRenderer.invoke("system-proxy-set", config);
+      },
+    },
   },
   providers: {
     audible: {
@@ -130,6 +138,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     getUserDataPath: () => {
       return ipcRenderer.invoke("settings-get-user-data-path");
     },
+    getDefaultEngine: () => {
+      return ipcRenderer.invoke("settings-get-default-engine");
+    },
+    setDefaultEngine: (engine: "enjoyai" | "openai") => {
+      return ipcRenderer.invoke("settings-set-default-engine", engine);
+    },
     getLlm: (provider: string) => {
       return ipcRenderer.invoke("settings-get-llm", provider);
     },
@@ -183,9 +197,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     destroy: (id: string) => {
       return ipcRenderer.invoke("audios-destroy", id);
     },
-    transcribe: (id: string) => {
-      return ipcRenderer.invoke("audios-transcribe", id);
-    },
     upload: (id: string) => {
       return ipcRenderer.invoke("audios-upload", id);
     },
@@ -208,9 +219,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     destroy: (id: string) => {
       return ipcRenderer.invoke("videos-destroy", id);
-    },
-    transcribe: (id: string) => {
-      return ipcRenderer.invoke("videos-transcribe", id);
     },
     upload: (id: string) => {
       return ipcRenderer.invoke("videos-upload", id);
@@ -298,11 +306,31 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findOne: (params: object) => {
       return ipcRenderer.invoke("messages-find-one", params);
     },
+    createInBatch: (messages: Partial<MessageType>[]) => {
+      return ipcRenderer.invoke("messages-create-in-batch", messages);
+    },
     destroy: (id: string) => {
       return ipcRenderer.invoke("messages-destroy", id);
     },
     createSpeech: (id: string, configuration?: { [key: string]: any }) => {
       return ipcRenderer.invoke("messages-create-speech", id, configuration);
+    },
+  },
+  speeches: {
+    create: (
+      params: {
+        sourceId: string;
+        sourceType: string;
+        text: string;
+        configuration: {
+          engine: string;
+          model: string;
+          voice: string;
+        };
+      },
+      blob: { type: string; arrayBuffer: ArrayBuffer }
+    ) => {
+      return ipcRenderer.invoke("speeches-create", params, blob);
     },
   },
   audiowaveform: {

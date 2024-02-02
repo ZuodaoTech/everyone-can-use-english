@@ -13,8 +13,9 @@ export class Client {
     baseUrl: string;
     accessToken?: string;
     logger?: any;
+    locale?: "en" | "zh-CN";
   }) {
-    const { baseUrl, accessToken, logger } = options;
+    const { baseUrl, accessToken, logger, locale = "en" } = options;
     this.baseUrl = baseUrl;
     this.logger = logger || console;
 
@@ -27,6 +28,7 @@ export class Client {
     });
     this.api.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${accessToken}`;
+      config.headers['Accept-Language'] = locale;
 
       this.logger.debug(
         config.method.toUpperCase(),

@@ -16,7 +16,7 @@ import {
 } from "sequelize-typescript";
 import { Recording, Speech, Transcription, Video } from "@main/db/models";
 import settings from "@main/settings";
-import { AudioFormats, VideoFormats } from "@/constants";
+import { AudioFormats, VideoFormats , WEB_API_URL } from "@/constants";
 import { hashFile } from "@/utils";
 import path from "path";
 import fs from "fs-extra";
@@ -26,19 +26,12 @@ import log from "electron-log/main";
 import storage from "@main/storage";
 import Ffmpeg from "@main/ffmpeg";
 import { Client } from "@/api";
-import { WEB_API_URL } from "@/constants";
-import { startCase } from "lodash";
+import startCase from "lodash/startCase";
 import { v5 as uuidv5 } from "uuid";
 
 const SIZE_LIMIT = 1024 * 1024 * 50; // 50MB
 
 const logger = log.scope("db/models/audio");
-
-const webApi = new Client({
-  baseUrl: process.env.WEB_API_URL || WEB_API_URL,
-  accessToken: settings.getSync("user.accessToken") as string,
-  logger: log.scope("api/client"),
-});
 
 @Table({
   modelName: "Audio",
@@ -119,7 +112,7 @@ export class Audio extends Model<Audio> {
 
   @Column(DataType.VIRTUAL)
   get transcribed(): boolean {
-    return this.transcription?.state === "finished";
+    return Boolean(this.transcription?.result);
   }
 
   @Column(DataType.VIRTUAL)
@@ -129,6 +122,11 @@ export class Audio extends Model<Audio> {
       "audios",
       this.getDataValue("md5") + this.extname
     )}`;
+  }
+
+  @Column(DataType.VIRTUAL)
+  get duration(): number {
+    return this.getDataValue("metadata").duration;
   }
 
   get extname(): string {
@@ -167,9 +165,13 @@ export class Audio extends Model<Audio> {
   }
 
   async sync() {
-    if (!this.isUploaded) {
-      this.upload();
-    }
+    if (this.isSynced) return;
+
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("api/client"),
+    });
 
     return webApi.syncAudio(this.toJSON()).then(() => {
       this.update({ syncedAt: new Date() });
@@ -212,6 +214,7 @@ export class Audio extends Model<Audio> {
   @AfterUpdate
   static notifyForUpdate(audio: Audio) {
     this.notify(audio, "update");
+    audio.sync().catch(() => {});
   }
 
   @AfterDestroy

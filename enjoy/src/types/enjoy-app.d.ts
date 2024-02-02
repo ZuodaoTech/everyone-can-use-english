@@ -15,6 +15,10 @@ type EnjoyAppType = {
     preferences: {
       mediaAccess: (mediaType: "microphone") => Promise<boolean>;
     };
+    proxy: {
+      get: () => Promise<ProxyConfigType>;
+      set: (config: ProxyConfigType) => Promise<void>;
+    };
   };
   providers: {
     audible: {
@@ -84,6 +88,8 @@ type EnjoyAppType = {
     getUser: () => Promise<UserType>;
     setUser: (user: UserType) => Promise<void>;
     getUserDataPath: () => Promise<string>;
+    getDefaultEngine: () => Promise<string>;
+    setDefaultEngine: (engine: "enjoyai" | "openai") => Promise<void>;
     getLlm: (provider: SupportedLlmProviderType) => Promise<LlmProviderType>;
     setLlm: (
       provider: SupportedLlmProviderType,
@@ -111,7 +117,6 @@ type EnjoyAppType = {
     create: (uri: string, params?: object) => Promise<AudioType>;
     update: (id: string, params: object) => Promise<AudioType | undefined>;
     destroy: (id: string) => Promise<undefined>;
-    transcribe: (id: string) => Promise<void>;
     upload: (id: string) => Promise<void>;
   };
   videos: {
@@ -120,7 +125,6 @@ type EnjoyAppType = {
     create: (uri: string, params?: any) => Promise<VideoType>;
     update: (id: string, params: any) => Promise<VideoType | undefined>;
     destroy: (id: string) => Promise<undefined>;
-    transcribe: (id: string) => Promise<void>;
     upload: (id: string) => Promise<void>;
   };
   recordings: {
@@ -179,8 +183,27 @@ type EnjoyAppType = {
   messages: {
     findAll: (params: object) => Promise<MessageType[]>;
     findOne: (params: object) => Promise<MessageType>;
+    createInBatch: (messages: Partial<MessageType>[]) => Promise<void>;
     destroy: (id: string) => Promise<void>;
     createSpeech: (id: string, configuration?: any) => Promise<SpeechType>;
+  };
+  speeches: {
+    create: (
+      params: {
+        sourceId: string;
+        sourceType: string;
+        text: string;
+        configuration: {
+          engine: string;
+          model: string;
+          voice: string;
+        };
+      },
+      blob: {
+        type: string;
+        arrayBuffer: ArrayBuffer;
+      }
+    ) => Promise<SpeechType>;
   };
   whisper: {
     config: () => Promise<WhisperConfigType>;

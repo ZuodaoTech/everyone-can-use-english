@@ -17,21 +17,26 @@ import {
   GalleryHorizontalIcon,
   SpellCheckIcon,
   Share2Icon,
+  ListRestartIcon,
+  SkipForwardIcon,
+  SkipBackIcon,
 } from "lucide-react";
 import { t } from "i18next";
 import { type WaveSurferOptions } from "wavesurfer.js";
 import { Tooltip } from "react-tooltip";
 
-const PLAYBACK_RATE_OPTIONS = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75];
+const PLAYBACK_RATE_OPTIONS = [0.8, 0.9, 1.0];
+const ZOOM_RATIO_OPTIONS = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
 const MIN_ZOOM_RATIO = 0.25;
-const MAX_ZOOM_RATIO = 5.0;
+const MAX_ZOOM_RATIO = 2.0;
 
 export const MediaPlayerControls = (props: {
   isPlaying: boolean;
-  isLooping: boolean;
+  playMode?: "loop" | "single" | "all";
+  setPlayMode?: (mode: "loop" | "single" | "all") => void;
   onPlayOrPause: () => void;
-  onPause?: () => void;
-  onLoop?: () => void;
+  onNext?: () => void;
+  onPrev?: () => void;
   onRecord?: () => void;
   playbackRate: number;
   setPlaybackRate: (rate: number) => void;
@@ -51,9 +56,11 @@ export const MediaPlayerControls = (props: {
 }) => {
   const {
     isPlaying,
-    isLooping,
+    playMode,
+    setPlayMode,
     onPlayOrPause,
-    onLoop,
+    onNext,
+    onPrev,
     playbackRate,
     setPlaybackRate,
     fitZoomRatio,
@@ -73,8 +80,23 @@ export const MediaPlayerControls = (props: {
 
   return (
     <div className="w-full flex items-center justify-center space-x-1 relative">
+      {
+        onPrev && (
+          <Button
+            variant="ghost"
+            onClick={onPrev}
+            data-tooltip-id="media-player-controls-tooltip"
+            data-tooltip-content={t("playPreviousSegment")}
+            className="aspect-square p-0 h-10"
+          >
+            <SkipBackIcon className="w-6 h-6" />
+          </Button>
+        )
+      }
+
       {isPlaying ? (
         <Button
+          variant="secondary"
           onClick={onPlayOrPause}
           data-tooltip-id="media-player-controls-tooltip"
           data-tooltip-content={t("pause")}
@@ -93,31 +115,59 @@ export const MediaPlayerControls = (props: {
           <PlayIcon className="w-6 h-6" />
         </Button>
       )}
-      {isLooping ? (
+
+      {
+        onNext && (
+          <Button
+            variant="ghost"
+            onClick={onNext}
+            data-tooltip-id="media-player-controls-tooltip"
+            data-tooltip-content={t("playNextSegment")}
+            className="aspect-square p-0 h-10"
+          >
+            <SkipForwardIcon className="w-6 h-6" />
+          </Button>
+        )
+      }
+
+      {playMode === "single" && (
         <Button
-          onClick={onLoop}
+          variant="ghost"
+          onClick={() => setPlayMode("loop")}
           data-tooltip-id="media-player-controls-tooltip"
-          data-tooltip-content={t("stopLoop")}
+          data-tooltip-content={t("playSingleSegment")}
+          className="aspect-square p-0 h-10"
+        >
+          <RepeatIcon className="w-6 h-6" />
+        </Button>
+      )}
+      {playMode === "loop" && (
+        <Button
+          variant="secondary"
+          onClick={() => setPlayMode("all")}
+          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-content={t("playInLoop")}
           className="aspect-square p-0 h-10"
         >
           <Repeat1Icon className="w-6 h-6" />
         </Button>
-      ) : (
+      )}
+      {playMode === "all" && (
         <Button
           variant="ghost"
-          onClick={onLoop}
+          onClick={() => setPlayMode("single")}
           data-tooltip-id="media-player-controls-tooltip"
-          data-tooltip-content={t("loop")}
+          data-tooltip-content={t("playAllSegments")}
           className="aspect-square p-0 h-10"
         >
-          <RepeatIcon className="w-6 h-6" />
+          <ListRestartIcon className="w-6 h-6" />
         </Button>
       )}
 
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            variant={`${playbackRate == 1.0 ? "ghost" : "default"}`}
+            variant={`${playbackRate == 1.0 ? "ghost" : "secondary"}`}
             data-tooltip-id="media-player-controls-tooltip"
             data-tooltip-content={t("playbackSpeed")}
             className="relative aspect-square p-0 h-10"
@@ -145,11 +195,7 @@ export const MediaPlayerControls = (props: {
                   setPlaybackRate(rate);
                 }}
               >
-                {[0.5, 1.0, 1.5].includes(rate) || rate === playbackRate ? (
-                  <span className="">{rate}</span>
-                ) : (
-                  <div className="h-2 w-[1px] bg-black/50"></div>
-                )}
+                <span className="">{rate}</span>
               </div>
             ))}
           </div>
@@ -157,13 +203,13 @@ export const MediaPlayerControls = (props: {
       </Popover>
 
       <Button
-        variant={`${zoomRatio > 1.0 ? "default" : "ghost"}`}
+        variant={`${zoomRatio > 1.0 ? "secondary" : "ghost"}`}
         data-tooltip-id="media-player-controls-tooltip"
         data-tooltip-content={t("zoomIn")}
         className="relative aspect-square p-0 h-10"
         onClick={() => {
           if (zoomRatio < MAX_ZOOM_RATIO) {
-            const nextZoomRatio = PLAYBACK_RATE_OPTIONS.find(
+            const nextZoomRatio = ZOOM_RATIO_OPTIONS.find(
               (rate) => rate > zoomRatio
             );
             setZoomRatio(nextZoomRatio || MAX_ZOOM_RATIO);
@@ -174,13 +220,13 @@ export const MediaPlayerControls = (props: {
       </Button>
 
       <Button
-        variant={`${zoomRatio < 1.0 ? "default" : "ghost"}`}
+        variant={`${zoomRatio < 1.0 ? "secondary" : "ghost"}`}
         data-tooltip-id="media-player-controls-tooltip"
         data-tooltip-content={t("zoomOut")}
         className="relative aspect-square p-0 h-10"
         onClick={() => {
           if (zoomRatio > MIN_ZOOM_RATIO) {
-            const nextZoomRatio = PLAYBACK_RATE_OPTIONS.reverse().find(
+            const nextZoomRatio = ZOOM_RATIO_OPTIONS.reverse().find(
               (rate) => rate < zoomRatio
             );
             setZoomRatio(nextZoomRatio || MIN_ZOOM_RATIO);
@@ -191,7 +237,7 @@ export const MediaPlayerControls = (props: {
       </Button>
 
       <Button
-        variant={`${zoomRatio === fitZoomRatio ? "default" : "ghost"}`}
+        variant={`${zoomRatio === fitZoomRatio ? "secondary" : "ghost"}`}
         data-tooltip-id="media-player-controls-tooltip"
         data-tooltip-content={t("zoomToFit")}
         className="relative aspect-square p-0 h-10"
@@ -207,7 +253,7 @@ export const MediaPlayerControls = (props: {
       </Button>
 
       <Button
-        variant={`${wavesurferOptions?.autoCenter ? "default" : "ghost"}`}
+        variant={`${wavesurferOptions?.autoCenter ? "secondary" : "ghost"}`}
         data-tooltip-id="media-player-controls-tooltip"
         data-tooltip-content={t("autoCenter")}
         className="relative aspect-square p-0 h-10"
@@ -221,7 +267,7 @@ export const MediaPlayerControls = (props: {
       </Button>
 
       <Button
-        variant={`${displayInlineCaption ? "default" : "ghost"}`}
+        variant={`${displayInlineCaption ? "secondary" : "ghost"}`}
         data-tooltip-id="media-player-controls-tooltip"
         data-tooltip-content={t("inlineCaption")}
         className="relative aspect-square p-0 h-10"
@@ -234,7 +280,7 @@ export const MediaPlayerControls = (props: {
 
       {setRecordButtonVisible && (
         <Button
-          variant={`${recordButtonVisible ? "default" : "ghost"}`}
+          variant={`${recordButtonVisible ? "secondary" : "ghost"}`}
           data-tooltip-id="media-player-controls-tooltip"
           data-tooltip-content={t("record")}
           className="relative aspect-square p-0 h-10"
@@ -273,7 +319,7 @@ export const MediaPlayerControls = (props: {
         </div>
       </div>
 
-      <Tooltip id="media-player-controls-tooltip" />
+      <Tooltip className="z-10" id="media-player-controls-tooltip" />
     </div>
   );
 };

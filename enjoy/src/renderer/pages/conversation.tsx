@@ -10,7 +10,7 @@ import {
 } from "@renderer/components/ui";
 import { MessageComponent, ConversationForm } from "@renderer/components";
 import { SendIcon, BotIcon, LoaderIcon, SettingsIcon } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { t } from "i18next";
 import {
   DbProviderContext,
@@ -19,19 +19,24 @@ import {
 import { messagesReducer } from "@renderer/reducers";
 import { v4 as uuidv4 } from "uuid";
 import autosize from "autosize";
+import { useConversation } from "@renderer/hooks";
 
 export default () => {
   const { id } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
   const [editting, setEditting] = useState<boolean>(false);
   const [conversation, setConversation] = useState<ConversationType>();
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const [content, setConent] = useState<string>("");
+  const [content, setContent] = useState<string>(
+    searchParams.get("text") || ""
+  );
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const [messages, dispatchMessages] = useReducer(messagesReducer, []);
   const [offset, setOffest] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const { chat } = useConversation();
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
@@ -50,7 +55,7 @@ export default () => {
     EnjoyApp.messages
       .findAll({
         where: {
-          conversationId: id,
+          conversationId: conversation.id,
         },
         offset,
         limit,
@@ -67,7 +72,11 @@ export default () => {
           setOffest(offset + _messages.length);
         }
 
-        dispatchMessages({ type: "append", records: _messages });
+        if (offset === 0) {
+          dispatchMessages({ type: "set", records: _messages });
+        } else {
+          dispatchMessages({ type: "append", records: _messages });
+        }
         scrollToMessage(_messages[0]);
       })
       .finally(() => {
@@ -84,7 +93,7 @@ export default () => {
     const message: MessageType = {
       id: uuidv4(),
       content: text,
-      role: "user",
+      role: "user" as MessageRoleEnum,
       conversationId: id,
       status: "pending",
     };
@@ -111,21 +120,15 @@ export default () => {
       setSubmitting(false);
     }, 1000 * 60 * 5);
 
-    EnjoyApp.conversations
-      .ask(conversation.id, {
-        messageId: message.id,
-        content: message.content,
-        file,
-      })
-      .then((reply) => {
-        if (reply) return;
-
+    chat(message, { conversation })
+      .catch((err) => {
         message.status = "error";
         dispatchMessages({ type: "update", record: message });
+        toast.error(err.message);
       })
       .finally(() => {
         setSubmitting(false);
-        setConent("");
+        setContent("");
         clearTimeout(timeout);
       });
   };
@@ -162,14 +165,21 @@ export default () => {
   };
 
   useEffect(() => {
+    setOffest(0);
+    setContent(searchParams.get("text") || "");
     fetchConversation();
-    fetchMessages();
     addDblistener(onMessagesUpdate);
 
     return () => {
       removeDbListener(onMessagesUpdate);
     };
   }, [id]);
+
+  useEffect(() => {
+    if (!conversation) return;
+
+    fetchMessages();
+  }, [conversation]);
 
   useEffect(() => {
     if (!inputRef.current) return;
@@ -189,7 +199,7 @@ export default () => {
       inputRef.current?.removeEventListener("keypress", () => {});
       autosize.destroy(inputRef.current);
     };
-  }, [inputRef.current]);
+  }, [id, inputRef.current]);
 
   if (!conversation) {
     return (
@@ -273,11 +283,10 @@ export default () => {
         <div className="px-4 absolute w-full bottom-0 left-0 h-14 bg-muted z-50">
           <div className="focus-within:bg-background px-4 py-2 flex items-center space-x-4 rounded-lg border">
             <Textarea
-              rows={1}
               ref={inputRef}
               disabled={submitting}
               value={content}
-              onChange={(e) => setConent(e.target.value)}
+              onChange={(e) => setContent(e.target.value)}
               placeholder={t("pressEnterToSend")}
               className="px-0 py-0 shadow-none border-none focus-visible:outline-0 focus-visible:ring-0 border-none bg-muted focus:bg-background min-h-[1.25rem] max-h-[3.5rem] !overflow-x-hidden"
             />

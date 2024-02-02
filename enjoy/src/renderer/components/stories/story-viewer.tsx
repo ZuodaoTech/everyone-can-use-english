@@ -9,7 +9,8 @@ import {
   PopoverAnchor,
 } from "@renderer/components/ui";
 import { SelectionMenu } from "@renderer/components";
-import { debounce, uniq } from "lodash";
+import uniq from "lodash/uniq";
+import debounce from "lodash/debounce";
 import Mark from "mark.js";
 
 export const StoryViewer = (props: {
@@ -53,7 +54,7 @@ export const StoryViewer = (props: {
     const word = selection
       .toString()
       .trim()
-      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]+$/, "");
+      .replace(/[.,/#!$%^&*;:{}=\-_`~()]+$/, "");
     if (!word) return;
 
     const position = {
@@ -151,9 +152,9 @@ export const StoryViewer = (props: {
           {paragraphs.map((sentences, i: number) => (
             <p key={`paragraph-${i}`} className="">
               {sentences.map((sentence, j: number) => {
-                if (sentence.text.match(/\!\[\]\(\S+\)/g)) {
-                  const [img] = sentence.text.match(/\!\[\]\(\S+\)/g);
-                  const src = img.replace(/\!\[\]\(/g, "").replace(/\)/g, "");
+                if (sentence.text.match(/!\[\]\(\S+\)/g)) {
+                  const [img] = sentence.text.match(/!\[\]\(\S+\)/g);
+                  const src = img.replace(/!\[\]\(/g, "").replace(/\)/g, "");
                   return <img key={`paragraph-${i}-sentence-${j}`} src={src} />;
                 } else {
                   return (

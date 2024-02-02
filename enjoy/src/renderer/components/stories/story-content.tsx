@@ -22,9 +22,9 @@ export const StoryContent = (props: { content: string }) => {
       {paragraphs.map((sentences, i: number) => (
         <p key={`paragraph-${i}`} className="">
           {sentences.map((sentence, i: number) => {
-            if (sentence.text.match(/\!\[\]\(\S+\)/g)) {
-              const [img] = sentence.text.match(/\!\[\]\(\S+\)/g);
-              const src = img.replace(/\!\[\]\(/g, "").replace(/\)/g, "");
+            if (sentence.text.match(/!\[\]\(\S+\)/g)) {
+              const [img] = sentence.text.match(/!\[\]\(\S+\)/g);
+              const src = img.replace(/!\[\]\(/g, "").replace(/\)/g, "");
               return (
                 <p key={`paragraph-${i}`}>
                   <img src={src} />

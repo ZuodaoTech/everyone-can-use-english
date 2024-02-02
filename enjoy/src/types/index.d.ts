@@ -5,9 +5,10 @@ declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string;
 declare const MAIN_WINDOW_VITE_NAME: string;
 declare module "compromise-paragraphs";
 
-type SupportedLlmProviderType = "openai" | "googleGenerativeAi";
+type SupportedLlmProviderType = "enjoyai" | "openai" | "googleGenerativeAi";
 
 type LlmProviderType = {
+  name?: "enjoyai" | "openai" | "googleGenerativeAi";
   key?: string;
   model?: string;
   baseUrl?: string;
@@ -156,4 +157,9 @@ type TedIdeaType = {
   cover?: string;
   title: string;
   description: string;
+};
+
+type ProxyConfigType = {
+  enabled: boolean;
+  url: string;
 };

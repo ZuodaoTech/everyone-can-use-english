@@ -10,7 +10,11 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
-import { UserSettings, LanguageSettings } from "@renderer/components";
+import {
+  UserSettings,
+  LanguageSettings,
+  LoaderSpin,
+} from "@renderer/components";
 import { ChevronLeftIcon } from "lucide-react";
 import intlTelInput from "intl-tel-input";
 import "intl-tel-input/build/css/intlTelInput.css";
@@ -19,27 +23,13 @@ export const LoginForm = () => {
   const { EnjoyApp, login, webApi, user } = useContext(
     AppSettingsProviderContext
   );
-  const [webviewVisible, setWebviewVisible] = useState<boolean>(false);
+  const [webviewUrl, setWebviewUrl] = useState<string>();
 
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleLogin = (provider: "mixin" | "github") => {
     const url = `${webApi.baseUrl}/sessions/new?provider=${provider}`;
-    setWebviewVisible(true);
-
-    const rect = containerRef.current.getBoundingClientRect();
-    EnjoyApp.view.load(
-      url,
-      {
-        x: rect.x,
-        y: rect.y,
-        width: rect.width,
-        height: rect.height,
-      },
-      {
-        navigatable: true,
-      }
-    );
+    setWebviewUrl(url);
   };
 
   const onViewState = (event: {
@@ -52,7 +42,7 @@ export const LoginForm = () => {
 
     if (error) {
       toast.error(error);
-      setWebviewVisible(false);
+      setWebviewUrl(null);
       return;
     }
 
@@ -76,37 +66,36 @@ export const LoginForm = () => {
             toast.error(err.message);
           })
           .finally(() => {
-            setWebviewVisible(false);
+            setWebviewUrl(null);
           });
-      } else {
-        toast.error(t("failedToLogin"));
-        setWebviewVisible(false);
       }
     }
   };
 
   useEffect(() => {
-    if (!webviewVisible) return;
+    if (!webviewUrl) return;
 
     EnjoyApp.view.onViewState((_event, state) => onViewState(state));
+
+    const rect = containerRef.current.getBoundingClientRect();
+    EnjoyApp.view.load(
+      webviewUrl,
+      {
+        x: Math.round(rect.x),
+        y: Math.round(rect.y),
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
+      },
+      {
+        navigatable: true,
+      }
+    );
 
     return () => {
       EnjoyApp.view.removeViewStateListeners();
       EnjoyApp.view.remove();
     };
-  }, [webApi, webviewVisible]);
-
-  useEffect(() => {
-    if (!webviewVisible) return;
-
-    const rect = containerRef.current.getBoundingClientRect();
-    EnjoyApp.view.show({
-      x: rect.x,
-      y: rect.y,
-      width: rect.width,
-      height: rect.height,
-    });
-  }, [webviewVisible]);
+  }, [webApi, webviewUrl]);
 
   if (user) {
     return (
@@ -174,16 +163,18 @@ export const LoginForm = () => {
 
       <div
         className={`absolute top-0 left-0 w-screen h-screen z-10 flex flex-col overflow-hidden ${
-          webviewVisible ? "" : "hidden"
+          webviewUrl ? "" : "hidden"
         }`}
       >
         <div className="flex items-center py-2 px-6">
-          <Button variant="ghost" onClick={() => setWebviewVisible(false)}>
+          <Button variant="ghost" onClick={() => setWebviewUrl(null)}>
             <ChevronLeftIcon className="w-5 h-5" />
             <span className="ml-2">{t("goBack")}</span>
           </Button>
         </div>
-        <div ref={containerRef} className="w-full flex-1"></div>
+        <div ref={containerRef} className="w-full h-full flex-1 bg-muted">
+          <LoaderSpin />
+        </div>
       </div>
     </>
   );

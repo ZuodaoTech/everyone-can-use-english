@@ -12,6 +12,8 @@ export const recordingsReducer = (
         return [...recordings, action.record];
       } else if (action.records) {
         return [...recordings, ...action.records];
+      } else {
+        return recordings;
       }
     }
     case "create": {
