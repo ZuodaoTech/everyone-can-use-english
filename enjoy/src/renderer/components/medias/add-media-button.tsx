@@ -51,7 +51,7 @@ export const AddMediaButton = () => {
         <DialogHeader>
           <DialogTitle>{t("addRecourse")}</DialogTitle>
           <DialogDescription>
-            {t("addResourseFromUrlOrLocal")}
+            {t("addResourceFromUrlOrLocal")}
           </DialogDescription>
         </DialogHeader>
 

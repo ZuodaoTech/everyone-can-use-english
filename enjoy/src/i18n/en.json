@@ -261,7 +261,7 @@
   "video": "video",
   "text": "text",
   "addRecourse": "add resource",
-  "addResourseFromUrlOrLocal": "add resource from url or local",
+  "addResourceFromUrlOrLocal": "add resource from url or local",
   "editRecourse": "edit resource",
   "deleteRecourse": "delete resource",
   "deleteRecourseConfirmation": "Are you sure to delete {{name}}?",

@@ -261,7 +261,7 @@
   "video": "视频",
   "text": "文本",
   "addRecourse": "添加资源",
-  "addResourseFromUrlOrLocal": "添加资源, 可以是 URL 或本地文件",
+  "addResourceFromUrlOrLocal": "添加资源, 可以是 URL 或本地文件",
   "editRecourse": "编辑资源",
   "deleteRecourse": "删除资源",
   "deleteRecourseConfirmation": "您确定要删除资源 {{name}} 吗？",
