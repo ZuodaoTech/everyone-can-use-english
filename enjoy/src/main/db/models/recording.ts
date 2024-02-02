@@ -134,9 +134,7 @@ export class Recording extends Model<Recording> {
   }
 
   async sync() {
-    if (!this.uploadedAt) {
-      await this.upload();
-    }
+    this.upload().catch(() => {});
 
     const webApi = new Client({
       baseUrl: process.env.WEB_API_URL || WEB_API_URL,
@@ -158,6 +156,7 @@ export class Recording extends Model<Recording> {
       return assessment;
     }
 
+    await this.sync();
     const webApi = new Client({
       baseUrl: process.env.WEB_API_URL || WEB_API_URL,
       accessToken: settings.getSync("user.accessToken") as string,
@@ -172,6 +171,14 @@ export class Recording extends Model<Recording> {
       reference: this.referenceText,
     });
 
+    const resultJson = camelcaseKeys(
+      JSON.parse(JSON.stringify(result.detailResult)),
+      {
+        deep: true,
+      }
+    );
+    resultJson.duration = this.duration;
+
     const _pronunciationAssessment = await PronunciationAssessment.create(
       {
         targetId: this.id,
@@ -184,9 +191,7 @@ export class Recording extends Model<Recording> {
         grammarScore: result.contentAssessmentResult?.grammarScore,
         vocabularyScore: result.contentAssessmentResult?.vocabularyScore,
         topicScore: result.contentAssessmentResult?.topicScore,
-        result: camelcaseKeys(JSON.parse(JSON.stringify(result.detailResult)), {
-          deep: true,
-        }),
+        result: resultJson,
       },
       {
         include: Recording,
