@@ -319,7 +319,7 @@ export const MediaPlayerControls = (props: {
         </div>
       </div>
 
-      <Tooltip id="media-player-controls-tooltip" />
+      <Tooltip className="z-10" id="media-player-controls-tooltip" />
     </div>
   );
 };
