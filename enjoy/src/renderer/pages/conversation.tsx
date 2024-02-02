@@ -121,9 +121,10 @@ export default () => {
     }, 1000 * 60 * 5);
 
     chat(message, { conversation })
-      .catch(() => {
+      .catch((err) => {
         message.status = "error";
         dispatchMessages({ type: "update", record: message });
+        toast.error(err.message);
       })
       .finally(() => {
         setSubmitting(false);
