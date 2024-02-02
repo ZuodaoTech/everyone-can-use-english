@@ -9,9 +9,7 @@ import {
 } from "@renderer/components";
 import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-  AppSettingsProviderContext,
-} from "@renderer/context";
+import { AppSettingsProviderContext } from "@renderer/context";
 import { useAiCommand } from "@renderer/hooks";
 import nlp from "compromise";
 import paragraphs from "compromise-paragraphs";

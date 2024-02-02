@@ -23,7 +23,7 @@ import { useConversation } from "@renderer/hooks";
 
 export default () => {
   const { id } = useParams<{ id: string }>();
-  const [searchParams, _] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [editting, setEditting] = useState<boolean>(false);
   const [conversation, setConversation] = useState<ConversationType>();
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);

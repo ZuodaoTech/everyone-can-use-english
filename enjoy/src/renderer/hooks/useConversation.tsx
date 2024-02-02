@@ -9,7 +9,7 @@ import { ChatOpenAI } from "langchain/chat_models/openai";
 import { ChatOllama } from "langchain/chat_models/ollama";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatPromptTemplate, MessagesPlaceholder } from "langchain/prompts";
-import OpenAI, { type ClientOptions } from "openai";
+import OpenAI from "openai";
 import { type Generation } from "langchain/dist/schema";
 import { v4 } from "uuid";
 
@@ -124,7 +124,7 @@ export const useConversation = () => {
 
     const llm = pickLlm(conversation);
     const chain = new ConversationChain({
-      // @ts-ignore
+      // @ts-expect-error
       llm,
       memory,
       prompt,

@@ -25,7 +25,8 @@ export const PitchContour = (props: {
   height: number;
   id?: string;
 }) => {
-  let { peaks, sampleRate, frequencies, height, id } = props;
+  const { peaks, sampleRate, height, id } = props;
+  let { frequencies } = props;
 
   if (!frequencies) {
     frequencies = extractFrequencies({ peaks, sampleRate });

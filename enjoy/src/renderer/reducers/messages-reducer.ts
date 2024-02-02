@@ -12,6 +12,8 @@ export const messagesReducer = (
         return [...messages, action.record];
       } else if (action.records) {
         return [...messages, ...action.records];
+      } else {
+        return messages;
       }
     }
     case "create": {
