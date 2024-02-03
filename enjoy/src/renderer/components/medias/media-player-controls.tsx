@@ -174,7 +174,7 @@ export const MediaPlayerControls = (props: {
           >
             <GaugeIcon className="w-6 h-6" />
             {playbackRate != 1.0 && (
-              <span className="absolute left-[1.25rem] top-6 text-[0.70rem] font-bold text-gray-400">
+              <span className="absolute left-[1.25rem] top-6 text-[0.6rem] font-bold text-gray-400">
                 {playbackRate.toFixed(1)}
               </span>
             )}
