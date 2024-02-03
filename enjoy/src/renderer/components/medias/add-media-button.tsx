@@ -44,14 +44,14 @@ export const AddMediaButton = () => {
       <DialogTrigger asChild>
         <Button className="capitalize">
           <PlusCircleIcon className="mr-2 h-4 w-4" />
-          {t("addRecourse")}
+          {t("addResource")}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t("addRecourse")}</DialogTitle>
+          <DialogTitle>{t("addResource")}</DialogTitle>
           <DialogDescription>
-            {t("addResourseFromUrlOrLocal")}
+            {t("addResourceFromUrlOrLocal")}
           </DialogDescription>
         </DialogHeader>
 

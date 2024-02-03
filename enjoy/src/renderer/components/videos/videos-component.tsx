@@ -182,7 +182,7 @@ export const VideosComponent = () => {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t("editRecourse")}</DialogTitle>
+            <DialogTitle>{t("editResource")}</DialogTitle>
           </DialogHeader>
 
           <VideoEditForm
@@ -202,10 +202,10 @@ export const VideosComponent = () => {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("deleteRecourse")}</AlertDialogTitle>
+            <AlertDialogTitle>{t("deleteResource")}</AlertDialogTitle>
             <AlertDialogDescription>
               <p className="break-all">
-                {t("deleteRecourseConfirmation", {
+                {t("deleteResourceConfirmation", {
                   name: deleting?.name || "",
                 })}
               </p>
