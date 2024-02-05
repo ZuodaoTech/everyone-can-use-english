@@ -6100,7 +6100,7 @@ __metadata:
     ts-node: "npm:^10.9.2"
     tslib: "npm:^2.6.2"
     typescript: "npm:^5.3.3"
-    umzug: "npm:^3.5.1"
+    umzug: "npm:^3.6.1"
     vite-plugin-static-copy: "npm:^1.0.1"
     wavesurfer.js: "npm:^7.7.1"
     zod: "npm:^3.22.4"
@@ -12786,10 +12786,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^3.0.0, type-fest@npm:^3.1.0":
+"type-fest@npm:^3.1.0":
   version: 3.13.1
   resolution: "type-fest@npm:3.13.1"
   checksum: 10c0/547d22186f73a8c04590b70dcf63baff390078c75ea8acd366bbd510fd0646e348bd1970e47ecf795b7cff0b41d26e9c475c1fedd6ef5c45c82075fbf916b629
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^4.0.0":
+  version: 4.10.2
+  resolution: "type-fest@npm:4.10.2"
+  checksum: 10c0/740f7d30da742ff413e8690ec10a24df054bfd87575cf92691b77f5a6b8185c582da529b84ceb13771482599e085712beec51492feaef2a1adc8661c0a47ecba
   languageName: node
   linkType: hard
 
@@ -12886,16 +12893,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"umzug@npm:^3.5.1":
-  version: 3.5.1
-  resolution: "umzug@npm:3.5.1"
+"umzug@npm:^3.6.1":
+  version: 3.6.1
+  resolution: "umzug@npm:3.6.1"
   dependencies:
     "@rushstack/ts-command-line": "npm:^4.12.2"
     emittery: "npm:^0.13.0"
     glob: "npm:^8.0.3"
     pony-cause: "npm:^2.1.4"
-    type-fest: "npm:^3.0.0"
-  checksum: 10c0/8e7eed79cc04fbfa92db24a8c4b8d3e8dd8d42cd620b474a5a1e32c1fa0b0e0f20a9a7157bec38f8852125f5914df3a4cdfa4271c62b717ec471af6444405bd9
+    type-fest: "npm:^4.0.0"
+  checksum: 10c0/0a58d3a5ed3b3b50b42a4ad25d4dc2c9103ae8c8061e9f855f49b40507e6a6affc92bc4e10d3f29e091e4024ae7cc73d63cface2c902a5ad4ddb4b74064fe0d8
   languageName: node
   linkType: hard
 
