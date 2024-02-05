@@ -5857,10 +5857,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-log@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "electron-log@npm:5.1.0"
-  checksum: 10c0/7a9bcab5a1f516641364711c0f23d440a00962c8f087f18125c89ddcab1da06181de59359e8023ac0824a59d7001a2faf08a61bbd68609ca53feb85815376bc9
+"electron-log@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "electron-log@npm:5.1.1"
+  checksum: 10c0/4ca427404d7a660df69146a4d16fcc266f0fa8d1da665b226cda50b8608f7ef032c43bef1330125b692835582afca4e2123602840b3216735c586dd49c16d03c
   languageName: node
   linkType: hard
 
@@ -6053,7 +6053,7 @@ __metadata:
     decamelize: "npm:^6.0.0"
     decamelize-keys: "npm:^2.0.1"
     electron: "npm:^28.2.0"
-    electron-log: "npm:^5.1.0"
+    electron-log: "npm:^5.1.1"
     electron-settings: "npm:^4.0.2"
     electron-squirrel-startup: "npm:^1.0.0"
     eslint: "npm:^8.56.0"
