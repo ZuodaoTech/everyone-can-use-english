@@ -91,13 +91,13 @@ sudo ln -s /Applications/JupyterLab.app/Contents/Resources/app/jlab /usr/local/b
 
 可以选择使用 Jupyterlab-Desktop 自带的 “Bundled Python environment”，不过，它的 Python 版本是 3.8.17。这个 “Bundle” 中，Python 解释器是 `~/Library/jupyterlab-desktop/jlab_server/bin/python`；所有相关组件安装在 `~/Library/jupyterlab-desktop/jlab_server/` 文件夹之内。
 
-![](images/jld-3.8.png)
+![](../images/jld-3.8.png)
 
 想要使用更高版本的 Python 及其环境，比如，Python 3.11.5，就得用我们自己在系统上使用 `conda` 安装的 Python 环境。
 
 打开 JupyterLab-Desktop 之后，右上角会显示当前使用的 Python 环境名称，比如，最初的时候，默认是 `conda: jlab_server`…… 点击这个字符串，会跳出一个带有输入框的下拉菜单：
 
-![](images/jld-change-env.png)
+![](../images/jld-change-env.png)
 
 在输入框里输入我们用 `conda` 安装的 Python 路径而后按 `Enter` 键即可：
 
@@ -110,11 +110,11 @@ which python
 
 而后我们就可以在 JupyterLab-Destop 里面使用自己选择的 Python 版本了：
 
-![](images/jld-3.11.5.png)
+![](../images/jld-3.11.5.png)
 
 有必要的话，可以在 JupyterLab-Desktop 的 `Settings > Server` 对话框里，把某个 Python 环境设置成 “默认”：
 
-![](images/jld-default-env.png)
+![](../images/jld-default-env.png)
 
 ### 6. jlab 命令使用
 
@@ -163,23 +163,23 @@ jlab sample.ipynb &
 
 找到下载的文件 `Anaconda3 ...... .exe` 双击运行安装向导，需要注意的是**下面这几个地方不要选错**：
 
-![installJL-2](images/win-installJL-2.png)
+![installJL-2](../images/win-installJL-2.png)
 
-![installJL-3](images/win-installJL-3.png)
+![installJL-3](../images/win-installJL-3.png)
 
 确认无误再点击 Install 安装：
 
-![installJL-4](images/win-installJL-4.png)
+![installJL-4](../images/win-installJL-4.png)
 
 > 在安装过程的最后一小段，电脑反应可能会变慢，感觉好像是卡住了，无需紧张，静静等待就好，因为安装过程中会执行各种解压、下载和安装命令。
 
 当出现 Completed 字样，说明安装成功，我们 Next ：
 
-![installJL-6](images/win-installJL-5.png)
+![installJL-6](../images/win-installJL-5.png)
 
 最后 Finish 的时候记得取消这个对勾：
 
-![installJL-6](images/win-installJL-6.png)
+![installJL-6](../images/win-installJL-6.png)
 
 点击 Finish
 
@@ -187,27 +187,27 @@ jlab sample.ipynb &
 
 安装完成后，系统会自动启动 Anaconda Navigator：
 
-![installJL-7](images/win-installJL-7.png)
+![installJL-7](../images/win-installJL-7.png)
 
 Anaconda Navigator 提示有新版本，点击 No, remind me later 暂不升级：
 
-![installJL-8](images/win-installJL-8.png)
+![installJL-8](../images/win-installJL-8.png)
 
 > 如果你对你的网络很有信心，你也可以现在升级，无论你是否升级，都不影响后续操作
 
 点击窗口左侧的 Environments 进入环境配置：
 
-![installJL-9](images/win-installJL-9.png)
+![installJL-9](../images/win-installJL-9.png)
 
 点击屏幕左下部分的 Create 按钮，新建一个新的 Python 环境，专门用于英语训练：
 
-![installJL-10](images/win-installJL-10.png)
+![installJL-10](../images/win-installJL-10.png)
 
 > 尽可能不要破坏系统的 Python 环境，以防其他使用Python 的 APP 出问题
 
 在弹出的对话框中，在 Name 这一行输入这个虚拟环境的名称  EnTrainEVM ：
 
-![installJL-11](images/win-installJL-11.png)
+![installJL-11](../images/win-installJL-11.png)
 
 > 这个名称随便填啥都可以，只要自己看着顺眼即可；只是**不能**整成**中文或者纯数字** 
 >
@@ -216,7 +216,7 @@ Anaconda Navigator 提示有新版本，点击 No, remind me later 暂不升级�
 
 点击 Create 创建环境
 
-![installJL-12](images/win-installJL-12.png)
+![installJL-12](../images/win-installJL-12.png)
 
 这个时候你会看到右下角的进度条在蠕动，说明你创建的 Python 环境正在创建中
 
@@ -224,19 +224,19 @@ Anaconda Navigator 提示有新版本，点击 No, remind me later 暂不升级�
 
 看到下面这样的画面，说明环境创建成功！
 
-![installJL-13](images/win-installJL-13.png)
+![installJL-13](../images/win-installJL-13.png)
 
 
 
 > 如果一开始你没有更新 Anaconda Navigator 可能会弹出新版本提示，我们同样点击 No, remind me later 暂不升级
 >
-> ![installJL-8](images/win-installJL-8.png)
+> ![installJL-8](../images/win-installJL-8.png)
 
 点击窗口左边的 Home 进入主页，往下滑，找到 Jupyter Lab 点击 Install 安装：
 
-![installJL-17](images/win-installJL-17.png)
+![installJL-17](../images/win-installJL-17.png)
 
-![installJL-18](images/win-installJL-19.png)
+![installJL-18](../images/win-installJL-19.png)
 
 等右下角的进度条走完，说明安装成功！可以关闭 Anaconda Navigator 程序了。
 
@@ -246,11 +246,11 @@ Anaconda Navigator 提示有新版本，点击 No, remind me later 暂不升级�
 
 找到下载目录，双击 `JupyterLab-Setup-Windows` 运行安装向导，此时系统会提示安装程序需要管理员权限，我们点 `是` 授权运行：
 
-![installJL-15](images/win-installJL-15.png)
+![installJL-15](../images/win-installJL-15.png)
 
 点击我同意，安装立即开始
 
-![installJL-14](images/win-installJL-14.png)
+![installJL-14](../images/win-installJL-14.png)
 
 安装完成，点击完成
 
@@ -258,27 +258,27 @@ Anaconda Navigator 提示有新版本，点击 No, remind me later 暂不升级�
 
 系统会自动运行 JupyterLab Desktop 程序：
 
-![installJL-16](images/win-installJL-16.png)
+![installJL-16](../images/win-installJL-16.png)
 
 我们点击 Open Folder 打开文件夹，找到存放学习资料的地方，点击 Open：
 
-![installJL-21](images/win-installJL-21.png)
+![installJL-21](../images/win-installJL-21.png)
 
 在窗口的右上方，有一个蓝色的图标，点一下：
 
-![installJL-23](images/win-installJL-23.png)
+![installJL-23](../images/win-installJL-23.png)
 
 在弹出的菜单里，选择我们刚才创建的 EnTrainEVM 英语练习环境：
 
-![installJL-24](images/win-installJL-24.png)
+![installJL-24](../images/win-installJL-24.png)
 
 看到这个画面需要稍微等一下：
 
-![installJL-25](images/win-installJL-25.png)
+![installJL-25](../images/win-installJL-25.png)
 
 当你看到这个画面，说明 JupyterLab Desktop 已经安装成功啦！
 
-![installJL-26](images/win-installJL-26.png)
+![installJL-26](../images/win-installJL-26.png)
 
 ### 6. jlab 命令使用
 
