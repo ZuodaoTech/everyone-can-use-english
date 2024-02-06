@@ -365,6 +365,11 @@ export const MediaPlayer = (props: {
       currentSegment.offsets.from / 1000.0,
       currentSegment.offsets.to / 1000.0
     );
+
+    // set zoom ratio to fit the current segment
+    if (!isPlaying) {
+      setZoomRatio(calcFitZoomRatio());
+    }
   }, [
     currentSegmentIndex,
     initialized,
@@ -539,7 +544,9 @@ export const MediaPlayer = (props: {
             const segment = transcription?.result?.[currentSegmentIndex + 1];
             if (!segment) return;
 
-            wavesurfer.seekTo(segment.offsets.from / 1000 / wavesurfer.getDuration());
+            wavesurfer.seekTo(
+              segment.offsets.from / 1000 / wavesurfer.getDuration()
+            );
           }}
           onPrev={() => {
             if (!transcription) return;
@@ -547,7 +554,9 @@ export const MediaPlayer = (props: {
             const segment = transcription?.result?.[currentSegmentIndex - 1];
             if (!segment) return;
 
-            wavesurfer.seekTo(segment.offsets.from / 1000 / wavesurfer.getDuration());
+            wavesurfer.seekTo(
+              segment.offsets.from / 1000 / wavesurfer.getDuration()
+            );
           }}
           playMode={playMode}
           setPlayMode={setPlayMode}
