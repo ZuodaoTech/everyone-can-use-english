@@ -191,7 +191,7 @@
   "verificationCode": "验证码",
   "delete": "删除",
   "transcribe": "语音转文本",
-  "stillTranscribing": "语音转文本仍在进行中，请耐心等候。或者您可以切换到另一个更小的模型以加快速度。",
+  "stillTranscribing": "语音转文本仍在进行中，请耐心等候。",
   "unableToSetLibraryPath": "无法设置资源库保存路径 {{path}}",
   "nthStep": "第 {{current}}/{{totalSteps}} 步",
   "open": "打开",
