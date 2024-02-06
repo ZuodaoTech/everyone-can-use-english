@@ -71,19 +71,35 @@ export const PronunciationAssessmentWordResult = (props: {
     <TooltipProvider>
       <Tooltip delayDuration={500}>
         <TooltipTrigger>
-          <span
+          <div
             onClick={() => {
-              onSeek && onSeek(result.offset / 1e7)
+              onSeek && onSeek(result.offset / 1e7);
             }}
-            className={`${
-              currentTime * 1e7 >= result.offset &&
-              currentTime * 1e7 < result.offset + result.duration
-                ? "underline"
-                : ""
-            } underline-offset-4`}
+            className="text-center"
           >
-            {WordDisplay}
-          </span>
+            <div className="">
+              {result.phonemes.map((phoneme, index) => (
+                <span
+                  key={index}
+                  className={`italic ${scoreColor(
+                    phoneme.pronunciationAssessment.accuracyScore
+                  )}`}
+                >
+                  {phoneme.phoneme}
+                </span>
+              ))}
+            </div>
+            <div
+              className={`${
+                currentTime * 1e7 >= result.offset &&
+                currentTime * 1e7 < result.offset + result.duration
+                  ? "underline"
+                  : ""
+              } underline-offset-4`}
+            >
+              {WordDisplay}
+            </div>
+          </div>
         </TooltipTrigger>
 
         <TooltipContent>
@@ -99,7 +115,9 @@ export const PronunciationAssessmentWordResult = (props: {
                 {result.phonemes.map((phoneme, index) => (
                   <div key={index} className="text-center">
                     <div className="font-bold">{phoneme.phoneme}</div>
-                    <div className="text-sm font-serif">{phoneme.pronunciationAssessment.accuracyScore}</div>
+                    <div className="text-sm font-serif">
+                      {phoneme.pronunciationAssessment.accuracyScore}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -158,3 +176,12 @@ const MonotoneWordDisplay = (props: { word: string }) => (
     {props.word}
   </span>
 );
+
+const scoreColor = (score: number) => {
+  if (!score) return "gray";
+
+  if (score >= 80) return "text-foreground/70";
+  if (score >= 60) return "font-bold text-yellow-600";
+
+  return "font-bold text-red-600";
+};
