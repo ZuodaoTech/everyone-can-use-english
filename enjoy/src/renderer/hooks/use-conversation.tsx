@@ -36,6 +36,7 @@ export const useConversation = () => {
         configuration: {
           baseURL: `${apiUrl}/api/ai`,
         },
+        maxRetries: 3,
         modelName: model,
         temperature,
         maxTokens,
