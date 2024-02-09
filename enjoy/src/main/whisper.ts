@@ -5,7 +5,8 @@ import {
   WHISPER_MODELS_OPTIONS,
   PROCESS_TIMEOUT,
   AI_WORKER_ENDPOINT,
- WEB_API_URL } from "@/constants";
+  WEB_API_URL,
+} from "@/constants";
 import { exec } from "child_process";
 import fs from "fs-extra";
 import log from "electron-log/main";
@@ -22,11 +23,21 @@ const logger = log.scope("whisper");
 const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
 const END_OF_WORD_REGEX = /[^\.!,\?][\.!\?]/g;
 class Whipser {
-  private binMain = path.join(__dirname, "lib", "whisper", "main");
+  private binMain: string;
   public config: WhisperConfigType;
 
   constructor(config?: WhisperConfigType) {
     this.config = config || settings.whisperConfig();
+    const customWhisperPath = path.join(
+      settings.libraryPath(),
+      "whisper",
+      "main"
+    );
+    if (fs.existsSync(customWhisperPath)) {
+      this.binMain = customWhisperPath;
+    } else {
+      this.binMain = path.join(__dirname, "lib", "whisper", "main");
+    }
   }
 
   currentModel() {
