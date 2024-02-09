@@ -36,10 +36,11 @@ export const AISettingsProvider = ({
 
   useEffect(() => {
     fetchSettings();
-    refreshWhisperConfig();
   }, []);
 
   useEffect(() => {
+    if (!libraryPath) return;
+
     refreshWhisperConfig();
   }, [libraryPath]);
 

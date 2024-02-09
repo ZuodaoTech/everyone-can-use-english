@@ -94,7 +94,13 @@ class TranscriptionsHandler {
         }, 1000 * 10);
 
         transcription
-          .process({ force, wavFileBlob: blob })
+          .process({
+            force,
+            wavFileBlob: blob,
+            onProgress: (progress: number) => {
+              event.sender.send("transcription-on-progress", progress);
+            },
+          })
           .catch((err) => {
             event.sender.send("on-notification", {
               type: "error",

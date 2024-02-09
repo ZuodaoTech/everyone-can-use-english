@@ -92,11 +92,12 @@ export class Transcription extends Model<Transcription> {
     options: {
       force?: boolean;
       wavFileBlob?: { type: string; arrayBuffer: ArrayBuffer };
+      onProgress?: (progress: number) => void;
     } = {}
   ) {
     if (this.getDataValue("state") === "processing") return;
 
-    const { force = false, wavFileBlob } = options;
+    const { force = false, wavFileBlob, onProgress } = options;
 
     logger.info(`[${this.getDataValue("id")}]`, "Start to transcribe.");
 
@@ -156,9 +157,12 @@ export class Transcription extends Model<Transcription> {
         force,
         extra: [
           "--split-on-word",
-          "--max-len 1",
-          `--prompt "Hello! Welcome to listen to this audio."`,
+          "--max-len",
+          "1",
+          "--prompt",
+          `"Hello! Welcome to listen to this audio."`,
         ],
+        onProgress,
       });
       const result = whisper.groupTranscription(transcription);
       this.update({
