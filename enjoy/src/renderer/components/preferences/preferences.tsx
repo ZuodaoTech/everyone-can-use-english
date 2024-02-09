@@ -28,7 +28,7 @@ export const Preferences = () => {
       value: "basic",
       label: t("basicSettingsShort"),
       component: () => (
-        <div className="">
+        <div className="pr-1">
           <div className="font-semibold mb-4 capitilized">
             {t("basicSettings")}
           </div>
@@ -72,7 +72,7 @@ export const Preferences = () => {
       value: "account",
       label: t("accountSettingsShort"),
       component: () => (
-        <div className="">
+        <div className="pr-1">
           <div className="font-semibold mb-4 capitilized">
             {t("accountSettings")}
           </div>
