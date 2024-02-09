@@ -139,7 +139,7 @@ export class Recording extends Model<Recording> {
     const webApi = new Client({
       baseUrl: process.env.WEB_API_URL || WEB_API_URL,
       accessToken: settings.getSync("user.accessToken") as string,
-      logger: log.scope("api/client"),
+      logger: log.scope("recording/sync"),
     });
 
     return webApi.syncRecording(this.toJSON()).then(() => {
@@ -160,7 +160,7 @@ export class Recording extends Model<Recording> {
     const webApi = new Client({
       baseUrl: process.env.WEB_API_URL || WEB_API_URL,
       accessToken: settings.getSync("user.accessToken") as string,
-      logger: log.scope("api/client"),
+      logger: log.scope("recording/assess"),
     });
 
     const { token, region } = await webApi.generateSpeechToken();
@@ -274,6 +274,14 @@ export class Recording extends Model<Recording> {
   @AfterDestroy
   static cleanupFile(recording: Recording) {
     fs.remove(recording.filePath);
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("recording/cleanupFile"),
+    });
+    webApi.deleteRecording(recording.id).catch((err) => {
+      logger.error("deleteRecording failed:", err.message);
+    });
   }
 
   static async createFromBlob(

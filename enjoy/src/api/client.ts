@@ -28,7 +28,7 @@ export class Client {
     });
     this.api.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${accessToken}`;
-      config.headers['Accept-Language'] = locale;
+      config.headers["Accept-Language"] = locale;
 
       this.logger.debug(
         config.method.toUpperCase(),
@@ -140,8 +140,16 @@ export class Client {
     return this.api.post("/api/mine/audios", decamelizeKeys(audio));
   }
 
+  deleteAudio(id: string) {
+    return this.api.delete(`/api/mine/audios/${id}`);
+  }
+
   syncVideo(video: Partial<VideoType>) {
     return this.api.post("/api/mine/videos", decamelizeKeys(video));
+  }
+
+  deleteVideo(id: string) {
+    return this.api.delete(`/api/mine/videos/${id}`);
   }
 
   syncTranscription(transcription: Partial<TranscriptionType>) {
@@ -152,6 +160,10 @@ export class Client {
     if (!recording) return;
 
     return this.api.post("/api/mine/recordings", decamelizeKeys(recording));
+  }
+
+  deleteRecording(id: string) {
+    return this.api.delete(`/api/mine/recordings/${id}`);
   }
 
   generateSpeechToken(): Promise<{ token: string; region: string }> {

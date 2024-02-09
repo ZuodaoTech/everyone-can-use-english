@@ -16,7 +16,7 @@ import {
 } from "sequelize-typescript";
 import { Recording, Speech, Transcription, Video } from "@main/db/models";
 import settings from "@main/settings";
-import { AudioFormats, VideoFormats , WEB_API_URL } from "@/constants";
+import { AudioFormats, VideoFormats, WEB_API_URL } from "@/constants";
 import { hashFile } from "@/utils";
 import path from "path";
 import fs from "fs-extra";
@@ -170,7 +170,7 @@ export class Audio extends Model<Audio> {
     const webApi = new Client({
       baseUrl: process.env.WEB_API_URL || WEB_API_URL,
       accessToken: settings.getSync("user.accessToken") as string,
-      logger: log.scope("api/client"),
+      logger: log.scope("audio/sync"),
     });
 
     return webApi.syncAudio(this.toJSON()).then(() => {
@@ -230,6 +230,16 @@ export class Audio extends Model<Audio> {
         targetId: audio.id,
         targetType: "Audio",
       },
+    });
+
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger: log.scope("audio/cleanupFile"),
+    });
+
+    webApi.deleteAudio(audio.id).catch((err) => {
+      logger.error("deleteAudio failed:", err.message);
     });
   }
 
