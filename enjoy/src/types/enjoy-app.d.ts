@@ -246,6 +246,8 @@ type EnjoyAppType = {
     findOrCreate: (params: any) => Promise<TranscriptionType>;
     process: (params: any, options: any) => Promise<void>;
     update: (id: string, params: any) => Promise<void>;
+    onProgress: (callback: (event, progress: number) => void) => void;
+    removeProgressListeners: () => Promise<void>;
   };
   waveforms: {
     find: (id: string) => Promise<WaveFormDataType>;

@@ -7,7 +7,7 @@ import {
   AI_WORKER_ENDPOINT,
   WEB_API_URL,
 } from "@/constants";
-import { exec } from "child_process";
+import { exec, spawn } from "child_process";
 import fs from "fs-extra";
 import log from "electron-log/main";
 import { t } from "i18next";
@@ -193,6 +193,7 @@ class Whipser {
     options?: {
       force?: boolean;
       extra?: string[];
+      onProgress?: (progress: number) => void;
     }
   ): Promise<Partial<WhisperOutputType>> {
     if (this.config.service === "local") {
@@ -310,10 +311,11 @@ class Whipser {
     options?: {
       force?: boolean;
       extra?: string[];
+      onProgress?: (progress: number) => void;
     }
   ): Promise<Partial<WhisperOutputType>> {
     logger.debug("transcribing from local");
-    const { force = false, extra = [] } = options || {};
+    const { force = false, extra = [], onProgress } = options || {};
     const filename = path.basename(file, path.extname(file));
     const tmpDir = settings.cachePath();
     const outputFile = path.join(tmpDir, filename + ".json");
@@ -334,39 +336,60 @@ class Whipser {
       `--model "${this.currentModel()}"`,
       "--output-json",
       `--output-file "${path.join(tmpDir, filename)}"`,
+      "-pp",
       ...extra,
     ].join(" ");
 
     logger.info(`Running command: ${command}`);
+
+    const transcribe = spawn(
+      this.binMain,
+      [
+        "--file",
+        file,
+        "--model",
+        this.currentModel(),
+        "--output-json",
+        "--output-file",
+        path.join(tmpDir, filename),
+        "-pp",
+        ...extra,
+      ],
+      {
+        timeout: PROCESS_TIMEOUT,
+      }
+    );
+
     return new Promise((resolve, reject) => {
-      exec(
-        command,
-        {
-          timeout: PROCESS_TIMEOUT,
-        },
-        (error, stdout, stderr) => {
-          if (fs.pathExistsSync(outputFile)) {
-            resolve(fs.readJson(outputFile));
-          }
+      transcribe.stdout.on("data", (data) => {
+        logger.debug(`stdout: ${data}`);
+      });
 
-          if (error) {
-            logger.error("error", error);
-          }
-
-          if (stderr) {
-            logger.error("stderr", stderr);
-          }
-
-          if (stdout) {
-            logger.debug(stdout);
-          }
-
-          reject(
-            error ||
-              new Error(stderr || "Whisper transcribe failed: unknown error")
-          );
+      transcribe.stderr.on("data", (data) => {
+        const output = data.toString();
+        logger.error(`stderr: ${output}`);
+        if (output.startsWith("whisper_print_progress_callback")) {
+          const progress = parseInt(output.match(/\d+%/)?.[0] || "0");
+          if (typeof progress === "number") onProgress(progress);
         }
-      );
+      });
+
+      transcribe.on("exit", (code) => {
+        logger.info(`transcribe process exited with code ${code}`);
+      });
+
+      transcribe.on("error", (err) => {
+        logger.error("transcribe error", err.message);
+        reject(err);
+      });
+
+      transcribe.on("close", () => {
+        if (fs.pathExistsSync(outputFile)) {
+          resolve(fs.readJson(outputFile));
+        } else {
+          reject(new Error("Transcription failed"));
+        }
+      });
     });
   }
 

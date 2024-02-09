@@ -428,6 +428,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     update: (id: string, params: any) => {
       return ipcRenderer.invoke("transcriptions-update", id, params);
     },
+    onProgress: (
+      callback: (event: IpcRendererEvent, progress: number) => void
+    ) => ipcRenderer.on("transcription-on-progress", callback),
+    removeProgressListeners: () => {
+      ipcRenderer.removeAllListeners("transcription-on-progress");
+    },
   },
   waveforms: {
     find: (id: string) => {

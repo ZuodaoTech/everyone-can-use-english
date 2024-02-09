@@ -12,7 +12,6 @@ import {
   ScrollArea,
   Button,
   PingPoint,
-  toast,
 } from "@renderer/components/ui";
 import React, { useEffect, useContext, useState } from "react";
 import { t } from "i18next";
@@ -46,6 +45,7 @@ export const MediaTranscription = (props: {
   const containerRef = React.createRef<HTMLDivElement>();
   const [transcribing, setTranscribing] = useState<boolean>(false);
   const { transcribe } = useTranscribe();
+  const [progress, setProgress] = useState<number>(0);
 
   const [recordingStats, setRecordingStats] =
     useState<SegementRecordingStatsType>([]);
@@ -54,6 +54,7 @@ export const MediaTranscription = (props: {
     if (transcribing) return;
 
     setTranscribing(true);
+    setProgress(0);
     transcribe({
       mediaId,
       mediaType,
@@ -79,8 +80,14 @@ export const MediaTranscription = (props: {
       generate();
     }
 
+    EnjoyApp.transcriptions.onProgress((_, p: number) => {
+      if (p > 100) p = 100;
+      setProgress(p);
+    });
+
     return () => {
       removeDbListener(fetchSegmentStats);
+      EnjoyApp.transcriptions.removeProgressListeners();
     };
   }, [mediaId, mediaType]);
 
@@ -105,7 +112,10 @@ export const MediaTranscription = (props: {
       <div className="mb-4 flex items-cener justify-between">
         <div className="flex items-center space-x-2">
           {transcribing || transcription.state === "processing" ? (
-            <PingPoint colorClassName="bg-yellow-500" />
+            <>
+              <PingPoint colorClassName="bg-yellow-500" />
+              <div className="text-sm">{progress}%</div>
+            </>
           ) : transcription.state === "finished" ? (
             <CheckCircleIcon className="text-green-500 w-4 h-4" />
           ) : (
