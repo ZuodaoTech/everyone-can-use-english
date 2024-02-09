@@ -5,7 +5,7 @@ import {
   RecordingActivities,
 } from "@renderer/components";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { Button, toast } from "@renderer/components/ui";
+import { Button } from "@renderer/components/ui";
 import { ChevronLeftIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";

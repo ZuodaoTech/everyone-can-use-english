@@ -14,6 +14,9 @@ import {
 } from "sequelize";
 import dayjs from "dayjs";
 import { t } from "i18next";
+import log from "electron-log/main";
+
+const logger = log.scope("db/handlers/recordings-handler");
 
 class RecordingsHandler {
   private async findAll(
@@ -68,17 +71,28 @@ class RecordingsHandler {
     const recordings = await Recording.findAll({
       where: { syncedAt: null },
     });
-    if (recordings.length > 0) {
-      event.sender.send("on-notification", {
-        type: "warning",
-        message: t("syncingRecordings", { count: recordings.length }),
-      });
+    if (recordings.length == 0) return;
+
+    event.sender.send("on-notification", {
+      type: "warning",
+      message: t("syncingRecordings", { count: recordings.length }),
+    });
+
+    try {
       recordings.forEach(async (recording) => {
         await recording.sync();
       });
+
       event.sender.send("on-notification", {
         type: "info",
         message: t("allRecordingsSynced"),
+      });
+    } catch (err) {
+      logger.error("failed to sync recordings", err.message);
+
+      event.sender.send("on-notification", {
+        type: "error",
+        message: t("failedToSyncRecordings"),
       });
     }
   }

@@ -446,5 +446,6 @@
   "translatedSuccessfully": "Translated successfully",
   "translationFailed": "Translation failed",
   "allRecordingsSynced": "All recordings synced",
-  "syncingRecordings": "Syncing {{count}} recordings"
+  "syncingRecordings": "Syncing {{count}} recordings",
+  "failedToSyncRecordings": "Syncing recordings failed"
 }
