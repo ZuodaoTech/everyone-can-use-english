@@ -71,9 +71,11 @@ class Whipser {
     settings.setSync("whisper.modelsPath", dir);
     this.config = settings.whisperConfig();
 
+    const command = `"${this.binMain}" --help`;
+    logger.debug(`Checking whisper command: ${command}`);
     return new Promise((resolve, reject) => {
       exec(
-        `"${this.binMain}" --help`,
+        command,
         {
           timeout: PROCESS_TIMEOUT,
         },
@@ -122,7 +124,7 @@ class Whipser {
         "--output-json",
         `--output-file "${path.join(tmpDir, "jfk")}"`,
       ];
-      logger.debug(`Running command: ${commands.join(" ")}`);
+      logger.debug(`Checking whisper command: ${commands.join(" ")}`);
       exec(
         commands.join(" "),
         {
@@ -435,8 +437,12 @@ class Whipser {
       this.config = settings.whisperConfig();
 
       return this.check()
-        .then(() => {
-          return Object.assign({}, this.config, { ready: true });
+        .then(({ success, log }) => {
+          if (success) {
+            return Object.assign({}, this.config, { ready: true });
+          } else {
+            throw new Error(log);
+          }
         })
         .catch((err) => {
           settings.setSync("whisper.model", originalModel);
