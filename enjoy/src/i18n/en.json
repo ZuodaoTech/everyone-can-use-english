@@ -444,5 +444,8 @@
   "generatingIpaFailed": "Generating IPA failed",
   "translating": "Translating",
   "translatedSuccessfully": "Translated successfully",
-  "translationFailed": "Translation failed"
+  "translationFailed": "Translation failed",
+  "allRecordingsSynced": "All recordings synced",
+  "syncingRecordings": "Syncing {{count}} recordings",
+  "failedToSyncRecordings": "Syncing recordings failed"
 }

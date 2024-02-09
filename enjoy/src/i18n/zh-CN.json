@@ -443,5 +443,8 @@
   "generatingIpaFailed": "音标生成失败",
   "translating": "正在翻译",
   "translatedSuccessfully": "翻译成功",
-  "translationFailed": "翻译失败"
+  "translationFailed": "翻译失败",
+  "allRecordingsSynced": "所有录音已同步",
+  "syncingRecordings": "{{count}} 条录音正在同步",
+  "failedToSyncRecordings": "同步录音失败"
 }

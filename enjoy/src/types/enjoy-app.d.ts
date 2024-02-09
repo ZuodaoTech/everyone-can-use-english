@@ -51,7 +51,7 @@ type EnjoyAppType = {
         navigatable?: boolean;
       }
     ) => Promise<void>;
-    show: (bounds: object) => Promise<void>;
+    show: (bounds: any) => Promise<void>;
     hide: () => Promise<void>;
     remove: () => Promise<void>;
     scrape: (url: string) => Promise<void>;
@@ -112,26 +112,27 @@ type EnjoyAppType = {
     removeListeners: () => Promise<void>;
   };
   audios: {
-    findAll: (params: object) => Promise<AudioType[]>;
-    findOne: (params: object) => Promise<AudioType>;
-    create: (uri: string, params?: object) => Promise<AudioType>;
-    update: (id: string, params: object) => Promise<AudioType | undefined>;
+    findAll: (params: any) => Promise<AudioType[]>;
+    findOne: (params: any) => Promise<AudioType>;
+    create: (uri: string, params?: any) => Promise<AudioType>;
+    update: (id: string, params: any) => Promise<AudioType | undefined>;
     destroy: (id: string) => Promise<undefined>;
     upload: (id: string) => Promise<void>;
   };
   videos: {
-    findAll: (params: object) => Promise<VideoType[]>;
-    findOne: (params: object) => Promise<VideoType>;
+    findAll: (params: any) => Promise<VideoType[]>;
+    findOne: (params: any) => Promise<VideoType>;
     create: (uri: string, params?: any) => Promise<VideoType>;
     update: (id: string, params: any) => Promise<VideoType | undefined>;
     destroy: (id: string) => Promise<undefined>;
     upload: (id: string) => Promise<void>;
   };
   recordings: {
-    findAll: (where: object) => Promise<RecordingType[]>;
-    findOne: (where: object) => Promise<RecordingType>;
-    create: (params: object) => Promise<RecordingType>;
-    update: (id: string, params: object) => Promise<RecordingType | undefined>;
+    findAll: (where: any) => Promise<RecordingType[]>;
+    findOne: (where: any) => Promise<RecordingType>;
+    syncAll: () => Promise<void>;
+    create: (params: any) => Promise<RecordingType>;
+    update: (id: string, params: any) => Promise<RecordingType | undefined>;
     destroy: (id: string) => Promise<void>;
     upload: (id: string) => Promise<void>;
     assess: (id: string) => Promise<void>;
@@ -165,7 +166,7 @@ type EnjoyAppType = {
     findAll: (params: any) => Promise<ConversationType[]>;
     findOne: (params: any) => Promise<ConversationType>;
     create: (params: any) => Promise<ConversationType>;
-    update: (id: string, params: object) => Promise<ConversationType>;
+    update: (id: string, params: any) => Promise<ConversationType>;
     destroy: (id: string) => Promise<void>;
     ask: (
       id: string,
@@ -181,8 +182,8 @@ type EnjoyAppType = {
     ) => Promise<MessageType[]>;
   };
   messages: {
-    findAll: (params: object) => Promise<MessageType[]>;
-    findOne: (params: object) => Promise<MessageType>;
+    findAll: (params: any) => Promise<MessageType[]>;
+    findOne: (params: any) => Promise<MessageType>;
     createInBatch: (messages: Partial<MessageType>[]) => Promise<void>;
     destroy: (id: string) => Promise<void>;
     createSpeech: (id: string, configuration?: any) => Promise<SpeechType>;
