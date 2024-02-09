@@ -64,6 +64,25 @@ class RecordingsHandler {
       });
   }
 
+  private async syncAll(event: IpcMainEvent) {
+    const recordings = await Recording.findAll({
+      where: { syncedAt: null },
+    });
+    if (recordings.length > 0) {
+      event.sender.send("on-notification", {
+        type: "warning",
+        message: t("syncingRecordings", { count: recordings.length }),
+      });
+      recordings.forEach(async (recording) => {
+        await recording.sync();
+      });
+      event.sender.send("on-notification", {
+        type: "info",
+        message: t("allRecordingsSynced"),
+      });
+    }
+  }
+
   private async create(
     event: IpcMainEvent,
     options: Attributes<Recording> & {
@@ -293,7 +312,7 @@ class RecordingsHandler {
   private async groupBySegment(
     event: IpcMainEvent,
     targetId: string,
-    targetType: string,
+    targetType: string
   ) {
     return Recording.findAll({
       where: {
@@ -328,6 +347,7 @@ class RecordingsHandler {
   register() {
     ipcMain.handle("recordings-find-all", this.findAll);
     ipcMain.handle("recordings-find-one", this.findOne);
+    ipcMain.handle("recordings-sync-all", this.syncAll);
     ipcMain.handle("recordings-create", this.create);
     ipcMain.handle("recordings-destroy", this.destroy);
     ipcMain.handle("recordings-upload", this.upload);
