@@ -213,10 +213,18 @@ type EnjoyAppType = {
     setService: (
       service: WhisperConfigType["service"]
     ) => Promise<WhisperConfigType>;
-    transcribeBlob: (
-      blob: { type: string; arrayBuffer: ArrayBuffer },
-      prompt?: string
-    ) => Promise<{ file: string; content: string }>;
+    transcribe: (
+      params: {
+        file?: string;
+        blob?: { type: string; arrayBuffer: ArrayBuffer };
+      },
+      options?: {
+        force?: boolean;
+        extra?: string[];
+      }
+    ) => Promise<Partial<WhisperOutputType>>;
+    onProgress: (callback: (event, progress: number) => void) => void;
+    removeProgressListeners: () => Promise<void>;
   };
   ffmpeg: {
     config: () => Promise<FfmpegConfigType>;

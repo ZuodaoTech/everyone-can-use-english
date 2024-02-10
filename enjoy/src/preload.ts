@@ -363,11 +363,26 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     check: () => {
       return ipcRenderer.invoke("whisper-check");
     },
-    transcribeBlob: (
-      blob: { type: string; arrayBuffer: ArrayBuffer },
-      prompt?: string
+    transcribe: (
+      params: {
+        file?: string;
+        blob?: {
+          type: string;
+          arrayBuffer: ArrayBuffer;
+        };
+      },
+      options?: {
+        force?: boolean;
+        extra?: string[];
+      }
     ) => {
-      return ipcRenderer.invoke("whisper-transcribe-blob", blob, prompt);
+      return ipcRenderer.invoke("whisper-transcribe", params, options);
+    },
+    onProgress: (
+      callback: (event: IpcRendererEvent, progress: number) => void
+    ) => ipcRenderer.on("whisper-on-progress", callback),
+    removeProgressListeners: () => {
+      ipcRenderer.removeAllListeners("whisper-on-progress");
     },
   },
   ffmpeg: {

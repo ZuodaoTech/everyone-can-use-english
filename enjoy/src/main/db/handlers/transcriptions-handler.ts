@@ -44,7 +44,7 @@ class TranscriptionsHandler {
     id: string,
     params: Attributes<Transcription>
   ) {
-    const { result } = params;
+    const { result, engine, model, state } = params;
 
     return Transcription.findOne({
       where: { id },
@@ -53,7 +53,7 @@ class TranscriptionsHandler {
         if (!transcription) {
           throw new Error("models.transcription.notFound");
         }
-        transcription.update({ result });
+        transcription.update({ result, engine, model, state });
       })
       .catch((err) => {
         logger.error(err);

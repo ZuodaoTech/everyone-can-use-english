@@ -152,61 +152,6 @@ class Whipser {
     });
   }
 
-  async transcribeBlob(
-    blob: { type: string; arrayBuffer: ArrayBuffer },
-    options?: {
-      prompt?: string;
-      group?: boolean;
-    }
-  ): Promise<
-    TranscriptionResultSegmentType[] | TranscriptionResultSegmentGroupType[]
-  > {
-    const { prompt, group = false } = options || {};
-
-    const format = blob.type.split("/")[1];
-
-    if (format !== "wav") {
-      throw new Error("Only wav format is supported");
-    }
-
-    const tempfile = path.join(settings.cachePath(), `${Date.now()}.${format}`);
-    await fs.outputFile(tempfile, Buffer.from(blob.arrayBuffer));
-
-    const extra = [];
-    if (prompt) {
-      extra.push(`--prompt "${prompt.replace(/"/g, '\\"')}"`);
-    }
-    const { transcription } = await this.transcribe(tempfile, {
-      force: true,
-      extra,
-    });
-
-    if (group) {
-      return this.groupTranscription(transcription);
-    } else {
-      return transcription;
-    }
-  }
-
-  async transcribe(
-    file: string,
-    options?: {
-      force?: boolean;
-      extra?: string[];
-      onProgress?: (progress: number) => void;
-    }
-  ): Promise<Partial<WhisperOutputType>> {
-    if (this.config.service === "local") {
-      return this.transcribeFromLocal(file, options);
-    } else if (this.config.service === "azure") {
-      return this.transcribeFromAzure(file);
-    } else if (this.config.service === "cloudflare") {
-      return this.transcribeFromCloudflare(file);
-    } else {
-      throw new Error("Unknown service");
-    }
-  }
-
   async transcribeFromAzure(file: string): Promise<Partial<WhisperOutputType>> {
     const webApi = new Client({
       baseUrl: process.env.WEB_API_URL || WEB_API_URL,
@@ -306,8 +251,14 @@ class Whipser {
   /* Ensure the file is in wav format
    * and 16kHz sample rate
    */
-  async transcribeFromLocal(
-    file: string,
+  async transcribe(
+    params: {
+      file?: string;
+      blob?: {
+        type: string;
+        arrayBuffer: ArrayBuffer;
+      };
+    },
     options?: {
       force?: boolean;
       extra?: string[];
@@ -315,6 +266,28 @@ class Whipser {
     }
   ): Promise<Partial<WhisperOutputType>> {
     logger.debug("transcribing from local");
+
+    const { blob } = params;
+    let { file } = params;
+    if (!file && !blob) {
+      throw new Error("No file or blob provided");
+    }
+
+    if (!this.currentModel()) {
+      throw new Error(t("pleaseDownloadWhisperModelFirst"));
+    }
+
+    if (blob) {
+      const format = blob.type.split("/")[1];
+
+      if (format !== "wav") {
+        throw new Error("Only wav format is supported");
+      }
+
+      file = path.join(settings.cachePath(), `${Date.now()}.${format}`);
+      await fs.outputFile(file, Buffer.from(blob.arrayBuffer));
+    }
+
     const { force = false, extra = [], onProgress } = options || {};
     const filename = path.basename(file, path.extname(file));
     const tmpDir = settings.cachePath();
@@ -326,46 +299,35 @@ class Whipser {
       return fs.readJson(outputFile);
     }
 
-    if (!this.currentModel()) {
-      throw new Error(t("pleaseDownloadWhisperModelFirst"));
-    }
-
-    const command = [
-      `"${this.binMain}"`,
-      `--file "${file}"`,
-      `--model "${this.currentModel()}"`,
+    const commandArguments = [
+      "--file",
+      file,
+      "--model",
+      this.currentModel(),
       "--output-json",
-      `--output-file "${path.join(tmpDir, filename)}"`,
+      "--output-file",
+      path.join(tmpDir, filename),
       "-pp",
+      "--split-on-word",
+      "--max-len",
+      "1",
       ...extra,
-    ].join(" ");
+    ];
 
-    logger.info(`Running command: ${command}`);
-
-    const transcribe = spawn(
-      this.binMain,
-      [
-        "--file",
-        file,
-        "--model",
-        this.currentModel(),
-        "--output-json",
-        "--output-file",
-        path.join(tmpDir, filename),
-        "-pp",
-        ...extra,
-      ],
-      {
-        timeout: PROCESS_TIMEOUT,
-      }
+    logger.info(
+      `Running command: ${this.binMain} ${commandArguments.join(" ")}`
     );
 
+    const command = spawn(this.binMain, commandArguments, {
+      timeout: PROCESS_TIMEOUT,
+    });
+
     return new Promise((resolve, reject) => {
-      transcribe.stdout.on("data", (data) => {
+      command.stdout.on("data", (data) => {
         logger.debug(`stdout: ${data}`);
       });
 
-      transcribe.stderr.on("data", (data) => {
+      command.stderr.on("data", (data) => {
         const output = data.toString();
         logger.error(`stderr: ${output}`);
         if (output.startsWith("whisper_print_progress_callback")) {
@@ -374,16 +336,16 @@ class Whipser {
         }
       });
 
-      transcribe.on("exit", (code) => {
+      command.on("exit", (code) => {
         logger.info(`transcribe process exited with code ${code}`);
       });
 
-      transcribe.on("error", (err) => {
+      command.on("error", (err) => {
         logger.error("transcribe error", err.message);
         reject(err);
       });
 
-      transcribe.on("close", () => {
+      command.on("close", () => {
         if (fs.pathExistsSync(outputFile)) {
           resolve(fs.readJson(outputFile));
         } else {
@@ -505,9 +467,14 @@ class Whipser {
       return await this.check();
     });
 
-    ipcMain.handle("whisper-transcribe-blob", async (event, blob, prompt) => {
+    ipcMain.handle("whisper-transcribe", async (event, params, options) => {
       try {
-        return await this.transcribeBlob(blob, prompt);
+        return await this.transcribe(params, {
+          ...options,
+          onProgress: (progress) => {
+            event.sender.send("whisper-on-progress", progress);
+          },
+        });
       } catch (err) {
         event.sender.send("on-notification", {
           type: "error",

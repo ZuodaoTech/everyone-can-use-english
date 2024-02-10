@@ -27,7 +27,7 @@ type NotificationType = {
 };
 
 type WhisperConfigType = {
-  service: "local" | "azure" | "cloudflare";
+  service: "local" | "azure" | "cloudflare" | "openai";
   availableModels: {
     type: string;
     name: string;

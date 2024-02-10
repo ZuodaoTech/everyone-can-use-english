@@ -153,17 +153,19 @@ export class Transcription extends Model<Transcription> {
         engine = "whisper",
         model,
         transcription,
-      } = await whisper.transcribe(wavFile, {
-        force,
-        extra: [
-          "--split-on-word",
-          "--max-len",
-          "1",
-          "--prompt",
-          `"Hello! Welcome to listen to this audio."`,
-        ],
-        onProgress,
-      });
+      } = await whisper.transcribe(
+        {
+          file: wavFile,
+        },
+        {
+          force,
+          extra: [
+            "--prompt",
+            `"Hello! Welcome to listen to this audio."`,
+          ],
+          onProgress,
+        }
+      );
       const result = whisper.groupTranscription(transcription);
       this.update({
         engine,
