@@ -12,6 +12,7 @@ import {
   ScrollArea,
   Button,
   PingPoint,
+  toast,
 } from "@renderer/components/ui";
 import React, { useEffect, useContext, useState } from "react";
 import { t } from "i18next";
@@ -55,13 +56,19 @@ export const MediaTranscription = (props: {
 
     setTranscribing(true);
     setProgress(0);
-    transcribe({
-      mediaId,
-      mediaType,
-      mediaSrc: mediaUrl,
-    }).finally(() => {
-      setTranscribing(false);
-    });
+    try {
+      const { engine, model, result } = await transcribe(mediaUrl);
+      await EnjoyApp.transcriptions.update(transcription.id, {
+        state: "finished",
+        result,
+        engine,
+        model,
+      });
+    } catch (err) {
+      toast.error(err.message);
+    }
+
+    setTranscribing(false);
   };
 
   const fetchSegmentStats = async () => {
@@ -80,7 +87,7 @@ export const MediaTranscription = (props: {
       generate();
     }
 
-    EnjoyApp.transcriptions.onProgress((_, p: number) => {
+    EnjoyApp.whisper.onProgress((_, p: number) => {
       if (p > 100) p = 100;
       setProgress(p);
     });
