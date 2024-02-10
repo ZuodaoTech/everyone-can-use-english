@@ -19,7 +19,7 @@ import { Audio, PronunciationAssessment, Video } from "@main/db/models";
 import fs from "fs-extra";
 import path from "path";
 import settings from "@main/settings";
-import { hashFile } from "@/utils";
+import { hashFile } from "@main/utils";
 import log from "electron-log/main";
 import storage from "@main/storage";
 import { Client } from "@/api";

@@ -12,6 +12,7 @@ import {
   ScrollArea,
   Button,
   PingPoint,
+  toast,
 } from "@renderer/components/ui";
 import React, { useEffect, useContext, useState } from "react";
 import { t } from "i18next";
@@ -19,6 +20,7 @@ import { LoaderIcon, CheckCircleIcon, MicIcon } from "lucide-react";
 import {
   DbProviderContext,
   AppSettingsProviderContext,
+  AISettingsProviderContext,
 } from "@renderer/context";
 import { useTranscribe } from "@renderer/hooks";
 
@@ -32,6 +34,7 @@ export const MediaTranscription = (props: {
   onSelectSegment?: (index: number) => void;
 }) => {
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
+  const { whisperConfig } = useContext(AISettingsProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const {
     transcription,
@@ -55,13 +58,19 @@ export const MediaTranscription = (props: {
 
     setTranscribing(true);
     setProgress(0);
-    transcribe({
-      mediaId,
-      mediaType,
-      mediaSrc: mediaUrl,
-    }).finally(() => {
-      setTranscribing(false);
-    });
+    try {
+      const { engine, model, result } = await transcribe(mediaUrl);
+      await EnjoyApp.transcriptions.update(transcription.id, {
+        state: "finished",
+        result,
+        engine,
+        model,
+      });
+    } catch (err) {
+      toast.error(err.message);
+    }
+
+    setTranscribing(false);
   };
 
   const fetchSegmentStats = async () => {
@@ -80,14 +89,16 @@ export const MediaTranscription = (props: {
       generate();
     }
 
-    EnjoyApp.transcriptions.onProgress((_, p: number) => {
-      if (p > 100) p = 100;
-      setProgress(p);
-    });
+    if (whisperConfig.service === "local") {
+      EnjoyApp.whisper.onProgress((_, p: number) => {
+        if (p > 100) p = 100;
+        setProgress(p);
+      });
+    }
 
     return () => {
       removeDbListener(fetchSegmentStats);
-      EnjoyApp.transcriptions.removeProgressListeners();
+      EnjoyApp.whisper.removeProgressListeners();
     };
   }, [mediaId, mediaType]);
 
@@ -114,7 +125,9 @@ export const MediaTranscription = (props: {
           {transcribing || transcription.state === "processing" ? (
             <>
               <PingPoint colorClassName="bg-yellow-500" />
-              <div className="text-sm">{progress}%</div>
+              <div className="text-sm">
+                {whisperConfig.service === "local" && `${progress}%`}
+              </div>
             </>
           ) : transcription.state === "finished" ? (
             <CheckCircleIcon className="text-green-500 w-4 h-4" />

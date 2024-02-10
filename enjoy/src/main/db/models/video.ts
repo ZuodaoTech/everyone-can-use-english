@@ -17,7 +17,7 @@ import {
 import { Audio, Recording, Speech, Transcription } from "@main/db/models";
 import settings from "@main/settings";
 import { AudioFormats, VideoFormats, WEB_API_URL } from "@/constants";
-import { hashFile } from "@/utils";
+import { hashFile } from "@main/utils";
 import path from "path";
 import fs from "fs-extra";
 import { t } from "i18next";
@@ -214,15 +214,6 @@ export class Video extends Model<Video> {
   }
 
   @AfterCreate
-  static transcribeAsync(video: Video) {
-    if (settings.ffmpegConfig().ready) {
-      setTimeout(() => {
-        video.transcribe();
-      }, 500);
-    }
-  }
-
-  @AfterCreate
   static autoSync(video: Video) {
     // auto sync should not block the main thread
     video.sync().catch(() => {});
@@ -353,37 +344,6 @@ export class Video extends Model<Video> {
       fs.removeSync(destFile);
       throw err;
     });
-  }
-
-  async transcribe() {
-    Transcription.findOrCreate({
-      where: {
-        targetId: this.id,
-        targetType: "Video",
-      },
-      defaults: {
-        targetId: this.id,
-        targetType: "Video",
-        targetMd5: this.md5,
-      },
-    })
-      .then(([transcription, _created]) => {
-        if (transcription.state === "pending") {
-          transcription.process();
-        } else if (transcription.state === "finished") {
-          transcription.process({ force: true });
-        } else if (transcription.state === "processing") {
-          logger.warn(
-            `[${transcription.getDataValue("id")}]`,
-            "Transcription is processing."
-          );
-        }
-      })
-      .catch((err) => {
-        logger.error(err);
-
-        throw err;
-      });
   }
 
   static notify(video: Video, action: "create" | "update" | "destroy") {

@@ -20,7 +20,7 @@ import path from "path";
 import settings from "@main/settings";
 import OpenAI, { type ClientOptions } from "openai";
 import { t } from "i18next";
-import { hashFile } from "@/utils";
+import { hashFile } from "@main/utils";
 import { Audio, Message } from "@main/db/models";
 import log from "electron-log/main";
 import { WEB_API_URL } from "@/constants";

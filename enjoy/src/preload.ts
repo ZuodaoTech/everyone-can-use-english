@@ -363,11 +363,26 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     check: () => {
       return ipcRenderer.invoke("whisper-check");
     },
-    transcribeBlob: (
-      blob: { type: string; arrayBuffer: ArrayBuffer },
-      prompt?: string
+    transcribe: (
+      params: {
+        file?: string;
+        blob?: {
+          type: string;
+          arrayBuffer: ArrayBuffer;
+        };
+      },
+      options?: {
+        force?: boolean;
+        extra?: string[];
+      }
     ) => {
-      return ipcRenderer.invoke("whisper-transcribe-blob", blob, prompt);
+      return ipcRenderer.invoke("whisper-transcribe", params, options);
+    },
+    onProgress: (
+      callback: (event: IpcRendererEvent, progress: number) => void
+    ) => ipcRenderer.on("whisper-on-progress", callback),
+    removeProgressListeners: () => {
+      ipcRenderer.removeAllListeners("whisper-on-progress");
     },
   },
   ffmpeg: {
@@ -425,17 +440,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findOrCreate: (params: any) => {
       return ipcRenderer.invoke("transcriptions-find-or-create", params);
     },
-    process: (params: any, options: any) => {
-      return ipcRenderer.invoke("transcriptions-process", params, options);
-    },
     update: (id: string, params: any) => {
       return ipcRenderer.invoke("transcriptions-update", id, params);
-    },
-    onProgress: (
-      callback: (event: IpcRendererEvent, progress: number) => void
-    ) => ipcRenderer.on("transcription-on-progress", callback),
-    removeProgressListeners: () => {
-      ipcRenderer.removeAllListeners("transcription-on-progress");
     },
   },
   waveforms: {

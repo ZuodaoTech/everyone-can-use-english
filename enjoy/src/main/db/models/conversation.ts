@@ -29,7 +29,7 @@ import fs from "fs-extra";
 import path from "path";
 import Ffmpeg from "@main/ffmpeg";
 import whisper from "@main/whisper";
-import { hashFile } from "@/utils";
+import { hashFile } from "@main/utils";
 import { WEB_API_URL } from "@/constants";
 import proxyAgent from "@main/proxy-agent";
 

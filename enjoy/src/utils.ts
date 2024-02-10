@@ -1,42 +1,4 @@
-import { createHash } from "crypto";
-import { createReadStream } from "fs";
 import Pitchfinder from "pitchfinder";
-
-export function hashFile(
-  path: string,
-  options: { algo: string }
-): Promise<string> {
-  const algo = options.algo || "md5";
-  return new Promise((resolve, reject) => {
-    const hash = createHash(algo);
-    const stream = createReadStream(path);
-    stream.on("error", reject);
-    stream.on("data", (chunk) => hash.update(chunk));
-    stream.on("end", () => resolve(hash.digest("hex")));
-  });
-}
-
-export function hashBlob(
-  blob: Blob,
-  options: { algo: string }
-): Promise<string> {
-  const algo = options.algo || "md5";
-  return new Promise((resolve, reject) => {
-    const hash = createHash(algo);
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.result instanceof ArrayBuffer) {
-        const buffer = Buffer.from(reader.result);
-        hash.update(buffer);
-        resolve(hash.digest("hex"));
-      } else {
-        reject(new Error("Unexpected result from FileReader"));
-      }
-    };
-    reader.onerror = reject;
-    reader.readAsArrayBuffer(blob);
-  });
-}
 
 export function generatePitch(peaks: Float32Array, sampleRate: number) {
   const detectPitch = Pitchfinder.YIN({ sampleRate });
@@ -77,3 +39,56 @@ export function milisecondsToTimestamp(ms: number) {
     "0"
   )}:${seconds.padStart(2, "0")},${milliseconds}`;
 }
+
+export const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
+export const END_OF_WORD_REGEX = /[^\.!,\?][\.!\?]/g;
+export const groupTranscription = (
+  transcription: TranscriptionResultSegmentType[]
+): TranscriptionResultSegmentGroupType[] => {
+  const generateGroup = (group?: TranscriptionResultSegmentType[]) => {
+    if (!group || group.length === 0) return;
+
+    const firstWord = group[0];
+    const lastWord = group[group.length - 1];
+
+    return {
+      offsets: {
+        from: firstWord.offsets.from,
+        to: lastWord.offsets.to,
+      },
+      text: group.map((w) => w.text.trim()).join(" "),
+      timestamps: {
+        from: firstWord.timestamps.from,
+        to: lastWord.timestamps.to,
+      },
+      segments: group,
+    };
+  };
+
+  const groups: TranscriptionResultSegmentGroupType[] = [];
+  let group: TranscriptionResultSegmentType[] = [];
+
+  transcription.forEach((segment) => {
+    const text = segment.text.trim();
+    if (!text) return;
+
+    group.push(segment);
+
+    if (
+      !MAGIC_TOKENS.includes(text) &&
+      segment.text.trim().match(END_OF_WORD_REGEX)
+    ) {
+      // Group a complete sentence;
+      groups.push(generateGroup(group));
+
+      // init a new group
+      group = [];
+    }
+  });
+
+  // Group the last group
+  const lastSentence = generateGroup(group);
+  if (lastSentence) groups.push(lastSentence);
+
+  return groups;
+};

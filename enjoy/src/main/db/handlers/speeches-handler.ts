@@ -3,7 +3,7 @@ import { Speech } from "@main/db/models";
 import fs from "fs-extra";
 import path from "path";
 import settings from "@main/settings";
-import { hashFile } from "@/utils";
+import { hashFile } from "@main/utils";
 
 class SpeechesHandler {
   private async create(
