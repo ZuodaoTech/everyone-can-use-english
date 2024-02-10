@@ -5,7 +5,7 @@ import {
 import OpenAI, { toFile } from "openai";
 import { useContext } from "react";
 import { AI_WORKER_ENDPOINT } from "@/constants";
-import { milisecondsToTimestamp } from "@/utils";
+import { milisecondsToTimestamp } from "@renderer/lib/utils";
 import axios from "axios";
 import { t } from "i18next";
 
