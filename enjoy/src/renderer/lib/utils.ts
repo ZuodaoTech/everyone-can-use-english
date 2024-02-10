@@ -23,17 +23,6 @@ export function secondsToTimestamp(seconds: number) {
   return `${h.padStart(2, "0")}:${m.padStart(2, "0")}:${s.padStart(2, "0")}`;
 }
 
-export function milisecondsToTimestamp(ms: number) {
-  const hours = Math.floor(ms / 3600000).toString();
-  const minutes = Math.floor((ms % 3600000) / 60000).toString();
-  const seconds = Math.floor(((ms % 360000) % 60000) / 1000).toString();
-  const milliseconds = Math.floor(((ms % 360000) % 60000) % 1000).toString();
-  return `${hours.padStart(2, "0")}:${minutes.padStart(
-    2,
-    "0"
-  )}:${seconds.padStart(2, "0")},${milliseconds}`;
-}
-
 export function humanizeDuration(
   duration: number,
   unit: DurationUnitType = "second"

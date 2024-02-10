@@ -2,9 +2,8 @@ import {
   AppSettingsProviderContext,
   AISettingsProviderContext,
 } from "@renderer/context";
-import OpenAI, { toFile } from "openai";
+import OpenAI from "openai";
 import { useContext } from "react";
-import { milisecondsToTimestamp } from "@renderer/lib/utils";
 import { toast } from "@renderer/components/ui";
 import { t } from "i18next";
 import { fetchFile } from "@ffmpeg/util";
@@ -13,6 +12,7 @@ import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import axios from "axios";
 import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
+import { groupTranscription, END_OF_WORD_REGEX, milisecondsToTimestamp } from "@/utils";
 
 export const useTranscribe = () => {
   const { EnjoyApp, ffmpeg, user, webApi } = useContext(
@@ -260,57 +260,4 @@ export const useTranscribe = () => {
     transcode,
     transcribe,
   };
-};
-
-const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
-const END_OF_WORD_REGEX = /[^\.!,\?][\.!\?]/g;
-const groupTranscription = (
-  transcription: TranscriptionResultSegmentType[]
-): TranscriptionResultSegmentGroupType[] => {
-  const generateGroup = (group?: TranscriptionResultSegmentType[]) => {
-    if (!group || group.length === 0) return;
-
-    const firstWord = group[0];
-    const lastWord = group[group.length - 1];
-
-    return {
-      offsets: {
-        from: firstWord.offsets.from,
-        to: lastWord.offsets.to,
-      },
-      text: group.map((w) => w.text.trim()).join(" "),
-      timestamps: {
-        from: firstWord.timestamps.from,
-        to: lastWord.timestamps.to,
-      },
-      segments: group,
-    };
-  };
-
-  const groups: TranscriptionResultSegmentGroupType[] = [];
-  let group: TranscriptionResultSegmentType[] = [];
-
-  transcription.forEach((segment) => {
-    const text = segment.text.trim();
-    if (!text) return;
-
-    group.push(segment);
-
-    if (
-      !MAGIC_TOKENS.includes(text) &&
-      segment.text.trim().match(END_OF_WORD_REGEX)
-    ) {
-      // Group a complete sentence;
-      groups.push(generateGroup(group));
-
-      // init a new group
-      group = [];
-    }
-  });
-
-  // Group the last group
-  const lastSentence = generateGroup(group);
-  if (lastSentence) groups.push(lastSentence);
-
-  return groups;
 };

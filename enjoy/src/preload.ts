@@ -440,17 +440,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findOrCreate: (params: any) => {
       return ipcRenderer.invoke("transcriptions-find-or-create", params);
     },
-    process: (params: any, options: any) => {
-      return ipcRenderer.invoke("transcriptions-process", params, options);
-    },
     update: (id: string, params: any) => {
       return ipcRenderer.invoke("transcriptions-update", id, params);
-    },
-    onProgress: (
-      callback: (event: IpcRendererEvent, progress: number) => void
-    ) => ipcRenderer.on("transcription-on-progress", callback),
-    removeProgressListeners: () => {
-      ipcRenderer.removeAllListeners("transcription-on-progress");
     },
   },
   waveforms: {
