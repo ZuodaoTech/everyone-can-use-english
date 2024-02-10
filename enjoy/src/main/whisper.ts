@@ -451,7 +451,7 @@ class Whipser {
             message: err.message,
           });
         }
-      } else if (["cloudflare", "azure"].includes(service)) {
+      } else if (["cloudflare", "azure", "openai"].includes(service)) {
         settings.setSync("whisper.service", service);
         this.config.service = service;
         return this.config;

@@ -77,6 +77,8 @@ export const WhisperSettings = () => {
             t("azureSpeechToTextDescription")}
           {whisperConfig?.service === "cloudflare" &&
             t("cloudflareSpeechToTextDescription")}
+          {whisperConfig?.service === "openai" &&
+            t("openaiSpeechToTextDescription")}
         </div>
       </div>
 
@@ -94,6 +96,7 @@ export const WhisperSettings = () => {
             <SelectItem value="local">{t("local")}</SelectItem>
             <SelectItem value="azure">{t("azureAi")}</SelectItem>
             <SelectItem value="cloudflare">{t("cloudflareAi")}</SelectItem>
+            <SelectItem value="openai">OpenAI</SelectItem>
           </SelectContent>
         </Select>
 

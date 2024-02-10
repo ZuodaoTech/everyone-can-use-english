@@ -316,6 +316,7 @@
   "azureSpeechToTextDescription": "使用 Azure AI Speech 进行语音转文本，收费服务",
   "cloudflareAi": "Cloudflare AI",
   "cloudflareSpeechToTextDescription": "使用 Cloudflare AI 进行语音转文本，目前免费",
+  "openaiSpeechToTextDescription": "使用 OpenAI 进行语音转文本（需要 API 密钥）",
   "checkingWhisper": "正在检查 Whisper",
   "pleaseDownloadWhisperModelFirst": "请先下载 Whisper 模型",
   "whisperIsWorkingGood": "Whisper 正常工作",

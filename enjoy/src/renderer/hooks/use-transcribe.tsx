@@ -101,9 +101,9 @@ export const useTranscribe = () => {
         end: number;
       }[];
     } = (await client.audio.transcriptions.create({
-      file: await toFile(blob),
+      file: new File([blob], "audio.wav"),
       model: "whisper-1",
-      response_format: "json",
+      response_format: "verbose_json",
       timestamp_granularities: ["word"],
     })) as any;
 
@@ -138,6 +138,7 @@ export const useTranscribe = () => {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
         },
+        timeout: 1000 * 60 * 5,
       })
     ).data;
     const transcription: TranscriptionResultSegmentType[] = res.words.map(
@@ -175,7 +176,7 @@ export const useTranscribe = () => {
     const { token, region } = await webApi.generateSpeechToken();
     const config = sdk.SpeechConfig.fromAuthorizationToken(token, region);
     const audioConfig = sdk.AudioConfig.fromWavFileInput(
-      Buffer.from(await blob.arrayBuffer())
+      new File([blob], "audio.wav")
     );
     // setting the recognition language to English.
     config.speechRecognitionLanguage = "en-US";
@@ -188,7 +189,9 @@ export const useTranscribe = () => {
     let results: SpeechRecognitionResultType[] = [];
 
     return new Promise((resolve, reject) => {
-      reco.recognizing = (_s, e) => {};
+      reco.recognizing = (_s, e) => {
+        console.log(e.result.text);
+      };
 
       reco.recognized = (_s, e) => {
         const json = e.result.properties.getProperty(
