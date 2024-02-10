@@ -98,7 +98,7 @@ export const MediaTranscription = (props: {
 
     return () => {
       removeDbListener(fetchSegmentStats);
-      EnjoyApp.transcriptions.removeProgressListeners();
+      EnjoyApp.whisper.removeProgressListeners();
     };
   }, [mediaId, mediaType]);
 
