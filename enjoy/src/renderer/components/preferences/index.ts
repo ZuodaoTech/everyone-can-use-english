@@ -6,7 +6,6 @@ export * from "./default-engine-settings";
 export * from "./openai-settings";
 export * from "./language-settings";
 export * from "./library-settings";
-export * from "./ffmpeg-settings";
 export * from "./whisper-settings";
 export * from "./google-generative-ai-settings";
 

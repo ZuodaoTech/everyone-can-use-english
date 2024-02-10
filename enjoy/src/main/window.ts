@@ -18,7 +18,7 @@ import "@main/i18n";
 import log from "electron-log/main";
 import { WEB_API_URL, REPO_URL } from "@/constants";
 import { AudibleProvider, TedProvider } from "@main/providers";
-import { FfmpegDownloader } from "@main/ffmpeg";
+import Ffmpeg from "@main/ffmpeg";
 import { Waveform } from "./waveform";
 
 log.initialize({ preload: true });
@@ -26,7 +26,7 @@ const logger = log.scope("window");
 
 const audibleProvider = new AudibleProvider();
 const tedProvider = new TedProvider();
-const ffmpegDownloader = new FfmpegDownloader();
+const ffmpeg = new Ffmpeg();
 const waveform = new Waveform();
 
 const main = {
@@ -55,8 +55,8 @@ main.init = () => {
   // Downloader
   downloader.registerIpcHandlers();
 
-  // FfmpegDownloader
-  ffmpegDownloader.registerIpcHandlers();
+  // ffmpeg
+  ffmpeg.registerIpcHandlers();
 
   // AudibleProvider
   audibleProvider.registerIpcHandlers();

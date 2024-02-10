@@ -24,7 +24,6 @@ export default defineConfig({
         "fluent-ffmpeg",
         "bufferutil",
         "utf-8-validate",
-        // "node-llama-cpp",
       ],
     },
   },

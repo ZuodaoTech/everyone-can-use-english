@@ -9,20 +9,16 @@ import {
   LanguageSettings,
   LibrarySettings,
   WhisperSettings,
-  FfmpegSettings,
   OpenaiSettings,
   ProxySettings,
   GoogleGenerativeAiSettings,
   ResetSettings,
   ResetAllSettings,
 } from "@renderer/components";
-import { useState, useContext } from "react";
-import { AppSettingsProviderContext } from "@renderer/context";
+import { useState } from "react";
 import { Tooltip } from "react-tooltip";
 
 export const Preferences = () => {
-  const { ffmpegConfig } = useContext(AppSettingsProviderContext);
-
   const TABS = [
     {
       value: "basic",
@@ -42,12 +38,6 @@ export const Preferences = () => {
           <Separator />
           <GoogleGenerativeAiSettings />
           <Separator />
-          {ffmpegConfig.ready && (
-            <>
-              <FfmpegSettings />
-              <Separator />
-            </>
-          )}
         </div>
       ),
     },

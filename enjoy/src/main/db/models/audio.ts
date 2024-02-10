@@ -180,8 +180,6 @@ export class Audio extends Model<Audio> {
 
   @BeforeCreate
   static async setupDefaultAttributes(audio: Audio) {
-    if (!settings.ffmpegConfig().ready) return;
-
     try {
       const ffmpeg = new Ffmpeg();
       const fileMetadata = await ffmpeg.generateMetadata(audio.filePath);
