@@ -85,6 +85,7 @@ export const MediaTranscription = (props: {
     addDblistener(fetchSegmentStats);
     fetchSegmentStats();
 
+    console.log(transcription);
     if (transcription?.state == "pending") {
       generate();
     }
@@ -100,7 +101,7 @@ export const MediaTranscription = (props: {
       removeDbListener(fetchSegmentStats);
       EnjoyApp.whisper.removeProgressListeners();
     };
-  }, [mediaId, mediaType]);
+  }, [mediaId, mediaType, transcription]);
 
   useEffect(() => {
     containerRef.current
