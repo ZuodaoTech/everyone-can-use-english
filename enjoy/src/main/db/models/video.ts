@@ -204,7 +204,10 @@ export class Video extends Model<Video> {
     try {
       const ffmpeg = new Ffmpeg();
       const fileMetadata = await ffmpeg.generateMetadata(video.filePath);
-      video.metadata = Object.assign(video.metadata || {}, fileMetadata);
+      video.metadata = Object.assign(video.metadata || {}, {
+        ...fileMetadata,
+        duration: fileMetadata.format.duration,
+      });
     } catch (err) {
       logger.error("failed to generate metadata", err.message);
     }
