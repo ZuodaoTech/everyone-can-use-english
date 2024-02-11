@@ -3,14 +3,10 @@ import { LIBRARY_PATH_SUFFIX, DATABASE_NAME } from "@/constants";
 import { ipcMain, app } from "electron";
 import path from "path";
 import fs from "fs-extra";
-import os from "os";
-import commandExists from "command-exists";
 import log from "electron-log";
 import * as i18n from "i18next";
-import mainWin from "@main/window";
 
 const logger = log.scope("settings");
-
 const language = () => {
   const _language = settings.getSync("language");
 
@@ -95,27 +91,6 @@ const userDataPath = () => {
   return userData;
 };
 
-const ffmpegConfig = () => {
-  const ffmpegPath = settings.getSync("ffmpeg.ffmpegPath");
-  const ffprobePath = settings.getSync("ffmpeg.ffprobePath");
-
-  const _commandExists =
-    commandExists.sync("ffmpeg") && commandExists.sync("ffprobe");
-
-  const config = {
-    os: os.platform(),
-    arch: os.arch(),
-    commandExists: _commandExists,
-    ffmpegPath,
-    ffprobePath,
-    ready: Boolean(_commandExists || (ffmpegPath && ffprobePath)),
-  };
-
-  logger.info("ffmpeg config", config);
-
-  return config;
-};
-
 export default {
   registerIpcHandlers: () => {
     ipcMain.handle("settings-get-library", (_event) => {
@@ -182,7 +157,6 @@ export default {
   userDataPath,
   dbPath,
   whisperConfig,
-  ffmpegConfig,
   language,
   switchLanguage,
   ...settings,

@@ -28,8 +28,6 @@ export * from "./whisper-model-options";
 export * from "./pitch-contour";
 export * from "./reset-all-button";
 
-export * from "./ffmpeg-check";
-
 export * from "./loader-spin";
 export * from "./no-records-found";
 

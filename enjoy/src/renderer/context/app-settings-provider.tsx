@@ -16,9 +16,7 @@ type AppSettingsProviderState = {
   login?: (user: UserType) => void;
   logout?: () => void;
   setLibraryPath?: (path: string) => Promise<void>;
-  ffmpegConfig?: FfmpegConfigType;
   ffmpeg?: FFmpeg;
-  setFfmegConfig?: (config: FfmpegConfigType) => void;
   EnjoyApp?: EnjoyAppType;
   language?: "en" | "zh-CN";
   switchLanguage?: (language: "en" | "zh-CN") => void;
@@ -46,7 +44,6 @@ export const AppSettingsProvider = ({
   const [webApi, setWebApi] = useState<Client>(null);
   const [user, setUser] = useState<UserType | null>(null);
   const [libraryPath, setLibraryPath] = useState("");
-  const [ffmpegConfig, setFfmegConfig] = useState<FfmpegConfigType>(null);
   const [ffmpeg, setFfmpeg] = useState<FFmpeg>(null);
   const [language, setLanguage] = useState<"en" | "zh-CN">();
   const [proxy, setProxy] = useState<ProxyConfigType>();
@@ -58,7 +55,6 @@ export const AppSettingsProvider = ({
     fetchVersion();
     fetchUser();
     fetchLibraryPath();
-    fetchFfmpegConfig();
     fetchLanguage();
     loadFfmpegWASM();
     fetchProxyConfig();
@@ -81,7 +77,7 @@ export const AppSettingsProvider = ({
   }, [user, apiUrl, language]);
 
   const loadFfmpegWASM = async () => {
-    const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm";
+    const baseURL = "assets/libs";
     ffmpegRef.current.on("log", ({ message }) => {
       console.log(message);
     });
@@ -122,11 +118,6 @@ export const AppSettingsProvider = ({
       i18n.changeLanguage(language);
       setLanguage(language);
     });
-  };
-
-  const fetchFfmpegConfig = async () => {
-    const config = await EnjoyApp.ffmpeg.config();
-    setFfmegConfig(config);
   };
 
   const fetchVersion = async () => {
@@ -204,9 +195,7 @@ export const AppSettingsProvider = ({
         logout,
         libraryPath,
         setLibraryPath: setLibraryPathHandler,
-        ffmpegConfig,
         ffmpeg,
-        setFfmegConfig,
         proxy,
         setProxy: setProxyConfigHandler,
         initialized,

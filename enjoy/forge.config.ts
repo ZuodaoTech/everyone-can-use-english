@@ -14,6 +14,8 @@ const NATIVE_MODULES_TO_PACKAGE = [
   "sqlite3",
   "fluent-ffmpeg",
   "electron-squirrel-startup",
+  "ffmpeg-static",
+  "@andrkrn/ffprobe-static",
 ];
 const INCLUDE_NESTED_DEPS = true as const;
 let nativeModuleDependenciesToPackage: Set<string>;

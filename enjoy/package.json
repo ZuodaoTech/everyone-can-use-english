@@ -31,7 +31,6 @@
     "@electron-forge/plugin-vite": "^7.2.0",
     "@electron-forge/publisher-github": "^7.2.0",
     "@tailwindcss/typography": "^0.5.10",
-    "@types/adm-zip": "^0.5.5",
     "@types/autosize": "^4.0.3",
     "@types/command-exists": "^1.2.3",
     "@types/fluent-ffmpeg": "^2.1.24",
@@ -64,6 +63,7 @@
     "zx": "^7.2.3"
   },
   "dependencies": {
+    "@andrkrn/ffprobe-static": "^5.2.0",
     "@ffmpeg/ffmpeg": "^0.12.10",
     "@ffmpeg/util": "^0.12.1",
     "@hookform/resolvers": "^3.3.4",
@@ -93,7 +93,6 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@uidotdev/usehooks": "^2.4.1",
     "@vidstack/react": "^1.10.5",
-    "adm-zip": "^0.5.10",
     "autosize": "^6.0.1",
     "axios": "^1.6.7",
     "camelcase": "^8.0.0",
@@ -111,6 +110,7 @@
     "electron-log": "^5.1.1",
     "electron-settings": "^4.0.2",
     "electron-squirrel-startup": "^1.0.0",
+    "ffmpeg-static": "^5.2.0",
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^11.2.0",
     "html-to-text": "^9.0.5",

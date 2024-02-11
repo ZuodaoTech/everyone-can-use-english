@@ -100,7 +100,7 @@ export const MediaTranscription = (props: {
       removeDbListener(fetchSegmentStats);
       EnjoyApp.whisper.removeProgressListeners();
     };
-  }, [mediaId, mediaType]);
+  }, [mediaId, mediaType, transcription]);
 
   useEffect(() => {
     containerRef.current

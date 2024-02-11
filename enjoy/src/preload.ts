@@ -386,18 +386,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   ffmpeg: {
-    config: () => {
-      return ipcRenderer.invoke("ffmpeg-config");
-    },
-    setConfig: (config: FfmpegConfigType) => {
-      return ipcRenderer.invoke("ffmpeg-set-config", config);
-    },
-    download: () => {
-      return ipcRenderer.invoke("ffmpeg-download");
-    },
-    discover: () => {
-      return ipcRenderer.invoke("ffmpeg-discover-command");
-    },
     check: () => {
       return ipcRenderer.invoke("ffmpeg-check-command");
     },
