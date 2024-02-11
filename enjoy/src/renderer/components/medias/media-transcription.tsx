@@ -85,7 +85,6 @@ export const MediaTranscription = (props: {
     addDblistener(fetchSegmentStats);
     fetchSegmentStats();
 
-    console.log(transcription);
     if (transcription?.state == "pending") {
       generate();
     }
