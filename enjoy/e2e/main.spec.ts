@@ -10,6 +10,12 @@ import {
 } from "electron-playwright-helpers";
 import { ElectronApplication, Page, _electron as electron } from "playwright";
 
+declare global {
+  interface Window {
+    __ENJOY_APP__: any;
+  }
+}
+
 let electronApp: ElectronApplication;
 
 test.beforeAll(async () => {
@@ -48,4 +54,20 @@ test("renders the first page", async () => {
   page = await electronApp.firstWindow();
   const title = await page.title();
   expect(title).toBe("Enjoy");
+});
+
+test("validate whisper command", async () => {
+  page = await electronApp.firstWindow();
+  const res = await page.evaluate(() => {
+    return window.__ENJOY_APP__.whisper.check();
+  });
+  expect(res.success).toBeTruthy();
+});
+
+test("valid ffmpeg command", async () => {
+  page = await electronApp.firstWindow();
+  const res = await page.evaluate(() => {
+    return window.__ENJOY_APP__.ffmpeg.check();
+  });
+  expect(res).toBeTruthy();
 });

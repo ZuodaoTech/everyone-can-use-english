@@ -110,3 +110,8 @@ package-lock.json
 
 # sketch file excluded.
 *.sketch*
+
+*/test-results/
+*/playwright-report/
+*/blob-report/
+*/playwright/.cache/
