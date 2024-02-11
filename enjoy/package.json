@@ -63,6 +63,7 @@
     "zx": "^7.2.3"
   },
   "dependencies": {
+    "@andrkrn/ffprobe-static": "^5.2.0",
     "@ffmpeg/ffmpeg": "^0.12.10",
     "@ffmpeg/util": "^0.12.1",
     "@hookform/resolvers": "^3.3.4",
@@ -110,7 +111,6 @@
     "electron-settings": "^4.0.2",
     "electron-squirrel-startup": "^1.0.0",
     "ffmpeg-static": "^5.2.0",
-    "ffprobe-static": "^3.1.0",
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^11.2.0",
     "html-to-text": "^9.0.5",

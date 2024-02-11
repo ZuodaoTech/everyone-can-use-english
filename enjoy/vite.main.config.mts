@@ -24,6 +24,8 @@ export default defineConfig({
         "fluent-ffmpeg",
         "bufferutil",
         "utf-8-validate",
+        "ffmpeg-static",
+        "@andrkrn/ffprobe-static",
       ],
     },
   },
@@ -41,12 +43,6 @@ export default defineConfig({
             process.env.PACKAGE_OS_ARCH || os.arch()
           }/${os.platform()}/*`,
           dest: "lib/youtubedr",
-        },
-        {
-          src: `lib/ffmpeg//${
-            process.env.PACKAGE_OS_ARCH || os.arch()
-          }/${os.platform()}/*`,
-          dest: "lib/ffmpeg",
         },
         {
           src: "src/main/db/migrations/*",

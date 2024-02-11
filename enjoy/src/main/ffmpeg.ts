@@ -1,6 +1,6 @@
 import { ipcMain } from "electron";
 import ffmpegPath from "ffmpeg-static";
-import ffprobe from "ffprobe-static";
+import ffprobePath from "@andrkrn/ffprobe-static";
 import Ffmpeg from "fluent-ffmpeg";
 import log from "electron-log/main";
 import path from "path";
@@ -13,9 +13,9 @@ export default class FfmpegWrapper {
   constructor() {
     const ff = Ffmpeg();
     logger.debug("Using ffmpeg path:", ffmpegPath);
-    logger.debug("Using ffprobe path:", ffprobe.path);
+    logger.debug("Using ffprobe path:", ffprobePath);
     ff.setFfmpegPath(ffmpegPath);
-    ff.setFfprobePath(ffprobe.path);
+    ff.setFfprobePath(ffprobePath);
     this.ffmpeg = ff;
   }
 
