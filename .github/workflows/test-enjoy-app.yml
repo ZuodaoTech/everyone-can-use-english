@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: npm install -g yarn && yarn
       - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
+        run: yarn workspace enjoy playwright install --with-deps
       - name: Package
         run: yarn package:enjoy
       - name: Run Playwright tests
