@@ -115,3 +115,11 @@ package-lock.json
 */playwright-report/
 */blob-report/
 */playwright/.cache/
+
+# whisper models
+ggml-*.bin
+
+# ffmpeg wasm
+ffmpeg-core.wasm
+ffmpeg-core.js
+ffmpeg-core.worker.js

@@ -14,7 +14,10 @@
     "publish": "rimraf .vite && electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
     "test": "playwright test",
-    "create-migration": "zx ./src/main/db/create-migration.mjs"
+    "create-migration": "zx ./src/main/db/create-migration.mjs",
+    "download-whisper-model": "zx ./scripts/download-whisper-model.mjs",
+    "download-ffmpeg-wasm": "zx ./scripts/download-ffmpeg-wasm.mjs",
+    "postinstall": "download-ffmpeg-wasm && download-ffmpeg-wasm"
   },
   "keywords": [],
   "author": {
@@ -56,6 +59,7 @@
     "eslint-plugin-import": "^2.29.1",
     "flora-colossus": "^2.0.0",
     "octokit": "^3.1.2",
+    "progress": "^2.0.3",
     "tailwind-merge": "^2.2.1",
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",

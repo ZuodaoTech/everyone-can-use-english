@@ -1,29 +1,17 @@
 import { ipcMain } from "electron";
 import settings from "@main/settings";
 import path from "path";
-import {
-  WHISPER_MODELS_OPTIONS,
-  PROCESS_TIMEOUT,
-  AI_WORKER_ENDPOINT,
-  WEB_API_URL,
-} from "@/constants";
+import { WHISPER_MODELS_OPTIONS, PROCESS_TIMEOUT } from "@/constants";
 import { exec, spawn } from "child_process";
 import fs from "fs-extra";
 import log from "electron-log/main";
 import { t } from "i18next";
-import axios from "axios";
-import { milisecondsToTimestamp } from "@/utils";
-import { AzureSpeechSdk } from "@main/azure-speech-sdk";
-import { Client } from "@/api";
-import take from "lodash/take";
-import sortedUniqBy from "lodash/sortedUniqBy";
 
 const logger = log.scope("whisper");
 
-const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
-const END_OF_WORD_REGEX = /[^\.!,\?][\.!\?]/g;
 class Whipser {
   private binMain: string;
+  private defaultModel: string;
   public config: WhisperConfigType;
 
   constructor(config?: WhisperConfigType) {
@@ -33,6 +21,13 @@ class Whipser {
       "whisper",
       "main"
     );
+    this.defaultModel = path.join(
+      __dirname,
+      "lib",
+      "whisper",
+      "models",
+      "ggml-base.en-q5_0.bin"
+    );
     if (fs.existsSync(customWhisperPath)) {
       this.binMain = customWhisperPath;
     } else {
@@ -41,6 +36,8 @@ class Whipser {
   }
 
   currentModel() {
+    return this.defaultModel;
+
     if (!this.config.availableModels) return;
     if (!this.config.model) {
       const model = this.config.availableModels[0];
