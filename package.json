@@ -6,6 +6,7 @@
   "scripts": {
     "dev:enjoy": "yarn workspace enjoy dev",
     "start:enjoy": "yarn workspace enjoy start",
+    "test:enjoy": "yarn workspace enjoy test",
     "package:enjoy": "yarn workspace enjoy package",
     "make:enjoy": "yarn workspace enjoy make",
     "publish:enjoy": "yarn workspace enjoy publish",
