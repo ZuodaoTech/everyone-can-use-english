@@ -142,7 +142,7 @@
     "react-tooltip": "^5.26.0",
     "reflect-metadata": "^0.2.1",
     "rimraf": "^5.0.5",
-    "sequelize": "^6.36.0",
+    "sequelize": "^6.37.0",
     "sequelize-typescript": "^2.1.6",
     "sonner": "^1.4.0",
     "sqlite3": "^5.1.7",

@@ -6168,7 +6168,7 @@ __metadata:
     react-tooltip: "npm:^5.26.0"
     reflect-metadata: "npm:^0.2.1"
     rimraf: "npm:^5.0.5"
-    sequelize: "npm:^6.36.0"
+    sequelize: "npm:^6.37.0"
     sequelize-typescript: "npm:^2.1.6"
     sonner: "npm:^1.4.0"
     sqlite3: "npm:^5.1.7"
@@ -11965,9 +11965,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sequelize@npm:^6.36.0":
-  version: 6.36.0
-  resolution: "sequelize@npm:6.36.0"
+"sequelize@npm:^6.37.0":
+  version: 6.37.0
+  resolution: "sequelize@npm:6.37.0"
   dependencies:
     "@types/debug": "npm:^4.1.8"
     "@types/validator": "npm:^13.7.17"
@@ -12004,7 +12004,7 @@ __metadata:
       optional: true
     tedious:
       optional: true
-  checksum: 10c0/05c5d15cea7db61c682030dccda4fb4416093ea017bb1960909b8c8c1bda1876b1f0a5adda167eb870889399c54224d433cdd255ce464bc0572466515b79a07d
+  checksum: 10c0/707bb638ce490321357879bbd865b52a40845ac74b4f49b63a71f7f79658be117fca3b000865255b0312eb990404b26d263630366b0686867e327d9973e3258e
   languageName: node
   linkType: hard
 
