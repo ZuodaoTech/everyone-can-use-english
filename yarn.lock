@@ -1659,13 +1659,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/google-genai@npm:^0.0.8":
-  version: 0.0.8
-  resolution: "@langchain/google-genai@npm:0.0.8"
+"@langchain/google-genai@npm:^0.0.10":
+  version: 0.0.10
+  resolution: "@langchain/google-genai@npm:0.0.10"
   dependencies:
     "@google/generative-ai": "npm:^0.1.3"
     "@langchain/core": "npm:~0.1.5"
-  checksum: 10c0/d908f33c21ed0bef904630ac1813d75935dee493d1d05a083a6f87ff5afb31fa1de052c34f4d7f7a3d6f34aa317639282c7b997b82f11bae9c774e8de5eb3e13
+  checksum: 10c0/5c6cf34f7f08eecb674524b50359934a96fc542f7f881eb59f93b2faa2430fdb8c36c70e38b95a45f773152a14f43997e7fe952b8afbdd67bfd0af8e066e0600
   languageName: node
   linkType: hard
 
@@ -6071,7 +6071,7 @@ __metadata:
     "@ffmpeg/ffmpeg": "npm:^0.12.10"
     "@ffmpeg/util": "npm:^0.12.1"
     "@hookform/resolvers": "npm:^3.3.4"
-    "@langchain/google-genai": "npm:^0.0.8"
+    "@langchain/google-genai": "npm:^0.0.10"
     "@mozilla/readability": "npm:^0.5.0"
     "@playwright/test": "npm:^1.41.2"
     "@radix-ui/react-accordion": "npm:^1.1.2"
