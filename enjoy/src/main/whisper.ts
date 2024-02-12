@@ -5,7 +5,6 @@ import { WHISPER_MODELS_OPTIONS, PROCESS_TIMEOUT } from "@/constants";
 import { exec, spawn } from "child_process";
 import fs from "fs-extra";
 import log from "electron-log/main";
-import { t } from "i18next";
 
 const logger = log.scope("whisper");
 
@@ -26,7 +25,7 @@ class Whipser {
       "lib",
       "whisper",
       "models",
-      "ggml-base.en-q5_0.bin"
+      "ggml-base.en-q5_1.bin"
     );
     if (fs.existsSync(customWhisperPath)) {
       this.binMain = customWhisperPath;
@@ -36,8 +35,6 @@ class Whipser {
   }
 
   currentModel() {
-    return this.defaultModel;
-
     if (!this.config.availableModels) return;
     if (!this.config.model) {
       const model = this.config.availableModels[0];
@@ -105,9 +102,7 @@ class Whipser {
   async check() {
     await this.initialize();
 
-    if (!this.currentModel()) {
-      throw new Error("No model selected");
-    }
+    const model = this.currentModel() || this.defaultModel;
 
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
     const tmpDir = settings.cachePath();
@@ -117,7 +112,7 @@ class Whipser {
       const commands = [
         `"${this.binMain}"`,
         `--file "${sampleFile}"`,
-        `--model "${this.currentModel()}"`,
+        `--model "${model}"`,
         "--output-json",
         `--output-file "${path.join(tmpDir, "jfk")}"`,
       ];
@@ -174,9 +169,7 @@ class Whipser {
       throw new Error("No file or blob provided");
     }
 
-    if (!this.currentModel()) {
-      throw new Error(t("pleaseDownloadWhisperModelFirst"));
-    }
+    const model = this.currentModel() || this.defaultModel;
 
     if (blob) {
       const format = blob.type.split("/")[1];
@@ -204,7 +197,7 @@ class Whipser {
       "--file",
       file,
       "--model",
-      this.currentModel(),
+      model,
       "--output-json",
       "--output-file",
       path.join(tmpDir, filename),

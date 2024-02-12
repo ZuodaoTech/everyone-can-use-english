@@ -17,7 +17,7 @@
     "create-migration": "zx ./src/main/db/create-migration.mjs",
     "download-whisper-model": "zx ./scripts/download-whisper-model.mjs",
     "download-ffmpeg-wasm": "zx ./scripts/download-ffmpeg-wasm.mjs",
-    "postinstall": "download-ffmpeg-wasm && download-ffmpeg-wasm"
+    "postinstall": "zx ./scripts/download-whisper-model.mjs && zx ./scripts/download-ffmpeg-wasm.mjs"
   },
   "keywords": [],
   "author": {
