@@ -39,6 +39,10 @@ export default defineConfig({
           dest: "lib/whisper",
         },
         {
+          src: `lib/whisper.cpp/models/*`,
+          dest: "lib/whisper/models",
+        },
+        {
           src: `lib/youtubedr/${
             process.env.PACKAGE_OS_ARCH || os.arch()
           }/${os.platform()}/*`,

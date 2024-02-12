@@ -6156,6 +6156,7 @@ __metadata:
     openai: "npm:^4.27.0"
     pitchfinder: "npm:^2.3.2"
     postcss: "npm:^8.4.35"
+    progress: "npm:^2.0.3"
     proxy-agent: "npm:^6.3.1"
     react: "npm:^18.2.0"
     react-activity-calendar: "npm:^2.2.7"

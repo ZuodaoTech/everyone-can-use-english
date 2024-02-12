@@ -1,29 +1,16 @@
 import { ipcMain } from "electron";
 import settings from "@main/settings";
 import path from "path";
-import {
-  WHISPER_MODELS_OPTIONS,
-  PROCESS_TIMEOUT,
-  AI_WORKER_ENDPOINT,
-  WEB_API_URL,
-} from "@/constants";
+import { WHISPER_MODELS_OPTIONS, PROCESS_TIMEOUT } from "@/constants";
 import { exec, spawn } from "child_process";
 import fs from "fs-extra";
 import log from "electron-log/main";
-import { t } from "i18next";
-import axios from "axios";
-import { milisecondsToTimestamp } from "@/utils";
-import { AzureSpeechSdk } from "@main/azure-speech-sdk";
-import { Client } from "@/api";
-import take from "lodash/take";
-import sortedUniqBy from "lodash/sortedUniqBy";
 
 const logger = log.scope("whisper");
 
-const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
-const END_OF_WORD_REGEX = /[^\.!,\?][\.!\?]/g;
 class Whipser {
   private binMain: string;
+  private defaultModel: string;
   public config: WhisperConfigType;
 
   constructor(config?: WhisperConfigType) {
@@ -32,6 +19,13 @@ class Whipser {
       settings.libraryPath(),
       "whisper",
       "main"
+    );
+    this.defaultModel = path.join(
+      __dirname,
+      "lib",
+      "whisper",
+      "models",
+      "ggml-base.en-q5_1.bin"
     );
     if (fs.existsSync(customWhisperPath)) {
       this.binMain = customWhisperPath;
@@ -108,9 +102,7 @@ class Whipser {
   async check() {
     await this.initialize();
 
-    if (!this.currentModel()) {
-      throw new Error("No model selected");
-    }
+    const model = this.currentModel() || this.defaultModel;
 
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
     const tmpDir = settings.cachePath();
@@ -120,7 +112,7 @@ class Whipser {
       const commands = [
         `"${this.binMain}"`,
         `--file "${sampleFile}"`,
-        `--model "${this.currentModel()}"`,
+        `--model "${model}"`,
         "--output-json",
         `--output-file "${path.join(tmpDir, "jfk")}"`,
       ];
@@ -177,9 +169,7 @@ class Whipser {
       throw new Error("No file or blob provided");
     }
 
-    if (!this.currentModel()) {
-      throw new Error(t("pleaseDownloadWhisperModelFirst"));
-    }
+    const model = this.currentModel() || this.defaultModel;
 
     if (blob) {
       const format = blob.type.split("/")[1];
@@ -207,7 +197,7 @@ class Whipser {
       "--file",
       file,
       "--model",
-      this.currentModel(),
+      model,
       "--output-json",
       "--output-file",
       path.join(tmpDir, filename),
