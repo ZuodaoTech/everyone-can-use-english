@@ -123,7 +123,7 @@
     "js-md5": "^0.8.3",
     "langchain": "^0.1.17",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.323.0",
+    "lucide-react": "^0.325.0",
     "mark.js": "^8.11.1",
     "microsoft-cognitiveservices-speech-sdk": "^1.35.0",
     "next-themes": "^0.2.1",
