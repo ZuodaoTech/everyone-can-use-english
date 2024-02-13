@@ -4,7 +4,7 @@ import axios from "axios";
 import { createHash } from "crypto";
 import { HttpsProxyAgent } from "https-proxy-agent";
 
-console.log(chalk.blue("=> Download ffmpeg wasm files"));
+console.info(chalk.blue("=> Download ffmpeg wasm files"));
 
 const files = [
   {
@@ -28,15 +28,15 @@ await Promise.all(
   files.map(async (file) => {
     try {
       if (fs.statSync(path.join(dir, file.name)).isFile()) {
-        console.log(chalk.green(`=> File ${file.name} already exists`));
+        console.info(chalk.green(`✅ File ${file.name} already exists`));
 
         const hash = await hashFile(path.join(dir, file.name), { algo: "md5" });
         if (hash === file.md5) {
-          console.log(chalk.green(`=> File ${file.name} MD5 match`));
+          console.info(chalk.green(`✅ File ${file.name} valid`));
         } else {
-          console.log(
+          console.warn(
             chalk.yellow(
-              `=> File ${file.name} MD5 not match, start to redownload`
+              `❌ File ${file.name} not valid, start to redownload`
             )
           );
           fs.removeSync(path.join(dir, file.name));
@@ -47,7 +47,7 @@ await Promise.all(
       }
     } catch (err) {
       if (err && err.code !== "ENOENT") {
-        console.log(chalk.red(`=> Error: ${err}`));
+        console.error(chalk.red(`❌ Error: ${err}`));
         process.exit(1);
       }
       pendingFiles.push(file);
@@ -56,10 +56,10 @@ await Promise.all(
 );
 
 if (pendingFiles.length === 0) {
-  console.log(chalk.green("=> All files already exist"));
+  console.info(chalk.green("✅ All files already exist"));
   process.exit(0);
 } else {
-  console.log(chalk.blue(`=> Start to download ${pendingFiles.length} files`));
+  console.info(chalk.blue(`=> Start to download ${pendingFiles.length} files`));
 }
 
 const proxyUrl =
@@ -77,12 +77,12 @@ if (proxyUrl) {
     protocol: protocol,
   };
   axios.defaults.httpsAgent = httpsAgent;
-  console.log(chalk.blue(`=> Use proxy: ${proxyUrl}`));
+  console.info(chalk.blue(`=> Use proxy: ${proxyUrl}`));
 }
 
 const download = async (url, dest, md5) => {
   return spinner(async () => {
-    console.log(chalk.blue(`=> Start to download file ${url}`));
+    console.info(chalk.blue(`=> Start to download file ${url}`));
     await axios
       .get(url, {
         responseType: "arraybuffer",
@@ -92,20 +92,19 @@ const download = async (url, dest, md5) => {
 
         fs.writeFileSync(dest, data);
         const hash = await hashFile(dest, { algo: "md5" });
-        console.log(chalk.blue(`=> File ${dest}(MD5: ${hash})`));
         if (hash === md5) {
-          console.log(chalk.green(`=> ${dest} downloaded successfully`));
+          console.info(chalk.green(`✅ ${dest} downloaded successfully`));
         } else {
-          console.log(
+          console.error(
             chalk.red(
-              `=> Error: ${dest} MD5 not match, ${hash} should be ${md5}`
+              `❌ Error: ${dest} MD5 not match, ${hash} should be ${md5}`
             )
           );
           process.exit(1);
         }
       })
       .catch((err) => {
-        console.log(chalk.red(`=> Error: ${err}`));
+        console.error(chalk.red(`❌ Error: ${err}`));
         process.exit(1);
       });
   });
@@ -127,7 +126,7 @@ const cleanup = () => {
     try {
       fs.removeSync(path.join(dir, file.name));
     } catch (err) {
-      console.log(chalk.red(`=> Error: ${err}`));
+      console.error(chalk.red(`❌ Error: ${err}`));
     }
   });
 };
@@ -140,10 +139,10 @@ try {
     )
   );
 } catch (err) {
-  console.log(chalk.red(`=> Error: ${err}`));
+  console.error(chalk.red(`❌ Error: ${err}`));
   cleanup();
   process.exit(1);
 }
 
-console.log(chalk.green("=> All files downloaded successfully"));
+console.info(chalk.green("✅ All files downloaded successfully"));
 process.exit(0);
