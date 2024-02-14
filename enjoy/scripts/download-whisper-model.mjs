@@ -9,29 +9,29 @@ const md5 = "55309cc6613788f07ac7988985210734";
 
 const dir = path.join(process.cwd(), "lib/whisper.cpp/models");
 
-console.log(chalk.blue(`=> Download whisper model ${model}`));
+console.info(chalk.blue(`=> Download whisper model ${model}`));
 
 fs.ensureDirSync(dir);
 try {
   if (fs.statSync(path.join(dir, model)).isFile()) {
-    console.log(chalk.green(`=> Model ${model} already exists`));
+    console.info(chalk.green(`✅ Model ${model} already exists`));
     const hash = await hashFile(path.join(dir, model), { algo: "md5" });
     if (hash === md5) {
-      console.log(chalk.green(`=> Model ${model} MD5 match`));
+      console.info(chalk.green(`✅ Model ${model} valid`));
       process.exit(0);
     } else {
-      console.log(
-        chalk.red(`=> Model ${model} MD5 not match, start to redownload`)
+      console.error(
+        chalk.red(`❌ Model ${model} not valid, start to redownload`)
       );
       fs.removeSync(path.join(dir, model));
     }
   }
 } catch (err) {
   if (err && err.code !== "ENOENT") {
-    console.log(chalk.red(`=> Error: ${err}`));
+    console.error(chalk.red(`❌ Error: ${err}`));
     process.exit(1);
   } else {
-    console.log(chalk.blue(`=> Start to download model ${model}`));
+    console.info(chalk.blue(`=> Start to download model ${model}`));
   }
 }
 
@@ -83,12 +83,12 @@ const download = async (url, dest) => {
       });
 
       response.data.pipe(fs.createWriteStream(dest)).on("close", () => {
-        console.log(chalk.green(`=> Model ${model} downloaded successfully`));
+        console.info(chalk.green(`✅ Model ${model} downloaded successfully`));
         process.exit(0);
       });
     })
     .catch((err) => {
-      console.log(chalk.red(`=> Error: ${err}`));
+      console.error(chalk.red(`❌ Error: ${err}`));
       process.exit(1);
     });
 };
