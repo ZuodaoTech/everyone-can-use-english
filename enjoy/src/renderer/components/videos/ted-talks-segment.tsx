@@ -61,16 +61,32 @@ export const TedTalksSegment = () => {
       });
   };
 
-  const downloadTalk = () => {
+  const downloadTalk = async () => {
     if (!selectedTalk?.canonicalUrl) return;
 
     setDownloadUrl(null);
-    EnjoyApp.providers.ted
-      .downloadTalk(selectedTalk?.canonicalUrl)
-      .then((downloadUrl) => {
-        if (!downloadUrl) return;
-        setDownloadUrl(downloadUrl);
-      });
+
+    const cachedUrl: {
+      audio: string;
+      video: string;
+    } = await EnjoyApp.cacheObjects.get(
+      `tedtalk-download-url-${selectedTalk?.canonicalUrl}`
+    );
+    if (cachedUrl) {
+      setDownloadUrl(cachedUrl);
+    } else {
+      EnjoyApp.providers.ted
+        .downloadTalk(selectedTalk?.canonicalUrl)
+        .then((url) => {
+          if (!url) return;
+          EnjoyApp.cacheObjects.set(
+            `tedtalk-download-url-${selectedTalk?.canonicalUrl}`,
+            url,
+            60 * 60 * 24 * 7
+          );
+          setDownloadUrl(url);
+        });
+    }
   };
 
   const fetchTalks = async () => {
