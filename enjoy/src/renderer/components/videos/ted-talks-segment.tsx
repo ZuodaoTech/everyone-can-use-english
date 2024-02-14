@@ -1,5 +1,3 @@
-/** @format */
-
 import { useState, useEffect, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import {
@@ -11,6 +9,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogFooter,
+  Progress,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +33,7 @@ export const TedTalksSegment = () => {
     video: string;
   }>();
   const [resolving, setResolving] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const addToLibrary = (type: DownloadType) => {
     if (!downloadUrl) return;
@@ -42,6 +43,7 @@ export const TedTalksSegment = () => {
     if (type === DownloadType.video) url = downloadUrl.video;
     setSubmitting(true);
     setSubmittingType(type);
+    setProgress(0);
 
     EnjoyApp.videos
       .create(url, {
@@ -49,6 +51,11 @@ export const TedTalksSegment = () => {
         coverUrl: selectedTalk?.primaryImageSet[0].url,
       })
       .then((record) => {
+        if (!record) {
+          toast.error(t("failedToDownload"));
+          return;
+        }
+
         if (type === "video") {
           navigate(`/videos/${record.id}`);
         } else {
@@ -123,6 +130,22 @@ export const TedTalksSegment = () => {
     resolveDowloadUrl();
   }, [selectedTalk]);
 
+  useEffect(() => {
+    if (!downloadUrl) return;
+
+    EnjoyApp.download.onState((_, downloadState) => {
+      console.log(downloadState);
+      const { state, received, total } = downloadState;
+      if (state === "progressing") {
+        setProgress(Math.floor((received / total) * 100));
+      }
+    });
+
+    return () => {
+      EnjoyApp.download.removeAllListeners();
+    };
+  }, [downloadUrl]);
+
   if (!talks?.length) return null;
 
   return (
@@ -184,12 +207,14 @@ export const TedTalksSegment = () => {
             </div>
           </div>
 
-          {resolving ? (
+          {resolving && (
             <div className="text-sm flex items-center justify-center">
               <LoaderIcon className="animate-spin" />
               <span className="ml-2">{t("resolvingDownloadUrl")}</span>
             </div>
-          ) : downloadUrl ? (
+          )}
+
+          {downloadUrl ? (
             <DialogFooter>
               <Button
                 variant="ghost"
@@ -239,6 +264,8 @@ export const TedTalksSegment = () => {
               </span>
             </div>
           )}
+
+          {submitting && progress > 0 && <Progress value={progress} />}
         </DialogContent>
       </Dialog>
     </div>
@@ -272,4 +299,4 @@ const TedTalkCard = (props: { talk: TedTalkType; onClick?: () => void }) => {
       </div>
     </div>
   );
-};
+};;
