@@ -12,7 +12,6 @@ import {
   DialogContent,
   DialogFooter,
 } from "@renderer/components/ui";
-import { LoaderSpin } from "@renderer/components";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
 import { LoaderIcon } from "lucide-react";
@@ -33,6 +32,7 @@ export const TedTalksSegment = () => {
     audio: string;
     video: string;
   }>();
+  const [resolving, setResolving] = useState(false);
 
   const addToLibrary = (type: DownloadType) => {
     if (!downloadUrl) return;
@@ -61,9 +61,11 @@ export const TedTalksSegment = () => {
       });
   };
 
-  const downloadTalk = async () => {
+  const resolveDowloadUrl = async () => {
     if (!selectedTalk?.canonicalUrl) return;
+    if (resolving) return;
 
+    setResolving(true);
     setDownloadUrl(null);
 
     const cachedUrl: {
@@ -74,6 +76,7 @@ export const TedTalksSegment = () => {
     );
     if (cachedUrl) {
       setDownloadUrl(cachedUrl);
+      setResolving(false);
     } else {
       EnjoyApp.providers.ted
         .downloadTalk(selectedTalk?.canonicalUrl)
@@ -85,6 +88,9 @@ export const TedTalksSegment = () => {
             60 * 60 * 24 * 7
           );
           setDownloadUrl(url);
+        })
+        .finally(() => {
+          setResolving(false);
         });
     }
   };
@@ -114,7 +120,7 @@ export const TedTalksSegment = () => {
   }, []);
 
   useEffect(() => {
-    downloadTalk();
+    resolveDowloadUrl();
   }, [selectedTalk]);
 
   if (!talks?.length) return null;
@@ -178,7 +184,12 @@ export const TedTalksSegment = () => {
             </div>
           </div>
 
-          {downloadUrl ? (
+          {resolving ? (
+            <div className="text-sm flex items-center justify-center">
+              <LoaderIcon className="animate-spin" />
+              <span className="ml-2">{t("resolvingDownloadUrl")}</span>
+            </div>
+          ) : downloadUrl ? (
             <DialogFooter>
               <Button
                 variant="ghost"
@@ -217,7 +228,16 @@ export const TedTalksSegment = () => {
               )}
             </DialogFooter>
           ) : (
-            <LoaderSpin />
+            <div className="text-sm text-muted-foreground text-center">
+              {t("downloadUrlNotResolved")}
+              {". "}
+              <span
+                className="underline cursor-pointer"
+                onClick={resolveDowloadUrl}
+              >
+                {t("retry")}
+              </span>
+            </div>
           )}
         </DialogContent>
       </Dialog>

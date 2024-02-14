@@ -447,5 +447,6 @@
   "translationFailed": "翻译失败",
   "allRecordingsSynced": "所有录音已同步",
   "syncingRecordings": "{{count}} 条录音正在同步",
-  "failedToSyncRecordings": "同步录音失败"
+  "failedToSyncRecordings": "同步录音失败",
+  "downloadUrlNotResolved": "无法解析下载地址"
 }

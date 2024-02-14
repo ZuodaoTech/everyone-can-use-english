@@ -448,5 +448,6 @@
   "translationFailed": "Translation failed",
   "allRecordingsSynced": "All recordings synced",
   "syncingRecordings": "Syncing {{count}} recordings",
-  "failedToSyncRecordings": "Syncing recordings failed"
+  "failedToSyncRecordings": "Syncing recordings failed",
+  "downloadUrlNotResolved": "Download URL not resolved"
 }
