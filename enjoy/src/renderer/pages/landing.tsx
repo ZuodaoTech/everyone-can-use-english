@@ -17,7 +17,7 @@ export default () => {
     AppSettingsProviderContext
   );
   const { whisperConfig } = useContext(AISettingsProviderContext);
-  const totalSteps = 4;
+  const totalSteps = 3;
 
   useEffect(() => {
     validateCurrentStep();
@@ -31,7 +31,7 @@ export default () => {
       case 2:
         setCurrentStepValid(!!libraryPath);
         break;
-      case 4:
+      case 3:
         setCurrentStepValid(initialized);
         break;
       default:
