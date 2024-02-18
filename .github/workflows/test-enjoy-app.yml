@@ -18,12 +18,12 @@ jobs:
       matrix:
         os:
           [
-            macos-11,
-            macos-12,
+            macos-latest,
             macos-13,
-            macos-14,
+            macos-13-xlarge,
             windows-2019,
             windows-latest,
+            ubuntu-20.04,
             ubuntu-latest,
           ]
     steps:
@@ -33,13 +33,13 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: npm install -g yarn && yarn
-      - if: startsWith(matrix.os, 'macos')
+      - if: matrix.os == 'macos-latest'
         name: Install sdl2 for macos
         run: |
           brew update
           brew install sdl2
       - if: matrix.os == 'ubuntu-latest'
-        name: Run tests with xvfb-run
+        name: Run tests with xvfb-run on ubuntu
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn test:enjoy
       - if: matrix.os != 'ubuntu-latest'
