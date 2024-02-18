@@ -6,7 +6,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [macos-latest, macos-13-xlarge, windows-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -18,8 +18,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
         run: yarn publish:enjoy
-      - if: matrix.os == 'macos-latest'
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-          PACKAGE_OS_ARCH: arm64
-        run: yarn run publish:enjoy --arch=arm64

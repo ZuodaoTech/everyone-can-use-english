@@ -6,6 +6,13 @@ import fs from "fs-extra";
 import log from "electron-log";
 import * as i18n from "i18next";
 
+if (process.env.SETTINGS_PATH) {
+  settings.configure({
+    dir: process.env.SETTINGS_PATH,
+    prettify: true,
+  });
+}
+
 const logger = log.scope("settings");
 const language = () => {
   const _language = settings.getSync("language");
@@ -28,7 +35,8 @@ const libraryPath = () => {
   if (!_library || typeof _library !== "string") {
     settings.setSync(
       "library",
-      path.join(app.getPath("documents"), LIBRARY_PATH_SUFFIX)
+      process.env.LIBRARY_PATH ||
+        path.join(app.getPath("documents"), LIBRARY_PATH_SUFFIX)
     );
   } else if (path.parse(_library).base !== LIBRARY_PATH_SUFFIX) {
     settings.setSync("library", path.join(_library, LIBRARY_PATH_SUFFIX));

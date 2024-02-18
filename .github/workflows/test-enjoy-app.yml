@@ -1,34 +1,51 @@
 name: Test Enjoy App
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  pull_request_target:
+    branches:
+      - main
+    paths:
+      - "enjoy/**/*.ts"
+      - "enjoy/**/*.tsx"
+      - "enjoy/**/*.js"
+      - "enjoy/**/*.mjs"
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os:
           [
-            macos-11,
-            macos-12,
-            macos-13,
             macos-latest,
+            macos-13,
+            macos-13-xlarge,
+            windows-2019,
             windows-latest,
+            ubuntu-20.04,
             ubuntu-latest,
           ]
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
       - name: Install dependencies
         run: npm install -g yarn && yarn
-      - name: Install Playwright Browsers
-        run: yarn workspace enjoy playwright install --with-deps
-      - name: Package
-        run: yarn package:enjoy
-      - name: Run Playwright tests
+      - if: matrix.os == 'macos-latest'
+        name: Install sdl2 for macos
+        run: |
+          brew update
+          brew install sdl2
+      - if: matrix.os == 'ubuntu-latest'
+        name: Run tests with xvfb-run on ubuntu
+        run: |
+          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn test:enjoy
+      - if: matrix.os != 'ubuntu-latest'
+        name: Run tests
         run: yarn test:enjoy
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report

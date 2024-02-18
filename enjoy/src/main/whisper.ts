@@ -46,16 +46,23 @@ class Whipser {
   }
 
   async initialize() {
-    const bundleModels = fs.readdirSync(this.bundledModelsDir);
+    const models = [];
+
+    const bundledModels = fs.readdirSync(this.bundledModelsDir);
+    for (const file of bundledModels) {
+      const model = WHISPER_MODELS_OPTIONS.find((m) => m.name == file);
+      if (!model) continue;
+
+      models.push({
+        ...model,
+        savePath: path.join(this.bundledModelsDir, file),
+      });
+    }
 
     const dir = path.join(settings.libraryPath(), "whisper", "models");
     fs.ensureDirSync(dir);
     const files = fs.readdirSync(dir);
-
-    const availableModelFiles = bundleModels.concat(files);
-
-    const models = [];
-    for (const file of availableModelFiles) {
+    for (const file of files) {
       const model = WHISPER_MODELS_OPTIONS.find((m) => m.name == file);
       if (!model) continue;
 
@@ -106,6 +113,7 @@ class Whipser {
     await this.initialize();
 
     const model = this.currentModel();
+    logger.debug(`Checking whisper model: ${model}`);
 
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
     const tmpDir = settings.cachePath();
