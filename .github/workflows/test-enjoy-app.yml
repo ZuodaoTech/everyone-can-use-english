@@ -33,6 +33,11 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: npm install -g yarn && yarn
+      - if: startsWith(matrix.os, 'macos')
+        name: Install sdl2 for macos
+        run: |
+          brew update
+          brew install sdl2
       - if: matrix.os == 'ubuntu-latest'
         name: Run tests with xvfb-run
         run: |
