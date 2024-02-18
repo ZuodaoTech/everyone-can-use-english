@@ -17,11 +17,13 @@ export class AudibleProvider {
       const view = new BrowserView();
       view.webContents.loadURL(this.baseURL + path);
       view.webContents.on("did-finish-load", () => {
+        logger.debug(`Scraped ${this.baseURL + path}`);
         view.webContents
           .executeJavaScript(`document.documentElement.innerHTML`)
           .then((html) => resolve(html as string));
       });
       view.webContents.on("did-fail-load", () => {
+        logger.error(`Failed to scrape ${this.baseURL + path}`);
         reject();
       });
     });
