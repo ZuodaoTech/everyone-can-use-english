@@ -70,6 +70,7 @@ test("validate whisper command", async () => {
   const res = await page.evaluate(() => {
     return window.__ENJOY_APP__.whisper.check();
   });
+  console.info(res.log);
   expect(res.success).toBeTruthy();
 });
 
