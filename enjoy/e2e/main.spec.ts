@@ -9,6 +9,8 @@ import {
   ipcRendererInvoke,
 } from "electron-playwright-helpers";
 import { ElectronApplication, Page, _electron as electron } from "playwright";
+import path from "path";
+import fs from "fs-extra";
 
 declare global {
   interface Window {
@@ -25,6 +27,13 @@ test.beforeAll(async () => {
   const appInfo = parseElectronApp(latestBuild);
   // set the CI environment variable to true
   process.env.CI = "e2e";
+
+  const resultDir = path.join(process.cwd(), "test-results");
+
+  fs.ensureDirSync(resultDir);
+  process.env.SETTINGS_PATH = resultDir;
+  process.env.LIBRARY_PATH = resultDir;
+
   electronApp = await electron.launch({
     args: [appInfo.main],
     executablePath: appInfo.executable,
