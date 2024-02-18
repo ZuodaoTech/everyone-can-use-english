@@ -35,9 +35,7 @@ await Promise.all(
           console.info(chalk.green(`✅ File ${file.name} valid`));
         } else {
           console.warn(
-            chalk.yellow(
-              `❌ File ${file.name} not valid, start to redownload`
-            )
+            chalk.yellow(`❌ File ${file.name} not valid, start to redownload`)
           );
           fs.removeSync(path.join(dir, file.name));
           pendingFiles.push(file);
@@ -81,6 +79,8 @@ if (proxyUrl) {
 }
 
 const download = async (url, dest, md5) => {
+  console.info(chalk.blue(`=> Start to download ${url} to ${dest}`));
+
   return spinner(async () => {
     console.info(chalk.blue(`=> Start to download file ${url}`));
     await axios
@@ -89,22 +89,27 @@ const download = async (url, dest, md5) => {
       })
       .then(async (response) => {
         const data = Buffer.from(response.data, "binary");
+        console.info(chalk.green(`✅ ${dest} downloaded successfully`));
 
         fs.writeFileSync(dest, data);
         const hash = await hashFile(dest, { algo: "md5" });
         if (hash === md5) {
-          console.info(chalk.green(`✅ ${dest} downloaded successfully`));
+          console.info(chalk.green(`✅ ${dest} valid`));
         } else {
           console.error(
             chalk.red(
-              `❌ Error: ${dest} MD5 not match, ${hash} should be ${md5}`
+              `❌ Error: ${dest} not valid. \nPlease try again using the command "yarn workspace enjoy download-ffmpeg-wasm"`
             )
           );
           process.exit(1);
         }
       })
       .catch((err) => {
-        console.error(chalk.red(`❌ Error: ${err}`));
+        console.error(
+          chalk.red(
+            `❌ Failed to download(${err}). \nPlease try again using the command "yarn workspace enjoy download-ffmpeg-wasm"`
+          )
+        );
         process.exit(1);
       });
   });
@@ -126,12 +131,17 @@ const cleanup = () => {
     try {
       fs.removeSync(path.join(dir, file.name));
     } catch (err) {
-      console.error(chalk.red(`❌ Error: ${err}`));
+      console.error(
+        chalk.red(
+          `❌ Failed to download(${err}). \nPlease try again using the command "yarn workspace enjoy download-ffmpeg-wasm"`
+        )
+      );
     }
   });
 };
 
-const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm";
+// const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm";
+const baseURL = "https://enjoy-storage.baizhiheizi.com";
 try {
   await Promise.all(
     pendingFiles.map((file) =>
@@ -139,7 +149,11 @@ try {
     )
   );
 } catch (err) {
-  console.error(chalk.red(`❌ Error: ${err}`));
+  console.error(
+    chalk.red(
+      `❌ Failed to download(${err}). \nPlease try again using the command "yarn workspace enjoy download-ffmpeg-wasm"`
+    )
+  );
   cleanup();
   process.exit(1);
 }
