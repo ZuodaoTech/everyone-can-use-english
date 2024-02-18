@@ -10,7 +10,7 @@ on:
       - "enjoy/**/*.js"
       - "enjoy/**/*.mjs"
 jobs:
-  test:
+  e2e:
     timeout-minutes: 60
     runs-on: ${{ matrix.os }}
     strategy:
@@ -38,11 +38,11 @@ jobs:
         run: |
           brew update
           brew install sdl2
-      - if: matrix.os == 'ubuntu-latest'
+      - if: startsWith(matrix.os, 'ubuntu')
         name: Run tests with xvfb-run on ubuntu
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn test:enjoy
-      - if: matrix.os != 'ubuntu-latest'
+      - if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'windows')
         name: Run tests
         run: yarn test:enjoy
       - uses: actions/upload-artifact@v4
