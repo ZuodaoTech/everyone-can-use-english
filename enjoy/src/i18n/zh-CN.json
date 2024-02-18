@@ -448,5 +448,6 @@
   "allRecordingsSynced": "所有录音已同步",
   "syncingRecordings": "{{count}} 条录音正在同步",
   "failedToSyncRecordings": "同步录音失败",
-  "downloadUrlNotResolved": "无法解析下载地址"
+  "downloadUrlNotResolved": "无法解析下载地址",
+  "resolvingDownloadUrl": "正在解析下载地址"
 }

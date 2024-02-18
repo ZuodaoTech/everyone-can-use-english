@@ -449,5 +449,6 @@
   "allRecordingsSynced": "All recordings synced",
   "syncingRecordings": "Syncing {{count}} recordings",
   "failedToSyncRecordings": "Syncing recordings failed",
-  "downloadUrlNotResolved": "Download URL not resolved"
+  "downloadUrlNotResolved": "Download URL not resolved",
+  "resolvingDownloadUrl": "Resolving download URL"
 }

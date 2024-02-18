@@ -207,13 +207,6 @@ export const TedTalksSegment = () => {
             </div>
           </div>
 
-          {resolving && (
-            <div className="text-sm flex items-center justify-center">
-              <LoaderIcon className="animate-spin" />
-              <span className="ml-2">{t("resolvingDownloadUrl")}</span>
-            </div>
-          )}
-
           {downloadUrl ? (
             <DialogFooter>
               <Button
@@ -252,6 +245,11 @@ export const TedTalksSegment = () => {
                 </Button>
               )}
             </DialogFooter>
+          ) : resolving ? (
+            <div className="text-sm flex items-center justify-center">
+              <LoaderIcon className="animate-spin" />
+              <span className="ml-2">{t("resolvingDownloadUrl")}</span>
+            </div>
           ) : (
             <div className="text-sm text-muted-foreground text-center">
               {t("downloadUrlNotResolved")}
@@ -299,4 +297,4 @@ const TedTalkCard = (props: { talk: TedTalkType; onClick?: () => void }) => {
       </div>
     </div>
   );
-};;
+};
