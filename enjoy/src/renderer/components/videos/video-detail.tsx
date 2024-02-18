@@ -195,6 +195,7 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
             mediaType="Video"
             mediaUrl={video.src}
             mediaName={video.name}
+            mediaMd5={video.md5}
             transcription={transcription}
             currentSegmentIndex={currentSegmentIndex}
             onSelectSegment={(index) => {

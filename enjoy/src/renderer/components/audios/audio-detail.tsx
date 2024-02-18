@@ -183,6 +183,7 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
             mediaId={audio.id}
             mediaType="Audio"
             mediaName={audio.name}
+            mediaMd5={audio.md5}
             mediaUrl={audio.src}
             transcription={transcription}
             currentSegmentIndex={currentSegmentIndex}

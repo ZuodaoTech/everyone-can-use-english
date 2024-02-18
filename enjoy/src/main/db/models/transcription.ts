@@ -69,6 +69,7 @@ export class Transcription extends Model<Transcription> {
   }
 
   async sync() {
+    if (this.isSynced) return;
     if (this.getDataValue("state") !== "finished") return;
 
     const webApi = new Client({
@@ -77,13 +78,21 @@ export class Transcription extends Model<Transcription> {
       logger,
     });
     return webApi.syncTranscription(this.toJSON()).then(() => {
-      this.update({ syncedAt: new Date() });
+      const now = new Date();
+      this.update({ syncedAt: now, updatedAt: now });
     });
   }
 
   @AfterUpdate
   static notifyForUpdate(transcription: Transcription) {
     this.notify(transcription, "update");
+  }
+
+  @AfterUpdate
+  static syncAfterUpdate(transcription: Transcription) {
+    transcription.sync().catch((err) => {
+      logger.error("sync error", err);
+    });
   }
 
   @AfterDestroy

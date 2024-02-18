@@ -191,11 +191,12 @@ export class Video extends Model<Video> {
     const webApi = new Client({
       baseUrl: process.env.WEB_API_URL || WEB_API_URL,
       accessToken: settings.getSync("user.accessToken") as string,
-      logger: log.scope("video/sync"),
+      logger,
     });
 
     return webApi.syncVideo(this.toJSON()).then(() => {
-      this.update({ syncedAt: new Date() });
+      const now = new Date();
+      this.update({ syncedAt: now, updatedAt: now });
     });
   }
 

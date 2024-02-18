@@ -29,18 +29,20 @@ export const MediaTranscription = (props: {
   mediaId: string;
   mediaType: "Audio" | "Video";
   mediaName?: string;
+  mediaMd5?: string;
   mediaUrl: string;
   currentSegmentIndex?: number;
   onSelectSegment?: (index: number) => void;
 }) => {
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { whisperConfig } = useContext(AISettingsProviderContext);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const {
     transcription,
     mediaId,
     mediaType,
     mediaName,
+    mediaMd5,
     mediaUrl,
     currentSegmentIndex,
     onSelectSegment,
@@ -73,6 +75,36 @@ export const MediaTranscription = (props: {
     setTranscribing(false);
   };
 
+  const fetchTranscriptionFromWebApi = async () => {
+    const res = await webApi.transcriptions({
+      targetMd5: mediaMd5,
+    });
+
+    const transcript = (res?.transcriptions || []).filter((t) =>
+      ["base", "small", "medium", "large", "whisper-1"].includes(t.model)
+    )?.[0];
+
+    if (!transcript) {
+      throw new Error("Transcription not found");
+    }
+
+    await EnjoyApp.transcriptions.update(transcription.id, {
+      state: "finished",
+      result: transcript.result,
+      engine: transcript.engine,
+      model: transcript.model,
+    });
+  };
+
+  const findOrGenerate = async () => {
+    try {
+      await fetchTranscriptionFromWebApi();
+    } catch (err) {
+      console.error(err);
+      await generate();
+    }
+  };
+
   const fetchSegmentStats = async () => {
     if (!mediaId) return;
 
@@ -86,7 +118,7 @@ export const MediaTranscription = (props: {
     fetchSegmentStats();
 
     if (transcription?.state == "pending") {
-      generate();
+      findOrGenerate();
     }
 
     if (whisperConfig.service === "local") {
@@ -100,7 +132,7 @@ export const MediaTranscription = (props: {
       removeDbListener(fetchSegmentStats);
       EnjoyApp.whisper.removeProgressListeners();
     };
-  }, [mediaId, mediaType, transcription]);
+  }, [mediaMd5, transcription]);
 
   useEffect(() => {
     containerRef.current
