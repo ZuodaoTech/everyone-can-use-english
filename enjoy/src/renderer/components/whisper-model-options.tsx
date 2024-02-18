@@ -36,54 +36,6 @@ type ModelType = {
   downloadState?: DownloadStateType;
 };
 
-export const WhisperModelOptionsPanel = () => {
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { whisperConfig, refreshWhisperConfig } = useContext(
-    AISettingsProviderContext
-  );
-
-  useEffect(() => {
-    refreshWhisperConfig();
-  }, []);
-
-  return (
-    <>
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>{t("whisperModel")}</CardTitle>
-          <CardDescription>
-            {t("chooseAIModelDependingOnYourHardware")}
-          </CardDescription>
-        </CardHeader>
-
-        <CardContent>
-          <WhisperModelOptions />
-        </CardContent>
-
-        <CardFooter>
-          <div className="text-xs flex items-start space-x-2">
-            <InfoIcon className="mr-1.5 w-4 h-4" />
-            <span className="flex-1 opacity-70">
-              {t("yourModelsWillBeDownloadedTo", {
-                path: whisperConfig.modelsPath,
-              })}
-            </span>
-            <Button
-              onClick={() => {
-                EnjoyApp.shell.openPath(whisperConfig.modelsPath);
-              }}
-              variant="outline"
-              size="sm"
-            >
-              {t("open")}
-            </Button>
-          </div>
-        </CardFooter>
-      </Card>
-    </>
-  );
-};
-
 export const WhisperModelOptions = () => {
   const [selectingModel, setSelectingModel] = useState<ModelType | null>(null);
   const [availableModels, setAvailableModels] = useState<ModelType[]>([]);
