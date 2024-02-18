@@ -19,6 +19,7 @@ declare global {
 }
 
 let electronApp: ElectronApplication;
+const resultDir = path.join(process.cwd(), "test-results");
 
 test.beforeAll(async () => {
   // find the latest build in the out directory
@@ -27,8 +28,6 @@ test.beforeAll(async () => {
   const appInfo = parseElectronApp(latestBuild);
   // set the CI environment variable to true
   process.env.CI = "e2e";
-
-  const resultDir = path.join(process.cwd(), "test-results");
 
   fs.ensureDirSync(resultDir);
   process.env.SETTINGS_PATH = resultDir;
@@ -40,7 +39,7 @@ test.beforeAll(async () => {
   });
   electronApp.on("window", async (page) => {
     const filename = page.url()?.split("/").pop();
-    console.log(`Window opened: ${filename}`);
+    console.info(`Window opened: ${filename}`);
 
     // capture errors
     page.on("pageerror", (error) => {
@@ -48,7 +47,7 @@ test.beforeAll(async () => {
     });
     // capture console messages
     page.on("console", (msg) => {
-      console.log(msg.text());
+      console.info(msg.text());
     });
   });
 });
@@ -57,25 +56,26 @@ test.afterAll(async () => {
   await electronApp.close();
 });
 
-let page: Page;
-
 test("renders the first page", async () => {
-  page = await electronApp.firstWindow();
+  const page = await electronApp.firstWindow();
   const title = await page.title();
   expect(title).toBe("Enjoy");
 });
 
 test("validate whisper command", async () => {
-  page = await electronApp.firstWindow();
+  const page = await electronApp.firstWindow();
   const res = await page.evaluate(() => {
     return window.__ENJOY_APP__.whisper.check();
   });
   console.info(res.log);
   expect(res.success).toBeTruthy();
+
+  const settings = fs.readJsonSync(path.join(resultDir, "settings.json"));
+  expect(settings.whisper.service).toBe("local");
 });
 
 test("valid ffmpeg command", async () => {
-  page = await electronApp.firstWindow();
+  const page = await electronApp.firstWindow();
   const res = await page.evaluate(() => {
     return window.__ENJOY_APP__.ffmpeg.check();
   });

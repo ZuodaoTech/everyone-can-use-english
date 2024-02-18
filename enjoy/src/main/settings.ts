@@ -70,13 +70,8 @@ const whisperConfig = (): WhisperConfigType => {
   ) as WhisperConfigType["service"];
 
   if (!service) {
-    if (model) {
-      settings.setSync("whisper.service", "local");
-      service = "local";
-    } else {
-      settings.setSync("whisper.service", "azure");
-      service = "azure";
-    }
+    settings.setSync("whisper.service", "local");
+    service = "local";
   }
 
   return {

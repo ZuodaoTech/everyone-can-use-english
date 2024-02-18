@@ -2,11 +2,7 @@ import { t } from "i18next";
 import { useState, useContext, useEffect } from "react";
 import { Button, Progress } from "@renderer/components/ui";
 import { Link } from "react-router-dom";
-import {
-  LoginForm,
-  ChooseLibraryPathInput,
-  WhisperModelOptionsPanel,
-} from "@renderer/components";
+import { LoginForm, ChooseLibraryPathInput } from "@renderer/components";
 import {
   AppSettingsProviderContext,
   AISettingsProviderContext,
@@ -21,7 +17,7 @@ export default () => {
     AppSettingsProviderContext
   );
   const { whisperConfig } = useContext(AISettingsProviderContext);
-  const totalSteps = 4;
+  const totalSteps = 3;
 
   useEffect(() => {
     validateCurrentStep();
@@ -36,9 +32,6 @@ export default () => {
         setCurrentStepValid(!!libraryPath);
         break;
       case 3:
-        setCurrentStepValid(true);
-        break;
-      case 4:
         setCurrentStepValid(initialized);
         break;
       default:
@@ -68,10 +61,6 @@ export default () => {
       subtitle: t("whereYourResourcesAreStored"),
     },
     3: {
-      title: t("AIModel"),
-      subtitle: t("chooseAIModelToDownload"),
-    },
-    4: {
       title: t("finish"),
       subtitle: t("youAreReadyToGo"),
     },
@@ -91,8 +80,7 @@ export default () => {
       <div className="flex-1 flex justify-center items-center">
         {currentStep == 1 && <LoginForm />}
         {currentStep == 2 && <ChooseLibraryPathInput />}
-        {currentStep == 3 && <WhisperModelOptionsPanel />}
-        {currentStep == 4 && (
+        {currentStep == 3 && (
           <div className="flex justify-center items-center">
             <CheckCircle2Icon className="text-green-500 w-24 h-24" />
           </div>

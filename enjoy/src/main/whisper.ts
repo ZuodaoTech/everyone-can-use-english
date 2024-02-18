@@ -13,8 +13,7 @@ class Whipser {
   private bundledModelsDir: string;
   public config: WhisperConfigType;
 
-  constructor(config?: WhisperConfigType) {
-    this.config = config || settings.whisperConfig();
+  constructor() {
     const customWhisperPath = path.join(
       settings.libraryPath(),
       "whisper",
@@ -26,26 +25,10 @@ class Whipser {
     } else {
       this.binMain = path.join(__dirname, "lib", "whisper", "main");
     }
+    this.initialize();
   }
 
-  currentModel() {
-    if (!this.config.availableModels) return;
-
-    let model: WhisperConfigType["availableModels"][0];
-    if (this.config.model) {
-      model = (this.config.availableModels || []).find(
-        (m) => m.name === this.config.model
-      );
-    }
-    if (!model) {
-      model = this.config.availableModels[0];
-    }
-
-    settings.setSync("whisper.model", model.name);
-    return model.savePath;
-  }
-
-  async initialize() {
+  initialize() {
     const models = [];
 
     const bundledModels = fs.readdirSync(this.bundledModelsDir);
@@ -74,44 +57,26 @@ class Whipser {
     settings.setSync("whisper.availableModels", models);
     settings.setSync("whisper.modelsPath", dir);
     this.config = settings.whisperConfig();
+  }
 
-    const command = `"${this.binMain}" --help`;
-    logger.debug(`Checking whisper command: ${command}`);
-    return new Promise((resolve, reject) => {
-      exec(
-        command,
-        {
-          timeout: PROCESS_TIMEOUT,
-        },
-        (error, stdout, stderr) => {
-          if (error) {
-            logger.error("error", error);
-          }
+  currentModel() {
+    if (!this.config.availableModels) return;
 
-          if (stderr) {
-            logger.debug("stderr", stderr);
-          }
-
-          if (stdout) {
-            logger.debug("stdout", stdout);
-          }
-
-          const std = (stdout || stderr).toString()?.trim();
-          if (std.startsWith("usage:")) {
-            resolve(true);
-          } else {
-            reject(
-              error || new Error("Whisper check failed: unknown error").message
-            );
-          }
-        }
+    let model: WhisperConfigType["availableModels"][0];
+    if (this.config.model) {
+      model = (this.config.availableModels || []).find(
+        (m) => m.name === this.config.model
       );
-    });
+    }
+    if (!model) {
+      model = this.config.availableModels[0];
+    }
+
+    settings.setSync("whisper.model", model.name);
+    return model.savePath;
   }
 
   async check() {
-    await this.initialize();
-
     const model = this.currentModel();
     logger.debug(`Checking whisper model: ${model}`);
 
@@ -262,12 +227,7 @@ class Whipser {
 
   registerIpcHandlers() {
     ipcMain.handle("whisper-config", async () => {
-      try {
-        await this.initialize();
-        return Object.assign({}, this.config, { ready: true });
-      } catch (_err) {
-        return Object.assign({}, this.config, { ready: false });
-      }
+      return this.config;
     });
 
     ipcMain.handle("whisper-set-model", async (event, model) => {
@@ -295,7 +255,7 @@ class Whipser {
     ipcMain.handle("whisper-set-service", async (event, service) => {
       if (service === "local") {
         try {
-          await this.initialize();
+          await this.check();
           settings.setSync("whisper.service", service);
           this.config.service = service;
           return this.config;
