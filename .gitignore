@@ -115,6 +115,7 @@ package-lock.json
 */playwright-report/
 */blob-report/
 */playwright/.cache/
+*/tmp/
 
 # whisper models
 ggml-*.bin

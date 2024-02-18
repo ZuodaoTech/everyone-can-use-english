@@ -13,8 +13,7 @@ class Whipser {
   private bundledModelsDir: string;
   public config: WhisperConfigType;
 
-  constructor(config?: WhisperConfigType) {
-    this.config = config || settings.whisperConfig();
+  constructor() {
     const customWhisperPath = path.join(
       settings.libraryPath(),
       "whisper",
@@ -228,12 +227,7 @@ class Whipser {
 
   registerIpcHandlers() {
     ipcMain.handle("whisper-config", async () => {
-      try {
-        await this.check();
-        return Object.assign({}, this.config, { ready: true });
-      } catch (_err) {
-        return Object.assign({}, this.config, { ready: false });
-      }
+      return this.config;
     });
 
     ipcMain.handle("whisper-set-model", async (event, model) => {

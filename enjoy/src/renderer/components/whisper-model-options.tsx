@@ -8,18 +8,12 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   Button,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
   ScrollArea,
   toast,
   Progress,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import { InfoIcon, CheckCircle, DownloadIcon, XCircleIcon } from "lucide-react";
+import { CheckCircle, DownloadIcon, XCircleIcon } from "lucide-react";
 import { WHISPER_MODELS_OPTIONS } from "@/constants";
 import { useState, useContext, useEffect } from "react";
 import {
