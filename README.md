@@ -19,6 +19,9 @@
 
 # Enjoy App
 
+[![Test](https://github.com/xiaolai/everyone-can-use-english/actions/workflows/test-enjoy-app.yml/badge.svg)](https://github.com/xiaolai/everyone-can-use-english/actions/workflows/test-enjoy-app.yml)
+[![Release](https://github.com/xiaolai/everyone-can-use-english/actions/workflows/release-enjoy-app.yml/badge.svg)](https://github.com/xiaolai/everyone-can-use-english/actions/workflows/release-enjoy-app.yml)
+
 ## \* 开发者
 
 ### 本地启动
@@ -79,7 +82,7 @@ yarn make:enjoy
    yarn start:enjoy
    ```
 
-6. 以后重新启动用 Terminal 
+6. 以后重新启动用 Terminal
 
    ```bash
    cd ~/github/everyone-can-use-english
@@ -205,6 +208,7 @@ yarn make:enjoy
 
 **Q: 很多解决不了的问题，怎么办？**
 
-其实，可能还有很多其它问题，比如，本软件安装、OpenAI（注册、支付）、美国线路…… 
+其实，可能还有很多其它问题，比如，本软件安装、OpenAI（注册、支付）、美国线路……
 
 > A: 1）文本生成，可以暂时用各种翻译工具，比如 Google Translate，或者其它的替代方案；2）语音生成，可以暂时用开源免费的 [Edge-TTS-record](https://github.com/LuckyHookin/edge-TTS-record)
+
