@@ -4,8 +4,8 @@ import axios from "axios";
 import progress from "progress";
 import { createHash } from "crypto";
 
-const model = "ggml-base.en-q5_1.bin";
-const md5 = "55309cc6613788f07ac7988985210734";
+const model = "ggml-tiny.en.bin";
+const sha = "c78c86eb1a8faa21b369bcd33207cc90d64ae9df";
 
 const dir = path.join(process.cwd(), "lib/whisper.cpp/models");
 
@@ -15,13 +15,15 @@ fs.ensureDirSync(dir);
 try {
   if (fs.statSync(path.join(dir, model)).isFile()) {
     console.info(chalk.green(`✅ Model ${model} already exists`));
-    const hash = await hashFile(path.join(dir, model), { algo: "md5" });
-    if (hash === md5) {
+    const hash = await hashFile(path.join(dir, model), { algo: "sha1" });
+    if (hash === sha) {
       console.info(chalk.green(`✅ Model ${model} valid`));
       process.exit(0);
     } else {
       console.error(
-        chalk.red(`❌ Model ${model} not valid, start to redownload`)
+        chalk.red(
+          `❌ Model ${model} not valid, start to redownload`
+        )
       );
       fs.removeSync(path.join(dir, model));
     }
@@ -54,7 +56,7 @@ const modelUrlPrefix =
   "https://huggingface.co/ggerganov/whisper.cpp/resolve/main";
 
 function hashFile(path, options) {
-  const algo = options.algo || "md5";
+  const algo = options.algo || "sha1";
   return new Promise((resolve, reject) => {
     const hash = createHash(algo);
     const stream = fs.createReadStream(path);
@@ -88,7 +90,9 @@ const download = async (url, dest) => {
       });
     })
     .catch((err) => {
-      console.error(chalk.red(`❌ Error: ${err}`));
+      console.error(
+        chalk.red(`❌ Failed to download ${url}: ${err}.\nPlease try again using command \`yarn workspace enjoy download-whisper-model\``)
+      );
       process.exit(1);
     });
 };
