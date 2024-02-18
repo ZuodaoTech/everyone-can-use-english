@@ -1,17 +1,25 @@
 name: Test Enjoy App
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "enjoy/**"
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os:
           [
             macos-11,
             macos-12,
             macos-13,
-            macos-latest,
+            macos-14,
+            windows-2019,
             windows-latest,
             ubuntu-latest,
           ]
