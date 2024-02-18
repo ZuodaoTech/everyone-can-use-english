@@ -207,61 +207,66 @@ export const TedTalksSegment = () => {
             </div>
           </div>
 
-          {downloadUrl ? (
-            <DialogFooter>
-              <Button
-                variant="ghost"
-                onClick={() =>
-                  EnjoyApp.shell.openExternal(selectedTalk?.canonicalUrl)
-                }
-                className="mr-auto"
-              >
-                {t("open")}
-              </Button>
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              onClick={() =>
+                EnjoyApp.shell.openExternal(selectedTalk?.canonicalUrl)
+              }
+              className="mr-auto"
+            >
+              {t("open")}
+            </Button>
 
-              <Button onClick={() => setSelectedTalk(null)} variant="secondary">
-                {t("cancel")}
-              </Button>
-              {downloadUrl.audio && (
+            {downloadUrl ? (
+              <>
                 <Button
-                  onClick={() => addToLibrary(DownloadType.audio)}
-                  disabled={submitting}
+                  onClick={() => setSelectedTalk(null)}
+                  variant="secondary"
                 >
-                  {submittingType === DownloadType.audio && (
-                    <LoaderIcon className="w-4 h-4 animate-spin mr-2" />
-                  )}
-                  {t("downloadAudio")}
+                  {t("cancel")}
                 </Button>
-              )}
-              {downloadUrl.video && (
-                <Button
-                  onClick={() => addToLibrary(DownloadType.video)}
-                  disabled={submitting}
+                {downloadUrl.audio && (
+                  <Button
+                    onClick={() => addToLibrary(DownloadType.audio)}
+                    disabled={submitting}
+                  >
+                    {submittingType === DownloadType.audio && (
+                      <LoaderIcon className="w-4 h-4 animate-spin mr-2" />
+                    )}
+                    {t("downloadAudio")}
+                  </Button>
+                )}
+                {downloadUrl.video && (
+                  <Button
+                    onClick={() => addToLibrary(DownloadType.video)}
+                    disabled={submitting}
+                  >
+                    {submittingType === DownloadType.video && (
+                      <LoaderIcon className="w-4 h-4 animate-spin mr-2" />
+                    )}
+                    {t("downloadVideo")}
+                  </Button>
+                )}
+              </>
+            ) : resolving ? (
+              <div className="text-sm flex items-center justify-center">
+                <LoaderIcon className="animate-spin" />
+                <span className="ml-2">{t("resolvingDownloadUrl")}</span>
+              </div>
+            ) : (
+              <div className="text-sm text-muted-foreground text-center">
+                {t("downloadUrlNotResolved")}
+                {". "}
+                <span
+                  className="underline cursor-pointer"
+                  onClick={resolveDowloadUrl}
                 >
-                  {submittingType === DownloadType.video && (
-                    <LoaderIcon className="w-4 h-4 animate-spin mr-2" />
-                  )}
-                  {t("downloadVideo")}
-                </Button>
-              )}
-            </DialogFooter>
-          ) : resolving ? (
-            <div className="text-sm flex items-center justify-center">
-              <LoaderIcon className="animate-spin" />
-              <span className="ml-2">{t("resolvingDownloadUrl")}</span>
-            </div>
-          ) : (
-            <div className="text-sm text-muted-foreground text-center">
-              {t("downloadUrlNotResolved")}
-              {". "}
-              <span
-                className="underline cursor-pointer"
-                onClick={resolveDowloadUrl}
-              >
-                {t("retry")}
-              </span>
-            </div>
-          )}
+                  {t("retry")}
+                </span>
+              </div>
+            )}
+          </DialogFooter>
 
           {submitting && progress > 0 && <Progress value={progress} />}
         </DialogContent>
