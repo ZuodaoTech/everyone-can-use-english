@@ -10,7 +10,7 @@ const logger = log.scope("whisper");
 
 class Whipser {
   private binMain: string;
-  private defaultModel: string;
+  private bundledModelsDir: string;
   public config: WhisperConfigType;
 
   constructor(config?: WhisperConfigType) {
@@ -20,13 +20,7 @@ class Whipser {
       "whisper",
       "main"
     );
-    this.defaultModel = path.join(
-      __dirname,
-      "lib",
-      "whisper",
-      "models",
-      "ggml-base.en-q5_1.bin"
-    );
+    this.bundledModelsDir = path.join(__dirname, "lib", "whisper", "models");
     if (fs.existsSync(customWhisperPath)) {
       this.binMain = customWhisperPath;
     } else {
@@ -36,23 +30,32 @@ class Whipser {
 
   currentModel() {
     if (!this.config.availableModels) return;
-    if (!this.config.model) {
-      const model = this.config.availableModels[0];
-      settings.setSync("whisper.model", this.config.availableModels[0].name);
-      return model.savePath;
+
+    let model: WhisperConfigType["availableModels"][0];
+    if (this.config.model) {
+      model = (this.config.availableModels || []).find(
+        (m) => m.name === this.config.model
+      );
+    }
+    if (!model) {
+      model = this.config.availableModels[0];
     }
 
-    return (this.config.availableModels || []).find(
-      (m) => m.name === this.config.model
-    )?.savePath;
+    settings.setSync("whisper.model", model.name);
+    return model.savePath;
   }
 
   async initialize() {
+    const bundleModels = fs.readdirSync(this.bundledModelsDir);
+
     const dir = path.join(settings.libraryPath(), "whisper", "models");
     fs.ensureDirSync(dir);
     const files = fs.readdirSync(dir);
+
+    const availableModelFiles = bundleModels.concat(files);
+
     const models = [];
-    for (const file of files) {
+    for (const file of availableModelFiles) {
       const model = WHISPER_MODELS_OPTIONS.find((m) => m.name == file);
       if (!model) continue;
 
@@ -102,7 +105,7 @@ class Whipser {
   async check() {
     await this.initialize();
 
-    const model = this.currentModel() || this.defaultModel;
+    const model = this.currentModel();
 
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
     const tmpDir = settings.cachePath();
@@ -169,7 +172,7 @@ class Whipser {
       throw new Error("No file or blob provided");
     }
 
-    const model = this.currentModel() || this.defaultModel;
+    const model = this.currentModel();
 
     if (blob) {
       const format = blob.type.split("/")[1];
