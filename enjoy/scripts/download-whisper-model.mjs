@@ -21,9 +21,7 @@ try {
       process.exit(0);
     } else {
       console.error(
-        chalk.red(
-          `❌ Model ${model} not valid, start to redownload`
-        )
+        chalk.red(`❌ Model ${model} not valid, start to redownload`)
       );
       fs.removeSync(path.join(dir, model));
     }
@@ -52,8 +50,9 @@ if (proxyUrl) {
   };
 }
 
-const modelUrlPrefix =
-  "https://huggingface.co/ggerganov/whisper.cpp/resolve/main";
+// const modelUrlPrefix =
+//   "https://huggingface.co/ggerganov/whisper.cpp/resolve/main";
+const modelUrlPrefix = "https://enjoy-storage.baizhiheizi.com";
 
 function hashFile(path, options) {
   const algo = options.algo || "sha1";
@@ -67,6 +66,7 @@ function hashFile(path, options) {
 }
 
 const download = async (url, dest) => {
+  console.info(chalk.blue(`=> Start to download from ${url} to ${dest}`));
   return axios
     .get(url, { responseType: "stream" })
     .then((response) => {
@@ -84,14 +84,27 @@ const download = async (url, dest) => {
         progressBar.tick(chunk.length);
       });
 
-      response.data.pipe(fs.createWriteStream(dest)).on("close", () => {
+      response.data.pipe(fs.createWriteStream(dest)).on("close", async () => {
         console.info(chalk.green(`✅ Model ${model} downloaded successfully`));
-        process.exit(0);
+        const hash = await hashFile(path.join(dir, model), { algo: "sha1" });
+        if (hash === sha) {
+          console.info(chalk.green(`✅ Model ${model} valid`));
+          process.exit(0);
+        } else {
+          console.error(
+            chalk.red(
+              `❌ Model ${model} not valid, please try again using command \`yarn workspace enjoy download-whisper-model\``
+            )
+          );
+          process.exit(1);
+        }
       });
     })
     .catch((err) => {
       console.error(
-        chalk.red(`❌ Failed to download ${url}: ${err}.\nPlease try again using command \`yarn workspace enjoy download-whisper-model\``)
+        chalk.red(
+          `❌ Failed to download ${url}: ${err}.\nPlease try again using command \`yarn workspace enjoy download-whisper-model\``
+        )
       );
       process.exit(1);
     });
