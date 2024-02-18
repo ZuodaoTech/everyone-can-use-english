@@ -24,7 +24,12 @@ jobs:
         run: npm install -g yarn && yarn
       - name: Install Playwright Browsers
         run: yarn workspace enjoy playwright install --with-deps
-      - name: Run tests
+      - if: matrix.os == 'ubuntu-latest'
+        name: Run tests with xvfb-run
+        run: |
+          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn test:enjoy
+      - if: matrix.os != 'ubuntu-latest'
+        name: Run tests
         run: yarn test:enjoy
       - uses: actions/upload-artifact@v3
         if: always()
