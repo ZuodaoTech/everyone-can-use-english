@@ -1,7 +1,7 @@
 name: Test Enjoy App
 on:
   workflow_dispatch:
-  pull_request:
+  pull_request_target:
     branches:
       - main
     paths:
@@ -27,8 +27,8 @@ jobs:
             ubuntu-latest,
           ]
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
       - name: Install dependencies
@@ -40,7 +40,7 @@ jobs:
       - if: matrix.os != 'ubuntu-latest'
         name: Run tests
         run: yarn test:enjoy
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
