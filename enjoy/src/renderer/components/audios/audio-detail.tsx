@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import {
   DbProviderContext,
   AppSettingsProviderContext,
+  AISettingsProviderContext,
 } from "@renderer/context";
 import {
   LoaderSpin,
@@ -10,7 +11,7 @@ import {
   MediaPlayer,
   MediaTranscription,
 } from "@renderer/components";
-import { LoaderIcon } from "lucide-react";
+import { CheckCircleIcon, LoaderIcon } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogHeader,
@@ -20,20 +21,31 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   Button,
+  PingPoint,
+  Progress,
   ScrollArea,
   toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
+import { useTranscribe } from "@renderer/hooks";
+import { useNavigate } from "react-router-dom";
 
 export const AudioDetail = (props: { id?: string; md5?: string }) => {
+  const navigate = useNavigate();
+
   const { id, md5 } = props;
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
+  const { whisperConfig } = useContext(AISettingsProviderContext);
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
 
   const [audio, setAudio] = useState<AudioType | null>(null);
   const [transcription, setTranscription] = useState<TranscriptionType>(null);
-  const [initialized, setInitialized] = useState<boolean>(false);
   const [sharing, setSharing] = useState<boolean>(false);
+
+  const [initialized, setInitialized] = useState<boolean>(false);
+  const [transcribing, setTranscribing] = useState<boolean>(false);
+  const { transcribe } = useTranscribe();
+  const [transcribingProgress, setTranscribingProgress] = useState<number>(0);
 
   // Player controls
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -53,6 +65,56 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
     const { model, action, record } = event.detail || {};
     if (model === "Transcription" && action === "update") {
       setTranscription(record);
+    }
+  };
+
+  const generateTranscription = async () => {
+    if (transcribing) return;
+
+    setTranscribing(true);
+    setTranscribingProgress(0);
+    try {
+      const { engine, model, result } = await transcribe(audio.src);
+      await EnjoyApp.transcriptions.update(transcription.id, {
+        state: "finished",
+        result,
+        engine,
+        model,
+      });
+    } catch (err) {
+      toast.error(err.message);
+    }
+
+    setTranscribing(false);
+  };
+
+  const findTranscriptionFromWebApi = async () => {
+    const res = await webApi.transcriptions({
+      targetMd5: audio.md5,
+    });
+
+    const transcript = (res?.transcriptions || []).filter((t) =>
+      ["base", "small", "medium", "large", "whisper-1"].includes(t.model)
+    )?.[0];
+
+    if (!transcript) {
+      throw new Error("Transcription not found");
+    }
+
+    await EnjoyApp.transcriptions.update(transcription.id, {
+      state: "finished",
+      result: transcript.result,
+      engine: transcript.engine,
+      model: transcript.model,
+    });
+  };
+
+  const findOrGenerateTranscription = async () => {
+    try {
+      await findTranscriptionFromWebApi();
+    } catch (err) {
+      console.error(err);
+      await generateTranscription();
     }
   };
 
@@ -110,11 +172,26 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
   }, [audio]);
 
   useEffect(() => {
+    if (!transcription) return;
+
     addDblistener(onTransactionUpdate);
+
+    if (transcription?.state == "pending") {
+      findOrGenerateTranscription();
+    }
+
+    if (whisperConfig.service === "local") {
+      EnjoyApp.whisper.onProgress((_, p: number) => {
+        if (p > 100) p = 100;
+        setTranscribingProgress(p);
+      });
+    }
+
     return () => {
       removeDbListener(onTransactionUpdate);
+      EnjoyApp.whisper.removeProgressListeners();
     };
-  }, [transcription]);
+  }, [md5, transcription]);
 
   if (!audio) {
     return <LoaderSpin />;
@@ -183,9 +260,10 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
             mediaId={audio.id}
             mediaType="Audio"
             mediaName={audio.name}
-            mediaMd5={audio.md5}
-            mediaUrl={audio.src}
             transcription={transcription}
+            transcribing={transcribing}
+            progress={transcribingProgress}
+            transcribe={generateTranscription}
             currentSegmentIndex={currentSegmentIndex}
             onSelectSegment={(index) => {
               if (currentSegmentIndex === index) return;
@@ -220,11 +298,69 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
         </AlertDialogContent>
       </AlertDialog>
 
-      {!initialized && (
-        <div className="top-0 w-full h-full absolute z-30 bg-background/10 flex items-center justify-center">
-          <LoaderIcon className="text-muted-foreground animate-spin w-8 h-8" />
-        </div>
-      )}
+      {/* Show loading progress until waveform is decoded & transcribed */}
+      <AlertDialog open={!initialized || !Boolean(transcription?.result)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("preparingResource")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("itMayTakeAWhileToPrepareForTheFirstLoad")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <div className="py-4">
+            {initialized ? (
+              <div className="mb-4 flex items-center space-x-4">
+                <CheckCircleIcon className="w-4 h-4 text-green-500" />
+                <span>{t("waveformIsDecoded")}</span>
+              </div>
+            ) : (
+              <div className="mb-4 flex items-center space-x-4">
+                <LoaderIcon className="w-4 h-4 animate-spin" />
+                <span>{t("decodingWaveform")}</span>
+              </div>
+            )}
+
+            {!transcription ? (
+              <div className="flex items-center space-x-4">
+                <PingPoint colorClassName="bg-muted" />
+                <span>{t("loadingTranscription")}</span>
+              </div>
+            ) : transcription.result ? (
+              <div className="flex items-center space-x-4">
+                <CheckCircleIcon className="w-4 h-4 text-green-500" />
+                <span>{t("transcribedSuccessfully")}</span>
+              </div>
+            ) : transcribing ? (
+              <div className="">
+                <div className="flex items-center space-x-4 mb-2">
+                  <PingPoint colorClassName="bg-yellow-500" />
+                  <span>{t("transcribing")}</span>
+                </div>
+                {whisperConfig.service === "local" && (
+                  <Progress value={transcribingProgress} />
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <PingPoint colorClassName="bg-muted" />
+                <div className="inline">
+                  <span>{t("notTranscribedYet")}</span>
+                  <Button className="ml-4" size="sm">
+                    {t("transcribe")}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <AlertDialogFooter>
+            <Button variant="secondary" onClick={() => navigate(-1)}>
+              {t("cancel")}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

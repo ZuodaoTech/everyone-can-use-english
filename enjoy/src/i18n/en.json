@@ -450,5 +450,13 @@
   "syncingRecordings": "Syncing {{count}} recordings",
   "failedToSyncRecordings": "Syncing recordings failed",
   "downloadUrlNotResolved": "Download URL not resolved",
-  "resolvingDownloadUrl": "Resolving download URL"
+  "resolvingDownloadUrl": "Resolving download URL",
+  "waveformIsDecoded": "Waveform is decoded",
+  "decodingWaveform": "Decoding waveform",
+  "transcribedSuccessfully": "Transcribed successfully",
+  "transcribing": "Transcribing",
+  "notTranscribedYet": "Not transcribed yet",
+  "preparingResource": "Preparing resource",
+  "itMayTakeAWhileToPrepareForTheFirstLoad": "It may take a while to prepare for the first load. Please be patient.",
+  "loadingTranscription": "Loading transcription"
 }

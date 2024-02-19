@@ -449,5 +449,13 @@
   "syncingRecordings": "{{count}} 条录音正在同步",
   "failedToSyncRecordings": "同步录音失败",
   "downloadUrlNotResolved": "无法解析下载地址",
-  "resolvingDownloadUrl": "正在解析下载地址"
+  "resolvingDownloadUrl": "正在解析下载地址",
+  "waveformIsDecoded": "波形已解码",
+  "decodingWaveform": "正在解码波形",
+  "transcribedSuccessfully": "语音转文本成功",
+  "transcribing": "正在语音转文本",
+  "notTranscribedYet": "尚未语音转文本",
+  "preparingResource": "正在准备资源",
+  "itMayTakeAWhileToPrepareForTheFirstLoad": "首次加载可能需要一些时间，请耐心等候",
+  "loadingTranscription": "正在加载语音文本"
 }
