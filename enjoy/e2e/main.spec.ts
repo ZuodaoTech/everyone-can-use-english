@@ -81,3 +81,8 @@ test("valid ffmpeg command", async () => {
   });
   expect(res).toBeTruthy();
 });
+
+test("should setup default library path", async () => {
+  const settings = fs.readJsonSync(path.join(resultDir, "settings.json"));
+  expect(settings.library).not.toBeNull();
+});
