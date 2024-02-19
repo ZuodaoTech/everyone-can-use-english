@@ -23,7 +23,6 @@ jobs:
             macos-14,
             windows-2019,
             windows-latest,
-            ubuntu-20.04,
             ubuntu-latest,
           ]
     steps:
