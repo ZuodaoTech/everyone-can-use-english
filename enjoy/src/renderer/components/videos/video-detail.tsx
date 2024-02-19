@@ -179,6 +179,7 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
   }, [video]);
 
   useEffect(() => {
+    if (!initialized) return;
     if (!transcription) return;
 
     addDblistener(onTransactionUpdate);
@@ -198,7 +199,7 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
       removeDbListener(onTransactionUpdate);
       EnjoyApp.whisper.removeProgressListeners();
     };
-  }, [md5, transcription]);
+  }, [md5, transcription, initialized]);
 
   if (!video) {
     return <LoaderSpin />;
@@ -337,7 +338,7 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
 
             {!transcription ? (
               <div className="flex items-center space-x-4">
-                <PingPoint colorClassName="bg-muted" />
+                <LoaderIcon className="w-4 h-4 animate-spin" />
                 <span>{t("loadingTranscription")}</span>
               </div>
             ) : transcription.result ? (
