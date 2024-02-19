@@ -53,7 +53,7 @@
     "@typescript-eslint/parser": "^7.0.1",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",
-    "electron": "^28.2.0",
+    "electron": "^28.2.3",
     "electron-playwright-helpers": "^1.7.0",
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",
