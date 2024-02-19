@@ -1363,7 +1363,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/community@npm:~0.0.29":
+"@langchain/community@npm:^0.0.30, @langchain/community@npm:~0.0.29":
   version: 0.0.30
   resolution: "@langchain/community@npm:0.0.30"
   dependencies:
@@ -6099,6 +6099,7 @@ __metadata:
     "@ffmpeg/ffmpeg": "npm:^0.12.10"
     "@ffmpeg/util": "npm:^0.12.1"
     "@hookform/resolvers": "npm:^3.3.4"
+    "@langchain/community": "npm:^0.0.30"
     "@langchain/google-genai": "npm:^0.0.10"
     "@mozilla/readability": "npm:^0.5.0"
     "@playwright/test": "npm:^1.41.2"

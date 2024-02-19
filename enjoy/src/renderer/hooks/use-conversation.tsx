@@ -5,10 +5,13 @@ import {
 import { useContext } from "react";
 import { ChatMessageHistory, BufferMemory } from "langchain/memory";
 import { ConversationChain } from "langchain/chains";
-import { ChatOpenAI } from "langchain/chat_models/openai";
-import { ChatOllama } from "langchain/chat_models/ollama";
+import { ChatOpenAI } from "@langchain/openai";
+import { ChatOllama } from "@langchain/community/chat_models/ollama";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { ChatPromptTemplate, MessagesPlaceholder } from "langchain/prompts";
+import {
+  ChatPromptTemplate,
+  MessagesPlaceholder,
+} from "@langchain/core/prompts";
 import OpenAI from "openai";
 import { type Generation } from "langchain/dist/schema";
 import { v4 } from "uuid";
