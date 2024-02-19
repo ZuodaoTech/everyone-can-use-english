@@ -6201,7 +6201,7 @@ __metadata:
     typescript: "npm:^5.3.3"
     umzug: "npm:^3.6.1"
     vite-plugin-static-copy: "npm:^1.0.1"
-    wavesurfer.js: "npm:^7.7.2"
+    wavesurfer.js: "npm:^7.7.3"
     zod: "npm:^3.22.4"
     zx: "npm:^7.2.3"
   languageName: unknown
@@ -13504,10 +13504,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wavesurfer.js@npm:^7.7.2":
-  version: 7.7.2
-  resolution: "wavesurfer.js@npm:7.7.2"
-  checksum: 10c0/74346ce3374810bb432b942dd6862bdfa4dda641ba5207a87a2186cb96a5764ee308c0cdcc6d40c758d78477c8bfca33aead0f5db43f915a5216a240baa11a77
+"wavesurfer.js@npm:^7.7.3":
+  version: 7.7.3
+  resolution: "wavesurfer.js@npm:7.7.3"
+  checksum: 10c0/6ef47d8edbb9a3d95442976958ea4a3f7b3705f02bfff539548cc53ca614f5c1057bd7dd2241c32433610084980f9906904e567d7a4312b33513d6e937add3d8
   languageName: node
   linkType: hard
 

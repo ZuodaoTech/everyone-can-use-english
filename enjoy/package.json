@@ -153,7 +153,7 @@
     "sqlite3": "^5.1.7",
     "tailwind-scrollbar-hide": "^1.1.7",
     "umzug": "^3.6.1",
-    "wavesurfer.js": "^7.7.2",
+    "wavesurfer.js": "^7.7.3",
     "zod": "^3.22.4"
   }
 }
