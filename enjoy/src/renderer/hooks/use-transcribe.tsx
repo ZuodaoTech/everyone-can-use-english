@@ -12,16 +12,32 @@ import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import axios from "axios";
 import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
-import { groupTranscription, END_OF_WORD_REGEX, milisecondsToTimestamp } from "@/utils";
+import {
+  groupTranscription,
+  END_OF_WORD_REGEX,
+  milisecondsToTimestamp,
+} from "@/utils";
 
 export const useTranscribe = () => {
-  const { EnjoyApp, ffmpeg, user, webApi } = useContext(
+  const { EnjoyApp, ffmpegWasm, ffmpegValid, user, webApi } = useContext(
     AppSettingsProviderContext
   );
   const { whisperConfig, openai } = useContext(AISettingsProviderContext);
 
   const transcode = async (src: string, options?: string[]) => {
-    if (!ffmpeg?.loaded) return;
+    if (ffmpegValid) {
+      const output = `enjoy://library/cache/${src.split("/").pop()}.wav`;
+      const res = await EnjoyApp.ffmpeg.transcode(src, output, options);
+      console.log(res);
+      const data = await fetchFile(output);
+      return new Blob([data], { type: "audio/wav" });
+    } else {
+      return transcodeUsingWasm(src, options);
+    }
+  };
+
+  const transcodeUsingWasm = async (src: string, options?: string[]) => {
+    if (!ffmpegWasm?.loaded) return;
 
     options = options || ["-ar", "16000", "-ac", "1", "-c:a", "pcm_s16le"];
 
@@ -29,9 +45,9 @@ export const useTranscribe = () => {
       const uri = new URL(src);
       const input = uri.pathname.split("/").pop();
       const output = input.replace(/\.[^/.]+$/, ".wav");
-      await ffmpeg.writeFile(input, await fetchFile(src));
-      await ffmpeg.exec(["-i", input, ...options, output]);
-      const data = await ffmpeg.readFile(output);
+      await ffmpegWasm.writeFile(input, await fetchFile(src));
+      await ffmpegWasm.exec(["-i", input, ...options, output]);
+      const data = await ffmpegWasm.readFile(output);
       return new Blob([data], { type: "audio/wav" });
     } catch (e) {
       toast.error(t("transcodeError"));

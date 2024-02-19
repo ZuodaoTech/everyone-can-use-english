@@ -389,6 +389,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     check: () => {
       return ipcRenderer.invoke("ffmpeg-check-command");
     },
+    transcode: (input: string, output: string, options: string[]) => {
+      return ipcRenderer.invoke("ffmpeg-transcode", input, output, options);
+    },
   },
   download: {
     onState: (

@@ -5,24 +5,18 @@ import Ffmpeg from "fluent-ffmpeg";
 import log from "electron-log/main";
 import path from "path";
 import fs from "fs-extra";
+import settings from "./settings";
+
+Ffmpeg.setFfmpegPath(ffmpegPath);
+Ffmpeg.setFfprobePath(ffprobePath);
 
 const logger = log.scope("ffmpeg");
 export default class FfmpegWrapper {
-  public ffmpeg: Ffmpeg.FfmpegCommand;
-
-  constructor() {
-    const ff = Ffmpeg();
-    logger.debug("Using ffmpeg path:", ffmpegPath);
-    logger.debug("Using ffprobe path:", ffprobePath);
-    ff.setFfmpegPath(ffmpegPath);
-    ff.setFfprobePath(ffprobePath);
-    this.ffmpeg = ff;
-  }
-
   checkCommand(): Promise<boolean> {
+    const ffmpeg = Ffmpeg();
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
     return new Promise((resolve, _reject) => {
-      this.ffmpeg.input(sampleFile).getAvailableFormats((err, _formats) => {
+      ffmpeg.input(sampleFile).getAvailableFormats((err, _formats) => {
         if (err) {
           logger.error("Command not valid:", err);
           resolve(false);
@@ -35,8 +29,9 @@ export default class FfmpegWrapper {
   }
 
   generateMetadata(input: string): Promise<Ffmpeg.FfprobeData> {
+    const ffmpeg = Ffmpeg();
     return new Promise((resolve, reject) => {
-      this.ffmpeg
+      ffmpeg
         .input(input)
         .on("start", (commandLine) => {
           logger.info("Spawned FFmpeg with command: " + commandLine);
@@ -57,8 +52,9 @@ export default class FfmpegWrapper {
   }
 
   generateCover(input: string, output: string): Promise<string> {
+    const ffmpeg = Ffmpeg();
     return new Promise((resolve, reject) => {
-      this.ffmpeg
+      ffmpeg
         .input(input)
         .thumbnail({
           count: 1,
@@ -91,8 +87,9 @@ export default class FfmpegWrapper {
       fs.removeSync(output);
     }
 
+    const ffmpeg = Ffmpeg();
     return new Promise((resolve, reject) => {
-      this.ffmpeg
+      ffmpeg
         .input(input)
         .outputOptions("-ar", `${sampleRate}`)
         .on("error", (err) => {
@@ -112,8 +109,9 @@ export default class FfmpegWrapper {
     output: string,
     options: string[] = []
   ): Promise<string> {
+    const ffmpeg = Ffmpeg();
     return new Promise((resolve, reject) => {
-      this.ffmpeg
+      ffmpeg
         .input(input)
         .outputOptions(
           "-ar",
@@ -135,7 +133,7 @@ export default class FfmpegWrapper {
           }
 
           if (stderr) {
-            logger.error(stderr);
+            logger.info(stderr);
           }
 
           if (fs.existsSync(output)) {
@@ -176,9 +174,79 @@ export default class FfmpegWrapper {
     return this.convertToWav(input, output);
   }
 
+  async transcode(
+    input: string,
+    output?: string,
+    options?: string[]
+  ): Promise<string> {
+    if (input.match(/enjoy:\/\/library\/(audios|videos|recordings)/g)) {
+      input = path.join(
+        settings.userDataPath(),
+        input.replace("enjoy://library/", "")
+      );
+    } else if (input.startsWith("enjoy://library/")) {
+      input = path.join(
+        settings.libraryPath(),
+        input.replace("enjoy://library/", "")
+      );
+    }
+
+    if (!output) {
+      output = path.join(settings.cachePath(), `${path.basename(input)}.wav`);
+    }
+
+    if (output.startsWith("enjoy://library/")) {
+      output = path.join(
+        settings.libraryPath(),
+        output.replace("enjoy://library/", "")
+      );
+    }
+
+    options = options || ["-ar", "16000", "-ac", "1", "-c:a", "pcm_s16le"];
+
+    const ffmpeg = Ffmpeg();
+    return new Promise((resolve, reject) => {
+      ffmpeg
+        .input(input)
+        .outputOptions(...options)
+        .on("start", (commandLine) => {
+          logger.debug(`Trying to convert ${input} to ${output}`);
+          logger.info("Spawned FFmpeg with command: " + commandLine);
+          fs.ensureDirSync(path.dirname(output));
+        })
+        .on("end", (stdout, stderr) => {
+          if (stdout) {
+            logger.debug(stdout);
+          }
+
+          if (stderr) {
+            logger.info(stderr);
+          }
+
+          if (fs.existsSync(output)) {
+            resolve(output);
+          } else {
+            reject(new Error("FFmpeg command failed"));
+          }
+        })
+        .on("error", (err: Error) => {
+          logger.error(err);
+          reject(err);
+        })
+        .save(output);
+    });
+  }
+
   registerIpcHandlers() {
     ipcMain.handle("ffmpeg-check-command", async (_event) => {
       return await this.checkCommand();
     });
+
+    ipcMain.handle(
+      "ffmpeg-transcode",
+      async (_event, input, output, options) => {
+        return await this.transcode(input, output, options);
+      }
+    );
   }
 }
