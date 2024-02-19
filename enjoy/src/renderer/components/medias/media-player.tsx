@@ -468,6 +468,7 @@ export const MediaPlayer = (props: {
     if (!initialized) return;
 
     wavesurfer.seekTo(seek?.seekTo / wavesurfer.getDuration());
+    wavesurfer.setScrollTime(seek?.seekTo);
   }, [seek, wavesurfer, initialized]);
 
   // Handle media provider
@@ -515,7 +516,7 @@ export const MediaPlayer = (props: {
 
     const duration =
       currentSegment.offsets.to / 1000.0 - currentSegment.offsets.from / 1000.0;
-    const fitZoomRatio = (containerWidth / duration / minPxPerSecBase) * 0.95;
+    const fitZoomRatio = (containerWidth / duration / minPxPerSecBase);
 
     return fitZoomRatio;
   };
