@@ -15,10 +15,13 @@ export const Layout = () => {
 
   if (!initialized) {
     return (
-      <div className="h-screen flex justify-center items-center">
+      <div
+        className="h-screen flex justify-center items-center"
+        date-testid="layout-onboarding"
+      >
         <div className="text-center">
           <div className="text-lg mb-6">
-            {t("welcomeTo")} <span className="font-semibold">Enjoy Bot</span>
+            {t("welcomeTo")} <span className="font-semibold">Enjoy App</span>
           </div>
 
           <div className="">
@@ -31,7 +34,7 @@ export const Layout = () => {
     );
   } else if (db.state === "connected") {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen" data-testid="layout-home">
         <div className="flex flex-start">
           <Sidebar />
           <div className="flex-1 border-l overflow-x-hidden">
@@ -42,7 +45,10 @@ export const Layout = () => {
     );
   } else {
     return (
-      <div className="h-screen w-screen flex justify-center items-center">
+      <div
+        className="h-screen w-screen flex justify-center items-center"
+        data-testid="layout-db-error"
+      >
         <DbState />
       </div>
     );

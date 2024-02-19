@@ -26,7 +26,10 @@ export const Sidebar = () => {
   const activeTab = location.pathname;
 
   return (
-    <div className="h-[100vh] w-20 xl:w-48 2xl:w-64 transition-all relative">
+    <div
+      className="h-[100vh] w-20 xl:w-48 2xl:w-64 transition-all relative"
+      data-testid="sidebar"
+    >
       <div className="fixed top-0 left-0 h-full w-20 xl:w-48 2xl:w-64">
         <ScrollArea className="w-full h-full">
           <div className="px-1 xl:px-3 pt-6 mb-2 flex items-center space-x-1 justify-center">
@@ -63,7 +66,9 @@ export const Sidebar = () => {
                   className="w-full xl:justify-start"
                 >
                   <UsersRoundIcon className="xl:mr-2 h-5 w-5" />
-                  <span className="hidden xl:block">{t("sidebar.community")}</span>
+                  <span className="hidden xl:block">
+                    {t("sidebar.community")}
+                  </span>
                 </Button>
               </Link>
             </div>
