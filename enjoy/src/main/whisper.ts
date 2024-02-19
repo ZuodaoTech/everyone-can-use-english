@@ -104,7 +104,7 @@ class Whipser {
           }
 
           if (stderr) {
-            logger.error("stderr", stderr);
+            logger.info("stderr", stderr);
           }
 
           if (stdout) {
@@ -199,7 +199,7 @@ class Whipser {
 
       command.stderr.on("data", (data) => {
         const output = data.toString();
-        logger.error(`stderr: ${output}`);
+        logger.info(`stderr: ${output}`);
         if (output.startsWith("whisper_print_progress_callback")) {
           const progress = parseInt(output.match(/\d+%/)?.[0] || "0");
           if (typeof progress === "number") onProgress(progress);

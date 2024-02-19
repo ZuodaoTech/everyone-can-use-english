@@ -228,6 +228,11 @@ type EnjoyAppType = {
   };
   ffmpeg: {
     check: () => Promise<boolean>;
+    transcode: (
+      input: string,
+      output: string,
+      options?: string[]
+    ) => Promise<string>;
   };
   download: {
     onState: (callback: (event, state) => void) => void;

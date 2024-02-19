@@ -90,16 +90,6 @@ type TransactionStateType = {
   record?: AudioType | UserType | RecordingType;
 };
 
-type FfmpegConfigType = {
-  os: string;
-  arch: string;
-  commandExists: boolean;
-  ffmpegPath?: string;
-  ffprobePath?: string;
-  scanDirs: string[];
-  ready: boolean;
-};
-
 type LookupType = {
   id: string;
   word: string;

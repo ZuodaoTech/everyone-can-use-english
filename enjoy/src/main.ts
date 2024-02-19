@@ -43,9 +43,12 @@ protocol.registerSchemesAsPrivileged([
 app.on("ready", async () => {
   protocol.handle("enjoy", (request) => {
     let url = request.url.replace("enjoy://", "");
-    if (url.startsWith("library")) {
+    if (url.match(/library\/(audios|videos|recordings)/g)) {
       url = url.replace("library/", "");
       url = path.join(settings.userDataPath(), url);
+    } else if (url.startsWith("library")) {
+      url = url.replace("library/", "");
+      url = path.join(settings.libraryPath(), url);
     }
 
     return net.fetch(`file:///${url}`);

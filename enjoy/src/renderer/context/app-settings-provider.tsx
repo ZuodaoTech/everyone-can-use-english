@@ -16,7 +16,8 @@ type AppSettingsProviderState = {
   login?: (user: UserType) => void;
   logout?: () => void;
   setLibraryPath?: (path: string) => Promise<void>;
-  ffmpeg?: FFmpeg;
+  ffmpegWasm?: FFmpeg;
+  ffmpegValid?: boolean;
   EnjoyApp?: EnjoyAppType;
   language?: "en" | "zh-CN";
   switchLanguage?: (language: "en" | "zh-CN") => void;
@@ -44,7 +45,8 @@ export const AppSettingsProvider = ({
   const [webApi, setWebApi] = useState<Client>(null);
   const [user, setUser] = useState<UserType | null>(null);
   const [libraryPath, setLibraryPath] = useState("");
-  const [ffmpeg, setFfmpeg] = useState<FFmpeg>(null);
+  const [ffmpegWasm, setFfmpegWasm] = useState<FFmpeg>(null);
+  const [ffmpegValid, setFfmpegValid] = useState<boolean>(false);
   const [language, setLanguage] = useState<"en" | "zh-CN">();
   const [proxy, setProxy] = useState<ProxyConfigType>();
   const EnjoyApp = window.__ENJOY_APP__;
@@ -56,7 +58,7 @@ export const AppSettingsProvider = ({
     fetchUser();
     fetchLibraryPath();
     fetchLanguage();
-    loadFfmpegWASM();
+    prepareFfmpeg();
     fetchProxyConfig();
   }, []);
 
@@ -75,6 +77,14 @@ export const AppSettingsProvider = ({
       })
     );
   }, [user, apiUrl, language]);
+
+  const prepareFfmpeg = async () => {
+    const valid = await EnjoyApp.ffmpeg.check();
+    setFfmpegValid(valid);
+    if (!valid) {
+      loadFfmpegWASM();
+    }
+  };
 
   const loadFfmpegWASM = async () => {
     const baseURL = "assets/libs";
@@ -101,7 +111,7 @@ export const AppSettingsProvider = ({
         wasmURL,
         workerURL,
       });
-      setFfmpeg(ffmpegRef.current);
+      setFfmpegWasm(ffmpegRef.current);
     } catch (err) {
       toast.error(err.message);
     }
@@ -195,7 +205,8 @@ export const AppSettingsProvider = ({
         logout,
         libraryPath,
         setLibraryPath: setLibraryPathHandler,
-        ffmpeg,
+        ffmpegValid,
+        ffmpegWasm,
         proxy,
         setProxy: setProxyConfigHandler,
         initialized,
