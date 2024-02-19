@@ -458,5 +458,6 @@
   "preparingAudio": "正在准备音频",
   "preparingVideo": "正在准备视频",
   "itMayTakeAWhileToPrepareForTheFirstLoad": "首次加载可能需要一些时间，请耐心等候",
-  "loadingTranscription": "正在加载语音文本"
+  "loadingTranscription": "正在加载语音文本",
+  "cannotFindMicrophone": "无法找到麦克风"
 }

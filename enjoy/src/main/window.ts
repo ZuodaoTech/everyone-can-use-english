@@ -381,6 +381,7 @@ ${log}
 
       if (process.platform === "darwin") {
         const status = systemPreferences.getMediaAccessStatus(mediaType);
+        logger.debug("system-preferences-media-access", status);
         if (status !== "granted") {
           const result = await systemPreferences.askForMediaAccess(mediaType);
           return result;
