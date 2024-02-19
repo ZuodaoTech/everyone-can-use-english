@@ -42,12 +42,13 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
   const [transcription, setTranscription] = useState<TranscriptionType>(null);
   const [sharing, setSharing] = useState<boolean>(false);
 
-  const [initialized, setInitialized] = useState<boolean>(false);
+  // Transcription controls
   const [transcribing, setTranscribing] = useState<boolean>(false);
   const { transcribe } = useTranscribe();
   const [transcribingProgress, setTranscribingProgress] = useState<number>(0);
 
   // Player controls
+  const [initialized, setInitialized] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [seek, setSeek] = useState<{
     seekTo: number;
@@ -302,7 +303,7 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
       <AlertDialog open={!initialized || !Boolean(transcription?.result)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("preparingResource")}</AlertDialogTitle>
+            <AlertDialogTitle>{t("preparingAudio")}</AlertDialogTitle>
             <AlertDialogDescription>
               {t("itMayTakeAWhileToPrepareForTheFirstLoad")}
             </AlertDialogDescription>

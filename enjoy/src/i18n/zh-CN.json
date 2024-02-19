@@ -455,7 +455,8 @@
   "transcribedSuccessfully": "语音转文本成功",
   "transcribing": "正在语音转文本",
   "notTranscribedYet": "尚未语音转文本",
-  "preparingResource": "正在准备资源",
+  "preparingAudio": "正在准备音频",
+  "preparingVideo": "正在准备视频",
   "itMayTakeAWhileToPrepareForTheFirstLoad": "首次加载可能需要一些时间，请耐心等候",
   "loadingTranscription": "正在加载语音文本"
 }

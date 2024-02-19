@@ -316,7 +316,7 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
       <AlertDialog open={!initialized || !Boolean(transcription?.result)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("preparingResource")}</AlertDialogTitle>
+            <AlertDialogTitle>{t("preparingVideo")}</AlertDialogTitle>
             <AlertDialogDescription>
               {t("itMayTakeAWhileToPrepareForTheFirstLoad")}
             </AlertDialogDescription>
