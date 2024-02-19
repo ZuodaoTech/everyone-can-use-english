@@ -134,12 +134,10 @@ export class Recording extends Model<Recording> {
   }
 
   async sync() {
-    this.upload().catch(() => {});
-
     const webApi = new Client({
       baseUrl: process.env.WEB_API_URL || WEB_API_URL,
       accessToken: settings.getSync("user.accessToken") as string,
-      logger: log.scope("recording/sync"),
+      logger,
     });
 
     return webApi.syncRecording(this.toJSON()).then(() => {
@@ -156,11 +154,12 @@ export class Recording extends Model<Recording> {
       return assessment;
     }
 
+    await this.upload();
     await this.sync();
     const webApi = new Client({
       baseUrl: process.env.WEB_API_URL || WEB_API_URL,
       accessToken: settings.getSync("user.accessToken") as string,
-      logger: log.scope("recording/assess"),
+      logger,
     });
 
     const { token, region } = await webApi.generateSpeechToken();
@@ -221,7 +220,7 @@ export class Recording extends Model<Recording> {
 
   @AfterCreate
   static autoSync(recording: Recording) {
-    // auto upload should not block the main thread
+    // auto sync should not block the main thread
     recording.sync().catch(() => {});
   }
 

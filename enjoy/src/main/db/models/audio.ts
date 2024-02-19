@@ -174,7 +174,8 @@ export class Audio extends Model<Audio> {
     });
 
     return webApi.syncAudio(this.toJSON()).then(() => {
-      this.update({ syncedAt: new Date() });
+      const now = new Date();
+      this.update({ syncedAt: now, updatedAt: now });
     });
   }
 

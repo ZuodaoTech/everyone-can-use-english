@@ -319,7 +319,7 @@ export const MediaPlayer = (props: {
     const subscriptions = [
       wavesurfer.on("play", () => setIsPlaying(true)),
       wavesurfer.on("pause", () => setIsPlaying(false)),
-      wavesurfer.on("loading", (percent: number) => console.log(percent)),
+      wavesurfer.on("loading", (percent: number) => console.log(`${percent}%`)),
       wavesurfer.on("timeupdate", (time: number) => setCurrentTime(time)),
       wavesurfer.on("decode", () => {
         if (waveform?.frequencies) return;

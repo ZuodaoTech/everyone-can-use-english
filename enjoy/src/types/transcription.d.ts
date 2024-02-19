@@ -3,6 +3,7 @@ type TranscriptionType = {
   targetId: string;
   targetType: string;
   state: "pending" | "processing" | "finished";
+  engine: string;
   model: string;
   result: TranscriptionResultSegmentGroupType[];
 };

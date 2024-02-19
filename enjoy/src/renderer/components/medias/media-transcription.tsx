@@ -12,7 +12,6 @@ import {
   ScrollArea,
   Button,
   PingPoint,
-  toast,
 } from "@renderer/components/ui";
 import React, { useEffect, useContext, useState } from "react";
 import { t } from "i18next";
@@ -22,14 +21,15 @@ import {
   AppSettingsProviderContext,
   AISettingsProviderContext,
 } from "@renderer/context";
-import { useTranscribe } from "@renderer/hooks";
 
 export const MediaTranscription = (props: {
   transcription: TranscriptionType;
+  progress: number;
+  transcribe: () => void;
+  transcribing: boolean;
   mediaId: string;
   mediaType: "Audio" | "Video";
   mediaName?: string;
-  mediaUrl: string;
   currentSegmentIndex?: number;
   onSelectSegment?: (index: number) => void;
 }) => {
@@ -38,40 +38,19 @@ export const MediaTranscription = (props: {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const {
     transcription,
+    transcribing,
+    progress,
+    transcribe,
     mediaId,
     mediaType,
     mediaName,
-    mediaUrl,
     currentSegmentIndex,
     onSelectSegment,
   } = props;
   const containerRef = React.createRef<HTMLDivElement>();
-  const [transcribing, setTranscribing] = useState<boolean>(false);
-  const { transcribe } = useTranscribe();
-  const [progress, setProgress] = useState<number>(0);
 
   const [recordingStats, setRecordingStats] =
     useState<SegementRecordingStatsType>([]);
-
-  const generate = async () => {
-    if (transcribing) return;
-
-    setTranscribing(true);
-    setProgress(0);
-    try {
-      const { engine, model, result } = await transcribe(mediaUrl);
-      await EnjoyApp.transcriptions.update(transcription.id, {
-        state: "finished",
-        result,
-        engine,
-        model,
-      });
-    } catch (err) {
-      toast.error(err.message);
-    }
-
-    setTranscribing(false);
-  };
 
   const fetchSegmentStats = async () => {
     if (!mediaId) return;
@@ -85,22 +64,10 @@ export const MediaTranscription = (props: {
     addDblistener(fetchSegmentStats);
     fetchSegmentStats();
 
-    if (transcription?.state == "pending") {
-      generate();
-    }
-
-    if (whisperConfig.service === "local") {
-      EnjoyApp.whisper.onProgress((_, p: number) => {
-        if (p > 100) p = 100;
-        setProgress(p);
-      });
-    }
-
     return () => {
       removeDbListener(fetchSegmentStats);
-      EnjoyApp.whisper.removeProgressListeners();
     };
-  }, [mediaId, mediaType, transcription]);
+  }, [transcription]);
 
   useEffect(() => {
     containerRef.current
@@ -159,7 +126,7 @@ export const MediaTranscription = (props: {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-              <AlertDialogAction onClick={generate}>
+              <AlertDialogAction onClick={transcribe}>
                 {t("transcribe")}
               </AlertDialogAction>
             </AlertDialogFooter>

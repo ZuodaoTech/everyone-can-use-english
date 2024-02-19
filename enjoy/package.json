@@ -8,7 +8,7 @@
   "types": "./src/types.d.ts",
   "scripts": {
     "predev": "yarn run download",
-    "dev": "rimraf .vite && yarn run download && WEB_API_URL=http://localhost:3000 SETTINGS_PATH=./tmp LIBRARY_PATH=./tmp electron-forge start",
+    "dev": "rimraf .vite && yarn run download && WEB_API_URL=http://localhost:3000 SETTINGS_PATH=${PWD}/enjoy/tmp LIBRARY_PATH=${PWD}/enjoy/tmp electron-forge start",
     "start": "rimraf .vite && yarn run download && electron-forge start",
     "package": "rimraf .vite && yarn run download && electron-forge package",
     "make": "rimraf .vite && yarn run download && electron-forge make",

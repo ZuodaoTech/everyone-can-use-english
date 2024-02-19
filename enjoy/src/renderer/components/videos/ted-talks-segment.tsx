@@ -51,11 +51,6 @@ export const TedTalksSegment = () => {
         coverUrl: selectedTalk?.primaryImageSet[0].url,
       })
       .then((record) => {
-        if (!record) {
-          toast.error(t("failedToDownload"));
-          return;
-        }
-
         if (type === "video") {
           navigate(`/videos/${record.id}`);
         } else {

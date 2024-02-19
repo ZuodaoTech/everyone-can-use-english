@@ -38,7 +38,7 @@ export const PostActions = (props: { post: PostType }) => {
   const [copied, setCopied] = useState<boolean>(false);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [asking, setAsking] = useState<boolean>(false);
-  const [aiReplies, setAiReplies] = useState<MessageType[]>([]);
+  const [aiReplies, setAiReplies] = useState<Partial<MessageType>[]>([]);
 
   const handleAddMedium = async () => {
     if (post.targetType !== "Medium") return;
@@ -185,7 +185,7 @@ export const PostActions = (props: { post: PostType }) => {
   );
 };
 
-const AIReplies = (props: { replies: MessageType[] }) => {
+const AIReplies = (props: { replies: Partial<MessageType>[] }) => {
   return (
     <div>
       <div className="space-y-2">
