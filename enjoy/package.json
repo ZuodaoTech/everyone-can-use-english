@@ -124,7 +124,7 @@
     "html-to-text": "^9.0.5",
     "https-proxy-agent": "^7.0.3",
     "i18next": "^23.8.2",
-    "intl-tel-input": "^19.2.16",
+    "intl-tel-input": "^19.2.19",
     "js-md5": "^0.8.3",
     "langchain": "^0.1.17",
     "lodash": "^4.17.21",
