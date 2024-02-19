@@ -24,9 +24,9 @@ import {
 
 export const MediaTranscription = (props: {
   transcription: TranscriptionType;
-  progress?: number;
-  transcribe?: () => void;
-  transcribing?: boolean;
+  progress: number;
+  transcribe: () => void;
+  transcribing: boolean;
   mediaId: string;
   mediaType: "Audio" | "Video";
   mediaName?: string;
