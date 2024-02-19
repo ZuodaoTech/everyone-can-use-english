@@ -7,6 +7,7 @@ import WaveSurfer from "wavesurfer.js";
 import { cn } from "@renderer/lib/utils";
 import { RadialProgress, toast } from "@renderer/components/ui";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useTranscribe } from "@renderer/hooks";
 
 export const RecordButton = (props: {
   className?: string;
@@ -117,6 +118,7 @@ const RecordButtonPopover = (props: {
   onRecordEnd: (blob: Blob, duration: number) => void;
 }) => {
   const containerRef = useRef<HTMLDivElement>();
+  const { transcodeUsingWasm } = useTranscribe();
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -138,7 +140,8 @@ const RecordButtonPopover = (props: {
 
     record.on("record-end", async (blob: Blob) => {
       const duration = Date.now() - startAt;
-      props.onRecordEnd(blob, duration);
+      const output = await transcodeUsingWasm(blob);
+      props.onRecordEnd(output, duration);
     });
 
     RecordPlugin.getAvailableAudioDevices()

@@ -27,8 +27,7 @@ export const useTranscribe = () => {
   const transcode = async (src: string, options?: string[]) => {
     if (ffmpegValid) {
       const output = `enjoy://library/cache/${src.split("/").pop()}.wav`;
-      const res = await EnjoyApp.ffmpeg.transcode(src, output, options);
-      console.log(res);
+      await EnjoyApp.ffmpeg.transcode(src, output, options);
       const data = await fetchFile(output);
       return new Blob([data], { type: "audio/wav" });
     } else {
@@ -36,15 +35,26 @@ export const useTranscribe = () => {
     }
   };
 
-  const transcodeUsingWasm = async (src: string, options?: string[]) => {
+  const transcodeUsingWasm = async (src: string | Blob, options?: string[]) => {
     if (!ffmpegWasm?.loaded) return;
 
     options = options || ["-ar", "16000", "-ac", "1", "-c:a", "pcm_s16le"];
 
     try {
-      const uri = new URL(src);
+      let uri: URL;
+      if (src instanceof Blob) {
+        uri = new URL(URL.createObjectURL(src));
+      } else {
+        uri = new URL(src);
+      }
+
       const input = uri.pathname.split("/").pop();
-      const output = input.replace(/\.[^/.]+$/, ".wav");
+      let output: string;
+      if (src instanceof Blob) {
+        output = input + ".wav";
+      } else {
+        output = input.replace(/\.[^/.]+$/, ".wav");
+      }
       await ffmpegWasm.writeFile(input, await fetchFile(src));
       await ffmpegWasm.exec(["-i", input, ...options, output]);
       const data = await ffmpegWasm.readFile(output);
@@ -274,6 +284,7 @@ export const useTranscribe = () => {
 
   return {
     transcode,
+    transcodeUsingWasm,
     transcribe,
   };
 };
