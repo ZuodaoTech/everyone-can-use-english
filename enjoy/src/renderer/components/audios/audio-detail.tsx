@@ -348,9 +348,15 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
                 <PingPoint colorClassName="bg-muted" />
                 <div className="inline">
                   <span>{t("notTranscribedYet")}</span>
-                  <Button className="ml-4" size="sm">
-                    {t("transcribe")}
-                  </Button>
+                  {initialized && (
+                    <Button
+                      onClick={generateTranscription}
+                      className="ml-4"
+                      size="sm"
+                    >
+                      {t("transcribe")}
+                    </Button>
+                  )}
                 </div>
               </div>
             )}
