@@ -100,7 +100,7 @@
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@uidotdev/usehooks": "^2.4.1",
-    "@vidstack/react": "^1.10.5",
+    "@vidstack/react": "^1.10.7",
     "autosize": "^6.0.1",
     "axios": "^1.6.7",
     "camelcase": "^8.0.0",

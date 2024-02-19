@@ -4090,15 +4090,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vidstack/react@npm:^1.10.5":
-  version: 1.10.5
-  resolution: "@vidstack/react@npm:1.10.5"
+"@vidstack/react@npm:^1.10.7":
+  version: 1.10.7
+  resolution: "@vidstack/react@npm:1.10.7"
   dependencies:
     media-captions: "npm:^1.0.1"
   peerDependencies:
     "@types/react": ^18.0.0
     react: ^18.0.0
-  checksum: 10c0/96751d0d187117931f3a53b3746c7f55261f04eb1ead5e0256be824656462be7f5fecc1324449b7dab9d98183423067d5481f79130640fcffc31133b3f084d82
+  checksum: 10c0/9abd06d33266dcf0dc4ebb777ac7f24d4b36ee41fff3f6e3dd410cc2a2b7f3a99e82dce6db3903dae43ea7301c991a682bbe65dc7b23dabbe5946f0d7dbb5306
   languageName: node
   linkType: hard
 
@@ -6131,7 +6131,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.0.1"
     "@typescript-eslint/parser": "npm:^7.0.1"
     "@uidotdev/usehooks": "npm:^2.4.1"
-    "@vidstack/react": "npm:^1.10.5"
+    "@vidstack/react": "npm:^1.10.7"
     "@vitejs/plugin-react": "npm:^4.2.1"
     autoprefixer: "npm:^10.4.17"
     autosize: "npm:^6.0.1"
