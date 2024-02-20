@@ -43,5 +43,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy .vitepress/dist --project-name=1000-hours
+          command: pages deploy .vitepress/dist --project-name=1000-hours-prod
           workingDirectory: "1000-hours"
