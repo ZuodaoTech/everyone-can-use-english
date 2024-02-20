@@ -72,7 +72,7 @@ class CacheObjectsHandler {
     const output = path.join(settings.cachePath(), filename);
     fs.writeFileSync(output, Buffer.from(data));
 
-    return output.replace(settings.libraryPath(), "enjoy://library");
+    return `enjoy://library/cache/${filename}`;
   }
 
   register() {
