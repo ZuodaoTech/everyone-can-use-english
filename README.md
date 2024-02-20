@@ -17,6 +17,17 @@
 
 ---
 
+# 一千小时
+
+本地阅读
+
+```
+yarn install
+yarn dev:1000h
+```
+
+---
+
 # Enjoy App
 
 [![Test](https://github.com/xiaolai/everyone-can-use-english/actions/workflows/test-enjoy-app.yml/badge.svg)](https://github.com/xiaolai/everyone-can-use-english/actions/workflows/test-enjoy-app.yml)
@@ -186,22 +197,6 @@ yarn make:enjoy
 
 > A: [点这里](find-compatible-software-version.md) 有详细说明。
 
-**Q: 如何确定安装成功了？**
-
-> A: 目前 Enjoy 的核心功能依赖两个服务，一个是 Whisper，用来语音转文字，在 软件设置 -> STT 语音转文字 -> 检查，提示工作正常表示 Whisper 安装成功。另一个是 FFmpeg，在 软件设置 -> FFmpeg -> 查找，确保提示成功。
-
-**Q: 我用 Mac，安装不了 FFmpeg**
-
-> A: 安装 FFmpeg 要先安装 [Homebrew](https://brew.sh)，如果安装失败，多数是因为网络问题导致 Github 服务连接失败。
-
-**Q: 无法语音转文字**
-
-> A: 先确定选择了哪个模型，如果选了 medium 以上的，试试换一个小一点的模型，电脑配置不够高可能会导致失败。如果是相对老版本 Windows 用户，可以是缺少一些依赖，到 [这里](https://aka.ms/vs/17/release/vc_redist.x64.exe) 下载这个软件然后安装，再重新打开 Enjoy 试试。
-
-**Q: 智能助手一直转圈**
-
-> A: 绝大多数是网络问题，请确保网络环境能正常访问 OpenAI 接口。如果网络有困难，请等待后续提供其他更易用的方案。
-
 **Q: 还有 bug，怎么办？**
 
 > A: 可以提 [Issue](https://github.com/xiaolai/everyone-can-use-english/issues/new)，也可以 Mixin 开发者（Mixin ID: 1051445）。
@@ -211,4 +206,3 @@ yarn make:enjoy
 其实，可能还有很多其它问题，比如，本软件安装、OpenAI（注册、支付）、美国线路……
 
 > A: 1）文本生成，可以暂时用各种翻译工具，比如 Google Translate，或者其它的替代方案；2）语音生成，可以暂时用开源免费的 [Edge-TTS-record](https://github.com/LuckyHookin/edge-TTS-record)
-
