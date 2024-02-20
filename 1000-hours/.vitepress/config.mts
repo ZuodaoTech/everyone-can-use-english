@@ -54,7 +54,7 @@ export default withMermaid(
           items: [
             { text: '1. 启动任务', link: '/training-tasks/kick-off' },
             { text: '2. 训练方法', link: '/training-tasks/procedures' },
-            { 
+            {
               text: '3. 人工智能', collapsed: false, link: '/training-tasks/ai',
               items: [
                 { text: '3.1. 基础语言能力', link: '/training-tasks/language' },
@@ -65,7 +65,7 @@ export default withMermaid(
               ]
             },
             { text: '4. 意料之外', link: '/training-tasks/surprise' },
-          ] 
+          ]
         },
         {
           text: '语音塑造', collapsed: true,
@@ -162,7 +162,7 @@ export default withMermaid(
         },
         {
           text: '自我训练', collapsed: true, link: `/self-training/00-intro`,
-          items: [            
+          items: [
             { text: '1. 用兵打仗', link: '/self-training/01-fight' },
             { text: '2. 只能自学', link: '/self-training/02-last-resort' },
             { text: '3. 生学硬练', link: '/self-training/03-trials-and-errors' },
@@ -178,7 +178,7 @@ export default withMermaid(
       ],
 
       socialLinks: [
-        { icon: 'github', link: 'https://github.com/xiaolai/everyone-can-use-english/1000-hours' }
+        { icon: 'github', link: 'https://github.com/xiaolai/everyone-can-use-english/tree/main/1000-hours' }
       ]
     },
 
