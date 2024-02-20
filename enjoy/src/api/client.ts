@@ -55,7 +55,7 @@ export class Client {
             err.response.config.baseURL + err.response.config.url
           );
           this.logger.error(err.response.data);
-          return Promise.reject(err.response.data);
+          return Promise.reject(new Error(err.response.data));
         }
 
         if (err.request) {
