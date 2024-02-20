@@ -1,0 +1,23 @@
+name: Deploy 1000h website
+
+on:
+  push:
+    branches:
+      - main
+    path:
+      - "1000-hours/**"
+  pull_request:
+    branches:
+      - main
+    path:
+      - "1000-hours/**"
+jobs:
+  deploy:
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: "1000-hours"
