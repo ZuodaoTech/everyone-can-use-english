@@ -97,7 +97,7 @@ export class Recording extends Model<Recording> {
 
   @Column(DataType.VIRTUAL)
   get src(): string {
-    return `enjoy://${path.join(
+    return `enjoy://${path.posix.join(
       "library",
       "recordings",
       this.getDataValue("filename")
