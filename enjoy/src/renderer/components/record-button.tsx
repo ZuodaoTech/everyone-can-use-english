@@ -140,8 +140,13 @@ const RecordButtonPopover = (props: {
 
     record.on("record-end", async (blob: Blob) => {
       const duration = Date.now() - startAt;
-      const output = await transcode(blob);
-      props.onRecordEnd(output, duration);
+      try {
+        const output = await transcode(blob);
+        props.onRecordEnd(output, duration);
+      } catch (e) {
+        console.error(e);
+        toast.error(t("failedToSaveRecording"));
+      }
     });
 
     RecordPlugin.getAvailableAudioDevices()

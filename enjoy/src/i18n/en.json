@@ -460,5 +460,6 @@
   "preparingVideo": "Preparing video",
   "itMayTakeAWhileToPrepareForTheFirstLoad": "It may take a while to prepare for the first load. Please be patient.",
   "loadingTranscription": "Loading transcription",
-  "cannotFindMicrophone": "Cannot find microphone"
+  "cannotFindMicrophone": "Cannot find microphone",
+  "failedToSaveRecording": "Failed to save recording"
 }
