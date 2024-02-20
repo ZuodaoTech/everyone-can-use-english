@@ -426,6 +426,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     clear: () => {
       return ipcRenderer.invoke("cache-objects-clear");
     },
+    writeFile: (filename: string, data: ArrayBuffer) => {
+      return ipcRenderer.invoke("cache-objects-write-file", filename, data);
+    },
   },
   transcriptions: {
     findOrCreate: (params: any) => {

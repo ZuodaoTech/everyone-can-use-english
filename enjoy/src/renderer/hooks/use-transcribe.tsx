@@ -24,8 +24,15 @@ export const useTranscribe = () => {
   );
   const { whisperConfig, openai } = useContext(AISettingsProviderContext);
 
-  const transcode = async (src: string, options?: string[]) => {
+  const transcode = async (src: string | Blob, options?: string[]) => {
     if (ffmpegValid) {
+      if (src instanceof Blob) {
+        src = await EnjoyApp.cacheObjects.writeFile(
+          `${Date.now()}.${src.type.split("/")[1]}`,
+          await src.arrayBuffer()
+        );
+      }
+
       const output = `enjoy://library/cache/${src.split("/").pop()}.wav`;
       await EnjoyApp.ffmpeg.transcode(src, output, options);
       const data = await fetchFile(output);
@@ -284,7 +291,6 @@ export const useTranscribe = () => {
 
   return {
     transcode,
-    transcodeUsingWasm,
     transcribe,
   };
 };

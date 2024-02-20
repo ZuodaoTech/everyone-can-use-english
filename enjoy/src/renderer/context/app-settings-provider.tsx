@@ -81,7 +81,10 @@ export const AppSettingsProvider = ({
   const prepareFfmpeg = async () => {
     const valid = await EnjoyApp.ffmpeg.check();
     setFfmpegValid(valid);
-    loadFfmpegWASM();
+
+    if (!valid) {
+      loadFfmpegWASM();
+    }
   };
 
   const loadFfmpegWASM = async () => {

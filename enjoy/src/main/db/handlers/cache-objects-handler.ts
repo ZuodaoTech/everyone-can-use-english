@@ -1,6 +1,9 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { CacheObject } from "@main/db/models";
+import fs from "fs-extra";
+import path from "path";
 import db from "@main/db";
+import settings from "@main/settings";
 
 class CacheObjectsHandler {
   private async get(event: IpcMainEvent, key: string) {
@@ -61,11 +64,23 @@ class CacheObjectsHandler {
       });
   }
 
+  private async writeFile(
+    _event: IpcMainEvent,
+    filename: string,
+    data: ArrayBuffer
+  ) {
+    const output = path.join(settings.cachePath(), filename);
+    fs.writeFileSync(output, Buffer.from(data));
+
+    return output.replace(settings.libraryPath(), "enjoy://library");
+  }
+
   register() {
     ipcMain.handle("cache-objects-get", this.get);
     ipcMain.handle("cache-objects-set", this.set);
     ipcMain.handle("cache-objects-delete", this.delete);
     ipcMain.handle("cache-objects-clear", this.clear);
+    ipcMain.handle("cache-objects-write-file", this.writeFile);
   }
 }
 

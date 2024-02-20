@@ -118,7 +118,7 @@ const RecordButtonPopover = (props: {
   onRecordEnd: (blob: Blob, duration: number) => void;
 }) => {
   const containerRef = useRef<HTMLDivElement>();
-  const { transcodeUsingWasm } = useTranscribe();
+  const { transcode } = useTranscribe();
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -140,7 +140,7 @@ const RecordButtonPopover = (props: {
 
     record.on("record-end", async (blob: Blob) => {
       const duration = Date.now() - startAt;
-      const output = await transcodeUsingWasm(blob);
+      const output = await transcode(blob);
       props.onRecordEnd(output, duration);
     });
 
