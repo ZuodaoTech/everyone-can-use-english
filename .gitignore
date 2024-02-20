@@ -82,6 +82,9 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+# TernJS port file
+.tern-port
+
 # Webpack
 .webpack/
 
@@ -97,6 +100,7 @@ package-lock.json
 
 # vscode
 .vscode/
+.vscode-test
 
 # Yarn Berry (v2+)
 # https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
@@ -124,3 +128,6 @@ ggml-*.bin
 ffmpeg-core.wasm
 ffmpeg-core.js
 ffmpeg-core.worker.js
+
+.vitepress/cache/
+/public/jupyter-notebooks/*.mp3

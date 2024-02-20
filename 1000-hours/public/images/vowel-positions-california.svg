@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280px" height="800px" viewBox="0 0 1280 800" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Vowels Positions Copy 2</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Vowels-Positions-Copy-2">
+            <rect id="Rectangle" x="0" y="0" width="1280" height="800"></rect>
+            <g id="Group" transform="translate(263, 114)" stroke="#979797" stroke-dasharray="5,10" stroke-linecap="square">
+                <line x1="0.5" y1="0.5" x2="800.5" y2="0.5" id="Line"></line>
+                <line x1="400.5" y1="569.5" x2="800.5" y2="569.5" id="Line-Copy"></line>
+                <line x1="800.5" y1="0.5" x2="800.5" y2="569.5" id="Line-4"></line>
+                <line x1="801.5" y1="192.5" x2="133.5" y2="192.5" id="Line-5"></line>
+                <line x1="801.5" y1="381.5" x2="268.5" y2="380.5" id="Line-5-Copy"></line>
+                <line x1="0.5" y1="0.5" x2="400.5" y2="569.5" id="Line-2"></line>
+                <line x1="400.5" y1="0.5" x2="600.5" y2="569.5" id="Line-3"></line>
+            </g>
+            <text id="ɛ" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="581" y="539">ɛ</tspan>
+            </text>
+            <text id="ɪ" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="475" y="354">ɪ</tspan>
+            </text>
+            <text id="ɑ" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="969" y="670">ɑ</tspan>
+            </text>
+            <text id="o" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="1017" y="354">o</tspan>
+            </text>
+            <text id="ʊ" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="816" y="235">ʊ</tspan>
+            </text>
+            <text id="i" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="322" y="160">i</tspan>
+            </text>
+            <text id="e" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="404" y="288">e</tspan>
+            </text>
+            <text id="æ" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="675" y="670">æ</tspan>
+            </text>
+            <text id="ɚ" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="722" y="411">ɚ</tspan>
+            </text>
+            <text id="ʌ" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="803" y="551">ʌ</tspan>
+            </text>
+            <text id="u" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="838" y="185">u</tspan>
+            </text>
+            <text id="Front" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="251" y="59">Front</tspan>
+            </text>
+            <text id="Close" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="79" y="127">Close</tspan>
+            </text>
+            <text id="Open" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="79" y="692">Open</tspan>
+            </text>
+            <text id="Back" font-family="Sauce Code Pro" font-size="32" font-weight="normal" fill="#000000">
+                <tspan x="981.5" y="58.5">Back</tspan>
+            </text>
+        </g>
+    </g>
+</svg>
