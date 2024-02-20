@@ -20,7 +20,7 @@ jobs:
       # checkout the code
       - uses: actions/checkout@v4
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: |
             1000-hours/node_modules
@@ -30,7 +30,7 @@ jobs:
       - name: Setup node env
         uses: actions/setup-node@master
         with:
-          node-version: "18"
+          node-version: "20"
 
       - run: npm install
         working-directory: 1000-hours
