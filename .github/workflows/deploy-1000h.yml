@@ -17,11 +17,31 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     steps:
+      # checkout the code
       - uses: actions/checkout@v4
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            1000-hours/node_modules
+            1000-hours/**/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('./1000-hours/package-lock.json') }}
+
+      - name: Setup node env
+        uses: actions/setup-node@master
+        with:
+          node-version: "18"
+
+      - run: npm install
+        working-directory: 1000-hours
+
+      - run: npm run docs:build
+        working-directory: 1000-hours
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy --project-name=1000-hours
+          command: pages deploy .vitepress/dist --project-name=1000-hours
           workingDirectory: "1000-hours"
