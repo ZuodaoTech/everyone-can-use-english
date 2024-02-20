@@ -117,7 +117,7 @@ export class Audio extends Model<Audio> {
 
   @Column(DataType.VIRTUAL)
   get src(): string {
-    return `enjoy://${path.join(
+    return `enjoy://${path.posix.join(
       "library",
       "audios",
       this.getDataValue("md5") + this.extname

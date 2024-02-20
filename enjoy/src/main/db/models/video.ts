@@ -117,7 +117,7 @@ export class Video extends Model<Video> {
 
   @Column(DataType.VIRTUAL)
   get src(): string {
-    return `enjoy://${path.join(
+    return `enjoy://${path.posix.join(
       "library",
       "videos",
       this.getDataValue("md5") + this.extname

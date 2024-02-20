@@ -97,7 +97,7 @@ export class Speech extends Model<Speech> {
 
   @Column(DataType.VIRTUAL)
   get src(): string {
-    return `enjoy://${path.join(
+    return `enjoy://${path.posix.join(
       "library",
       "speeches",
       this.getDataValue("md5") + this.getDataValue("extname")
