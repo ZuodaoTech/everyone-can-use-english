@@ -1,54 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="496px" height="225px" viewBox="0 0 496 225" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="640px" height="300px" viewBox="0 0 640 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>nuclear-accented-words</title>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="nuclear-accented-words">
-            <g id="Marianna-made-the-ma" transform="translate(60, 100)" fill="#000000" fill-rule="nonzero" font-family="Sauce Code Pro" font-size="20" font-weight="normal">
-                <text>
-                    <tspan x="0" y="17">Marianna made the marmalade…</tspan>
-                </text>
-            </g>
-            <g id="这两个单词被-“强读”-了" fill="#000000" fill-rule="nonzero" font-family="Hei" font-size="14" font-weight="normal">
-                <text>
-                    <tspan x="0" y="19">这两个单词被强读了</tspan>
-                </text>
-            </g>
-            <polygon id="Line" fill="#979797" fill-rule="nonzero" points="73.6570048 32.8105441 73.9232304 33.2337744 108.397 88.039 111.783239 85.9090536 112.766226 95.9232304 104.165092 90.7011136 107.551 88.571 73.0767696 33.7662256 72.8105441 33.3429952"></polygon>
-            <polygon id="Line-Copy" fill="#979797" fill-rule="nonzero" points="73.2445122 32.868558 73.8145075 33.0196884 289.79633 90.2858981 291.300439 86.6197635 299.868558 93.4645078 287.916851 94.868558 289.42061 91.2017661 73.4385532 33.9362211 72.868558 33.7850908"></polygon>
-            <polygon id="Line-Copy-4" fill="#979797" fill-rule="nonzero" transform="translate(196.5069, 163.0694) scale(-1, 1) rotate(-180) translate(-196.5069, -163.0694)" points="206.516928 129.019664 207.477631 129.297242 207.338842 129.777594 190.339 188.61142 194.182581 189.721932 187.361211 197.119156 185.536254 187.223726 189.379 188.33342 206.378139 129.500015"></polygon>
-            <polygon id="Line-Copy-3" fill="#979797" fill-rule="nonzero" transform="translate(225.4613, 163.1225) scale(-1, 1) rotate(-180) translate(-225.4613, -163.1225)" points="207.049503 129.064084 207.294406 129.5 240.772 189.088903 244.259884 187.130209 244.744903 197.180819 236.413404 191.538468 239.9 189.578903 206.422575 129.989806 206.177672 129.553891"></polygon>
-            <polygon id="Line-Copy-2" fill="#979797" fill-rule="nonzero" points="382.494251 32.7929166 383.207083 33.4942514 382.856416 33.8506674 327.817 89.791 330.66909 92.596934 321.149333 95.856416 324.253601 86.284921 327.105 89.089 382.143584 33.1493326"></polygon>
-            <polygon id="Line-Copy-5" fill="#979797" fill-rule="nonzero" points="322.605634 168 322.605634 172 375 172 375 173 322.605634 173 322.605634 177 315 172.5"></polygon>
-            <g id="这个词-“句内最强”" transform="translate(310, 0)" fill="#000000" fill-rule="nonzero" font-family="Hei" font-size="14" font-weight="normal">
-                <text>
-                    <tspan x="30" y="19">这个词句内最强</tspan>
-                </text>
-            </g>
-            <g id="这两个词没有被-“强读”" transform="translate(96, 202)" fill="#000000" fill-rule="nonzero" font-family="Hei" font-size="14" font-weight="normal">
-                <text>
-                    <tspan x="0" y="19">这两个词没有被强读</tspan>
-                </text>
-            </g>
-            <line x1="113.5" y1="130.5" x2="113.5" y2="155.5" id="Line-2" stroke="#979797" stroke-linecap="square"></line>
-            <g id="H*" transform="translate(108, 163)" fill="#000000" fill-rule="nonzero" font-family="Sauce Code Pro" font-size="14" font-weight="normal">
-                <text>
-                    <tspan x="0" y="15">H*</tspan>
-                </text>
-            </g>
-            <line x1="291.5" y1="130.5" x2="291.5" y2="155.5" id="Line-2-Copy" stroke="#979797" stroke-linecap="square"></line>
-            <g id="H*-Copy" transform="translate(288, 163)" fill="#000000" fill-rule="nonzero" font-family="Sauce Code Pro" font-size="14" font-weight="normal">
-                <text id="H*">
-                    <tspan x="0" y="15">H*</tspan>
-                </text>
-            </g>
-            <g id="这两个音节的-“音高”-更高" transform="translate(388, 151)" fill="#000000" fill-rule="nonzero" font-family="Hei" font-size="14" font-weight="normal">
-                <text id="这两个音节的">
-                    <tspan x="0" y="19">这两个音节的</tspan>
-                </text>
-                <text id="“音高”-更高">
-                    <tspan x="0" y="41">音高更高</tspan>
-                </text>
-            </g>
+    <g id="nuclear-accented-words" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(131, 42)">
+            <text id="Marianna-made-the-ma" font-family="PingFangSC-Light, PingFang SC" font-size="16" font-weight="300" fill="#000000">
+                <tspan x="61" y="114">Marianna made the marmalade…</tspan>
+            </text>
+            <text id="这两个单词被-“强读”-了" font-family="PingFangSC-Regular, PingFang SC" font-size="14" font-weight="normal" fill="#000000">
+                <tspan x="0" y="15">这两个单词被 “强读” 了</tspan>
+            </text>
+            <path id="Line" d="M71.6570048,28.8105441 L71.9232304,29.2337744 L106.397,84.039 L109.783239,81.9090536 L110.766226,91.9232304 L102.165092,86.7011136 L105.551,84.571 L71.0767696,29.7662256 L70.8105441,29.3429952 L71.6570048,28.8105441 Z" fill="#979797" fill-rule="nonzero"></path>
+            <path id="Line-Copy" d="M71.2336091,28.8449917 L71.6943087,29.0393004 L210.862,87.735 L212.416885,84.0504559 L218.9607,91.6943087 L208.919328,92.343049 L210.473,88.657 L71.3056913,29.9606996 L70.8449917,29.7663909 L71.2336091,28.8449917 Z" fill="#979797" fill-rule="nonzero"></path>
+            <path id="Line-Copy-4" d="M161.432466,119.016284 L162.422851,119.15462 L162.353683,119.649813 L154.171,178.231 L158.13259,178.784882 L152.430832,187.075838 L149.219122,177.539858 L153.181,178.092 L161.363298,119.511477 L161.432466,119.016284 Z" transform="translate(157.3999, 153.0403) scale(1, -1) translate(-157.3999, -153.0403)" fill="#979797" fill-rule="nonzero"></path>
+            <path id="Line-Copy-3" d="M162.776871,118.929998 L162.963759,119.393757 L186.786,178.509 L190.496737,177.014741 L189.686888,187.044405 L182.149067,180.378728 L185.859,178.883 L162.036241,119.767533 L161.849352,119.303774 L162.776871,118.929998 Z" transform="translate(175.7584, 153.0403) scale(1, -1) translate(-175.7584, -153.0403)" fill="#979797" fill-rule="nonzero"></path>
+            <path id="Line-Copy-2" d="M323.494251,28.7929166 L324.207083,29.4942514 L323.856416,29.8506674 L268.817,85.791 L271.66909,88.596934 L262.149333,91.856416 L265.253601,82.284921 L268.105,85.089 L323.143584,29.1493326 L323.494251,28.7929166 Z" fill="#979797" fill-rule="nonzero"></path>
+            <path id="Line-Copy-5" d="M254,164 L254,168 L316,168 L316,169 L254,169 L254,173 L245,168.5 L254,164 Z" fill="#979797" fill-rule="nonzero"></path>
+            <text id="这个词-“句内最强”" font-family="PingFangSC-Regular, PingFang SC" font-size="14" font-weight="normal" fill="#000000">
+                <tspan x="251" y="15">这个词 “句内最强”</tspan>
+            </text>
+            <text id="这两个词没有被-“强读”" font-family="PingFangSC-Regular, PingFang SC" font-size="14" font-weight="normal" fill="#000000">
+                <tspan x="97" y="217">这两个词没有被 “强读”</tspan>
+            </text>
+            <line x1="97.5" y1="126.5" x2="97.5" y2="151.5" id="Line-2" stroke="#979797" stroke-linecap="square"></line>
+            <text id="H*" font-family="STKaiti" font-size="14" font-weight="normal" fill="#000000">
+                <tspan x="91" y="175">H*</tspan>
+            </text>
+            <line x1="224.5" y1="126.5" x2="224.5" y2="151.5" id="Line-2-Copy" stroke="#979797" stroke-linecap="square"></line>
+            <text id="H*-Copy" font-family="STKaiti" font-size="14" font-weight="normal" fill="#000000">
+                <tspan x="219" y="175">H*</tspan>
+            </text>
+            <text id="这两个音节的-“音高”-更高" font-family="PingFangSC-Regular, PingFang SC" font-size="14" font-weight="normal" fill="#000000">
+                <tspan x="329" y="166">这两个音节的</tspan>
+                <tspan x="329" y="186">“音高” 更高 </tspan>
+            </text>
         </g>
     </g>
 </svg>
