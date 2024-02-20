@@ -11,8 +11,11 @@ on:
       - main
     path:
       - "1000-hours/**"
+
 jobs:
   deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
     steps:
       - uses: actions/checkout@v4
       - name: Deploy
