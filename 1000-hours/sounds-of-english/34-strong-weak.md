@@ -18,7 +18,7 @@
 
 ![](/images/nuclear-accented-words.svg)
 
-被**强读**的词汇之中，重音音节往往带着**声调** —— 升、降、平、降升（[3.4](33-up-down)）。并且，少数重音音节会有被拔高的音高（[3.3](32-high-low)）。这些都是自然语流的韵律（*prosody*）格外重要的组成部分，包括接下来要讲述的**弱读**，也是跟读模仿时的重点之一。
+被**强读**的词汇之中，重音音节往往带着**声调** —— 升、降、平、降升（[3.4](33-up-down)）。并且，少数重音音节会有被拔高的音高（[3.3](32-high-low)）。这些都是自然语流的韵律（*prosody*）格外重要的组成部分，也是跟读模仿时的重点之一。
 
 另外，除了少数词汇会被**强读** 之外，还会有很多词汇会被**弱读**。
 
@@ -30,7 +30,7 @@
 
 这段录音中所有被强读的词汇在以下的文本中被加重标记（而没有标记的，就是被弱读的）：
 
-> **Community** **service** is an **important** **component** of **education** here at our **university**. We **encourage** **all** **students** to **volunteer** for at **least** **one** community **activity** **before** they **graduate**.
+> **Community** **service** is an **important** **component** of **education** **here** at our **university**. We **encourage** **all** **students** to **volunteer** for at **least** **one** community **activity** **before** they **graduate**.
 
 自然语音中，会有大量的常见词汇会被**弱读** —— 尤其是那些最常见的单音节词汇。
 
