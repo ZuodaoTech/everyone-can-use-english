@@ -236,7 +236,10 @@ export default () => {
   }
 
   return (
-    <div className="h-screen px-4 py-6 lg:px-8 bg-muted flex flex-col">
+    <div
+      data-testid="conversation-page"
+      className="h-screen px-4 py-6 lg:px-8 bg-muted flex flex-col"
+    >
       <div className="h-[calc(100vh-3rem)] relative w-full max-w-screen-md mx-auto flex flex-col">
         <div className="flex items-center justify-center py-2 bg-gradient-to-b from-muted relative">
           <div className="cursor-pointer h-6 opacity-50 hover:opacity-100">
@@ -322,12 +325,14 @@ export default () => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder={t("pressEnterToSend")}
+              data-testid="conversation-page-input"
               className="px-0 py-0 shadow-none border-none focus-visible:outline-0 focus-visible:ring-0 border-none bg-muted focus:bg-background min-h-[1.25rem] max-h-[3.5rem] !overflow-x-hidden"
             />
             <Button
               type="submit"
               ref={submitRef}
               disabled={submitting || !content}
+              data-testid="conversation-page-submit"
               onClick={() => handleSubmit(content)}
               className=""
             >

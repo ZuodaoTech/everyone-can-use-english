@@ -62,6 +62,7 @@ export default () => {
 
   const PRESETS = [
     {
+      key: "english-coach",
       name: "英语教练",
       engine: currentEngine.name,
       configuration: {
@@ -90,6 +91,7 @@ export default () => {
       },
     },
     {
+      key: "tts",
       name: "TTS",
       engine: currentEngine.name,
       configuration: {
@@ -103,6 +105,7 @@ export default () => {
       },
     },
     {
+      key: "custom",
       name: t("custom"),
       engine: currentEngine.name,
       configuration: {
@@ -139,7 +142,10 @@ export default () => {
         <div className="my-6 flex justify-center">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="h-12 rounded-lg w-96">
+              <Button
+                data-testid="conversation-new-button"
+                className="h-12 rounded-lg w-96"
+              >
                 {t("newConversation")}
               </Button>
             </DialogTrigger>
@@ -148,10 +154,14 @@ export default () => {
               <DialogHeader>
                 <DialogTitle>{t("selectAiRole")}</DialogTitle>
               </DialogHeader>
-              <div className="grid grid-cols-2 gap-4">
+              <div
+                data-testid="conversation-presets"
+                className="grid grid-cols-2 gap-4"
+              >
                 {PRESETS.map((preset) => (
                   <DialogTrigger
-                    key={preset.name}
+                    key={preset.key}
+                    data-testid={`conversation-preset-${preset.key}`}
                     className="p-4 border hover:shadow rounded-lg cursor-pointer space-y-2"
                     onClick={() => {
                       setPreset(preset);

@@ -110,7 +110,7 @@ export const AssistantMessageComponent = (props: {
   return (
     <div
       id={`message-${message.id}`}
-      className="flex items-end space-x-2 pr-10"
+      className="ai-message flex items-end space-x-2 pr-10"
     >
       <Avatar className="w-8 h-8 bg-background avatar">
         <AvatarImage></AvatarImage>

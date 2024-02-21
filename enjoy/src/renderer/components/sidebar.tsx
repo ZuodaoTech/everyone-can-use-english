@@ -167,6 +167,7 @@ export const Sidebar = () => {
                   to="/conversations"
                   data-tooltip-id="sidebar-tooltip"
                   data-tooltip-content={t("sidebar.aiAssistant")}
+                  data-testid="sidebar-conversations"
                   className="block"
                 >
                   <Button

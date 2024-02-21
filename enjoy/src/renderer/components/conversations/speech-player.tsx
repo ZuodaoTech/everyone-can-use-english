@@ -113,6 +113,7 @@ export const SpeechPlayer = (props: {
         </div>
 
         <div
+          data-testid="wavesurfer-container"
           className={`col-span-8 ${initialized ? "" : "hidden"}`}
           ref={containerRef}
         ></div>

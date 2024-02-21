@@ -201,6 +201,7 @@ export const ConversationForm = (props: {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="h-full flex flex-col pt-6"
+        data-testid="conversation-form"
       >
         <div className="mb-4 px-6 text-lg font-bold">
           {conversation.id ? t("editConversation") : t("startConversation")}
@@ -713,6 +714,7 @@ export const ConversationForm = (props: {
               submitting || (conversation.id && !form.formState.isDirty)
             }
             className="w-full h-12"
+            data-testid="conversation-form-submit"
             size="lg"
             type="submit"
           >
