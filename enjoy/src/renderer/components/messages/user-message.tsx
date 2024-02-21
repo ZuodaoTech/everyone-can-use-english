@@ -35,6 +35,7 @@ import {
   CheckIcon,
   Share2Icon,
   ForwardIcon,
+  MoreVerticalIcon,
 } from "lucide-react";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
@@ -44,8 +45,8 @@ import Markdown from "react-markdown";
 export const UserMessageComponent = (props: {
   message: MessageType;
   configuration?: { [key: string]: any };
-  onResend?: () => void;
-  onRemove?: () => void;
+  onResend: () => void;
+  onRemove: () => void;
 }) => {
   const { message, onResend, onRemove } = props;
   const speech = message.speeches?.[0];
@@ -89,12 +90,12 @@ export const UserMessageComponent = (props: {
       id={`message-${message.id}`}
       className="flex items-end justify-end space-x-2 pl-10"
     >
-      <DropdownMenu>
-        <div className="flex flex-col gap-2 px-4 py-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full">
-          <Markdown className="select-text prose">{message.content}</Markdown>
+      <div className="flex flex-col gap-2 px-4 py-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full">
+        <Markdown className="select-text prose">{message.content}</Markdown>
 
-          {Boolean(speech) && <SpeechPlayer speech={speech} />}
+        {Boolean(speech) && <SpeechPlayer speech={speech} />}
 
+        <DropdownMenu>
           <div className="flex items-center justify-end space-x-2">
             {message.createdAt ? (
               <CheckCircleIcon
@@ -180,20 +181,25 @@ export const UserMessageComponent = (props: {
                 </AlertDialogContent>
               </AlertDialog>
             )}
+
+            <DropdownMenuTrigger>
+              <MoreVerticalIcon className="w-3 h-3" />
+            </DropdownMenuTrigger>
           </div>
-        </div>
-        <DropdownMenuContent>
-          <DropdownMenuItem onClick={onResend}>
-            <span className="mr-auto capitalize">{t("resend")}</span>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={onRemove}>
-            <span className="mr-auto text-destructive capitalize">
-              {t("remove")}
-            </span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+
+          <DropdownMenuContent>
+            <DropdownMenuItem className="cursor-pointer" onClick={onResend}>
+              <span className="mr-auto capitalize">{t("resend")}</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="cursor-pointer" onClick={onRemove}>
+              <span className="mr-auto text-destructive capitalize">
+                {t("remove")}
+              </span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       <Avatar className="w-8 h-8 bg-background">
         <AvatarImage src={user.avatarUrl} />

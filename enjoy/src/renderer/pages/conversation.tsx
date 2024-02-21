@@ -120,17 +120,40 @@ export default () => {
       setSubmitting(false);
     }, 1000 * 60 * 5);
 
-    chat(message, { conversation })
-      .catch((err) => {
-        message.status = "error";
-        dispatchMessages({ type: "update", record: message });
-        toast.error(err.message);
-      })
-      .finally(() => {
-        setSubmitting(false);
-        setContent("");
-        clearTimeout(timeout);
-      });
+    if (conversation.type === "gpt") {
+      chat(message, { conversation })
+        .catch((err) => {
+          message.status = "error";
+          dispatchMessages({ type: "update", record: message });
+          toast.error(err.message);
+        })
+        .finally(() => {
+          setSubmitting(false);
+          setContent("");
+          clearTimeout(timeout);
+        });
+    } else if (conversation.type === "tts") {
+      // reply with the same text
+      // and create a speech using TTS
+      const reply = {
+        id: uuidv4(),
+        content: message.content,
+        role: "assistant" as MessageRoleEnum,
+        conversationId: conversation.id,
+      };
+      EnjoyApp.messages
+        .createInBatch([message, reply])
+        .catch((err) => {
+          message.status = "error";
+          dispatchMessages({ type: "update", record: message });
+          toast.error(err.message);
+        })
+        .finally(() => {
+          setSubmitting(false);
+          setContent("");
+          clearTimeout(timeout);
+        });
+    }
   };
 
   const onMessagesUpdate = (event: CustomEvent) => {
@@ -146,6 +169,8 @@ export default () => {
       }
 
       scrollToMessage(record);
+    } else if (action === "destroy") {
+      dispatchMessages({ type: "destroy", record });
     }
   };
 
@@ -167,6 +192,7 @@ export default () => {
   useEffect(() => {
     setOffest(0);
     setContent(searchParams.get("text") || "");
+    dispatchMessages({ type: "set", records: [] });
     fetchConversation();
     addDblistener(onMessagesUpdate);
 
@@ -248,17 +274,25 @@ export default () => {
               <MessageComponent
                 key={message.id}
                 message={message}
-                configuration={conversation.configuration}
+                configuration={{
+                  type: conversation.type,
+                  ...conversation.configuration,
+                }}
                 onResend={() => {
-                  if (message.status !== "error") return;
+                  if (message.status === "error") {
+                    dispatchMessages({ type: "destroy", record: message });
+                  }
 
-                  dispatchMessages({ type: "destroy", record: message });
                   handleSubmit(message.content);
                 }}
                 onRemove={() => {
-                  if (message.status !== "error") return;
-
-                  dispatchMessages({ type: "destroy", record: message });
+                  if (message.status === "error") {
+                    dispatchMessages({ type: "destroy", record: message });
+                  } else {
+                    EnjoyApp.messages.destroy(message.id).catch((err) => {
+                      toast.error(err.message);
+                    });
+                  }
                 }}
               />
             ))}
