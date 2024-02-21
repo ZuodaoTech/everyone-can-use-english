@@ -6,10 +6,10 @@
     "markdown-it-mathjax3": "^4.3.2",
     "markdown-it-sub": "^2.0.0",
     "markdown-it-sup": "^2.0.0",
-    "sass": "^1.70.0",
+    "sass": "^1.71.1",
     "vitepress": "^1.0.0-rc.42",
     "vitepress-plugin-mermaid": "^2.0.16",
-    "vue": "^3.4.18"
+    "vue": "^3.4.19"
   },
   "scripts": {
     "docs:dev": "vitepress dev",
