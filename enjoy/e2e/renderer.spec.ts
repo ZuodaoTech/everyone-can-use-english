@@ -1,22 +1,8 @@
 import { expect, test } from "@playwright/test";
-import {
-  clickMenuItemById,
-  findLatestBuild,
-  ipcMainCallFirstListener,
-  ipcRendererCallFirstListener,
-  parseElectronApp,
-  ipcMainInvokeHandler,
-  ipcRendererInvoke,
-} from "electron-playwright-helpers";
+import { findLatestBuild, parseElectronApp } from "electron-playwright-helpers";
 import { ElectronApplication, Page, _electron as electron } from "playwright";
 import path from "path";
 import fs from "fs-extra";
-
-declare global {
-  interface Window {
-    __ENJOY_APP__: any;
-  }
-}
 
 const user = {
   id: 24000001,
@@ -129,14 +115,23 @@ test.describe("with login", async () => {
           },
         });
       });
+
+      // navigate to the conversations page
       await page.getByTestId("sidebar-conversations").click();
-      await page.getByTestId("conversation-new-button").click();
-      expect(
-        await page.getByTestId("conversation-presets").isVisible()
-      ).toBeTruthy();
     });
 
+    /*
+     * steps:
+     * 1. create a gpt conversation
+     * 2. submit a message to the conversation, AI should reply
+     * 3. create a speech from the AI message
+     * 4. add the speech to the library
+     * 5. audio waveform player should be visible and transcription should be generated
+     */
     test("gpt conversation", async () => {
+      // trigger new conversation modal
+      await page.getByTestId("conversation-new-button").click();
+
       // create a gpt conversation
       await page.getByTestId("conversation-preset-english-coach").click();
       await page.getByTestId("conversation-form").waitFor();
@@ -153,20 +148,36 @@ test.describe("with login", async () => {
       expect(await message.isVisible()).toBeTruthy();
 
       // create a speech
-      await page
-        .getByTestId("message-create-speech")
-        .click({ timeout: 1000 * 60 });
+      await page.getByTestId("message-create-speech").click();
 
       // wait for the speech player
       const player = page
         .locator(".ai-message")
         .getByTestId("wavesurfer-container");
       await player.waitFor();
-
       expect(await player.isVisible()).toBeTruthy();
+
+      // add to library
+      await page.getByTestId("message-start-shadow").click();
+      await page.getByTestId("audio-detail").waitFor();
+      await page.getByTestId("media-player-container").waitFor();
+      await page.getByTestId("media-transcription").waitFor();
+      await page.getByTestId("media-transcription-result").waitFor();
+      expect(
+        await page.getByTestId("media-transcription-result").isVisible()
+      ).toBeTruthy();
     });
 
+    /*
+     * steps:
+     * 1. create a tts conversation
+     * 2. submit a message to the conversation
+     * 3. the speech should auto create
+     */
     test("tts conversation", async () => {
+      // trigger new conversation modal
+      await page.getByTestId("conversation-new-button").click();
+
       // create a tts conversation
       await page.click("[data-testid=conversation-preset-tts]");
       await page.getByTestId("conversation-form").waitFor();

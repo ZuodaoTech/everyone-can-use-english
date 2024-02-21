@@ -223,6 +223,7 @@ export const AssistantMessageComponent = (props: {
                 <MicIcon
                   data-tooltip-id="global-tooltip"
                   data-tooltip-content={t("shadowingExercise")}
+                  data-testid="message-start-shadow"
                   onClick={startShadow}
                   className="w-3 h-3 cursor-pointer"
                 />
