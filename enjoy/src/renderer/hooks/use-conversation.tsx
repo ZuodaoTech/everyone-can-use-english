@@ -114,6 +114,28 @@ export const useConversation = () => {
     }
   ): Promise<Partial<MessageType>[]> => {
     const { conversation } = params;
+
+    if (conversation.type === "gpt") {
+      return askGPT(message, params);
+    } else if (conversation.type === "tts") {
+      return askTTS(message, params);
+    } else {
+      return [];
+    }
+  };
+
+  /*
+   * Ask GPT
+   * chat with GPT conversation
+   * Use LLM to generate response
+   */
+  const askGPT = async (
+    message: Partial<MessageType>,
+    params: {
+      conversation: ConversationType;
+    }
+  ): Promise<Partial<MessageType>[]> => {
+    const { conversation } = params;
     const chatHistory = await fetchChatHistory(conversation);
     const memory = new BufferMemory({
       chatHistory,
@@ -128,7 +150,6 @@ export const useConversation = () => {
 
     const llm = pickLlm(conversation);
     const chain = new ConversationChain({
-      // @ts-expect-error
       llm,
       memory,
       prompt,
@@ -152,6 +173,35 @@ export const useConversation = () => {
       };
     });
 
+    message.role = "user" as MessageRoleEnum;
+    message.conversationId = conversation.id;
+
+    await EnjoyApp.messages.createInBatch([message, ...replies]);
+
+    return replies;
+  };
+
+  /*
+   * Ask TTS
+   * chat with TTS conversation
+   * It reply with the same text
+   * and create speech using TTS
+   */
+  const askTTS = async (
+    message: Partial<MessageType>,
+    params: {
+      conversation: ConversationType;
+    }
+  ): Promise<Partial<MessageType>[]> => {
+    const { conversation } = params;
+    const replies = [
+      {
+        id: v4(),
+        content: message.content,
+        role: "assistant" as MessageRoleEnum,
+        conversationId: conversation.id,
+      },
+    ];
     message.role = "user" as MessageRoleEnum;
     message.conversationId = conversation.id;
 

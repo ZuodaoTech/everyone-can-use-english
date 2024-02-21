@@ -162,7 +162,7 @@ export default () => {
                   <DialogTrigger
                     key={preset.key}
                     data-testid={`conversation-preset-${preset.key}`}
-                    className="p-4 border hover:shadow rounded-lg cursor-pointer space-y-2"
+                    className="p-4 border hover:shadow rounded-lg cursor-pointer space-y-2 h-32"
                     onClick={() => {
                       setPreset(preset);
                       setCreating(true);
