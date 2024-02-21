@@ -1,6 +1,6 @@
 # 1.1.4. 示例
 
-以下是一个 *English Phonetic Pangram*[^1]，52 个词的篇幅里包含了所有元音和辅音。
+以下是一个 *English Phonetic Pangram*[^1]，52 个词的篇幅里包含了所有**元音**和**辅音**。
 
 > Jane, a dramatic young girl, loves to read  books at leisure in rooms or play on a sunny day outdoor here and there under the trees with boys. She vowed to buy a red ear dog. She thought it was unique, for sure. Now she feeds it dough, nuts, and cheese bar.
 >
