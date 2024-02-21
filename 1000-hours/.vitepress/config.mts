@@ -130,13 +130,14 @@ export default withMermaid(
                 { text: '3.4 起伏', link: '/sounds-of-english/33-up-down' },
                 { text: '3.5 轻重', link: '/sounds-of-english/34-strong-weak' },
                 { text: '3.6 缓急', link: '/sounds-of-english/35-fast-slow' },
+                { text: '3.7 长短', link: '/sounds-of-english/36-long-short' },
               ]
             },
             {
-              text: '4. 收官', collapsed: true, link: '/sounds-of-english/36-round-up',
+              text: '4. 收官', collapsed: true, link: '/sounds-of-english/37-round-up',
               items: [
-                { text: '4.1 流利', link: '/sounds-of-english/37-fluent' },
-                { text: '4.2 情绪', link: '/sounds-of-english/38-emotional' },
+                { text: '4.1 流利', link: '/sounds-of-english/38-fluent' },
+                { text: '4.2 情绪', link: '/sounds-of-english/39-emotional' },
               ]
             }
           ]
