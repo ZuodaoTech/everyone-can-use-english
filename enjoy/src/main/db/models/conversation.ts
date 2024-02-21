@@ -18,7 +18,10 @@ import { ConversationChain } from "langchain/chains";
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatOllama } from "@langchain/community/chat_models/ollama";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
+import {
+  ChatPromptTemplate,
+  MessagesPlaceholder,
+} from "@langchain/core/prompts";
 import { type Generation } from "langchain/dist/schema";
 import settings from "@main/settings";
 import db from "@main/db";
@@ -58,10 +61,16 @@ export class Conversation extends Model<Conversation> {
   @Column(DataType.JSON)
   configuration: {
     model: string;
+    type: "gpt" | "tts";
     roleDefinition?: string;
     temperature?: number;
     maxTokens?: number;
   } & { [key: string]: any };
+
+  @Column(DataType.VIRTUAL)
+  get type(): 'gpt' | 'tts' {
+    return this.getDataValue("configuration").type || "gpt";
+  }
 
   @Column(DataType.VIRTUAL)
   get model(): string {

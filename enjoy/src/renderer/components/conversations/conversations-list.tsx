@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { Button, ScrollArea } from "@renderer/components/ui";
 import { LoaderSpin } from "@renderer/components";
-import { MessageCircleIcon, LoaderIcon } from "lucide-react";
+import { MessageCircleIcon, LoaderIcon, SpeechIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
 
@@ -86,7 +86,11 @@ export const ConversationsList = (props: {
               }}
             >
               <div className="">
-                <MessageCircleIcon className="mr-2" />
+                {conversation.type === "gpt" && (
+                  <MessageCircleIcon className="mr-2" />
+                )}
+
+                {conversation.type === "tts" && <SpeechIcon className="mr-2" />}
               </div>
               <div className="flex-1 truncated">{conversation.name}</div>
             </div>

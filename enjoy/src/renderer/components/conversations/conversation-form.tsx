@@ -44,7 +44,8 @@ const conversationFormSchema = z.object({
     .default("openai"),
   configuration: z
     .object({
-      model: z.string().nonempty(),
+      type: z.enum(["gpt", "tts"]),
+      model: z.string().optional(),
       baseUrl: z.string().optional(),
       roleDefinition: z.string().optional(),
       temperature: z.number().min(0).max(1).default(0.2),
@@ -83,7 +84,7 @@ export const ConversationForm = (props: {
         (m: any) => m.name
       );
     } catch (e) {
-      console.error(e);
+      console.warn(`No ollama server found: ${e.message}`);
     }
     setProviders({ ...providers });
   };
@@ -112,7 +113,8 @@ export const ConversationForm = (props: {
       defaultConfig.configuration.baseUrl = openai.baseUrl;
     }
   }
-  if (defaultConfig.configuration.tts.engine === "openai" && openai) {
+
+  if (defaultConfig.configuration.tts?.engine === "openai" && openai) {
     if (!defaultConfig.configuration.tts.baseUrl) {
       defaultConfig.configuration.tts.baseUrl = openai.baseUrl;
     }
@@ -126,10 +128,8 @@ export const ConversationForm = (props: {
           name: conversation.name,
           engine: conversation.engine,
           configuration: {
+            type: conversation.configuration.type || "gpt",
             ...conversation.configuration,
-            tts: {
-              ...conversation.configuration?.tts,
-            },
           },
         }
       : {
@@ -146,16 +146,24 @@ export const ConversationForm = (props: {
     setSubmitting(true);
 
     Object.keys(configuration).forEach((key) => {
+      if (key === "type") return;
+
       if (!LLM_PROVIDERS[engine]?.configurable.includes(key)) {
         // @ts-ignore
         delete configuration[key];
       }
     });
 
+    if (configuration.type === "tts") {
+      conversation.model = configuration.tts.model;
+    }
+
+    // use default base url if not set
     if (!configuration.baseUrl) {
       configuration.baseUrl = LLM_PROVIDERS[engine]?.baseUrl;
     }
 
+    // use default base url if not set
     if (!configuration.tts.baseUrl) {
       configuration.tts.baseUrl = LLM_PROVIDERS[engine]?.baseUrl;
     }
@@ -213,10 +221,10 @@ export const ConversationForm = (props: {
 
             <FormField
               control={form.control}
-              name="engine"
+              name="configuration.type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("models.conversation.engine")}</FormLabel>
+                  <FormLabel>{t("models.conversation.type")}</FormLabel>
                   <Select
                     disabled={Boolean(conversation?.id)}
                     onValueChange={field.onChange}
@@ -224,45 +232,16 @@ export const ConversationForm = (props: {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={t("selectAiEngine")} />
+                        <SelectValue placeholder={t("selectAiType")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {Object.keys(providers).map((key) => (
-                        <SelectItem key={key} value={key}>
-                          {providers[key].name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormDescription>
-                    {providers[form.watch("engine")]?.description}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="configuration.model"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("models.conversation.model")}</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t("selectAiModel")} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {(providers[form.watch("engine")]?.models || []).map(
-                        (option: string) => (
-                          <SelectItem key={option} value={option}>
-                            {option}
-                          </SelectItem>
-                        )
-                      )}
+                      <SelectItem key="gpt" value="gpt">
+                        GPT
+                      </SelectItem>
+                      <SelectItem key="tts" value="tts">
+                        TTS
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -270,227 +249,306 @@ export const ConversationForm = (props: {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="configuration.roleDefinition"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    {t("models.conversation.roleDefinition")}
-                  </FormLabel>
-                  <Textarea
-                    placeholder={t(
-                      "models.conversation.roleDefinitionPlaceholder"
+            {form.watch("configuration.type") === "gpt" && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="engine"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("models.conversation.engine")}</FormLabel>
+                      <Select
+                        disabled={Boolean(conversation?.id)}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t("selectAiEngine")} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {Object.keys(providers)
+                            .filter((key) =>
+                              LLM_PROVIDERS[key].types.includes(
+                                form.watch("configuration.type")
+                              )
+                            )
+                            .map((key) => (
+                              <SelectItem key={key} value={key}>
+                                {providers[key].name}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        {providers[form.watch("engine")]?.description}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="configuration.model"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("models.conversation.model")}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t("selectAiModel")} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {(providers[form.watch("engine")]?.models || []).map(
+                            (option: string) => (
+                              <SelectItem key={option} value={option}>
+                                {option}
+                              </SelectItem>
+                            )
+                          )}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="configuration.roleDefinition"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        {t("models.conversation.roleDefinition")}
+                      </FormLabel>
+                      <Textarea
+                        placeholder={t(
+                          "models.conversation.roleDefinitionPlaceholder"
+                        )}
+                        className="h-64"
+                        {...field}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
+                  "temperature"
+                ) && (
+                  <FormField
+                    control={form.control}
+                    name="configuration.temperature"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("models.conversation.temperature")}
+                        </FormLabel>
+                        <Input
+                          type="number"
+                          min="0"
+                          max="1.0"
+                          step="0.1"
+                          value={field.value}
+                          onChange={(event) => {
+                            field.onChange(
+                              event.target.value
+                                ? parseFloat(event.target.value)
+                                : 0.0
+                            );
+                          }}
+                        />
+                        <FormDescription>
+                          {t("models.conversation.temperatureDescription")}
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
                     )}
-                    className="h-64"
-                    {...field}
                   />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
-              "temperature"
-            ) && (
-              <FormField
-                control={form.control}
-                name="configuration.temperature"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {t("models.conversation.temperature")}
-                    </FormLabel>
-                    <Input
-                      type="number"
-                      min="0"
-                      max="1.0"
-                      step="0.1"
-                      value={field.value}
-                      onChange={(event) => {
-                        field.onChange(
-                          event.target.value
-                            ? parseFloat(event.target.value)
-                            : 0.0
-                        );
-                      }}
-                    />
-                    <FormDescription>
-                      {t("models.conversation.temperatureDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
                 )}
-              />
-            )}
 
-            {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
-              "maxTokens"
-            ) && (
-              <FormField
-                control={form.control}
-                name="configuration.maxTokens"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("models.conversation.maxTokens")}</FormLabel>
-                    <Input
-                      type="number"
-                      min="0"
-                      value={field.value}
-                      onChange={(event) => {
-                        if (!event.target.value) return;
-                        field.onChange(parseInt(event.target.value));
-                      }}
-                    />
-                    <FormDescription>
-                      {t("models.conversation.maxTokensDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
-              "presencePenalty"
-            ) && (
-              <FormField
-                control={form.control}
-                name="configuration.presencePenalty"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {t("models.conversation.presencePenalty")}
-                    </FormLabel>
-                    <Input
-                      type="number"
-                      min="-2"
-                      step="0.1"
-                      max="2"
-                      value={field.value}
-                      onChange={(event) => {
-                        if (!event.target.value) return;
-                        field.onChange(parseInt(event.target.value));
-                      }}
-                    />
-                    <FormDescription>
-                      {t("models.conversation.presencePenaltyDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
-              "frequencyPenalty"
-            ) && (
-              <FormField
-                control={form.control}
-                name="configuration.frequencyPenalty"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {t("models.conversation.frequencyPenalty")}
-                    </FormLabel>
-                    <Input
-                      type="number"
-                      min="-2"
-                      step="0.1"
-                      max="2"
-                      value={field.value}
-                      onChange={(event) => {
-                        if (!event.target.value) return;
-                        field.onChange(parseInt(event.target.value));
-                      }}
-                    />
-                    <FormDescription>
-                      {t("models.conversation.frequencyPenaltyDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
-              "numberOfChoices"
-            ) && (
-              <FormField
-                control={form.control}
-                name="configuration.numberOfChoices"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {t("models.conversation.numberOfChoices")}
-                    </FormLabel>
-                    <Input
-                      type="number"
-                      min="1"
-                      step="1.0"
-                      value={field.value}
-                      onChange={(event) => {
-                        field.onChange(
-                          event.target.value
-                            ? parseInt(event.target.value)
-                            : 1.0
-                        );
-                      }}
-                    />
-                    <FormDescription>
-                      {t("models.conversation.numberOfChoicesDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            <FormField
-              control={form.control}
-              name="configuration.historyBufferSize"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    {t("models.conversation.historyBufferSize")}
-                  </FormLabel>
-                  <Input
-                    type="number"
-                    min="0"
-                    step="1"
-                    max="100"
-                    value={field.value}
-                    onChange={(event) => {
-                      field.onChange(
-                        event.target.value ? parseInt(event.target.value) : 0
-                      );
-                    }}
+                {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
+                  "maxTokens"
+                ) && (
+                  <FormField
+                    control={form.control}
+                    name="configuration.maxTokens"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("models.conversation.maxTokens")}
+                        </FormLabel>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={field.value}
+                          onChange={(event) => {
+                            if (!event.target.value) return;
+                            field.onChange(parseInt(event.target.value));
+                          }}
+                        />
+                        <FormDescription>
+                          {t("models.conversation.maxTokensDescription")}
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                  <FormDescription>
-                    {t("models.conversation.historyBufferSizeDescription")}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
-              "baseUrl"
-            ) && (
-              <FormField
-                control={form.control}
-                name="configuration.baseUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("models.conversation.baseUrl")}</FormLabel>
-                    <Input {...field} />
-                    <FormDescription>
-                      {t("models.conversation.baseUrlDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
                 )}
-              />
+
+                {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
+                  "presencePenalty"
+                ) && (
+                  <FormField
+                    control={form.control}
+                    name="configuration.presencePenalty"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("models.conversation.presencePenalty")}
+                        </FormLabel>
+                        <Input
+                          type="number"
+                          min="-2"
+                          step="0.1"
+                          max="2"
+                          value={field.value}
+                          onChange={(event) => {
+                            if (!event.target.value) return;
+                            field.onChange(parseInt(event.target.value));
+                          }}
+                        />
+                        <FormDescription>
+                          {t("models.conversation.presencePenaltyDescription")}
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
+                  "frequencyPenalty"
+                ) && (
+                  <FormField
+                    control={form.control}
+                    name="configuration.frequencyPenalty"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("models.conversation.frequencyPenalty")}
+                        </FormLabel>
+                        <Input
+                          type="number"
+                          min="-2"
+                          step="0.1"
+                          max="2"
+                          value={field.value}
+                          onChange={(event) => {
+                            if (!event.target.value) return;
+                            field.onChange(parseInt(event.target.value));
+                          }}
+                        />
+                        <FormDescription>
+                          {t("models.conversation.frequencyPenaltyDescription")}
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
+                  "numberOfChoices"
+                ) && (
+                  <FormField
+                    control={form.control}
+                    name="configuration.numberOfChoices"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("models.conversation.numberOfChoices")}
+                        </FormLabel>
+                        <Input
+                          type="number"
+                          min="1"
+                          step="1.0"
+                          value={field.value}
+                          onChange={(event) => {
+                            field.onChange(
+                              event.target.value
+                                ? parseInt(event.target.value)
+                                : 1.0
+                            );
+                          }}
+                        />
+                        <FormDescription>
+                          {t("models.conversation.numberOfChoicesDescription")}
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                <FormField
+                  control={form.control}
+                  name="configuration.historyBufferSize"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        {t("models.conversation.historyBufferSize")}
+                      </FormLabel>
+                      <Input
+                        type="number"
+                        min="0"
+                        step="1"
+                        max="100"
+                        value={field.value}
+                        onChange={(event) => {
+                          field.onChange(
+                            event.target.value
+                              ? parseInt(event.target.value)
+                              : 0
+                          );
+                        }}
+                      />
+                      <FormDescription>
+                        {t("models.conversation.historyBufferSizeDescription")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
+                  "baseUrl"
+                ) && (
+                  <FormField
+                    control={form.control}
+                    name="configuration.baseUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("models.conversation.baseUrl")}
+                        </FormLabel>
+                        <Input
+                          {...field}
+                          placeholder={t(
+                            "models.conversation.baseUrlDescription"
+                          )}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </>
             )}
 
             <FormField
@@ -603,10 +661,12 @@ export const ConversationForm = (props: {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("models.conversation.ttsBaseUrl")}</FormLabel>
-                    <Input {...field} />
-                    <FormDescription>
-                      {t("models.conversation.ttsBaseUrlDescription")}
-                    </FormDescription>
+                    <Input
+                      {...field}
+                      placeholder={t(
+                        "models.conversation.ttsBaseUrlDescription"
+                      )}
+                    />
                     <FormMessage />
                   </FormItem>
                 )}
@@ -691,6 +751,7 @@ export const LLM_PROVIDERS: { [key: string]: any } = {
       "historyBufferSize",
       "tts",
     ],
+    types: ["gpt", "tts"],
   },
   openai: {
     name: "OpenAI",
@@ -719,6 +780,7 @@ export const LLM_PROVIDERS: { [key: string]: any } = {
       "historyBufferSize",
       "tts",
     ],
+    types: ["gpt", "tts"],
   },
   googleGenerativeAi: {
     name: "Google Generative AI",
@@ -731,6 +793,7 @@ export const LLM_PROVIDERS: { [key: string]: any } = {
       "historyBufferSize",
       "tts",
     ],
+    types: ["gpt"],
   },
   ollama: {
     name: "Ollama",
@@ -748,6 +811,7 @@ export const LLM_PROVIDERS: { [key: string]: any } = {
       "presencePenalty",
       "tts",
     ],
+    types: ["gpt"],
   },
 };
 

@@ -11,7 +11,7 @@ import {
 } from "@renderer/components/ui";
 import { ConversationForm } from "@renderer/components";
 import { useState, useEffect, useContext, useReducer } from "react";
-import { ChevronLeftIcon, MessageCircleIcon } from "lucide-react";
+import { ChevronLeftIcon, MessageCircleIcon, SpeechIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   DbProviderContext,
@@ -65,6 +65,7 @@ export default () => {
       name: "英语教练",
       engine: currentEngine.name,
       configuration: {
+        type: "gpt",
         model: "gpt-4-1106-preview",
         baseUrl: "",
         roleDefinition: `你是我的英语教练。
@@ -89,9 +90,23 @@ export default () => {
       },
     },
     {
+      name: "TTS",
+      engine: currentEngine.name,
+      configuration: {
+        type: "tts",
+        tts: {
+          baseUrl: "",
+          engine: currentEngine.name,
+          model: "tts-1",
+          voice: "alloy",
+        },
+      },
+    },
+    {
       name: t("custom"),
       engine: currentEngine.name,
       configuration: {
+        type: "gpt",
         model: "gpt-4-1106-preview",
         baseUrl: "",
         roleDefinition: "",
@@ -181,7 +196,11 @@ export default () => {
               }}
             >
               <div className="">
-                <MessageCircleIcon className="mr-2" />
+                {conversation.type === "gpt" && (
+                  <MessageCircleIcon className="mr-2" />
+                )}
+
+                {conversation.type === "tts" && <SpeechIcon className="mr-2" />}
               </div>
               <div className="flex-1 flex items-center justify-between space-x-4">
                 <span className="line-clamp-1">{conversation.name}</span>
