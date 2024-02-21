@@ -4,7 +4,7 @@
 
 > Jane, a dramatic young girl, loves to read  books at leisure in rooms or play on a sunny day outdoor here and there under the trees with boys. She vowed to buy a red ear dog. She thought it was unique, for sure. Now she feeds it dough, nuts, and cheese bar.
 >
-> `/dʒeɪn, ə drəˈmætɪk jʌŋ gəː(r)l, lʌvz tuː riːd bʊks æt ˈlɛʒiː(r) ɪn rumz ɔː(r) pleɪ ɒn ə ˈsʌni deɪ ˈaʊtˌdɔr hiə(r) ənd ðeə ˈʌndə(r) ðə triz wɪθ bɔɪz. ʃiː vaʊd tʊ baɪ ə red ɪə(r) dɒg. ʃiː θɒt ɪt wɒz juˈniːk, fə(r) ʃʊə(r). naʊ ʃiː fiːdz ɪt dəʊ, nʌts, ənd tʃiːz bɑː(r)./`
+> `/dʒeɪn, ə drəˈmætɪk jʌŋ gəː(r)l, lʌvz tuː riːd bʊks æt ˈliːʒə(r) ɪn rumz ɔː(r) pleɪ ɒn ə ˈsʌni deɪ ˈaʊtˌdɔr hiə(r) ənd ðeə ˈʌndə(r) ðə triz wɪθ bɔɪz. ʃiː vaʊd tʊ baɪ ə red ɪə(r) dɒg. ʃiː θɒt ɪt wɒz juˈniːk, fə(r) ʃʊə(r). naʊ ʃiː fiːdz ɪt dəʊ, nʌts, ənd tʃiːz bɑː(r)./`
 
 Voice: Alloy (US Male)
 
