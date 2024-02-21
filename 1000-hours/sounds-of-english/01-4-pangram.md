@@ -17,6 +17,9 @@ Voice: Nova (US Female)
 注意，以上的 *Pangram* 也包括 `tr`、`dr`、`ts` 和 `dz`。
 
 
+::: info
+以上两条语音，Alloy 和 Nova，使用 OpenAI 的 TTS 引擎生成。而教程中其它的词汇音频，大多数使用 Microsoft 的 [EdgeTTS](https://github.com/rany2/edge-tts) 生成。
+:::
 
 -----
 
