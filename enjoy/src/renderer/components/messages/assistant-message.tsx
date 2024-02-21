@@ -133,7 +133,7 @@ export const AssistantMessageComponent = (props: {
 
         {configuration.type === "gpt" && (
           <Markdown
-            className="select-text prose"
+            className="message-content select-text prose"
             components={{
               a({ node, children, ...props }) {
                 try {
@@ -165,6 +165,7 @@ export const AssistantMessageComponent = (props: {
                 <SpeechIcon
                   data-tooltip-id="global-tooltip"
                   data-tooltip-content={t("textToSpeech")}
+                  data-testid="message-create-speech"
                   onClick={createSpeech}
                   className="w-3 h-3 cursor-pointer"
                 />

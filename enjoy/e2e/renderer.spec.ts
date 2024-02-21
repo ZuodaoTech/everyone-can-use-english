@@ -103,9 +103,30 @@ test.describe("with login", async () => {
       );
 
       page = await electronApp.firstWindow();
-      page.route("**/api/ai/audio/speech", (route) => {
+      page.on("console", (msg) => {
+        console.info(msg.text());
+      });
+
+      await page.route("**/api/ai/audio/speech", (route) => {
         route.fulfill({
           body: file,
+        });
+      });
+      await page.route("**/api/ai/chat/completions", (route) => {
+        route.fulfill({
+          json: {
+            id: "1",
+            choices: [
+              {
+                index: 1,
+                message: {
+                  role: "assistant",
+                  content: "I'm fine, thank you.",
+                },
+                finish_reason: "stop",
+              },
+            ],
+          },
         });
       });
       await page.getByTestId("sidebar-conversations").click();
@@ -113,6 +134,36 @@ test.describe("with login", async () => {
       expect(
         await page.getByTestId("conversation-presets").isVisible()
       ).toBeTruthy();
+    });
+
+    test("gpt conversation", async () => {
+      // create a gpt conversation
+      await page.getByTestId("conversation-preset-english-coach").click();
+      await page.getByTestId("conversation-form").waitFor();
+      await page.click("[data-testid=conversation-form-submit]");
+
+      // wait for the conversation to be created
+      await page.getByTestId("conversation-page").waitFor();
+
+      // submit a message to the conversation
+      await page.getByTestId("conversation-page-input").fill("How are you?");
+      await page.getByTestId("conversation-page-submit").click();
+      await page.locator(".ai-message").waitFor();
+      const message = page.locator(".ai-message").first();
+      expect(await message.isVisible()).toBeTruthy();
+
+      // create a speech
+      await page
+        .getByTestId("message-create-speech")
+        .click({ timeout: 1000 * 60 });
+
+      // wait for the speech player
+      const player = page
+        .locator(".ai-message")
+        .getByTestId("wavesurfer-container");
+      await player.waitFor();
+
+      expect(await player.isVisible()).toBeTruthy();
     });
 
     test("tts conversation", async () => {
