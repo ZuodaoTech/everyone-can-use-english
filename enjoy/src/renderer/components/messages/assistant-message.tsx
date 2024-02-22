@@ -61,8 +61,17 @@ export const AssistantMessageComponent = (props: {
     if (speech) return;
     if (configuration?.type !== "tts") return;
 
-    createSpeech();
+    findOrCreateSpeech();
   }, [message]);
+
+  const findOrCreateSpeech = async () => {
+    const msg = await EnjoyApp.messages.findOne({ id: message.id });
+    if (msg.speeches.length > 0) {
+      setSpeech(msg.speeches[0]);
+    } else {
+      createSpeech();
+    }
+  };
 
   const createSpeech = () => {
     if (speeching) return;

@@ -194,20 +194,24 @@ export const useConversation = () => {
     }
   ): Promise<Partial<MessageType>[]> => {
     const { conversation } = params;
-    const replies = [
-      {
-        id: v4(),
-        content: message.content,
-        role: "assistant" as MessageRoleEnum,
-        conversationId: conversation.id,
-      },
-    ];
+    const reply = {
+      id: v4(),
+      content: message.content,
+      role: "assistant" as MessageRoleEnum,
+      conversationId: conversation.id,
+    };
     message.role = "user" as MessageRoleEnum;
     message.conversationId = conversation.id;
 
-    await EnjoyApp.messages.createInBatch([message, ...replies]);
+    await tts({
+      sourceType: "Message",
+      sourceId: reply.id,
+      text: reply.content,
+      configuration: conversation.configuration.tts,
+    });
+    await EnjoyApp.messages.createInBatch([message, reply]);
 
-    return replies;
+    return [reply];
   };
 
   const tts = async (params: Partial<SpeechType>) => {
