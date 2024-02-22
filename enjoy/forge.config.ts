@@ -4,24 +4,12 @@ import { MakerZIP } from "@electron-forge/maker-zip";
 import { MakerDeb } from "@electron-forge/maker-deb";
 import { MakerRpm } from "@electron-forge/maker-rpm";
 import { VitePlugin } from "@electron-forge/plugin-vite";
-import { dirname } from "node:path";
-import { Walker, DepType, type Module } from "flora-colossus";
-
-// any packages that you must mark as "external" in vite
-const NATIVE_MODULES_TO_PACKAGE = [
-  "sequelize",
-  "umzug",
-  "sqlite3",
-  "fluent-ffmpeg",
-  "electron-squirrel-startup",
-  "ffmpeg-static",
-  "@andrkrn/ffprobe-static",
-];
-const INCLUDE_NESTED_DEPS = true as const;
-let nativeModuleDependenciesToPackage: Set<string>;
+import { FusesPlugin } from "@electron-forge/plugin-fuses";
+import { FuseV1Options, FuseVersion } from "@electron/fuses";
 
 const config: ForgeConfig = {
   packagerConfig: {
+    asar: true,
     icon: "./assets/icon",
     name: "Enjoy",
     executableName: "enjoy",
@@ -90,91 +78,18 @@ const config: ForgeConfig = {
         },
       ],
     }),
+    // Fuses are used to enable/disable various Electron functionality
+    // at package time, before code signing the application
+    new FusesPlugin({
+      version: FuseVersion.V1,
+      [FuseV1Options.RunAsNode]: false,
+      [FuseV1Options.EnableCookieEncryption]: true,
+      [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
+      [FuseV1Options.EnableNodeCliInspectArguments]: false,
+      [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
+      [FuseV1Options.OnlyLoadAppFromAsar]: true,
+    }),
   ],
-  hooks: {
-    // TODO: remove this once this issue is resolved: https://github.com/electron/forge/pull/3336
-    prePackage: async (forgeConfig) => {
-      if (process.platform === "linux") return;
-
-      if (forgeConfig.packagerConfig.ignore !== undefined) {
-        throw new Error(
-          "forgeConfig.packagerConfig.ignore is already defined. Please remove it from your forge config and instead use the prePackage hook to dynamically set it."
-        );
-      }
-
-      const getExternalNestedDependencies = async (
-        nodeModuleNames: string[],
-        includeNestedDeps = true
-      ) => {
-        const foundModules = new Set(nodeModuleNames);
-        if (includeNestedDeps) {
-          for (const external of nodeModuleNames) {
-            type MyPublicClass<T> = {
-              [P in keyof T]: T[P];
-            };
-            type MyPublicWalker = MyPublicClass<Walker> & {
-              modules: Module[];
-              walkDependenciesForModule: (
-                moduleRoot: string,
-                depType: DepType
-              ) => Promise<void>;
-            };
-            const moduleRoot = dirname(
-              require.resolve(`${external}/package.json`, {
-                paths: [__dirname],
-              })
-            );
-            const walker = new Walker(moduleRoot) as unknown as MyPublicWalker;
-            walker.modules = [];
-            await walker.walkDependenciesForModule(moduleRoot, DepType.PROD);
-            walker.modules
-              .filter(
-                (dep) => (dep.nativeModuleType as number) === DepType.PROD
-              )
-              .map((dep) => dep.name)
-              .forEach((name) => foundModules.add(name));
-          }
-        }
-        return foundModules;
-      };
-
-      nativeModuleDependenciesToPackage = await getExternalNestedDependencies(
-        NATIVE_MODULES_TO_PACKAGE,
-        INCLUDE_NESTED_DEPS
-      );
-
-      forgeConfig.packagerConfig.ignore = (path) => {
-        // .vite bundled build files
-        if (path.startsWith("/.vite")) {
-          return false;
-        }
-        // main package.json file
-        if (path === "/package.json") {
-          return false;
-        }
-        if (!path) {
-          return false;
-        }
-        // need to first NOT ignore the root node_modules folder
-        if (path === "/node_modules") {
-          return false;
-        }
-        // if path is in nativeModuleDependenciesToPackage, return false (to package it)
-        const foundModules: Set<string> = nativeModuleDependenciesToPackage;
-        for (const module of foundModules) {
-          if (
-            path.startsWith(`/node_modules/${module}`) ||
-            path.startsWith(`/node_modules/${module.split("/")[0]}`)
-          ) {
-            return false;
-          }
-        }
-
-        // for everything else, ignore it
-        return true;
-      };
-    },
-  },
 };
 
 export default config;

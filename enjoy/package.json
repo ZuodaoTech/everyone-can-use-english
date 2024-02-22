@@ -33,8 +33,10 @@
     "@electron-forge/maker-squirrel": "^7.3.0",
     "@electron-forge/maker-zip": "^7.3.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.3.0",
+    "@electron-forge/plugin-fuses": "^7.3.0",
     "@electron-forge/plugin-vite": "^7.3.0",
     "@electron-forge/publisher-github": "^7.3.0",
+    "@electron/fuses": "^1.7.0",
     "@playwright/test": "^1.41.2",
     "@tailwindcss/typography": "^0.5.10",
     "@types/autosize": "^4.0.3",
@@ -67,6 +69,7 @@
     "ts-node": "^10.9.2",
     "tslib": "^2.6.2",
     "typescript": "^5.3.3",
+    "vite": "^5.1.4",
     "vite-plugin-static-copy": "^1.0.1",
     "zx": "^7.2.3"
   },
