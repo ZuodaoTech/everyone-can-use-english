@@ -2,11 +2,6 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
   Sheet,
   SheetContent,
   SheetHeader,
@@ -20,7 +15,7 @@ import {
 import {
   SpeechPlayer,
   AudioDetail,
-  ConversationsList,
+  ConversationShortcuts,
 } from "@renderer/components";
 import { useState, useEffect, useContext } from "react";
 import {
@@ -198,26 +193,17 @@ export const AssistantMessageComponent = (props: {
                     }}
                   />
                 )}
-                <Dialog>
-                  <DialogTrigger>
+                <ConversationShortcuts
+                  prompt={message.content}
+                  excludedIds={[message.conversationId]}
+                  trigger={
                     <ForwardIcon
                       data-tooltip-id="global-tooltip"
                       data-tooltip-content={t("forward")}
                       className="w-3 h-3 cursor-pointer"
                     />
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>{t("forward")}</DialogTitle>
-                    </DialogHeader>
-                    <div className="">
-                      <ConversationsList
-                        prompt={message.content}
-                        excludedIds={[message.conversationId]}
-                      />
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                  }
+                />
               </>
             )}
 

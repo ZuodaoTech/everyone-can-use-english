@@ -194,22 +194,25 @@ export const useConversation = () => {
     }
   ): Promise<Partial<MessageType>[]> => {
     const { conversation } = params;
-    const reply = {
+    const reply: MessageType = {
       id: v4(),
       content: message.content,
       role: "assistant" as MessageRoleEnum,
       conversationId: conversation.id,
+      speeches: [],
     };
     message.role = "user" as MessageRoleEnum;
     message.conversationId = conversation.id;
 
-    await tts({
+    const speech = await tts({
       sourceType: "Message",
       sourceId: reply.id,
       text: reply.content,
       configuration: conversation.configuration.tts,
     });
     await EnjoyApp.messages.createInBatch([message, reply]);
+
+    reply.speeches = [speech];
 
     return [reply];
   };

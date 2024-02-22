@@ -12,11 +12,6 @@ import {
   AvatarImage,
   AvatarFallback,
   Button,
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
@@ -24,7 +19,7 @@ import {
   DropdownMenuSeparator,
   toast,
 } from "@renderer/components/ui";
-import { SpeechPlayer, ConversationsList } from "@renderer/components";
+import { SpeechPlayer, ConversationShortcuts } from "@renderer/components";
 import { useContext, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import {
@@ -133,26 +128,17 @@ export const UserMessageComponent = (props: {
               />
             )}
 
-            <Dialog>
-              <DialogTrigger>
+            <ConversationShortcuts
+              prompt={message.content}
+              excludedIds={[message.conversationId]}
+              trigger={
                 <ForwardIcon
                   data-tooltip-id="global-tooltip"
                   data-tooltip-content={t("forward")}
                   className="w-3 h-3 cursor-pointer"
                 />
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{t("forward")}</DialogTitle>
-                </DialogHeader>
-                <div className="">
-                  <ConversationsList
-                    prompt={message.content}
-                    excludedIds={[message.conversationId]}
-                  />
-                </div>
-              </DialogContent>
-            </Dialog>
+              }
+            />
 
             {message.createdAt && (
               <AlertDialog>

@@ -463,5 +463,6 @@
   "loadingTranscription": "Loading transcription",
   "cannotFindMicrophone": "Cannot find microphone",
   "failedToSaveRecording": "Failed to save recording",
-  "speechNotCreatedYet": "Speech not created yet"
+  "speechNotCreatedYet": "Speech not created yet",
+  "goToConversation": "Go to conversation"
 }

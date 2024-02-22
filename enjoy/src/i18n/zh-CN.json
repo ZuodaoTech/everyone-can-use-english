@@ -462,5 +462,6 @@
   "loadingTranscription": "正在加载语音文本",
   "cannotFindMicrophone": "无法找到麦克风",
   "failedToSaveRecording": "保存录音失败",
-  "speechNotCreatedYet": "尚未生成语音"
+  "speechNotCreatedYet": "尚未生成语音",
+  "goToConversation": "前往对话"
 }
