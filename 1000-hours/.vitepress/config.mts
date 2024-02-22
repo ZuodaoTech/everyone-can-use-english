@@ -107,7 +107,7 @@ export default withMermaid(
                     { text: '2.2.4. t, d, s, z; ʃ, tʃ, dʒ', link: '/sounds-of-english/16-tdsz' },
                     { text: '2.2.5. t, d', link: '/sounds-of-english/17-td' },
                     { text: '2.2.6. tr, dr, ts, dz', link: '/sounds-of-english/18-trdr' },
-                    { text: '2.2.7. sp, st, sk', link: '/sounds-of-english/19-sptk' },
+                    { text: '2.2.7. sp, st, str, sk', link: '/sounds-of-english/19-sptk' },
                     { text: '2.2.8. h', link: '/sounds-of-english/20-h' },
                     { text: '2.2.9. θ, ð', link: '/sounds-of-english/21-θð' },
                     { text: '2.2.10. r', link: '/sounds-of-english/22-r' },
