@@ -11,7 +11,7 @@ import {
 } from "@renderer/components/ui";
 import { ConversationForm } from "@renderer/components";
 import { useState, useEffect, useContext, useReducer } from "react";
-import { ChevronLeftIcon, MessageCircleIcon } from "lucide-react";
+import { ChevronLeftIcon, MessageCircleIcon, SpeechIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   DbProviderContext,
@@ -62,9 +62,11 @@ export default () => {
 
   const PRESETS = [
     {
+      key: "english-coach",
       name: "英语教练",
       engine: currentEngine.name,
       configuration: {
+        type: "gpt",
         model: "gpt-4-1106-preview",
         baseUrl: "",
         roleDefinition: `你是我的英语教练。
@@ -89,9 +91,25 @@ export default () => {
       },
     },
     {
+      key: "tts",
+      name: "TTS",
+      engine: currentEngine.name,
+      configuration: {
+        type: "tts",
+        tts: {
+          baseUrl: "",
+          engine: currentEngine.name,
+          model: "tts-1",
+          voice: "alloy",
+        },
+      },
+    },
+    {
+      key: "custom",
       name: t("custom"),
       engine: currentEngine.name,
       configuration: {
+        type: "gpt",
         model: "gpt-4-1106-preview",
         baseUrl: "",
         roleDefinition: "",
@@ -124,7 +142,10 @@ export default () => {
         <div className="my-6 flex justify-center">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="h-12 rounded-lg w-96">
+              <Button
+                data-testid="conversation-new-button"
+                className="h-12 rounded-lg w-96"
+              >
                 {t("newConversation")}
               </Button>
             </DialogTrigger>
@@ -133,11 +154,15 @@ export default () => {
               <DialogHeader>
                 <DialogTitle>{t("selectAiRole")}</DialogTitle>
               </DialogHeader>
-              <div className="grid grid-cols-2 gap-4">
+              <div
+                data-testid="conversation-presets"
+                className="grid grid-cols-2 gap-4"
+              >
                 {PRESETS.map((preset) => (
                   <DialogTrigger
-                    key={preset.name}
-                    className="p-4 border hover:shadow rounded-lg cursor-pointer space-y-2"
+                    key={preset.key}
+                    data-testid={`conversation-preset-${preset.key}`}
+                    className="p-4 border hover:shadow rounded-lg cursor-pointer space-y-2 h-32"
                     onClick={() => {
                       setPreset(preset);
                       setCreating(true);
@@ -181,7 +206,11 @@ export default () => {
               }}
             >
               <div className="">
-                <MessageCircleIcon className="mr-2" />
+                {conversation.type === "gpt" && (
+                  <MessageCircleIcon className="mr-2" />
+                )}
+
+                {conversation.type === "tts" && <SpeechIcon className="mr-2" />}
               </div>
               <div className="flex-1 flex items-center justify-between space-x-4">
                 <span className="line-clamp-1">{conversation.name}</span>

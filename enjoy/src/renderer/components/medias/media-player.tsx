@@ -516,7 +516,7 @@ export const MediaPlayer = (props: {
 
     const duration =
       currentSegment.offsets.to / 1000.0 - currentSegment.offsets.from / 1000.0;
-    const fitZoomRatio = (containerWidth / duration / minPxPerSecBase);
+    const fitZoomRatio = containerWidth / duration / minPxPerSecBase;
 
     return fitZoomRatio;
   };
@@ -534,7 +534,11 @@ export const MediaPlayer = (props: {
 
   return (
     <>
-      <div className="mb-2" ref={containerRef} />
+      <div
+        className="mb-2"
+        ref={containerRef}
+        data-testid="media-player-container"
+      />
       <div className="mb-2 flex justify-center">
         <MediaPlayerControls
           isPlaying={isPlaying}

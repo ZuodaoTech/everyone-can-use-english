@@ -6,8 +6,8 @@ import {
 export const MessageComponent = (props: {
   message: MessageType;
   configuration: { [key: string]: any };
-  onResend?: () => void;
-  onRemove?: () => void;
+  onResend: () => void;
+  onRemove: () => void;
 }) => {
   const { message, configuration, onResend, onRemove } = props;
   if (message.role === "assistant") {
@@ -15,6 +15,7 @@ export const MessageComponent = (props: {
       <AssistantMessageComponent
         message={message}
         configuration={configuration}
+        onRemove={onRemove}
       />
     );
   } else if (message.role === "user") {

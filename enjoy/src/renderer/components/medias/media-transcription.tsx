@@ -86,7 +86,10 @@ export const MediaTranscription = (props: {
     );
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div
+      className="w-full h-full flex flex-col"
+      data-testid="media-transcription"
+    >
       <div className="mb-4 flex items-cener justify-between">
         <div className="flex items-center space-x-2">
           {transcribing || transcription.state === "processing" ? (
@@ -135,7 +138,11 @@ export const MediaTranscription = (props: {
       </div>
 
       {transcription?.result ? (
-        <ScrollArea ref={containerRef} className="flex-1 px-2">
+        <ScrollArea
+          ref={containerRef}
+          className="flex-1 px-2"
+          data-testid="media-transcription-result"
+        >
           {transcription.result.map((t, index) => (
             <div
               key={index}

@@ -66,9 +66,10 @@
       "name": "对话标题",
       "engine": "AI 引擎",
       "baseUrl": "接口地址",
-      "baseUrlDescription": "接口地址，留空则使用默认值",
+      "baseUrlDescription": "留空则使用默认值",
       "configuration": "AI 配置",
       "model": "AI 模型",
+      "type": "AI 类型",
       "roleDefinition": "角色定义",
       "roleDefinitionPlaceholder": "描述 AI 扮演的角色",
       "temperature": "随机性 (temperature)",
@@ -87,7 +88,7 @@
       "ttsModel": "TTS 模型",
       "ttsVoice": "TTS 声音",
       "ttsBaseUrl": "TTS 接口地址",
-      "ttsBaseUrlDescription": "TTS 接口地址，留空则使用默认值",
+      "ttsBaseUrlDescription": "留空则使用默认值",
       "notFound": "未找到对话",
       "contentRequired": "对话内容不能为空",
       "failedToGenerateResponse": "生成失败，请重试"
@@ -460,5 +461,7 @@
   "itMayTakeAWhileToPrepareForTheFirstLoad": "首次加载可能需要一些时间，请耐心等候",
   "loadingTranscription": "正在加载语音文本",
   "cannotFindMicrophone": "无法找到麦克风",
-  "failedToSaveRecording": "保存录音失败"
+  "failedToSaveRecording": "保存录音失败",
+  "speechNotCreatedYet": "尚未生成语音",
+  "goToConversation": "前往对话"
 }

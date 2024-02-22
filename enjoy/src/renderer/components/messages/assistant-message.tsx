@@ -2,21 +2,20 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
   Sheet,
   SheetContent,
   SheetHeader,
   SheetClose,
   toast,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
 } from "@renderer/components/ui";
 import {
   SpeechPlayer,
   AudioDetail,
-  ConversationsList,
+  ConversationShortcuts,
 } from "@renderer/components";
 import { useState, useEffect, useContext } from "react";
 import {
@@ -27,6 +26,8 @@ import {
   MicIcon,
   ChevronDownIcon,
   ForwardIcon,
+  AlertCircleIcon,
+  MoreVerticalIcon,
 } from "lucide-react";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
@@ -37,8 +38,9 @@ import { useConversation } from "@renderer/hooks";
 export const AssistantMessageComponent = (props: {
   message: MessageType;
   configuration: { [key: string]: any };
+  onRemove: () => void;
 }) => {
-  const { message, configuration } = props;
+  const { message, configuration, onRemove } = props;
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
   const [speech, setSpeech] = useState<Partial<SpeechType>>(
@@ -52,10 +54,19 @@ export const AssistantMessageComponent = (props: {
 
   useEffect(() => {
     if (speech) return;
-    if (!configuration?.autoSpeech) return;
+    if (configuration?.type !== "tts") return;
 
-    createSpeech();
-  }, [message, configuration]);
+    findOrCreateSpeech();
+  }, [message]);
+
+  const findOrCreateSpeech = async () => {
+    const msg = await EnjoyApp.messages.findOne({ id: message.id });
+    if (msg.speeches.length > 0) {
+      setSpeech(msg.speeches[0]);
+    } else {
+      createSpeech();
+    }
+  };
 
   const createSpeech = () => {
     if (speeching) return;
@@ -103,20 +114,30 @@ export const AssistantMessageComponent = (props: {
   return (
     <div
       id={`message-${message.id}`}
-      className="flex items-end space-x-2 pr-10"
+      className="ai-message flex items-end space-x-2 pr-10"
     >
       <Avatar className="w-8 h-8 bg-background avatar">
         <AvatarImage></AvatarImage>
         <AvatarFallback className="bg-background">AI</AvatarFallback>
       </Avatar>
       <div className="flex flex-col gap-2 px-4 py-2 bg-background border rounded-lg shadow-sm w-full">
-        {configuration?.autoSpeech && speeching ? (
-          <div className="p-4">
-            <LoaderIcon className="w-8 h-8 animate-spin" />
-          </div>
-        ) : (
+        {configuration.type === "tts" &&
+          (speeching ? (
+            <div className="text-muted-foreground text-sm py-2">
+              <span>{t("creatingSpeech")}</span>
+            </div>
+          ) : (
+            !speech && (
+              <div className="text-muted-foreground text-sm py-2 flex items-center">
+                <AlertCircleIcon className="w-4 h-4 mr-2 text-yellow-600" />
+                <span>{t("speechNotCreatedYet")}</span>
+              </div>
+            )
+          ))}
+
+        {configuration.type === "gpt" && (
           <Markdown
-            className="select-text prose"
+            className="message-content select-text prose"
             components={{
               a({ node, children, ...props }) {
                 try {
@@ -135,78 +156,87 @@ export const AssistantMessageComponent = (props: {
 
         {Boolean(speech) && <SpeechPlayer speech={speech} />}
 
-        <div className="flex items-center justify-start space-x-2">
-          {copied ? (
-            <CheckIcon className="w-3 h-3 text-green-500" />
-          ) : (
-            <CopyIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("copyText")}
-              className="w-3 h-3 cursor-pointer"
-              onClick={() => {
-                copyToClipboard(message.content);
-                setCopied(true);
-                setTimeout(() => {
-                  setCopied(false);
-                }, 3000);
-              }}
-            />
-          )}
+        <DropdownMenu>
+          <div className="flex items-center justify-start space-x-2">
+            {!speech &&
+              (speeching ? (
+                <LoaderIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("creatingSpeech")}
+                  className="w-3 h-3 animate-spin"
+                />
+              ) : (
+                <SpeechIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("textToSpeech")}
+                  data-testid="message-create-speech"
+                  onClick={createSpeech}
+                  className="w-3 h-3 cursor-pointer"
+                />
+              ))}
 
-          {!speech &&
-            !configuration?.autoSpeech &&
-            (speeching ? (
-              <LoaderIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("creatingSpeech")}
-                className="w-3 h-3 animate-spin"
-              />
-            ) : (
-              <SpeechIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("textToSpeech")}
-                onClick={createSpeech}
-                className="w-3 h-3 cursor-pointer"
-              />
-            ))}
-
-          <Dialog>
-            <DialogTrigger>
-              <ForwardIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("forward")}
-                className="w-3 h-3 cursor-pointer"
-              />
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>{t("forward")}</DialogTitle>
-              </DialogHeader>
-              <div className="">
-                <ConversationsList
+            {configuration.type === "gpt" && (
+              <>
+                {copied ? (
+                  <CheckIcon className="w-3 h-3 text-green-500" />
+                ) : (
+                  <CopyIcon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("copyText")}
+                    className="w-3 h-3 cursor-pointer"
+                    onClick={() => {
+                      copyToClipboard(message.content);
+                      setCopied(true);
+                      setTimeout(() => {
+                        setCopied(false);
+                      }, 3000);
+                    }}
+                  />
+                )}
+                <ConversationShortcuts
                   prompt={message.content}
                   excludedIds={[message.conversationId]}
+                  trigger={
+                    <ForwardIcon
+                      data-tooltip-id="global-tooltip"
+                      data-tooltip-content={t("forward")}
+                      className="w-3 h-3 cursor-pointer"
+                    />
+                  }
                 />
-              </div>
-            </DialogContent>
-          </Dialog>
+              </>
+            )}
 
-          {Boolean(speech) &&
-            (resourcing ? (
-              <LoaderIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("addingResource")}
-                className="w-3 h-3 animate-spin"
-              />
-            ) : (
-              <MicIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("shadowingExercise")}
-                onClick={startShadow}
-                className="w-3 h-3 cursor-pointer"
-              />
-            ))}
-        </div>
+            {Boolean(speech) &&
+              (resourcing ? (
+                <LoaderIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("addingResource")}
+                  className="w-3 h-3 animate-spin"
+                />
+              ) : (
+                <MicIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("shadowingExercise")}
+                  data-testid="message-start-shadow"
+                  onClick={startShadow}
+                  className="w-3 h-3 cursor-pointer"
+                />
+              ))}
+
+            <DropdownMenuTrigger>
+              <MoreVerticalIcon className="w-3 h-3" />
+            </DropdownMenuTrigger>
+          </div>
+
+          <DropdownMenuContent>
+            <DropdownMenuItem className="cursor-pointer" onClick={onRemove}>
+              <span className="mr-auto text-destructive capitalize">
+                {t("delete")}
+              </span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <Sheet open={shadowing} onOpenChange={(value) => setShadowing(value)}>

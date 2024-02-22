@@ -66,9 +66,10 @@
       "name": "Name",
       "engine": "AI engine",
       "baseUrl": "Request endpoint",
-      "baseUrlDescription": "BaseURL, leave it blank if you don't have one",
+      "baseUrlDescription": "leave it blank if you don't have one",
       "configuration": "Configuration",
       "model": "AI model",
+      "type": "AI Type",
       "roleDefinition": "Role definition",
       "roleDefinitionPlaceholder": "Describe the AI role",
       "temperature": "Temperature",
@@ -87,7 +88,7 @@
       "ttsModel": "TTS model",
       "ttsVoice": "TTS voice",
       "ttsBaseUrl": "TTS base URL",
-      "ttsBaseUrlDescription": "BaseURL for TTS, leave it blank if you don't have one",
+      "ttsBaseUrlDescription": "leave it blank if you don't have one",
       "notFound": "Conversation not found",
       "contentRequired": "Content required",
       "failedToGenerateResponse": "Failed to generate response, please retry"
@@ -461,5 +462,7 @@
   "itMayTakeAWhileToPrepareForTheFirstLoad": "It may take a while to prepare for the first load. Please be patient.",
   "loadingTranscription": "Loading transcription",
   "cannotFindMicrophone": "Cannot find microphone",
-  "failedToSaveRecording": "Failed to save recording"
+  "failedToSaveRecording": "Failed to save recording",
+  "speechNotCreatedYet": "Speech not created yet",
+  "goToConversation": "Go to conversation"
 }

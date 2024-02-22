@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { ConversationsShortcut } from "@renderer/components";
+import { ConversationShortcuts, SpeechPlayer } from "@renderer/components";
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -12,12 +12,6 @@ import {
   AlertDialogCancel,
   AlertDialogFooter,
   Button,
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  ScrollArea,
   toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
@@ -150,8 +144,15 @@ export const PostActions = (props: { post: PostType }) => {
           </Button>
         )}
         {post.metadata?.type === "prompt" && (
-          <Dialog open={asking} onOpenChange={setAsking}>
-            <DialogTrigger asChild>
+          <ConversationShortcuts
+            open={asking}
+            onOpenChange={setAsking}
+            prompt={post.metadata.content as string}
+            onReply={(replies) => {
+              setAiReplies([...aiReplies, ...replies]);
+              setAsking(false);
+            }}
+            trigger={
               <Button
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sendToAIAssistant")}
@@ -162,21 +163,8 @@ export const PostActions = (props: { post: PostType }) => {
               >
                 <BotIcon className="w-5 h-5 text-muted-foreground hover:text-primary" />
               </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>{t("sendToAIAssistant")}</DialogTitle>
-              </DialogHeader>
-              <ConversationsShortcut
-                prompt={post.metadata.content as string}
-                onReply={(replies) => {
-                  setAiReplies([...aiReplies, ...replies]);
-                  setAsking(false);
-                }}
-              />
-            </DialogContent>
-            <ScrollArea></ScrollArea>
-          </Dialog>
+            }
+          />
         )}
       </div>
 
@@ -198,6 +186,9 @@ const AIReplies = (props: { replies: Partial<MessageType>[] }) => {
               </Link>
             </div>
             <Markdown className="prose select-text">{reply.content}</Markdown>
+            {reply.speeches?.map((speech) => (
+              <SpeechPlayer key={speech.id} speech={speech} />
+            ))}
           </div>
         ))}
       </div>

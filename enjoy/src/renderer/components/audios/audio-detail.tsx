@@ -206,7 +206,7 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" data-testid="audio-detail">
       <div className={`grid grid-cols-7 gap-4 ${initialized ? "" : "blur-sm"}`}>
         <div className="col-span-5 h-[calc(100vh-6.5rem)] flex flex-col">
           <MediaPlayer
