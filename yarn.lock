@@ -15,7 +15,7 @@ __metadata:
     markdown-it-mathjax3: "npm:^4.3.2"
     markdown-it-sub: "npm:^2.0.0"
     markdown-it-sup: "npm:^2.0.0"
-    sass: "npm:^1.71.0"
+    sass: "npm:^1.70.0"
     vitepress: "npm:^1.0.0-rc.42"
     vitepress-plugin-mermaid: "npm:^2.0.16"
     vue: "npm:^3.4.18"
@@ -13309,7 +13309,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.71.0":
+"sass@npm:^1.70.0":
   version: 1.71.1
   resolution: "sass@npm:1.71.1"
   dependencies:
