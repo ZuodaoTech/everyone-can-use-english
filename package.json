@@ -1,8 +1,7 @@
 {
   "private": true,
   "workspaces": [
-    "enjoy",
-    "1000-hours"
+    "enjoy"
   ],
   "scripts": {
     "dev:enjoy": "yarn workspace enjoy dev",
