@@ -16,6 +16,7 @@ export default {
   // },
   enhanceApp({ app, router, siteData }) {
     // ...
+    app.component('Image', Image)
     app.component('SpeakWord', SpeakWord)
   }
 } satisfies Theme

@@ -1,6 +1,7 @@
 <script setup>
 import DefaultTheme from 'vitepress/theme'
 import SpeakWordInlineConverter from '../components/SpeakWordInlineConverter.vue'
+import ThemedImageSwitch from '../components/ThemedImageSwitch.vue'
 
 const { Layout } = DefaultTheme
 
@@ -11,6 +12,7 @@ const { Layout } = DefaultTheme
     <template #doc-after>
       <ClientOnly>
         <SpeakWordInlineConverter />
+        <ThemedImageSwitch />
       </ClientOnly>
     </template>
   </Layout>
