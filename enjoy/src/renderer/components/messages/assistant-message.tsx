@@ -61,7 +61,7 @@ export const AssistantMessageComponent = (props: {
 
   const findOrCreateSpeech = async () => {
     const msg = await EnjoyApp.messages.findOne({ id: message.id });
-    if (msg.speeches.length > 0) {
+    if (msg && msg.speeches.length > 0) {
       setSpeech(msg.speeches[0]);
     } else {
       createSpeech();

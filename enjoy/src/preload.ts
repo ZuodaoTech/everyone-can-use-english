@@ -185,13 +185,13 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     }) => {
       return ipcRenderer.invoke("audios-find-all", params);
     },
-    findOne: (params: object) => {
+    findOne: (params: any) => {
       return ipcRenderer.invoke("audios-find-one", params);
     },
-    create: (uri: string, params?: object) => {
+    create: (uri: string, params?: any) => {
       return ipcRenderer.invoke("audios-create", uri, params);
     },
-    update: (id: string, params: object) => {
+    update: (id: string, params: any) => {
       return ipcRenderer.invoke("audios-update", id, params);
     },
     destroy: (id: string) => {
@@ -208,13 +208,13 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     }) => {
       return ipcRenderer.invoke("videos-find-all", params);
     },
-    findOne: (params: object) => {
+    findOne: (params: any) => {
       return ipcRenderer.invoke("videos-find-one", params);
     },
-    create: (uri: string, params?: object) => {
+    create: (uri: string, params?: any) => {
       return ipcRenderer.invoke("videos-create", uri, params);
     },
-    update: (id: string, params: object) => {
+    update: (id: string, params: any) => {
       return ipcRenderer.invoke("videos-update", id, params);
     },
     destroy: (id: string) => {
@@ -233,16 +233,16 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     }) => {
       return ipcRenderer.invoke("recordings-find-all", params);
     },
-    findOne: (params: object) => {
+    findOne: (params: any) => {
       return ipcRenderer.invoke("recordings-find-one", params);
     },
     syncAll: () => {
       return ipcRenderer.invoke("recordings-sync-all");
     },
-    create: (params: object) => {
+    create: (params: any) => {
       return ipcRenderer.invoke("recordings-create", params);
     },
-    update: (id: string, params: object) => {
+    update: (id: string, params: any) => {
       return ipcRenderer.invoke("recordings-update", id, params);
     },
     destroy: (id: string) => {
@@ -272,16 +272,16 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   conversations: {
-    findAll: (params: { where?: object; offset?: number; limit?: number }) => {
+    findAll: (params: { where?: any; offset?: number; limit?: number }) => {
       return ipcRenderer.invoke("conversations-find-all", params);
     },
-    findOne: (params: object) => {
+    findOne: (params: any) => {
       return ipcRenderer.invoke("conversations-find-one", params);
     },
-    create: (params: object) => {
+    create: (params: any) => {
       return ipcRenderer.invoke("conversations-create", params);
     },
-    update: (id: string, params: object) => {
+    update: (id: string, params: any) => {
       return ipcRenderer.invoke("conversations-update", id, params);
     },
     destroy: (id: string) => {
@@ -303,11 +303,11 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   messages: {
-    findAll: (params: { where?: object; offset?: number; limit?: number }) => {
+    findAll: (params: { where?: any; offset?: number; limit?: number }) => {
       return ipcRenderer.invoke("messages-find-all", params);
     },
-    findOne: (params: object) => {
-      return ipcRenderer.invoke("messages-find-one", params);
+    findOne: (where: any) => {
+      return ipcRenderer.invoke("messages-find-one", where);
     },
     createInBatch: (messages: Partial<MessageType>[]) => {
       return ipcRenderer.invoke("messages-create-in-batch", messages);
@@ -417,7 +417,7 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     get: (key: string) => {
       return ipcRenderer.invoke("cache-objects-get", key);
     },
-    set: (key: string, value: string | object, ttl?: number) => {
+    set: (key: string, value: string | any, ttl?: number) => {
       return ipcRenderer.invoke("cache-objects-set", key, value, ttl);
     },
     delete: (key: string) => {
