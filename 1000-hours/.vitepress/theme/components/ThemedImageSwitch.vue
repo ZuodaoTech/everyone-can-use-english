@@ -58,10 +58,12 @@ function switchImagesTheme(isDark:boolean) {
 
 onMounted(() => {
   const htmlEle:any = document.querySelector('html');
+  const isDark = htmlEle.classList.contains('dark');
+
   const observer = new MutationObserver((mutationsList, observer) => {
     for(const mutation of mutationsList) {
       if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-        switchImagesTheme(htmlEle.classList.contains('dark'))
+        switchImagesTheme(isDark)
       }
     }
   });
@@ -73,7 +75,7 @@ onMounted(() => {
   observer.observe(htmlEle, config);
 
   // apply html
-  switchImagesTheme(htmlEle.classList.contains('dark'))
+  switchImagesTheme(isDark);
 });
 </script>
 
