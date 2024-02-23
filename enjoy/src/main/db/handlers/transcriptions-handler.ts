@@ -1,7 +1,7 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { Transcription, Audio, Video } from "@main/db/models";
 import { Attributes } from "sequelize";
-import log from "electron-log/main";
+import log from "@main/logger";
 
 const logger = log.scope("db/handlers/transcriptions-handler");
 class TranscriptionsHandler {

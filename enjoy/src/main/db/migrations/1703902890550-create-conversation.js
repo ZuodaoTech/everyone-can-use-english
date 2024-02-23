@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+import { DataTypes } from "sequelize";
 
 async function up({ context: queryInterface }) {
   queryInterface.createTable("conversations", {
@@ -35,5 +35,4 @@ async function down({ context: queryInterface }) {
   queryInterface.dropTable("conversations");
 }
 
-module.exports = { up, down };
-
+export { up, down };

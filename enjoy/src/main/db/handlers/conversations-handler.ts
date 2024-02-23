@@ -1,7 +1,7 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { Conversation, Message } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes } from "sequelize";
-import log from "electron-log/main";
+import log from "@main/logger";
 import { t } from "i18next";
 
 class ConversationsHandler {

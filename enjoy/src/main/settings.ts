@@ -3,7 +3,6 @@ import { LIBRARY_PATH_SUFFIX, DATABASE_NAME } from "@/constants";
 import { ipcMain, app } from "electron";
 import path from "path";
 import fs from "fs-extra";
-import log from "electron-log";
 import * as i18n from "i18next";
 
 if (process.env.SETTINGS_PATH) {
@@ -13,7 +12,6 @@ if (process.env.SETTINGS_PATH) {
   });
 }
 
-const logger = log.scope("settings");
 const language = () => {
   const _language = settings.getSync("language");
 

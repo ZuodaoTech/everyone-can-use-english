@@ -19,11 +19,14 @@ declare global {
 }
 
 let electronApp: ElectronApplication;
+let page: Page;
 const resultDir = path.join(process.cwd(), "test-results");
 
 test.beforeAll(async () => {
   // find the latest build in the out directory
   const latestBuild = findLatestBuild();
+  console.log(`Latest build: ${latestBuild}`);
+
   // parse the directory and find paths and other info
   const appInfo = parseElectronApp(latestBuild);
   // set the CI environment variable to true
@@ -37,18 +40,19 @@ test.beforeAll(async () => {
     args: [appInfo.main],
     executablePath: appInfo.executable,
   });
-  electronApp.on("window", async (page) => {
-    const filename = page.url()?.split("/").pop();
-    console.info(`Window opened: ${filename}`);
+  console.log("Electron app launched");
 
-    // capture errors
-    page.on("pageerror", (error) => {
-      console.error(error);
-    });
-    // capture console messages
-    page.on("console", (msg) => {
-      console.info(msg.text());
-    });
+  page = await electronApp.firstWindow();
+  const filename = page.url()?.split("/").pop();
+  console.info(`Window opened: ${filename}`);
+
+  // capture errors
+  page.on("pageerror", (error) => {
+    console.error(error);
+  });
+  // capture console messages
+  page.on("console", (msg) => {
+    console.info(msg.text());
   });
 });
 
@@ -57,7 +61,6 @@ test.afterAll(async () => {
 });
 
 test("validate whisper command", async () => {
-  const page = await electronApp.firstWindow();
   const res = await page.evaluate(() => {
     return window.__ENJOY_APP__.whisper.check();
   });
@@ -69,7 +72,6 @@ test("validate whisper command", async () => {
 });
 
 test("valid ffmpeg command", async () => {
-  const page = await electronApp.firstWindow();
   const res = await page.evaluate(() => {
     return window.__ENJOY_APP__.ffmpeg.check();
   });

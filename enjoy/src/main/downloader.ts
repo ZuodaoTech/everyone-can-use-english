@@ -2,7 +2,7 @@ import { ipcMain, app } from "electron";
 import path from "path";
 import fs from "fs";
 import mainWin from "@main/window";
-import log from "electron-log/main";
+import log from "@main/logger";
 
 const logger = log.scope("downloader");
 class Downloader {

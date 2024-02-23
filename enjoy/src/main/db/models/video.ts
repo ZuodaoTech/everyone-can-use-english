@@ -22,7 +22,7 @@ import path from "path";
 import fs from "fs-extra";
 import { t } from "i18next";
 import mainWindow from "@main/window";
-import log from "electron-log/main";
+import log from "@main/logger";
 import storage from "@main/storage";
 import Ffmpeg from "@main/ffmpeg";
 import { Client } from "@/api";
