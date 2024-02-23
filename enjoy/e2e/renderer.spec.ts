@@ -14,11 +14,14 @@ const user = {
 };
 
 let electronApp: ElectronApplication;
+let page: Page;
 const resultDir = path.join(process.cwd(), "test-results");
 
 test.beforeAll(async () => {
   // find the latest build in the out directory
   const latestBuild = findLatestBuild();
+  console.log(`Latest build: ${latestBuild}`);
+
   // parse the directory and find paths and other info
   const appInfo = parseElectronApp(latestBuild);
   // set the CI environment variable to true
@@ -32,18 +35,19 @@ test.beforeAll(async () => {
     args: [appInfo.main],
     executablePath: appInfo.executable,
   });
-  electronApp.on("window", async (page) => {
-    const filename = page.url()?.split("/").pop();
-    console.info(`Window opened: ${filename}`);
+  console.log("Electron app launched");
 
-    // capture errors
-    page.on("pageerror", (error) => {
-      console.error(error);
-    });
-    // capture console messages
-    page.on("console", (msg) => {
-      console.info(msg.text());
-    });
+  page = await electronApp.firstWindow();
+  const filename = page.url()?.split("/").pop();
+  console.info(`Window opened: ${filename}`);
+
+  // capture errors
+  page.on("pageerror", (error) => {
+    console.error(error);
+  });
+  // capture console messages
+  page.on("console", (msg) => {
+    console.info(msg.text());
   });
 });
 
@@ -52,14 +56,11 @@ test.afterAll(async () => {
 });
 
 test.describe("with login", async () => {
-  let page: Page;
-
   test.beforeAll(async () => {
     const settings = fs.readJsonSync(path.join(resultDir, "settings.json"));
     settings.user = user;
     fs.writeJsonSync(path.join(resultDir, "settings.json"), settings);
 
-    page = await electronApp.firstWindow();
     page.route("**/api/me", (route) => {
       route.fulfill({
         json: user,
@@ -89,9 +90,6 @@ test.describe("with login", async () => {
       );
 
       page = await electronApp.firstWindow();
-      page.on("console", (msg) => {
-        console.info(msg.text());
-      });
 
       await page.route("**/api/ai/audio/speech", (route) => {
         route.fulfill({

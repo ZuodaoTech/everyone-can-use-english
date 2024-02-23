@@ -8,7 +8,7 @@ const filename = path.resolve(
 );
 
 const template = `
-const { DataTypes } = require("sequelize");
+import { DataTypes } from "sequelize";
 
 async function up({ context: queryInterface }) {
   // code here
@@ -18,8 +18,7 @@ async function down({ context: queryInterface }) {
   // code here
 }
 
-module.exports = { up, down };
-`;
+export { up, down };`;
 
 await fs.mkdir(path.resolve(__dirname, "migrations"), { recursive: true });
 await fs.writeFile(filename, template.trim());

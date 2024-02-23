@@ -8,7 +8,7 @@ import { FuseV1Options, FuseVersion } from "@electron/fuses";
 
 const config = {
   packagerConfig: {
-    asar: true,
+    asar: false,
     icon: "./assets/icon",
     name: "Enjoy",
     executableName: "enjoy",
@@ -84,9 +84,9 @@ const config = {
       [FuseV1Options.RunAsNode]: false,
       [FuseV1Options.EnableCookieEncryption]: true,
       [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
-      [FuseV1Options.EnableNodeCliInspectArguments]: false,
+      [FuseV1Options.EnableNodeCliInspectArguments]: true,
       [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
-      [FuseV1Options.OnlyLoadAppFromAsar]: true,
+      [FuseV1Options.OnlyLoadAppFromAsar]: false,
     }),
   ],
 };
