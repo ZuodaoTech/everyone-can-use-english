@@ -71,8 +71,22 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
     }
   };
 
+  const findOrCreateTranscription = async () => {
+    return EnjoyApp.transcriptions
+      .findOrCreate({
+        targetId: video.id,
+        targetType: "Video",
+      })
+      .then((transcription) => {
+        setTranscription(transcription);
+      });
+  };
+
   const generateTranscription = async () => {
     if (transcribing) return;
+    if (!transcription) {
+      await findOrCreateTranscription();
+    }
 
     setTranscribing(true);
     setTranscribingProgress(0);
@@ -92,6 +106,10 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
   };
 
   const findTranscriptionFromWebApi = async () => {
+    if (!transcription) {
+      await findOrCreateTranscription();
+    }
+
     const res = await webApi.transcriptions({
       targetMd5: video.md5,
     });
@@ -168,14 +186,7 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
   useEffect(() => {
     if (!video) return;
 
-    EnjoyApp.transcriptions
-      .findOrCreate({
-        targetId: video.id,
-        targetType: "Video",
-      })
-      .then((transcription) => {
-        setTranscription(transcription);
-      });
+    findOrCreateTranscription();
   }, [video]);
 
   useEffect(() => {

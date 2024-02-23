@@ -69,8 +69,28 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
     }
   };
 
+  const findOrCreateTranscription = async () => {
+    if (!audio) return;
+    if (transcription) return;
+
+    return EnjoyApp.transcriptions
+      .findOrCreate({
+        targetId: audio.id,
+        targetType: "Audio",
+      })
+      .then((transcription) => {
+        setTranscription(transcription);
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
   const generateTranscription = async () => {
     if (transcribing) return;
+    if (!transcription) {
+      await findOrCreateTranscription();
+    }
 
     setTranscribing(true);
     setTranscribingProgress(0);
@@ -90,6 +110,10 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
   };
 
   const findTranscriptionFromWebApi = async () => {
+    if (!transcription) {
+      await findOrCreateTranscription();
+    }
+
     const res = await webApi.transcriptions({
       targetMd5: audio.md5,
     });
@@ -162,14 +186,7 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
   useEffect(() => {
     if (!audio) return;
 
-    EnjoyApp.transcriptions
-      .findOrCreate({
-        targetId: audio.id,
-        targetType: "Audio",
-      })
-      .then((transcription) => {
-        setTranscription(transcription);
-      });
+    findOrCreateTranscription();
   }, [audio]);
 
   useEffect(() => {
