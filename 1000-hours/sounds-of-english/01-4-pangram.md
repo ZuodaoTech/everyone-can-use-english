@@ -4,7 +4,7 @@
 
 > Jane, a dramatic young girl, loves to read  books at leisure in rooms or play on a sunny day outdoor here and there under the trees with boys. She vowed to buy a red ear dog. She thought it was unique, for sure. Now she feeds it dough, nuts, and cheese bar.
 >
-> `/dʒeɪn, ə drəˈmætɪk jʌŋ gəː(r)l, lʌvz tuː riːd bʊks æt ˈliːʒə(r) ɪn rumz ɔː(r) pleɪ ɒn ə ˈsʌni deɪ ˈaʊtˌdɔr hiə(r) ənd ðeə ˈʌndə(r) ðə triz wɪθ bɔɪz. ʃiː vaʊd tʊ baɪ ə red ɪə(r) dɒg. ʃiː θɒt ɪt wɒz juˈniːk, fə(r) ʃʊə(r). naʊ ʃiː fiːdz ɪt dəʊ, nʌts, ənd tʃiːz bɑː(r)./`
+> `/dʒeɪn, ə drəˈmætɪk jʌŋ gəː(r)l, lʌvz tuː riːd bʊks æt ˈliːʒə(r) ɪn rumz ɔː(r) pleɪ ɒŋ ə ˈsʌni deɪ ˈaʊtˌdɔr hiə(r) ənd ðeə ˈʌndə(r) ðə triz wɪθ bɔɪz. ʃiː vaʊd tʊ baɪ ə red ɪə(r) dɒg. ʃiː θɒt ɪt wɒz juˈniːk, fə(r) ʃʊə(r). naʊ ʃiː fiːdz ɪt dəʊ, nʌts, ənd tʃiːz bɑː(r)./`
 
 Voice: Alloy (US Male)
 
@@ -20,8 +20,11 @@ Voice: Nova (US Female)
 ::: info
 以上两条语音，Alloy 和 Nova，使用 OpenAI 的 TTS 引擎生成。而教程中其它的词汇音频，大多数使用 Microsoft 的 [EdgeTTS](https://github.com/rany2/edge-tts) 生成。
 :::
-
 -----
+
+::: tip
+音素在自然语流中经常会有变化，比如，*on a sunny day* 中的 *on* `/ɒŋ/`，由于后面紧跟着一个元音，所以，会被读成 `/ɒn/` —— 也就是说，`ŋ` 变成了 `n`（[2.2.3](15-mn)）……
+:::
 
 [^1]: 所谓 *pangram*，指的是一个尽可能短的包含所有字母的句子。*The quick brown fox jumps over the lazy dog.* 就是大家练打字的时候都用过的经典 *pangram*。
 
