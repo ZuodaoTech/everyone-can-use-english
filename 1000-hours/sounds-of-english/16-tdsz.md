@@ -4,7 +4,7 @@
 
 `t, d, s, z` 这 4 个辅音的发声关键，在于它们发声时起始的**舌尖位置**。
 
-![](/images/speech-tract-tdsz.svg)
+<img src="/images/speech-tract-tdsz.svg" class="themed" />
 
 在中文普通话里，`t, d` 这两个声母发声时起始的**舌尖位置** 贴在牙齿上；`s, z` 这两个声母发声时起始的 “舌尖位置” 接近牙齿，但留了个空隙以便气流通过。你可以试着用中文普通话说一遍 “我踢死你”（`wǒ tī sǐ nǐ`<span class="speak-word-inline" data-audio-uk="/audios/我踢死你-zh-cn-male.mp3"></span>）。
 
