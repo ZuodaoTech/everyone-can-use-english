@@ -1,4 +1,4 @@
-import log from "electron-log/main";
+import log from "@main/logger";
 import $ from "cheerio";
 import { BrowserView, ipcMain } from "electron";
 

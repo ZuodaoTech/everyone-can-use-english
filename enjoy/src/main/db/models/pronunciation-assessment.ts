@@ -17,7 +17,7 @@ import { Recording } from "@main/db/models";
 import { Client } from "@/api";
 import { WEB_API_URL } from "@/constants";
 import settings from "@main/settings";
-import log from "electron-log/main";
+import log from "@main/logger";
 
 @Table({
   modelName: "PronunciationAssessment",

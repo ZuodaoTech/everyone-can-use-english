@@ -2,10 +2,14 @@ import { ipcMain } from "electron";
 import ffmpegPath from "ffmpeg-static";
 import ffprobePath from "@andrkrn/ffprobe-static";
 import Ffmpeg from "fluent-ffmpeg";
-import log from "electron-log/main";
+import log from "@main/logger";
 import path from "path";
 import fs from "fs-extra";
 import settings from "./settings";
+import url from 'url';
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 Ffmpeg.setFfmpegPath(ffmpegPath);
 Ffmpeg.setFfprobePath(ffprobePath);

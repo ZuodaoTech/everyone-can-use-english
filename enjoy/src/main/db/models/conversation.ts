@@ -27,7 +27,7 @@ import settings from "@main/settings";
 import db from "@main/db";
 import mainWindow from "@main/window";
 import { t } from "i18next";
-import log from "electron-log/main";
+import log from "@main/logger";
 import fs from "fs-extra";
 import path from "path";
 import Ffmpeg from "@main/ffmpeg";

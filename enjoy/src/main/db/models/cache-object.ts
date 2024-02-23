@@ -7,7 +7,7 @@ import {
   DataType,
   AllowNull,
 } from "sequelize-typescript";
-import log from "electron-log/main";
+import log from "@main/logger";
 
 const logger = log.scope("cache-object");
 

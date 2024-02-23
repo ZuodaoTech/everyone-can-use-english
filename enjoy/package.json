@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "private": true,
   "name": "enjoy",
   "productName": "Enjoy",
@@ -41,6 +42,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "@types/autosize": "^4.0.3",
     "@types/command-exists": "^1.2.3",
+    "@types/electron-squirrel-startup": "^1.0.2",
     "@types/fluent-ffmpeg": "^2.1.24",
     "@types/html-to-text": "^9.0.4",
     "@types/intl-tel-input": "^18.1.4",

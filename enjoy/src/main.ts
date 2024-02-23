@@ -3,21 +3,12 @@ import path from "path";
 import settings from "@main/settings";
 import "@main/i18n";
 import mainWindow from "@main/window";
-import crypto from "crypto";
-import log from "electron-log/main";
-
-log.transports.file.level = "info";
-log.transports.file.resolvePathFn = () =>
-  path.join(settings.libraryPath(), "logs", "main.log");
-log.errorHandler.startCatching();
-
-// Fix "getRandomValues() not supported"
-global.crypto = crypto;
+import ElectronSquirrelStartup from "electron-squirrel-startup";
 
 app.commandLine.appendSwitch("enable-features", "SharedArrayBuffer");
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require("electron-squirrel-startup")) {
+if (ElectronSquirrelStartup) {
   app.quit();
 }
 

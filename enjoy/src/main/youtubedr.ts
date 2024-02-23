@@ -3,9 +3,13 @@ import path from "path";
 import { exec } from "child_process";
 import fs from "fs-extra";
 import os from "os";
-import log from "electron-log/main";
+import log from "@main/logger";
 import snakeCase from "lodash/snakeCase";
 import settings from "@main/settings";
+import url from 'url';
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const logger = log.scope("YOUTUBEDR");
 

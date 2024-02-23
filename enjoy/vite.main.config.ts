@@ -7,6 +7,7 @@ import {
   getBuildConfig,
   getBuildDefine,
   pluginHotRestart,
+  external,
 } from "./vite.base.config";
 
 // https://vitejs.dev/config
@@ -19,19 +20,29 @@ export default defineConfig((env) => {
       lib: {
         entry: forgeConfigSelf.entry!,
         fileName: () => "[name].js",
-        formats: ["cjs"],
+        formats: ["es"],
       },
       rollupOptions: {
-        external: [
-          "sequelize",
-          "umzug",
-          "sqlite3",
-          "fluent-ffmpeg",
-          "bufferutil",
-          "utf-8-validate",
-          "ffmpeg-static",
-          "@andrkrn/ffprobe-static",
-        ],
+        external,
+        // external: [
+        //   "axios",
+        //   "child_process",
+        //   "crypto",
+        //   "fs-extra",
+        //   "fs",
+        //   "path",
+        //   "sequelize",
+        //   "umzug",
+        //   "sqlite3",
+        //   "fluent-ffmpeg",
+        //   "ffmpeg-static",
+        //   "@andrkrn/ffprobe-static",
+        // ],
+      },
+      commonjsOptions: {
+        transformMixedEsModules: true,
+        defaultIsModuleExports: true,
+        esmExternals: true,
       },
     },
     plugins: [

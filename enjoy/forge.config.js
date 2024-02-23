@@ -1,4 +1,3 @@
-import type { ForgeConfig } from "@electron-forge/shared-types";
 import { MakerSquirrel } from "@electron-forge/maker-squirrel";
 import { MakerZIP } from "@electron-forge/maker-zip";
 import { MakerDeb } from "@electron-forge/maker-deb";
@@ -7,7 +6,7 @@ import { VitePlugin } from "@electron-forge/plugin-vite";
 import { FusesPlugin } from "@electron-forge/plugin-fuses";
 import { FuseV1Options, FuseVersion } from "@electron/fuses";
 
-const config: ForgeConfig = {
+const config = {
   packagerConfig: {
     asar: true,
     icon: "./assets/icon",
@@ -64,17 +63,17 @@ const config: ForgeConfig = {
         {
           // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
           entry: "src/main.ts",
-          config: "vite.main.config.mts",
+          config: "vite.main.config.ts",
         },
         {
           entry: "src/preload.ts",
-          config: "vite.preload.config.mts",
+          config: "vite.preload.config.ts",
         },
       ],
       renderer: [
         {
           name: "main_window",
-          config: "vite.renderer.config.mts",
+          config: "vite.renderer.config.ts",
         },
       ],
     }),

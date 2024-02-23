@@ -4,7 +4,11 @@ import path from "path";
 import { WHISPER_MODELS_OPTIONS, PROCESS_TIMEOUT } from "@/constants";
 import { exec, spawn } from "child_process";
 import fs from "fs-extra";
-import log from "electron-log/main";
+import log from "@main/logger";
+import url from 'url';
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const logger = log.scope("whisper");
 

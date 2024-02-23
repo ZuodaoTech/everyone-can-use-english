@@ -15,13 +15,16 @@ import downloader from "@main/downloader";
 import whisper from "@main/whisper";
 import fs from "fs-extra";
 import "@main/i18n";
-import log from "electron-log/main";
+import log from "@main/logger";
 import { WEB_API_URL, REPO_URL } from "@/constants";
 import { AudibleProvider, TedProvider } from "@main/providers";
 import Ffmpeg from "@main/ffmpeg";
 import { Waveform } from "./waveform";
+import url from 'url';
 
-log.initialize({ preload: true });
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const logger = log.scope("window");
 
 const audibleProvider = new AudibleProvider();

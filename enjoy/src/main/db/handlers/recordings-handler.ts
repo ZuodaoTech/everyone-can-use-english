@@ -14,7 +14,7 @@ import {
 } from "sequelize";
 import dayjs from "dayjs";
 import { t } from "i18next";
-import log from "electron-log/main";
+import log from "@main/logger";
 
 const logger = log.scope("db/handlers/recordings-handler");
 

@@ -1,6 +1,6 @@
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import fs from "fs-extra";
-import log from "electron-log/main";
+import log from "@main/logger";
 
 const logger = log.scope("AZURE");
 export class AzureSpeechSdk {

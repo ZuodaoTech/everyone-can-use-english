@@ -22,7 +22,7 @@ import OpenAI, { type ClientOptions } from "openai";
 import { t } from "i18next";
 import { hashFile } from "@main/utils";
 import { Audio, Message } from "@main/db/models";
-import log from "electron-log/main";
+import log from "@main/logger";
 import { WEB_API_URL } from "@/constants";
 import proxyAgent from "@main/proxy-agent";
 

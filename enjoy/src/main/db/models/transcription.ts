@@ -13,7 +13,7 @@ import {
 } from "sequelize-typescript";
 import { Audio, Video } from "@main/db/models";
 import mainWindow from "@main/window";
-import log from "electron-log/main";
+import log from "@main/logger";
 import { Client } from "@/api";
 import { WEB_API_URL, PROCESS_TIMEOUT } from "@/constants";
 import settings from "@main/settings";
