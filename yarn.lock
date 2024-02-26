@@ -6121,7 +6121,7 @@ __metadata:
     html-to-text: "npm:^9.0.5"
     https-proxy-agent: "npm:^7.0.4"
     i18next: "npm:^23.10.0"
-    intl-tel-input: "npm:^19.2.20"
+    intl-tel-input: "npm:^19.5.2"
     js-md5: "npm:^0.8.3"
     langchain: "npm:^0.1.21"
     lodash: "npm:^4.17.21"
@@ -6306,7 +6306,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.19.11, esbuild@npm:^0.19.3":
+"esbuild@npm:^0.19.3":
   version: 0.19.12
   resolution: "esbuild@npm:0.19.12"
   dependencies:
@@ -8017,15 +8017,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"intl-tel-input@npm:^19.2.20":
-  version: 19.3.0
-  resolution: "intl-tel-input@npm:19.3.0"
+"intl-tel-input@npm:^19.5.2":
+  version: 19.5.2
+  resolution: "intl-tel-input@npm:19.5.2"
   dependencies:
-    esbuild: "npm:^0.19.11"
     prop-types: "npm:^15.8.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-  checksum: 10c0/e6b6ee00e42513b3550838b49ddef38bd09c66aa39d451b4a0496a4f60ff4d49bc3eb75caeb7aeb50b08240556b2cc747f9e937cb6bfd3b50a14c1e8322c3407
+  checksum: 10c0/1e94e5af5e5e8872a8d4ce3b4999a048969203e6662ef2c40e5d6823c558a3634382cfdc11d923de1ac0aa1a4c13829ba0ced36dc23ba24e3a16fbdcbda6920b
   languageName: node
   linkType: hard
 
