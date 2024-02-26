@@ -155,7 +155,7 @@
     "rimraf": "^5.0.5",
     "sequelize": "^6.37.1",
     "sequelize-typescript": "^2.1.6",
-    "sonner": "^1.4.0",
+    "sonner": "^1.4.1",
     "sqlite3": "^5.1.7",
     "tailwind-scrollbar-hide": "^1.1.7",
     "umzug": "^3.7.0",
