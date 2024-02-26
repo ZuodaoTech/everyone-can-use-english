@@ -35,9 +35,9 @@ export default withMermaid(
         // provider: 'local'
         provider: 'algolia',
         options: {
-          appId: 'QF5TVZ8TIO',
-          apiKey: '8dac3a5e27daaaf57efc72604ca08b98',
-          indexName: '1000h_prod'
+          appId: 'KKK8CORNSR',
+          apiKey: 'd613ff31a535ff1e9535cf9c88ec420a',
+          indexName: '1000h'
         }
       },
 
