@@ -297,4 +297,16 @@ export class Client {
   unstarStory(storyId: string): Promise<{ starred: boolean }> {
     return this.api.delete(`/api/mine/stories/${storyId}`);
   }
+
+  createPayment(params: {
+    amount: number;
+    proccessor: string;
+    paymentType: string;
+  }): Promise<PaymentType> {
+    return this.api.post("/api/payments", decamelizeKeys(params));
+  }
+
+  payment(id: string): Promise<PaymentType> {
+    return this.api.get(`/api/payments/${id}`);
+  }
 }
