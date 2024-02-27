@@ -1,5 +1,6 @@
 export * from "./audios-table";
 export * from "./audio-edit-form";
+export * from "./audio-player";
 export * from "./audio-detail";
 
 export * from "./audios-component";

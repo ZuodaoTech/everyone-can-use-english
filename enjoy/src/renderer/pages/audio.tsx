@@ -1,8 +1,9 @@
-import { useParams , useNavigate } from "react-router-dom";
-import { AudioDetail } from "@renderer/components";
+import { useParams, useNavigate } from "react-router-dom";
+import { AudioDetail, AudioPlayer } from "@renderer/components";
 import { Button } from "@renderer/components/ui";
 import { ChevronLeftIcon } from "lucide-react";
 import { t } from "i18next";
+import { WavesurferProvider } from "@renderer/context";
 
 export default () => {
   const navigate = useNavigate();
@@ -18,7 +19,9 @@ export default () => {
           <span>{t("shadowingAudio")}</span>
         </div>
 
-        <AudioDetail id={id} />
+        <WavesurferProvider>
+          <AudioDetail id={id} />
+        </WavesurferProvider>
       </div>
     </>
   );
