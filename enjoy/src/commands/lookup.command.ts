@@ -5,6 +5,7 @@ import {
   StructuredOutputParser,
   OutputFixingParser,
 } from "langchain/output_parsers";
+import { RESPONSE_JSON_FORMAT_MODELS } from "@/constants";
 
 export const lookupCommand = async (
   params: {
@@ -28,12 +29,13 @@ export const lookupCommand = async (
   translation?: string;
   lemma?: string;
 }> => {
-  const {
-    key,
-    modelName = "gpt-3.5-turbo-1106",
-    temperature = 0,
-    baseUrl,
-  } = options;
+  const { key, temperature = 0, baseUrl } = options;
+  let { modelName = "gpt-3.5-turbo" } = options;
+
+  if (RESPONSE_JSON_FORMAT_MODELS.indexOf(modelName) === -1) {
+    modelName = "gpt-3.5-turbo";
+  }
+
   const { word, context, meaningOptions } = params;
 
   const responseSchema = z.object({

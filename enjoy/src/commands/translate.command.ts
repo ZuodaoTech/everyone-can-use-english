@@ -1,5 +1,6 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { RESPONSE_JSON_FORMAT_MODELS } from "@/constants";
 
 export const translateCommand = async (
   text: string,
@@ -10,12 +11,12 @@ export const translateCommand = async (
     baseUrl?: string;
   }
 ): Promise<string> => {
-  const {
-    key,
-    modelName = "gpt-3.5-turbo-1106",
-    temperature = 0,
-    baseUrl,
-  } = options;
+  const { key, temperature = 0, baseUrl } = options;
+  let { modelName = "gpt-3.5-turbo" } = options;
+
+  if (RESPONSE_JSON_FORMAT_MODELS.indexOf(modelName) === -1) {
+    modelName = "gpt-3.5-turbo";
+  }
 
   const chatModel = new ChatOpenAI({
     openAIApiKey: key,

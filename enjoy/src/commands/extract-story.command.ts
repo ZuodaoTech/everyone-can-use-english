@@ -2,6 +2,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { z } from "zod";
+import { RESPONSE_JSON_FORMAT_MODELS } from "@/constants";
 
 export const extractStoryCommand = async (
   content: string,
@@ -12,12 +13,12 @@ export const extractStoryCommand = async (
     baseUrl?: string;
   }
 ): Promise<{ words: string[]; idioms: string[] }> => {
-  const {
-    key,
-    modelName = "gpt-3.5-turbo-1106",
-    temperature = 0,
-    baseUrl,
-  } = options;
+  const { key, temperature = 0, baseUrl } = options;
+  let { modelName = "gpt-3.5-turbo" } = options;
+
+  if (RESPONSE_JSON_FORMAT_MODELS.indexOf(modelName) === -1) {
+    modelName = "gpt-3.5-turbo";
+  }
 
   const saveExtraction = z.object({
     words: z.array(z.string().describe("extracted word")),
