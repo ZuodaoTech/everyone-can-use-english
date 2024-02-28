@@ -1,7 +1,8 @@
 {
   "private": true,
   "workspaces": [
-    "enjoy"
+    "enjoy",
+    "enjoy-docs"
   ],
   "scripts": {
     "dev:enjoy": "yarn workspace enjoy dev",
@@ -12,6 +13,9 @@
     "publish:enjoy": "yarn workspace enjoy publish",
     "lint:enjoy": "yarn workspace enjoy eslint --ext .ts,.tsx .",
     "create-migration:enjoy": "yarn workspace enjoy zx ./src/main/db/create-migration.mjs",
+    "dev:docs": "yarn workspace enjoy-docs dev",
+    "build:docs": "yarn workspace enjoy-docs build",
+    "preview:docs": "yarn workspace enjoy-docs preview",
     "dev:1000h": "yarn workspace 1000-hours dev",
     "build:1000h": "yarn workspace 1000-hours build",
     "preview:1000h": "yarn workspace 1000-hours preview"
