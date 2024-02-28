@@ -6,5 +6,6 @@ type UserType = {
   accessToken?: string;
   recordingsCount?: number;
   recordingsDuration?: number;
+  hasMixin?: boolean;
   createdAt?: string;
 };
