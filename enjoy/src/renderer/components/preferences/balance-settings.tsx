@@ -11,8 +11,18 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  toast,
 } from "@renderer/components/ui";
+import { LoaderSpin } from "@renderer/components";
 import { LoaderIcon } from "lucide-react";
+import { formatDateTime } from "@/renderer/lib/utils";
 
 export const BalanceSettings = () => {
   const { webApi } = useContext(AppSettingsProviderContext);
@@ -20,6 +30,26 @@ export const BalanceSettings = () => {
   const [depositAmount, setDepositAmount] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [paymentCreated, setPaymentCreated] = useState<boolean>(false);
+  const [payments, setPayments] = useState<any[]>([]);
+
+  const refreshPayments = () => {
+    webApi
+      .payments({
+        paymentType: "deposit",
+      })
+      .then(({ payments }) => {
+        setPayments(payments);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
+  const refreshBalance = () => {
+    webApi.me().then((user) => {
+      setBalance(user.balance);
+    });
+  };
 
   const createDepositPayment = () => {
     if (loading) return;
@@ -34,8 +64,11 @@ export const BalanceSettings = () => {
       .then((payment) => {
         if (payment?.payUrl) {
           setPaymentCreated(true);
-          window.open(payment.payUrl, "_blank");
+          window.open(payment.payUrl, "model");
         }
+      })
+      .catch((error) => {
+        toast.error(error.message);
       })
       .finally(() => {
         setLoading(false);
@@ -43,9 +76,7 @@ export const BalanceSettings = () => {
   };
 
   useEffect(() => {
-    webApi.me().then((user) => {
-      setBalance(user.balance);
-    });
+    refreshBalance();
   }, []);
 
   if (!balance) return null;
@@ -56,7 +87,16 @@ export const BalanceSettings = () => {
         <div className="text-sm text-muted-foreground mb-2">${balance}</div>
       </div>
 
-      <Dialog>
+      <Dialog
+        onOpenChange={(value) => {
+          if (value) {
+            refreshPayments();
+          } else {
+            setPaymentCreated(false);
+            refreshBalance();
+          }
+        }}
+      >
         <DialogTrigger asChild>
           <Button
             onClick={() => setPaymentCreated(false)}
@@ -75,9 +115,12 @@ export const BalanceSettings = () => {
           </DialogHeader>
 
           {paymentCreated ? (
-            <div className="text-center">
-              {t("pleaseCompletePaymentInBrowser")}
-            </div>
+            <>
+              <LoaderSpin />
+              <div className="text-center">
+                {t("pleaseCompletePaymentInPopupWindow")}
+              </div>
+            </>
           ) : (
             <>
               <div className="grid grid-cols-4 gap-4">
@@ -93,23 +136,67 @@ export const BalanceSettings = () => {
                   </div>
                 ))}
               </div>
-              <div className="text-sm">{t("depositAlert")}</div>
+              <div className="text-sm">{t("depositDisclaimer")}</div>
             </>
           )}
 
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="secondary">{t("cancel")}</Button>
+              <Button variant="secondary">
+                {paymentCreated ? t("finish") : t("cancel")}
+              </Button>
             </DialogClose>
-            <Button
-              variant="default"
-              disabled={loading}
-              onClick={createDepositPayment}
-            >
-              {loading && <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />}
-              {t("deposit")}
-            </Button>
+            {paymentCreated ? null : (
+              <Button
+                variant="default"
+                disabled={loading}
+                onClick={createDepositPayment}
+              >
+                {loading && (
+                  <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
+                )}
+                {t("deposit")}
+              </Button>
+            )}
           </DialogFooter>
+
+          {payments.length > 0 && (
+            <div className="">
+              <Table>
+                <TableCaption>{t("recentDeposits")}</TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>ID</TableHead>
+                    <TableHead className="capitalize">{t("amount")}</TableHead>
+                    <TableHead className="capitalize">{t("status")}</TableHead>
+                    <TableHead className="capitalize">
+                      {t("processor")}
+                    </TableHead>
+                    <TableHead className="capitalize">{t("date")}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {payments.map((payment) => (
+                    <TableRow key={payment.id}>
+                      <TableCell>
+                        <span className="text-xs bg-muted font-mono p-0.5 rounded select-text">
+                          {payment.id.split("-").shift()}
+                        </span>
+                      </TableCell>
+                      <TableCell>${payment.amount}</TableCell>
+                      <TableCell className="">{payment.status}</TableCell>
+                      <TableCell className="capitalize">
+                        {payment.processor}
+                      </TableCell>
+                      <TableCell className="text-xs">
+                        {formatDateTime(payment.createdAt)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>

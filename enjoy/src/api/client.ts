@@ -306,6 +306,18 @@ export class Client {
     return this.api.post("/api/payments", decamelizeKeys(params));
   }
 
+  payments(params?: {
+    paymentType?: string;
+    page?: number;
+    items?: number;
+  }): Promise<
+    {
+      payments: PaymentType[];
+    } & PagyResponseType
+  > {
+    return this.api.get("/api/payments", { params: decamelizeKeys(params) });
+  }
+
   payment(id: string): Promise<PaymentType> {
     return this.api.get(`/api/payments/${id}`);
   }
