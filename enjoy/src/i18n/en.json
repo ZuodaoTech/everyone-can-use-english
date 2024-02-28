@@ -311,6 +311,7 @@
   "deposit": "Deposit",
   "depositDescription": "Deposit to your account",
   "depositDisclaimer": "After deposit, your balance is only used for paid services. It is not refundable.",
+  "pay": "Pay",
   "pleaseCompletePaymentInPopupWindow": "Please complete payment in the popup window",
   "processor": "Processor",
   "amount": "Amount",

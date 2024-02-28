@@ -3,7 +3,7 @@ type PaymentType = {
   amount: number;
   status: 'succeeded' | 'expired' | 'pending';
   paymentType: string;
-  proccessor: string;
+  processor: string;
   traceId?: string;
   snapshotId?: string;
   memo?: string;

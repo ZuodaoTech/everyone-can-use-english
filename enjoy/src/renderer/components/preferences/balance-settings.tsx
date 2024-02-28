@@ -25,7 +25,7 @@ import { LoaderIcon } from "lucide-react";
 import { formatDateTime } from "@/renderer/lib/utils";
 
 export const BalanceSettings = () => {
-  const { webApi } = useContext(AppSettingsProviderContext);
+  const { webApi, user } = useContext(AppSettingsProviderContext);
   const [balance, setBalance] = useState<number>(0);
   const [depositAmount, setDepositAmount] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -51,7 +51,7 @@ export const BalanceSettings = () => {
     });
   };
 
-  const createDepositPayment = () => {
+  const createDepositPayment = (processor = "stripe") => {
     if (loading) return;
 
     setLoading(true);
@@ -59,7 +59,7 @@ export const BalanceSettings = () => {
       .createPayment({
         amount: depositAmount,
         paymentType: "deposit",
-        proccessor: "stripe",
+        processor,
       })
       .then((payment) => {
         if (payment?.payUrl) {
@@ -147,16 +147,31 @@ export const BalanceSettings = () => {
               </Button>
             </DialogClose>
             {paymentCreated ? null : (
-              <Button
-                variant="default"
-                disabled={loading}
-                onClick={createDepositPayment}
-              >
-                {loading && (
-                  <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
+              <>
+                {user.hasMixin && (
+                  <Button
+                    variant="default"
+                    disabled={loading}
+                    className="bg-blue-500 hover:bg-blue-600 transition-colors duration-200 ease-in-out"
+                    onClick={() => createDepositPayment("mixin")}
+                  >
+                    {loading && (
+                      <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
+                    )}
+                    <span>Mixin {t('pay')}</span>
+                  </Button>
                 )}
-                {t("deposit")}
-              </Button>
+                <Button
+                  variant="default"
+                  disabled={loading}
+                  onClick={() => createDepositPayment()}
+                >
+                  {loading && (
+                    <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
+                  )}
+                  <span>{t("pay")}</span>
+                </Button>
+              </>
             )}
           </DialogFooter>
 

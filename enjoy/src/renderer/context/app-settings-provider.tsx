@@ -150,7 +150,7 @@ export const AppSettingsProvider = ({
 
     client.me().then((user) => {
       if (user?.id) {
-        login(currentUser);
+        login(Object.assign({}, currentUser, user));
       } else {
         logout();
       }

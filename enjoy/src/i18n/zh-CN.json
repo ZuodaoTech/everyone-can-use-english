@@ -310,6 +310,7 @@
   "deposit": "充值",
   "depositDescription": "充值至您的账户，用于购买付费服务",
   "depositDisclaimer": "充值金额将直接存入您的账户，仅用于 App 内购买付费服务，不可退款",
+  "pay": "支付",
   "pleaseCompletePaymentInPopupWindow": "请在弹出窗口中完成支付",
   "processor": "渠道",
   "amount": "金额",

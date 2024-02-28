@@ -300,7 +300,7 @@ export class Client {
 
   createPayment(params: {
     amount: number;
-    proccessor: string;
+    processor: string;
     paymentType: string;
   }): Promise<PaymentType> {
     return this.api.post("/api/payments", decamelizeKeys(params));
