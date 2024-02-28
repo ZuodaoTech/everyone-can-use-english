@@ -3,14 +3,10 @@
 layout: home
 
 hero:
-  name: "Enjoy Manual"
-  text: "How to use Enjoy"
-  tagline: How to use Enjoy App
+  name: "Enjoy App"
+  tagline: AI 是最好的老师，我们做 AI 最好的助教
   actions:
     - theme: brand
-      text: Markdown Examples
+      text: 快速开始
       link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
 ---
