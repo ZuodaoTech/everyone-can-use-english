@@ -5,6 +5,7 @@ import {
   StructuredOutputParser,
   OutputFixingParser,
 } from "langchain/output_parsers";
+import { RESPONSE_JSON_FORMAT_MODELS } from "@/constants";
 
 export const ipaCommand = async (
   text: string,
@@ -15,12 +16,12 @@ export const ipaCommand = async (
     baseUrl?: string;
   }
 ): Promise<{ words?: { word?: string; ipa?: string }[] }> => {
-  const {
-    key,
-    modelName = "gpt-3.5-turbo-1106",
-    temperature = 0,
-    baseUrl,
-  } = options;
+  const { key, temperature = 0, baseUrl } = options;
+  let { modelName = "gpt-4-turbo-preview" } = options;
+
+  if (RESPONSE_JSON_FORMAT_MODELS.indexOf(modelName) === -1) {
+    modelName = "gpt-4-turbo-preview";
+  }
 
   const responseSchema = z.object({
     words: z.array(
