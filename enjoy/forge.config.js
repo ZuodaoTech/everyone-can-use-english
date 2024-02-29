@@ -25,7 +25,7 @@ const config = {
       name: "Enjoy",
       setupIcon: "./assets/icon.ico",
     }),
-    new MakerZIP({}, ["darwin", "win32"]),
+    new MakerZIP(["darwin", "win32"]),
     new MakerDeb({
       options: {
         name: "enjoy",
@@ -51,6 +51,7 @@ const config = {
           owner: "xiaolai",
           name: "everyone-can-use-english",
         },
+        generateReleaseNotes: true,
         draft: true,
       },
     },
@@ -90,5 +91,26 @@ const config = {
     // }),
   ],
 };
+
+const macOsCodesignConfig = {
+  osxSign: {},
+  osxNotarize: {
+    tool: "notarytool",
+    appleId: process.env.APPLE_ID,
+    appleIdPassword: process.env.APPLE_APP_PASSWORD,
+    teamId: process.env.APPLE_TEAM_ID,
+  },
+};
+
+if (
+  process.env.APPLE_ID &&
+  process.env.APPLE_APP_PASSWORD &&
+  process.env.APPLE_TEAM_ID
+) {
+  config.packagerConfig = {
+    ...config.packagerConfig,
+    ...macOsCodesignConfig,
+  };
+}
 
 export default config;
