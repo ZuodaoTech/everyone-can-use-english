@@ -22,7 +22,9 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           MACOS_CERTIFICATE_APPLICATION_BASE64: ${{ secrets.MACOS_CERTIFICATE_APPLICATION_BASE64 }}
           MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-        run: yarn make:enjoy
+        run: |
+          ./enjoy/scripts/add-macos-cert.sh
+          yarn make:enjoy
       - if: matrix.os == 'macos-latest'
         name: Build macOS arm64
         env:
