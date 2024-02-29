@@ -9,7 +9,7 @@ import os from "os";
 
 const config = {
   packagerConfig: {
-    asar: true,
+    asar: false,
     icon: "./assets/icon",
     name: "Enjoy",
     executableName: "enjoy",
