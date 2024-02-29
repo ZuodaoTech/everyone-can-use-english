@@ -3,6 +3,7 @@ import { MakerZIP } from "@electron-forge/maker-zip";
 import { MakerDeb } from "@electron-forge/maker-deb";
 import { MakerRpm } from "@electron-forge/maker-rpm";
 import { VitePlugin } from "@electron-forge/plugin-vite";
+import os from "os";
 // import { FusesPlugin } from "@electron-forge/plugin-fuses";
 // import { FuseV1Options, FuseVersion } from "@electron/fuses";
 
@@ -103,6 +104,7 @@ const macOsCodesignConfig = {
 };
 
 if (
+  os.platform() === "darwin" &&
   process.env.APPLE_ID &&
   process.env.APPLE_APP_PASSWORD &&
   process.env.APPLE_TEAM_ID
