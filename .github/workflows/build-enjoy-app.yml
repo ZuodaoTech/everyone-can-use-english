@@ -43,4 +43,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Enjoy-${{ matrix.os }}
-          path: ./enjoy/output/make/**/*
+          path: ./enjoy/out/make/**/*
