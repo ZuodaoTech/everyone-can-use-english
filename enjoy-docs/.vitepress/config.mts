@@ -12,16 +12,32 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: '简介',
+        text: '快速开始',
+        collapsed: false,
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: '简介', link: '/guide/intro' },
+          { text: '下载安装', link: '/guide/install' },
+          { text: '软件设置', link: '/guide/settings' }
+        ]
+      },
+      {
+        text: '跟读训练',
+        items: [
+          { text: '快速开始', link: '/markdown-examples' },
+          { text: '基本用法', link: '/api-examples' }
+        ]
+      },
+      {
+        text: '智能助手',
+        items: [
+          { text: '快速开始', link: '/markdown-examples' },
+          { text: '基本用法', link: '/api-examples' }
         ]
       }
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/xiaolai/everyone-can-use-english/tree/main/enjoy-docs' }
     ]
   }
 })
