@@ -30,7 +30,7 @@ jobs:
         uses: josStorer/get-current-time@v2
         id: current-time
         with:
-          format: YYYYMMDD-HH
+          format: YYYYMMDD-HH-mm
 
       - uses: actions/cache@v4
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
@@ -68,7 +68,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Enjoy-${{ runner.os }}-${{ github.event.inputs.arch }}-build-${{ steps.current-time.outputs.time }}
+          name: Enjoy-${{ runner.os }}-${{ github.event.inputs.arch }}-build-${{ steps.current-time.outputs.formattedTime }}
           path: |
             enjoy/out/make/**/*.deb
             enjoy/out/make/**/*.rpm
