@@ -54,7 +54,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Enjoy-${{ runner.os }}-${{ github.event.inputs.os == 'macos-14' && 'arm64' || 'x64' }}-build-${{ steps.current-time.outputs.formattedTime }}
+          name: Enjoy-${{ runner.os }}-${{ github.event.inputs.os == 'macos-14' && 'arm64' || 'x64' }}-build-${{ github.ref_name }}-${{ steps.current-time.outputs.formattedTime }}
           path: |
             enjoy/out/make/**/*.deb
             enjoy/out/make/**/*.rpm
