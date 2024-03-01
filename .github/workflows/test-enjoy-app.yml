@@ -10,43 +10,47 @@ on:
       - "enjoy/**/*.js"
       - "enjoy/**/*.mjs"
 jobs:
-  e2e:
+  end-to-end-tests:
     timeout-minutes: 60
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os:
-          [
-            macos-latest,
-            macos-13,
-            macos-14,
-            windows-2019,
-            windows-latest,
-            ubuntu-latest,
-          ]
+        os: [macos-12, macos-14, windows-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - uses: actions/cache@v4
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: "**/node_modules"
+          key: ${{ github.event.inputs.os }}-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install dependencies
-        run: npm install -g yarn && yarn
-      - if: matrix.os == 'macos-latest'
-        name: Install sdl2 for macos
+        run: yarn install
+
+      - name: Install sdl2 for macOS12
+        if: matrix.os == 'macos-12'
         run: |
           brew update
           brew install sdl2
-      - if: startsWith(matrix.os, 'ubuntu')
-        name: Run tests with xvfb-run on ubuntu
+
+      - name: Run tests with xvfb-run on Ubuntu
+        if: contains(matrix.os, 'ubuntu')
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn test:enjoy
-      - if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'windows')
-        name: Run tests
+
+      - name: Run tests on macOS or Windows
+        if: contains(matrix.os, 'macos') || contains(matrix.os, 'windows')
         run: yarn test:enjoy
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
-          path: playwright-report/
+          path: enjoy/playwright-report/
           retention-days: 30
