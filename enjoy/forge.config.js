@@ -9,7 +9,11 @@ import os from "os";
 
 const config = {
   packagerConfig: {
-    asar: false,
+    asar: {
+      // Binary files won't work in asar, so we need to unpack them
+      unpackDir:
+        "{.vite/build/lib,.vite/build/samples,node_modules/ffmpeg-static,node_modules/@andrkrn/ffprobe-static}",
+    },
     icon: "./assets/icon",
     name: "Enjoy",
     executableName: "enjoy",
@@ -79,6 +83,10 @@ const config = {
         },
       ],
     }),
+    {
+      name: "@electron-forge/plugin-auto-unpack-natives",
+      config: {},
+    },
     // Fuses are used to enable/disable various Electron functionality
     // at package time, before code signing the application
     // new FusesPlugin({
