@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Install certificate
-        if: ${{ github.event.inputs.os }} == 'macos-latest'
+        if: github.event.inputs.os == 'macos-latest'
         run: ./enjoy/scripts/add-macos-cert.sh
       - name: Make
         env:
@@ -43,7 +43,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Enjoy-${{ github.event.inputs.os }}-${{ github.event.inputs.arch }}-build
-          path: |
-            ./enjoy/out/make/zip/${{ github.event.inputs.arch }}/*.zip
-            ./enjoy/out/make/dep/${{ github.event.inputs.arch }}/*.dep
-            ./enjoy/out/make/rpm/${{ github.event.inputs.arch }}/*.rpm
+          path: enjoy/out/make/**/*
