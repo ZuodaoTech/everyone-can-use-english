@@ -78,3 +78,4 @@ jobs:
             enjoy/out/make/**/*.rpm
             enjoy/out/make/**/*.zip
             enjoy/out/make/**/*.exe
+            enjoy/out/make/**/*.dmg
