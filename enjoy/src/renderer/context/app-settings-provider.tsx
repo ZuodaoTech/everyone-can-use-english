@@ -82,9 +82,7 @@ export const AppSettingsProvider = ({
     const valid = await EnjoyApp.ffmpeg.check();
     setFfmpegValid(valid);
 
-    if (!valid) {
-      loadFfmpegWASM();
-    }
+    loadFfmpegWASM();
   };
 
   const loadFfmpegWASM = async () => {
@@ -113,6 +111,7 @@ export const AppSettingsProvider = ({
         workerURL,
       });
       setFfmpegWasm(ffmpegRef.current);
+      (window as any).ffmpeg = ffmpegRef.current;
     } catch (err) {
       toast.error(err.message);
     }

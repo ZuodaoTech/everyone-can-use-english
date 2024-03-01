@@ -39,6 +39,10 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
+        env:
+          # It will build arm64 version in x64 runner
+          # This env help ffmpeg/ffprobe-static to install the right binary
+          npm_config_arch: ${{ github.event.inputs.arch }}
         run: yarn install
 
       - name: Install Apple certificate
