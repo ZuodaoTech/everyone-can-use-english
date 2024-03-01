@@ -10,7 +10,7 @@ on:
       - "enjoy/**/*.js"
       - "enjoy/**/*.mjs"
 jobs:
-  end-to-end-tests:
+  e2e-test:
     timeout-minutes: 60
     runs-on: ${{ matrix.os }}
     strategy:
