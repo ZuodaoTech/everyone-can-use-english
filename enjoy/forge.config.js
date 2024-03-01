@@ -26,11 +26,17 @@ const config = {
   },
   rebuildConfig: {},
   makers: [
+    {
+      name: "@electron-forge/maker-dmg",
+      config: {
+        icon: "./assets/icon.png",
+      },
+    },
     new MakerSquirrel({
       name: "Enjoy",
       setupIcon: "./assets/icon.ico",
     }),
-    new MakerZIP(["darwin", "win32"]),
+    new MakerZIP(["win32"]),
     new MakerDeb({
       options: {
         name: "enjoy",
