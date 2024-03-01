@@ -6,13 +6,18 @@ import log from "@main/logger";
 import path from "path";
 import fs from "fs-extra";
 import settings from "./settings";
-import url from 'url';
+import url from "url";
 
+/*
+ * ffmpeg and ffprobe bin file will be in /app.asar.unpacked instead of /app.asar
+ * the /samples folder is also in /app.asar.unpacked
+ */
+Ffmpeg.setFfmpegPath(ffmpegPath.replace("app.asar", "app.asar.unpacked"));
+Ffmpeg.setFfprobePath(ffprobePath.replace("app.asar", "app.asar.unpacked"));
 const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-Ffmpeg.setFfmpegPath(ffmpegPath);
-Ffmpeg.setFfprobePath(ffprobePath);
+const __dirname = path
+  .dirname(__filename)
+  .replace("app.asar", "app.asar.unpacked");
 
 const logger = log.scope("ffmpeg");
 export default class FfmpegWrapper {

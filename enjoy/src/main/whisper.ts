@@ -5,10 +5,15 @@ import { WHISPER_MODELS_OPTIONS, PROCESS_TIMEOUT } from "@/constants";
 import { exec, spawn } from "child_process";
 import fs from "fs-extra";
 import log from "@main/logger";
-import url from 'url';
+import url from "url";
 
 const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+/*
+ * whipser bin file will be in /app.asar.unpacked instead of /app.asar
+ */
+const __dirname = path
+  .dirname(__filename)
+  .replace("app.asar", "app.asar.unpacked");
 
 const logger = log.scope("whisper");
 
