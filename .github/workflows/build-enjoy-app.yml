@@ -4,17 +4,12 @@ on:
     inputs:
       os:
         type: choice
-        description: Choose platform
+        description: Choose os
         options:
           - macos-latest
+          - macos-14
           - windows-latest
           - ubuntu-latest
-      arch:
-        type: choice
-        description: Choose Arch
-        options:
-          - x64
-          - arm64
 
 jobs:
   build:
@@ -36,43 +31,30 @@ jobs:
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-${{ github.event.inputs.arch }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ github.event.inputs.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
-        env:
-          # It will build arm64 version in x64 runner
-          # This env help ffmpeg/ffprobe-static to install the right binary
-          npm_config_arch: ${{ github.event.inputs.arch }}
         run: yarn install
 
       - name: Install Apple certificate
-        if: github.event.inputs.os == 'macos-latest'
+        if: contains(github.event.inputs.os, 'macos')
         env:
           MACOS_CERTIFICATE_APPLICATION_BASE64: ${{ secrets.MACOS_CERTIFICATE_APPLICATION_BASE64 }}
           MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
         run: ./enjoy/scripts/add-macos-cert.sh
 
-      - name: Make with Apple Account
-        if: github.event.inputs.os == 'macos-latest'
+      - name: Make
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-          PACKAGE_OS_ARCH: ${{ github.event.inputs.arch }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: yarn run make:enjoy --arch=${{ github.event.inputs.arch }}
-
-      - name: Make without Apple account
-        if: github.event.inputs.os != 'macos-latest'
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-          PACKAGE_OS_ARCH: ${{ github.event.inputs.arch }}
-        run: yarn run make:enjoy --arch=${{ github.event.inputs.arch }}
+          APPLE_ID: ${{ runner.os == 'macOS' && secrets.APPLE_ID || '' }}
+          APPLE_APP_PASSWORD: ${{ runner.os == 'macOS' && secrets.APPLE_APP_PASSWORD || '' }}
+          APPLE_TEAM_ID: ${{ runner.os == 'macOS' && secrets.APPLE_TEAM_ID || '' }}
+        run: yarn run make:enjoy
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Enjoy-${{ runner.os }}-${{ github.event.inputs.arch }}-build-${{ steps.current-time.outputs.formattedTime }}
+          name: Enjoy-${{ runner.os }}-${{ github.event.inputs.os == 'macos-14' && 'arm64' || 'x64' }}-build-${{ steps.current-time.outputs.formattedTime }}
           path: |
             enjoy/out/make/**/*.deb
             enjoy/out/make/**/*.rpm
