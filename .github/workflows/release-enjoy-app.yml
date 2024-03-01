@@ -6,20 +6,39 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [macos-12, macos-14, windows-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: install dependencies
+
+      - name: Install dependencies
         run: yarn install
-      - name: publish
+
+      - name: Install Apple certificate
+        if: contains(github.event.inputs.os, 'macos')
+        env:
+          MACOS_CERTIFICATE_APPLICATION_BASE64: ${{ secrets.MACOS_CERTIFICATE_APPLICATION_BASE64 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: ./enjoy/scripts/add-macos-cert.sh
+
+      - name: Publish
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+          APPLE_ID: ${{ runner.os == 'macOS' && secrets.APPLE_ID || '' }}
+          APPLE_APP_PASSWORD: ${{ runner.os == 'macOS' && secrets.APPLE_APP_PASSWORD || '' }}
+          APPLE_TEAM_ID: ${{ runner.os == 'macOS' && secrets.APPLE_TEAM_ID || '' }}
         run: yarn publish:enjoy
-      - if: matrix.os == 'macos-latest'
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-          PACKAGE_OS_ARCH: arm64
-        run: yarn run publish:enjoy --arch=arm64
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Enjoy-${{ runner.os }}-${{ matrix.os == 'macos-14' && 'arm64' || 'x64' }}-build-${{ github.ref_name }}
+          path: |
+            enjoy/out/make/**/*.deb
+            enjoy/out/make/**/*.rpm
+            enjoy/out/make/**/*.zip
+            enjoy/out/make/**/*.exe
+            enjoy/out/make/**/*.dmg
