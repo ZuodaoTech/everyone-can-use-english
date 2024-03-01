@@ -27,21 +27,17 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - if: ${{ github.event.inputs.os }} == 'macos-latest'
-        name: Build
+        name: Install certificate
+        run: ./enjoy/scripts/add-macos-cert.sh
+      - name: Make
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+          PACKAGE_OS_ARCH: ${{ github.event.inputs.arch }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           MACOS_CERTIFICATE_APPLICATION_BASE64: ${{ secrets.MACOS_CERTIFICATE_APPLICATION_BASE64 }}
           MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-        run: |
-          ./enjoy/scripts/add-macos-cert.sh
-          yarn run make:enjoy --arch=${{ github.event.inputs.arch }}
-      - name: Build
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-          PACKAGE_OS_ARCH: ${{ github.event.inputs.arch }}
         run: yarn run make:enjoy --arch=${{ github.event.inputs.arch }}
       - name: Upload artifact
         uses: actions/upload-artifact@v4
