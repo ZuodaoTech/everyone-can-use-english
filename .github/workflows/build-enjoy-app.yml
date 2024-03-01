@@ -26,8 +26,8 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: yarn install
-      - if: ${{ github.event.inputs.os }} == 'macos-latest'
-        name: Install certificate
+      - name: Install certificate
+        if: ${{ github.event.inputs.os }} == 'macos-latest'
         run: ./enjoy/scripts/add-macos-cert.sh
       - name: Make
         env:
@@ -44,6 +44,6 @@ jobs:
         with:
           name: Enjoy-${{ github.event.inputs.os }}-${{ github.event.inputs.arch }}-build
           path: |
-            ./enjoy/out/make/zip/${{ github.event.inputs.arch }}/*
-            ./enjoy/out/make/dep/${{ github.event.inputs.arch }}/*
-            ./enjoy/out/make/rpm/${{ github.event.inputs.arch }}/*
+            ./enjoy/out/make/zip/${{ github.event.inputs.arch }}/*.zip
+            ./enjoy/out/make/dep/${{ github.event.inputs.arch }}/*.dep
+            ./enjoy/out/make/rpm/${{ github.event.inputs.arch }}/*.rpm
