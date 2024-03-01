@@ -21,18 +21,34 @@ jobs:
     runs-on: ${{ github.event.inputs.os }}
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       - name: Install dependencies
         run: yarn install
-      - name: Install certificate
+
+      - name: Install Apple certificate
         if: github.event.inputs.os == 'macos-latest'
         env:
           MACOS_CERTIFICATE_APPLICATION_BASE64: ${{ secrets.MACOS_CERTIFICATE_APPLICATION_BASE64 }}
           MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
         run: ./enjoy/scripts/add-macos-cert.sh
-      - name: Make with APPLE ACCOUNT
+
+      - name: Make with Apple Account
         if: github.event.inputs.os == 'macos-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
@@ -41,12 +57,14 @@ jobs:
           APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: yarn run make:enjoy --arch=${{ github.event.inputs.arch }}
-      - name: Make
+
+      - name: Make without Apple account
         if: github.event.inputs.os != 'macos-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
           PACKAGE_OS_ARCH: ${{ github.event.inputs.arch }}
         run: yarn run make:enjoy --arch=${{ github.event.inputs.arch }}
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
