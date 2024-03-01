@@ -1,5 +1,5 @@
 name: Build Enjoy App
-on: 
+on:
   workflow_dispatch:
     inputs:
       os:
@@ -26,10 +26,16 @@ jobs:
         with:
           node-version: 20
 
+      - name: Get current time
+        uses: josStorer/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYYMMDD-HH
+
       - uses: actions/cache@v4
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
@@ -62,5 +68,9 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Enjoy-${{ runner.os }}-${{ github.event.inputs.arch }}-build
-          path: enjoy/out/make/**/*
+          name: Enjoy-${{ runner.os }}-${{ github.event.inputs.arch }}-build-${{ steps.current-time.outputs.time }}
+          path: |
+            enjoy/out/make/**/*.deb
+            enjoy/out/make/**/*.rpm
+            enjoy/out/make/**/*.zip
+            enjoy/out/make/**/*.exe
