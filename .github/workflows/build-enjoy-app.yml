@@ -1,13 +1,24 @@
 name: Build Enjoy App
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      os:
+        type: choice
+        description: Choose platform
+        options:
+          - macos-latest
+          - windows-latest
+          - ubuntu-latest
+      arch:
+        type: choice
+        description: Choose Arch
+        options:
+          - x64
+          - arm64
 
 jobs:
-  publish:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+  build:
+    runs-on: ${{ github.event.inputs.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -15,7 +26,8 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: yarn install
-      - name: Build
+      - if: ${{ github.event.inputs.os }} == 'macos-latest'
+        name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
@@ -25,22 +37,17 @@ jobs:
           MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
         run: |
           ./enjoy/scripts/add-macos-cert.sh
-          yarn make:enjoy
-      - if: matrix.os == 'macos-latest'
-        name: Build macOS arm64
+          yarn run make:enjoy --arch=${{ github.event.inputs.arch }}
+      - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          MACOS_CERTIFICATE_APPLICATION_BASE64: ${{ secrets.MACOS_CERTIFICATE_APPLICATION_BASE64 }}
-          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-          PACKAGE_OS_ARCH: arm64
-        run: | 
-          ./enjoy/scripts/add-macos-cert.sh
-          yarn run make:enjoy --arch=arm64
+          PACKAGE_OS_ARCH: ${{ github.event.inputs.arch }}
+        run: yarn run make:enjoy --arch=${{ github.event.inputs.arch }}
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Enjoy-${{ matrix.os }}
-          path: ./enjoy/out/make/**/*
+          name: Enjoy-${{ github.event.inputs.os }}-${{ github.event.inputs.arch }}-build
+          path: |
+            ./enjoy/out/make/zip/${{ github.event.inputs.arch }}/*
+            ./enjoy/out/make/dep/${{ github.event.inputs.arch }}/*
+            ./enjoy/out/make/rpm/${{ github.event.inputs.arch }}/*
