@@ -6,7 +6,7 @@ on:
         type: choice
         description: Choose os
         options:
-          - macos-latest
+          - macos-12
           - macos-14
           - windows-latest
           - ubuntu-latest
@@ -25,13 +25,13 @@ jobs:
         uses: josStorer/get-current-time@v2
         id: current-time
         with:
-          format: YYYYMMDD-HH-mm
+          format: YYYYMMDDHHmm
 
       - uses: actions/cache@v4
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-${{ github.event.inputs.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ github.event.inputs.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
         run: yarn install
