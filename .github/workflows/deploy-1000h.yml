@@ -1,6 +1,7 @@
 name: Deploy 1000h website
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
