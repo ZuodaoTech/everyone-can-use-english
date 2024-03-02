@@ -30,7 +30,7 @@ jobs:
           APPLE_ID: ${{ runner.os == 'macOS' && secrets.APPLE_ID || '' }}
           APPLE_APP_PASSWORD: ${{ runner.os == 'macOS' && secrets.APPLE_APP_PASSWORD || '' }}
           APPLE_TEAM_ID: ${{ runner.os == 'macOS' && secrets.APPLE_TEAM_ID || '' }}
-        run: yarn publish:enjoy
+        run: yarn enjoy:publish
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
