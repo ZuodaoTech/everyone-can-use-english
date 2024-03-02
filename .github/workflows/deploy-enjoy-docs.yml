@@ -39,8 +39,8 @@ jobs:
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN_A }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID_A }}
           command: pages deploy .vitepress/dist --project-name=enjoy-docs
           workingDirectory: "enjoy-docs"
 
