@@ -40,16 +40,16 @@ export default defineConfig({
         text: '智能助手',
         collapsed: false,
         items: [
-          { text: '添加对话', link: '/markdown-examples' },
-          { text: 'GPT 服务', link: '/api-examples' },
-          { text: 'TTS 服务', link: '/api-examples' }
+          { text: '简介', link: '/guide/ai-assistant' },
+          { text: 'GPT 服务', link: '/guide/gpt-conversation' },
+          { text: 'TTS 服务', link: '/guide/tts-conversation' }
         ]
       },
       {
         text: '使用案例',
         collapsed: false,
         items: [
-          { text: '利用 AI 生成训练材料', link: '/markdown-examples' },
+          { text: '利用 AI 生成训练材料', link: '/guide/use-case-generate-audio-resources' },
         ]
       }
     ],

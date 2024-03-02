@@ -76,7 +76,7 @@ Enjoy 采用 **本地优先** 的设计原则，大部分数据均保存在本�
 软件设置 -> 基本设置 -> OpenAi
 :::
 
-配置 OpenAI API 密钥，可以在 [官网](https://platform.openai.com/api-keys) 申请。配置好的 OpenAI 服务可以在 [智能助手]()、[查单词]()、[标注音标]() 等服务中使用。
+配置 OpenAI API 密钥，可以在 [官网](https://platform.openai.com/api-keys) 申请。配置好的 OpenAI 服务可以在 [智能助手](./ai-assistant.md)、 [提取关键词汇](./webpage#提取关键词汇)、 [查单词](./webpage#查单词)、标注音标 等服务中使用。
 
 - 密钥：OpenAI API 密钥
 - 模型：默认使用的模型
@@ -92,7 +92,7 @@ Enjoy 采用 **本地优先** 的设计原则，大部分数据均保存在本�
 软件设置 -> 基本设置 -> Google Generative AI
 :::
 
-配置 Google Generative AI 的密钥，可以在 [官网](https://ai.google.dev/) 申请 。配置后可以在 [智能助手]() 中选用 Google Generative AI 作为 AI 引擎。
+配置 Google Generative AI 的密钥，可以在 [官网](https://ai.google.dev/) 申请 。配置后可以在 [智能助手](./ai-assistant.md) 中选用 Google Generative AI 作为 AI 引擎。
 
 ## 语音转文本服务
 
@@ -100,7 +100,7 @@ Enjoy 采用 **本地优先** 的设计原则，大部分数据均保存在本�
 软件设置 -> 基本设置 -> 语音转文本服务
 :::
 
-语音转文本（即 STT，Speech To Text）服务是 Enjoy 提供的核心功能之一，也是 [跟读训练](/recoding) 的前提条件。
+语音转文本（即 STT，Speech to Text）服务是 Enjoy 提供的核心功能之一，也是 [跟读训练](./audios.md#跟读音频) 的前提条件。
 
 ### 本地(whisper)
 
@@ -122,7 +122,7 @@ Enjoy 软件集成了最小的 whisper 模型 `tiny.en`，如果电脑配置较�
 
 ### Azure AI STT
 
-利用微软 Azure AI 的语音识别 API 服务提供的 STT，该服务为**收费服务**，每次使用均会在 Enjoy 账户余额中扣费，，余额不足则需要 [充值](deposit) 后才可继续使用。
+利用微软 Azure AI 的语音识别 API 服务提供的 STT，该服务为**收费服务**，每次使用均会在 Enjoy 账户余额中扣费，，余额不足则需要 [充值](#充值) 后才可继续使用。
 
 ### Cloudflare AI STT
 
@@ -138,11 +138,11 @@ Enjoy 软件集成了最小的 whisper 模型 `tiny.en`，如果电脑配置较�
 软件设置 -> 基本设置 -> 默认 AI 引擎
 :::
 
-Enjoy 中提供了很多方便的功能，例如 [查单词](#lookup)、[标注音标](#ipa)、[提取关键词汇](#extract) 等，均是利用 AI 服务来实现。
+Enjoy 中提供了很多方便的功能，例如 [提取关键词汇](./webpage#提取关键词汇)、 [查单词](./webpage#查单词)、标注音标 等，均是利用 AI 服务来实现。
 
-如果你有自己的 OpenAI 密钥，建议将 **默认 AI 引擎** 选为 OpenAI。
+如果你有自己的 [OpenAI 密钥](#openai-配置)，建议将 **默认 AI 引擎** 选为 OpenAI。
 
-否则，可以选 `Enjoy AI`，由 Enjoy 提供该服务，每次使用均会在账户余额中扣费，余额不足则需要 [充值](deposit) 后才可继续使用。
+否则，可以选 `Enjoy AI`，由 Enjoy 提供该服务，每次使用均会在账户余额中扣费，余额不足则需要 [充值](#充值) 后才可继续使用。
 
 ## 充值
 
