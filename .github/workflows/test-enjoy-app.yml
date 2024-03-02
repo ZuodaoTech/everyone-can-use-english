@@ -46,7 +46,7 @@ jobs:
 
       - name: Run tests on macOS or Windows
         if: contains(matrix.os, 'macos') || contains(matrix.os, 'windows')
-        run: yarn test:enjoy
+        run: yarn enjoy:test
 
       - uses: actions/upload-artifact@v4
         if: always()
