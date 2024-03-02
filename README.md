@@ -11,8 +11,6 @@ yarn install
 yarn docs:dev
 ```
 
----
-
 # Enjoy App
 
 [![Test](https://github.com/xiaolai/everyone-can-use-english/actions/workflows/test-enjoy-app.yml/badge.svg)](https://github.com/xiaolai/everyone-can-use-english/actions/workflows/test-enjoy-app.yml)
@@ -28,8 +26,6 @@ yarn docs:dev
 yarn install
 yarn enjoy:start
 ```
-
----
 
 # 人人都能用英语
 
