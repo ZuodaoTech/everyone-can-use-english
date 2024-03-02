@@ -28,6 +28,12 @@
 
 :::
 
+::: tip
+
+在 D.J. 的某些版本里， `əʊ`，也被写作`oʊ` —— 所以现在也有一些词典用的是 `oʊ`。我的个人看法是，写作  `əʊ` 相对更合理，因为 `o` 并没有在 6 个基础音素里出现过。
+
+:::
+
 ::: info
 
 有时你会看到三种颜色的小喇叭图标，暗红色<span class="speak-word-inline" data-audio-uk="null-file.mp3"></span>、浅蓝色<span class="speak-word-inline" data-audio-us="null-file.mp3"></span>，或者黑色<span class="speak-word-inline" data-audio-other="null-file.mp3"></span>，用鼠标点击它可以听音频播放。比如，*happy* `/ˈhæpi/` —— 暗红色喇叭<span class="speak-word-inline" data-audio-uk="/audios/happy-uk.mp3"></span>是英式发音；浅蓝色<span class="speak-word-inline" data-audio-us="/audios/happy-us.mp3"></span>是美式发音；黑色<span class="speak-word-inline" data-audio-other="/audios/happy-zh-liaoning.mp3"></span>是其他口音。

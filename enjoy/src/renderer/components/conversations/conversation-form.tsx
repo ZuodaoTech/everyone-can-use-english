@@ -731,10 +731,13 @@ export const LLM_PROVIDERS: { [key: string]: any } = {
   enjoyai: {
     name: "EnjoyAI",
     models: [
-      "gpt-3.5-turbo-1106",
+      "gpt-3.5-turbo-0125",
       "gpt-3.5-turbo",
+      "gpt-3.5-turbo-1106",
       "gpt-3.5-turbo-16k",
       "gpt-3.5-turbo-instruct",
+      "gpt-4-0125-preview",
+      "gpt-4-turbo-preview",
       "gpt-4-1106-preview",
       "gpt-4-vision-preview",
       "gpt-4",
@@ -759,10 +762,13 @@ export const LLM_PROVIDERS: { [key: string]: any } = {
     name: "OpenAI",
     description: t("youNeedToSetupApiKeyBeforeUsingOpenAI"),
     models: [
-      "gpt-3.5-turbo-1106",
+      "gpt-3.5-turbo-0125",
       "gpt-3.5-turbo",
+      "gpt-3.5-turbo-1106",
       "gpt-3.5-turbo-16k",
       "gpt-3.5-turbo-instruct",
+      "gpt-4-0125-preview",
+      "gpt-4-turbo-preview",
       "gpt-4-1106-preview",
       "gpt-4-vision-preview",
       "gpt-4",
@@ -820,14 +826,14 @@ export const LLM_PROVIDERS: { [key: string]: any } = {
 export const TTS_PROVIDERS: { [key: string]: any } = {
   enjoyai: {
     name: "EnjoyAI",
-    models: ["tts-1"],
+    models: ["tts-1", "tts-1-hd"],
     voices: ["alloy", "echo", "fable", "onyx", "nova", "shimmer"],
     configurable: ["voice"],
   },
   openai: {
     name: "OpenAI",
     description: t("youNeedToSetupApiKeyBeforeUsingOpenAI"),
-    models: ["tts-1"],
+    models: ["tts-1", "tts-1-hd"],
     voices: ["alloy", "echo", "fable", "onyx", "nova", "shimmer"],
     configurable: ["model", "voice", "baseUrl"],
   },

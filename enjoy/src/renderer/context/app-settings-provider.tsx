@@ -79,12 +79,15 @@ export const AppSettingsProvider = ({
   }, [user, apiUrl, language]);
 
   const prepareFfmpeg = async () => {
-    const valid = await EnjoyApp.ffmpeg.check();
-    setFfmpegValid(valid);
-
-    if (!valid) {
-      loadFfmpegWASM();
+    try {
+      const valid = await EnjoyApp.ffmpeg.check();
+      setFfmpegValid(valid);
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message);
     }
+
+    loadFfmpegWASM();
   };
 
   const loadFfmpegWASM = async () => {
@@ -113,6 +116,7 @@ export const AppSettingsProvider = ({
         workerURL,
       });
       setFfmpegWasm(ffmpegRef.current);
+      (window as any).ffmpeg = ffmpegRef.current;
     } catch (err) {
       toast.error(err.message);
     }
@@ -150,7 +154,7 @@ export const AppSettingsProvider = ({
 
     client.me().then((user) => {
       if (user?.id) {
-        login(currentUser);
+        login(Object.assign({}, currentUser, user));
       } else {
         logout();
       }

@@ -6,7 +6,7 @@
 
 在挣扎着**读准**之前，**首先要避免读错**。这只是一个习惯，遇到任何不确定的词汇都要查词典 —— 当然，在有各种辅助工具的情况下（[GPT: Phonetic Transcriber](https://chat.openai.com/g/g-nWwuxUVqO-phonetic-transcriber)），甚至可以整句查询音标。
 
-忘文生音非常可怕。我曾经在很多年里把 *facade* 读成 `/ˈfækeɪd/` （其实是 `/fəˈsɑːd/`<span class="speak-word-inline" data-audio-uk="/audios/facade-uk.mp3" data-audio-us="/audios/facade-us.mp3"></span>）把 *specific* 读成 `/ˈspesɪfɪk/` （其实是 `/spəˈsɪfɪk/`<span class="speak-word-inline" data-audio-uk="/audios/specific-uk.mp3" data-audio-us="/audios/specific-us.mp3"></span>）…… 不妨再猜猜 *plaid* 这个词怎么读？我在很长一段时间里误以为是 `/pleɪd/` …… 后来才发现并非如此 —— 其实是 `/plæd/`：<span class="speak-word-inline" data-audio-uk="/audios/plaid-uk.mp3" data-audio-us="/audios/plaid-us.mp3"></span>。
+望文生音非常可怕。我曾经在很多年里把 *facade* 读成 `/ˈfækeɪd/` （其实是 `/fəˈsɑːd/`<span class="speak-word-inline" data-audio-uk="/audios/facade-uk.mp3" data-audio-us="/audios/facade-us.mp3"></span>）把 *specific* 读成 `/ˈspesɪfɪk/` （其实是 `/spəˈsɪfɪk/`<span class="speak-word-inline" data-audio-uk="/audios/specific-uk.mp3" data-audio-us="/audios/specific-us.mp3"></span>）…… 不妨再猜猜 *plaid* 这个词怎么读？我在很长一段时间里误以为是 `/pleɪd/` …… 后来才发现并非如此 —— 其实是 `/plæd/`：<span class="speak-word-inline" data-audio-uk="/audios/plaid-uk.mp3" data-audio-us="/audios/plaid-us.mp3"></span>。
 
 如果不养成这个习惯，那么读错的单词会越来越多，等于时时刻刻在为自己的牢墙添砖加瓦，到最后再也无法逃脱 —— Github 上有个[常见中国程序员发音错误的单词列表](https://github.com/shimohq/chinese-programmer-wrong-pronunciation)，不妨去看看，当作自己的警钟。
 
@@ -27,7 +27,7 @@
 >   * 元音（[2.1](/sounds-of-english/03-vowels-overview)）
 >   * 辅音（[2.2](/sounds-of-english/12-consonants-overview)）
 
-**仔细听**的意思是说，按照以上的顺序，逐条分析，直至每个**音素**都认真分析过、认真体会过、认真尝试过。这一步最需要**注意力集中**，也是整个训练中最关键的部分 —— 这场训练，从另外一个角度来看，全部都是**注意力训练**。
+**仔细听**的意思是说，按照以上的顺序，逐条分析，直至每个**音素**都认真分析过、认真体会过、认真尝试过。这一步最需要**注意力集中**，也是整个训练中最关键的部分 —— 这场训练，从另外一个角度来看，实际上都是**注意力训练**。
 
 如果这一点没做到、没做好的话，就会出现 “**明明听到的是一回事，脑子里反应的却是另外一回事**”。
 
@@ -57,11 +57,11 @@
 
 <video controls><source src="/videos/hc-gt-slow.mp4"></source></video>
 
- 可即便放慢速度了也不行…… 于是，只能一小节一小节地练，练熟了一小节再去练下一小节，两个都练熟了之后吧，还得拼起来重复很多遍才能做到两个小节之间衔接自然…… 如此这般，一小节一小节地终于 “**爬**” 完之后，才算有资格可以进行**正式练习**了……
+ 可即便放慢速度了也不行…… 于是，只能一小节一小节地练，练熟了一小节再去练下一小节，两个小节都练熟了之后吧，还得拼起来重复很多遍才能做到两个小节之间衔接自然…… 如此这般，一小节一小节地终于 “**爬**” 完之后，才算有资格可以进行**正式练习**了……
 
 自然语音中有**可换气停顿**的地方，就相当于是乐谱里的小节分界线。分段练习，实在难的小节，还可以继续拆分……
 
-在跟读的时候，有必要**夸张**一点**。声音也要正常地大** —— 确实不用喊，嗓子的确需要保护。实际上，我们主要需要练的是嘴唇、舌头、气流震动的配合，主要练的还真不是声带。
+在跟读的时候，有必要**夸张**一点。声音也要正常地**大** —— 确实不用喊，嗓子的确需要保护。实际上，我们主要需要练的是嘴唇、舌头、气流震动的配合，主要练的还真不是声带。
 
 跟读的时候，可以戴着耳机。一个比较好的方法是戴单只耳机 —— 这样，一方面录音听得更清楚，另外一方面也不妨碍听清自己的声音，还可以换着耳朵戴。
 
@@ -119,4 +119,4 @@ TED 上有一个讲座，Benjamin Zander 讲 [The transformative power of classi
 
 一天至少三个小时，每周最多可以中止一天。
 
-每天结束之前，要花 5～10 分钟做一下**复盘**，回忆并记录一下自己今天遇到的困难、已经克服的困难，尚未克服的困难，以及面对那些困难时所采用的方法…… 想一想还有什么方法可以试试？这些都要写下来。相信我，记录这个东西 ，总是会以想象不到的方式起想象不到的作用。
+每天结束之前，要花 5～10 分钟做一下**复盘**，回忆并记录一下自己今天遇到的困难、已经克服的困难、尚未克服的困难、以及面对那些困难时所采用的方法…… 想一想还有什么方法可以试试？这些都要写下来。相信我，记录这个东西 ，总是会以想象不到的方式起想象不到的作用。

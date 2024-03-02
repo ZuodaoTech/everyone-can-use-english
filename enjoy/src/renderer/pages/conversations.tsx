@@ -67,7 +67,7 @@ export default () => {
       engine: currentEngine.name,
       configuration: {
         type: "gpt",
-        model: "gpt-4-1106-preview",
+        model: "gpt-4-turbo-preview",
         baseUrl: "",
         roleDefinition: `你是我的英语教练。
 请将我的话改写成英文。
@@ -110,7 +110,7 @@ export default () => {
       engine: currentEngine.name,
       configuration: {
         type: "gpt",
-        model: "gpt-4-1106-preview",
+        model: "gpt-4-turbo-preview",
         baseUrl: "",
         roleDefinition: "",
         temperature: 0.2,

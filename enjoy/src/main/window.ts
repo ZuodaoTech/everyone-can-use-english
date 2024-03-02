@@ -20,7 +20,7 @@ import { WEB_API_URL, REPO_URL } from "@/constants";
 import { AudibleProvider, TedProvider } from "@main/providers";
 import Ffmpeg from "@main/ffmpeg";
 import { Waveform } from "./waveform";
-import url from 'url';
+import url from "url";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -442,14 +442,8 @@ ${log}
     },
   });
 
-  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith("http")) {
-      logger.info(`Opening ${url}`);
-      shell.openExternal(url);
-      return { action: "deny" };
-    } else {
-      return { action: "allow" };
-    }
+  mainWindow.webContents.setWindowOpenHandler(() => {
+    return { action: "allow" };
   });
 
   // and load the index.html of the app.

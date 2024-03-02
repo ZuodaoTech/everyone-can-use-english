@@ -3,12 +3,17 @@ import { MakerZIP } from "@electron-forge/maker-zip";
 import { MakerDeb } from "@electron-forge/maker-deb";
 import { MakerRpm } from "@electron-forge/maker-rpm";
 import { VitePlugin } from "@electron-forge/plugin-vite";
-import { FusesPlugin } from "@electron-forge/plugin-fuses";
-import { FuseV1Options, FuseVersion } from "@electron/fuses";
+import os from "os";
+// import { FusesPlugin } from "@electron-forge/plugin-fuses";
+// import { FuseV1Options, FuseVersion } from "@electron/fuses";
 
 const config = {
   packagerConfig: {
-    asar: false,
+    asar: {
+      // Binary files won't work in asar, so we need to unpack them
+      unpackDir:
+        "{.vite/build/lib,.vite/build/samples,node_modules/ffmpeg-static,node_modules/@andrkrn/ffprobe-static}",
+    },
     icon: "./assets/icon",
     name: "Enjoy",
     executableName: "enjoy",
@@ -21,11 +26,17 @@ const config = {
   },
   rebuildConfig: {},
   makers: [
+    {
+      name: "@electron-forge/maker-dmg",
+      config: {
+        icon: "./assets/icon.png",
+      },
+    },
     new MakerSquirrel({
       name: "Enjoy",
       setupIcon: "./assets/icon.ico",
     }),
-    new MakerZIP({}, ["darwin", "win32"]),
+    new MakerZIP(["win32"]),
     new MakerDeb({
       options: {
         name: "enjoy",
@@ -51,6 +62,7 @@ const config = {
           owner: "xiaolai",
           name: "everyone-can-use-english",
         },
+        generateReleaseNotes: true,
         draft: true,
       },
     },
@@ -77,18 +89,44 @@ const config = {
         },
       ],
     }),
+    {
+      name: "@electron-forge/plugin-auto-unpack-natives",
+      config: {},
+    },
     // Fuses are used to enable/disable various Electron functionality
     // at package time, before code signing the application
-    new FusesPlugin({
-      version: FuseVersion.V1,
-      [FuseV1Options.RunAsNode]: false,
-      [FuseV1Options.EnableCookieEncryption]: true,
-      [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
-      [FuseV1Options.EnableNodeCliInspectArguments]: true,
-      [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
-      [FuseV1Options.OnlyLoadAppFromAsar]: false,
-    }),
+    // new FusesPlugin({
+    //   version: FuseVersion.V1,
+    //   [FuseV1Options.RunAsNode]: false,
+    //   [FuseV1Options.EnableCookieEncryption]: true,
+    //   [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
+    //   [FuseV1Options.EnableNodeCliInspectArguments]: true,
+    //   [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
+    //   [FuseV1Options.OnlyLoadAppFromAsar]: false,
+    // }),
   ],
 };
+
+const macOsCodesignConfig = {
+  osxSign: {},
+  osxNotarize: {
+    tool: "notarytool",
+    appleId: process.env.APPLE_ID,
+    appleIdPassword: process.env.APPLE_APP_PASSWORD,
+    teamId: process.env.APPLE_TEAM_ID,
+  },
+};
+
+if (
+  os.platform() === "darwin" &&
+  process.env.APPLE_ID &&
+  process.env.APPLE_APP_PASSWORD &&
+  process.env.APPLE_TEAM_ID
+) {
+  config.packagerConfig = {
+    ...config.packagerConfig,
+    ...macOsCodesignConfig,
+  };
+}
 
 export default config;
