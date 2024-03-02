@@ -1,6 +1,7 @@
 name: Deploy Enjoy Docs website
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
