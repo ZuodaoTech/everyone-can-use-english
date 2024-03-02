@@ -22,16 +22,34 @@ export default defineConfig({
       },
       {
         text: '跟读训练',
+        collapsed: false,
         items: [
-          { text: '快速开始', link: '/markdown-examples' },
-          { text: '基本用法', link: '/api-examples' }
+          { text: '音频资源', link: '/guide/audios' },
+          { text: '视频资源', link: '/guide/videos' },
+        ]
+      },
+      {
+        text: '阅读文本',
+        collapsed: false,
+        items: [
+          { text: '在线文章', link: '/guide/webpage' },
+          { text: '本地电子书', link: '/guide/ebook' },
         ]
       },
       {
         text: '智能助手',
+        collapsed: false,
         items: [
-          { text: '快速开始', link: '/markdown-examples' },
-          { text: '基本用法', link: '/api-examples' }
+          { text: '添加对话', link: '/markdown-examples' },
+          { text: 'GPT 服务', link: '/api-examples' },
+          { text: 'TTS 服务', link: '/api-examples' }
+        ]
+      },
+      {
+        text: '使用案例',
+        collapsed: false,
+        items: [
+          { text: '利用 AI 生成训练材料', link: '/markdown-examples' },
         ]
       }
     ],
