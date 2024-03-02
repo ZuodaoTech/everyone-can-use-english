@@ -1,4 +1,4 @@
-# 安装
+# 下载安装
 
 Enjoy App 是一个跨平台的桌面应用，可以在 Windows、Mac 和 Linux 等电脑设备上运行。
 
@@ -12,32 +12,19 @@ Enjoy App 是一个跨平台的桌面应用，可以在 Windows、Mac 和 Linux 
 
 下载后，双击即可安装。
 
-## Mac(Silicon 芯片)
+## Mac
 
-[点击下载](https://github.com/xiaolai/everyone-can-use-english/releases/download/v0.1.0-alpha.12/Enjoy-darwin-arm64-0.1.0-alpha.12.zip)
+根据使用 Mac 电脑的芯片不同，需要下载不同的版本。
 
-下载解压后即可使用。
-
-::: tip 提示
-推荐先将软件拖至 `Applications` (`应用`) 中再使用。
-:::
+- [Silicon 芯片版本(arm64)](https://github.com/xiaolai/everyone-can-use-english/releases/download/v0.1.0-alpha.12/Enjoy-darwin-arm64-0.1.0-alpha.12.zip)
+- [Intel 芯片版本(x64)](https://github.com/xiaolai/everyone-can-use-english/releases/download/v0.1.0-alpha.12/Enjoy-darwin-x64-0.1.0-alpha.12.zip)
 
 ::: info 如何查看本机配置
 M1 以后的 Mac 电脑型号(M1、M2、M3)，均为 Silicon 芯片。
 
 如果你不清楚自己电脑的具体型号，可以点击屏幕左上方的  符号，在弹出来的菜单中，选择第一个选项 “关于本机（About This Mac）”，在弹出的窗口中，即可看到本机的硬件和系统配置。
 
-如果显示的是 `Apple M 系列`，即为 Silicon 芯片。
-:::
-
-## Mac(Intel 芯片)
-
-[点击下载](https://github.com/xiaolai/everyone-can-use-english/releases/download/v0.1.0-alpha.12/Enjoy-darwin-x64-0.1.0-alpha.12.zip)
-
-下载解压后即可使用。
-
-::: tip 提示
-推荐先将软件拖至 `Applications` (`应用`) 中再使用。
+如果显示的是 _Apple M 系列_，即为 Silicon 芯片。
 :::
 
 ::: warning 警告
@@ -46,9 +33,10 @@ M1 以后的 Mac 电脑型号(M1、M2、M3)，均为 Silicon 芯片。
 
 ## Linux
 
-[下载 deb 版本](https://github.com/xiaolai/everyone-can-use-english/releases/download/v0.1.0-alpha.12/enjoy_0.1.0-alpha.12_amd64.deb)
+请根据不同发行版本选用安装文件。
 
-[下载 rpm 版本](https://github.com/xiaolai/everyone-can-use-english/releases/download/v0.1.0-alpha.12/enjoy-0.1.0.alpha.12-1.x86_64.rpm)
+- [下载 deb 版本](https://github.com/xiaolai/everyone-can-use-english/releases/download/v0.1.0-alpha.12/enjoy_0.1.0-alpha.12_amd64.deb)
+- [下载 rpm 版本](https://github.com/xiaolai/everyone-can-use-english/releases/download/v0.1.0-alpha.12/enjoy-0.1.0.alpha.12-1.x86_64.rpm)
 
 ## 历史版本
 
