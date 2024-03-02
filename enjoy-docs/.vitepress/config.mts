@@ -5,7 +5,21 @@ export default defineConfig({
   lang: "zh-CN", // 'en-US
   title: "Enjoy App",
   description: "Enjoy 用户手册",
-  head: [["link", { rel: "icon", href: "/favicon.ico" }]],
+  head: [
+    [
+      "script",
+      { async: "", src: "https://www.googletagmanager.com/gtag/js?id=G-RY5XCM04NL" },
+    ],
+    [
+      "script",
+      {},
+      `window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RY5XCM04NL');`,
+    ],
+    ["link", { rel: "icon", href: "/favicon.ico" }],
+  ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: "/logo.png",
