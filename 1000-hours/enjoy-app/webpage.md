@@ -4,14 +4,14 @@
 
 输入文章的网址，即可开始阅读。
 
-![文章阅读页面](/snapshots/story-page.png)
+![文章阅读页面](/images/enjoy/story-page.png)
 _\* 文章阅读页面_
 
 ## 提取关键词汇
 
 打开文章后，Enjoy 将会智能提取该文章的关键词汇，并在文中标注。该功能需要 AI 引擎的支持，在 [默认 AI 引擎](./settings.md#默认-ai-引擎) 可以设置。
 
-![关键词汇](/snapshots/story-key-vocabulary.png)
+![关键词汇](/images/enjoy/story-key-vocabulary.png)
 _\* 智能提取关键词汇_
 
 ## 查单词

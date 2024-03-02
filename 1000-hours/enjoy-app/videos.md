@@ -2,7 +2,7 @@
 
 视频资源的使用与 [音频资源](./audios.md) 基本一致。
 
-![视频资源播放页面](/snapshots/video-page.png)
+![视频资源播放页面](/images/enjoy/video-page.png)
 _\* 视频播放页面_
 
 ## 录音

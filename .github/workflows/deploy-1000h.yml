@@ -22,21 +22,19 @@ jobs:
 
       - uses: actions/cache@v4
         with:
-          path: |
-            1000-hours/node_modules
-            1000-hours/**/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./1000-hours/package-lock.json') }}
+          path: "**/node_modules"
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Setup node env
         uses: actions/setup-node@master
         with:
           node-version: "20"
 
-      - run: npm install
-        working-directory: 1000-hours
+      - name: Install dependencies
+        run: yarn install
 
-      - run: npm run docs:build
-        working-directory: 1000-hours
+      - name: Build
+        run: yarn docs:build
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
@@ -45,3 +43,4 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy .vitepress/dist --project-name=1000-hours-prod
           workingDirectory: "1000-hours"
+

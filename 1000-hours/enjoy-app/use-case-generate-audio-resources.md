@@ -12,14 +12,14 @@
 
 角色定义选择预设的 `英语教练`。
 
-![选择 AI 角色](/snapshots/select-ai-role.png)
+![选择 AI 角色](/images/enjoy/select-ai-role.png)
 _\* 选择 AI 角色_
 
 具体配置里，根据具体情况，修改 AI 引擎 为 OpenAI 或者 Enjoy AI。如果使用 [OpenAI](./settings#openai-配置)，可能还需要检查配置 `接口地址`。
 
 将配置拉到最下面，`TTS 引擎` 也需要做相应配置。
 
-![对话设置](/snapshots/conversation-form.png)
+![对话设置](/images/enjoy/conversation-form.png)
 _\* 对话设置_
 
 配置完成后，点击下面的 `确认` 按钮，即可创建成功。
@@ -32,14 +32,14 @@ _\* 对话设置_
 
 如果你对 AI 的回复感到满意，点击信息下方的朗读图标，将其转化为语音。
 
-![英语教练对话](/snapshots/english-coach-gpt-conversation.png)
+![英语教练对话](/images/enjoy/english-coach-gpt-conversation.png)
 _\* 英语教练对话_
 
 ## 跟读训练
 
 继而点击麦克风图标，将该语音加入资源库，进行跟读训练。
 
-![添加跟读训练](/snapshots/conversation-add-speech-to-audio.png)
+![添加跟读训练](/images/enjoy/conversation-add-speech-to-audio.png)
 _\* 添加跟读训练_
 
 随后也可以在 [音频页面](./audios.md) 找到该材料，继续练习。

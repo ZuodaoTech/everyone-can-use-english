@@ -2,7 +2,7 @@
   "private": true,
   "workspaces": [
     "enjoy",
-    "enjoy-docs"
+    "1000-hours"
   ],
   "scripts": {
     "start:enjoy": "echo 'Please use `yarn enjoy:start` instead'",
@@ -14,12 +14,9 @@
     "enjoy:publish": "yarn workspace enjoy publish",
     "enjoy:lint": "yarn workspace enjoy eslint --ext .ts,.tsx .",
     "enjoy:create-migration": "yarn workspace enjoy zx ./src/main/db/create-migration.mjs",
-    "docs:dev": "yarn workspace enjoy-docs dev",
-    "docs:build": "yarn workspace enjoy-docs build",
-    "docs:preview": "yarn workspace enjoy-docs preview",
-    "1000h:dev": "yarn workspace 1000-hours dev",
-    "1000h:build": "yarn workspace 1000-hours build",
-    "1000h:preview": "yarn workspace 1000-hours preview"
+    "docs:dev": "yarn workspace 1000-hours dev",
+    "docs:build": "yarn workspace 1000-hours build",
+    "docs:preview": "yarn workspace 1000-hours preview"
   },
   "packageManager": "yarn@4.1.0",
   "engines": {

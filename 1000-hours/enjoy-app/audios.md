@@ -29,7 +29,7 @@ Enjoy 支持添加本地的音频资源，和在线资源。在音频页面，�
 
 Enjoy 会将音频按照句子切分，用户以句子为单位进行跟读练习。在激活的音频句子下，点击下方的录音按钮，即可开始录音，用户可以模仿音频朗读当前句子作为练习。
 
-![音频播放页面](/snapshots/audio-page.png)
+![音频播放页面](/images/enjoy/audio-page.png)
 _\* 音频播放页面_
 
 ::: tip 录音权限
@@ -42,7 +42,7 @@ Enjoy 集成了微软 Azure 的发音评估功能，作为自我的发音检查�
 
 该功能会以**录音时的句子文本作为参考**，评估录音的发音情况，各指标的详细说明可以参考微软的 [官方文档](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/how-to-pronunciation-assessment?pivots=programming-language-javascript#scripted-assessment-results)。
 
-![发音评估示例](/snapshots/pronouce-assessment.png)
+![发音评估示例](/images/enjoy/pronouce-assessment.png)
 _\* 发音评估示例_
 
 ::: warning 发音评估的使用建议
