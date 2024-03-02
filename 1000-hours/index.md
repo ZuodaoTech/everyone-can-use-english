@@ -23,8 +23,7 @@ hero:
     - theme: brand
       text: 自我训练
       link: /self-training/00-intro
-    # - theme: alt
-    #   text: API Examples
-    #   link: /api-examples
-
-
+    - theme: alt
+      text: Enjoy App
+      link: /enjoy-app/
+---
