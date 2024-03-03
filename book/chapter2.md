@@ -24,7 +24,7 @@
 
 突然，我眉头一皱，计上心来。我终于开口说话了：“Many believe that parents are the best teachers, do you agree or disagree?”──这是 TOEFL 作文题第一道……
 
-也许是这个话题太突兀了，那女生愣了一下，说话居然开始支吾起来。两三个短句之后，她把球踢了回来：“Wow, I really didn't think it through, huh, what do you say about it?” 
+也许是这个话题太突兀了，那女生愣了一下，说话居然开始支吾起来。两三个短句之后，她把球踢了回来：“Wow, I really didn't think it through, huh, what do you say about it?”
 
 我突然放松了下来──她怎么可能知道，这道题我写过四五个版本！我开始跟她说我的看法。我知道我的发音很差，所以，有意放慢了语速 …… 她不由地认真听了起来，因为她发现身边这个其貌不扬的男人，不开口倒也罢了，一开口竟然常常有并列复杂句 …… 更为关键的是，例证丰富，逻辑严谨……
 
@@ -56,7 +56,7 @@
 
 随着年龄的增加，每个人的内涵会慢慢积累出巨大的差异，于是，人们之间各自 “想要说的话” 都大不相同。另外还有一个原因，在真实的对话场景里，除非必要，人们往往回避 “重复别人的话”。既然别人已经说过，自己又何必再啰嗦？与此同时，随着时间的推移，每个人的思考方式也会衍生出独特之处，乃至于即便用同样的开场白，几句话过后，就会蔓延到与其他人完全不一样的方向。
 
-As people getting older, their knowledge is also increasing (hopefully). Therefore, what people want to say varies drastically from individual to individual. Furthermore, in real conversations, people always avoid repeating others whenever necessary. Why waste time and energy to produce nothing? 
+As people getting older, their knowledge is also increasing (hopefully). Therefore, what people want to say varies drastically from individual to individual. Furthermore, in real conversations, people always avoid repeating others whenever necessary. Why waste time and energy to produce nothing?
 
 Meanwhile, everyone is becoming even more distinctive, especially in terms of thinking. Therefore, a talk might well begin with mundane greetings, but is bound to crawl into a unique and unexpected direction after several exchanges.
 
@@ -80,7 +80,7 @@ Meanwhile, everyone is becoming even more distinctive, especially in terms of th
 10. Good afternoon.
 11. Good evening.
 12. Good night.
-13. Good-bye.	
+13. Good-bye.<img src="/images/speech-tract-$1.svg" class="themed" />
 14. See you in the evening.
 15. So long.
 
@@ -178,7 +178,7 @@ Meanwhile, everyone is becoming even more distinctive, especially in terms of th
 
 可是，“早恋” 用英文怎么说呢？我不知道。也查不到。我甚至没办法问老外，“早恋” 怎么说，因为我没办法用英语问他我想问的东西究竟是什么……
 
-我向他们描述：“In our culture, it is deemed as a wrongdoing if teenage girls and boys fall in love…” 我本来想接着问他 “… and we have a specific word to describe the relationship or the circumstance, called ‘早恋’，‘早’means too early, or premature, and ‘恋’means love… is there any counterpart in English vocabulary for this?” 可后面这话还没说出来，老外已经瞪大了眼睛喊道，“Why?” 
+我向他们描述：“In our culture, it is deemed as a wrongdoing if teenage girls and boys fall in love…” 我本来想接着问他 “… and we have a specific word to describe the relationship or the circumstance, called ‘早恋’，‘早’means too early, or premature, and ‘恋’means love… is there any counterpart in English vocabulary for this?” 可后面这话还没说出来，老外已经瞪大了眼睛喊道，“Why?”
 
 老外不会理解的，在他们眼里，十几岁的孩子开始对异性感兴趣（事实上，孩子从几岁开始就对异性感兴趣了）根本就是正常的，甚至是必然的。歌德说，“哪个少女不怀春，哪个少男不钟情”。
 
@@ -260,7 +260,7 @@ One of the reasons why many parents want to send their children to separate scho
 
 既然那个重要的前提非真，那么 “英语思维” 之类的概念就是虚无的，至少是 “靠不住的”，因为我们大多数情况下并不使用语言进行思维。更多的时候，我们是在思考有某种特定的语言如何表达思维结果，而非依赖语言去得到思维结果。
 
-有一篇重要的论文请读者参考阅读：[Absurdity of ‘Thinking in Language’](http://www.dwillard.org/articles/artview.asp?artID=11) (1972)   
+有一篇重要的论文请读者参考阅读：[Absurdity of ‘Thinking in Language’](http://www.dwillard.org/articles/artview.asp?artID=11) (1972)
 
 作为老师，给学生一个 “凭空捏造且无实际意义的概念” 是不厚道的。尤其当很多学生不由自主地把老师给出的这个概念作为自己的追求的时候。这样的学生注定要以失败作为结局 —— 因为根本不存在，所以肯定追求不到。要知道那些凭空捏造且无实际意义的概念在真实世界里依然可以发挥巨大作用 —— 当然通常是负面作用，最终只能归结为 “幻觉”、“扭曲”，抑或 “自我催眠”，反正没一个是能有好下场的。
 
@@ -274,7 +274,7 @@ One of the reasons why many parents want to send their children to separate scho
 
 > 我们所使用的语言限制我们的思维。
 
-这个错误的提问，无形之间给很多英语学习者造成了非常严重而又看不见摸不着的障碍（读者现在应该已经理解：每个人都不仅仅应该是 “学习者”，而是一上来就应该是 “使用者” ）。 
+这个错误的提问，无形之间给很多英语学习者造成了非常严重而又看不见摸不着的障碍（读者现在应该已经理解：每个人都不仅仅应该是 “学习者”，而是一上来就应该是 “使用者” ）。
 
 首先，翻译并不是大多数人学习外语的目的。大多数人学习外语的目的是使用外语，而 “翻译”，只不过是外语的众多用处之一而已。但是，“这句话怎么翻译？” 这个问法，却无形之中把这只不过是 “之一” 的用处变成了全部，正是所谓的本末倒置。
 
@@ -443,7 +443,7 @@ Style: Toward Clarity and Grace by Joseph M. Williams
 
 ## 8 秘密武器 —— 复述
 
-几乎所有真正有效的学习手段都是简单、廉价、往往并不直接但却真正有效的。复述，就是这样的有效手段。 
+几乎所有真正有效的学习手段都是简单、廉价、往往并不直接但却真正有效的。复述，就是这样的有效手段。
 
 每个文化中的每个人在这方面都一样 —— 终其一生绝大多数情况下都在复述别人说过的话。首先语言文字很难纯粹 “原创”，其次绝大多数情况下确实也没有必要 “独一无二”。更为重要的是，第二语言学习者的目标绝大多数情况下不是为了从事诗人、小说家之类的职业，而是希望多掌握一门用来承载信息沟通交流的工具 —— 这种情况下 “复述” 几乎占据了第二语言应用的全部。
 

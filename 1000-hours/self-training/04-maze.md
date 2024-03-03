@@ -14,7 +14,7 @@
 
 斯蒂芬·阿瑟·平克（Steven Arthur Pinker）说，“**写作之难，在于将网状的思想，通过树状的语法，用线性的文字展开……**”
 
-这有点像什么呢？这就好像是在二维的平面上绘制三维的物体…… 一不小心就可能看起来像是那种[不可能图形](https://en.wikipedia.org/wiki/Impossible_object)…… 
+这有点像什么呢？这就好像是在二维的平面上绘制三维的物体…… 一不小心就可能看起来像是那种[不可能图形](https://en.wikipedia.org/wiki/Impossible_object)……
 
 ![inb](/images/inb.svg)
 

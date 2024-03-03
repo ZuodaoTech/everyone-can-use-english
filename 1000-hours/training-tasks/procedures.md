@@ -49,7 +49,7 @@
 
 ## 2.3. 分段跟读
 
-这和我们练琴特别像。刚开始的时候，人家弹得轻松听着优美，我们自己的手指干脆不听话，笨得跟脚趾似的…… 
+这和我们练琴特别像。刚开始的时候，人家弹得轻松听着优美，我们自己的手指干脆不听话，笨得跟脚趾似的……
 
 <video controls><source src="/videos/hc-gt-normal.mp4"></source></video>
 
@@ -71,7 +71,7 @@
 
 大家都一样，刚开始的时候就是很吃力，就是很生硬 —— 并且，这种笨拙必然要持续相当长一段时间…… 哪怕感觉上已经熟练，还是需要继续练习的 —— 做什么都一样。
 
-TED 上有一个讲座，Benjamin Zander 讲 [The transformative power of classical music](https://www.ted.com/talks/benjamin_zander_the_transformative_power_of_classical_music/transcript?language=en)，提到说 “没有人是音盲（*tune deaf*）” 所以每个人都可以练习演奏 —— 这很重要…… 不过，值得你在这里听听的是他模仿了不同时期孩子弹钢琴的情况，从生硬到熟练…… 
+TED 上有一个讲座，Benjamin Zander 讲 [The transformative power of classical music](https://www.ted.com/talks/benjamin_zander_the_transformative_power_of_classical_music/transcript?language=en)，提到说 “没有人是音盲（*tune deaf*）” 所以每个人都可以练习演奏 —— 这很重要…… 不过，值得你在这里听听的是他模仿了不同时期孩子弹钢琴的情况，从生硬到熟练……
 
 <audio controls><source src="/audios/benjamin-zander-on-kids-playing-piano.mp3"></source></audio>
 

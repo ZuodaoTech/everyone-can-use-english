@@ -203,7 +203,7 @@
 另外一个特色是充斥在各个页面上的词表。下面摘录出来的仅是其中一例：
 
 > 下列名词用来返指想法，同时又表示对这些想法的态度：
-> analysis, assessment, assumption, attitude, belief, conclusion, conjecture, concept, deduction, delusion, diagnosis, doctrine, doubt, estimate, evaluation, fear, finding, guess, hope, idea, illusion, inference, insight, interpretation, misinterpretation, notion, opinion, picture, plan, position, reasoning, supposition, theory, thinking, view, viewpoint, vision, wish 
+> analysis, assessment, assumption, attitude, belief, conclusion, conjecture, concept, deduction, delusion, diagnosis, doctrine, doubt, estimate, evaluation, fear, finding, guess, hope, idea, illusion, inference, insight, interpretation, misinterpretation, notion, opinion, picture, plan, position, reasoning, supposition, theory, thinking, view, viewpoint, vision, wish
 准备过GRE/GMAT/SAT作文的同学可以一眼就看出这种整理方式对第二语言使用者多么地重要。
 基于语料库的语法书，在国内可以买到的，目前好像仅此一本。基于语料库的英语词典，现在有很多种，其中最有用的可能是《Oxford Collocation Dictionary for Students of English》，当然还有另外一个就是柯林斯的《Collins COBUILD Dictionary on CD-ROM 2006》（现在已经有Lingoes版本）。而柯林斯电子辞典更老一点的版本中，含有《Collins COBUILD英语语法大全》的英文原版内容。
 

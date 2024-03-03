@@ -8,7 +8,7 @@
 
 以下是一小段在本书成稿的过程中被删掉的文字：
 
-> Most people are deft at exhausting resources to tackle problems they have been creating. They often in effect choose to involute, rather than evolute without noticing. 
+> Most people are deft at exhausting resources to tackle problems they have been creating. They often in effect choose to involute, rather than evolute without noticing.
 >
 > <br />
 >

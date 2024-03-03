@@ -97,23 +97,23 @@ Please check out the [example_test.go](example_test.go) for example code.
 
  * ### Download video to specific folder and name
 
-	`go get github.com/kkdai/youtube/v2/youtubedr`
+<img src="/images/speech-tract-$1.svg" class="themed" />`go get github.com/kkdai/youtube/v2/youtubedr`
 
-	Download video from [dotGo 2015 - Rob Pike - Simplicity is Complicated](https://www.youtube.com/watch?v=rFejpH_tAHM) to current directory and name the file to simplicity-is-complicated.mp4
+<img src="/images/speech-tract-$1.svg" class="themed" />Download video from [dotGo 2015 - Rob Pike - Simplicity is Complicated](https://www.youtube.com/watch?v=rFejpH_tAHM) to current directory and name the file to simplicity-is-complicated.mp4
 
-	```
-	youtubedr download -d ./ -o simplicity-is-complicated.mp4 https://www.youtube.com/watch?v=rFejpH_tAHM
-	```
+<img src="/images/speech-tract-$1.svg" class="themed" />```
+<img src="/images/speech-tract-$1.svg" class="themed" />youtubedr download -d ./ -o simplicity-is-complicated.mp4 https://www.youtube.com/watch?v=rFejpH_tAHM
+<img src="/images/speech-tract-$1.svg" class="themed" />```
 
  * ### Download video with specific quality
 
-	`go get github.com/kkdai/youtube/v2/youtubedr`
+<img src="/images/speech-tract-$1.svg" class="themed" />`go get github.com/kkdai/youtube/v2/youtubedr`
 
-	Download video from [dotGo 2015 - Rob Pike - Simplicity is Complicated](https://www.youtube.com/watch?v=rFejpH_tAHM) with specific quality
+<img src="/images/speech-tract-$1.svg" class="themed" />Download video from [dotGo 2015 - Rob Pike - Simplicity is Complicated](https://www.youtube.com/watch?v=rFejpH_tAHM) with specific quality
 
-	```
-	youtubedr download -q medium https://www.youtube.com/watch?v=rFejpH_tAHM
-	```
+<img src="/images/speech-tract-$1.svg" class="themed" />```
+<img src="/images/speech-tract-$1.svg" class="themed" />youtubedr download -q medium https://www.youtube.com/watch?v=rFejpH_tAHM
+<img src="/images/speech-tract-$1.svg" class="themed" />```
 
    #### Special case by quality hd1080:
    Installation of ffmpeg is necessary for hd1080
@@ -136,14 +136,14 @@ Please check out the [example_test.go](example_test.go) for example code.
 ## How it works
 
 - Parse the video ID you input in URL
-	- ex: `https://www.youtube.com/watch?v=rFejpH_tAHM`, the video id is `rFejpH_tAHM`
+<img src="/images/speech-tract-$1.svg" class="themed" />- ex: `https://www.youtube.com/watch?v=rFejpH_tAHM`, the video id is `rFejpH_tAHM`
 - Get video information via video id.
-	- Use URL: `http://youtube.com/get_video_info?video_id=`
+<img src="/images/speech-tract-$1.svg" class="themed" />- Use URL: `http://youtube.com/get_video_info?video_id=`
 - Parse and decode video information.
-	- Download URL in "url="
-	- title in "title="
+<img src="/images/speech-tract-$1.svg" class="themed" />- Download URL in "url="
+<img src="/images/speech-tract-$1.svg" class="themed" />- title in "title="
 - Download video from URL
-	- Need the string combination of "url"
+<img src="/images/speech-tract-$1.svg" class="themed" />- Need the string combination of "url"
 
 ## Inspired
 - [https://github.com/ytdl-org/youtube-dl](https://github.com/ytdl-org/youtube-dl)

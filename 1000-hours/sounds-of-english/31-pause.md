@@ -9,7 +9,7 @@
 
 > *Yet, it is a fact of life that an unlettered peasant is considered ignorant.*
 >
-> <audio controls><source src="/audios/yet-it-is-a-fact-of-life.mp3" type="audio/mpeg">Your browser does not support the audio element.</source></audio>   
+> <audio controls><source src="/audios/yet-it-is-a-fact-of-life.mp3" type="audio/mpeg">Your browser does not support the audio element.</source></audio>
 >
 > 以下是这段音频的 *Waveform*（波谱）和 *Pitch Contour*（音高变化）：
 >
@@ -35,7 +35,7 @@
 
 > * 把 `/ɪs/` 中的 `s` 夸张地拉长，保持气流振动；
 > * 然后再抬高声调清楚地读出那个重音音节 `/ˈpe/`；
-> * 而后顺畅地接着把后面的 `/ʃəlɪ/` 读完…… 
+> * 而后顺畅地接着把后面的 `/ʃəlɪ/` 读完……
 
 再试试 *abstraction* `/æbˈstrækʃən/`:
 
