@@ -66,6 +66,7 @@ export const OpenaiSettings = () => {
                       <Input
                         disabled={!editing}
                         type="password"
+                        placeholder="*********"
                         value={field.value}
                         onChange={field.onChange}
                       />
