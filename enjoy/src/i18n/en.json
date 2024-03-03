@@ -247,6 +247,8 @@
   "about": "About",
   "currentVersion": "Current version",
   "checkUpdate": "Check update",
+  "userGuide": "User guide",
+  "feedback": "Feedback",
   "alreadyLatestVersion": "Already latest version",
   "initializingApp": "Initializing APP",
   "welcomeTo": "Welcome to",
