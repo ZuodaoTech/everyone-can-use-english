@@ -347,6 +347,7 @@
   "leaveEmptyToUseDefault": "留空则使用默认值",
   "newConversation": "新对话",
   "selectAiRole": "选择 AI 角色",
+  "chooseFromPresetGpts": "从预设的 GPTs 中选择",
   "custom": "自定义",
   "startConversation": "开始对话",
   "editConversation": "编辑对话",

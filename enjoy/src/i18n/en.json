@@ -348,6 +348,7 @@
   "leaveEmptyToUseDefault": "Leave empty to use default",
   "newConversation": "New conversation",
   "selectAiRole": "Select AI role",
+  "chooseFromPresetGpts": "Choose from preset GPTs",
   "custom": "Custom",
   "startConversation": "Start conversation",
   "editConversation": "Edit conversation",

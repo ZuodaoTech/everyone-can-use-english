@@ -8,6 +8,7 @@ import {
   DialogTrigger,
   Sheet,
   SheetContent,
+  ScrollArea,
 } from "@renderer/components/ui";
 import { ConversationForm } from "@renderer/components";
 import { useState, useEffect, useContext, useReducer } from "react";
@@ -20,6 +21,7 @@ import {
 } from "@renderer/context";
 import { conversationsReducer } from "@renderer/reducers";
 import dayjs from "dayjs";
+import { CONVERSATION_PRESETS } from "@/constants";
 
 export default () => {
   const [creating, setCreating] = useState<boolean>(false);
@@ -60,74 +62,57 @@ export default () => {
     }
   };
 
-  const PRESETS = [
-    {
-      key: "english-coach",
-      name: "英语教练",
+  const presets = CONVERSATION_PRESETS.map((preset) =>
+    Object.assign({}, preset, {
       engine: currentEngine.name,
       configuration: {
-        type: "gpt",
-        model: "gpt-4-turbo-preview",
+        ...preset.configuration,
+        tts: {
+          ...preset.configuration.tts,
+          engine: currentEngine.name,
+        },
+      },
+    })
+  );
+
+  const customPreset = {
+    key: "custom",
+    name: t("custom"),
+    engine: currentEngine.name,
+    configuration: {
+      type: "gpt",
+      model: "gpt-4-turbo-preview",
+      baseUrl: "",
+      roleDefinition: "",
+      temperature: 0.2,
+      numberOfChoices: 1,
+      maxTokens: 2048,
+      presencePenalty: 0,
+      frequencyPenalty: 0,
+      historyBufferSize: 0,
+      tts: {
         baseUrl: "",
-        roleDefinition: `你是我的英语教练。
-请将我的话改写成英文。
-不需要逐字翻译。
-请分析清楚我的内容，而后用英文重新逻辑清晰地组织它。
-请使用地道的美式英语，纽约腔调。
-请尽量使用日常词汇，尽量优先使用短语动词或者习惯用语。
-每个句子最长不应该超过 20 个单词。`,
-        temperature: 0.2,
-        numberOfChoices: 1,
-        maxTokens: 2048,
-        presencePenalty: 0,
-        frequencyPenalty: 0,
-        historyBufferSize: 0,
-        tts: {
-          baseUrl: "",
-          engine: currentEngine.name,
-          model: "tts-1",
-          voice: "alloy",
-        },
+        engine: currentEngine.name,
+        model: "tts-1",
+        voice: "alloy",
       },
     },
-    {
-      key: "tts",
-      name: "TTS",
-      engine: currentEngine.name,
-      configuration: {
-        type: "tts",
-        tts: {
-          baseUrl: "",
-          engine: currentEngine.name,
-          model: "tts-1",
-          voice: "alloy",
-        },
-      },
-    },
-    {
-      key: "custom",
-      name: t("custom"),
-      engine: currentEngine.name,
-      configuration: {
-        type: "gpt",
-        model: "gpt-4-turbo-preview",
+  };
+
+  const ttsPreset = {
+    key: "tts",
+    name: "TTS",
+    engine: "openai",
+    configuration: {
+      type: "tts",
+      tts: {
         baseUrl: "",
-        roleDefinition: "",
-        temperature: 0.2,
-        numberOfChoices: 1,
-        maxTokens: 2048,
-        presencePenalty: 0,
-        frequencyPenalty: 0,
-        historyBufferSize: 0,
-        tts: {
-          baseUrl: "",
-          engine: currentEngine.name,
-          model: "tts-1",
-          voice: "alloy",
-        },
+        engine: "openai",
+        model: "tts-1",
+        voice: "alloy",
       },
     },
-  ];
+  };
 
   return (
     <div className="h-full px-4 py-6 lg:px-8 bg-muted flex flex-col">
@@ -154,30 +139,62 @@ export default () => {
               <DialogHeader>
                 <DialogTitle>{t("selectAiRole")}</DialogTitle>
               </DialogHeader>
-              <div
-                data-testid="conversation-presets"
-                className="grid grid-cols-2 gap-4"
-              >
-                {PRESETS.map((preset) => (
-                  <DialogTrigger
-                    key={preset.key}
-                    data-testid={`conversation-preset-${preset.key}`}
-                    className="p-4 border hover:shadow rounded-lg cursor-pointer space-y-2 h-32"
+
+              <div data-testid="conversation-presets" className="">
+                <div className="text-sm text-foreground/70 mb-2">
+                  {t("chooseFromPresetGpts")}
+                </div>
+                <ScrollArea className="h-64 pr-4">
+                  {presets.map((preset) => (
+                    <DialogTrigger
+                      key={preset.key}
+                      data-testid={`conversation-preset-${preset.key}`}
+                      asChild
+                      onClick={() => {
+                        setPreset(preset);
+                        setCreating(true);
+                      }}
+                    >
+                      <div className="w-full p-2 cursor-pointer rounded hover:bg-muted">
+                        <div className="capitalize truncate">{preset.name}</div>
+                        {preset.configuration.roleDefinition && (
+                          <div className="line-clamp-1 text-xs text-foreground/70">
+                            {preset.configuration.roleDefinition}
+                          </div>
+                        )}
+                      </div>
+                    </DialogTrigger>
+                  ))}
+                </ScrollArea>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <DialogTrigger>
+                  <Button
+                    data-testid={`conversation-preset-${customPreset.key}`}
                     onClick={() => {
-                      setPreset(preset);
+                      setPreset(customPreset);
                       setCreating(true);
                     }}
+                    variant="secondary"
+                    className="w-full"
                   >
-                    <div className="capitalize text-center line-clamp-1">
-                      {preset.name}
-                    </div>
-                    {preset.configuration.roleDefinition && (
-                      <div className="line-clamp-3 text-sm text-foreground/70">
-                        {preset.configuration.roleDefinition}
-                      </div>
-                    )}
-                  </DialogTrigger>
-                ))}
+                    {t("custom")} GPT
+                  </Button>
+                </DialogTrigger>
+                <DialogTrigger>
+                  <Button
+                    data-testid={`conversation-preset-${ttsPreset.key}`}
+                    onClick={() => {
+                      setPreset(ttsPreset);
+                      setCreating(true);
+                    }}
+                    variant="secondary"
+                    className="w-full"
+                  >
+                    TTS
+                  </Button>
+                </DialogTrigger>
               </div>
             </DialogContent>
           </Dialog>
