@@ -41,7 +41,7 @@ export const RecordingCard = (props: {
     EnjoyApp.recordings.destroy(recording.id);
   };
   const handleShare = async () => {
-    if (!recording.updatedAt) {
+    if (!recording.uploadedAt) {
       try {
         await EnjoyApp.recordings.upload(recording.id);
       } catch (error) {
