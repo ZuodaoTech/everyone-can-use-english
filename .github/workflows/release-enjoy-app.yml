@@ -18,7 +18,7 @@ jobs:
         run: yarn install
 
       - name: Install Apple certificate
-        if: contains(github.event.inputs.os, 'macos')
+        if: contains(matrix.os, 'macos')
         env:
           MACOS_CERTIFICATE_APPLICATION_BASE64: ${{ secrets.MACOS_CERTIFICATE_APPLICATION_BASE64 }}
           MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
