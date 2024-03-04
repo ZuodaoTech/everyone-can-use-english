@@ -48,6 +48,8 @@ export const useConversation = () => {
         n: numberOfChoices,
       });
     } else if (conversation.engine === "openai") {
+      if (!openai) throw new Error("OpenAI API key is required");
+
       return new ChatOpenAI({
         openAIApiKey: openai.key,
         configuration: {
@@ -69,6 +71,8 @@ export const useConversation = () => {
         presencePenalty,
       });
     } else if (conversation.engine === "googleGenerativeAi") {
+      if (!googleGenerativeAi) throw new Error("Google Generative AI API key is required");
+
       return new ChatGoogleGenerativeAI({
         apiKey: googleGenerativeAi.key,
         modelName: model,
@@ -234,12 +238,14 @@ export const useConversation = () => {
         baseURL: `${apiUrl}/api/ai`,
         dangerouslyAllowBrowser: true,
       });
-    } else {
+    } else if (openai) {
       client = new OpenAI({
         apiKey: openai.key,
         baseURL: baseUrl || openai.baseUrl,
         dangerouslyAllowBrowser: true,
       });
+    } else {
+      throw new Error("OpenAI API key is required");
     }
 
     const file = await client.audio.speech.create({
