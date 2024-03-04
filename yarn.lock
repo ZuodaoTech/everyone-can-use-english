@@ -7615,7 +7615,7 @@ __metadata:
     html-to-text: "npm:^9.0.5"
     https-proxy-agent: "npm:^7.0.4"
     i18next: "npm:^23.10.0"
-    intl-tel-input: "npm:^19.5.4"
+    intl-tel-input: "npm:^19.5.5"
     js-md5: "npm:^0.8.3"
     langchain: "npm:^0.1.21"
     lodash: "npm:^4.17.21"
@@ -9668,14 +9668,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"intl-tel-input@npm:^19.5.4":
-  version: 19.5.4
-  resolution: "intl-tel-input@npm:19.5.4"
+"intl-tel-input@npm:^19.5.5":
+  version: 19.5.5
+  resolution: "intl-tel-input@npm:19.5.5"
   dependencies:
     prop-types: "npm:^15.8.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-  checksum: 10c0/c393f0090cfbfc2014eab335b02b5f18dd6719a7d10383f9898a2361b8b98e2cc35ee8a1f2444571d98413b39694a0a13319365a0f374f23fb9e1705bd636e71
+  checksum: 10c0/940c1d318bfe6433dba61f4f186d9fb446b06bc4005fe45a8de580c37f3c96f01ebc772351c516d28c7a7054858696ab4252c0b75a6f3470352e727959c5381f
   languageName: node
   linkType: hard
 
