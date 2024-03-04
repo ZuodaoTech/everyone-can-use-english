@@ -68,7 +68,7 @@ test.describe("with login", async () => {
     });
 
     await page.evaluate(() => {
-      return window.__ENJOY_APP__.app.reload();
+      return (window as any).__ENJOY_APP__.app.reload();
     });
   });
 

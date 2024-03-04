@@ -107,7 +107,7 @@ export default () => {
       type: "tts",
       tts: {
         baseUrl: "",
-        engine: "openai",
+        engine: currentEngine.name,
         model: "tts-1",
         voice: "alloy",
       },
