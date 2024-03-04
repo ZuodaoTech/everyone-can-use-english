@@ -7617,7 +7617,7 @@ __metadata:
     i18next: "npm:^23.10.0"
     intl-tel-input: "npm:^19.5.4"
     js-md5: "npm:^0.8.3"
-    langchain: "npm:^0.1.21"
+    langchain: "npm:^0.1.25"
     lodash: "npm:^4.17.21"
     lucide-react: "npm:^0.344.0"
     mark.js: "npm:^8.11.1"
@@ -10307,9 +10307,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"langchain@npm:^0.1.21":
-  version: 0.1.24
-  resolution: "langchain@npm:0.1.24"
+"langchain@npm:^0.1.25":
+  version: 0.1.25
+  resolution: "langchain@npm:0.1.25"
   dependencies:
     "@anthropic-ai/sdk": "npm:^0.9.1"
     "@langchain/community": "npm:~0.0.33"
@@ -10379,7 +10379,7 @@ __metadata:
     web-auth-library: ^1.0.3
     ws: ^8.14.2
     youtube-transcript: ^1.0.6
-    youtubei.js: ^5.8.0
+    youtubei.js: ^9.1.0
   peerDependenciesMeta:
     "@aws-sdk/client-s3":
       optional: true
@@ -10483,7 +10483,7 @@ __metadata:
       optional: true
     youtubei.js:
       optional: true
-  checksum: 10c0/6ad73bd80cbffbc33fa863b3e10fd7ec788832cbab1a15eb4aa8f680241235f0463577d09dc6bb63995bc4bc2c18f22391c02d9c2cb963890f9b84c4cb621722
+  checksum: 10c0/ce8fbe8180df7dfb1f12b5dea176af29adbfd4b291234053274a1410f2d862ab73f8c9f31bee49c750ca5a4e12acdfc93a0bcc3a584e5b896d04776bea58e6ae
   languageName: node
   linkType: hard
 
