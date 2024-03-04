@@ -13,9 +13,6 @@ yarn docs:dev
 
 # Enjoy App
 
-[![Test](https://github.com/xiaolai/everyone-can-use-english/actions/workflows/test-enjoy-app.yml/badge.svg)](https://github.com/xiaolai/everyone-can-use-english/actions/workflows/test-enjoy-app.yml)
-[![Release](https://github.com/xiaolai/everyone-can-use-english/actions/workflows/release-enjoy-app.yml/badge.svg)](https://github.com/xiaolai/everyone-can-use-english/actions/workflows/release-enjoy-app.yml)
-
 ## 使用说明
 
 请参阅 https://1000h.org/enjoy-app/
