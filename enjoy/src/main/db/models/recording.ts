@@ -162,7 +162,10 @@ export class Recording extends Model<Recording> {
       logger,
     });
 
-    const { token, region } = await webApi.generateSpeechToken();
+    const { token, region } = await webApi.generateSpeechToken({
+      targetId: this.id,
+      targetType: "Recording",
+    });
     const sdk = new AzureSpeechSdk(token, region);
 
     const result = await sdk.pronunciationAssessment({

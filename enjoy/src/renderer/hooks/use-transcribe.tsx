@@ -72,7 +72,11 @@ export const useTranscribe = () => {
   };
 
   const transcribe = async (
-    mediaSrc: string
+    mediaSrc: string,
+    params?: {
+      targetId?: string;
+      targetType?: string;
+    }
   ): Promise<{
     engine: string;
     model: string;
@@ -87,7 +91,7 @@ export const useTranscribe = () => {
     } else if (whisperConfig.service === "openai") {
       return transcribeByOpenAi(blob);
     } else if (whisperConfig.service === "azure") {
-      return transcribeByAzureAi(blob);
+      return transcribeByAzureAi(blob, params);
     } else {
       throw new Error(t("whisperServiceNotSupported"));
     }
@@ -200,13 +204,17 @@ export const useTranscribe = () => {
   };
 
   const transcribeByAzureAi = async (
-    blob: Blob
+    blob: Blob,
+    params?: {
+      targetId?: string;
+      targetType?: string;
+    }
   ): Promise<{
     engine: string;
     model: string;
     result: TranscriptionResultSegmentGroupType[];
   }> => {
-    const { token, region } = await webApi.generateSpeechToken();
+    const { token, region } = await webApi.generateSpeechToken(params);
     const config = sdk.SpeechConfig.fromAuthorizationToken(token, region);
     const audioConfig = sdk.AudioConfig.fromWavFileInput(
       new File([blob], "audio.wav")

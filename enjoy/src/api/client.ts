@@ -166,8 +166,11 @@ export class Client {
     return this.api.delete(`/api/mine/recordings/${id}`);
   }
 
-  generateSpeechToken(): Promise<{ token: string; region: string }> {
-    return this.api.post("/api/speech/tokens");
+  generateSpeechToken(params?: {
+    targetType?: string;
+    targetId?: string;
+  }): Promise<{ token: string; region: string }> {
+    return this.api.post("/api/speech/tokens", decamelizeKeys(params || {}));
   }
 
   syncPronunciationAssessment(

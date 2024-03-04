@@ -252,10 +252,9 @@ export const VideosComponent = () => {
               onClick={async () => {
                 if (!transcribing) return;
 
-                transcribe({
-                  mediaId: transcribing.id,
-                  mediaSrc: transcribing.src,
-                  mediaType: "Video",
+                transcribe(transcribing.src, {
+                  targetId: transcribing.id,
+                  targetType: "Video",
                 }).finally(() => {
                   setTranscribing(null);
                 });

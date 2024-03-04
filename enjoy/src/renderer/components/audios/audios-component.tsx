@@ -252,10 +252,9 @@ export const AudiosComponent = () => {
               onClick={async () => {
                 if (!transcribing) return;
 
-                transcribe({
-                  mediaId: transcribing.id,
-                  mediaSrc: transcribing.src,
-                  mediaType: "Audio",
+                transcribe(transcribing.src, {
+                  targetId: transcribing.id,
+                  targetType: "Audio",
                 }).finally(() => {
                   setTranscribing(null);
                 });

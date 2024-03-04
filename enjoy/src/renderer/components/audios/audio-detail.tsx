@@ -95,7 +95,10 @@ export const AudioDetail = (props: { id?: string; md5?: string }) => {
     setTranscribing(true);
     setTranscribingProgress(0);
     try {
-      const { engine, model, result } = await transcribe(audio.src);
+      const { engine, model, result } = await transcribe(audio.src, {
+        targetId: audio.id,
+        targetType: "Audio",
+      });
       await EnjoyApp.transcriptions.update(transcription.id, {
         state: "finished",
         result,

@@ -91,7 +91,10 @@ export const VideoDetail = (props: { id?: string; md5?: string }) => {
     setTranscribing(true);
     setTranscribingProgress(0);
     try {
-      const { engine, model, result } = await transcribe(video.src);
+      const { engine, model, result } = await transcribe(video.src, {
+        targetId: video.id,
+        targetType: "Video",
+      });
       await EnjoyApp.transcriptions.update(transcription.id, {
         state: "finished",
         result,
