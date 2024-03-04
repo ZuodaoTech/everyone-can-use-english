@@ -74,6 +74,7 @@ export const LoginForm = () => {
 
   useEffect(() => {
     if (!webviewUrl) return;
+    if (!containerRef?.current) return;
 
     EnjoyApp.view.onViewState((_event, state) => onViewState(state));
 

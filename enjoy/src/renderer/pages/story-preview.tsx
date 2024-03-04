@@ -170,6 +170,8 @@ export default () => {
     if (readable) {
       EnjoyApp.view.hide().catch(console.error);
     } else if (!loading) {
+      if (!containerRef?.current) return;
+
       const rect = containerRef.current.getBoundingClientRect();
       EnjoyApp.view.show({
         x: rect.x,
