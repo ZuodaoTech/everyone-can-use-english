@@ -67,6 +67,15 @@ test.describe("with login", async () => {
       });
     });
 
+    page.route("**/api/stories", (route) => {
+      route.fulfill({
+        json: {
+          stories: [],
+          next: null,
+        },
+      });
+    });
+
     await page.evaluate(() => {
       return (window as any).__ENJOY_APP__.app.reload();
     });
@@ -84,7 +93,7 @@ test.describe("with login", async () => {
   });
 
   test.describe("with conversation", async () => {
-    test.beforeEach(async () => {
+    test.beforeAll(async () => {
       const file = fs.readFileSync(
         path.join(process.cwd(), "samples", "speech.mp3")
       );
