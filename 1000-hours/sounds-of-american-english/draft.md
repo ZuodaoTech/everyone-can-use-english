@@ -67,3 +67,17 @@ English may well be the language with the most regional accents on Earth, leadin
 
 A prominent feature of American English is the rhotacized `ə`. The IPA developed two specific marks to note this, with `ɚ` corresponding to `əʳ`, and `ɝ`  to `əːʳ`. Bear in mind not all instances of `ə` will be subjected to rhotacization; certain words like *focus* retain their original pronunciations as `/ˈfoʊkǝs/` rather than veering towards a rendition such as `/ˈfoʊkɚs/`.
 
+## 2.2 辅音
+
+英文大约 28 个辅音。
+
+| 爆破音 | 清辅音 | `p`, `t`, `k`           |
+| ------ | ------ | ----------------------- |
+|        | 浊辅音 | `b`, `d`, `g`           |
+| 摩擦音 | 清辅音 | `f`, `s`, `θ`, `ʃ`, `h` |
+|        | 浊辅音 | `v`, `z`, `ð`, `ʒ`, `r` |
+| 破擦音 | 清辅音 | `tʃ`, `tr`, `ts`        |
+|        | 浊辅音 | `dʒ`, `dr`, `dz`        |
+| 鼻音   | 浊辅音 | `m`, `n`, `ŋ`           |
+| 边辅音 | 浊辅音 | `l`                     |
+| 半元音 | 浊辅音 | `j`, `w`                |
