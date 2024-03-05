@@ -4,7 +4,7 @@
 
 ## 01. English Alphabet
 
-Modern English is composed of *26* letters, each with both *uppercase* and *lowercase* forms. English stands out among European languages for not using [diacritics](https://en.wikipedia.org/wiki/Diacritic), which are special marks added to letters to alter their pronunciation or meaning.
+Modern English is composed of *26* letters, each with both *uppercase* and *lowercase* forms. English stands out among European languages for not using [diacritics](https://en.wikipedia.org/wiki/Diacritic), which are special marks added to letters to alter their pronunciation or meaning, such as *â*, *é* or *ç*, etc.
 
 [NATO](https://en.wikipedia.org/wiki/NATO) has a system that uses common words to identify each letter, which is particularly helpful for military and civil aviation, emergency serivces, radio or phone communication, and many others to avoid confusion when spelling out words.
 
