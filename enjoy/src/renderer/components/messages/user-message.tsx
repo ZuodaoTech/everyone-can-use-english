@@ -86,7 +86,22 @@ export const UserMessageComponent = (props: {
       className="flex items-end justify-end space-x-2 pl-10"
     >
       <div className="flex flex-col gap-2 px-4 py-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full">
-        <Markdown className="select-text prose">{message.content}</Markdown>
+        <Markdown
+          className="select-text prose"
+          components={{
+            a({ node, children, ...props }) {
+              try {
+                new URL(props.href ?? "");
+                props.target = "_blank";
+                props.rel = "noopener noreferrer";
+              } catch (e) {}
+
+              return <a {...props}>{children}</a>;
+            },
+          }}
+        >
+          {message.content}
+        </Markdown>
 
         {Boolean(speech) && <SpeechPlayer speech={speech} />}
 
