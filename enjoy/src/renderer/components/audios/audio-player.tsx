@@ -1,18 +1,38 @@
 import { createContext, useEffect, useState, useContext, useRef } from "react";
 import {
-  WavesurferContext,
-  WavesurferProvider,
+  MediaPlayerProviderContext,
   AppSettingsProviderContext,
 } from "@renderer/context";
 import { t } from "i18next";
-import { toast } from "@renderer/components/ui";
-import { LoaderSpin } from "@renderer/components";
+import { Button, toast } from "@renderer/components/ui";
+import {
+  MediaLoadingModal,
+  AudioCaption,
+  AudioTranscription,
+  AudioPlayerControls,
+  AudioInfoPanel,
+  AudioRecordings,
+} from "@renderer/components";
+import {
+  MediaPlayer as VidstackMediaPlayer,
+  MediaProvider,
+  isAudioProvider,
+  isVideoProvider,
+  useMediaRemote,
+} from "@vidstack/react";
+import {
+  DefaultAudioLayout,
+  defaultLayoutIcons,
+} from "@vidstack/react/player/layouts/default";
 
 export const AudioPlayer = (props: { id?: string; md5?: string }) => {
   const { id, md5 } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { setMedia, initialized, setRef } = useContext(WavesurferContext);
+  const { media, setMedia, setMediaProvider, decoded, setRef, wavesurfer } =
+    useContext(MediaPlayerProviderContext);
   const ref = useRef(null);
+
+  const mediaRemote = useMediaRemote();
 
   useEffect(() => {
     const where = id ? { id } : { md5 };
@@ -27,16 +47,50 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
 
   useEffect(() => {
     setRef(ref);
-  }, []);
+  }, [ref]);
 
   return (
     <div data-testid="audio-player">
-      <div className="grid grid-cols-7 gap-4">
-        <div className="col-span-5 h-[calc(100vh-6.5rem)] flex flex-col">
-          <div ref={ref} />
+      <div className="">
+        <div className="h-[calc(40vh-3.5rem)]">
+          {media?.src && (
+            <div className={decoded ? "hidden" : ""}>
+              <VidstackMediaPlayer
+                src={media.src}
+                onCanPlayThrough={(detail, nativeEvent) => {
+                  mediaRemote.setTarget(nativeEvent.target);
+                  const { provider } = detail;
+                  if (isAudioProvider(provider)) {
+                    setMediaProvider(provider.audio);
+                  } else if (isVideoProvider(provider)) {
+                    setMediaProvider(provider.video);
+                  }
+                }}
+              >
+                <MediaProvider />
+                <DefaultAudioLayout icons={defaultLayoutIcons} />
+              </VidstackMediaPlayer>
+            </div>
+          )}
+
+          <div className="grid grid-cols-3 gap-4 px-6 pb-4 h-full">
+            <AudioInfoPanel />
+            <AudioRecordings />
+            <AudioTranscription />
+          </div>
         </div>
-        <div className="col-span-2 h-[calc(100vh-6.5rem)]">
+
+        <div className="h-[60vh] flex flex-col">
+          <div className="flex-1 w-full p-4 h-48 border-t">
+            <AudioCaption />
+          </div>
+          <div className="w-full border-t">
+            <div ref={ref} />
+          </div>
+          <AudioPlayerControls />
         </div>
+
+        <MediaLoadingModal />
       </div>
     </div>
   );
