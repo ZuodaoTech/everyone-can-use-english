@@ -66,6 +66,22 @@ export const AudioPlayerControls = () => {
   const [transcriptionDraft, setTranscriptionDraft] =
     useState<TranscriptionType["result"]>();
 
+  const playOrPause = () => {
+    if (!wavesurfer) return;
+
+    if (wavesurfer.isPlaying()) {
+      wavesurfer.pause();
+    } else {
+      if (
+        activeRegion &&
+        (currentTime < activeRegion.start || currentTime > activeRegion.end)
+      ) {
+        wavesurfer.seekTo(activeRegion.start / wavesurfer.getDuration());
+      }
+      wavesurfer.play();
+    }
+  };
+
   const onPrev = () => {
     if (!wavesurfer) return;
     const segment = transcription?.result[currentSegmentIndex - 1];
@@ -384,7 +400,7 @@ export const AudioPlayerControls = () => {
       if (!wavesurfer) return;
 
       keyboardEvent.preventDefault();
-      wavesurfer.playPause();
+      playOrPause();
     },
     [wavesurfer]
   );
@@ -405,7 +421,7 @@ export const AudioPlayerControls = () => {
       {wavesurfer?.isPlaying() ? (
         <Button
           variant="secondary"
-          onClick={() => wavesurfer?.pause()}
+          onClick={playOrPause}
           data-tooltip-id="media-player-controls-tooltip"
           data-tooltip-content={t("pause")}
           className="aspect-square p-0 h-14 rounded-full"
@@ -416,16 +432,7 @@ export const AudioPlayerControls = () => {
         <Button
           variant="ghost"
           size="lg"
-          onClick={() => {
-            if (
-              activeRegion &&
-              (currentTime < activeRegion.start ||
-                currentTime > activeRegion.end)
-            ) {
-              wavesurfer?.seekTo(activeRegion.start / wavesurfer.getDuration());
-            }
-            wavesurfer?.play();
-          }}
+          onClick={playOrPause}
           data-tooltip-id="media-player-controls-tooltip"
           data-tooltip-content={t("play")}
           className="aspect-square p-0 h-14 rounded-full"

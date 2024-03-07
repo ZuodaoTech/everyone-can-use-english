@@ -27,6 +27,7 @@ type MediaPlayerContextType = {
   transcribing: boolean;
   transcribingProgress: number;
   // Recordings
+  currentRecording?: RecordingType;
   recordings: RecordingType[];
   fetchRecordings: () => void;
   loadingRecordings: boolean;
@@ -58,6 +59,8 @@ export const MediaPlayerProvider = ({
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [currentSegmentIndex, setCurrentSegmentIndex] = useState<number>(0);
   const [fitZoomRatio, setFitZoomRatio] = useState<number>(1.0);
+
+  const [currentRecording, setCurrentRecording] = useState<RecordingType>(null);
 
   const {
     transcription,
@@ -202,6 +205,7 @@ export const MediaPlayerProvider = ({
         generateTranscription,
         transcribing,
         transcribingProgress,
+        currentRecording,
         recordings,
         fetchRecordings,
         loadingRecordings,

@@ -53,7 +53,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
   return (
     <div data-testid="audio-player">
       <div className="">
-        <div className="h-[calc(30vh-3.5rem)] 2xl:h-[calc(40vh-3.5rem)]">
+        <div className="h-[calc(30vh-3.5rem)]">
           {media?.src && (
             <div className={decoded ? "hidden" : ""}>
               <VidstackMediaPlayer
@@ -81,11 +81,12 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
           </div>
         </div>
 
-        <div className="h-[70vh] 2xl:h-[60vh] flex flex-col">
-          <ScrollArea className="flex-1 w-full border-t">
+        <div className="h-[70vh] flex flex-col">
+          <ScrollArea className="flex-1 w-full h-full border-t">
             <AudioCaption />
-            <div className="h-[150px] border-t"></div>
           </ScrollArea>
+
+          <div className="h-[150px] border-t"></div>
 
           <div className="w-full border-t">
             <div ref={ref} />
