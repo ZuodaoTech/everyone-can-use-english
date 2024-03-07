@@ -21,7 +21,6 @@ export const AudioTranscription = () => {
   const containerRef = useRef<HTMLDivElement>();
   const {
     media,
-    currentTime,
     currentSegmentIndex,
     wavesurfer,
     setCurrentSegmentIndex,
@@ -42,19 +41,7 @@ export const AudioTranscription = () => {
       } as ScrollIntoViewOptions);
   }, [currentSegmentIndex, transcription, containerRef]);
 
-  useEffect(() => {
-    if (!transcription?.result) return;
-
-    const index = transcription.result.findIndex(
-      (t) =>
-        currentTime * 1000 >= t.offsets.from &&
-        currentTime * 1000 < t.offsets.to
-    );
-    if (index === -1) return;
-    setCurrentSegmentIndex(index);
-  }, [currentTime, transcription]);
-
-  if (!transcription) {
+  if (!transcription?.result) {
     return null;
   }
 

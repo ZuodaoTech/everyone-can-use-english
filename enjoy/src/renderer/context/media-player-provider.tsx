@@ -17,9 +17,10 @@ type MediaPlayerContextType = {
   currentTime: number;
   currentSegmentIndex: number;
   setCurrentSegmentIndex: (index: number) => void;
-  zoomRatio: number;
   waveform: WaveFormDataType;
   regions: Regions | null;
+  fitZoomRatio: number;
+  minPxPerSec: number;
   // Transcription
   transcription: TranscriptionType;
   generateTranscription: () => void;
@@ -40,6 +41,7 @@ export const MediaPlayerProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const minPxPerSec = 150;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const [media, setMedia] = useState<AudioType | VideoType>(null);
@@ -55,8 +57,7 @@ export const MediaPlayerProvider = ({
   const [decoded, setDecoded] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [currentSegmentIndex, setCurrentSegmentIndex] = useState<number>(0);
-  const [zoomRatio, setZoomRatio] = useState<number>(1.0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [fitZoomRatio, setFitZoomRatio] = useState<number>(1.0);
 
   const {
     transcription,
@@ -80,14 +81,15 @@ export const MediaPlayerProvider = ({
     const ws = WaveSurfer.create({
       container: ref.current,
       height: 250,
-      waveColor: "#eee",
+      waveColor: "#efefef",
       progressColor: "rgba(0, 0, 0, 0.15)",
       cursorColor: "#aaa",
       barWidth: 2,
       autoScroll: true,
-      minPxPerSec: 150,
+      minPxPerSec,
       autoCenter: false,
       dragToSeek: false,
+      fillParent: true,
       media: mediaProvider,
       peaks: waveform ? [waveform.peaks] : undefined,
       duration: waveform ? waveform.duration : undefined,
@@ -132,11 +134,8 @@ export const MediaPlayerProvider = ({
     setRegions(wavesurfer.registerPlugin(Regions.create()));
 
     setCurrentTime(0);
-    setIsPlaying(false);
 
     const subscriptions = [
-      wavesurfer.on("play", () => setIsPlaying(true)),
-      wavesurfer.on("pause", () => setIsPlaying(false)),
       wavesurfer.on("loading", (percent: number) => console.log(`${percent}%`)),
       wavesurfer.on("timeupdate", (time: number) => setCurrentTime(time)),
       wavesurfer.on("decode", () => {
@@ -165,6 +164,24 @@ export const MediaPlayerProvider = ({
     };
   }, [wavesurfer]);
 
+  /*
+   * update fitZoomRatio when currentSegmentIndex is updated
+   */
+  useEffect(() => {
+    if (!ref?.current) return;
+    if (!wavesurfer) return;
+    if (!transcription?.result) return;
+
+    const currentSegment = transcription?.result?.[currentSegmentIndex];
+    if (!currentSegment) return;
+
+    const containerWidth = ref.current.getBoundingClientRect().width;
+    const duration =
+      currentSegment.offsets.to / 1000.0 - currentSegment.offsets.from / 1000.0;
+
+    setFitZoomRatio(containerWidth / duration / minPxPerSec);
+  }, [ref, wavesurfer, transcription, currentSegmentIndex]);
+
   return (
     <MediaPlayerProviderContext.Provider
       value={{
@@ -177,8 +194,9 @@ export const MediaPlayerProvider = ({
         currentTime,
         currentSegmentIndex,
         setCurrentSegmentIndex,
-        zoomRatio,
         waveform,
+        fitZoomRatio,
+        minPxPerSec,
         transcription,
         regions,
         generateTranscription,

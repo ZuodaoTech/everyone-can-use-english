@@ -1466,6 +1466,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kurkle/color@npm:^0.3.0":
+  version: 0.3.2
+  resolution: "@kurkle/color@npm:0.3.2"
+  checksum: 10c0/a9e8e3e35dcd59dec4dd4f0105919c05e24823a96347bcf152965c29e48d6290b66d5fb96c071875db752e10930724c48ce6d338fefbd65e0ce5082d5c78970e
+  languageName: node
+  linkType: hard
+
 "@langchain/community@npm:^0.0.34, @langchain/community@npm:~0.0.33":
   version: 0.0.34
   resolution: "@langchain/community@npm:0.0.34"
@@ -5622,6 +5629,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chart.js@npm:^4.4.2":
+  version: 4.4.2
+  resolution: "chart.js@npm:4.4.2"
+  dependencies:
+    "@kurkle/color": "npm:^0.3.0"
+  checksum: 10c0/4233bdc3cce9e4d5aca575f8ef9313f56867491b9eac027f3514ca807aca9a2ba2087f85ca3c68f022974f948ce688a178b0ce21d95706116abca5acf19e072f
+  languageName: node
+  linkType: hard
+
 "cheerio-select@npm:^1.5.0":
   version: 1.6.0
   resolution: "cheerio-select@npm:1.6.0"
@@ -7340,6 +7356,7 @@ __metadata:
     axios: "npm:^1.6.7"
     camelcase: "npm:^8.0.0"
     camelcase-keys: "npm:^9.1.3"
+    chart.js: "npm:^4.4.2"
     cheerio: "npm:^1.0.0-rc.12"
     class-variance-authority: "npm:^0.7.0"
     clsx: "npm:^2.1.0"
