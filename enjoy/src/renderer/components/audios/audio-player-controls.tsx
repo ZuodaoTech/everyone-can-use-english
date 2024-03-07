@@ -390,7 +390,7 @@ export const AudioPlayerControls = () => {
   );
 
   return (
-    <div className="w-full h-20 border-t flex items-center justify-center space-x-1">
+    <div className="w-full h-20 flex items-center justify-center space-x-1">
       <Button
         variant="ghost"
         size="lg"

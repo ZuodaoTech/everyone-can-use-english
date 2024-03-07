@@ -28,7 +28,7 @@ export const AudioCaption = () => {
   if (!caption) return <div></div>;
 
   return (
-    <div className="flex items-start space-x-4">
+    <div className="flex items-start space-x-4 p-4">
       <div className="flex-1 text-xl font-serif">
         <div className="flex flex-wrap">
           {(caption.segments || []).map((w, index) => (
