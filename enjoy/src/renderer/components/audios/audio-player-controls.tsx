@@ -1,14 +1,7 @@
-import { createContext, useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { type Region as RegionType } from "wavesurfer.js/dist/plugins/regions";
 import {
-  extractFrequencies,
-  PitchContour,
-  MediaPlayerControls,
-  MediaCaption,
-} from "@renderer/components";
-import {
   Button,
-  toast,
   Popover,
   PopoverTrigger,
   PopoverContent,

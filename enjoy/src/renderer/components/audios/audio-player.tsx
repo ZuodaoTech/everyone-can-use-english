@@ -1,10 +1,10 @@
-import { createContext, useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useContext, useRef } from "react";
 import {
   MediaPlayerProviderContext,
   AppSettingsProviderContext,
 } from "@renderer/context";
 import { t } from "i18next";
-import { Button, toast } from "@renderer/components/ui";
+import { toast } from "@renderer/components/ui";
 import {
   MediaLoadingModal,
   AudioCaption,
@@ -28,8 +28,9 @@ import {
 export const AudioPlayer = (props: { id?: string; md5?: string }) => {
   const { id, md5 } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { media, setMedia, setMediaProvider, decoded, setRef, wavesurfer } =
-    useContext(MediaPlayerProviderContext);
+  const { media, setMedia, setMediaProvider, decoded, setRef } = useContext(
+    MediaPlayerProviderContext
+  );
   const ref = useRef(null);
 
   const mediaRemote = useMediaRemote();
