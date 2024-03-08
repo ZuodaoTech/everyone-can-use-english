@@ -10,7 +10,7 @@ import { useTranscribe } from "@renderer/hooks";
 import { Button, toast } from "@renderer/components/ui";
 import { StopCircleIcon } from "lucide-react";
 
-export const AudioRecorder = () => {
+export const MediaRecorder = () => {
   const { recordings, isRecording, setIsRecording, currentRecording } =
     useContext(MediaPlayerProviderContext);
   const [access, setAccess] = useState<boolean>(false);

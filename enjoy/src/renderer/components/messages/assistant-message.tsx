@@ -14,7 +14,7 @@ import {
 } from "@renderer/components/ui";
 import {
   SpeechPlayer,
-  AudioDetail,
+  AudioPlayer,
   ConversationShortcuts,
 } from "@renderer/components";
 import { useState, useEffect, useContext } from "react";
@@ -242,16 +242,16 @@ export const AssistantMessageComponent = (props: {
       <Sheet open={shadowing} onOpenChange={(value) => setShadowing(value)}>
         <SheetContent
           side="bottom"
-          className="rounded-t-2xl shadow-lg"
+          className="rounded-t-2xl shadow-lg h-100vh p-0"
           displayClose={false}
         >
-          <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
+          <SheetHeader className="flex items-center justify-center h-14">
             <SheetClose>
               <ChevronDownIcon />
             </SheetClose>
           </SheetHeader>
 
-          {Boolean(speech) && <AudioDetail md5={speech.md5} />}
+          {Boolean(speech) && <AudioPlayer md5={speech.md5} />}
         </SheetContent>
       </Sheet>
     </div>

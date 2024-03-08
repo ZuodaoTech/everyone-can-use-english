@@ -239,7 +239,7 @@ export const VideosComponent = () => {
             <AlertDialogTitle>{t("transcribe")}</AlertDialogTitle>
             <AlertDialogDescription>
               <p className="break-all">
-                {t("transcribeVideoConfirmation", {
+                {t("transcribeMediaConfirmation", {
                   name: transcribing?.name || "",
                 })}
               </p>

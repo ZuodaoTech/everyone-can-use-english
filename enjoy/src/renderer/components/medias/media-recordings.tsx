@@ -5,7 +5,7 @@ import { LoaderIcon, MicIcon } from "lucide-react";
 import { t } from "i18next";
 import { formatDateTime, formatDuration } from "@renderer/lib/utils";
 
-export const AudioRecordings = () => {
+export const MediaRecordings = () => {
   const containerRef = useRef<HTMLDivElement>();
   const {
     recordings = [],

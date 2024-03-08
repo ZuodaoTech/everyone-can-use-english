@@ -16,21 +16,20 @@ import {
 } from "@renderer/components";
 import { formatDuration } from "@renderer/lib/utils";
 
-export const AudioPlayer = (props: { id?: string; md5?: string }) => {
+export const VideoPlayer = (props: { id?: string; md5?: string }) => {
   const { id, md5 } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { media, currentTime, setMedia, setRef } = useContext(
-    MediaPlayerProviderContext
-  );
+  const { media, currentTime, setMedia, setRef } =
+    useContext(MediaPlayerProviderContext);
   const ref = useRef(null);
 
   useEffect(() => {
     const where = id ? { id } : { md5 };
-    EnjoyApp.audios.findOne(where).then((audio) => {
-      if (audio) {
-        setMedia(audio);
+    EnjoyApp.videos.findOne(where).then((video) => {
+      if (video) {
+        setMedia(video);
       } else {
-        toast.error(t("models.audio.notFound"));
+        toast.error(t("models.video.notFound"));
       }
     });
   }, [id, md5]);
@@ -40,7 +39,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
   }, [ref]);
 
   return (
-    <div data-testid="audio-player">
+    <div data-testid="video-player">
       <div className="">
         <div className="h-[calc(30vh-3.5rem)]">
           <div className="grid grid-cols-3 gap-4 px-6 pb-4 h-full">

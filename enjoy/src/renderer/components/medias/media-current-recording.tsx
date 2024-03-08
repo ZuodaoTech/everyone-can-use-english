@@ -1,17 +1,12 @@
-import { createContext, useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useContext, useRef } from "react";
 import {
   MediaPlayerProviderContext,
-  AppSettingsProviderContext,
 } from "@renderer/context";
-import { extractFrequencies, AudioRecorder } from "@renderer/components";
-import RecordPlugin from "wavesurfer.js/dist/plugins/record";
+import { extractFrequencies, MediaRecorder } from "@renderer/components";
 import WaveSurfer from "wavesurfer.js";
 import Chart from "chart.js/auto";
-import { t } from "i18next";
-import { useTranscribe } from "@renderer/hooks";
-import { RadialProgress, toast } from "@renderer/components/ui";
 
-export const AudioCurrentRecording = () => {
+export const MediaCurrentRecording = () => {
   const { recordings, isRecording, setIsRecording, currentRecording } =
     useContext(MediaPlayerProviderContext);
 
@@ -55,7 +50,6 @@ export const AudioCurrentRecording = () => {
       const peaks: Float32Array = ws.getDecodedData().getChannelData(0);
       const sampleRate = ws.options.sampleRate;
       const data = extractFrequencies({ peaks, sampleRate });
-      console.log(data);
 
       new Chart(canvas, {
         type: "line",
@@ -104,7 +98,7 @@ export const AudioCurrentRecording = () => {
     };
   }, [ref, currentRecording, isRecording]);
 
-  if (isRecording) return <AudioRecorder />;
+  if (isRecording) return <MediaRecorder />;
   if (!currentRecording?.src) return null;
 
   return (

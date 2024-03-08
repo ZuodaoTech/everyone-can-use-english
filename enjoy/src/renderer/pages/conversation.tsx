@@ -15,6 +15,7 @@ import { t } from "i18next";
 import {
   DbProviderContext,
   AppSettingsProviderContext,
+  MediaPlayerProvider,
 } from "@renderer/context";
 import { messagesReducer } from "@renderer/reducers";
 import { v4 as uuidv4 } from "uuid";
@@ -249,52 +250,54 @@ export default () => {
           </Sheet>
         </div>
 
-        <ScrollArea ref={containerRef} className="px-4 flex-1">
-          <div className="messages flex flex-col-reverse gap-6 my-6">
-            <div className="w-full h-16"></div>
-            {messages.map((message) => (
-              <MessageComponent
-                key={message.id}
-                message={message}
-                configuration={{
-                  type: conversation.type,
-                  ...conversation.configuration,
-                }}
-                onResend={() => {
-                  if (message.status === "error") {
-                    dispatchMessages({ type: "destroy", record: message });
-                  }
+        <MediaPlayerProvider>
+          <ScrollArea ref={containerRef} className="px-4 flex-1">
+            <div className="messages flex flex-col-reverse gap-6 my-6">
+              <div className="w-full h-16"></div>
+              {messages.map((message) => (
+                <MessageComponent
+                  key={message.id}
+                  message={message}
+                  configuration={{
+                    type: conversation.type,
+                    ...conversation.configuration,
+                  }}
+                  onResend={() => {
+                    if (message.status === "error") {
+                      dispatchMessages({ type: "destroy", record: message });
+                    }
 
-                  handleSubmit(message.content);
-                }}
-                onRemove={() => {
-                  if (message.status === "error") {
-                    dispatchMessages({ type: "destroy", record: message });
-                  } else {
-                    EnjoyApp.messages.destroy(message.id).catch((err) => {
-                      toast.error(err.message);
-                    });
-                  }
-                }}
-              />
-            ))}
-            {offset > -1 && (
-              <div className="flex justify-center">
-                <Button
-                  variant="ghost"
-                  onClick={() => fetchMessages()}
-                  disabled={loading || offset === -1}
-                  className="px-4 py-2"
-                >
-                  {t("loadMore")}
-                  {loading && (
-                    <LoaderIcon className="h-4 w-4 animate-spin ml-2" />
-                  )}
-                </Button>
-              </div>
-            )}
-          </div>
-        </ScrollArea>
+                    handleSubmit(message.content);
+                  }}
+                  onRemove={() => {
+                    if (message.status === "error") {
+                      dispatchMessages({ type: "destroy", record: message });
+                    } else {
+                      EnjoyApp.messages.destroy(message.id).catch((err) => {
+                        toast.error(err.message);
+                      });
+                    }
+                  }}
+                />
+              ))}
+              {offset > -1 && (
+                <div className="flex justify-center">
+                  <Button
+                    variant="ghost"
+                    onClick={() => fetchMessages()}
+                    disabled={loading || offset === -1}
+                    className="px-4 py-2"
+                  >
+                    {t("loadMore")}
+                    {loading && (
+                      <LoaderIcon className="h-4 w-4 animate-spin ml-2" />
+                    )}
+                  </Button>
+                </div>
+              )}
+            </div>
+          </ScrollArea>
+        </MediaPlayerProvider>
 
         <div className="px-4 absolute w-full bottom-0 left-0 h-14 bg-muted z-50">
           <div className="focus-within:bg-background px-4 py-2 flex items-center space-x-4 rounded-lg border">
