@@ -55,12 +55,13 @@ export const MediaPlayerControls = () => {
     minPxPerSec,
     isRecording,
     setIsRecording,
+    activeRegion,
+    setActiveRegion,
   } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("single");
   const [playbackRate, setPlaybackRate] = useState<number>(1);
   const [zoomRatio, setZoomRatio] = useState<number>(1.0);
-  const [activeRegion, setActiveRegion] = useState<RegionType>(null);
   const [displayInlineCaption, setDisplayInlineCaption] =
     useState<boolean>(true);
   const [editing, setEditing] = useState<boolean>(false);
@@ -387,7 +388,7 @@ export const MediaPlayerControls = () => {
   useEffect(() => {
     if (wavesurfer?.isPlaying()) return;
     if (!activeRegion) return;
-    if (playMode === 'all') return;
+    if (playMode === "all") return;
 
     if (currentTime < activeRegion.start || currentTime > activeRegion.end) {
       wavesurfer.seekTo(activeRegion.start / wavesurfer.getDuration());

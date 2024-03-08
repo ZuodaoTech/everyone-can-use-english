@@ -19,6 +19,8 @@ type MediaPlayerContextType = {
   setCurrentSegmentIndex: (index: number) => void;
   waveform: WaveFormDataType;
   regions: Regions | null;
+  activeRegion: RegionType;
+  setActiveRegion: (region: Region) => void;
   fitZoomRatio: number;
   minPxPerSec: number;
   // Transcription
@@ -54,6 +56,7 @@ export const MediaPlayerProvider = ({
   );
   const [wavesurfer, setWavesurfer] = useState(null);
   const [regions, setRegions] = useState<Regions | null>(null);
+  const [activeRegion, setActiveRegion] = useState<RegionType>(null);
   const [waveform, setWaveForm] = useState<WaveFormDataType>(null);
   const [ref, setRef] = useState(null);
 
@@ -206,6 +209,8 @@ export const MediaPlayerProvider = ({
         minPxPerSec,
         transcription,
         regions,
+        activeRegion,
+        setActiveRegion,
         generateTranscription,
         transcribing,
         transcribingProgress,
