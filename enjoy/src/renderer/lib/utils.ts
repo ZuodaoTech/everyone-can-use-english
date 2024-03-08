@@ -37,7 +37,8 @@ export function formatDuration(
   format = "HH:mm:ss"
 ) {
   dayjs.locale(i18next.resolvedLanguage?.toLowerCase() || "en");
-  return dayjs.duration(duration, unit).format(format);
+  const display = dayjs.duration(duration, unit).format(format);
+  return display.replace(/^00:/, "");
 }
 
 export function bytesToSize(bytes: number) {

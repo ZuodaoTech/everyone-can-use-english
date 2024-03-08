@@ -12,4 +12,6 @@ export * from "./audio-player-controls";
 export * from "./audio-caption";
 export * from "./audio-info-panel";
 export * from "./audio-recordings";
+export * from "./audio-current-recording";
+export * from "./audio-recorder";
 export * from "./audio-transcription";

@@ -291,6 +291,7 @@
   "deleteRecording": "删除录音",
   "deleteRecordingConfirmation": "您确定要删除录音吗？",
   "myRecordings": "我的练习",
+  "noRecordingForThisSegmentYet": "当前句子还没有练习过",
   "lastYear": "过去一年",
   "less": "更少",
   "more": "更多",
@@ -475,5 +476,10 @@
   "cannotFindMicrophone": "无法找到麦克风",
   "failedToSaveRecording": "保存录音失败",
   "speechNotCreatedYet": "尚未生成语音",
-  "goToConversation": "前往对话"
+  "goToConversation": "前往对话",
+  "mediaInfo": "资源信息",
+  "editRegion": "修改当前区域",
+  "startRecording": "开始录音",
+  "stopRecording": "结束录音",
+  "playRecording": "播放录音"
 }

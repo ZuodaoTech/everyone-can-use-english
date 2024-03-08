@@ -1,10 +1,7 @@
-import { createContext, useEffect, useState, useContext, useRef } from "react";
-import { ScrollArea, Button, toast } from "@renderer/components/ui";
-import {
-  MediaPlayerProviderContext,
-  AppSettingsProviderContext,
-} from "@renderer/context";
-import { LoaderIcon, PlayIcon, CheckCircleIcon, MicIcon } from "lucide-react";
+import { useContext, useRef, useEffect } from "react";
+import { ScrollArea, Button } from "@renderer/components/ui";
+import { MediaPlayerProviderContext } from "@renderer/context";
+import { LoaderIcon, MicIcon } from "lucide-react";
 import { t } from "i18next";
 import { formatDateTime, formatDuration } from "@renderer/lib/utils";
 
@@ -15,7 +12,17 @@ export const AudioRecordings = () => {
     hasMoreRecordings,
     loadingRecordings,
     fetchRecordings,
+    currentRecording,
+    setCurrentRecording,
+    currentSegmentIndex,
   } = useContext(MediaPlayerProviderContext);
+
+  useEffect(() => {
+    if (currentRecording?.referenceId === currentSegmentIndex) return;
+    if (recordings.length === 0) return;
+
+    setCurrentRecording(recordings[0]);
+  }, [currentSegmentIndex, recordings]);
 
   return (
     <ScrollArea
@@ -25,7 +32,7 @@ export const AudioRecordings = () => {
     >
       <div className="sticky top-0 px-4 py-2 bg-background z-10">
         <div className="flex items-cener justify-between">
-          <div className="capitalize">{t("recordings")}</div>
+          <div className="capitalize">{t("myRecordings")}</div>
           {recordings.length > 0 && (
             <span className="font-serif text-muted-foreground">
               ({recordings.length})
@@ -35,16 +42,19 @@ export const AudioRecordings = () => {
       </div>
       {recordings.length == 0 && (
         <div className="text-center px-6 py-8 text-sm text-muted-foreground capitalize">
-          {t("noRecordingForThisSetmentYet")}
+          {t("noRecordingForThisSegmentYet")}
         </div>
       )}
       {recordings.map((recording) => (
         <div
           key={recording.id}
-          className="flex items-center justify-between px-4 py-2"
+          className="flex items-center justify-between px-4 py-2 cursor-pointer"
           style={{
             borderLeftColor: `#${recording.md5.substr(0, 6)}`,
             borderLeftWidth: 3,
+          }}
+          onClick={() => {
+            setCurrentRecording(recording);
           }}
         >
           <div className="flex items-center space-x-2">

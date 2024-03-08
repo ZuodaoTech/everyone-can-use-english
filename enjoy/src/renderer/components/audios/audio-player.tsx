@@ -12,6 +12,7 @@ import {
   AudioPlayerControls,
   AudioInfoPanel,
   AudioRecordings,
+  AudioCurrentRecording,
 } from "@renderer/components";
 import {
   MediaPlayer as VidstackMediaPlayer,
@@ -24,13 +25,13 @@ import {
   DefaultAudioLayout,
   defaultLayoutIcons,
 } from "@vidstack/react/player/layouts/default";
+import { formatDuration } from "@renderer/lib/utils";
 
 export const AudioPlayer = (props: { id?: string; md5?: string }) => {
   const { id, md5 } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { media, setMedia, setMediaProvider, decoded, setRef } = useContext(
-    MediaPlayerProviderContext
-  );
+  const { media, currentTime, setMedia, setMediaProvider, decoded, setRef } =
+    useContext(MediaPlayerProviderContext);
   const ref = useRef(null);
 
   const mediaRemote = useMediaRemote();
@@ -86,12 +87,22 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
             <AudioCaption />
           </ScrollArea>
 
-          <div className="h-[150px] border-t"></div>
+          <div className="w-full border-t relative">
+            <div ref={ref} />
+            <div className="absolute right-2 top-2">
+              <span className="text-sm">{formatDuration(currentTime || 0)}</span>
+              <span className="mx-1">/</span>
+              <span className="text-sm">
+                {formatDuration(media?.duration || 0)}
+              </span>
+            </div>
+          </div>
+
+          <AudioCurrentRecording />
 
           <div className="w-full border-t">
-            <div ref={ref} />
+            <AudioPlayerControls />
           </div>
-          <AudioPlayerControls />
         </div>
 
         <MediaLoadingModal />
