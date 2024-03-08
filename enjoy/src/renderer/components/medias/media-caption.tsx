@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import { secondsToTimestamp } from "@renderer/lib/utils";
 import cloneDeep from "lodash/cloneDeep";
@@ -18,7 +18,14 @@ export const MediaCaption = () => {
   } = useContext(MediaPlayerProviderContext);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
+  const [multiSelecting, setMultiSelecting] = useState<boolean>(false);
   const caption = transcription?.result?.[currentSegmentIndex];
+
+  const ref = useRef(null);
+
+  const toggleMultiSelect = (event: KeyboardEvent) => {
+    setMultiSelecting(event.shiftKey && event.type === "keydown");
+  };
 
   const toggleRegion = (index: number) => {
     if (!activeRegion) return;
@@ -40,11 +47,22 @@ export const MediaCaption = () => {
         setActiveRegion(
           regions.getRegions().find((r) => r.id.startsWith("segment-region"))
         );
-      } else {
+      } else if (multiSelecting) {
         const region = regions.addRegion({
           id: `word-region-${index}`,
           start: Math.min(start, regionStart),
           end: Math.max(end, regionEnd),
+          color: "#fb6f9233",
+          drag: false,
+          resize: editingRegion,
+        });
+
+        setActiveRegion(region);
+      } else {
+        const region = regions.addRegion({
+          id: `word-region-${index}`,
+          start,
+          end,
           color: "#fb6f9233",
           drag: false,
           resize: editingRegion,
@@ -162,10 +180,27 @@ export const MediaCaption = () => {
     };
   }, [editingRegion]);
 
+  useEffect(() => {
+    if (!caption) return;
+    if (!ref?.current) return;
+
+    document.addEventListener("keydown", (event: KeyboardEvent) =>
+      toggleMultiSelect(event)
+    );
+    document.addEventListener("keyup", (event: KeyboardEvent) =>
+      toggleMultiSelect(event)
+    );
+
+    return () => {
+      document.removeEventListener("keydown", toggleMultiSelect);
+      document.removeEventListener("keyup", toggleMultiSelect);
+    };
+  }, [ref, caption]);
+
   if (!caption) return <div></div>;
 
   return (
-    <div className="p-4">
+    <div ref={ref} className="p-4">
       <div className="flex-1 font-serif">
         <div className="flex flex-wrap">
           {(caption.segments || []).map((w, index) => (
