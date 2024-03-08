@@ -1,8 +1,8 @@
-import { createContext, useEffect, useState, useContext, useRef } from "react";
-import {
-  MediaPlayerProviderContext,
-  AppSettingsProviderContext,
-} from "@renderer/context";
+import { useEffect, useState, useContext } from "react";
+import { MediaPlayerProviderContext } from "@renderer/context";
+import { secondsToTimestamp } from "@renderer/lib/utils";
+import cloneDeep from "lodash/cloneDeep";
+import { toast } from "@renderer/components/ui";
 import { t } from "i18next";
 
 export const MediaCaption = () => {
@@ -13,6 +13,8 @@ export const MediaCaption = () => {
     regions,
     activeRegion,
     setActiveRegion,
+    editingRegion,
+    setTranscriptionDraft,
   } = useContext(MediaPlayerProviderContext);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
@@ -20,6 +22,11 @@ export const MediaCaption = () => {
 
   const toggleRegion = (index: number) => {
     if (!activeRegion) return;
+    if (editingRegion) {
+      toast.warning(t("currentRegionIsBeingEdited"));
+      return;
+    }
+
     const word = caption.segments[index];
     if (!word) return;
 
@@ -40,7 +47,7 @@ export const MediaCaption = () => {
           end: Math.max(end, regionEnd),
           color: "#fb6f9233",
           drag: false,
-          resize: false,
+          resize: editingRegion,
         });
 
         setActiveRegion(region);
@@ -94,6 +101,66 @@ export const MediaCaption = () => {
 
     setSelectedIndices(indices);
   }, [caption, activeRegion]);
+
+  useEffect(() => {
+    if (!activeRegion) return;
+    if (!activeRegion.id.startsWith("word-region")) return;
+
+    const region = regions.addRegion({
+      id: `word-region-${selectedIndices.join("-")}`,
+      start: activeRegion.start,
+      end: activeRegion.end,
+      color: "#fb6f9233",
+      drag: false,
+      resize: editingRegion,
+    });
+
+    activeRegion.remove();
+    setActiveRegion(region);
+
+    const subscriptions = [
+      regions.on("region-updated", (region) => {
+        if (!region.id.startsWith("word-region")) return;
+
+        const from = region.start;
+        const to = region.end;
+
+        const offsets = {
+          from: Math.round(from * 1000),
+          to: Math.round(to * 1000),
+        };
+
+        const timestamps = {
+          from: [
+            secondsToTimestamp(from),
+            Math.round((from * 1000) % 1000),
+          ].join(","),
+          to: [secondsToTimestamp(to), Math.round((to * 1000) % 1000)].join(
+            ","
+          ),
+        };
+
+        const draft = cloneDeep(transcription.result);
+        const firstWord =
+          draft[currentSegmentIndex].segments[
+            cloneDeep(selectedIndices).shift()
+          ];
+        const lastWord =
+          draft[currentSegmentIndex].segments[cloneDeep(selectedIndices).pop()];
+
+        firstWord.offsets.from = offsets.from;
+        lastWord.offsets.to = offsets.to;
+        firstWord.timestamps.from = timestamps.from;
+        lastWord.timestamps.to = timestamps.to;
+
+        setTranscriptionDraft(draft);
+      }),
+    ];
+
+    return () => {
+      subscriptions.forEach((unsub) => unsub());
+    };
+  }, [editingRegion]);
 
   if (!caption) return <div></div>;
 

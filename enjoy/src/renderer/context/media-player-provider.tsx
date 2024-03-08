@@ -6,28 +6,38 @@ import WaveSurfer from "wavesurfer.js";
 import Regions, {
   type Region as RegionType,
 } from "wavesurfer.js/dist/plugins/regions";
+import Chart from "chart.js/auto";
 
 type MediaPlayerContextType = {
   media: AudioType | VideoType;
   setMedia: (media: AudioType | VideoType) => void;
   setMediaProvider: (mediaProvider: HTMLAudioElement | null) => void;
+  waveform: WaveFormDataType;
+  // wavesurfer
   wavesurfer: WaveSurfer;
   setRef: (ref: any) => void;
   decoded: boolean;
+  // player state
   currentTime: number;
   currentSegmentIndex: number;
   setCurrentSegmentIndex: (index: number) => void;
-  waveform: WaveFormDataType;
-  regions: Regions | null;
-  activeRegion: RegionType;
-  setActiveRegion: (region: Region) => void;
   fitZoomRatio: number;
   minPxPerSec: number;
+  // regions
+  regions: Regions | null;
+  activeRegion: RegionType;
+  setActiveRegion: (region: RegionType) => void;
+  editingRegion: boolean;
+  setEditingRegion: (editing: boolean) => void;
+  renderPitchContour: (region: RegionType) => void;
+  pitchChart: Chart;
   // Transcription
   transcription: TranscriptionType;
   generateTranscription: () => void;
   transcribing: boolean;
   transcribingProgress: number;
+  transcriptionDraft: TranscriptionType["result"];
+  setTranscriptionDraft: (result: TranscriptionType["result"]) => void;
   // Recordings
   isRecording: boolean;
   setIsRecording: (isRecording: boolean) => void;
@@ -54,10 +64,14 @@ export const MediaPlayerProvider = ({
   const [mediaProvider, setMediaProvider] = useState<HTMLAudioElement | null>(
     null
   );
+  const [waveform, setWaveForm] = useState<WaveFormDataType>(null);
   const [wavesurfer, setWavesurfer] = useState(null);
+
   const [regions, setRegions] = useState<Regions | null>(null);
   const [activeRegion, setActiveRegion] = useState<RegionType>(null);
-  const [waveform, setWaveForm] = useState<WaveFormDataType>(null);
+  const [editingRegion, setEditingRegion] = useState<boolean>(false);
+  const [pitchChart, setPitchChart] = useState<Chart>(null);
+
   const [ref, setRef] = useState(null);
 
   // Player state
@@ -68,6 +82,9 @@ export const MediaPlayerProvider = ({
 
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [currentRecording, setCurrentRecording] = useState<RecordingType>(null);
+
+  const [transcriptionDraft, setTranscriptionDraft] =
+    useState<TranscriptionType["result"]>();
 
   const {
     transcription,
@@ -91,9 +108,9 @@ export const MediaPlayerProvider = ({
     const ws = WaveSurfer.create({
       container: ref.current,
       height: 250,
-      waveColor: "#efefef",
-      progressColor: "rgba(0, 0, 0, 0.15)",
-      cursorColor: "#aaa",
+      waveColor: "#eaeaea",
+      progressColor: "#c0d6df",
+      cursorColor: "#ff0054",
       barWidth: 2,
       autoScroll: true,
       minPxPerSec,
@@ -115,6 +132,118 @@ export const MediaPlayerProvider = ({
     }
 
     setWavesurfer(ws);
+  };
+
+  const renderPitchContour = (region: RegionType) => {
+    if (!region) return;
+    if (!waveform?.frequencies?.length) return;
+    if (!wavesurfer) return;
+    const height = 250;
+
+    const duration = wavesurfer.getDuration();
+    const fromIndex = Math.round(
+      (region.start / duration) * waveform.frequencies.length
+    );
+    const toIndex = Math.round(
+      (region.end / duration) * waveform.frequencies.length
+    );
+
+    const wrapper = (wavesurfer as any).renderer.getWrapper();
+    // remove existing pitch contour
+    wrapper
+      .querySelectorAll(".pitch-contour")
+      .forEach((element: HTMLDivElement) => {
+        element.remove();
+      });
+
+    // calculate offset and width
+    const wrapperWidth = wrapper.getBoundingClientRect().width;
+    const offsetLeft = (region.start / duration) * wrapperWidth;
+    const width = ((region.end - region.start) / duration) * wrapperWidth;
+
+    // create container and canvas
+    const containerId = `pitch-contour-${region.id}`;
+    const pitchContourWidthContainer = document.createElement("div");
+    const canvas = document.createElement("canvas");
+    const canvasId = `pitch-contour-${region.id}-canvas`;
+    canvas.id = canvasId;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    pitchContourWidthContainer.appendChild(canvas);
+
+    pitchContourWidthContainer.style.position = "absolute";
+    pitchContourWidthContainer.style.top = "0";
+    pitchContourWidthContainer.style.left = "0";
+
+    pitchContourWidthContainer.style.width = `${width}px`;
+    pitchContourWidthContainer.style.height = `${height}px`;
+    pitchContourWidthContainer.style.marginLeft = `${offsetLeft}px`;
+    pitchContourWidthContainer.className = "pitch-contour";
+    pitchContourWidthContainer.id = containerId;
+
+    wrapper.appendChild(pitchContourWidthContainer);
+
+    // render pitch contour
+    const data = waveform.frequencies.slice(fromIndex, toIndex);
+    const labels = new Array(data.length).fill("");
+    const regionDuration = region.end - region.start;
+
+    const caption = transcription?.result?.[currentSegmentIndex];
+    if (region.id.startsWith("segment-region")) {
+      caption.segments.forEach((segment) => {
+        const index = Math.round(
+          ((segment.offsets.from / 1000 - region.start) / regionDuration) *
+            data.length
+        );
+        labels[index] = segment.text.trim();
+        if (!data[index]) {
+          data[index] = 0;
+        }
+      });
+    }
+
+    setPitchChart(
+      new Chart(canvas, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              data,
+              cubicInterpolationMode: "monotone",
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: false,
+            },
+            title: {
+              display: false,
+            },
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              ticks: {
+                autoSkip: false,
+              },
+              display: true,
+              grid: {
+                display: false,
+              },
+              border: {
+                display: false,
+              },
+            },
+            y: {
+              display: false,
+            },
+          },
+        },
+      })
+    );
   };
 
   useEffect(() => {
@@ -192,6 +321,12 @@ export const MediaPlayerProvider = ({
     setFitZoomRatio(containerWidth / duration / minPxPerSec);
   }, [ref, wavesurfer, transcription, currentSegmentIndex]);
 
+  useEffect(() => {
+    if (!activeRegion) return;
+
+    renderPitchContour(activeRegion);
+  }, [activeRegion])
+
   return (
     <MediaPlayerProviderContext.Provider
       value={{
@@ -209,11 +344,17 @@ export const MediaPlayerProvider = ({
         minPxPerSec,
         transcription,
         regions,
+        renderPitchContour,
+        pitchChart,
         activeRegion,
         setActiveRegion,
+        editingRegion,
+        setEditingRegion,
         generateTranscription,
         transcribing,
         transcribingProgress,
+        transcriptionDraft,
+        setTranscriptionDraft,
         isRecording,
         setIsRecording,
         currentRecording,

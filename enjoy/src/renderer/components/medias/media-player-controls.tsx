@@ -31,7 +31,6 @@ import {
 } from "lucide-react";
 import { t } from "i18next";
 import { secondsToTimestamp } from "@renderer/lib/utils";
-import Chart from "chart.js/auto";
 import { Tooltip } from "react-tooltip";
 import { useHotkeys } from "react-hotkeys-hook";
 import cloneDeep from "lodash/cloneDeep";
@@ -50,13 +49,18 @@ export const MediaPlayerControls = () => {
     setCurrentSegmentIndex,
     fitZoomRatio,
     transcription,
-    waveform,
+    renderPitchContour,
+    pitchChart,
     regions,
     minPxPerSec,
     isRecording,
     setIsRecording,
     activeRegion,
     setActiveRegion,
+    editingRegion,
+    setEditingRegion,
+    transcriptionDraft,
+    setTranscriptionDraft,
   } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("single");
@@ -64,10 +68,6 @@ export const MediaPlayerControls = () => {
   const [zoomRatio, setZoomRatio] = useState<number>(1.0);
   const [displayInlineCaption, setDisplayInlineCaption] =
     useState<boolean>(true);
-  const [editing, setEditing] = useState<boolean>(false);
-  const [pitchChart, setPitchChart] = useState<Chart>(null);
-  const [transcriptionDraft, setTranscriptionDraft] =
-    useState<TranscriptionType["result"]>();
 
   const playOrPause = () => {
     if (!wavesurfer) return;
@@ -96,9 +96,23 @@ export const MediaPlayerControls = () => {
     setCurrentSegmentIndex(currentSegmentIndex + 1);
   };
 
+  /*
+   * Update segmentRegion when currentSegmentIndex is updated
+   * or when editingRegion is toggled.
+   * It will clear all regions and add a new region for the current segment.
+   */
   const updateSegmentRegion = () => {
     if (!wavesurfer) return;
     if (!regions) return;
+
+    // Do not update segmentRegion when editing word region
+    if (
+      editingRegion &&
+      activeRegion &&
+      activeRegion.id.startsWith("word-region")
+    ) {
+      return;
+    }
 
     const currentSegment = transcription?.result?.[currentSegmentIndex];
     if (!currentSegment) return;
@@ -117,129 +131,16 @@ export const MediaPlayerControls = () => {
       id,
       start: from,
       end: to,
-      color: "rgba(255, 0, 0, 0.03)",
+      color: "#fb6f9211",
       drag: false,
-      resize: editing,
+      resize: editingRegion,
       content: span,
     });
     setActiveRegion(region);
     wavesurfer.setScrollTime(region.start);
-    renderPitchContour(region);
   };
 
   const debouncedUpdateSegmentRegion = debounce(updateSegmentRegion, 100);
-
-  const renderPitchContour = (region: RegionType) => {
-    if (!region) return;
-    if (!waveform?.frequencies?.length) return;
-    if (!wavesurfer) return;
-    const height = 250;
-
-    const duration = wavesurfer.getDuration();
-    const fromIndex = Math.round(
-      (region.start / duration) * waveform.frequencies.length
-    );
-    const toIndex = Math.round(
-      (region.end / duration) * waveform.frequencies.length
-    );
-
-    const wrapper = (wavesurfer as any).renderer.getWrapper();
-    // remove existing pitch contour
-    wrapper
-      .querySelectorAll(".pitch-contour")
-      .forEach((element: HTMLDivElement) => {
-        element.remove();
-      });
-
-    // calculate offset and width
-    const wrapperWidth = wrapper.getBoundingClientRect().width;
-    const offsetLeft = (region.start / duration) * wrapperWidth;
-    const width = ((region.end - region.start) / duration) * wrapperWidth;
-
-    // create container and canvas
-    const containerId = `pitch-contour-${region.id}`;
-    const pitchContourWidthContainer = document.createElement("div");
-    const canvas = document.createElement("canvas");
-    const canvasId = `pitch-contour-${region.id}-canvas`;
-    canvas.id = canvasId;
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
-    pitchContourWidthContainer.appendChild(canvas);
-
-    pitchContourWidthContainer.style.position = "absolute";
-    pitchContourWidthContainer.style.top = "0";
-    pitchContourWidthContainer.style.left = "0";
-
-    pitchContourWidthContainer.style.width = `${width}px`;
-    pitchContourWidthContainer.style.height = `${height}px`;
-    pitchContourWidthContainer.style.marginLeft = `${offsetLeft}px`;
-    pitchContourWidthContainer.className = "pitch-contour";
-    pitchContourWidthContainer.id = containerId;
-
-    wrapper.appendChild(pitchContourWidthContainer);
-
-    // render pitch contour
-    const data = waveform.frequencies.slice(fromIndex, toIndex);
-    const labels = new Array(data.length).fill("");
-    const regionDuration = region.end - region.start;
-
-    const caption = transcription?.result?.[currentSegmentIndex];
-    if (region.id.startsWith("segment-region")) {
-      caption.segments.forEach((segment) => {
-        const index = Math.round(
-          ((segment.offsets.from / 1000 - region.start) / regionDuration) *
-            data.length
-        );
-        labels[index] = segment.text.trim();
-        if (!data[index]) {
-          data[index] = 0;
-        }
-      });
-    }
-
-    setPitchChart(
-      new Chart(canvas, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [
-            {
-              data,
-              cubicInterpolationMode: "monotone",
-            },
-          ],
-        },
-        options: {
-          plugins: {
-            legend: {
-              display: false,
-            },
-            title: {
-              display: false,
-            },
-          },
-          scales: {
-            x: {
-              beginAtZero: true,
-              ticks: {
-                autoSkip: false,
-              },
-              display: true,
-              grid: {
-                display: false,
-              },
-              border: {
-                display: false,
-              },
-            },
-            y: {
-              display: false,
-            },
-          },
-        },
-      })
-    );
-  };
 
   /*
    * Update segmentRegion when currentSegmentIndex is updated
@@ -247,8 +148,17 @@ export const MediaPlayerControls = () => {
   useEffect(() => {
     if (!regions) return;
 
+    // Exit editing when segment is updated
+    setEditingRegion(false);
     debouncedUpdateSegmentRegion();
-  }, [currentSegmentIndex, regions, editing, transcription?.result]);
+  }, [currentSegmentIndex, regions, transcription?.result]);
+
+  /*
+   * Update region to editable when editingRegion is toggled
+   */
+  useEffect(() => {
+    debouncedUpdateSegmentRegion();
+  }, [editingRegion]);
 
   /*
    * When regions are available,
@@ -267,49 +177,48 @@ export const MediaPlayerControls = () => {
       }),
 
       regions.on("region-updated", (region) => {
-        if (region.id === `segment-region-${currentSegmentIndex}`) {
-          const from = region.start;
-          const to = region.end;
+        if (region.id !== `segment-region-${currentSegmentIndex}`) return;
 
-          const offsets = {
-            from: Math.round(from * 1000),
-            to: Math.round(to * 1000),
-          };
+        const from = region.start;
+        const to = region.end;
 
-          const timestamps = {
-            from: [
-              secondsToTimestamp(from),
-              Math.round((from * 1000) % 1000),
-            ].join(","),
-            to: [secondsToTimestamp(to), Math.round((to * 1000) % 1000)].join(
-              ","
-            ),
-          };
+        const offsets = {
+          from: Math.round(from * 1000),
+          to: Math.round(to * 1000),
+        };
 
-          const draft = cloneDeep(transcription.result);
+        const timestamps = {
+          from: [
+            secondsToTimestamp(from),
+            Math.round((from * 1000) % 1000),
+          ].join(","),
+          to: [secondsToTimestamp(to), Math.round((to * 1000) % 1000)].join(
+            ","
+          ),
+        };
 
-          draft[currentSegmentIndex].offsets = offsets;
-          draft[currentSegmentIndex].timestamps = timestamps;
+        const draft = cloneDeep(transcription.result);
 
-          // ensure that the previous segment ends before the current segment
-          if (
-            currentSegmentIndex > 0 &&
-            draft[currentSegmentIndex - 1].offsets.to > offsets.from
-          ) {
-            draft[currentSegmentIndex - 1].offsets.to = offsets.from;
-          }
+        draft[currentSegmentIndex].offsets = offsets;
+        draft[currentSegmentIndex].timestamps = timestamps;
 
-          // ensure that the next segment starts after the current segment
-          if (
-            currentSegmentIndex < draft.length - 1 &&
-            draft[currentSegmentIndex + 1].offsets.from < offsets.to
-          ) {
-            draft[currentSegmentIndex + 1].offsets.from = offsets.to;
-          }
-
-          setTranscriptionDraft(draft);
-          renderPitchContour(region);
+        // ensure that the previous segment ends before the current segment
+        if (
+          currentSegmentIndex > 0 &&
+          draft[currentSegmentIndex - 1].offsets.to > offsets.from
+        ) {
+          draft[currentSegmentIndex - 1].offsets.to = offsets.from;
         }
+
+        // ensure that the next segment starts after the current segment
+        if (
+          currentSegmentIndex < draft.length - 1 &&
+          draft[currentSegmentIndex + 1].offsets.from < offsets.to
+        ) {
+          draft[currentSegmentIndex + 1].offsets.from = offsets.to;
+        }
+
+        setTranscriptionDraft(draft);
       }),
 
       regions.on("region-created", (region: RegionType) => {
@@ -353,7 +262,6 @@ export const MediaPlayerControls = () => {
     wavesurfer.zoom(zoomRatio * minPxPerSec);
     if (!activeRegion) return;
 
-    renderPitchContour(activeRegion);
     wavesurfer.setScrollTime(activeRegion.start);
   }, [zoomRatio, wavesurfer, decoded]);
 
@@ -617,24 +525,26 @@ export const MediaPlayerControls = () => {
           </Button>
 
           <Button
-            variant={`${editing ? "secondary" : "ghost"}`}
+            variant={`${editingRegion ? "secondary" : "ghost"}`}
             data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("editRegion")}
+            data-tooltip-content={
+              editingRegion ? t("dragRegionBorderToEdit") : t("editRegion")
+            }
             className="relative aspect-square p-0 h-10"
             onClick={() => {
-              setEditing(!editing);
+              setEditingRegion(!editingRegion);
             }}
           >
             <ScissorsIcon className="w-6 h-6" />
           </Button>
         </div>
 
-        {editing && (
+        {editingRegion && (
           <div className="flex items-center space-x-1">
             <Button
               variant="secondary"
               onClick={() => {
-                setEditing(false);
+                setEditingRegion(false);
                 setTranscriptionDraft(null);
               }}
             >
@@ -651,7 +561,7 @@ export const MediaPlayerControls = () => {
                   })
                   .then(() => {
                     setTranscriptionDraft(null);
-                    setEditing(false);
+                    setEditingRegion(false);
                   });
               }}
             >
