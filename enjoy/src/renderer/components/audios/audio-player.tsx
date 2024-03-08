@@ -1,10 +1,8 @@
 import { useEffect, useContext, useRef } from "react";
 import {
   MediaPlayerProviderContext,
-  AppSettingsProviderContext,
 } from "@renderer/context";
-import { t } from "i18next";
-import { ScrollArea, toast } from "@renderer/components/ui";
+import { ScrollArea } from "@renderer/components/ui";
 import {
   MediaLoadingModal,
   MediaCaption,
@@ -15,25 +13,21 @@ import {
   MediaCurrentRecording,
 } from "@renderer/components";
 import { formatDuration } from "@renderer/lib/utils";
+import { useAudio } from "@renderer/hooks";
 
 export const AudioPlayer = (props: { id?: string; md5?: string }) => {
   const { id, md5 } = props;
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { media, currentTime, setMedia, setRef } = useContext(
     MediaPlayerProviderContext
   );
+  const { audio } = useAudio({ id, md5 });
   const ref = useRef(null);
 
   useEffect(() => {
-    const where = id ? { id } : { md5 };
-    EnjoyApp.audios.findOne(where).then((audio) => {
-      if (audio) {
-        setMedia(audio);
-      } else {
-        toast.error(t("models.audio.notFound"));
-      }
-    });
-  }, [id, md5]);
+    if (!audio) return;
+
+    setMedia(audio);
+  }, [audio]);
 
   useEffect(() => {
     setRef(ref);

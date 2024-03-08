@@ -5,7 +5,6 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  Separator,
 } from "@renderer/components/ui";
 import {
   MediaPlayerProviderContext,
@@ -44,7 +43,6 @@ const MIN_ZOOM_RATIO = 0.25;
 const MAX_ZOOM_RATIO = 2.0;
 export const MediaPlayerControls = () => {
   const {
-    media,
     decoded,
     wavesurfer,
     currentTime,
@@ -76,15 +74,10 @@ export const MediaPlayerControls = () => {
     if (wavesurfer.isPlaying()) {
       wavesurfer.pause();
     } else {
-      if (
-        activeRegion &&
-        (currentTime < activeRegion.start || currentTime > activeRegion.end)
-      ) {
-        wavesurfer.seekTo(activeRegion.start / wavesurfer.getDuration());
-      }
       wavesurfer.play();
     }
   };
+  const debouncedPlayOrPause = debounce(playOrPause, 100);
 
   const onPrev = () => {
     if (!wavesurfer) return;
@@ -257,19 +250,6 @@ export const MediaPlayerControls = () => {
   }, [currentSegmentIndex, regions, editing, transcription?.result]);
 
   /*
-   * Update segmentRegion when currentSegmentIndex is updated
-   */
-  useEffect(() => {
-    if (!wavesurfer) return;
-    if (wavesurfer.isPlaying()) return;
-
-    const segment = transcription?.result?.[currentSegmentIndex];
-    if (!segment) return;
-
-    wavesurfer.seekTo(segment.offsets.from / 1000.0 / wavesurfer.getDuration());
-  }, [currentSegmentIndex, wavesurfer, transcription?.result]);
-
-  /*
    * When regions are available,
    * set up event listeners for regions
    * and clean up when component is unmounted
@@ -352,6 +332,9 @@ export const MediaPlayerControls = () => {
     };
   }, [playMode, regions, transcription, currentSegmentIndex]);
 
+  /*
+   * Auto select the firt segment when everything is ready
+   */
   useEffect(() => {
     if (!transcription?.result) return;
     if (!decoded) return;
@@ -398,13 +381,26 @@ export const MediaPlayerControls = () => {
     setCurrentSegmentIndex(index);
   }, [currentTime, transcription?.result]);
 
+  /*
+   * Always stay in the active region when playMode is single/loop
+   */
+  useEffect(() => {
+    if (wavesurfer?.isPlaying()) return;
+    if (!activeRegion) return;
+    if (playMode === 'all') return;
+
+    if (currentTime < activeRegion.start || currentTime > activeRegion.end) {
+      wavesurfer.seekTo(activeRegion.start / wavesurfer.getDuration());
+    }
+  }, [wavesurfer, playMode, activeRegion, currentTime]);
+
   useHotkeys(
     "Space",
     (keyboardEvent, _hotkeyEvent) => {
       if (!wavesurfer) return;
 
       keyboardEvent.preventDefault();
-      playOrPause();
+      document.getElementById("media-play-or-pause-button").click();
     },
     [wavesurfer]
   );
@@ -416,7 +412,8 @@ export const MediaPlayerControls = () => {
           {wavesurfer?.isPlaying() ? (
             <Button
               variant="default"
-              onClick={playOrPause}
+              onClick={debouncedPlayOrPause}
+              id="media-play-or-pause-button"
               data-tooltip-id="media-player-controls-tooltip"
               data-tooltip-content={t("pause")}
               className="aspect-square p-0 h-12 rounded-full"
@@ -426,7 +423,8 @@ export const MediaPlayerControls = () => {
           ) : (
             <Button
               variant="default"
-              onClick={playOrPause}
+              onClick={debouncedPlayOrPause}
+              id="media-play-or-pause-button"
               data-tooltip-id="media-player-controls-tooltip"
               data-tooltip-content={t("play")}
               className="aspect-square p-0 h-12 rounded-full"

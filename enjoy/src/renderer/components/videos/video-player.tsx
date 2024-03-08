@@ -1,10 +1,6 @@
 import { useEffect, useContext, useRef } from "react";
-import {
-  MediaPlayerProviderContext,
-  AppSettingsProviderContext,
-} from "@renderer/context";
-import { t } from "i18next";
-import { ScrollArea, toast } from "@renderer/components/ui";
+import { MediaPlayerProviderContext } from "@renderer/context";
+import { ScrollArea } from "@renderer/components/ui";
 import {
   MediaLoadingModal,
   MediaCaption,
@@ -15,24 +11,21 @@ import {
   MediaCurrentRecording,
 } from "@renderer/components";
 import { formatDuration } from "@renderer/lib/utils";
+import { useVideo } from "@renderer/hooks";
 
 export const VideoPlayer = (props: { id?: string; md5?: string }) => {
   const { id, md5 } = props;
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { media, currentTime, setMedia, setRef } =
-    useContext(MediaPlayerProviderContext);
+  const { media, currentTime, setMedia, setRef } = useContext(
+    MediaPlayerProviderContext
+  );
+  const { video } = useVideo({ id, md5 });
   const ref = useRef(null);
 
   useEffect(() => {
-    const where = id ? { id } : { md5 };
-    EnjoyApp.videos.findOne(where).then((video) => {
-      if (video) {
-        setMedia(video);
-      } else {
-        toast.error(t("models.video.notFound"));
-      }
-    });
-  }, [id, md5]);
+    if (!video) return;
+
+    setMedia(video);
+  }, [video]);
 
   useEffect(() => {
     setRef(ref);
