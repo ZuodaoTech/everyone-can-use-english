@@ -157,17 +157,47 @@ export const MediaCaption = () => {
         };
 
         const draft = cloneDeep(transcription.result);
-        const firstWord =
-          draft[currentSegmentIndex].segments[
-            cloneDeep(selectedIndices).shift()
-          ];
-        const lastWord =
-          draft[currentSegmentIndex].segments[cloneDeep(selectedIndices).pop()];
+        const draftCaption = draft[currentSegmentIndex];
+
+        const firstIndex = selectedIndices[0];
+        const lastIndex = selectedIndices[selectedIndices.length - 1];
+        const firstWord = draftCaption.segments[firstIndex];
+        const lastWord = draftCaption.segments[lastIndex];
 
         firstWord.offsets.from = offsets.from;
         lastWord.offsets.to = offsets.to;
         firstWord.timestamps.from = timestamps.from;
         lastWord.timestamps.to = timestamps.to;
+
+        /* Update the offsets of the previous and next words
+         * It happens only when regions are intersecting with the previous or next word.
+         * It will ignore if the previous/next word's position changed in timestamps.
+         */
+        const prevWord = draftCaption.segments[firstIndex - 1];
+        const nextWord = draftCaption.segments[lastIndex + 1];
+        if (
+          prevWord &&
+          prevWord.offsets.to > offsets.from &&
+          prevWord.offsets.from < offsets.from
+        ) {
+          prevWord.offsets.to = offsets.from;
+          prevWord.timestamps.to = timestamps.from;
+        }
+        if (
+          nextWord &&
+          nextWord.offsets.from < offsets.to &&
+          nextWord.offsets.to > offsets.to
+        ) {
+          nextWord.offsets.from = offsets.to;
+          nextWord.timestamps.from = timestamps.to;
+        }
+
+        /*
+         * If the last word is the last word of the segment, then update the segment's end time.
+         */
+        if (lastIndex === draftCaption.segments.length - 1) {
+          draftCaption.offsets.to = offsets.to;
+        }
 
         setTranscriptionDraft(draft);
       }),
@@ -179,8 +209,6 @@ export const MediaCaption = () => {
   }, [editingRegion]);
 
   useEffect(() => {
-    if (!caption) return;
-
     document.addEventListener("keydown", (event: KeyboardEvent) =>
       toggleMultiSelect(event)
     );

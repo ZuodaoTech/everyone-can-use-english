@@ -238,6 +238,7 @@ export const MediaPlayerProvider = ({
               },
             },
             y: {
+              beginAtZero: true,
               display: false,
             },
           },

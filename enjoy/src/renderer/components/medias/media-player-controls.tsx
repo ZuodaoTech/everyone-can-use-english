@@ -126,7 +126,11 @@ export const MediaPlayerControls = () => {
     span.style.padding = "1rem";
     span.style.fontSize = "0.9rem";
 
-    regions.clearRegions();
+    regions
+      .getRegions()
+      .filter((r) => r.id.startsWith("segment-region"))
+      .forEach((r) => r.remove());
+
     const region = regions.addRegion({
       id,
       start: from,
@@ -136,10 +140,33 @@ export const MediaPlayerControls = () => {
       resize: editingRegion,
       content: span,
     });
+
+    /* 
+     * Remain active wordRegion unchanged if it's still in the segment region.
+     * It happens when word region finish editing and the transcription is updated.
+     */
+    if (
+      activeRegion &&
+      activeRegion.id.startsWith("word-region") &&
+      activeRegion.start >= region.start &&
+      activeRegion.end <= region.end
+    ) {
+      return;
+    }
+
+    /* 
+     * Otherwise remove all word regions.
+     * Set the segment region as active
+    */
+    regions
+      .getRegions()
+      .filter((r) => r.id.startsWith("word-region"))
+      .forEach((r) => r.remove());
     setActiveRegion(region);
     wavesurfer.setScrollTime(region.start);
   };
 
+  // Debounce updateSegmentRegion
   const debouncedUpdateSegmentRegion = debounce(updateSegmentRegion, 100);
 
   /*
@@ -262,6 +289,7 @@ export const MediaPlayerControls = () => {
     wavesurfer.zoom(zoomRatio * minPxPerSec);
     if (!activeRegion) return;
 
+    renderPitchContour(activeRegion);
     wavesurfer.setScrollTime(activeRegion.start);
   }, [zoomRatio, wavesurfer, decoded]);
 
