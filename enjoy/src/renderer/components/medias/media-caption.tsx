@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import { secondsToTimestamp } from "@renderer/lib/utils";
 import cloneDeep from "lodash/cloneDeep";
@@ -20,8 +20,6 @@ export const MediaCaption = () => {
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [multiSelecting, setMultiSelecting] = useState<boolean>(false);
   const caption = transcription?.result?.[currentSegmentIndex];
-
-  const ref = useRef(null);
 
   const toggleMultiSelect = (event: KeyboardEvent) => {
     setMultiSelecting(event.shiftKey && event.type === "keydown");
@@ -182,7 +180,6 @@ export const MediaCaption = () => {
 
   useEffect(() => {
     if (!caption) return;
-    if (!ref?.current) return;
 
     document.addEventListener("keydown", (event: KeyboardEvent) =>
       toggleMultiSelect(event)
@@ -195,12 +192,12 @@ export const MediaCaption = () => {
       document.removeEventListener("keydown", toggleMultiSelect);
       document.removeEventListener("keyup", toggleMultiSelect);
     };
-  }, [ref, caption]);
+  }, []);
 
   if (!caption) return <div></div>;
 
   return (
-    <div ref={ref} className="p-4">
+    <div className="p-4">
       <div className="flex-1 font-serif">
         <div className="flex flex-wrap">
           {(caption.segments || []).map((w, index) => (
