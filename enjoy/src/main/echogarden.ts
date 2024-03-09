@@ -2,12 +2,41 @@ import { ipcMain } from "electron";
 import { align } from "echogarden/dist/api/API.js";
 import { AlignmentOptions } from "echogarden/dist/api/API";
 import { AudioSourceParam } from "echogarden/dist/audio/AudioUtilities";
+import path from "path";
+import log from "@main/logger";
+import url from "url";
 
+const __filename = url.fileURLToPath(import.meta.url);
+/*
+ * whipser bin file will be in /app.asar.unpacked instead of /app.asar
+ */
+const __dirname = path
+  .dirname(__filename)
+  .replace("app.asar", "app.asar.unpacked");
+
+const logger = log.scope("echogarden");
 class EchogardenWrapper {
-  align: typeof align;
+  public align: typeof align;
 
   constructor() {
     this.align = align;
+  }
+
+  async check() {
+    const sampleFile = path.join(__dirname, "samples", "jfk.wav");
+    try {
+      const result = await this.align(
+        sampleFile,
+        "And so my fellow Americans ask not what your country can do for you",
+        {}
+      );
+      logger.info(result);
+
+      return true;
+    } catch (e) {
+      logger.error(e);
+      return false;
+    }
   }
 
   registerIpcHandlers() {
@@ -22,6 +51,10 @@ class EchogardenWrapper {
         return this.align(input, transcript, options);
       }
     );
+
+    ipcMain.handle("echogarden-check", async (_event) => {
+      return this.check();
+    });
   }
 }
 

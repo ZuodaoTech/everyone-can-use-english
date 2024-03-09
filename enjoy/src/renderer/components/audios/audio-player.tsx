@@ -53,7 +53,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
 
           <div className="w-full h-[16rem] px-6 py-2 my-2">
             <div className="border rounded-xl shadow-lg relative">
-              <div ref={ref} />
+              <div data-testid="media-player-container" ref={ref} />
             </div>
 
             <div className="absolute right-2 top-2">

@@ -354,6 +354,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     align: (input: string, transcript: string, options: any) => {
       return ipcRenderer.invoke("echogarden-align", input, transcript, options);
     },
+    check: () => {
+      return ipcRenderer.invoke("echogarden-check");
+    },
   },
   whisper: {
     config: () => {
