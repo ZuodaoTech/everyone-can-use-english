@@ -22,6 +22,7 @@ export const MediaCaption = () => {
     activeRegion,
     setActiveRegion,
     editingRegion,
+    setEditingRegion,
     setTranscriptionDraft,
   } = useContext(MediaPlayerProviderContext);
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -118,6 +119,7 @@ export const MediaCaption = () => {
       if (
         w.offsets.from / 1000.0 >= activeRegion.start &&
         (w.offsets.to / 1000.0 <= activeRegion.end ||
+          // The last word's end time may be a little greater than the duration of the audio in somehow.
           w.offsets.to / 1000.0 > wavesurfer.getDuration())
       ) {
         indices.push(index);
@@ -173,8 +175,12 @@ export const MediaCaption = () => {
         const firstWord = draftCaption.segments[firstIndex];
         const lastWord = draftCaption.segments[lastIndex];
 
-        console.log("firstWord", firstWord, "lastWord", lastWord);
-        if (!firstWord) return;
+        // If no word is selected somehow, then ignore the update.
+        if (!firstWord || !lastWord) {
+          setEditingRegion(false);
+          return;
+        };
+
         firstWord.offsets.from = offsets.from;
         lastWord.offsets.to = offsets.to;
         firstWord.timestamps.from = timestamps.from;
@@ -236,7 +242,7 @@ export const MediaCaption = () => {
   if (!caption) return <div></div>;
 
   return (
-    <div className="flex justify-between h-[calc(70vh-28.5rem)] py-4">
+    <div className="flex justify-between min-h-[calc(70vh-28.5rem)] py-4">
       <div className="flex-1 px-4 py-2 flex-1 font-serif h-full">
         <div className="flex flex-wrap">
           {(caption.segments || []).map((w, index) => (
@@ -263,10 +269,10 @@ export const MediaCaption = () => {
         </div>
       )}
       <div className="flex flex-col space-y-2">
-        <Button variant="outline" size="icon" className="rounded-full">
+        <Button variant="outline" size="icon" className="rounded-full w-8 h-8 p-0">
           <LanguagesIcon className="w-4 h-4" />
         </Button>
-        <Button variant="outline" size="icon" className="rounded-full">
+        <Button variant="outline" size="icon" className="rounded-full w-8 h-8 p-0">
           <SpeechIcon className="w-4 h-4" />
         </Button>
       </div>

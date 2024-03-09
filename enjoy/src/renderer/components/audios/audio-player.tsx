@@ -46,7 +46,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
           <ScrollArea className="h-[calc(70vh-22rem)] px-6">
             <MediaCaption />
 
-            <div className="sticky bottom-0">
+            <div className="sticky bottom-0 z-10 bg-background">
               <MediaCurrentRecording />
             </div>
           </ScrollArea>
