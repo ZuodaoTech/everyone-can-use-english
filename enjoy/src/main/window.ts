@@ -21,6 +21,7 @@ import { AudibleProvider, TedProvider } from "@main/providers";
 import Ffmpeg from "@main/ffmpeg";
 import { Waveform } from "./waveform";
 import url from "url";
+import echogarden from "./echogarden";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,6 +49,9 @@ main.init = () => {
 
   // Prepare Settings
   settings.registerIpcHandlers();
+
+  // echogarden
+  echogarden.registerIpcHandlers();
 
   // Whisper
   whisper.registerIpcHandlers();
