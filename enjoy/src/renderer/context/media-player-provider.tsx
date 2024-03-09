@@ -54,8 +54,10 @@ export const MediaPlayerProviderContext =
 
 export const MediaPlayerProvider = ({
   children,
+  height = 240,
 }: {
   children: React.ReactNode;
+  height: number;
 }) => {
   const minPxPerSec = 150;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -107,7 +109,7 @@ export const MediaPlayerProvider = ({
 
     const ws = WaveSurfer.create({
       container: ref.current,
-      height: 250,
+      height,
       waveColor: "#eaeaea",
       progressColor: "#c0d6df",
       cursorColor: "#ff0054",
@@ -138,7 +140,6 @@ export const MediaPlayerProvider = ({
     if (!region) return;
     if (!waveform?.frequencies?.length) return;
     if (!wavesurfer) return;
-    const height = 250;
 
     const duration = wavesurfer.getDuration();
     const fromIndex = Math.round(
@@ -326,7 +327,15 @@ export const MediaPlayerProvider = ({
     if (!activeRegion) return;
 
     renderPitchContour(activeRegion);
-  }, [activeRegion])
+  }, [activeRegion]);
+
+  useEffect(() => {
+    if (!wavesurfer) return;
+    if (!decoded) return;
+
+    const scrollContainer = wavesurfer.getWrapper().closest(".scroll");
+    scrollContainer.style.scrollbarWidth = "thin";
+  }, [decoded, wavesurfer]);
 
   return (
     <MediaPlayerProviderContext.Provider

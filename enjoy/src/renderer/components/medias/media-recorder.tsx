@@ -10,7 +10,8 @@ import { useTranscribe } from "@renderer/hooks";
 import { Button, toast } from "@renderer/components/ui";
 import { StopCircleIcon } from "lucide-react";
 
-export const MediaRecorder = () => {
+export const MediaRecorder = (props: { height?: number }) => {
+  const { height = 96 } = props;
   const { recordings, isRecording, setIsRecording, currentRecording } =
     useContext(MediaPlayerProviderContext);
   const [access, setAccess] = useState<boolean>(false);
@@ -38,8 +39,7 @@ export const MediaRecorder = () => {
     const ws = WaveSurfer.create({
       container: ref.current,
       fillParent: true,
-      waveColor: "#fff",
-      height: 150,
+      height,
       autoCenter: false,
       normalize: false,
     });
@@ -93,12 +93,12 @@ export const MediaRecorder = () => {
   }, []);
 
   return (
-    <div className="w-full relative">
-      <span className="absolute bottom-2 right-2 text-white serif">
+    <div className="border rounded-xl relative">
+      <span className="absolute bottom-2 right-2 serif">
         {duration}
         <span className="text-xs"> / 300</span>
       </span>
-      <div className="h-full bg-red-500/50" ref={ref}></div>
+      <div className="h-full" ref={ref}></div>
     </div>
   );
 };

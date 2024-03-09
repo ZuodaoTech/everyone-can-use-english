@@ -67,6 +67,7 @@
     "octokit": "^3.1.2",
     "progress": "^2.0.3",
     "tailwind-merge": "^2.2.1",
+    "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
     "ts-node": "^10.9.2",

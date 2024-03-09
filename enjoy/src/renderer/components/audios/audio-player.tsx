@@ -1,7 +1,5 @@
 import { useEffect, useContext, useRef } from "react";
-import {
-  MediaPlayerProviderContext,
-} from "@renderer/context";
+import { MediaPlayerProviderContext } from "@renderer/context";
 import { ScrollArea } from "@renderer/components/ui";
 import {
   MediaLoadingModal,
@@ -37,7 +35,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
     <div data-testid="audio-player">
       <div className="">
         <div className="h-[calc(30vh-3.5rem)]">
-          <div className="grid grid-cols-3 gap-4 px-6 pb-4 h-full">
+          <div className="grid grid-cols-3 gap-4 px-6 h-full">
             <MediaInfoPanel />
             <MediaRecordings />
             <MediaTranscription />
@@ -45,12 +43,19 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
         </div>
 
         <div className="h-[70vh] flex flex-col">
-          <ScrollArea className="flex-1 w-full h-full border-t">
+          <ScrollArea className="h-[calc(70vh-22rem)] px-6">
             <MediaCaption />
+
+            <div className="sticky bottom-0">
+              <MediaCurrentRecording />
+            </div>
           </ScrollArea>
 
-          <div className="w-full border-t relative">
-            <div ref={ref} />
+          <div className="w-full h-[16rem] px-6 py-2 my-2">
+            <div className="border rounded-xl shadow-lg relative">
+              <div ref={ref} />
+            </div>
+
             <div className="absolute right-2 top-2">
               <span className="text-sm">
                 {formatDuration(currentTime || 0)}
@@ -62,9 +67,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
             </div>
           </div>
 
-          <MediaCurrentRecording />
-
-          <div className="w-full border-t">
+          <div className="w-full bg-background z-10 shadow-xl">
             <MediaPlayerControls />
           </div>
         </div>

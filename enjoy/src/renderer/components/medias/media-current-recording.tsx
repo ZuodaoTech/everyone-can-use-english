@@ -1,12 +1,11 @@
 import { useEffect, useContext, useRef } from "react";
-import {
-  MediaPlayerProviderContext,
-} from "@renderer/context";
+import { MediaPlayerProviderContext } from "@renderer/context";
 import { extractFrequencies, MediaRecorder } from "@renderer/components";
 import WaveSurfer from "wavesurfer.js";
 import Chart from "chart.js/auto";
 
-export const MediaCurrentRecording = () => {
+export const MediaCurrentRecording = (props: { height?: number }) => {
+  const { height = 96 } = props;
   const { recordings, isRecording, setIsRecording, currentRecording } =
     useContext(MediaPlayerProviderContext);
 
@@ -17,7 +16,6 @@ export const MediaCurrentRecording = () => {
     if (isRecording) return;
     if (!currentRecording?.src) return;
 
-    const height = 150;
     const ws = WaveSurfer.create({
       container: ref.current,
       url: currentRecording.src,
@@ -102,7 +100,7 @@ export const MediaCurrentRecording = () => {
   if (!currentRecording?.src) return null;
 
   return (
-    <div className="border-t bg-blue-500/10">
+    <div className="border rounded-xl shadow relative">
       <div ref={ref}></div>
     </div>
   );
