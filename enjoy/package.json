@@ -133,7 +133,7 @@
     "i18next": "^23.10.0",
     "intl-tel-input": "^19.5.5",
     "js-md5": "^0.8.3",
-    "langchain": "^0.1.25",
+    "langchain": "^0.1.26",
     "lodash": "^4.17.21",
     "lucide-react": "^0.344.0",
     "mark.js": "^8.11.1",
