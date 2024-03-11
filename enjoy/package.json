@@ -130,7 +130,7 @@
     "fs-extra": "^11.2.0",
     "html-to-text": "^9.0.5",
     "https-proxy-agent": "^7.0.4",
-    "i18next": "^23.10.0",
+    "i18next": "^23.10.1",
     "intl-tel-input": "^19.5.5",
     "js-md5": "^0.8.3",
     "langchain": "^0.1.25",
