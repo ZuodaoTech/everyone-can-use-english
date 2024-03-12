@@ -15,6 +15,7 @@ import {
   TimelineEntry,
   Timeline,
 } from "echogarden/dist/utilities/Timeline.d.js";
+import { IPA_MAPPING } from "@/constants";
 
 export const MediaCaption = () => {
   const {
@@ -239,7 +240,13 @@ export const MediaCaption = () => {
               <div className="">
                 <div className="text-2xl">{w.text}</div>
                 <div className="text-muted-foreground">
-                  {w.timeline.map((t) => t.text).join()}
+                  {w.timeline
+                    .map((t) =>
+                      t.timeline
+                        .map((s) => (IPA_MAPPING as any)[s.text] || s.text)
+                        .join("")
+                    )
+                    .join()}
                 </div>
               </div>
             </div>
@@ -258,7 +265,15 @@ export const MediaCaption = () => {
                   {word.text}
                 </div>
                 <div className="text-muted-foreground">
-                  /{word.timeline.map((t) => t.text).join()}/
+                  /
+                  {word.timeline
+                    .map((t) =>
+                      t.timeline
+                        .map((s) => (IPA_MAPPING as any)[s.text] || s.text)
+                        .join("")
+                    )
+                    .join()}
+                  /
                 </div>
               </div>
             );

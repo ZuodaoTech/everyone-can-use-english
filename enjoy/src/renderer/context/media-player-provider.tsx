@@ -8,6 +8,7 @@ import Regions, {
 } from "wavesurfer.js/dist/plugins/regions";
 import Chart from "chart.js/auto";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
+import { IPA_MAPPING } from "@/constants";
 
 type MediaPlayerContextType = {
   media: AudioType | VideoType;
@@ -217,7 +218,8 @@ export const MediaPlayerProvider = ({
         const index = Math.round(
           ((phone.startTime - region.start) / regionDuration) * data.length
         );
-        labels[index] = phone.text.trim();
+        labels[index] =
+          (IPA_MAPPING as any)[phone.text.trim()] || phone.text.trim();
       });
     }
 
@@ -332,10 +334,14 @@ export const MediaPlayerProvider = ({
 
     if (!activeRegion) return;
 
-    const containerWidth = ref.current.getBoundingClientRect().width;
-    const duration = activeRegion.end - activeRegion.start;
+    if (activeRegion.id.startsWith("segment-region")) {
+      const containerWidth = ref.current.getBoundingClientRect().width;
+      const duration = activeRegion.end - activeRegion.start;
 
-    setFitZoomRatio(containerWidth / duration / minPxPerSec);
+      setFitZoomRatio(containerWidth / duration / minPxPerSec);
+    } else if (activeRegion.id.startsWith("word-region")) {
+      setFitZoomRatio(4);
+    }
   }, [ref, wavesurfer, activeRegion]);
 
   useEffect(() => {
