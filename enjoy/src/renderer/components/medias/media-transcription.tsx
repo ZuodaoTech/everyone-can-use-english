@@ -1,4 +1,4 @@
-import { useEffect, useContext, useRef } from "react";
+import { useEffect, useContext, useRef, useState } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import {
@@ -16,6 +16,7 @@ import {
   ScrollArea,
 } from "@renderer/components/ui";
 import { LoaderIcon, CheckCircleIcon, MicIcon } from "lucide-react";
+import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 
 export const MediaTranscription = () => {
   const containerRef = useRef<HTMLDivElement>();
@@ -101,25 +102,27 @@ export const MediaTranscription = () => {
         </div>
       </div>
 
-      {transcription.result.map((t, index) => (
-        <div
-          key={index}
-          id={`segment-${index}`}
-          className={`py-2 px-4 cursor-pointer hover:bg-yellow-400/10 ${
-            currentSegmentIndex === index ? "bg-yellow-400/25" : ""
-          }`}
-          onClick={() => {
-            wavesurfer.seekTo(t.offsets.from / 1000.0 / media.duration);
-            wavesurfer.setScrollTime(t.offsets.from / 1000.0);
-            setCurrentSegmentIndex(index);
-          }}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-xs opacity-50">#{index + 1}</span>
+      {(transcription.result as AlignmentResult).timeline.map(
+        (sentence, index) => (
+          <div
+            key={index}
+            id={`segment-${index}`}
+            className={`py-2 px-4 cursor-pointer hover:bg-yellow-400/10 ${
+              currentSegmentIndex === index ? "bg-yellow-400/25" : ""
+            }`}
+            onClick={() => {
+              wavesurfer.seekTo(sentence.startTime / media.duration);
+              wavesurfer.setScrollTime(sentence.startTime);
+              setCurrentSegmentIndex(index);
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs opacity-50">#{index + 1}</span>
+            </div>
+            <p className="">{sentence.text}</p>
           </div>
-          <p className="">{t.text}</p>
-        </div>
-      ))}
+        )
+      )}
     </ScrollArea>
   );
 };

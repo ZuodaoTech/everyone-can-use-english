@@ -1,5 +1,5 @@
 type VideoType = {
-  mediaType: 'Video',
+  mediaType: string,
   id: string;
   source: string;
   name: string;

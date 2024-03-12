@@ -30,16 +30,16 @@ import {
   SquareIcon,
 } from "lucide-react";
 import { t } from "i18next";
-import { secondsToTimestamp } from "@renderer/lib/utils";
 import { Tooltip } from "react-tooltip";
 import { useHotkeys } from "react-hotkeys-hook";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
+import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 
 const PLAYBACK_RATE_OPTIONS = [0.75, 0.8, 0.9, 1.0];
-const ZOOM_RATIO_OPTIONS = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
+const ZOOM_RATIO_OPTIONS = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 3.5, 4.0];
 const MIN_ZOOM_RATIO = 0.25;
-const MAX_ZOOM_RATIO = 2.0;
+const MAX_ZOOM_RATIO = 4.0;
 export const MediaPlayerControls = () => {
   const {
     decoded,
@@ -114,13 +114,13 @@ export const MediaPlayerControls = () => {
       return;
     }
 
-    const currentSegment = transcription?.result?.[currentSegmentIndex];
+    const currentSegment =
+      transcription?.result?.timeline?.[currentSegmentIndex];
     if (!currentSegment) return;
 
     const id = `segment-region-${currentSegmentIndex}`;
-    const from = currentSegment.offsets.from / 1000.0;
-    const to = currentSegment.offsets.to / 1000.0;
-
+    const from = currentSegment.startTime;
+    const to = currentSegment.endTime;
     const span = document.createElement("span");
     span.innerText = `#${currentSegmentIndex + 1} (${(to - from).toFixed(2)}s)`;
     span.style.padding = "1rem";
@@ -141,7 +141,7 @@ export const MediaPlayerControls = () => {
       content: span,
     });
 
-    /* 
+    /*
      * Remain active wordRegion unchanged if it's still in the segment region.
      * It happens when word region finish editing and the transcription is updated.
      */
@@ -154,10 +154,10 @@ export const MediaPlayerControls = () => {
       return;
     }
 
-    /* 
+    /*
      * Otherwise remove all word regions.
      * Set the segment region as active
-    */
+     */
     regions
       .getRegions()
       .filter((r) => r.id.startsWith("word-region"))
@@ -206,43 +206,25 @@ export const MediaPlayerControls = () => {
       regions.on("region-updated", (region) => {
         if (region.id !== `segment-region-${currentSegmentIndex}`) return;
 
-        const from = region.start;
-        const to = region.end;
-
-        const offsets = {
-          from: Math.round(from * 1000),
-          to: Math.round(to * 1000),
-        };
-
-        const timestamps = {
-          from: [
-            secondsToTimestamp(from),
-            Math.round((from * 1000) % 1000),
-          ].join(","),
-          to: [secondsToTimestamp(to), Math.round((to * 1000) % 1000)].join(
-            ","
-          ),
-        };
-
         const draft = cloneDeep(transcription.result);
 
-        draft[currentSegmentIndex].offsets = offsets;
-        draft[currentSegmentIndex].timestamps = timestamps;
+        draft[currentSegmentIndex].startTime = region.start;
+        draft[currentSegmentIndex].endTime = region.end;
 
         // ensure that the previous segment ends before the current segment
         if (
           currentSegmentIndex > 0 &&
-          draft[currentSegmentIndex - 1].offsets.to > offsets.from
+          draft[currentSegmentIndex - 1].endTime > region.start
         ) {
-          draft[currentSegmentIndex - 1].offsets.to = offsets.from;
+          draft[currentSegmentIndex - 1].endTime = region.start;
         }
 
         // ensure that the next segment starts after the current segment
         if (
           currentSegmentIndex < draft.length - 1 &&
-          draft[currentSegmentIndex + 1].offsets.from < offsets.to
+          draft[currentSegmentIndex + 1].startTime < region.end
         ) {
-          draft[currentSegmentIndex + 1].offsets.from = offsets.to;
+          draft[currentSegmentIndex + 1].startTime = region.end;
         }
 
         setTranscriptionDraft(draft);
@@ -274,12 +256,13 @@ export const MediaPlayerControls = () => {
    */
   useEffect(() => {
     if (!transcription?.result) return;
+    if (!transcription.result['transcript']) return;
     if (!decoded) return;
     if (!wavesurfer) return;
 
     setCurrentSegmentIndex(0);
-    const segment = transcription.result[0];
-    wavesurfer.seekTo(segment.offsets.from / 1000.0 / wavesurfer.getDuration());
+    const segment = transcription.result.timeline[0];
+    wavesurfer.seekTo(segment.startTime / wavesurfer.getDuration());
   }, [decoded, transcription?.id, wavesurfer]);
 
   useEffect(() => {
@@ -304,11 +287,10 @@ export const MediaPlayerControls = () => {
    */
   useEffect(() => {
     if (!transcription?.result) return;
+    if (!transcription.result['transcript']) return;
 
-    const index = transcription.result.findIndex(
-      (t) =>
-        currentTime * 1000 >= t.offsets.from &&
-        currentTime * 1000 < t.offsets.to
+    const index = (transcription.result as AlignmentResult).timeline.findIndex(
+      (t) => currentTime >= t.startTime && currentTime < t.endTime
     );
     if (index === -1) return;
     // Stay on the current segment if playMode is single

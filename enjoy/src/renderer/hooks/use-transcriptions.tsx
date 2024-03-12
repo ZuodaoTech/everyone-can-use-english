@@ -6,6 +6,7 @@ import {
   DbProviderContext,
 } from "@renderer/context";
 import { toast } from "@renderer/components/ui";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
   const { whisperConfig } = useContext(AISettingsProviderContext);
@@ -31,8 +32,11 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         targetId: media.id,
         targetType: media.mediaType,
       })
-      .then((transcription) => {
-        setTranscription(transcription);
+      .then((t) => {
+        if (t.result && !t.result["transcript"]) {
+          t.result = null;
+        }
+        setTranscription(t);
       })
       .catch((err) => {
         toast.error(err.message);
@@ -48,13 +52,30 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     setTranscribing(true);
     setTranscribingProgress(0);
     try {
-      const { engine, model, result } = await transcribe(media.src, {
+      const { engine, model, alignmentResult } = await transcribe(media.src, {
         targetId: media.id,
         targetType: media.mediaType,
       });
+
+      let timeline: TimelineEntry[] = [];
+      if (alignmentResult) {
+        alignmentResult.timeline.forEach((t) => {
+          if (t.type === "sentence") {
+            timeline.push(t);
+          } else {
+            t.timeline.forEach((st) => {
+              timeline.push(st);
+            });
+          }
+        });
+      }
+
       await EnjoyApp.transcriptions.update(transcription.id, {
         state: "finished",
-        result,
+        result: {
+          timeline: timeline,
+          transcript: alignmentResult.transcript,
+        },
         engine,
         model,
       });
@@ -79,10 +100,14 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     )?.[0];
 
     if (!transcript) {
-      throw new Error("Transcription not found");
+      return Promise.reject("Transcription not found");
     }
 
-    await EnjoyApp.transcriptions.update(transcription.id, {
+    if (!transcript.result["transcript"]) {
+      return Promise.reject("Transcription not aligned");
+    }
+
+    return EnjoyApp.transcriptions.update(transcription.id, {
       state: "finished",
       result: transcript.result,
       engine: transcript.engine,
@@ -110,7 +135,10 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
 
     addDblistener(onTransactionUpdate);
 
-    if (transcription?.state == "pending") {
+    if (
+      transcription.state == "pending" ||
+      !transcription.result?.["transcript"]
+    ) {
       findOrGenerateTranscription();
     }
 

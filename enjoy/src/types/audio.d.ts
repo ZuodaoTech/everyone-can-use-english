@@ -1,5 +1,5 @@
 type AudioType = {
-  mediaType: 'Audio',
+  mediaType: string,
   id: string;
   source: string;
   name: string;

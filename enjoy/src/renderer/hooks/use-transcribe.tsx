@@ -17,6 +17,7 @@ import {
   END_OF_WORD_REGEX,
   milisecondsToTimestamp,
 } from "@/utils";
+import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 
 export const useTranscribe = () => {
   const { EnjoyApp, ffmpegWasm, ffmpegValid, user, webApi } = useContext(
@@ -80,21 +81,32 @@ export const useTranscribe = () => {
   ): Promise<{
     engine: string;
     model: string;
-    result: TranscriptionResultSegmentGroupType[];
+    alignmentResult: AlignmentResult;
   }> => {
     const blob = await transcode(mediaSrc);
 
+    let result;
     if (whisperConfig.service === "local") {
-      return transcribeByLocal(blob);
+      result = await transcribeByLocal(blob);
     } else if (whisperConfig.service === "cloudflare") {
-      return transcribeByCloudflareAi(blob);
+      result = await transcribeByCloudflareAi(blob);
     } else if (whisperConfig.service === "openai") {
-      return transcribeByOpenAi(blob);
+      result = await transcribeByOpenAi(blob);
     } else if (whisperConfig.service === "azure") {
-      return transcribeByAzureAi(blob, params);
+      result = await transcribeByAzureAi(blob, params);
     } else {
       throw new Error(t("whisperServiceNotSupported"));
     }
+
+    const alignmentResult = await EnjoyApp.echogarden.align(
+      new Uint8Array(await blob.arrayBuffer()),
+      result.result.map((segment) => segment.text).join(" ")
+    );
+
+    return {
+      ...result,
+      alignmentResult,
+    };
   };
 
   const transcribeByLocal = async (blob: Blob) => {

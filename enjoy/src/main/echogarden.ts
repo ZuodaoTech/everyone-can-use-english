@@ -8,7 +8,7 @@ import url from "url";
 
 const __filename = url.fileURLToPath(import.meta.url);
 /*
- * whipser bin file will be in /app.asar.unpacked instead of /app.asar
+ * sample files will be in /app.asar.unpacked instead of /app.asar
  */
 const __dirname = path
   .dirname(__filename)

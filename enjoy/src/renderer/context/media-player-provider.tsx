@@ -7,6 +7,7 @@ import Regions, {
   type Region as RegionType,
 } from "wavesurfer.js/dist/plugins/regions";
 import Chart from "chart.js/auto";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 
 type MediaPlayerContextType = {
   media: AudioType | VideoType;
@@ -189,17 +190,34 @@ export const MediaPlayerProvider = ({
     const labels = new Array(data.length).fill("");
     const regionDuration = region.end - region.start;
 
-    const caption = transcription?.result?.[currentSegmentIndex];
+    const caption = transcription?.result?.timeline?.[currentSegmentIndex];
     if (region.id.startsWith("segment-region")) {
-      caption.segments.forEach((segment) => {
+      caption.timeline.forEach((segment: TimelineEntry) => {
         const index = Math.round(
-          ((segment.offsets.from / 1000 - region.start) / regionDuration) *
-            data.length
+          ((segment.startTime - region.start) / regionDuration) * data.length
         );
         labels[index] = segment.text.trim();
-        if (!data[index]) {
-          data[index] = 0;
-        }
+      });
+    } else if (region.id.startsWith("word-region")) {
+      const words = caption.timeline.filter(
+        (w: TimelineEntry) =>
+          w.startTime >= region.start &&
+          w.endTime <= region.end &&
+          w.type === "word"
+      );
+
+      let phones: TimelineEntry[] = [];
+      words.forEach((word: TimelineEntry) => {
+        word.timeline.forEach((token: TimelineEntry) => {
+          phones = phones.concat(token.timeline);
+        });
+      });
+
+      phones.forEach((phone: TimelineEntry) => {
+        const index = Math.round(
+          ((phone.startTime - region.start) / regionDuration) * data.length
+        );
+        labels[index] = phone.text.trim();
       });
     }
 
@@ -311,17 +329,14 @@ export const MediaPlayerProvider = ({
   useEffect(() => {
     if (!ref?.current) return;
     if (!wavesurfer) return;
-    if (!transcription?.result) return;
 
-    const currentSegment = transcription?.result?.[currentSegmentIndex];
-    if (!currentSegment) return;
+    if (!activeRegion) return;
 
     const containerWidth = ref.current.getBoundingClientRect().width;
-    const duration =
-      currentSegment.offsets.to / 1000.0 - currentSegment.offsets.from / 1000.0;
+    const duration = activeRegion.end - activeRegion.start;
 
     setFitZoomRatio(containerWidth / duration / minPxPerSec);
-  }, [ref, wavesurfer, transcription, currentSegmentIndex]);
+  }, [ref, wavesurfer, activeRegion]);
 
   useEffect(() => {
     if (!activeRegion) return;

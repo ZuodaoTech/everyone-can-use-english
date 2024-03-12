@@ -11,6 +11,10 @@ import {
   LoaderIcon,
   SpeechIcon,
 } from "lucide-react";
+import {
+  TimelineEntry,
+  Timeline,
+} from "echogarden/dist/utilities/Timeline.d.js";
 
 export const MediaCaption = () => {
   const {
@@ -28,7 +32,9 @@ export const MediaCaption = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [multiSelecting, setMultiSelecting] = useState<boolean>(false);
-  const caption = transcription?.result?.[currentSegmentIndex];
+  const caption = (transcription?.result?.timeline as Timeline)?.[
+    currentSegmentIndex
+  ];
 
   const toggleMultiSelect = (event: KeyboardEvent) => {
     setMultiSelecting(event.shiftKey && event.type === "keydown");
@@ -41,11 +47,11 @@ export const MediaCaption = () => {
       return;
     }
 
-    const word = caption.segments[index];
+    const word = caption.timeline[index];
     if (!word) return;
 
-    const start = word.offsets.from / 1000;
-    const end = word.offsets.to / 1000;
+    const start = word.startTime;
+    const end = word.endTime;
     const regionStart = activeRegion.start;
     const regionEnd = activeRegion.end;
 
@@ -95,9 +101,8 @@ export const MediaCaption = () => {
   useEffect(() => {
     if (!caption) return;
 
-    const time = Math.round(currentTime * 1000.0);
-    const index = caption.segments.findIndex(
-      (w) => time >= w.offsets.from && time < w.offsets.to
+    const index = caption.timeline.findIndex(
+      (w) => currentTime >= w.startTime && currentTime < w.endTime
     );
 
     if (index !== activeIndex) {
@@ -106,7 +111,7 @@ export const MediaCaption = () => {
   }, [currentTime, caption]);
 
   useEffect(() => {
-    if (!caption?.segments) return;
+    if (!caption?.timeline) return;
     if (!activeRegion) return;
 
     if (!activeRegion.id.startsWith("word-region")) {
@@ -115,12 +120,12 @@ export const MediaCaption = () => {
     }
 
     const indices: number[] = [];
-    caption.segments.forEach((w, index) => {
+    caption.timeline.forEach((w, index) => {
       if (
-        w.offsets.from / 1000.0 >= activeRegion.start &&
-        (w.offsets.to / 1000.0 <= activeRegion.end ||
+        w.startTime >= activeRegion.start &&
+        (w.endTime <= activeRegion.end ||
           // The last word's end time may be a little greater than the duration of the audio in somehow.
-          w.offsets.to / 1000.0 > wavesurfer.getDuration())
+          w.endTime > wavesurfer.getDuration())
       ) {
         indices.push(index);
       }
@@ -149,71 +154,49 @@ export const MediaCaption = () => {
       regions.on("region-updated", (region) => {
         if (!region.id.startsWith("word-region")) return;
 
-        const from = region.start;
-        const to = region.end;
-
-        const offsets = {
-          from: Math.round(from * 1000.0),
-          to: Math.round(to * 1000.0),
-        };
-
-        const timestamps = {
-          from: [
-            secondsToTimestamp(from),
-            Math.round((from * 1000) % 1000),
-          ].join(","),
-          to: [secondsToTimestamp(to), Math.round((to * 1000) % 1000)].join(
-            ","
-          ),
-        };
-
         const draft = cloneDeep(transcription.result);
         const draftCaption = draft[currentSegmentIndex];
 
         const firstIndex = selectedIndices[0];
         const lastIndex = selectedIndices[selectedIndices.length - 1];
-        const firstWord = draftCaption.segments[firstIndex];
-        const lastWord = draftCaption.segments[lastIndex];
+        const firstWord = draftCaption.timeline[firstIndex];
+        const lastWord = draftCaption.timeline[lastIndex];
 
         // If no word is selected somehow, then ignore the update.
         if (!firstWord || !lastWord) {
           setEditingRegion(false);
           return;
-        };
+        }
 
-        firstWord.offsets.from = offsets.from;
-        lastWord.offsets.to = offsets.to;
-        firstWord.timestamps.from = timestamps.from;
-        lastWord.timestamps.to = timestamps.to;
+        firstWord.startTime = region.start;
+        lastWord.endTime = region.end;
 
-        /* Update the offsets of the previous and next words
+        /* Update the timeline of the previous and next words
          * It happens only when regions are intersecting with the previous or next word.
          * It will ignore if the previous/next word's position changed in timestamps.
          */
-        const prevWord = draftCaption.segments[firstIndex - 1];
-        const nextWord = draftCaption.segments[lastIndex + 1];
+        const prevWord = draftCaption.timeline[firstIndex - 1];
+        const nextWord = draftCaption.timeline[lastIndex + 1];
         if (
           prevWord &&
-          prevWord.offsets.to > offsets.from &&
-          prevWord.offsets.from < offsets.from
+          prevWord.endTime > region.start &&
+          prevWord.startTime < region.start
         ) {
-          prevWord.offsets.to = offsets.from;
-          prevWord.timestamps.to = timestamps.from;
+          prevWord.endTime = region.start;
         }
         if (
           nextWord &&
-          nextWord.offsets.from < offsets.to &&
-          nextWord.offsets.to > offsets.to
+          nextWord.startTime < region.end &&
+          nextWord.endTime > region.end
         ) {
-          nextWord.offsets.from = offsets.to;
-          nextWord.timestamps.from = timestamps.to;
+          nextWord.startTime = region.end;
         }
 
         /*
          * If the last word is the last word of the segment, then update the segment's end time.
          */
-        if (lastIndex === draftCaption.segments.length - 1) {
-          draftCaption.offsets.to = offsets.to;
+        if (lastIndex === draftCaption.timeline.length - 1) {
+          draftCaption.endTime = region.end;
         }
 
         setTranscriptionDraft(draft);
@@ -245,15 +228,20 @@ export const MediaCaption = () => {
     <div className="flex justify-between min-h-[calc(70vh-28.5rem)] py-4">
       <div className="flex-1 px-4 py-2 flex-1 font-serif h-full">
         <div className="flex flex-wrap">
-          {(caption.segments || []).map((w, index) => (
+          {(caption.timeline || []).map((w, index) => (
             <div
               key={index}
-              className={`pr-1 cursor-pointer hover:bg-red-500/10 ${
+              className={`pr-2 cursor-pointer hover:bg-red-500/10 ${
                 index === activeIndex ? "text-red-500" : ""
               } ${selectedIndices.includes(index) ? "bg-red-500/10" : ""}`}
               onClick={() => toggleRegion(index)}
             >
-              <div className="text-2xl">{w.text}</div>
+              <div className="">
+                <div className="text-2xl">{w.text}</div>
+                <div className="text-muted-foreground">
+                  {w.timeline.map((t) => t.text).join()}
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -261,18 +249,35 @@ export const MediaCaption = () => {
 
       {selectedIndices.length > 0 && (
         <div className="w-56 rounded-lg shadow border px-4 py-2 mr-4">
-          <div className="font-serif text-lg font-semibold tracking-tight">
-            {selectedIndices
-              .map((index) => caption.segments[index].text)
-              .join(" ")}
-          </div>
+          {selectedIndices.map((index) => {
+            const word = caption.timeline[index];
+            if (!word) return;
+            return (
+              <div>
+                <div className="font-serif text-lg font-semibold tracking-tight">
+                  {word.text}
+                </div>
+                <div className="text-muted-foreground">
+                  /{word.timeline.map((t) => t.text).join()}/
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
       <div className="flex flex-col space-y-2">
-        <Button variant="outline" size="icon" className="rounded-full w-8 h-8 p-0">
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-full w-8 h-8 p-0"
+        >
           <LanguagesIcon className="w-4 h-4" />
         </Button>
-        <Button variant="outline" size="icon" className="rounded-full w-8 h-8 p-0">
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-full w-8 h-8 p-0"
+        >
           <SpeechIcon className="w-4 h-4" />
         </Button>
       </div>

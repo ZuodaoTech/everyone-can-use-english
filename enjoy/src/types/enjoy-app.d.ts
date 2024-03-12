@@ -206,6 +206,14 @@ type EnjoyAppType = {
       }
     ) => Promise<SpeechType>;
   };
+  echogarden: {
+    align: (
+      input: string | Uint8Array,
+      transcript: string,
+      options?: any
+    ) => Promise<any>;
+    check: () => Promise<boolean>;
+  };
   whisper: {
     config: () => Promise<WhisperConfigType>;
     check: () => Promise<{ success: boolean; log: string }>;
