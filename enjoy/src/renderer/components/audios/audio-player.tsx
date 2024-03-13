@@ -43,7 +43,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
         </div>
 
         <div className="h-[70vh] flex flex-col">
-          <ScrollArea className="h-[calc(70vh-22rem)] px-6">
+          <ScrollArea className="h-[calc(70vh-19rem)] px-6">
             <MediaCaption />
 
             <div className="sticky bottom-0 z-10 bg-background">
@@ -51,7 +51,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
             </div>
           </ScrollArea>
 
-          <div className="w-full h-[16rem] px-6 py-2 my-2">
+          <div className="w-full h-[13rem] px-6 py-2 my-2">
             <div className="border rounded-xl shadow-lg relative">
               <div data-testid="media-player-container" ref={ref} />
               <div className="absolute right-2 top-1">

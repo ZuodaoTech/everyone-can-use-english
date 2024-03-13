@@ -11,7 +11,7 @@ import { Button, toast } from "@renderer/components/ui";
 import { StopCircleIcon } from "lucide-react";
 
 export const MediaRecorder = (props: { height?: number }) => {
-  const { height = 96 } = props;
+  const { height = 144 } = props;
   const { recordings, isRecording, setIsRecording, currentRecording } =
     useContext(MediaPlayerProviderContext);
   const [access, setAccess] = useState<boolean>(false);

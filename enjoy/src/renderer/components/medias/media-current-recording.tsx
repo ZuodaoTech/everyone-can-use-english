@@ -3,7 +3,11 @@ import {
   AppSettingsProviderContext,
   MediaPlayerProviderContext,
 } from "@renderer/context";
-import { extractFrequencies, MediaRecorder } from "@renderer/components";
+import {
+  extractFrequencies,
+  MediaRecorder,
+  RecordingDetail,
+} from "@renderer/components";
 import WaveSurfer from "wavesurfer.js";
 import Chart from "chart.js/auto";
 import {
@@ -18,17 +22,29 @@ import {
   AlertDialogAction,
   Button,
   toast,
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetClose,
 } from "@renderer/components/ui";
-import { PauseIcon, PlayIcon, Share2Icon } from "lucide-react";
+import {
+  PauseIcon,
+  PlayIcon,
+  Share2Icon,
+  GaugeCircleIcon,
+  ChevronDownIcon,
+} from "lucide-react";
 import { t } from "i18next";
+import { formatDuration } from "@renderer/lib/utils";
 
 export const MediaCurrentRecording = (props: { height?: number }) => {
-  const { height = 96 } = props;
+  const { height = 144 } = props;
   const { recordings, isRecording, setIsRecording, currentRecording } =
     useContext(MediaPlayerProviderContext);
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
   const [player, setPlayer] = useState<WaveSurfer | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
+  const [detailIsOpen, setDetailIsOpen] = useState(false);
 
   const ref = useRef(null);
 
@@ -154,8 +170,19 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
   if (!currentRecording?.src) return null;
 
   return (
-    <div className="flex space-x-4 relative">
-      <div className="border rounded-xl shadow flex-1" ref={ref}></div>
+    <div className="flex space-x-4">
+      <div className="border rounded-xl flex-1 relative">
+        <div ref={ref}></div>
+
+        <div className="absolute right-2 top-1">
+          <span className="text-sm">{formatDuration(currentTime || 0)}</span>
+          <span className="mx-1">/</span>
+          <span className="text-sm">
+            {formatDuration(player?.getDuration() || 0)}
+          </span>
+        </div>
+      </div>
+
       <div className="flex flex-col space-y-2">
         <Button
           variant="default"
@@ -200,7 +227,51 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
+        <Button
+          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-content={t("pronunciationAssessment")}
+          data-tooltip-place="bottom"
+          onClick={() => {
+            setDetailIsOpen(true);
+          }}
+          variant="outline"
+          size="icon"
+          className="rounded-full w-8 h-8 p-0"
+        >
+          <GaugeCircleIcon
+            className={`w-4 h-4
+                    ${
+                      currentRecording.pronunciationAssessment
+                        ? currentRecording.pronunciationAssessment
+                            .pronunciationScore >= 80
+                          ? "text-green-500"
+                          : currentRecording.pronunciationAssessment
+                              .pronunciationScore >= 60
+                          ? "text-yellow-600"
+                          : "text-red-500"
+                        : "text-muted-foreground"
+                    }
+                    `}
+          />
+        </Button>
       </div>
+
+      <Sheet open={detailIsOpen} onOpenChange={(open) => setDetailIsOpen(open)}>
+        <SheetContent
+          side="bottom"
+          className="rounded-t-2xl shadow-lg"
+          displayClose={false}
+        >
+          <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
+            <SheetClose>
+              <ChevronDownIcon />
+            </SheetClose>
+          </SheetHeader>
+
+          <RecordingDetail recording={currentRecording} />
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };

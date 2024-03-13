@@ -24,7 +24,7 @@ export const PostAudio = (props: {
   const [transcription, setTranscription] = useState<TranscriptionType>();
 
   const currentTranscription = transcription?.result["transcript"]
-    ? transcription.result.timeline.find(
+    ? (transcription.result?.timeline || []).find(
         (s: TimelineEntry) =>
           currentTime >= s.startTime && currentTime <= s.endTime
       )

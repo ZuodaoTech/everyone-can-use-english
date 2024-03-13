@@ -56,7 +56,7 @@ export const MediaPlayerProviderContext =
 
 export const MediaPlayerProvider = ({
   children,
-  height = 240,
+  height = 192,
 }: {
   children: React.ReactNode;
   height: number;

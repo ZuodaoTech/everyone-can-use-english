@@ -19,7 +19,7 @@ export default () => {
           <span>{t("shadowingAudio")}</span>
         </div>
 
-        <MediaPlayerProvider height={240}>
+        <MediaPlayerProvider height={192}>
           <AudioPlayer id={id} />
         </MediaPlayerProvider>
       </div>
