@@ -7,7 +7,7 @@ import { LanguagesIcon, SpeechIcon } from "lucide-react";
 import { Timeline } from "echogarden/dist/utilities/Timeline.d.js";
 import { IPA_MAPPING } from "@/constants";
 import { useAiCommand } from "@renderer/hooks";
-import { LoaderIcon, AlertCircleIcon } from "lucide-react";
+import { LoaderIcon } from "lucide-react";
 
 export const MediaCaption = () => {
   const {
@@ -194,9 +194,6 @@ export const MediaCaption = () => {
   };
 
   useEffect(() => {
-    setLookupResult(undefined);
-    setTranslation(undefined);
-
     if (!caption) return;
 
     const index = caption.timeline.findIndex(
@@ -230,6 +227,7 @@ export const MediaCaption = () => {
     });
 
     setSelectedIndices(indices);
+    setLookupResult(undefined);
   }, [caption, activeRegion]);
 
   useEffect(() => {
@@ -305,6 +303,11 @@ export const MediaCaption = () => {
       subscriptions.forEach((unsub) => unsub());
     };
   }, [editingRegion]);
+
+  useEffect(() => {
+    setTranslation(undefined);
+    setDisplayTranslation(false);
+  }, [caption]);
 
   useEffect(() => {
     document.addEventListener("keydown", (event: KeyboardEvent) =>
@@ -441,6 +444,7 @@ export const MediaCaption = () => {
           </div>
         )}
       </ScrollArea>
+
       <div className="flex flex-col space-y-2">
         <Button
           variant={displayTranslation ? "secondary" : "outline"}

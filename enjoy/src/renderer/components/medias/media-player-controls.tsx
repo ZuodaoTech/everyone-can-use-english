@@ -1,10 +1,24 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext } from "react";
 import { type Region as RegionType } from "wavesurfer.js/dist/plugins/regions";
 import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogCancel,
+  AlertDialogAction,
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
   Button,
   Popover,
   PopoverTrigger,
   PopoverContent,
+  toast,
 } from "@renderer/components/ui";
 import {
   MediaPlayerProviderContext,
@@ -28,6 +42,9 @@ import {
   SkipForwardIcon,
   SkipBackIcon,
   SquareIcon,
+  SaveIcon,
+  UndoIcon,
+  CheckIcon,
 } from "lucide-react";
 import { t } from "i18next";
 import { Tooltip } from "react-tooltip";
@@ -44,6 +61,7 @@ const MIN_ZOOM_RATIO = 0.25;
 const MAX_ZOOM_RATIO = 4.0;
 export const MediaPlayerControls = () => {
   const {
+    media,
     decoded,
     wavesurfer,
     currentTime,
@@ -55,16 +73,16 @@ export const MediaPlayerControls = () => {
     pitchChart,
     regions,
     minPxPerSec,
-    isRecording,
-    setIsRecording,
     activeRegion,
     setActiveRegion,
     editingRegion,
     setEditingRegion,
     transcriptionDraft,
     setTranscriptionDraft,
+    isRecording,
+    setIsRecording,
   } = useContext(MediaPlayerProviderContext);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("single");
   const [playbackRate, setPlaybackRate] = useState<number>(1);
   const [zoomRatio, setZoomRatio] = useState<number>(1.0);
@@ -96,6 +114,34 @@ export const MediaPlayerControls = () => {
     if (!segment) return;
 
     setCurrentSegmentIndex(currentSegmentIndex + 1);
+  };
+
+  const onShare = async () => {
+    if (!media.source && !media.isUploaded) {
+      try {
+        await EnjoyApp.audios.upload(media.id);
+      } catch (err) {
+        toast.error(t("shareFailed"), {
+          description: err.message,
+        });
+        return;
+      }
+    }
+    webApi
+      .createPost({
+        targetType: media.mediaType,
+        targetId: media.id,
+      })
+      .then(() => {
+        toast.success(t("sharedSuccessfully"), {
+          description: t("sharedAudio"),
+        });
+      })
+      .catch((err) => {
+        toast.error(t("shareFailed"), {
+          description: err.message,
+        });
+      });
   };
 
   /*
@@ -386,39 +432,43 @@ export const MediaPlayerControls = () => {
             <SkipForwardIcon className="w-6 h-6" />
           </Button>
 
-          {playMode === "single" && (
-            <Button
-              variant="ghost"
-              onClick={() => setPlayMode("loop")}
-              data-tooltip-id="media-player-controls-tooltip"
-              data-tooltip-content={t("playSingleSegment")}
-              className="aspect-square p-0 h-10"
-            >
-              <RepeatIcon className="w-6 h-6" />
-            </Button>
-          )}
-          {playMode === "loop" && (
-            <Button
-              variant="secondary"
-              onClick={() => setPlayMode("all")}
-              data-tooltip-id="media-player-controls-tooltip"
-              data-tooltip-content={t("playInLoop")}
-              className="aspect-square p-0 h-10"
-            >
-              <Repeat1Icon className="w-6 h-6" />
-            </Button>
-          )}
-          {playMode === "all" && (
-            <Button
-              variant="ghost"
-              onClick={() => setPlayMode("single")}
-              data-tooltip-id="media-player-controls-tooltip"
-              data-tooltip-content={t("playAllSegments")}
-              className="aspect-square p-0 h-10"
-            >
-              <ListRestartIcon className="w-6 h-6" />
-            </Button>
-          )}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                data-tooltip-id="media-player-controls-tooltip"
+                data-tooltip-content={t("switchPlayMode")}
+                className="aspect-square p-0 h-10"
+              >
+                {playMode === "single" && <RepeatIcon className="w-6 h-6" />}
+                {playMode === "loop" && <Repeat1Icon className="w-6 h-6" />}
+                {playMode === "all" && <ListRestartIcon className="w-6 h-6" />}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => setPlayMode("single")}>
+                <RepeatIcon className="w-4 h-4 mr-2" />
+                <span>{t("playSingleSegment")}</span>
+                {playMode === "single" && (
+                  <CheckIcon className="w-4 h-4 ml-auto" />
+                )}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setPlayMode("loop")}>
+                <Repeat1Icon className="w-4 h-4 mr-2" />
+                <span>{t("playInLoop")}</span>
+                {playMode === "loop" && (
+                  <CheckIcon className="w-4 h-4 ml-auto" />
+                )}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setPlayMode("all")}>
+                <ListRestartIcon className="w-4 h-4 mr-2" />
+                <span>{t("playAllSegments")}</span>
+                {playMode === "all" && (
+                  <CheckIcon className="w-4 h-4 ml-auto" />
+                )}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <Popover>
             <PopoverTrigger asChild>
@@ -457,9 +507,7 @@ export const MediaPlayerControls = () => {
               </div>
             </PopoverContent>
           </Popover>
-        </div>
 
-        <div className="flex items-center space-x-1">
           <Button
             variant={`${zoomRatio > 1.0 ? "secondary" : "ghost"}`}
             data-tooltip-id="media-player-controls-tooltip"
@@ -509,9 +557,7 @@ export const MediaPlayerControls = () => {
           >
             <MinimizeIcon className="w-6 h-6" />
           </Button>
-        </div>
 
-        <div className="flex items-center space-x-1">
           <Button
             variant={`${displayInlineCaption ? "secondary" : "ghost"}`}
             data-tooltip-id="media-player-controls-tooltip"
@@ -544,6 +590,42 @@ export const MediaPlayerControls = () => {
             <GalleryHorizontalIcon className="w-6 h-6" />
           </Button>
 
+          <AlertDialog>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  {media?.mediaType === "Audio"
+                    ? t("shareAudio")
+                    : t("shareVideo")}
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  {media?.mediaType === "Audio"
+                    ? t("areYouSureToShareThisAudioToCommunity")
+                    : t("areYouSureToShareThisVideoToCommunity")}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                <AlertDialogAction asChild>
+                  <Button variant="default" onClick={onShare}>
+                    {t("share")}
+                  </Button>
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="ghost"
+                data-tooltip-id="media-player-controls-tooltip"
+                data-tooltip-content={t("share")}
+                className="relative aspect-square p-0 h-10"
+              >
+                <Share2Icon className="w-6 h-6" />
+              </Button>
+            </AlertDialogTrigger>
+          </AlertDialog>
+
           <Button
             variant={`${editingRegion ? "secondary" : "ghost"}`}
             data-tooltip-id="media-player-controls-tooltip"
@@ -560,18 +642,24 @@ export const MediaPlayerControls = () => {
         </div>
 
         {editingRegion && (
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-2">
             <Button
               variant="secondary"
+              className="relative aspect-square p-0 h-10"
+              data-tooltip-id="media-player-controls-tooltip"
+              data-tooltip-content={t("cancel")}
               onClick={() => {
                 setEditingRegion(false);
                 setTranscriptionDraft(null);
               }}
             >
-              {t("cancel")}
+              <UndoIcon className="w-6 h-6" />
             </Button>
             <Button
               variant="default"
+              className="relative aspect-square p-0 h-10"
+              data-tooltip-id="media-player-controls-tooltip"
+              data-tooltip-content={t("save")}
               onClick={() => {
                 if (!transcriptionDraft) return;
 
@@ -585,41 +673,28 @@ export const MediaPlayerControls = () => {
                   });
               }}
             >
-              {t("save")}
+              <SaveIcon className="w-6 h-6" />
             </Button>
           </div>
         )}
       </div>
 
-      <div className="ml-auto flex items-center space-x-6">
-        <div className="flex items-center space-x-1">
-          <Button
-            variant="ghost"
-            data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("playRecording")}
-            className="aspect-square p-0 h-10"
-          >
-            <PlayIcon className="w-6 h-6" />
-          </Button>
-        </div>
-
-        <div className="flex items-center space-x-1">
-          <Button
-            variant="ghost"
-            onClick={() => setIsRecording(!isRecording)}
-            data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={
-              isRecording ? t("stopRecording") : t("startRecording")
-            }
-            className="aspect-square p-0 h-12 rounded-full bg-red-500 hover:bg-red-500/90"
-          >
-            {isRecording ? (
-              <SquareIcon fill="white" className="w-6 h-6 text-white" />
-            ) : (
-              <MicIcon className="w-6 h-6 text-white" />
-            )}
-          </Button>
-        </div>
+      <div className="ml-auto">
+        <Button
+          variant="ghost"
+          onClick={() => setIsRecording(!isRecording)}
+          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-content={
+            isRecording ? t("stopRecording") : t("startRecording")
+          }
+          className="aspect-square p-0 h-12 rounded-full bg-red-500 hover:bg-red-500/90"
+        >
+          {isRecording ? (
+            <SquareIcon fill="white" className="w-6 h-6 text-white" />
+          ) : (
+            <MicIcon className="w-6 h-6 text-white" />
+          )}
+        </Button>
       </div>
 
       <Tooltip className="z-10" id="media-player-controls-tooltip" />

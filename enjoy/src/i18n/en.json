@@ -151,6 +151,7 @@
   "yesterday": "yesterday",
   "play": "play",
   "pause": "pause",
+  "switchPlayMode": "switch play mode",
   "playSingleSegment": "play single segment",
   "playAllSegments": "play all segments",
   "playInLoop": "play in loop",
@@ -479,8 +480,10 @@
   "goToConversation": "Go to conversation",
   "mediaInfo": "Media Info",
   "editRegion": "edit region",
+  "dragRegionBorderToEdit": "Drag region border to edit",
   "startRecording": "start recording",
   "stopRecording": "stop recording",
   "playRecording": "play recording",
-  "clickAnyWordToSelect": "Click any words to select. Press shift to select multiple words."
+  "clickAnyWordToSelect": "Click any words to select. Press shift to select multiple words.",
+  "currentRegionIsBeingEdited": "Current region is being edited"
 }

@@ -341,7 +341,7 @@ export const MediaPlayerProvider = ({
     if (activeRegion.id.startsWith("segment-region")) {
       setFitZoomRatio(containerWidth / duration / minPxPerSec);
     } else if (activeRegion.id.startsWith("word-region")) {
-      setFitZoomRatio(containerWidth/ 3 / duration / minPxPerSec);
+      setFitZoomRatio(containerWidth / 3 / duration / minPxPerSec);
     }
   }, [ref, wavesurfer, activeRegion]);
 
