@@ -7,6 +7,10 @@ export const WEB_API_URL = "https://enjoy-web.fly.dev";
 
 export const REPO_URL = "https://github.com/xiaolai/everyone-can-use-english";
 
+export const MAGIC_TOKEN_REGEX =
+  /[^a-zA-Z]?(Mrs\.|Ms\.|Mr\.|Dr\.|Prof\.|St\.)/g;
+export const END_OF_SENTENCE_REGEX = /[^\.!,\?][\.!\?]/g;
+
 // https://huggingface.co/ggerganov/whisper.cpp/tree/main
 export const WHISPER_MODELS_OPTIONS = [
   {

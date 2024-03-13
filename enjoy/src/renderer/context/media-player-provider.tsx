@@ -218,8 +218,10 @@ export const MediaPlayerProvider = ({
         const index = Math.round(
           ((phone.startTime - region.start) / regionDuration) * data.length
         );
-        labels[index] =
-          (IPA_MAPPING as any)[phone.text.trim()] || phone.text.trim();
+        labels[index] = [
+          labels[index] || "",
+          (IPA_MAPPING as any)[phone.text.trim()] || phone.text.trim(),
+        ].join("");
       });
     }
 
@@ -334,13 +336,12 @@ export const MediaPlayerProvider = ({
 
     if (!activeRegion) return;
 
+    const containerWidth = ref.current.getBoundingClientRect().width;
+    const duration = activeRegion.end - activeRegion.start;
     if (activeRegion.id.startsWith("segment-region")) {
-      const containerWidth = ref.current.getBoundingClientRect().width;
-      const duration = activeRegion.end - activeRegion.start;
-
       setFitZoomRatio(containerWidth / duration / minPxPerSec);
     } else if (activeRegion.id.startsWith("word-region")) {
-      setFitZoomRatio(4);
+      setFitZoomRatio(containerWidth/ 3 / duration / minPxPerSec);
     }
   }, [ref, wavesurfer, activeRegion]);
 

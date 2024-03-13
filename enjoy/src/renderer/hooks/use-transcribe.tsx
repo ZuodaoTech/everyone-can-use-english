@@ -14,9 +14,9 @@ import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
 import {
   groupTranscription,
-  END_OF_WORD_REGEX,
   milisecondsToTimestamp,
 } from "@/utils";
+import { END_OF_SENTENCE_REGEX } from "@/constants";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 
 export const useTranscribe = () => {
@@ -279,7 +279,7 @@ export const useTranscribe = () => {
 
             if (
               index === best.Words.length - 1 &&
-              !text.trim().match(END_OF_WORD_REGEX)
+              !text.trim().match(END_OF_SENTENCE_REGEX)
             ) {
               text = text + ".";
             }

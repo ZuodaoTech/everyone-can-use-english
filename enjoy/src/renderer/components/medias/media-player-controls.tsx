@@ -37,7 +37,9 @@ import debounce from "lodash/debounce";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 
 const PLAYBACK_RATE_OPTIONS = [0.75, 0.8, 0.9, 1.0];
-const ZOOM_RATIO_OPTIONS = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 3.5, 4.0];
+const ZOOM_RATIO_OPTIONS = [
+  0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 3.5, 4.0,
+];
 const MIN_ZOOM_RATIO = 0.25;
 const MAX_ZOOM_RATIO = 4.0;
 export const MediaPlayerControls = () => {
@@ -208,23 +210,23 @@ export const MediaPlayerControls = () => {
 
         const draft = cloneDeep(transcription.result);
 
-        draft[currentSegmentIndex].startTime = region.start;
-        draft[currentSegmentIndex].endTime = region.end;
+        draft.timeline[currentSegmentIndex].startTime = region.start;
+        draft.timeline[currentSegmentIndex].endTime = region.end;
 
         // ensure that the previous segment ends before the current segment
         if (
           currentSegmentIndex > 0 &&
-          draft[currentSegmentIndex - 1].endTime > region.start
+          draft.timeline[currentSegmentIndex - 1].endTime > region.start
         ) {
-          draft[currentSegmentIndex - 1].endTime = region.start;
+          draft.timeline[currentSegmentIndex - 1].endTime = region.start;
         }
 
         // ensure that the next segment starts after the current segment
         if (
           currentSegmentIndex < draft.length - 1 &&
-          draft[currentSegmentIndex + 1].startTime < region.end
+          draft.timeline[currentSegmentIndex + 1].startTime < region.end
         ) {
-          draft[currentSegmentIndex + 1].startTime = region.end;
+          draft.timeline[currentSegmentIndex + 1].startTime = region.end;
         }
 
         setTranscriptionDraft(draft);
@@ -256,7 +258,7 @@ export const MediaPlayerControls = () => {
    */
   useEffect(() => {
     if (!transcription?.result) return;
-    if (!transcription.result['transcript']) return;
+    if (!transcription.result["transcript"]) return;
     if (!decoded) return;
     if (!wavesurfer) return;
 
@@ -287,7 +289,7 @@ export const MediaPlayerControls = () => {
    */
   useEffect(() => {
     if (!transcription?.result) return;
-    if (!transcription.result['transcript']) return;
+    if (!transcription.result["transcript"]) return;
 
     const index = (transcription.result as AlignmentResult).timeline.findIndex(
       (t) => currentTime >= t.startTime && currentTime < t.endTime
@@ -323,6 +325,14 @@ export const MediaPlayerControls = () => {
     },
     [wavesurfer]
   );
+
+  useEffect(() => {
+    if (!activeRegion) return;
+    if (!activeRegion.id.startsWith("word-region")) return;
+    if (zoomRatio === fitZoomRatio) return;
+
+    setZoomRatio(fitZoomRatio);
+  }, [activeRegion, fitZoomRatio]);
 
   return (
     <div className="w-full h-20 flex items-center justify-between px-6">

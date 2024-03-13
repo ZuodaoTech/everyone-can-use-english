@@ -7,6 +7,7 @@ import {
 } from "@renderer/context";
 import { toast } from "@renderer/components/ui";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
+import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@/constants";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
   const { whisperConfig } = useContext(AISettingsProviderContext);
@@ -69,6 +70,27 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
           }
         });
       }
+
+      /* Pre-process
+      /* Some words end with period should not be a single sentence, like Mr./Ms./Dr. etc
+       */
+      timeline.forEach((sentence, i) => {
+        const nextSentence = timeline[i + 1];
+        if (
+          !sentence.text
+            .replaceAll(MAGIC_TOKEN_REGEX, "")
+            .match(END_OF_SENTENCE_REGEX) &&
+          nextSentence?.text
+        ) {
+          console.log(sentence.text);
+          nextSentence.text = [sentence.text, nextSentence.text].join(" ");
+          nextSentence.timeline = [
+            ...sentence.timeline,
+            ...nextSentence.timeline,
+          ];
+          timeline.splice(i, 1);
+        }
+      });
 
       await EnjoyApp.transcriptions.update(transcription.id, {
         state: "finished",

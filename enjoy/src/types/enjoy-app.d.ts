@@ -211,7 +211,7 @@ type EnjoyAppType = {
       input: string | Uint8Array,
       transcript: string,
       options?: any
-    ) => Promise<any>;
+    ) => Promise<AlignmentResult>;
     check: () => Promise<boolean>;
   };
   whisper: {

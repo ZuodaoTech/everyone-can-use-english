@@ -1,20 +1,10 @@
 import { useEffect, useState, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
-import { secondsToTimestamp } from "@renderer/lib/utils";
 import cloneDeep from "lodash/cloneDeep";
 import { Button, toast } from "@renderer/components/ui";
 import { t } from "i18next";
-import {
-  ChevronDownIcon,
-  LanguagesIcon,
-  PlayIcon,
-  LoaderIcon,
-  SpeechIcon,
-} from "lucide-react";
-import {
-  TimelineEntry,
-  Timeline,
-} from "echogarden/dist/utilities/Timeline.d.js";
+import { LanguagesIcon, SpeechIcon } from "lucide-react";
+import { Timeline } from "echogarden/dist/utilities/Timeline.d.js";
 import { IPA_MAPPING } from "@/constants";
 
 export const MediaCaption = () => {
@@ -99,6 +89,43 @@ export const MediaCaption = () => {
     }
   };
 
+  const markPhoneRegions = () => {
+    const phoneRegions = regions
+      .getRegions()
+      .filter((r) => r.id.startsWith("phone-region"));
+    if (phoneRegions.length > 0) {
+      phoneRegions.forEach((r) => {
+        r.remove();
+        r.unAll();
+      });
+      return;
+    }
+
+    if (!activeRegion) return;
+    if (!activeRegion.id.startsWith("word-region")) return;
+    if (!selectedIndices) return;
+
+    selectedIndices.forEach((index) => {
+      const word = caption.timeline[index];
+
+      word.timeline.forEach((token) => {
+        token.timeline.forEach((phone) => {
+          const region = regions.addRegion({
+            id: `phone-region-${index}`,
+            start: phone.startTime,
+            end: phone.endTime,
+            color: "#efefefef",
+            drag: false,
+            resize: editingRegion,
+          });
+          region.on("click", () => {
+            region.play();
+          });
+        });
+      });
+    });
+  };
+
   useEffect(() => {
     if (!caption) return;
 
@@ -156,7 +183,7 @@ export const MediaCaption = () => {
         if (!region.id.startsWith("word-region")) return;
 
         const draft = cloneDeep(transcription.result);
-        const draftCaption = draft[currentSegmentIndex];
+        const draftCaption = draft.timeline[currentSegmentIndex];
 
         const firstIndex = selectedIndices[0];
         const lastIndex = selectedIndices[selectedIndices.length - 1];
@@ -254,32 +281,34 @@ export const MediaCaption = () => {
         </div>
       </div>
 
-      {selectedIndices.length > 0 && (
-        <div className="w-56 rounded-lg shadow border px-4 py-2 mr-4">
-          {selectedIndices.map((index) => {
-            const word = caption.timeline[index];
-            if (!word) return;
-            return (
-              <div>
-                <div className="font-serif text-lg font-semibold tracking-tight">
-                  {word.text}
+      <div className="w-56 rounded-lg shadow border px-4 py-2 mr-4">
+        {selectedIndices.length > 0 ? (
+          <div className="flex items-center space-x-2">
+            {selectedIndices.map((index) => {
+              const word = caption.timeline[index];
+              if (!word) return;
+              return (
+                <div>
+                  <div className="font-serif text-lg font-semibold tracking-tight">
+                    {word.text}
+                  </div>
+                  <div className="text-muted-foreground">
+                    {word.timeline
+                      .map((t) =>
+                        t.timeline
+                          .map((s) => (IPA_MAPPING as any)[s.text] || s.text)
+                          .join("")
+                      )
+                      .join("")}
+                  </div>
                 </div>
-                <div className="text-muted-foreground">
-                  /
-                  {word.timeline
-                    .map((t) =>
-                      t.timeline
-                        .map((s) => (IPA_MAPPING as any)[s.text] || s.text)
-                        .join("")
-                    )
-                    .join()}
-                  /
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        ) : (
+          <div>{t("clickAnyWordToSelect")}</div>
+        )}
+      </div>
       <div className="flex flex-col space-y-2">
         <Button
           variant="outline"

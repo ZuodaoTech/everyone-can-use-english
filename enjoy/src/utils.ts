@@ -1,4 +1,5 @@
 import Pitchfinder from "pitchfinder";
+import { END_OF_SENTENCE_REGEX, MAGIC_TOKEN_REGEX } from "./constants";
 
 export function generatePitch(peaks: Float32Array, sampleRate: number) {
   const detectPitch = Pitchfinder.YIN({ sampleRate });
@@ -40,8 +41,6 @@ export function milisecondsToTimestamp(ms: number) {
   )}:${seconds.padStart(2, "0")},${milliseconds}`;
 }
 
-export const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
-export const END_OF_WORD_REGEX = /[^\.!,\?][\.!\?]/g;
 export const groupTranscription = (
   transcription: TranscriptionResultSegmentType[]
 ): TranscriptionResultSegmentGroupType[] => {
@@ -75,8 +74,8 @@ export const groupTranscription = (
     group.push(segment);
 
     if (
-      !MAGIC_TOKENS.includes(text) &&
-      segment.text.trim().match(END_OF_WORD_REGEX)
+      !text.match(MAGIC_TOKEN_REGEX) &&
+      segment.text.trim().match(END_OF_SENTENCE_REGEX)
     ) {
       // Group a complete sentence;
       groups.push(generateGroup(group));
