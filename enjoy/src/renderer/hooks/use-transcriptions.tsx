@@ -71,8 +71,9 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         });
       }
 
-      /* Pre-process
-      /* Some words end with period should not be a single sentence, like Mr./Ms./Dr. etc
+      /*
+       * Pre-process
+       * Some words end with period should not be a single sentence, like Mr./Ms./Dr. etc
        */
       timeline.forEach((sentence, i) => {
         const nextSentence = timeline[i + 1];
@@ -88,6 +89,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
             ...sentence.timeline,
             ...nextSentence.timeline,
           ];
+          nextSentence.startTime = sentence.startTime;
           timeline.splice(i, 1);
         }
       });

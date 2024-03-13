@@ -256,28 +256,51 @@ export const MediaCaption = () => {
     <div className="flex justify-between min-h-[calc(70vh-28.5rem)] py-4">
       <div className="flex-1 px-4 py-2 flex-1 font-serif h-full">
         <div className="flex flex-wrap">
-          {(caption.timeline || []).map((w, index) => (
-            <div
-              key={index}
-              className={`pr-2 cursor-pointer hover:bg-red-500/10 ${
-                index === activeIndex ? "text-red-500" : ""
-              } ${selectedIndices.includes(index) ? "bg-red-500/10" : ""}`}
-              onClick={() => toggleRegion(index)}
-            >
-              <div className="">
-                <div className="text-2xl">{w.text}</div>
-                <div className="text-muted-foreground">
-                  {w.timeline
-                    .map((t) =>
-                      t.timeline
-                        .map((s) => (IPA_MAPPING as any)[s.text] || s.text)
-                        .join("")
-                    )
-                    .join()}
+          {caption.text.split(" ").length === caption.timeline.length
+            ? caption.text.split(" ").map((word, index) => (
+                <div
+                  key={index}
+                  className={`pr-2 cursor-pointer hover:bg-red-500/10 ${
+                    index === activeIndex ? "text-red-500" : ""
+                  } ${selectedIndices.includes(index) ? "bg-red-500/10" : ""}`}
+                  onClick={() => toggleRegion(index)}
+                >
+                  <div className="">
+                    <div className="text-2xl">{word}</div>
+                    <div className="text-muted-foreground">
+                      {caption.timeline[index].timeline
+                        .map((t) =>
+                          t.timeline
+                            .map((s) => (IPA_MAPPING as any)[s.text] || s.text)
+                            .join("")
+                        )
+                        .join()}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              ))
+            : (caption.timeline || []).map((w, index) => (
+                <div
+                  key={index}
+                  className={`pr-2 cursor-pointer hover:bg-red-500/10 ${
+                    index === activeIndex ? "text-red-500" : ""
+                  } ${selectedIndices.includes(index) ? "bg-red-500/10" : ""}`}
+                  onClick={() => toggleRegion(index)}
+                >
+                  <div className="">
+                    <div className="text-2xl">{w.text}</div>
+                    <div className="text-muted-foreground">
+                      {w.timeline
+                        .map((t) =>
+                          t.timeline
+                            .map((s) => (IPA_MAPPING as any)[s.text] || s.text)
+                            .join("")
+                        )
+                        .join()}
+                    </div>
+                  </div>
+                </div>
+              ))}
         </div>
       </div>
 
@@ -288,7 +311,7 @@ export const MediaCaption = () => {
               const word = caption.timeline[index];
               if (!word) return;
               return (
-                <div>
+                <div key={index}>
                   <div className="font-serif text-lg font-semibold tracking-tight">
                     {word.text}
                   </div>

@@ -5,6 +5,8 @@ import { AudioSourceParam } from "echogarden/dist/audio/AudioUtilities";
 import path from "path";
 import log from "@main/logger";
 import url from "url";
+import settings from "@main/settings";
+import fs from "fs-extra";
 
 const __filename = url.fileURLToPath(import.meta.url);
 /*
@@ -31,6 +33,11 @@ class EchogardenWrapper {
         {}
       );
       logger.info(result);
+      fs.writeJsonSync(
+        path.join(settings.cachePath(), "echogarden-check.json"),
+        result,
+        { spaces: 2 }
+      );
 
       return true;
     } catch (e) {
