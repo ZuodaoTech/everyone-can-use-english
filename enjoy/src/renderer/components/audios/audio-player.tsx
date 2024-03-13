@@ -54,16 +54,15 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
           <div className="w-full h-[16rem] px-6 py-2 my-2">
             <div className="border rounded-xl shadow-lg relative">
               <div data-testid="media-player-container" ref={ref} />
-            </div>
-
-            <div className="absolute right-2 top-2">
-              <span className="text-sm">
-                {formatDuration(currentTime || 0)}
-              </span>
-              <span className="mx-1">/</span>
-              <span className="text-sm">
-                {formatDuration(media?.duration || 0)}
-              </span>
+              <div className="absolute right-2 top-1">
+                <span className="text-sm">
+                  {formatDuration(currentTime || 0)}
+                </span>
+                <span className="mx-1">/</span>
+                <span className="text-sm">
+                  {formatDuration(media?.duration || 0)}
+                </span>
+              </div>
             </div>
           </div>
 

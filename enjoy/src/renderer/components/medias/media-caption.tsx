@@ -439,7 +439,7 @@ export const MediaCaption = () => {
             )}
           </div>
         ) : (
-          <div className="py-8 px-2 text-muted-foreground">
+          <div className="py-4 px-2 text-muted-foreground">
             <div className="text-sm">{t("clickAnyWordToSelect")}</div>
           </div>
         )}

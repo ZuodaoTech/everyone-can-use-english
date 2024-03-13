@@ -102,7 +102,7 @@ export const MediaPlayerControls = () => {
 
   const onPrev = () => {
     if (!wavesurfer) return;
-    const segment = transcription?.result[currentSegmentIndex - 1];
+    const segment = transcription?.result?.timeline[currentSegmentIndex - 1];
     if (!segment) return;
 
     setCurrentSegmentIndex(currentSegmentIndex - 1);
@@ -110,7 +110,7 @@ export const MediaPlayerControls = () => {
 
   const onNext = () => {
     if (!wavesurfer) return;
-    const segment = transcription?.result[currentSegmentIndex + 1];
+    const segment = transcription?.result?.timeline[currentSegmentIndex + 1];
     if (!segment) return;
 
     setCurrentSegmentIndex(currentSegmentIndex + 1);
@@ -446,26 +446,26 @@ export const MediaPlayerControls = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => setPlayMode("single")}>
+              <DropdownMenuItem
+                className={playMode === "single" ? "bg-muted" : ""}
+                onClick={() => setPlayMode("single")}
+              >
                 <RepeatIcon className="w-4 h-4 mr-2" />
                 <span>{t("playSingleSegment")}</span>
-                {playMode === "single" && (
-                  <CheckIcon className="w-4 h-4 ml-auto" />
-                )}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setPlayMode("loop")}>
+              <DropdownMenuItem
+                className={playMode === "loop" ? "bg-muted" : ""}
+                onClick={() => setPlayMode("loop")}
+              >
                 <Repeat1Icon className="w-4 h-4 mr-2" />
                 <span>{t("playInLoop")}</span>
-                {playMode === "loop" && (
-                  <CheckIcon className="w-4 h-4 ml-auto" />
-                )}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setPlayMode("all")}>
+              <DropdownMenuItem
+                className={playMode === "all" ? "bg-muted" : ""}
+                onClick={() => setPlayMode("all")}
+              >
                 <ListRestartIcon className="w-4 h-4 mr-2" />
                 <span>{t("playAllSegments")}</span>
-                {playMode === "all" && (
-                  <CheckIcon className="w-4 h-4 ml-auto" />
-                )}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

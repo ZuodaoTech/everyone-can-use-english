@@ -437,10 +437,11 @@ ${log}
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     icon: "./assets/icon.png",
-    width: 1600,
-    height: 1200,
-    minWidth: 1024,
-    minHeight: 768,
+    width: 1920,
+    height: 1080,
+    minWidth: 1440,
+    minHeight: 900,
+    fullscreen: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
