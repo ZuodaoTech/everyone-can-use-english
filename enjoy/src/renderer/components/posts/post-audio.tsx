@@ -12,6 +12,7 @@ import {
   defaultLayoutIcons,
 } from "@vidstack/react/player/layouts/default";
 export const STORAGE_WORKER_ENDPOINT = "https://enjoy-storage.baizhiheizi.com";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 
 export const PostAudio = (props: {
   audio: Partial<MediumType>;
@@ -22,11 +23,16 @@ export const PostAudio = (props: {
   const { webApi } = useContext(AppSettingsProviderContext);
   const [transcription, setTranscription] = useState<TranscriptionType>();
 
-  const currentTranscription = (transcription?.result || []).find(
-    (s) =>
-      currentTime >= s.offsets.from / 1000.0 &&
-      currentTime <= s.offsets.to / 1000.0
-  );
+  const currentTranscription = transcription?.result["transcript"]
+    ? transcription.result.timeline.find(
+        (s: TimelineEntry) =>
+          currentTime >= s.startTime && currentTime <= s.endTime
+      )
+    : (transcription?.result || []).find(
+        (s: TranscriptionResultSegmentType) =>
+          currentTime >= s.offsets.from / 1000.0 &&
+          currentTime <= s.offsets.to / 1000.0
+      );
 
   useEffect(() => {
     webApi
