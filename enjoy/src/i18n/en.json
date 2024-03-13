@@ -481,5 +481,6 @@
   "editRegion": "edit region",
   "startRecording": "start recording",
   "stopRecording": "stop recording",
-  "playRecording": "play recording"
+  "playRecording": "play recording",
+  "clickAnyWordToSelect": "Click any words to select. Press shift to select multiple words."
 }

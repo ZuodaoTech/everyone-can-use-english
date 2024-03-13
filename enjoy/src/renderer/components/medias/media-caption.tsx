@@ -1,11 +1,13 @@
 import { useEffect, useState, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import cloneDeep from "lodash/cloneDeep";
-import { Button, toast } from "@renderer/components/ui";
+import { Button, toast, ScrollArea } from "@renderer/components/ui";
 import { t } from "i18next";
 import { LanguagesIcon, SpeechIcon } from "lucide-react";
 import { Timeline } from "echogarden/dist/utilities/Timeline.d.js";
 import { IPA_MAPPING } from "@/constants";
+import { useAiCommand } from "@renderer/hooks";
+import { LoaderIcon, AlertCircleIcon } from "lucide-react";
 
 export const MediaCaption = () => {
   const {
@@ -23,9 +25,74 @@ export const MediaCaption = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [multiSelecting, setMultiSelecting] = useState<boolean>(false);
+  const [displayIpa, setDisplayIpa] = useState<boolean>(true);
+
+  const [translation, setTranslation] = useState<string>();
+  const [translating, setTranslating] = useState<boolean>(false);
+  const [displayTranslation, setDisplayTranslation] = useState<boolean>(false);
+
+  const [lookingUp, setLookingUp] = useState<boolean>(false);
+  const [lookupResult, setLookupResult] = useState<LookupType>();
+
   const caption = (transcription?.result?.timeline as Timeline)?.[
     currentSegmentIndex
   ];
+
+  const { translate, lookupWord } = useAiCommand();
+
+  const lookup = () => {
+    if (selectedIndices.length === 0) return;
+
+    const word = selectedIndices
+      .map((index) => caption.timeline[index].text)
+      .join(" ");
+    setLookingUp(true);
+    lookupWord({
+      word,
+      context: caption.text,
+      sourceId: transcription.targetId,
+      sourceType: transcription.targetType,
+    })
+      .then((lookup) => {
+        if (lookup?.meaning) {
+          setLookupResult(lookup);
+        }
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      })
+      .finally(() => {
+        setLookingUp(false);
+      });
+  };
+
+  const toggleTranslation = async () => {
+    if (translating) return;
+
+    if (translation) {
+      setDisplayTranslation(!displayTranslation);
+      return;
+    }
+
+    toast.promise(
+      translate(caption.text)
+        .then((result) => {
+          if (result) {
+            setTranslation(result);
+            setDisplayTranslation(true);
+          }
+        })
+        .finally(() => {
+          setTranslating(false);
+        }),
+      {
+        loading: t("translating"),
+        success: t("translatedSuccessfully"),
+        error: (err) => t("translationFailed", { error: err.message }),
+        position: "bottom-right",
+      }
+    );
+  };
 
   const toggleMultiSelect = (event: KeyboardEvent) => {
     setMultiSelecting(event.shiftKey && event.type === "keydown");
@@ -127,6 +194,9 @@ export const MediaCaption = () => {
   };
 
   useEffect(() => {
+    setLookupResult(undefined);
+    setTranslation(undefined);
+
     if (!caption) return;
 
     const index = caption.timeline.findIndex(
@@ -250,12 +320,13 @@ export const MediaCaption = () => {
     };
   }, []);
 
-  if (!caption) return <div></div>;
+  if (!caption) return null;
 
   return (
     <div className="flex justify-between min-h-[calc(70vh-28.5rem)] py-4">
-      <div className="flex-1 px-4 py-2 flex-1 font-serif h-full">
-        <div className="flex flex-wrap">
+      <div className="flex-1 px-4 py-2 font-serif h-full">
+        <div className="flex flex-wrap mb-6">
+          {/* use the words splitted by caption text if it is matched with the timeline length, otherwise use the timeline */}
           {caption.text.split(" ").length === caption.timeline.length
             ? caption.text.split(" ").map((word, index) => (
                 <div
@@ -267,15 +338,19 @@ export const MediaCaption = () => {
                 >
                   <div className="">
                     <div className="text-2xl">{word}</div>
-                    <div className="text-muted-foreground">
-                      {caption.timeline[index].timeline
-                        .map((t) =>
-                          t.timeline
-                            .map((s) => (IPA_MAPPING as any)[s.text] || s.text)
-                            .join("")
-                        )
-                        .join()}
-                    </div>
+                    {displayIpa && (
+                      <div className="text-muted-foreground">
+                        {caption.timeline[index].timeline
+                          .map((t) =>
+                            t.timeline
+                              .map(
+                                (s) => (IPA_MAPPING as any)[s.text] || s.text
+                              )
+                              .join("")
+                          )
+                          .join()}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))
@@ -289,61 +364,98 @@ export const MediaCaption = () => {
                 >
                   <div className="">
                     <div className="text-2xl">{w.text}</div>
-                    <div className="text-muted-foreground">
-                      {w.timeline
+                    {displayIpa && (
+                      <div className="text-muted-foreground">
+                        {w.timeline
+                          .map((t) =>
+                            t.timeline
+                              .map(
+                                (s) => (IPA_MAPPING as any)[s.text] || s.text
+                              )
+                              .join("")
+                          )
+                          .join()}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+        </div>
+
+        {displayTranslation && translation && (
+          <div className="select-text py-2 text-sm text-foreground/70">
+            {translation}
+          </div>
+        )}
+      </div>
+
+      <ScrollArea className="w-56 rounded-lg shadow border px-4 py-2 mr-4">
+        {selectedIndices.length > 0 ? (
+          <div className="">
+            <div className="flex items-center space-x-2 mb-6">
+              {selectedIndices.map((index) => {
+                const word = caption.timeline[index];
+                if (!word) return;
+                return (
+                  <div key={index}>
+                    <div className="font-serif text-lg font-semibold tracking-tight">
+                      {word.text}
+                    </div>
+                    <div className="text-sm text-serif text-muted-foreground">
+                      {word.timeline
                         .map((t) =>
                           t.timeline
                             .map((s) => (IPA_MAPPING as any)[s.text] || s.text)
                             .join("")
                         )
-                        .join()}
+                        .join("")}
                     </div>
                   </div>
-                </div>
-              ))}
-        </div>
-      </div>
+                );
+              })}
+            </div>
 
-      <div className="w-56 rounded-lg shadow border px-4 py-2 mr-4">
-        {selectedIndices.length > 0 ? (
-          <div className="flex items-center space-x-2">
-            {selectedIndices.map((index) => {
-              const word = caption.timeline[index];
-              if (!word) return;
-              return (
-                <div key={index}>
-                  <div className="font-serif text-lg font-semibold tracking-tight">
-                    {word.text}
-                  </div>
-                  <div className="text-muted-foreground">
-                    {word.timeline
-                      .map((t) =>
-                        t.timeline
-                          .map((s) => (IPA_MAPPING as any)[s.text] || s.text)
-                          .join("")
-                      )
-                      .join("")}
-                  </div>
+            {lookupResult ? (
+              <div>
+                <div className="text-sm text-serif">
+                  {lookupResult.meaning.translation}
                 </div>
-              );
-            })}
+                <div className="text-sm text-serif">
+                  {lookupResult.meaning.definition}
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center">
+                <Button disabled={lookingUp} onClick={lookup}>
+                  {lookingUp && (
+                    <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
+                  )}
+                  <span>{t("translate")}</span>
+                </Button>
+              </div>
+            )}
           </div>
         ) : (
-          <div>{t("clickAnyWordToSelect")}</div>
+          <div className="py-8 px-2 text-muted-foreground">
+            <div className="text-sm">{t("clickAnyWordToSelect")}</div>
+          </div>
         )}
-      </div>
+      </ScrollArea>
       <div className="flex flex-col space-y-2">
         <Button
-          variant="outline"
+          variant={displayTranslation ? "secondary" : "outline"}
           size="icon"
           className="rounded-full w-8 h-8 p-0"
+          disabled={translating}
+          onClick={toggleTranslation}
         >
           <LanguagesIcon className="w-4 h-4" />
         </Button>
         <Button
-          variant="outline"
+          variant={displayIpa ? "secondary" : "outline"}
           size="icon"
           className="rounded-full w-8 h-8 p-0"
+          onClick={() => setDisplayIpa(!displayIpa)}
         >
           <SpeechIcon className="w-4 h-4" />
         </Button>
