@@ -199,6 +199,34 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
           )}
         </Button>
 
+        <Button
+          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-content={t("pronunciationAssessment")}
+          data-tooltip-place="bottom"
+          onClick={() => {
+            setDetailIsOpen(true);
+          }}
+          variant="outline"
+          size="icon"
+          className="rounded-full w-8 h-8 p-0"
+        >
+          <GaugeCircleIcon
+            className={`w-4 h-4
+                    ${
+                      currentRecording.pronunciationAssessment
+                        ? currentRecording.pronunciationAssessment
+                            .pronunciationScore >= 80
+                          ? "text-green-500"
+                          : currentRecording.pronunciationAssessment
+                              .pronunciationScore >= 60
+                          ? "text-yellow-600"
+                          : "text-red-500"
+                        : ""
+                    }
+                    `}
+          />
+        </Button>
+
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button
@@ -227,34 +255,6 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-
-        <Button
-          data-tooltip-id="media-player-controls-tooltip"
-          data-tooltip-content={t("pronunciationAssessment")}
-          data-tooltip-place="bottom"
-          onClick={() => {
-            setDetailIsOpen(true);
-          }}
-          variant="outline"
-          size="icon"
-          className="rounded-full w-8 h-8 p-0"
-        >
-          <GaugeCircleIcon
-            className={`w-4 h-4
-                    ${
-                      currentRecording.pronunciationAssessment
-                        ? currentRecording.pronunciationAssessment
-                            .pronunciationScore >= 80
-                          ? "text-green-500"
-                          : currentRecording.pronunciationAssessment
-                              .pronunciationScore >= 60
-                          ? "text-yellow-600"
-                          : "text-red-500"
-                        : "text-muted-foreground"
-                    }
-                    `}
-          />
-        </Button>
       </div>
 
       <Sheet open={detailIsOpen} onOpenChange={(open) => setDetailIsOpen(open)}>

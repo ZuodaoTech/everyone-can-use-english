@@ -1,7 +1,29 @@
-import { useContext, useRef, useEffect } from "react";
-import { ScrollArea, Button } from "@renderer/components/ui";
-import { MediaPlayerProviderContext } from "@renderer/context";
-import { LoaderIcon, MicIcon } from "lucide-react";
+import { useContext, useRef, useEffect, useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogHeader,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  Button,
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  ScrollArea,
+} from "@renderer/components/ui";
+import {
+  AppSettingsProviderContext,
+  MediaPlayerProviderContext,
+} from "@renderer/context";
+import {
+  LoaderIcon,
+  MicIcon,
+  MoreVerticalIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { t } from "i18next";
 import { formatDateTime, formatDuration } from "@renderer/lib/utils";
 
@@ -16,6 +38,15 @@ export const MediaRecordings = () => {
     setCurrentRecording,
     currentSegmentIndex,
   } = useContext(MediaPlayerProviderContext);
+
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const [selectedRecording, setSelectedRecording] = useState(null);
+
+  const handleDelete = () => {
+    if (!selectedRecording) return;
+
+    EnjoyApp.recordings.destroy(selectedRecording.id);
+  };
 
   useEffect(() => {
     if (currentRecording?.referenceId === currentSegmentIndex) return;
@@ -40,11 +71,13 @@ export const MediaRecordings = () => {
           )}
         </div>
       </div>
+
       {recordings.length == 0 && (
         <div className="text-center px-6 py-8 text-sm text-muted-foreground capitalize">
           {t("noRecordingForThisSegmentYet")}
         </div>
       )}
+
       {recordings.map((recording) => (
         <div
           key={recording.id}
@@ -61,9 +94,30 @@ export const MediaRecordings = () => {
             <MicIcon className="w-4 h-4" />
             <span>{formatDuration(recording.duration, "ms")}</span>
           </div>
-          <span className="">{formatDateTime(recording.createdAt)}</span>
+          <div className="flex items-center space-x2">
+            <span className="text-sm text-muted-foreground">
+              {formatDateTime(recording.createdAt)}
+            </span>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <MoreVerticalIcon className="w-4 h-4" />
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  className="text-destructive cursor-pointer"
+                  onClick={() => setSelectedRecording(recording)}
+                >
+                  <Trash2Icon className="w-4 h-4 mr-2" />
+                  <span>{t("delete")}</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       ))}
+
       {hasMoreRecordings && (
         <div className="py-2 flex items-center justify-center">
           <Button
@@ -79,6 +133,29 @@ export const MediaRecordings = () => {
           </Button>
         </div>
       )}
+
+      <AlertDialog
+        open={selectedRecording}
+        onOpenChange={(value) => {
+          if (value) return;
+          setSelectedRecording(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("deleteRecording")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("deleteRecordingConfirmation")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+            <Button variant="destructive" onClick={handleDelete}>
+              {t("delete")}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </ScrollArea>
   );
 };
