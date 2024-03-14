@@ -39,8 +39,9 @@ import { formatDuration } from "@renderer/lib/utils";
 
 export const MediaCurrentRecording = (props: { height?: number }) => {
   const { height = 144 } = props;
-  const { recordings, isRecording, setIsRecording, currentRecording } =
-    useContext(MediaPlayerProviderContext);
+  const { isRecording, currentRecording } = useContext(
+    MediaPlayerProviderContext
+  );
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
   const [player, setPlayer] = useState<WaveSurfer | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -178,7 +179,9 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
           <span className="text-sm">{formatDuration(currentTime || 0)}</span>
           <span className="mx-1">/</span>
           <span className="text-sm">
-            {formatDuration(player?.getDuration() || currentRecording.duration / 1000.0 || 0)}
+            {formatDuration(
+              player?.getDuration() || currentRecording.duration / 1000.0 || 0
+            )}
           </span>
         </div>
       </div>

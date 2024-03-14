@@ -35,7 +35,7 @@ export const VideoPlayer = (props: { id?: string; md5?: string }) => {
     <div data-testid="video-player">
       <div className="">
         <div className="h-[calc(30vh-3.5rem)]">
-          <div className="grid grid-cols-3 gap-4 px-6 pb-4 h-full">
+          <div className="grid grid-cols-3 gap-4 px-6 h-full">
             <MediaInfoPanel />
             <MediaRecordings />
             <MediaTranscription />
@@ -43,26 +43,30 @@ export const VideoPlayer = (props: { id?: string; md5?: string }) => {
         </div>
 
         <div className="h-[70vh] flex flex-col">
-          <ScrollArea className="flex-1 w-full h-full border-t">
+          <ScrollArea className="h-[calc(70vh-19rem)] px-6">
             <MediaCaption />
+
+            <div className="sticky bottom-0 z-10 bg-background">
+              <MediaCurrentRecording />
+            </div>
           </ScrollArea>
 
-          <div className="w-full border-t relative">
-            <div ref={ref} />
-            <div className="absolute right-2 top-2">
-              <span className="text-sm">
-                {formatDuration(currentTime || 0)}
-              </span>
-              <span className="mx-1">/</span>
-              <span className="text-sm">
-                {formatDuration(media?.duration || 0)}
-              </span>
+          <div className="w-full h-[13rem] px-6 py-2 my-2">
+            <div className="border rounded-xl shadow-lg relative">
+              <div data-testid="media-player-container" ref={ref} />
+              <div className="absolute right-2 top-1">
+                <span className="text-sm">
+                  {formatDuration(currentTime || 0)}
+                </span>
+                <span className="mx-1">/</span>
+                <span className="text-sm">
+                  {formatDuration(media?.duration || 0)}
+                </span>
+              </div>
             </div>
           </div>
 
-          <MediaCurrentRecording />
-
-          <div className="w-full border-t">
+          <div className="w-full bg-background z-10 shadow-xl">
             <MediaPlayerControls />
           </div>
         </div>

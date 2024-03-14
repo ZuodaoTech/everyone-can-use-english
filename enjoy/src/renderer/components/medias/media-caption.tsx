@@ -344,14 +344,8 @@ export const MediaCaption = () => {
                     {displayIpa && (
                       <div className="text-muted-foreground">
                         {caption.timeline[index].timeline
-                          .map((t) =>
-                            t.timeline
-                              .map(
-                                (s) => (IPA_MAPPING as any)[s.text] || s.text
-                              )
-                              .join("")
-                          )
-                          .join()}
+                          .map((t) => t.timeline.map((s) => s.text).join(""))
+                          .join(" · ")}
                       </div>
                     )}
                   </div>
@@ -370,14 +364,8 @@ export const MediaCaption = () => {
                     {displayIpa && (
                       <div className="text-muted-foreground">
                         {w.timeline
-                          .map((t) =>
-                            t.timeline
-                              .map(
-                                (s) => (IPA_MAPPING as any)[s.text] || s.text
-                              )
-                              .join("")
-                          )
-                          .join()}
+                          .map((t) => t.timeline.map((s) => s.text).join(""))
+                          .join(" · ")}
                       </div>
                     )}
                   </div>
@@ -406,12 +394,8 @@ export const MediaCaption = () => {
                     </div>
                     <div className="text-sm text-serif text-muted-foreground">
                       {word.timeline
-                        .map((t) =>
-                          t.timeline
-                            .map((s) => (IPA_MAPPING as any)[s.text] || s.text)
-                            .join("")
-                        )
-                        .join("")}
+                        .map((t) => t.timeline.map((s) => s.text).join(""))
+                        .join(" · ")}
                     </div>
                   </div>
                 );
