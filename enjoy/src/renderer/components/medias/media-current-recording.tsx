@@ -346,7 +346,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         </Button>
 
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
               size="icon"

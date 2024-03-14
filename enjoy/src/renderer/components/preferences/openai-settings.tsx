@@ -117,7 +117,6 @@ export const OpenaiSettings = () => {
                       <Input
                         disabled={!editing}
                         placeholder={t("leaveEmptyToUseDefault")}
-                        defaultValue=""
                         value={field.value}
                         onChange={field.onChange}
                       />
