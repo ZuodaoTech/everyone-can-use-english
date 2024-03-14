@@ -7,13 +7,21 @@ import RecordPlugin from "wavesurfer.js/dist/plugins/record";
 import WaveSurfer from "wavesurfer.js";
 import { t } from "i18next";
 import { useTranscribe } from "@renderer/hooks";
-import { Button, toast } from "@renderer/components/ui";
-import { StopCircleIcon } from "lucide-react";
+import { toast } from "@renderer/components/ui";
+import {
+  FFMPEG_TRIM_SILENCE_OPTIONS,
+  FFMPEG_CONVERT_WAV_OPTIONS,
+} from "@/constants";
 
 export const MediaRecorder = (props: { height?: number }) => {
   const { height = 144 } = props;
-  const { recordings, isRecording, setIsRecording, currentRecording } =
-    useContext(MediaPlayerProviderContext);
+  const {
+    media,
+    isRecording,
+    setIsRecording,
+    transcription,
+    currentSegmentIndex,
+  } = useContext(MediaPlayerProviderContext);
   const [access, setAccess] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -32,7 +40,28 @@ export const MediaRecorder = (props: { height?: number }) => {
     });
   };
 
+  const createRecording = async (blob: Blob, duration: number) => {
+    if (!media) return;
+
+    const currentSegment =
+      transcription?.result?.timeline?.[currentSegmentIndex];
+    if (!currentSegment) return;
+
+    EnjoyApp.recordings.create({
+      targetId: media.id,
+      targetType: media.mediaType,
+      blob: {
+        type: blob.type.split(";")[0],
+        arrayBuffer: await blob.arrayBuffer(),
+      },
+      referenceId: currentSegmentIndex,
+      referenceText: currentSegment.text,
+      duration,
+    });
+  };
+
   useEffect(() => {
+    if (!access) return;
     if (!isRecording) return;
     if (!ref.current) return;
 
@@ -54,7 +83,12 @@ export const MediaRecorder = (props: { height?: number }) => {
     record.on("record-end", async (blob: Blob) => {
       const duration = Date.now() - startAt;
       try {
-        const output = await transcode(blob);
+        const output = await transcode(blob, [
+          // ...FFMPEG_TRIM_SILENCE_OPTIONS,
+          ...FFMPEG_CONVERT_WAV_OPTIONS,
+        ]);
+
+        await createRecording(output, duration);
       } catch (e) {
         console.error(e);
         toast.error(t("failedToSaveRecording"));
@@ -86,7 +120,7 @@ export const MediaRecorder = (props: { height?: number }) => {
       record.stopRecording();
       ws.destroy();
     };
-  }, [ref, isRecording]);
+  }, [ref, isRecording, access]);
 
   useEffect(() => {
     askForMediaAccess();

@@ -7,6 +7,7 @@ import {
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogCancel,
+  AlertDialogAction,
   Button,
   DropdownMenu,
   DropdownMenuItem,
@@ -49,7 +50,6 @@ export const MediaRecordings = () => {
   };
 
   useEffect(() => {
-    if (currentRecording?.referenceId === currentSegmentIndex) return;
     if (recordings.length === 0) return;
 
     setCurrentRecording(recordings[0]);
@@ -81,7 +81,9 @@ export const MediaRecordings = () => {
       {recordings.map((recording) => (
         <div
           key={recording.id}
-          className="flex items-center justify-between px-4 py-2 cursor-pointer"
+          className={`flex items-center justify-between px-4 py-2 cursor-pointer ${
+            recording.id === currentRecording?.id ? "bg-muted" : ""
+          }`}
           style={{
             borderLeftColor: `#${recording.md5.substr(0, 6)}`,
             borderLeftWidth: 3,
@@ -150,9 +152,9 @@ export const MediaRecordings = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-            <Button variant="destructive" onClick={handleDelete}>
-              {t("delete")}
-            </Button>
+            <AlertDialogAction asChild>
+              <Button onClick={handleDelete}>{t("delete")}</Button>
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

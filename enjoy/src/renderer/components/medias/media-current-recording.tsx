@@ -178,7 +178,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
           <span className="text-sm">{formatDuration(currentTime || 0)}</span>
           <span className="mx-1">/</span>
           <span className="text-sm">
-            {formatDuration(player?.getDuration() || 0)}
+            {formatDuration(player?.getDuration() || currentRecording.duration / 1000.0 || 0)}
           </span>
         </div>
       </div>

@@ -12,12 +12,10 @@ import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import axios from "axios";
 import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
-import {
-  groupTranscription,
-  milisecondsToTimestamp,
-} from "@/utils";
+import { groupTranscription, milisecondsToTimestamp } from "@/utils";
 import { END_OF_SENTENCE_REGEX } from "@/constants";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
+import { FFMPEG_CONVERT_WAV_OPTIONS } from "@/constants";
 
 export const useTranscribe = () => {
   const { EnjoyApp, ffmpegWasm, ffmpegValid, user, webApi } = useContext(
@@ -29,12 +27,16 @@ export const useTranscribe = () => {
     if (ffmpegValid) {
       if (src instanceof Blob) {
         src = await EnjoyApp.cacheObjects.writeFile(
-          `${Date.now()}.${src.type.split("/")[1]}`,
+          `${Date.now()}.${src.type.split("/")[1].split(";")[0]}`,
           await src.arrayBuffer()
         );
       }
 
-      const output = `enjoy://library/cache/${src.split("/").pop()}.wav`;
+      const output = `enjoy://library/cache/${src
+        .split("/")
+        .pop()
+        .split(";")
+        .shift()}.wav`;
       await EnjoyApp.ffmpeg.transcode(src, output, options);
       const data = await fetchFile(output);
       return new Blob([data], { type: "audio/wav" });
@@ -46,7 +48,7 @@ export const useTranscribe = () => {
   const transcodeUsingWasm = async (src: string | Blob, options?: string[]) => {
     if (!ffmpegWasm?.loaded) return;
 
-    options = options || ["-ar", "16000", "-ac", "1", "-c:a", "pcm_s16le"];
+    options = options || FFMPEG_CONVERT_WAV_OPTIONS;
 
     try {
       let uri: URL;

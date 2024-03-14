@@ -11,6 +11,20 @@ export const MAGIC_TOKEN_REGEX =
   /[^a-zA-Z]?(Mrs|Ms|Mr|Dr|Prof|St|[a-zA-Z]{1,2}|\d{1,2})\./g;
 export const END_OF_SENTENCE_REGEX = /[^\.!,\?][\.!\?]/g;
 
+export const FFMPEG_TRIM_SILENCE_OPTIONS = [
+  "-af",
+  "silenceremove=1:start_duration=1:start_threshold=-50dB:detection=peak,aformat=dblp,areverse,silenceremove=start_periods=1:start_duration=1:start_threshold=-50dB:detection=peak,aformat=dblp,areverse",
+];
+
+export const FFMPEG_CONVERT_WAV_OPTIONS = [
+  "-ar",
+  "16000",
+  "-ac",
+  "1",
+  "-c:a",
+  "pcm_s16le",
+];
+
 // https://huggingface.co/ggerganov/whisper.cpp/tree/main
 export const WHISPER_MODELS_OPTIONS = [
   {
