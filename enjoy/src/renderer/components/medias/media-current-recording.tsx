@@ -56,7 +56,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     editingRegion,
   } = useContext(MediaPlayerProviderContext);
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
-  const [player, setPlayer] = useState<WaveSurfer | null>(null);
+  const [player, setPlayer] = useState(null);
   const [regions, setRegions] = useState<Regions | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
 
@@ -181,14 +181,13 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
       url: currentRecording.src,
       height,
       barWidth: 2,
-      cursorWidth: 0,
-      autoCenter: false,
+      cursorWidth: 1,
+      autoCenter: true,
       autoScroll: true,
-      hideScrollbar: true,
-      minPxPerSec: 100,
+      minPxPerSec: 150,
       waveColor: "#efefef",
       normalize: false,
-      progressColor: "rgba(0, 0, 0, 0.25)",
+      progressColor: "rgba(0, 0, 0, 0.1)",
     });
 
     setPlayer(ws);
@@ -200,7 +199,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
 
     ws.on("finish", () => ws.seekTo(0));
 
-    ws.on("decode", () => {
+    ws.on("ready", () => {
       const wrapper = (ws as any).renderer.getWrapper();
       const width = wrapper.getBoundingClientRect().width;
       const canvas = document.createElement("canvas");
@@ -265,11 +264,6 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
       });
     });
 
-    ws.on("interaction", () => {
-      regions.clearRegions();
-      setIsSelectingRegion(false);
-    });
-
     return () => {
       ws.destroy();
     };
@@ -319,9 +313,25 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
 
     return () => {
       disableSelectingRegion && disableSelectingRegion();
+      regions.clearRegions();
       subscriptions.forEach((unsub) => unsub());
     };
   }, [regions, isSelectingRegion]);
+
+  /*
+   * Update player styles
+   */
+  useEffect(() => {
+    if (!ref?.current || !player) return;
+
+    const scrollContainer = player.getWrapper()?.closest(".scroll");
+    if (!scrollContainer) return;
+
+    scrollContainer.style.width = `${
+      ref.current.getBoundingClientRect().width
+    }px`;
+    scrollContainer.style.scrollbarWidth = "thin";
+  }, [ref, player]);
 
   if (isRecording) return <MediaRecorder />;
   if (!currentRecording?.src) return null;

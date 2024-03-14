@@ -485,5 +485,7 @@
   "stopRecording": "stop recording",
   "playRecording": "play recording",
   "clickAnyWordToSelect": "Click any words to select. Press shift to select multiple words.",
-  "currentRegionIsBeingEdited": "Current region is being edited"
+  "currentRegionIsBeingEdited": "Current region is being edited",
+  "compare": "compare",
+  "selectRegion": "select region"
 }
