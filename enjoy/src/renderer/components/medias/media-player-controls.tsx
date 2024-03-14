@@ -67,12 +67,12 @@ export const MediaPlayerControls = () => {
     currentTime,
     currentSegmentIndex,
     setCurrentSegmentIndex,
+    zoomRatio,
+    setZoomRatio,
     fitZoomRatio,
     transcription,
-    renderPitchContour,
     pitchChart,
     regions,
-    minPxPerSec,
     activeRegion,
     setActiveRegion,
     editingRegion,
@@ -85,7 +85,6 @@ export const MediaPlayerControls = () => {
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("single");
   const [playbackRate, setPlaybackRate] = useState<number>(1);
-  const [zoomRatio, setZoomRatio] = useState<number>(1.0);
   const [displayInlineCaption, setDisplayInlineCaption] =
     useState<boolean>(true);
 
@@ -312,17 +311,6 @@ export const MediaPlayerControls = () => {
     const segment = transcription.result.timeline[0];
     wavesurfer.seekTo(segment.startTime / wavesurfer.getDuration());
   }, [decoded, transcription?.id, wavesurfer]);
-
-  useEffect(() => {
-    if (!wavesurfer) return;
-    if (!decoded) return;
-
-    wavesurfer.zoom(zoomRatio * minPxPerSec);
-    if (!activeRegion) return;
-
-    renderPitchContour(activeRegion);
-    wavesurfer.setScrollTime(activeRegion.start);
-  }, [zoomRatio, wavesurfer, decoded]);
 
   useEffect(() => {
     if (!wavesurfer) return;

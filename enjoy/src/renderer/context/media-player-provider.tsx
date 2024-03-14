@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, useContext } from "react";
-import { extractFrequencies, PitchContour } from "@renderer/components";
+import { extractFrequencies } from "@renderer/components";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { useTranscriptions, useRecordings } from "@renderer/hooks";
 import WaveSurfer from "wavesurfer.js";
@@ -23,6 +23,8 @@ type MediaPlayerContextType = {
   currentTime: number;
   currentSegmentIndex: number;
   setCurrentSegmentIndex: (index: number) => void;
+  zoomRatio: number;
+  setZoomRatio: (zoomRation: number) => void;
   fitZoomRatio: number;
   minPxPerSec: number;
   // regions
@@ -31,7 +33,15 @@ type MediaPlayerContextType = {
   setActiveRegion: (region: RegionType) => void;
   editingRegion: boolean;
   setEditingRegion: (editing: boolean) => void;
-  renderPitchContour: (region: RegionType) => void;
+  renderPitchContour: (
+    region: RegionType,
+    options?: {
+      repaint?: boolean;
+      canvasId?: string;
+      containerClassNames?: string[];
+      data?: Chart["data"];
+    }
+  ) => void;
   pitchChart: Chart;
   // Transcription
   transcription: TranscriptionType;
@@ -82,6 +92,7 @@ export const MediaPlayerProvider = ({
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [currentSegmentIndex, setCurrentSegmentIndex] = useState<number>(0);
   const [fitZoomRatio, setFitZoomRatio] = useState<number>(1.0);
+  const [zoomRatio, setZoomRatio] = useState<number>(1.0);
 
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [currentRecording, setCurrentRecording] = useState<RecordingType>(null);
@@ -137,11 +148,20 @@ export const MediaPlayerProvider = ({
     setWavesurfer(ws);
   };
 
-  const renderPitchContour = (region: RegionType) => {
+  const renderPitchContour = (
+    region: RegionType,
+    options?: {
+      repaint?: boolean;
+      canvasId?: string;
+      containerClassNames?: string[];
+      data?: Chart["data"];
+    }
+  ) => {
     if (!region) return;
     if (!waveform?.frequencies?.length) return;
     if (!wavesurfer) return;
 
+    const { repaint = true, containerClassNames = [] } = options || {};
     const duration = wavesurfer.getDuration();
     const fromIndex = Math.round(
       (region.start / duration) * waveform.frequencies.length
@@ -152,11 +172,13 @@ export const MediaPlayerProvider = ({
 
     const wrapper = (wavesurfer as any).renderer.getWrapper();
     // remove existing pitch contour
-    wrapper
-      .querySelectorAll(".pitch-contour")
-      .forEach((element: HTMLDivElement) => {
-        element.remove();
-      });
+    if (repaint) {
+      wrapper
+        .querySelectorAll(".pitch-contour")
+        .forEach((element: HTMLDivElement) => {
+          element.remove();
+        });
+    }
 
     // calculate offset and width
     const wrapperWidth = wrapper.getBoundingClientRect().width;
@@ -164,10 +186,9 @@ export const MediaPlayerProvider = ({
     const width = ((region.end - region.start) / duration) * wrapperWidth;
 
     // create container and canvas
-    const containerId = `pitch-contour-${region.id}`;
     const pitchContourWidthContainer = document.createElement("div");
     const canvas = document.createElement("canvas");
-    const canvasId = `pitch-contour-${region.id}-canvas`;
+    const canvasId = options?.canvasId || `pitch-contour-${region.id}-canvas`;
     canvas.id = canvasId;
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
@@ -180,62 +201,71 @@ export const MediaPlayerProvider = ({
     pitchContourWidthContainer.style.width = `${width}px`;
     pitchContourWidthContainer.style.height = `${height}px`;
     pitchContourWidthContainer.style.marginLeft = `${offsetLeft}px`;
-    pitchContourWidthContainer.className = "pitch-contour";
-    pitchContourWidthContainer.id = containerId;
+    pitchContourWidthContainer.classList.add(
+      "pitch-contour",
+      ...containerClassNames
+    );
+    pitchContourWidthContainer.style.zIndex = "50";
 
     wrapper.appendChild(pitchContourWidthContainer);
 
-    // render pitch contour
-    const data = waveform.frequencies.slice(fromIndex, toIndex);
-    const labels = new Array(data.length).fill("");
-    const regionDuration = region.end - region.start;
+    // prepare chart data
+    let chartData: Chart["data"] = options?.data;
 
-    const caption = transcription?.result?.timeline?.[currentSegmentIndex];
-    if (region.id.startsWith("segment-region")) {
-      caption.timeline.forEach((segment: TimelineEntry) => {
-        const index = Math.round(
-          ((segment.startTime - region.start) / regionDuration) * data.length
-        );
-        labels[index] = segment.text.trim();
-      });
-    } else if (region.id.startsWith("word-region")) {
-      const words = caption.timeline.filter(
-        (w: TimelineEntry) =>
-          w.startTime >= region.start &&
-          w.endTime <= region.end &&
-          w.type === "word"
-      );
+    if (!chartData) {
+      const data = waveform.frequencies.slice(fromIndex, toIndex);
+      const regionDuration = region.end - region.start;
 
-      let phones: TimelineEntry[] = [];
-      words.forEach((word: TimelineEntry) => {
-        word.timeline.forEach((token: TimelineEntry) => {
-          phones = phones.concat(token.timeline);
+      const labels = new Array(data.length).fill("");
+      const caption = transcription?.result?.timeline?.[currentSegmentIndex];
+      if (region.id.startsWith("segment-region")) {
+        caption.timeline.forEach((segment: TimelineEntry) => {
+          const index = Math.round(
+            ((segment.startTime - region.start) / regionDuration) * data.length
+          );
+          labels[index] = segment.text.trim();
         });
-      });
-
-      phones.forEach((phone: TimelineEntry) => {
-        const index = Math.round(
-          ((phone.startTime - region.start) / regionDuration) * data.length
+      } else if (region.id.startsWith("word-region")) {
+        const words = caption.timeline.filter(
+          (w: TimelineEntry) =>
+            w.startTime >= region.start &&
+            w.endTime <= region.end &&
+            w.type === "word"
         );
-        labels[index] = [
-          labels[index] || "",
-          (IPA_MAPPING as any)[phone.text.trim()] || phone.text.trim(),
-        ].join("");
-      });
+
+        let phones: TimelineEntry[] = [];
+        words.forEach((word: TimelineEntry) => {
+          word.timeline.forEach((token: TimelineEntry) => {
+            phones = phones.concat(token.timeline);
+          });
+        });
+
+        phones.forEach((phone: TimelineEntry) => {
+          const index = Math.round(
+            ((phone.startTime - region.start) / regionDuration) * data.length
+          );
+          labels[index] = [
+            labels[index] || "",
+            (IPA_MAPPING as any)[phone.text.trim()] || phone.text.trim(),
+          ].join("");
+        });
+      }
+
+      chartData = {
+        labels,
+        datasets: [
+          {
+            data,
+            cubicInterpolationMode: "monotone",
+          },
+        ],
+      };
     }
 
     setPitchChart(
       new Chart(canvas, {
         type: "line",
-        data: {
-          labels,
-          datasets: [
-            {
-              data,
-              cubicInterpolationMode: "monotone",
-            },
-          ],
-        },
+        data: chartData,
         options: {
           plugins: {
             legend: {
@@ -344,12 +374,32 @@ export const MediaPlayerProvider = ({
     }
   }, [ref, wavesurfer, activeRegion]);
 
+  /*
+   * Zoom chart when zoomRatio update
+   */
+  useEffect(() => {
+    if (!wavesurfer) return;
+    if (!decoded) return;
+
+    wavesurfer.zoom(zoomRatio * minPxPerSec);
+    if (!activeRegion) return;
+
+    renderPitchContour(activeRegion);
+    wavesurfer.setScrollTime(activeRegion.start);
+  }, [zoomRatio, wavesurfer, decoded]);
+
+  /*
+   * Re-render pitch contour when active region changed
+   */
   useEffect(() => {
     if (!activeRegion) return;
 
     renderPitchContour(activeRegion);
   }, [activeRegion]);
 
+  /*
+   * Update player styles
+   */
   useEffect(() => {
     if (!wavesurfer) return;
     if (!decoded) return;
@@ -371,6 +421,8 @@ export const MediaPlayerProvider = ({
         currentSegmentIndex,
         setCurrentSegmentIndex,
         waveform,
+        zoomRatio,
+        setZoomRatio,
         fitZoomRatio,
         minPxPerSec,
         transcription,

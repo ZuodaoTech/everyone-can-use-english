@@ -28,6 +28,7 @@ import {
   SheetClose,
 } from "@renderer/components/ui";
 import {
+  GitCompareIcon,
   PauseIcon,
   PlayIcon,
   Share2Icon,
@@ -39,15 +40,98 @@ import { formatDuration } from "@renderer/lib/utils";
 
 export const MediaCurrentRecording = (props: { height?: number }) => {
   const { height = 144 } = props;
-  const { isRecording, currentRecording } = useContext(
-    MediaPlayerProviderContext
-  );
+  const {
+    isRecording,
+    currentRecording,
+    renderPitchContour,
+    regions,
+    wavesurfer,
+    zoomRatio,
+    editingRegion,
+  } = useContext(MediaPlayerProviderContext);
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
   const [player, setPlayer] = useState<WaveSurfer | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [detailIsOpen, setDetailIsOpen] = useState(false);
+  const [isComparing, setIsComparing] = useState(false);
+  const [frequencies, setFrequencies] = useState<number[]>([]);
+  const [peaks, setPeaks] = useState<number[]>([]);
 
   const ref = useRef(null);
+
+  const removeComparingPitchContour = () => {
+    if (!wavesurfer) return;
+
+    const wrapper = (wavesurfer as any).renderer.getWrapper();
+    wrapper
+      .querySelectorAll(".pitch-contour-recording")
+      .forEach((el: HTMLDivElement) => el.remove());
+  };
+
+  /*
+   * Render recording's pitch contour on the original audio waveform
+   * with the original pitch contour.
+   */
+  const renderComparingPitchContour = () => {
+    const region = regions
+      .getRegions()
+      .find((r) => r.id.startsWith("segment-region"));
+    if (!region) return;
+
+    if (!frequencies || !peaks) return;
+
+    // Trim the peaks from start to end, so we can render the voicable part of the recording
+    const minValue = 0.01;
+    let voiceStartIndex = 0;
+    let voiceEndIndex = peaks.length - 1;
+
+    for (let i = 1; i < voiceEndIndex; i++) {
+      if (peaks[i] >= minValue) {
+        voiceStartIndex = i;
+        break;
+      }
+    }
+    for (let i = voiceEndIndex; i > voiceStartIndex; i--) {
+      if (peaks[i] >= minValue) {
+        voiceEndIndex = i;
+        break;
+      }
+    }
+    voiceStartIndex = Math.round(
+      ((1.0 * voiceStartIndex) / peaks.length) * frequencies.length
+    );
+    voiceEndIndex = Math.round(
+      ((1.0 * voiceEndIndex) / peaks.length) * frequencies.length
+    );
+
+    renderPitchContour(region, {
+      repaint: false,
+      canvasId: `pitch-contour-${currentRecording.id}-canvas`,
+      containerClassNames: ["pitch-contour-recording"],
+      data: {
+        labels: new Array(frequencies.length).fill(""),
+        datasets: [
+          {
+            data: frequencies.slice(voiceStartIndex, voiceEndIndex),
+            cubicInterpolationMode: "monotone",
+            borderColor: "#fb6f92",
+            pointBorderColor: "#fb6f92",
+            pointBackgroundColor: "#ff8fab",
+          },
+        ],
+      },
+    });
+  };
+
+  const toggleCompare = () => {
+    if (isComparing) {
+      removeComparingPitchContour();
+      setIsComparing(false);
+    } else {
+      setIsComparing(true);
+      renderComparingPitchContour();
+    }
+  };
 
   const handleShare = async () => {
     if (!currentRecording.uploadedAt) {
@@ -119,6 +203,8 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
       const peaks: Float32Array = ws.getDecodedData().getChannelData(0);
       const sampleRate = ws.options.sampleRate;
       const data = extractFrequencies({ peaks, sampleRate });
+      setFrequencies(data);
+      setPeaks(Array.from(peaks));
 
       new Chart(canvas, {
         type: "line",
@@ -167,6 +253,23 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     };
   }, [ref, currentRecording, isRecording]);
 
+  useEffect(() => {
+    setIsComparing(false);
+    removeComparingPitchContour();
+  }, [currentRecording]);
+
+  useEffect(() => {
+    if (!isComparing) return;
+
+    if (editingRegion) {
+      setIsComparing(false);
+    } else {
+      setTimeout(() => {
+        renderComparingPitchContour();
+      }, 100);
+    }
+  }, [zoomRatio, editingRegion]);
+
   if (isRecording) return <MediaRecorder />;
   if (!currentRecording?.src) return null;
 
@@ -186,7 +289,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         </div>
       </div>
 
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col space-y-1.5">
         <Button
           variant="default"
           size="icon"
@@ -200,6 +303,17 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
           ) : (
             <PlayIcon className="w-4 h-4" />
           )}
+        </Button>
+
+        <Button
+          variant={isComparing ? "secondary" : "outline"}
+          size="icon"
+          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-content={t("compare")}
+          className="rounded-full w-8 h-8 p-0"
+          onClick={toggleCompare}
+        >
+          <GitCompareIcon className="w-4 h-4" />
         </Button>
 
         <Button

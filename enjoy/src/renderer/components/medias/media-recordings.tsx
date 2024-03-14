@@ -73,7 +73,7 @@ export const MediaRecordings = () => {
       </div>
 
       {recordings.length == 0 && (
-        <div className="text-center px-6 py-8 text-sm text-muted-foreground capitalize">
+        <div className="text-center px-6 py-8 text-sm text-muted-foreground">
           {t("noRecordingForThisSegmentYet")}
         </div>
       )}
