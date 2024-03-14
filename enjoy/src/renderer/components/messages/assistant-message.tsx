@@ -242,7 +242,7 @@ export const AssistantMessageComponent = (props: {
       <Sheet open={shadowing} onOpenChange={(value) => setShadowing(value)}>
         <SheetContent
           side="bottom"
-          className="rounded-t-2xl shadow-lg h-100vh p-0"
+          className="h-100vh p-0"
           displayClose={false}
         >
           <SheetHeader className="flex items-center justify-center h-14">

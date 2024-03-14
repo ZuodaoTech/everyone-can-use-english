@@ -56,11 +56,10 @@ export const MediaPlayerProviderContext =
 
 export const MediaPlayerProvider = ({
   children,
-  height = 192,
 }: {
   children: React.ReactNode;
-  height: number;
 }) => {
+  const height = 192;
   const minPxPerSec = 150;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 

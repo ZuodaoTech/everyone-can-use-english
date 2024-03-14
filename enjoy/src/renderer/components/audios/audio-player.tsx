@@ -32,7 +32,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
   }, [ref]);
 
   return (
-    <div data-testid="audio-player">
+    <div data-testid="audio-player" className="relative">
       <div className="">
         <div className="h-[calc(30vh-3.5rem)]">
           <div className="grid grid-cols-3 gap-4 px-6 h-full">

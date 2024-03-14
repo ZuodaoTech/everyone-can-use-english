@@ -10,6 +10,7 @@ import {
   AlertDialogTitle,
   AlertDialogContent,
   AlertDialogFooter,
+  AlertDialogOverlay,
   Button,
   PingPoint,
   Progress,
@@ -31,7 +32,8 @@ export const MediaLoadingModal = () => {
 
   return (
     <AlertDialog open={!decoded || !Boolean(transcription?.result)}>
-      <AlertDialogContent>
+      <AlertDialogOverlay className="z-[100]" />
+      <AlertDialogContent className="z-[100]">
         <AlertDialogHeader>
           <AlertDialogTitle>{t("preparingAudio")}</AlertDialogTitle>
           <AlertDialogDescription>
