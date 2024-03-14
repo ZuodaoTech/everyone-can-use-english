@@ -303,7 +303,9 @@ export const MediaPlayerControls = () => {
 
     setCurrentSegmentIndex(0);
     const segment = transcription.result.timeline[0];
-    wavesurfer.seekTo(segment.startTime / wavesurfer.getDuration());
+    wavesurfer.seekTo(
+      Math.floor((segment.startTime / wavesurfer.getDuration()) * 1000) / 1000
+    );
   }, [decoded, transcription?.id, wavesurfer]);
 
   useEffect(() => {
@@ -339,7 +341,11 @@ export const MediaPlayerControls = () => {
     if (playMode === "all") return;
 
     if (currentTime < activeRegion.start || currentTime > activeRegion.end) {
-      wavesurfer.seekTo(activeRegion.start / wavesurfer.getDuration());
+      wavesurfer.setScrollTime(activeRegion.start);
+      wavesurfer.seekTo(
+        Math.floor((activeRegion.start / wavesurfer.getDuration()) * 1000) /
+          1000
+      );
     }
   }, [wavesurfer, playMode, activeRegion, currentTime]);
 

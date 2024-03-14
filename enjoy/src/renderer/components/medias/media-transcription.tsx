@@ -111,7 +111,9 @@ export const MediaTranscription = () => {
               currentSegmentIndex === index ? "bg-yellow-400/25" : ""
             }`}
             onClick={() => {
-              wavesurfer.seekTo(sentence.startTime / media.duration);
+              wavesurfer.seekTo(
+                Math.floor((sentence.startTime / media.duration) * 1000) / 1000
+              );
               wavesurfer.setScrollTime(sentence.startTime);
               setCurrentSegmentIndex(index);
             }}
