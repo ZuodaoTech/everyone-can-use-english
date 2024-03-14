@@ -112,7 +112,7 @@ export const MediaTranscription = () => {
             }`}
             onClick={() => {
               wavesurfer.seekTo(
-                Math.floor((sentence.startTime / media.duration) * 1000) / 1000
+                Math.floor((sentence.startTime / media.duration) * 1e8) / 1e8
               );
               wavesurfer.setScrollTime(sentence.startTime);
               setCurrentSegmentIndex(index);

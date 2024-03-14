@@ -304,7 +304,7 @@ export const MediaPlayerControls = () => {
     setCurrentSegmentIndex(0);
     const segment = transcription.result.timeline[0];
     wavesurfer.seekTo(
-      Math.floor((segment.startTime / wavesurfer.getDuration()) * 1000) / 1000
+      Math.floor((segment.startTime / wavesurfer.getDuration()) * 1e8) / 1e8
     );
   }, [decoded, transcription?.id, wavesurfer]);
 
@@ -343,8 +343,8 @@ export const MediaPlayerControls = () => {
     if (currentTime < activeRegion.start || currentTime > activeRegion.end) {
       wavesurfer.setScrollTime(activeRegion.start);
       wavesurfer.seekTo(
-        Math.floor((activeRegion.start / wavesurfer.getDuration()) * 1000) /
-          1000
+        Math.floor((activeRegion.start / wavesurfer.getDuration()) * 1e8) /
+          1e8
       );
     }
   }, [wavesurfer, playMode, activeRegion, currentTime]);
