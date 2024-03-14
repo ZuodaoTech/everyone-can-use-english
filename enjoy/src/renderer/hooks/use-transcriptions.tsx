@@ -20,7 +20,11 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
 
   const onTransactionUpdate = (event: CustomEvent) => {
     const { model, action, record } = event.detail || {};
-    if (model === "Transcription" && action === "update") {
+    if (
+      model === "Transcription" &&
+      record.id === transcription.id &&
+      action === "update"
+    ) {
       setTranscription(record);
     }
   };

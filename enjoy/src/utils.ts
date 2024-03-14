@@ -1,8 +1,13 @@
 import Pitchfinder from "pitchfinder";
 import { END_OF_SENTENCE_REGEX, MAGIC_TOKEN_REGEX } from "./constants";
 
-export function generatePitch(peaks: Float32Array, sampleRate: number) {
-  const detectPitch = Pitchfinder.YIN({ sampleRate });
+export const extractFrequencies = (props: {
+  peaks: Float32Array;
+  sampleRate: number;
+}): number[] => {
+  const { peaks, sampleRate } = props;
+
+  const detectPitch = Pitchfinder.AMDF({ sampleRate });
   const duration = peaks.length / sampleRate;
   const bpm = peaks.length / duration / 60;
 
@@ -11,24 +16,8 @@ export function generatePitch(peaks: Float32Array, sampleRate: number) {
     quantization: bpm,
   });
 
-  // Find the baseline frequency (the value that appears most often)
-  const frequencyMap: any = {};
-  let maxAmount = 0;
-  let baseFrequency = 0;
-  frequencies.forEach((frequency) => {
-    if (!frequency) return;
-    const tolerance = 10;
-    frequency = Math.round(frequency * tolerance) / tolerance;
-    if (!frequencyMap[frequency]) frequencyMap[frequency] = 0;
-    frequencyMap[frequency] += 1;
-    if (frequencyMap[frequency] > maxAmount) {
-      maxAmount = frequencyMap[frequency];
-      baseFrequency = frequency;
-    }
-  });
-
-  return { frequencies, baseFrequency };
-}
+  return frequencies;
+};
 
 export function milisecondsToTimestamp(ms: number) {
   const hours = Math.floor(ms / 3600000).toString();

@@ -3,11 +3,8 @@ import {
   AppSettingsProviderContext,
   MediaPlayerProviderContext,
 } from "@renderer/context";
-import {
-  extractFrequencies,
-  MediaRecorder,
-  RecordingDetail,
-} from "@renderer/components";
+import { MediaRecorder, RecordingDetail } from "@renderer/components";
+import { extractFrequencies } from "@/utils";
 import WaveSurfer from "wavesurfer.js";
 import Regions from "wavesurfer.js/dist/plugins/regions";
 import Chart from "chart.js/auto";

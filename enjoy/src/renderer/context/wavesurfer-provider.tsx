@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, useContext } from "react";
-import { extractFrequencies, PitchContour } from "@renderer/components";
+import { extractFrequencies } from "@/utils";
 import { AppSettingsProviderContext } from "@renderer/context";
 import WaveSurfer from "wavesurfer.js";
 import Regions, {

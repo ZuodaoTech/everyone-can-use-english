@@ -383,7 +383,7 @@ export const MediaCaption = () => {
       <ScrollArea className="w-56 rounded-lg shadow border px-4 py-2 mr-4">
         {selectedIndices.length > 0 ? (
           <div className="">
-            <div className="flex items-center space-x-2 mb-6">
+            <div className="flex flex-wrap items-center space-x-2 mb-6">
               {selectedIndices.map((index) => {
                 const word = caption.timeline[index];
                 if (!word) return;

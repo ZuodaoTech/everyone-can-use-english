@@ -44,6 +44,7 @@ import {
   SquareIcon,
   SaveIcon,
   UndoIcon,
+  TextCursorInputIcon,
 } from "lucide-react";
 import { t } from "i18next";
 import { Tooltip } from "react-tooltip";
@@ -86,6 +87,7 @@ export const MediaPlayerControls = () => {
   const [playbackRate, setPlaybackRate] = useState<number>(1);
   const [displayInlineCaption, setDisplayInlineCaption] =
     useState<boolean>(true);
+  const [isSelectingRegion, setIsSelectingRegion] = useState(false);
 
   const playOrPause = () => {
     if (!wavesurfer) return;
@@ -242,6 +244,30 @@ export const MediaPlayerControls = () => {
     if (!regions) return;
     if (!transcription?.result) return;
 
+    let disableSelectingRegion: () => void;
+    if (isSelectingRegion) {
+      wavesurfer
+        .getWrapper()
+        .querySelectorAll(".pitch-contour")
+        .forEach((el: HTMLDivElement) => {
+          el.style.zIndex = "3";
+        });
+      disableSelectingRegion = regions.enableDragSelection({
+        id: `custom-region-${Date.now()}`,
+        color: "rgba(76, 201, 240, 0.2)",
+        drag: false,
+      });
+    } else {
+      regions
+        .getRegions()
+        .filter((r) => r.id.startsWith("custom-region"))
+        .forEach((r) => r.remove());
+
+      setActiveRegion(
+        regions.getRegions().find((r) => r.id.startsWith("segment-region"))
+      );
+    }
+
     const subscriptions = [
       wavesurfer.on("finish", () => {
         if (playMode !== "loop") return;
@@ -250,7 +276,21 @@ export const MediaPlayerControls = () => {
       }),
 
       regions.on("region-updated", (region) => {
-        if (region.id !== `segment-region-${currentSegmentIndex}`) return;
+        const segmentRegion = regions
+          .getRegions()
+          .find((r) => r.id === `segment-region-${currentSegmentIndex}`);
+
+        // limit the custom region always in the segment region
+        if (region.id.startsWith("custom-region")) {
+          if (region.start < segmentRegion.start) {
+            region.setOptions({ start: segmentRegion.start });
+          }
+          if (region.end > segmentRegion.end) {
+            region.setOptions({ start: region.start, end: segmentRegion.end });
+          }
+        } else if (region !== segmentRegion) {
+          return;
+        }
 
         const draft = cloneDeep(transcription.result);
 
@@ -276,7 +316,12 @@ export const MediaPlayerControls = () => {
         setTranscriptionDraft(draft);
       }),
 
-      regions.on("region-created", (region: RegionType) => {}),
+      regions.on("region-created", (region: RegionType) => {
+        if (region.id.startsWith("custom-region")) {
+          disableSelectingRegion?.();
+          setActiveRegion(region);
+        }
+      }),
 
       regions.on("region-out", (region) => {
         if (playMode === "loop") {
@@ -288,9 +333,16 @@ export const MediaPlayerControls = () => {
     ];
 
     return () => {
+      disableSelectingRegion?.();
       subscriptions.forEach((unsub) => unsub());
     };
-  }, [playMode, regions, transcription, currentSegmentIndex]);
+  }, [
+    playMode,
+    regions,
+    transcription,
+    currentSegmentIndex,
+    isSelectingRegion,
+  ]);
 
   /*
    * Auto select the firt segment when everything is ready
@@ -343,8 +395,7 @@ export const MediaPlayerControls = () => {
     if (currentTime < activeRegion.start || currentTime > activeRegion.end) {
       wavesurfer.setScrollTime(activeRegion.start);
       wavesurfer.seekTo(
-        Math.floor((activeRegion.start / wavesurfer.getDuration()) * 1e8) /
-          1e8
+        Math.floor((activeRegion.start / wavesurfer.getDuration()) * 1e8) / 1e8
       );
     }
   }, [wavesurfer, playMode, activeRegion, currentTime]);
@@ -367,6 +418,20 @@ export const MediaPlayerControls = () => {
 
     setZoomRatio(fitZoomRatio);
   }, [activeRegion, fitZoomRatio]);
+
+  useEffect(() => {
+    if (!regions) return;
+    if (!activeRegion) return;
+
+    if (activeRegion.id.startsWith("custom-region")) {
+      regions
+        .getRegions()
+        .filter((r) => r.id.startsWith("word-region"))
+        .forEach((r) => r.remove());
+    } else {
+      setIsSelectingRegion(false);
+    }
+  }, [regions, activeRegion]);
 
   return (
     <div className="w-full h-20 flex items-center justify-between px-6">
@@ -576,6 +641,17 @@ export const MediaPlayerControls = () => {
             }}
           >
             <GalleryHorizontalIcon className="w-6 h-6" />
+          </Button>
+
+          <Button
+            variant={isSelectingRegion ? "secondary" : "ghost"}
+            size="icon"
+            data-tooltip-id="media-player-controls-tooltip"
+            data-tooltip-content={t("selectRegion")}
+            className="relative aspect-square p-0 h-10"
+            onClick={() => setIsSelectingRegion(!isSelectingRegion)}
+          >
+            <TextCursorInputIcon className="w-6 h-6" />
           </Button>
 
           <Button

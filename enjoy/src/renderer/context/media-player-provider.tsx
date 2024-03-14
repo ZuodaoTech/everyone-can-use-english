@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, useContext } from "react";
-import { extractFrequencies } from "@renderer/components";
+import { extractFrequencies } from "@/utils";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { useTranscriptions, useRecordings } from "@renderer/hooks";
 import WaveSurfer from "wavesurfer.js";
@@ -205,7 +205,7 @@ export const MediaPlayerProvider = ({
       "pitch-contour",
       ...containerClassNames
     );
-    pitchContourWidthContainer.style.zIndex = "50";
+    // pitchContourWidthContainer.style.zIndex = "3";
 
     wrapper.appendChild(pitchContourWidthContainer);
 
