@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import WaveSurfer from "wavesurfer.js";
-import { PitchContour } from "@renderer/components";
+import { renderPitchContour } from "@renderer/lib/utils";
+import { extractFrequencies } from "@/utils";
 import { Button, Skeleton } from "@renderer/components/ui";
 import { PlayIcon, PauseIcon } from "lucide-react";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
@@ -70,16 +71,23 @@ export const RecordingPlayer = (props: {
       wavesurfer.on("timeupdate", (time: number) => {
         onCurrentTimeChange?.(time);
       }),
-      wavesurfer.on("decode", () => {
+      wavesurfer.on("ready", () => {
         const peaks = wavesurfer.getDecodedData().getChannelData(0);
         const sampleRate = wavesurfer.options.sampleRate;
-        wavesurfer.renderer.getWrapper().appendChild(
-          PitchContour({
-            peaks,
-            sampleRate,
-            height,
-          })
-        );
+        const data = extractFrequencies({ peaks, sampleRate });
+        setTimeout(() => {
+          renderPitchContour({
+            wrapper: wavesurfer.getWrapper(),
+            canvasId: `pitch-contour-${recording.id}-canvas`,
+            labels: new Array(data.length).fill(""),
+            datasets: [
+              {
+                data,
+                cubicInterpolationMode: "monotone",
+              },
+            ],
+          });
+        }, 1000);
         setInitialized(true);
       }),
     ];

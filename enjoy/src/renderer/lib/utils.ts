@@ -10,6 +10,7 @@ import i18next, { t } from "i18next";
 dayjs.extend(localizedFormat);
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
+import Chart from "chart.js/auto";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -78,4 +79,61 @@ export function formatDate(date: string | Date) {
   } else {
     return then.fromNow();
   }
+}
+
+export function renderPitchContour(options: {
+  wrapper: HTMLElement;
+  canvasId: string;
+  labels: string[];
+  datasets: Chart["data"]["datasets"];
+}) {
+  const { wrapper, datasets, labels, canvasId } = options;
+
+  const width = wrapper.getBoundingClientRect().width;
+  const height = wrapper.getBoundingClientRect().height;
+  const canvas = document.createElement("canvas");
+  canvas.id = canvasId;
+  canvas.style.position = "absolute";
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
+  canvas.style.top = "0";
+  canvas.style.left = "0";
+
+  wrapper.appendChild(canvas);
+
+  new Chart(canvas, {
+    type: "line",
+    data: {
+      labels,
+      datasets,
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: false,
+        },
+        title: {
+          display: false,
+        },
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          ticks: {
+            autoSkip: false,
+          },
+          display: false,
+          grid: {
+            display: false,
+          },
+          border: {
+            display: false,
+          },
+        },
+        y: {
+          display: false,
+        },
+      },
+    },
+  });
 }

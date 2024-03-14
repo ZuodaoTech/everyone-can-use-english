@@ -4,10 +4,10 @@ import {
   MediaPlayerProviderContext,
 } from "@renderer/context";
 import { MediaRecorder, RecordingDetail } from "@renderer/components";
+import { renderPitchContour } from "@renderer/lib/utils";
 import { extractFrequencies } from "@/utils";
 import WaveSurfer from "wavesurfer.js";
 import Regions from "wavesurfer.js/dist/plugins/regions";
-import Chart from "chart.js/auto";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -46,7 +46,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
   const {
     isRecording,
     currentRecording,
-    renderPitchContour,
+    renderPitchContour: renderMediaPitchContour,
     regions: mediaRegions,
     wavesurfer,
     zoomRatio,
@@ -112,7 +112,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
       ((1.0 * voiceEndIndex) / peaks.length) * frequencies.length
     );
 
-    renderPitchContour(region, {
+    renderMediaPitchContour(region, {
       repaint: false,
       canvasId: `pitch-contour-${currentRecording.id}-canvas`,
       containerClassNames: ["pitch-contour-recording"],
@@ -197,67 +197,25 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     ws.on("finish", () => ws.seekTo(0));
 
     ws.on("ready", () => {
-      const wrapper = (ws as any).renderer.getWrapper();
-      const width = wrapper.getBoundingClientRect().width;
-      const canvas = document.createElement("canvas");
-      const canvasId = `pitch-contour-${currentRecording.id}-canvas`;
-      canvas.id = canvasId;
-      canvas.style.position = "absolute";
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      canvas.style.top = "0";
-      canvas.style.left = "0";
-
-      wrapper.appendChild(canvas);
-
       const peaks: Float32Array = ws.getDecodedData().getChannelData(0);
       const sampleRate = ws.options.sampleRate;
       const data = extractFrequencies({ peaks, sampleRate });
       setFrequencies(data);
       setPeaks(Array.from(peaks));
 
-      new Chart(canvas, {
-        type: "line",
-        data: {
-          labels: data.map((_, i) => ""),
-          datasets: [
-            {
-              data,
-              cubicInterpolationMode: "monotone",
-              borderColor: "#fb6f92",
-              pointBorderColor: "#fb6f92",
-              pointBackgroundColor: "#ff8fab",
-            },
-          ],
-        },
-        options: {
-          plugins: {
-            legend: {
-              display: false,
-            },
-            title: {
-              display: false,
-            },
+      renderPitchContour({
+        wrapper: ws.getWrapper(),
+        canvasId: `pitch-contour-${currentRecording.id}-canvas`,
+        labels: new Array(data.length).fill(""),
+        datasets: [
+          {
+            data,
+            cubicInterpolationMode: "monotone",
+            borderColor: "#fb6f92",
+            pointBorderColor: "#fb6f92",
+            pointBackgroundColor: "#ff8fab",
           },
-          scales: {
-            x: {
-              beginAtZero: true,
-              ticks: {
-                autoSkip: false,
-              },
-              display: false,
-              grid: {
-                display: false,
-              },
-              border: {
-                display: false,
-              },
-            },
-            y: {
-              display: false,
-            },
-          },
-        },
+        ],
       });
     });
 
