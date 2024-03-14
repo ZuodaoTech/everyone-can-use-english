@@ -126,7 +126,7 @@ export const MediaRecordings = () => {
             variant="outline"
             size="sm"
             disabled={loadingRecordings}
-            onClick={fetchRecordings}
+            onClick={() => fetchRecordings(recordings.length)}
           >
             {loadingRecordings && (
               <LoaderIcon className="w-4 h-4 animate-spin mr-2" />

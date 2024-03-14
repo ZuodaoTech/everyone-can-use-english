@@ -92,7 +92,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     if (!frequencies || !peaks) return;
 
     // Trim the peaks from start to end, so we can render the voicable part of the recording
-    const minValue = 0.01;
+    const minValue = 0.05;
     let voiceStartIndex = 0;
     let voiceEndIndex = peaks.length - 1;
 

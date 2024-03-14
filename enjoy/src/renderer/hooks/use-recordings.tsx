@@ -15,7 +15,7 @@ export const useRecordings = (
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const fetchRecordings = async (offset = recordings.length) => {
+  const fetchRecordings = async (offset = 0) => {
     setLoading(true);
 
     const limit = 10;

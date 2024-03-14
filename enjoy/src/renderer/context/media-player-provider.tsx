@@ -56,7 +56,7 @@ type MediaPlayerContextType = {
   currentRecording: RecordingType;
   setCurrentRecording: (recording: RecordingType) => void;
   recordings: RecordingType[];
-  fetchRecordings: () => void;
+  fetchRecordings: (offset: number) => void;
   loadingRecordings: boolean;
   hasMoreRecordings: boolean;
 };
