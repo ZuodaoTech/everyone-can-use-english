@@ -44,7 +44,6 @@ import {
   SquareIcon,
   SaveIcon,
   UndoIcon,
-  CheckIcon,
 } from "lucide-react";
 import { t } from "i18next";
 import { Tooltip } from "react-tooltip";
@@ -277,18 +276,13 @@ export const MediaPlayerControls = () => {
         setTranscriptionDraft(draft);
       }),
 
-      regions.on("region-created", (region: RegionType) => {
-        region.on("click", () => {
-          wavesurfer.play();
-        });
-      }),
+      regions.on("region-created", (region: RegionType) => {}),
 
       regions.on("region-out", (region) => {
         if (playMode === "loop") {
           region.play();
         } else if (playMode === "single") {
           wavesurfer.pause();
-          wavesurfer.seekTo(region.start / wavesurfer.getDuration());
         }
       }),
     ];
@@ -578,42 +572,6 @@ export const MediaPlayerControls = () => {
             <GalleryHorizontalIcon className="w-6 h-6" />
           </Button>
 
-          <AlertDialog>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  {media?.mediaType === "Audio"
-                    ? t("shareAudio")
-                    : t("shareVideo")}
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  {media?.mediaType === "Audio"
-                    ? t("areYouSureToShareThisAudioToCommunity")
-                    : t("areYouSureToShareThisVideoToCommunity")}
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-                <AlertDialogAction asChild>
-                  <Button variant="default" onClick={onShare}>
-                    {t("share")}
-                  </Button>
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="ghost"
-                data-tooltip-id="media-player-controls-tooltip"
-                data-tooltip-content={t("share")}
-                className="relative aspect-square p-0 h-10"
-              >
-                <Share2Icon className="w-6 h-6" />
-              </Button>
-            </AlertDialogTrigger>
-          </AlertDialog>
-
           <Button
             variant={`${editingRegion ? "secondary" : "ghost"}`}
             data-tooltip-id="media-player-controls-tooltip"
@@ -667,7 +625,43 @@ export const MediaPlayerControls = () => {
         )}
       </div>
 
-      <div className="ml-auto">
+      <div className="ml-auto flex items-center space-x-4">
+        <AlertDialog>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {media?.mediaType === "Audio"
+                  ? t("shareAudio")
+                  : t("shareVideo")}
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                {media?.mediaType === "Audio"
+                  ? t("areYouSureToShareThisAudioToCommunity")
+                  : t("areYouSureToShareThisVideoToCommunity")}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+              <AlertDialogAction asChild>
+                <Button variant="default" onClick={onShare}>
+                  {t("share")}
+                </Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="ghost"
+              data-tooltip-id="media-player-controls-tooltip"
+              data-tooltip-content={t("share")}
+              className="relative aspect-square p-0 h-10"
+            >
+              <Share2Icon className="w-6 h-6" />
+            </Button>
+          </AlertDialogTrigger>
+        </AlertDialog>
+
         <Button
           variant="ghost"
           onClick={() => setIsRecording(!isRecording)}

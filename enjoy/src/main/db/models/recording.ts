@@ -311,7 +311,7 @@ export class Recording extends Model<Recording> {
     if (!format) {
       throw new Error("Unknown recording format");
     }
-    logger.debug("Recording format:", format);
+
     const file = path.join(
       settings.userDataPath(),
       "recordings",

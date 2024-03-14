@@ -9,10 +9,10 @@ import {
   RecordingDetail,
 } from "@renderer/components";
 import WaveSurfer from "wavesurfer.js";
+import Regions from "wavesurfer.js/dist/plugins/regions";
 import Chart from "chart.js/auto";
 import {
   AlertDialog,
-  AlertDialogTrigger,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -21,6 +21,10 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
   Button,
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
   toast,
   Sheet,
   SheetContent,
@@ -34,6 +38,8 @@ import {
   Share2Icon,
   GaugeCircleIcon,
   ChevronDownIcon,
+  MoreVerticalIcon,
+  TextCursorInputIcon,
 } from "lucide-react";
 import { t } from "i18next";
 import { formatDuration } from "@renderer/lib/utils";
@@ -44,16 +50,21 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     isRecording,
     currentRecording,
     renderPitchContour,
-    regions,
+    regions: mediaRegions,
     wavesurfer,
     zoomRatio,
     editingRegion,
   } = useContext(MediaPlayerProviderContext);
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
   const [player, setPlayer] = useState<WaveSurfer | null>(null);
+  const [regions, setRegions] = useState<Regions | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
+
   const [detailIsOpen, setDetailIsOpen] = useState(false);
   const [isComparing, setIsComparing] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
+  const [isSelectingRegion, setIsSelectingRegion] = useState(false);
+
   const [frequencies, setFrequencies] = useState<number[]>([]);
   const [peaks, setPeaks] = useState<number[]>([]);
 
@@ -73,7 +84,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
    * with the original pitch contour.
    */
   const renderComparingPitchContour = () => {
-    const region = regions
+    const region = mediaRegions
       .getRegions()
       .find((r) => r.id.startsWith("segment-region"));
     if (!region) return;
@@ -182,6 +193,9 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
 
     setPlayer(ws);
 
+    const regions = ws.registerPlugin(Regions.create());
+    setRegions(regions);
+
     ws.on("timeupdate", (time: number) => setCurrentTime(time));
 
     ws.on("finish", () => ws.seekTo(0));
@@ -214,6 +228,9 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
             {
               data,
               cubicInterpolationMode: "monotone",
+              borderColor: "#fb6f92",
+              pointBorderColor: "#fb6f92",
+              pointBackgroundColor: "#ff8fab",
             },
           ],
         },
@@ -248,6 +265,11 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
       });
     });
 
+    ws.on("interaction", () => {
+      regions.clearRegions();
+      setIsSelectingRegion(false);
+    });
+
     return () => {
       ws.destroy();
     };
@@ -269,6 +291,37 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
       }, 100);
     }
   }, [zoomRatio, editingRegion]);
+
+  useEffect(() => {
+    if (!regions) return;
+
+    let disableSelectingRegion: () => void | undefined;
+    if (isSelectingRegion) {
+      regions.clearRegions();
+      disableSelectingRegion = regions.enableDragSelection({
+        color: "rgba(76, 201, 240, 0.2)",
+        drag: false,
+      });
+    }
+
+    const subscriptions = [
+      regions.on("region-created", () => {}),
+
+      regions.on("region-clicked", (region, e) => {
+        e.stopPropagation();
+        region.play();
+      }),
+
+      regions.on("region-out", () => {
+        player.pause();
+      }),
+    ];
+
+    return () => {
+      disableSelectingRegion && disableSelectingRegion();
+      subscriptions.forEach((unsub) => unsub());
+    };
+  }, [regions, isSelectingRegion]);
 
   if (isRecording) return <MediaRecorder />;
   if (!currentRecording?.src) return null;
@@ -317,18 +370,36 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         </Button>
 
         <Button
-          data-tooltip-id="media-player-controls-tooltip"
-          data-tooltip-content={t("pronunciationAssessment")}
-          data-tooltip-place="bottom"
-          onClick={() => {
-            setDetailIsOpen(true);
-          }}
-          variant="outline"
+          variant={isSelectingRegion ? "secondary" : "outline"}
           size="icon"
+          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-content={t("selectRegion")}
           className="rounded-full w-8 h-8 p-0"
+          onClick={() => setIsSelectingRegion(!isSelectingRegion)}
         >
-          <GaugeCircleIcon
-            className={`w-4 h-4
+          <TextCursorInputIcon className="w-4 h-4" />
+        </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button
+              variant="outline"
+              size="icon"
+              data-tooltip-id="media-player-controls-tooltip"
+              data-tooltip-content={t("more")}
+              className="rounded-full w-8 h-8 p-0"
+            >
+              <MoreVerticalIcon className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => setDetailIsOpen(true)}
+            >
+              <GaugeCircleIcon
+                className={`w-4 h-4 mr-4
                     ${
                       currentRecording.pronunciationAssessment
                         ? currentRecording.pronunciationAssessment
@@ -341,39 +412,37 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
                         : ""
                     }
                     `}
-          />
-        </Button>
+              />
+              <span>{t("pronunciationAssessment")}</span>
+            </DropdownMenuItem>
 
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              data-tooltip-id="media-player-controls-tooltip"
-              data-tooltip-content={t("share")}
-              className="rounded-full w-8 h-8 p-0"
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => setIsSharing(true)}
             >
-              <Share2Icon className="w-4 h-4" />
-            </Button>
-          </AlertDialogTrigger>
-
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{t("shareRecording")}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {t("areYouSureToShareThisRecordingToCommunity")}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-              <AlertDialogAction asChild>
-                <Button onClick={handleShare}>{t("share")}</Button>
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+              <Share2Icon className="w-4 h-4 mr-4" />
+              <span>{t("share")}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
+      <AlertDialog open={isSharing} onOpenChange={setIsSharing}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("shareRecording")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("areYouSureToShareThisRecordingToCommunity")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button onClick={handleShare}>{t("share")}</Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <Sheet open={detailIsOpen} onOpenChange={(open) => setDetailIsOpen(open)}>
         <SheetContent
           side="bottom"

@@ -22,7 +22,7 @@ import {
 import {
   LoaderIcon,
   MicIcon,
-  MoreVerticalIcon,
+  MoreHorizontalIcon,
   Trash2Icon,
 } from "lucide-react";
 import { t } from "i18next";
@@ -96,14 +96,14 @@ export const MediaRecordings = () => {
             <MicIcon className="w-4 h-4" />
             <span>{formatDuration(recording.duration, "ms")}</span>
           </div>
-          <div className="flex items-center space-x2">
+          <div className="flex items-center space-x-2">
             <span className="text-sm text-muted-foreground">
               {formatDateTime(recording.createdAt)}
             </span>
 
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <MoreVerticalIcon className="w-4 h-4" />
+                <MoreHorizontalIcon className="w-4 h-4" />
               </DropdownMenuTrigger>
 
               <DropdownMenuContent>
