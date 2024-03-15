@@ -413,11 +413,16 @@ export const MediaPlayerControls = () => {
 
   useEffect(() => {
     if (!activeRegion) return;
-    if (!activeRegion.id.startsWith("word-region")) return;
     if (zoomRatio === fitZoomRatio) return;
+    if (playMode === "all") return;
 
-    setZoomRatio(fitZoomRatio);
-  }, [activeRegion, fitZoomRatio]);
+    if (
+      activeRegion.id.startsWith("word-region") ||
+      activeRegion.id.startsWith("segment-region")
+    ) {
+      setZoomRatio(fitZoomRatio);
+    }
+  }, [playMode, activeRegion, fitZoomRatio]);
 
   useEffect(() => {
     if (!regions) return;

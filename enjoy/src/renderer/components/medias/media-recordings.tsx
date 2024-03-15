@@ -50,8 +50,6 @@ export const MediaRecordings = () => {
   };
 
   useEffect(() => {
-    if (recordings.length === 0) return;
-
     setCurrentRecording(recordings[0]);
   }, [currentSegmentIndex, recordings]);
 
