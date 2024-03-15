@@ -401,12 +401,25 @@ export const MediaPlayerControls = () => {
   }, [wavesurfer, playMode, activeRegion, currentTime]);
 
   useHotkeys(
-    "Space",
-    (keyboardEvent, _hotkeyEvent) => {
+    ["Space", "p", "n", "r"],
+    (keyboardEvent, hotkeyEvent) => {
       if (!wavesurfer) return;
-
       keyboardEvent.preventDefault();
-      document.getElementById("media-play-or-pause-button").click();
+
+      switch (hotkeyEvent.keys.join("")) {
+        case "space":
+          document.getElementById("media-play-or-pause-button").click();
+          break;
+        case "p":
+          document.getElementById("media-play-previous-button").click();
+          break;
+        case "n":
+          document.getElementById("media-play-next-button").click();
+          break;
+        case "r":
+          document.getElementById("media-record-button").click();
+          break;
+      }
     },
     [wavesurfer]
   );
@@ -422,7 +435,7 @@ export const MediaPlayerControls = () => {
     ) {
       setZoomRatio(fitZoomRatio);
     }
-  }, [playMode, activeRegion, fitZoomRatio]);
+  }, [activeRegion, fitZoomRatio]);
 
   useEffect(() => {
     if (!regions) return;
@@ -472,6 +485,7 @@ export const MediaPlayerControls = () => {
             variant="ghost"
             size="lg"
             onClick={onPrev}
+            id="media-play-previous-button"
             data-tooltip-id="media-player-controls-tooltip"
             data-tooltip-content={t("playPreviousSegment")}
             className="aspect-square p-0 h-10"
@@ -483,6 +497,7 @@ export const MediaPlayerControls = () => {
             variant="ghost"
             size="lg"
             onClick={onNext}
+            id="media-play-next-button"
             data-tooltip-id="media-player-controls-tooltip"
             data-tooltip-content={t("playNextSegment")}
             className="aspect-square p-0 h-10"
@@ -752,6 +767,7 @@ export const MediaPlayerControls = () => {
         <Button
           variant="ghost"
           onClick={() => setIsRecording(!isRecording)}
+          id="media-record-button"
           data-tooltip-id="media-player-controls-tooltip"
           data-tooltip-content={
             isRecording ? t("stopRecording") : t("startRecording")
