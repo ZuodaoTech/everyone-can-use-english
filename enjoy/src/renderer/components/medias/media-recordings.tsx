@@ -54,22 +54,7 @@ export const MediaRecordings = () => {
   }, [currentSegmentIndex, recordings]);
 
   return (
-    <ScrollArea
-      ref={containerRef}
-      className="border rounded-lg shadow-lg"
-      data-testid="media-recordings-result"
-    >
-      <div className="sticky top-0 px-4 py-2 bg-background z-10">
-        <div className="flex items-cener justify-between">
-          <div className="capitalize">{t("myRecordings")}</div>
-          {recordings.length > 0 && (
-            <span className="font-serif text-muted-foreground">
-              ({recordings.length})
-            </span>
-          )}
-        </div>
-      </div>
-
+    <div ref={containerRef} data-testid="media-recordings-result">
       {recordings.length == 0 && (
         <div className="text-center px-6 py-8 text-sm text-muted-foreground">
           {t("noRecordingForThisSegmentYet")}
@@ -156,6 +141,6 @@ export const MediaRecordings = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </ScrollArea>
+    </div>
   );
 };

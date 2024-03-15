@@ -1,7 +1,12 @@
 import { useEffect, useState, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import cloneDeep from "lodash/cloneDeep";
-import { Button, toast, ScrollArea } from "@renderer/components/ui";
+import {
+  Button,
+  toast,
+  ScrollArea,
+  Separator,
+} from "@renderer/components/ui";
 import { t } from "i18next";
 import { LanguagesIcon, SpeechIcon } from "lucide-react";
 import { Timeline } from "echogarden/dist/utilities/Timeline.d.js";
@@ -25,6 +30,7 @@ export const MediaCaption = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [multiSelecting, setMultiSelecting] = useState<boolean>(false);
+
   const [displayIpa, setDisplayIpa] = useState<boolean>(true);
 
   const [translation, setTranslation] = useState<string>();
@@ -226,6 +232,11 @@ export const MediaCaption = () => {
       }
     });
 
+    if (indices.length > 0) {
+      const el = document.getElementById(
+        `word-${currentSegmentIndex}-${indices[0]}`
+      );
+    }
     setSelectedIndices(indices);
     setLookupResult(undefined);
   }, [caption, activeRegion]);
@@ -326,15 +337,16 @@ export const MediaCaption = () => {
   if (!caption) return null;
 
   return (
-    <div className="flex justify-between min-h-[calc(70vh-28.5rem)] py-4">
-      <div className="flex-1 px-4 py-2 font-serif h-full">
-        <div className="flex flex-wrap mb-6">
+    <div className="h-full flex justify-between space-x-4">
+      <ScrollArea className="flex-1 px-6 py-4 font-serif h-full border shadow-lg rounded-lg">
+        <div className="flex flex-wrap mb-4">
           {/* use the words splitted by caption text if it is matched with the timeline length, otherwise use the timeline */}
           {caption.text.split(" ").length === caption.timeline.length
             ? caption.text.split(" ").map((word, index) => (
                 <div
                   key={index}
-                  className={`pr-2 cursor-pointer hover:bg-red-500/10 ${
+                  id={`word-${currentSegmentIndex}-${index}`}
+                  className={`pr-2 pb-2 cursor-pointer hover:bg-red-500/10 ${
                     index === activeIndex ? "text-red-500" : ""
                   } ${selectedIndices.includes(index) ? "bg-red-500/10" : ""}`}
                   onClick={() => toggleRegion(index)}
@@ -354,9 +366,14 @@ export const MediaCaption = () => {
             : (caption.timeline || []).map((w, index) => (
                 <div
                   key={index}
-                  className={`pr-2 cursor-pointer hover:bg-red-500/10 ${
+                  id={`word-${currentSegmentIndex}-${index}`}
+                  className={`pr-2 pb-2 cursor-pointer hover:bg-red-500/10 ${
                     index === activeIndex ? "text-red-500" : ""
-                  } ${selectedIndices.includes(index) ? "bg-red-500/10" : ""}`}
+                  } ${
+                    selectedIndices.includes(index)
+                      ? "bg-red-500/10 selected"
+                      : ""
+                  }`}
                   onClick={() => toggleRegion(index)}
                 >
                   <div className="">
@@ -374,16 +391,19 @@ export const MediaCaption = () => {
         </div>
 
         {displayTranslation && translation && (
-          <div className="select-text py-2 text-sm text-foreground/70">
-            {translation}
-          </div>
+          <>
+            <Separator className="my-2" />
+            <div className="text-sm font-semibold py-2">{t("translation")}</div>
+            <div className="select-text py-2 text-sm text-foreground">
+              {translation}
+            </div>
+          </>
         )}
-      </div>
 
-      <ScrollArea className="w-56 rounded-lg shadow border px-4 py-2 mr-4">
-        {selectedIndices.length > 0 ? (
-          <div className="">
-            <div className="flex flex-wrap items-center space-x-2 mb-6">
+        {selectedIndices.length > 0 && (
+          <>
+            <Separator className="my-2" />
+            <div className="flex flex-wrap items-center space-x-2 select-text mb-4">
               {selectedIndices.map((index) => {
                 const word = caption.timeline[index];
                 if (!word) return;
@@ -403,17 +423,17 @@ export const MediaCaption = () => {
             </div>
 
             {lookupResult ? (
-              <div>
-                <div className="text-sm text-serif">
+              <div className="py-2 select-text">
+                <div className="text-serif">
                   {lookupResult.meaning.translation}
                 </div>
-                <div className="text-sm text-serif">
+                <div className="text-serif">
                   {lookupResult.meaning.definition}
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-center">
-                <Button disabled={lookingUp} onClick={lookup}>
+              <div className="flex items-center py-2">
+                <Button size="sm" disabled={lookingUp} onClick={lookup}>
                   {lookingUp && (
                     <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
                   )}
@@ -421,11 +441,7 @@ export const MediaCaption = () => {
                 </Button>
               </div>
             )}
-          </div>
-        ) : (
-          <div className="py-4 px-2 text-muted-foreground">
-            <div className="text-sm">{t("clickAnyWordToSelect")}</div>
-          </div>
+          </>
         )}
       </ScrollArea>
 

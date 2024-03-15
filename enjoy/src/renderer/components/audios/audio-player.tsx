@@ -1,13 +1,10 @@
 import { useEffect, useContext, useRef } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
-import { ScrollArea } from "@renderer/components/ui";
 import {
   MediaLoadingModal,
   MediaCaption,
-  MediaTranscription,
   MediaPlayerControls,
-  MediaInfoPanel,
-  MediaRecordings,
+  MediaTabs,
   MediaCurrentRecording,
 } from "@renderer/components";
 import { formatDuration } from "@renderer/lib/utils";
@@ -33,46 +30,43 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
 
   return (
     <div data-testid="audio-player">
-      <div className="">
-        <div className="h-[calc(30vh-3.5rem)]">
-          <div className="grid grid-cols-3 gap-4 px-6 h-full">
-            <MediaInfoPanel />
-            <MediaRecordings />
-            <MediaTranscription />
+      <div className="h-[calc(100vh-37.5rem)] mb-4">
+        <div className="grid grid-cols-3 gap-4 px-6 h-full">
+          <div className="col-span-1 rounded-lg border h-[calc(100vh-37.5rem)]">
+            <MediaTabs />
           </div>
-        </div>
-
-        <div className="h-[70vh] flex flex-col">
-          <ScrollArea className="h-[calc(70vh-19rem)] px-6">
+          <div className="col-span-2 h-[calc(100vh-37.5rem)]">
             <MediaCaption />
-
-            <div className="sticky bottom-0 z-10 bg-background">
-              <MediaCurrentRecording />
-            </div>
-          </ScrollArea>
-
-          <div className="w-full h-[13rem] px-6 py-2 my-2">
-            <div className="border rounded-xl shadow-lg relative">
-              <div data-testid="media-player-container" ref={ref} />
-              <div className="absolute right-2 top-1">
-                <span className="text-sm">
-                  {formatDuration(currentTime || 0)}
-                </span>
-                <span className="mx-1">/</span>
-                <span className="text-sm">
-                  {formatDuration(media?.duration || 0)}
-                </span>
-              </div>
-            </div>
           </div>
+        </div>
+      </div>
 
-          <div className="w-full bg-background z-10 shadow-xl">
-            <MediaPlayerControls />
+      <div className="h-[33rem] flex flex-col">
+        <div className="h-[13rem] py-2 px-6 mb-4">
+          <MediaCurrentRecording />
+        </div>
+
+        <div className="w-full h-[13rem] px-6 py-2 mb-4">
+          <div className="border rounded-xl shadow-lg relative">
+            <div data-testid="media-player-container" ref={ref} />
+            <div className="absolute right-2 top-1">
+              <span className="text-sm">
+                {formatDuration(currentTime || 0)}
+              </span>
+              <span className="mx-1">/</span>
+              <span className="text-sm">
+                {formatDuration(media?.duration || 0)}
+              </span>
+            </div>
           </div>
         </div>
 
-        <MediaLoadingModal />
+        <div className="w-full bg-background z-10 shadow-xl">
+          <MediaPlayerControls />
+        </div>
       </div>
+
+      <MediaLoadingModal />
     </div>
   );
 };

@@ -42,7 +42,7 @@ import { t } from "i18next";
 import { formatDuration } from "@renderer/lib/utils";
 
 export const MediaCurrentRecording = (props: { height?: number }) => {
-  const { height = 144 } = props;
+  const { height = 192 } = props;
   const {
     isRecording,
     currentRecording,
@@ -293,7 +293,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
 
   return (
     <div className="flex space-x-4">
-      <div className="border rounded-xl flex-1 relative">
+      <div className="border rounded-xl shadow-lg flex-1 relative">
         <div ref={ref}></div>
 
         <div className="absolute right-2 top-1">

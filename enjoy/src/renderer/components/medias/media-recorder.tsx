@@ -14,7 +14,7 @@ import {
 } from "@/constants";
 
 export const MediaRecorder = (props: { height?: number }) => {
-  const { height = 144 } = props;
+  const { height = 192 } = props;
   const {
     media,
     isRecording,
@@ -127,7 +127,7 @@ export const MediaRecorder = (props: { height?: number }) => {
   }, []);
 
   return (
-    <div className="border rounded-xl relative">
+    <div className="border rounded-xl shadow-lg relative">
       <span className="absolute bottom-2 right-2 serif">
         {duration}
         <span className="text-xs"> / 300</span>

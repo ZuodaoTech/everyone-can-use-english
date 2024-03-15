@@ -13,9 +13,8 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
   PingPoint,
-  ScrollArea,
 } from "@renderer/components/ui";
-import { LoaderIcon, CheckCircleIcon, MicIcon } from "lucide-react";
+import { LoaderIcon, CheckCircleIcon } from "lucide-react";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 
 export const MediaTranscription = () => {
@@ -47,12 +46,11 @@ export const MediaTranscription = () => {
   }
 
   return (
-    <ScrollArea
+    <div
       ref={containerRef}
-      className="border rounded-lg shadow-lg"
       data-testid="media-transcription-result"
     >
-      <div className="sticky top-0 px-4 py-2 bg-background z-10">
+      <div className="px-4 py-1 bg-background">
         <div className="flex items-cener justify-between">
           <div className="flex items-center space-x-2">
             {transcribing || transcription.state === "processing" ? (
@@ -73,6 +71,7 @@ export const MediaTranscription = () => {
             <AlertDialogTrigger asChild>
               <Button
                 variant="outline"
+                size="sm"
                 disabled={transcribing || transcription.state === "processing"}
                 className="capitalize"
               >
@@ -125,6 +124,6 @@ export const MediaTranscription = () => {
           </div>
         )
       )}
-    </ScrollArea>
+    </div>
   );
 };
