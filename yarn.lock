@@ -8734,7 +8734,7 @@ __metadata:
 
 "echogarden@https://github.com/an-lee/echogarden":
   version: 0.11.22
-  resolution: "echogarden@https://github.com/an-lee/echogarden.git#commit=b1404c62786bddb12d3e2b2a163f9c0c6bbbee76"
+  resolution: "echogarden@https://github.com/an-lee/echogarden.git#commit=501ad82e4d690e7ea1ff19ce6580a560697a01cb"
   dependencies:
     "@aws-sdk/client-polly": "npm:^3.529.1"
     "@aws-sdk/client-transcribe-streaming": "npm:^3.529.1"

@@ -1,5 +1,9 @@
 import { useEffect, useContext, useRef, useState } from "react";
-import { MediaPlayerProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  DbProviderContext,
+  MediaPlayerProviderContext,
+} from "@renderer/context";
 import { t } from "i18next";
 import {
   Button,
@@ -14,8 +18,9 @@ import {
   AlertDialogAction,
   PingPoint,
 } from "@renderer/components/ui";
-import { LoaderIcon, CheckCircleIcon } from "lucide-react";
+import { LoaderIcon, CheckCircleIcon, MicIcon } from "lucide-react";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
+import { secondsToTimestamp } from "@renderer/lib/utils";
 
 export const MediaTranscription = () => {
   const containerRef = useRef<HTMLDivElement>();
@@ -29,6 +34,32 @@ export const MediaTranscription = () => {
     transcribing,
     transcribingProgress,
   } = useContext(MediaPlayerProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { addDblistener, removeDbListener } = useContext(DbProviderContext);
+
+  const [recordingStats, setRecordingStats] =
+    useState<SegementRecordingStatsType>([]);
+
+  const fetchSegmentStats = async () => {
+    if (!media) return;
+
+    EnjoyApp.recordings
+      .groupBySegment(media.id, media.mediaType)
+      .then((stats) => {
+        setRecordingStats(stats);
+      });
+  };
+
+  useEffect(() => {
+    if (!transcription?.result) return;
+
+    addDblistener(fetchSegmentStats);
+    fetchSegmentStats();
+
+    return () => {
+      removeDbListener(fetchSegmentStats);
+    };
+  }, [transcription?.result]);
 
   useEffect(() => {
     if (!containerRef?.current) return;
@@ -46,10 +77,7 @@ export const MediaTranscription = () => {
   }
 
   return (
-    <div
-      ref={containerRef}
-      data-testid="media-transcription-result"
-    >
+    <div ref={containerRef} data-testid="media-transcription-result">
       <div className="px-4 py-1 bg-background">
         <div className="flex items-cener justify-between">
           <div className="flex items-center space-x-2">
@@ -119,6 +147,14 @@ export const MediaTranscription = () => {
           >
             <div className="flex items-center justify-between">
               <span className="text-xs opacity-50">#{index + 1}</span>
+              <div className="flex items-center space-x-2">
+                {(recordingStats || []).findIndex(
+                  (s) => s.referenceId === index
+                ) !== -1 && <MicIcon className="w-3 h-3 text-sky-500" />}
+                <span className="text-xs opacity-50">
+                  {secondsToTimestamp(sentence.startTime)}
+                </span>
+              </div>
             </div>
             <p className="">{sentence.text}</p>
           </div>
