@@ -130,18 +130,19 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
       resize: false,
     });
 
+    const data = frequencies.slice(
+      voiceStartFrequenciesIndex,
+      voiceEndFrequenciesIndex
+    );
     renderMediaPitchContour(region, {
       repaint: false,
       canvasId: `pitch-contour-${currentRecording.id}-canvas`,
       containerClassNames: ["pitch-contour-recording"],
       data: {
-        labels: new Array(frequencies.length).fill(""),
+        labels: new Array(data.length).fill(""),
         datasets: [
           {
-            data: frequencies.slice(
-              voiceStartFrequenciesIndex,
-              voiceEndFrequenciesIndex
-            ),
+            data,
             cubicInterpolationMode: "monotone",
             borderColor: "#fb6f92",
             pointBorderColor: "#fb6f92",
