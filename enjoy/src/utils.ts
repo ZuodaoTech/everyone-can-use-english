@@ -7,7 +7,13 @@ export const extractFrequencies = (props: {
 }): number[] => {
   const { peaks, sampleRate } = props;
 
-  const detectPitch = Pitchfinder.AMDF({ sampleRate });
+  const detectPitch = Pitchfinder.AMDF({
+    sampleRate,
+    sensitivity: 0.05,
+    minFrequency: 100,
+    maxFrequency: 1000,
+    ratio: 5,
+  });
   const duration = peaks.length / sampleRate;
   const bpm = peaks.length / duration / 60;
 
