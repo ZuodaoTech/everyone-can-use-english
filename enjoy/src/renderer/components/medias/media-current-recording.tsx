@@ -49,9 +49,11 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     currentRecording,
     renderPitchContour: renderMediaPitchContour,
     regions: mediaRegions,
+    activeRegion: mediaActiveRegion,
     wavesurfer,
     zoomRatio,
     editingRegion,
+    currentTime: mediaCurrentTime,
   } = useContext(MediaPlayerProviderContext);
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
   const [player, setPlayer] = useState(null);
@@ -70,6 +72,11 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
 
   const removeComparingPitchContour = () => {
     if (!wavesurfer) return;
+
+    regions
+      .getRegions()
+      .find((r) => r.id.startsWith("recording-voice-region"))
+      ?.remove();
 
     const wrapper = (wavesurfer as any).renderer.getWrapper();
     wrapper
@@ -90,7 +97,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     if (!frequencies || !peaks) return;
 
     // Trim the peaks from start to end, so we can render the voicable part of the recording
-    const minValue = 0.05;
+    const minValue = 0.01;
     let voiceStartIndex = 0;
     let voiceEndIndex = peaks.length - 1;
 
@@ -106,12 +113,22 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         break;
       }
     }
-    voiceStartIndex = Math.round(
+    const voiceStartFrequenciesIndex = Math.round(
       ((1.0 * voiceStartIndex) / peaks.length) * frequencies.length
     );
-    voiceEndIndex = Math.round(
+    const voiceEndFrequenciesIndex = Math.round(
       ((1.0 * voiceEndIndex) / peaks.length) * frequencies.length
     );
+
+    regions.clearRegions();
+    regions.addRegion({
+      id: `recording-voice-region-${currentRecording.id}`,
+      start: (voiceStartIndex / peaks.length) * player.getDuration(),
+      end: (voiceEndIndex / peaks.length) * player.getDuration(),
+      color: "#fb6f9211",
+      drag: false,
+      resize: false,
+    });
 
     renderMediaPitchContour(region, {
       repaint: false,
@@ -121,7 +138,10 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         labels: new Array(frequencies.length).fill(""),
         datasets: [
           {
-            data: frequencies.slice(voiceStartIndex, voiceEndIndex),
+            data: frequencies.slice(
+              voiceStartFrequenciesIndex,
+              voiceEndFrequenciesIndex
+            ),
             cubicInterpolationMode: "monotone",
             borderColor: "#fb6f92",
             pointBorderColor: "#fb6f92",
@@ -272,7 +292,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
       regions.clearRegions();
       subscriptions.forEach((unsub) => unsub());
     };
-  }, [regions, isSelectingRegion]);
+  }, [regions, isSelectingRegion, player]);
 
   /*
    * Update player styles
@@ -288,6 +308,30 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     }px`;
     scrollContainer.style.scrollbarWidth = "thin";
   }, [ref, player]);
+
+  /*
+   * play recording along with the media when isComparing is true
+   * only when the media is playing and the active region is the segment region
+   */
+  useEffect(() => {
+    if (!regions) return;
+    if (!isComparing) return;
+    if (!wavesurfer?.isPlaying()) return;
+    if (player?.isPlaying()) return;
+    if (!mediaActiveRegion?.id?.startsWith("segment-region")) return;
+
+    regions
+      .getRegions()
+      .find((r) => r.id.startsWith("recording-voice-region"))
+      ?.play();
+  }, [
+    wavesurfer,
+    player,
+    regions,
+    isComparing,
+    mediaCurrentTime,
+    mediaActiveRegion,
+  ]);
 
   useHotkeys(
     ["Ctrl+R", "Meta+R"],
@@ -342,7 +386,17 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
           data-tooltip-id="media-player-controls-tooltip"
           data-tooltip-content={t("playRecording")}
           className="rounded-full w-8 h-8 p-0"
-          onClick={() => player?.playPause()}
+          onClick={() => {
+            const region = regions
+              ?.getRegions()
+              ?.find((r) => r.id.startsWith("recording-voice-region"));
+
+            if (region) {
+              region.play();
+            } else {
+              player?.playPause();
+            }
+          }}
         >
           {player?.isPlaying() ? (
             <PauseIcon className="w-4 h-4" />
