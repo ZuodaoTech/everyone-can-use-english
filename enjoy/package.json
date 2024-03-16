@@ -124,7 +124,7 @@
     "dayjs": "^1.11.10",
     "decamelize": "^6.0.0",
     "decamelize-keys": "^2.0.1",
-    "echogarden": "^0.11.22",
+    "echogarden": "https://github.com/an-lee/echogarden",
     "electron-log": "^5.1.2",
     "electron-settings": "^4.0.2",
     "electron-squirrel-startup": "^1.0.0",

@@ -8732,9 +8732,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"echogarden@npm:^0.11.22":
+"echogarden@https://github.com/an-lee/echogarden":
   version: 0.11.22
-  resolution: "echogarden@npm:0.11.22"
+  resolution: "echogarden@https://github.com/an-lee/echogarden.git#commit=b1404c62786bddb12d3e2b2a163f9c0c6bbbee76"
   dependencies:
     "@aws-sdk/client-polly": "npm:^3.529.1"
     "@aws-sdk/client-transcribe-streaming": "npm:^3.529.1"
@@ -8790,7 +8790,7 @@ __metadata:
     winax:
       optional: true
   bin:
-    echogarden: dist/cli/CLILauncher.js
+    echogarden: ./dist/cli/CLILauncher.js
   conditions: (os=win32 | os=darwin | os=linux)
   languageName: node
   linkType: hard
@@ -9105,7 +9105,7 @@ __metadata:
     dayjs: "npm:^1.11.10"
     decamelize: "npm:^6.0.0"
     decamelize-keys: "npm:^2.0.1"
-    echogarden: "npm:^0.11.22"
+    echogarden: "https://github.com/an-lee/echogarden"
     electron: "npm:^29.1.4"
     electron-log: "npm:^5.1.2"
     electron-playwright-helpers: "npm:^1.7.1"
