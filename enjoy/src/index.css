@@ -81,6 +81,12 @@
   }
 }
 
+@layer components {
+  .scroll {
+    @appply scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary;
+  }
+}
+
 body {
   user-select: none;
 }

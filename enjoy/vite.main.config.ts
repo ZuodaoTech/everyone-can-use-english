@@ -23,21 +23,11 @@ export default defineConfig((env) => {
         formats: ["es"],
       },
       rollupOptions: {
-        external,
-        // external: [
-        //   "axios",
-        //   "child_process",
-        //   "crypto",
-        //   "fs-extra",
-        //   "fs",
-        //   "path",
-        //   "sequelize",
-        //   "umzug",
-        //   "sqlite3",
-        //   "fluent-ffmpeg",
-        //   "ffmpeg-static",
-        //   "@andrkrn/ffprobe-static",
-        // ],
+        external: [...external, "echogarden/dist/api/API.js"],
+        output: {
+          strict: false,
+        },
+        plugins: [],
       },
       commonjsOptions: {
         transformMixedEsModules: true,

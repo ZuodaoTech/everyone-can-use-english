@@ -25,7 +25,7 @@ export const AISettingsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [defaultEngine, setDefaultEngine] = useState<string>(null);
+  const [defaultEngine, setDefaultEngine] = useState<string>("openai");
   const [openai, setOpenai] = useState<LlmProviderType>(null);
   const [googleGenerativeAi, setGoogleGenerativeAi] =
     useState<LlmProviderType>(null);

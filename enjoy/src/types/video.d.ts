@@ -1,4 +1,5 @@
 type VideoType = {
+  mediaType: string,
   id: string;
   source: string;
   name: string;

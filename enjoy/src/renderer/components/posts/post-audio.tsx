@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { PitchContour } from "@renderer/components";
+import { renderPitchContour } from "@renderer/lib/utils";
+import { extractFrequencies } from "@/utils";
 import WaveSurfer from "wavesurfer.js";
 import { Button, Skeleton } from "@renderer/components/ui";
 import { PlayIcon, PauseIcon } from "lucide-react";
@@ -12,6 +13,7 @@ import {
   defaultLayoutIcons,
 } from "@vidstack/react/player/layouts/default";
 export const STORAGE_WORKER_ENDPOINT = "https://enjoy-storage.baizhiheizi.com";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 
 export const PostAudio = (props: {
   audio: Partial<MediumType>;
@@ -22,11 +24,16 @@ export const PostAudio = (props: {
   const { webApi } = useContext(AppSettingsProviderContext);
   const [transcription, setTranscription] = useState<TranscriptionType>();
 
-  const currentTranscription = (transcription?.result || []).find(
-    (s) =>
-      currentTime >= s.offsets.from / 1000.0 &&
-      currentTime <= s.offsets.to / 1000.0
-  );
+  const currentTranscription = transcription?.result["transcript"]
+    ? (transcription.result?.timeline || []).find(
+        (s: TimelineEntry) =>
+          currentTime >= s.startTime && currentTime <= s.endTime
+      )
+    : (transcription?.result || []).find(
+        (s: TranscriptionResultSegmentType) =>
+          currentTime >= s.offsets.from / 1000.0 &&
+          currentTime <= s.offsets.to / 1000.0
+      );
 
   useEffect(() => {
     webApi
@@ -134,17 +141,25 @@ const WavesurferPlayer = (props: {
       wavesurfer.on("timeupdate", (time: number) => {
         setCurrentTime(time);
       }),
-      wavesurfer.on("decode", () => {
+      wavesurfer.on("ready", () => {
         setDuration(wavesurfer.getDuration());
         const peaks = wavesurfer.getDecodedData().getChannelData(0);
         const sampleRate = wavesurfer.options.sampleRate;
-        wavesurfer.renderer.getWrapper().appendChild(
-          PitchContour({
-            peaks,
-            sampleRate,
-            height,
-          })
-        );
+        const data = extractFrequencies({ peaks, sampleRate });
+        setTimeout(() => {
+          renderPitchContour({
+            wrapper: wavesurfer.getWrapper(),
+            canvasId: `pitch-contour-${audio.id}-canvas`,
+            labels: new Array(data.length).fill(""),
+            datasets: [
+              {
+                data,
+                cubicInterpolationMode: "monotone",
+                pointRadius: 1,
+              },
+            ],
+          });
+        }, 1000);
         setInitialized(true);
       }),
     ];

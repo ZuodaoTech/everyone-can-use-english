@@ -129,6 +129,11 @@ export class Audio extends Model<Audio> {
     return this.getDataValue("metadata").duration;
   }
 
+  @Column(DataType.VIRTUAL)
+  get mediaType(): string {
+    return "Audio";
+  }
+
   get extname(): string {
     return (
       this.getDataValue("metadata").extname ||

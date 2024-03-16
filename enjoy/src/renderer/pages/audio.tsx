@@ -1,8 +1,9 @@
-import { useParams , useNavigate } from "react-router-dom";
-import { AudioDetail } from "@renderer/components";
+import { useParams, useNavigate } from "react-router-dom";
+import { AudioPlayer } from "@renderer/components";
 import { Button } from "@renderer/components/ui";
 import { ChevronLeftIcon } from "lucide-react";
 import { t } from "i18next";
+import { MediaPlayerProvider } from "@renderer/context";
 
 export default () => {
   const navigate = useNavigate();
@@ -10,15 +11,17 @@ export default () => {
 
   return (
     <>
-      <div className="h-full px-4 py-6 xl:px-8">
-        <div className="flex space-x-1 items-center mb-4">
+      <div className="h-full relative">
+        <div className="flex space-x-1 items-center h-14 px-4 xl:px-8">
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
             <ChevronLeftIcon className="w-5 h-5" />
           </Button>
           <span>{t("shadowingAudio")}</span>
         </div>
 
-        <AudioDetail id={id} />
+        <MediaPlayerProvider>
+          <AudioPlayer id={id} />
+        </MediaPlayerProvider>
       </div>
     </>
   );

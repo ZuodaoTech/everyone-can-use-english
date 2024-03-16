@@ -7,6 +7,7 @@ import path from "path";
 import fs from "fs-extra";
 import settings from "./settings";
 import url from "url";
+import { FFMPEG_CONVERT_WAV_OPTIONS } from "@/constants";
 
 /*
  * ffmpeg and ffprobe bin file will be in /app.asar.unpacked instead of /app.asar
@@ -18,6 +19,8 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path
   .dirname(__filename)
   .replace("app.asar", "app.asar.unpacked");
+
+process.env.FFMPEG_PATH = ffmpegPath;
 
 const logger = log.scope("ffmpeg");
 export default class FfmpegWrapper {
@@ -211,7 +214,7 @@ export default class FfmpegWrapper {
       );
     }
 
-    options = options || ["-ar", "16000", "-ac", "1", "-c:a", "pcm_s16le"];
+    options = options || FFMPEG_CONVERT_WAV_OPTIONS;
 
     const ffmpeg = Ffmpeg();
     return new Promise((resolve, reject) => {

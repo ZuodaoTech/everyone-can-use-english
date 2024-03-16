@@ -1,6 +1,6 @@
 export * from "./videos-table";
 export * from "./video-edit-form";
-export * from "./video-detail";
+export * from "./video-player";
 
 export * from "./videos-component";
 

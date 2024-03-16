@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { PitchContour } from "@renderer/components";
+import { renderPitchContour } from "@renderer/lib/utils";
+import { extractFrequencies } from "@/utils";
 import WaveSurfer from "wavesurfer.js";
 import { Button, Skeleton } from "@renderer/components/ui";
 import { PlayIcon, PauseIcon } from "lucide-react";
@@ -59,17 +60,28 @@ export const PostRecording = (props: {
       wavesurfer.on("pause", () => {
         setIsPlaying(false);
       }),
-      wavesurfer.on("decode", () => {
+      wavesurfer.on("ready", () => {
         setDuration(wavesurfer.getDuration());
         const peaks = wavesurfer.getDecodedData().getChannelData(0);
         const sampleRate = wavesurfer.options.sampleRate;
-        wavesurfer.renderer.getWrapper().appendChild(
-          PitchContour({
-            peaks,
-            sampleRate,
-            height,
-          })
-        );
+        const data = extractFrequencies({ peaks, sampleRate });
+        setTimeout(() => {
+          renderPitchContour({
+            wrapper: wavesurfer.getWrapper(),
+            canvasId: `pitch-contour-${recording.id}-canvas`,
+            labels: new Array(data.length).fill(""),
+            datasets: [
+              {
+                data,
+                cubicInterpolationMode: "monotone",
+                pointRadius: 1,
+                borderColor: "#fb6f92",
+                pointBorderColor: "#fb6f92",
+                pointBackgroundColor: "#ff8fab",
+              },
+            ],
+          });
+        }, 1000);
         setInitialized(true);
       }),
     ];
@@ -119,15 +131,13 @@ export const PostRecording = (props: {
         ></div>
       </div>
 
-      {
-        recording.referenceText && (
-          <div className="mt-2 bg-muted px-4 py-2 rounded">
-            <div className="text-muted-foreground text-center font-serif">
-              {recording.referenceText}
-            </div>
+      {recording.referenceText && (
+        <div className="mt-2 bg-muted px-4 py-2 rounded">
+          <div className="text-muted-foreground text-center font-serif">
+            {recording.referenceText}
           </div>
-        )
-      }
+        </div>
+      )}
     </div>
   );
 };

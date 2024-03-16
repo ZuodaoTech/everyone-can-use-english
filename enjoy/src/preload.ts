@@ -350,6 +350,14 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       return ipcRenderer.invoke("audiowaveform-frequencies", file);
     },
   },
+  echogarden: {
+    align: (input: string, transcript: string, options: any) => {
+      return ipcRenderer.invoke("echogarden-align", input, transcript, options);
+    },
+    check: () => {
+      return ipcRenderer.invoke("echogarden-check");
+    },
+  },
   whisper: {
     config: () => {
       return ipcRenderer.invoke("whisper-config");

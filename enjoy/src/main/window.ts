@@ -21,6 +21,7 @@ import { AudibleProvider, TedProvider } from "@main/providers";
 import Ffmpeg from "@main/ffmpeg";
 import { Waveform } from "./waveform";
 import url from "url";
+import echogarden from "./echogarden";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,6 +49,9 @@ main.init = () => {
 
   // Prepare Settings
   settings.registerIpcHandlers();
+
+  // echogarden
+  echogarden.registerIpcHandlers();
 
   // Whisper
   whisper.registerIpcHandlers();
@@ -433,10 +437,11 @@ ${log}
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     icon: "./assets/icon.png",
-    width: 1600,
-    height: 1200,
-    minWidth: 1024,
-    minHeight: 768,
+    width: 1920,
+    height: 1080,
+    minWidth: 1440,
+    minHeight: 900,
+    fullscreen: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
