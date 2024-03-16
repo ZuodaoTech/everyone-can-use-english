@@ -55,6 +55,17 @@ export const Hotkeys = () => {
         <Separator />
 
         <div className="flex items-center justify-between py-4">
+          <div className="flex items-center space-x-2">
+            {t("playOrPauseRecording")}
+          </div>
+          <kbd className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground">
+            {commandOrCtrl} + r
+          </kbd>
+        </div>
+
+        <Separator />
+
+        <div className="flex items-center justify-between py-4">
           <div className="flex items-center space-x-2 capitalize">
             {t("playPreviousSegment")}
           </div>

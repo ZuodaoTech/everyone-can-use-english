@@ -56,9 +56,12 @@ export const MediaRecordings = () => {
   return (
     <div ref={containerRef} data-testid="media-recordings-result">
       {recordings.length == 0 && (
-        <div className="text-center px-6 py-8 text-sm text-muted-foreground">
-          {t("noRecordingForThisSegmentYet")}
-        </div>
+        <div
+          className="text-center px-6 py-8 text-sm text-muted-foreground"
+          dangerouslySetInnerHTML={{
+            __html: t("noRecordingForThisSegmentYet"),
+          }}
+        ></div>
       )}
 
       {recordings.map((recording) => (

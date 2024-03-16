@@ -32,7 +32,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
     <div data-testid="audio-player">
       <div className="h-[calc(100vh-37.5rem)] mb-4">
         <div className="grid grid-cols-3 gap-4 px-6 h-full">
-          <div className="col-span-1 rounded-lg border h-[calc(100vh-37.5rem)]">
+          <div className="col-span-1 rounded-lg border shadow-lg h-[calc(100vh-37.5rem)]">
             <MediaTabs />
           </div>
           <div className="col-span-2 h-[calc(100vh-37.5rem)]">

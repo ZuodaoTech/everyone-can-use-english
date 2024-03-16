@@ -40,6 +40,7 @@ import {
 } from "lucide-react";
 import { t } from "i18next";
 import { formatDuration } from "@renderer/lib/utils";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const MediaCurrentRecording = (props: { height?: number }) => {
   const { height = 192 } = props;
@@ -288,8 +289,34 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     scrollContainer.style.scrollbarWidth = "thin";
   }, [ref, player]);
 
+  useHotkeys(
+    ["Ctrl+R", "Meta+R"],
+    (keyboardEvent, hotkeyEvent) => {
+      if (!player) return;
+      keyboardEvent.preventDefault();
+
+      if (
+        (navigator.platform.includes("Mac") && hotkeyEvent.meta) ||
+        hotkeyEvent.ctrl
+      ) {
+        document.getElementById("recording-play-or-pause-button").click();
+      }
+    },
+    [player]
+  );
+
   if (isRecording) return <MediaRecorder />;
-  if (!currentRecording?.src) return null;
+  if (!currentRecording?.src)
+    return (
+      <div className="h-full w-full border rounded-xl shadow-lg flex items-center justify-center">
+        <div
+          className="m-auto"
+          dangerouslySetInnerHTML={{
+            __html: t("noRecordingForThisSegmentYet"),
+          }}
+        ></div>
+      </div>
+    );
 
   return (
     <div className="flex space-x-4">
@@ -311,6 +338,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         <Button
           variant="default"
           size="icon"
+          id="recording-play-or-pause-button"
           data-tooltip-id="media-player-controls-tooltip"
           data-tooltip-content={t("playRecording")}
           className="rounded-full w-8 h-8 p-0"

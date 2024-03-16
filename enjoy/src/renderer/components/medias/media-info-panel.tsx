@@ -1,11 +1,4 @@
 import { useContext } from "react";
-import {
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableHead,
-} from "@renderer/components/ui";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import { formatDuration, formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
@@ -16,44 +9,32 @@ export const MediaInfoPanel = () => {
 
   return (
     <div className="px-4" data-testid="media-info-panel">
-      <Table>
-        <TableBody>
-          <TableRow className="border-none">
-            <TableHead className="w-20 capitalize">
-              {t("models.audio.name")}:
-            </TableHead>
-            <TableCell>{media.name}</TableCell>
-          </TableRow>
-          <TableRow className="border-none">
-            <TableHead className="w-20 capitalize">
-              {t("models.audio.duration")}:
-            </TableHead>
-            <TableCell>{formatDuration(media.duration)}</TableCell>
-          </TableRow>
-          <TableRow className="border-none">
-            <TableHead className="w-20 capitalize">
-              {t("models.audio.recordingsCount")}:
-            </TableHead>
-            <TableCell>
-              {media.recordingsCount ? media.recordingsCount : 0}
-            </TableCell>
-          </TableRow>
-          <TableRow className="border-none">
-            <TableHead className="w-20 capitalize">
-              {t("models.audio.recordingsDuration")}:
-            </TableHead>
-            <TableCell>
-              {formatDuration(media.recordingsDuration, "ms")}
-            </TableCell>
-          </TableRow>
-          <TableRow className="border-none">
-            <TableHead className="w-20 capitalize">
-              {t("models.audio.createdAt")}:
-            </TableHead>
-            <TableCell>{formatDateTime(media.createdAt)}</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      {[
+        { label: t("models.audio.name"), value: media.name },
+        {
+          label: t("models.audio.duration"),
+          value: formatDuration(media.duration),
+        },
+        {
+          label: t("models.audio.recordingsCount"),
+          value: media.recordingsCount ? media.recordingsCount : 0,
+        },
+        {
+          label: t("models.audio.recordingsDuration"),
+          value: formatDuration(media.recordingsDuration, "ms"),
+        },
+        {
+          label: t("models.audio.createdAt"),
+          value: formatDateTime(media.createdAt),
+        },
+      ].map((item, index) => (
+        <div key={`media-info-item-${index}`} className="mb-2">
+          <div className="capitalize text-sm text-muted-foreground mb-1">
+            {item.label}
+          </div>
+          <div className="">{item.value}</div>
+        </div>
+      ))}
     </div>
   );
 };
