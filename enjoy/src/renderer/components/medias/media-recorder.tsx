@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import {
   MediaPlayerProviderContext,
   AppSettingsProviderContext,
@@ -40,24 +40,42 @@ export const MediaRecorder = (props: { height?: number }) => {
     });
   };
 
-  const createRecording = async (blob: Blob, duration: number) => {
+  const createRecording = async (params: { blob: Blob; duration: number }) => {
     if (!media) return;
 
-    const currentSegment =
-      transcription?.result?.timeline?.[currentSegmentIndex];
-    if (!currentSegment) return;
+    const { blob, duration } = params;
 
-    EnjoyApp.recordings.create({
-      targetId: media.id,
-      targetType: media.mediaType,
-      blob: {
-        type: blob.type.split(";")[0],
-        arrayBuffer: await blob.arrayBuffer(),
+    toast.promise(
+      async () => {
+        let output: Blob;
+        output = await transcode(blob, [
+          // ...FFMPEG_TRIM_SILENCE_OPTIONS,
+          ...FFMPEG_CONVERT_WAV_OPTIONS,
+        ]);
+
+        const currentSegment =
+          transcription?.result?.timeline?.[currentSegmentIndex];
+        if (!currentSegment) return;
+
+        return EnjoyApp.recordings.create({
+          targetId: media.id,
+          targetType: media.mediaType,
+          blob: {
+            type: output.type.split(";")[0],
+            arrayBuffer: await output.arrayBuffer(),
+          },
+          referenceId: currentSegmentIndex,
+          referenceText: currentSegment.text,
+          duration,
+        });
       },
-      referenceId: currentSegmentIndex,
-      referenceText: currentSegment.text,
-      duration,
-    });
+      {
+        loading: t("savingRecording"),
+        success: t("recordingSaved"),
+        error: (e) => t("failedToSaveRecording" + " : " + e.message),
+        position: "bottom-right",
+      },
+    );
   };
 
   useEffect(() => {
@@ -81,18 +99,7 @@ export const MediaRecorder = (props: { height?: number }) => {
     });
 
     record.on("record-end", async (blob: Blob) => {
-      const duration = Date.now() - startAt;
-      try {
-        const output = await transcode(blob, [
-          // ...FFMPEG_TRIM_SILENCE_OPTIONS,
-          ...FFMPEG_CONVERT_WAV_OPTIONS,
-        ]);
-
-        await createRecording(output, duration);
-      } catch (e) {
-        console.error(e);
-        toast.error(t("failedToSaveRecording"));
-      }
+      createRecording({ blob, duration: Date.now() - startAt });
     });
     let interval: NodeJS.Timeout;
 
@@ -109,7 +116,7 @@ export const MediaRecorder = (props: { height?: number }) => {
               }
               return duration + 1;
             });
-          }, 1000);
+          }, 100);
         } else {
           toast.error(t("cannotFindMicrophone"));
         }
@@ -129,7 +136,7 @@ export const MediaRecorder = (props: { height?: number }) => {
   return (
     <div className="border rounded-xl shadow-lg relative">
       <span className="absolute bottom-2 right-2 serif">
-        {duration}
+        {duration / 10}
         <span className="text-xs"> / 300</span>
       </span>
       <div className="h-full" ref={ref}></div>

@@ -478,6 +478,8 @@
   "itMayTakeAWhileToPrepareForTheFirstLoad": "首次加载可能需要一些时间，请耐心等候",
   "loadingTranscription": "正在加载语音文本",
   "cannotFindMicrophone": "无法找到麦克风",
+  "savingRecording": "正在保存录音",
+  "recordingSaved": "录音已保存",
   "failedToSaveRecording": "保存录音失败",
   "speechNotCreatedYet": "尚未生成语音",
   "goToConversation": "前往对话",

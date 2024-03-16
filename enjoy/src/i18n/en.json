@@ -479,6 +479,8 @@
   "itMayTakeAWhileToPrepareForTheFirstLoad": "It may take a while to prepare for the first load. Please be patient.",
   "loadingTranscription": "Loading transcription",
   "cannotFindMicrophone": "Cannot find microphone",
+  "savingRecording": "Saving recording",
+  "recordingSaved": "Recording saved",
   "failedToSaveRecording": "Failed to save recording",
   "speechNotCreatedYet": "Speech not created yet",
   "goToConversation": "Go to conversation",

@@ -20,7 +20,7 @@ import {
 } from "@renderer/components/ui";
 import { LoaderIcon, CheckCircleIcon, MicIcon } from "lucide-react";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
-import { secondsToTimestamp } from "@renderer/lib/utils";
+import { formatDuration } from "@renderer/lib/utils";
 
 export const MediaTranscription = () => {
   const containerRef = useRef<HTMLDivElement>();
@@ -152,7 +152,7 @@ export const MediaTranscription = () => {
                   (s) => s.referenceId === index
                 ) !== -1 && <MicIcon className="w-3 h-3 text-sky-500" />}
                 <span className="text-xs opacity-50">
-                  {secondsToTimestamp(sentence.startTime)}
+                  {formatDuration(sentence.startTime, "s")}
                 </span>
               </div>
             </div>
