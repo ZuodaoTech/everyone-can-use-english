@@ -8499,9 +8499,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"echogarden@npm:^0.12.0":
-  version: 0.12.0
-  resolution: "echogarden@npm:0.12.0"
+"echogarden@npm:^0.12.1":
+  version: 0.12.1
+  resolution: "echogarden@npm:0.12.1"
   dependencies:
     "@aws-sdk/client-polly": "npm:^3.535.0"
     "@aws-sdk/client-transcribe-streaming": "npm:^3.535.0"
@@ -8872,7 +8872,7 @@ __metadata:
     dayjs: "npm:^1.11.10"
     decamelize: "npm:^6.0.0"
     decamelize-keys: "npm:^2.0.1"
-    echogarden: "npm:^0.12.0"
+    echogarden: "npm:^0.12.1"
     electron: "npm:^29.1.4"
     electron-log: "npm:^5.1.2"
     electron-playwright-helpers: "npm:^1.7.1"
