@@ -441,7 +441,6 @@ ${log}
     height: 1080,
     minWidth: 1440,
     minHeight: 900,
-    fullscreen: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },

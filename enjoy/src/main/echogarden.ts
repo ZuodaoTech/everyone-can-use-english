@@ -9,7 +9,7 @@ import settings from "@main/settings";
 import fs from "fs-extra";
 import ffmpegPath from "ffmpeg-static";
 
-Echogarden.setGlobalOption("ffmpegPath", ffmpegPath);
+Echogarden.setGlobalOption("ffmpegPath", ffmpegPath.replace("app.asar", "app.asar.unpacked"));
 
 const __filename = url.fileURLToPath(import.meta.url);
 /*
