@@ -9,7 +9,10 @@ import settings from "@main/settings";
 import fs from "fs-extra";
 import ffmpegPath from "ffmpeg-static";
 
-Echogarden.setGlobalOption("ffmpegPath", ffmpegPath.replace("app.asar", "app.asar.unpacked"));
+Echogarden.setGlobalOption(
+  "ffmpegPath",
+  ffmpegPath.replace("app.asar", "app.asar.unpacked")
+);
 
 const __filename = url.fileURLToPath(import.meta.url);
 /*
@@ -53,12 +56,20 @@ class EchogardenWrapper {
     ipcMain.handle(
       "echogarden-align",
       async (
-        _event,
+        event,
         input: AudioSourceParam,
         transcript: string,
         options: AlignmentOptions
       ) => {
-        return this.align(input, transcript, options);
+        try {
+          return await this.align(input, transcript, options);
+        } catch (err) {
+          logger.error(err);
+          event.sender.send("on-notification", {
+            type: "error",
+            message: err.message,
+          });
+        }
       }
     );
 

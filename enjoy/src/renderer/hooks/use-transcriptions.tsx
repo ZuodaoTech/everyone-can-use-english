@@ -8,6 +8,7 @@ import {
 import { toast } from "@renderer/components/ui";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@/constants";
+import { t } from "i18next";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
   const { whisperConfig } = useContext(AISettingsProviderContext);
@@ -73,6 +74,8 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
             });
           }
         });
+      } else {
+        throw new Error(t("forceAlignmentFailed"));
       }
 
       /*
@@ -87,7 +90,6 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
             .match(END_OF_SENTENCE_REGEX) &&
           nextSentence?.text
         ) {
-          console.log(sentence.text);
           nextSentence.text = [sentence.text, nextSentence.text].join(" ");
           nextSentence.timeline = [
             ...sentence.timeline,
