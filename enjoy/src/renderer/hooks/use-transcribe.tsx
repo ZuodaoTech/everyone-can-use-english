@@ -79,34 +79,43 @@ export const useTranscribe = () => {
     params?: {
       targetId?: string;
       targetType?: string;
+      originalText?: string;
     }
   ): Promise<{
     engine: string;
     model: string;
     alignmentResult: AlignmentResult;
+    originalText?: string;
   }> => {
     const blob = await transcode(mediaSrc);
+    const { targetId, targetType, originalText } = params || {};
 
     let result;
-    if (whisperConfig.service === "local") {
+    if (originalText) {
+      result = {
+        engine: "original",
+        model: "original",
+      };
+    } else if (whisperConfig.service === "local") {
       result = await transcribeByLocal(blob);
     } else if (whisperConfig.service === "cloudflare") {
       result = await transcribeByCloudflareAi(blob);
     } else if (whisperConfig.service === "openai") {
       result = await transcribeByOpenAi(blob);
     } else if (whisperConfig.service === "azure") {
-      result = await transcribeByAzureAi(blob, params);
+      result = await transcribeByAzureAi(blob, { targetId, targetType });
     } else {
       throw new Error(t("whisperServiceNotSupported"));
     }
 
     const alignmentResult = await EnjoyApp.echogarden.align(
       new Uint8Array(await blob.arrayBuffer()),
-      result.result.map((segment) => segment.text).join(" ")
+      originalText || result.result.map((segment) => segment.text).join(" ")
     );
 
     return {
       ...result,
+      originalText,
       alignmentResult,
     };
   };

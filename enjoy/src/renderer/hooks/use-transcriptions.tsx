@@ -55,13 +55,18 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
       await findOrCreateTranscription();
     }
 
+    const { result } = transcription;
     setTranscribing(true);
     setTranscribingProgress(0);
     try {
-      const { engine, model, alignmentResult } = await transcribe(media.src, {
-        targetId: media.id,
-        targetType: media.mediaType,
-      });
+      const { engine, model, alignmentResult, originalText } = await transcribe(
+        media.src,
+        {
+          targetId: media.id,
+          targetType: media.mediaType,
+          originalText: result?.originalText,
+        }
+      );
 
       let timeline: TimelineEntry[] = [];
       if (alignmentResult) {
@@ -105,6 +110,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         result: {
           timeline: timeline,
           transcript: alignmentResult.transcript,
+          originalText,
         },
         engine,
         model,
