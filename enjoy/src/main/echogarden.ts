@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import { align } from "echogarden/dist/api/API.js";
+import * as Echogarden from "echogarden/dist/api/API.js";
 import { AlignmentOptions } from "echogarden/dist/api/API";
 import { AudioSourceParam } from "echogarden/dist/audio/AudioUtilities";
 import path from "path";
@@ -7,6 +7,9 @@ import log from "@main/logger";
 import url from "url";
 import settings from "@main/settings";
 import fs from "fs-extra";
+import ffmpegPath from "ffmpeg-static";
+
+Echogarden.setGlobalOption("ffmpegPath", ffmpegPath);
 
 const __filename = url.fileURLToPath(import.meta.url);
 /*
@@ -18,10 +21,10 @@ const __dirname = path
 
 const logger = log.scope("echogarden");
 class EchogardenWrapper {
-  public align: typeof align;
+  public align: typeof Echogarden.align;
 
   constructor() {
-    this.align = align;
+    this.align = Echogarden.align;
   }
 
   async check() {

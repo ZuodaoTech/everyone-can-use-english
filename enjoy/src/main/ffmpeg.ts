@@ -20,8 +20,6 @@ const __dirname = path
   .dirname(__filename)
   .replace("app.asar", "app.asar.unpacked");
 
-process.env.FFMPEG_PATH = ffmpegPath;
-
 const logger = log.scope("ffmpeg");
 export default class FfmpegWrapper {
   checkCommand(): Promise<boolean> {
