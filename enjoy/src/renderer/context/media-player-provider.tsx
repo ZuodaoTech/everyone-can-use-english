@@ -117,7 +117,7 @@ export const MediaPlayerProvider = ({
   const initializeWavesurfer = async () => {
     if (!media) return;
     if (!mediaProvider) return;
-    if (!ref.current) return;
+    if (!ref?.current) return;
 
     const ws = WaveSurfer.create({
       container: ref.current,
@@ -299,22 +299,6 @@ export const MediaPlayerProvider = ({
     );
   };
 
-  useEffect(() => {
-    if (!media) return;
-
-    EnjoyApp.waveforms.find(media.md5).then((waveform) => {
-      setWaveForm(waveform);
-    });
-  }, [media]);
-
-  /*
-   * Initialize wavesurfer when container ref is available
-   * and mediaProvider is available
-   */
-  useEffect(() => {
-    initializeWavesurfer();
-  }, [media, ref, mediaProvider]);
-
   /*
    * When wavesurfer is decoded,
    * set up event listeners for wavesurfer
@@ -353,6 +337,7 @@ export const MediaPlayerProvider = ({
 
     return () => {
       subscriptions.forEach((unsub) => unsub());
+      wavesurfer?.destroy();
     };
   }, [wavesurfer]);
 
@@ -371,6 +356,10 @@ export const MediaPlayerProvider = ({
       setFitZoomRatio(containerWidth / duration / minPxPerSec);
     } else if (activeRegion.id.startsWith("word-region")) {
       setFitZoomRatio(containerWidth / 3 / duration / minPxPerSec);
+    }
+
+    return () => {
+      setFitZoomRatio(1.0);
     }
   }, [ref, wavesurfer, activeRegion]);
 
@@ -395,7 +384,7 @@ export const MediaPlayerProvider = ({
     if (!activeRegion) return;
 
     renderPitchContour(activeRegion);
-  }, [activeRegion]);
+  }, [wavesurfer, activeRegion]);
 
   /*
    * Update player styles
@@ -407,6 +396,22 @@ export const MediaPlayerProvider = ({
     const scrollContainer = wavesurfer.getWrapper().closest(".scroll");
     scrollContainer.style.scrollbarWidth = "thin";
   }, [decoded, wavesurfer]);
+
+  useEffect(() => {
+    if (!media) return;
+
+    EnjoyApp.waveforms.find(media.md5).then((waveform) => {
+      setWaveForm(waveform);
+    });
+  }, [media]);
+
+  /*
+   * Initialize wavesurfer when container ref is available
+   * and mediaProvider is available
+   */
+  useEffect(() => {
+    initializeWavesurfer();
+  }, [media, ref, mediaProvider]);
 
   return (
     <MediaPlayerProviderContext.Provider

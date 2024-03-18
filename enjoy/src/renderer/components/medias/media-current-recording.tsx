@@ -72,6 +72,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
 
   const removeComparingPitchContour = () => {
     if (!wavesurfer) return;
+    if (!regions) return;
 
     regions
       .getRegions()

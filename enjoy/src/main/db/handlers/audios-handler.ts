@@ -72,6 +72,7 @@ class AudiosHandler {
     params: {
       name?: string;
       coverUrl?: string;
+      originalText?: string;
     } = {}
   ) {
     let file = uri;
@@ -95,19 +96,33 @@ class AudiosHandler {
       }
     }
 
-    return Audio.buildFromLocalFile(file, {
-      source,
-      ...params,
-    })
-      .then((audio) => {
-        return audio.toJSON();
-      })
-      .catch((err) => {
-        return event.sender.send("on-notification", {
-          type: "error",
-          message: t("models.audio.failedToAdd", { error: err.message }),
-        });
+    try {
+      const audio = await Audio.buildFromLocalFile(file, {
+        source,
+        name: params.name,
+        coverUrl: params.coverUrl,
       });
+
+      // create transcription if originalText is provided
+      const { originalText } = params;
+      if (originalText) {
+        await Transcription.create({
+          targetType: "Audio",
+          targetId: audio.id,
+          targetMd5: audio.md5,
+          result: {
+            originalText,
+          },
+        });
+      }
+
+      return audio.toJSON();
+    } catch (err) {
+      return event.sender.send("on-notification", {
+        type: "error",
+        message: t("models.audio.failedToAdd", { error: err.message }),
+      });
+    }
   }
 
   private async update(

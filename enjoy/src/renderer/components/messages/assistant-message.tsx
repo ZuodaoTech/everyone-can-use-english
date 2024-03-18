@@ -104,6 +104,7 @@ export const AssistantMessageComponent = (props: {
           speech.text.length > 20
             ? speech.text.substring(0, 17).trim() + "..."
             : speech.text,
+        originalText: speech.text,
       });
       setResourcing(false);
     }
@@ -251,7 +252,7 @@ export const AssistantMessageComponent = (props: {
             </SheetClose>
           </SheetHeader>
 
-          {Boolean(speech) && <AudioPlayer md5={speech.md5} />}
+          {Boolean(speech) && shadowing && <AudioPlayer md5={speech.md5} />}
         </SheetContent>
       </Sheet>
     </div>

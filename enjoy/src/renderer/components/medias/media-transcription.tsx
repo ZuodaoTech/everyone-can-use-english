@@ -72,7 +72,7 @@ export const MediaTranscription = () => {
       } as ScrollIntoViewOptions);
   }, [currentSegmentIndex, transcription, containerRef]);
 
-  if (!transcription?.result) {
+  if (!transcription?.result?.timeline) {
     return null;
   }
 
