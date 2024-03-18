@@ -54,10 +54,8 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     };
 
   const generateTranscription = async () => {
-    if (transcription?.targetId === media.id) return;
-
     let originalText: string;
-    if (transcription) {
+    if (transcription?.targetId === media.id) {
       originalText = transcription.result?.originalText;
     } else {
       const r = await findOrCreateTranscription();

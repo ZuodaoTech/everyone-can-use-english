@@ -337,33 +337,8 @@ export const MediaCaption = () => {
       <ScrollArea className="flex-1 px-6 py-4 font-serif h-full border shadow-lg rounded-lg">
         <div className="flex flex-wrap mb-4">
           {/* use the words splitted by caption text if it is matched with the timeline length, otherwise use the timeline */}
-          {caption.text.split(" ").length === caption.timeline.length
-            ? caption.text.split(" ").map((word, index) => (
-                <div
-                  key={index}
-                  id={`word-${currentSegmentIndex}-${index}`}
-                  className={`pr-2 pb-2 cursor-pointer hover:bg-red-500/10 ${
-                    index === activeIndex ? "text-red-500" : ""
-                  } ${selectedIndices.includes(index) ? "bg-red-500/10" : ""}`}
-                  onClick={() => toggleRegion(index)}
-                >
-                  <div className="">
-                    <div className="text-2xl">{word}</div>
-                    {displayIpa && (
-                      <div className="text-muted-foreground">
-                        {caption.timeline[index].timeline
-                          .map((t) =>
-                            t.timeline
-                              .map((s) => convertIpaToNormal(s.text))
-                              .join("")
-                          )
-                          .join(" · ")}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))
-            : (caption.timeline || []).map((w, index) => (
+          {caption.text.includes("-")
+            ? (caption.timeline || []).map((w, index) => (
                 <div
                   key={index}
                   id={`word-${currentSegmentIndex}-${index}`}
@@ -381,6 +356,31 @@ export const MediaCaption = () => {
                     {displayIpa && (
                       <div className="text-muted-foreground">
                         {w.timeline
+                          .map((t) =>
+                            t.timeline
+                              .map((s) => convertIpaToNormal(s.text))
+                              .join("")
+                          )
+                          .join(" · ")}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))
+            : caption.text.split(" ").map((word, index) => (
+                <div
+                  key={index}
+                  id={`word-${currentSegmentIndex}-${index}`}
+                  className={`pr-2 pb-2 cursor-pointer hover:bg-red-500/10 ${
+                    index === activeIndex ? "text-red-500" : ""
+                  } ${selectedIndices.includes(index) ? "bg-red-500/10" : ""}`}
+                  onClick={() => toggleRegion(index)}
+                >
+                  <div className="">
+                    <div className="text-2xl">{word}</div>
+                    {displayIpa && (
+                      <div className="text-muted-foreground">
+                        {caption.timeline[index].timeline
                           .map((t) =>
                             t.timeline
                               .map((s) => convertIpaToNormal(s.text))

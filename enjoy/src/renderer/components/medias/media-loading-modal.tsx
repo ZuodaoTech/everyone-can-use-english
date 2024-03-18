@@ -31,7 +31,7 @@ export const MediaLoadingModal = () => {
   } = useContext(MediaPlayerProviderContext);
 
   return (
-    <AlertDialog open={!decoded || !Boolean(transcription?.result)}>
+    <AlertDialog open={!decoded || !Boolean(transcription?.result?.timeline)}>
       <AlertDialogOverlay className="z-[100]" />
       <AlertDialogContent className="z-[100]">
         <AlertDialogHeader>
@@ -59,7 +59,7 @@ export const MediaLoadingModal = () => {
               <LoaderIcon className="w-4 h-4 animate-spin" />
               <span>{t("loadingTranscription")}</span>
             </div>
-          ) : transcription.result ? (
+          ) : transcription.result?.timeline ? (
             <div className="flex items-center space-x-4">
               <CheckCircleIcon className="w-4 h-4 text-green-500" />
               <span>{t("transcribedSuccessfully")}</span>
