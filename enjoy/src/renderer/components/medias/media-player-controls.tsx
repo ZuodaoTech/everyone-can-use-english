@@ -263,9 +263,11 @@ export const MediaPlayerControls = () => {
         .filter((r) => r.id.startsWith("custom-region"))
         .forEach((r) => r.remove());
 
-      setActiveRegion(
-        regions.getRegions().find((r) => r.id.startsWith("segment-region"))
-      );
+      if (!activeRegion || activeRegion?.id.startsWith("custom-region")) {
+        setActiveRegion(
+          regions.getRegions().find((r) => r.id.startsWith("segment-region"))
+        );
+      }
     }
 
     const subscriptions = [
@@ -325,7 +327,10 @@ export const MediaPlayerControls = () => {
 
       regions.on("region-out", (region) => {
         if (playMode === "loop") {
-          region.play();
+          wavesurfer.pause();
+          setTimeout(() => {
+            region.play();
+          }, 500);
         } else if (playMode === "single") {
           wavesurfer.pause();
         }
