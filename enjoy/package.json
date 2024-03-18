@@ -144,7 +144,7 @@
     "next-themes": "^0.3.0",
     "openai": "^4.29.0",
     "pitchfinder": "^2.3.2",
-    "postcss": "^8.4.35",
+    "postcss": "^8.4.36",
     "proxy-agent": "^6.4.0",
     "react": "^18.2.0",
     "react-activity-calendar": "^2.2.8",
