@@ -443,6 +443,7 @@ ${log}
     minHeight: 900,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      spellcheck: false,
     },
   });
 
