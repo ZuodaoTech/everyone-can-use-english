@@ -142,7 +142,7 @@
     "mark.js": "^8.11.1",
     "microsoft-cognitiveservices-speech-sdk": "^1.36.0",
     "next-themes": "^0.3.0",
-    "openai": "^4.29.0",
+    "openai": "^4.29.1",
     "pitchfinder": "^2.3.2",
     "postcss": "^8.4.35",
     "proxy-agent": "^6.4.0",

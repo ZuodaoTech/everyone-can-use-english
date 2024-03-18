@@ -8897,7 +8897,7 @@ __metadata:
     microsoft-cognitiveservices-speech-sdk: "npm:^1.36.0"
     next-themes: "npm:^0.3.0"
     octokit: "npm:^3.1.2"
-    openai: "npm:^4.29.0"
+    openai: "npm:^4.29.1"
     pitchfinder: "npm:^2.3.2"
     postcss: "npm:^8.4.35"
     progress: "npm:^2.0.3"
@@ -14193,9 +14193,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openai@npm:^4.29.0":
-  version: 4.29.0
-  resolution: "openai@npm:4.29.0"
+"openai@npm:^4.29.1":
+  version: 4.29.1
+  resolution: "openai@npm:4.29.1"
   dependencies:
     "@types/node": "npm:^18.11.18"
     "@types/node-fetch": "npm:^2.6.4"
@@ -14208,7 +14208,7 @@ __metadata:
     web-streams-polyfill: "npm:^3.2.1"
   bin:
     openai: bin/cli
-  checksum: 10c0/df5a99c7a54f782780446cfb346d18793ded57a54908d839ca49967f85f8803c74ec7473f11426228af2c1df2c0d2325d52fe5590e54b194552593db7c524637
+  checksum: 10c0/7873d1c8f69d8a76ca38bd3b0aa10e967ee1a2e705a1a2eb1012dcdd1b689569e041e1bcbeb72e10fc15a43d62c0f99e01de58c8ed454e8c0b54626b58c0794f
   languageName: node
   linkType: hard
 
