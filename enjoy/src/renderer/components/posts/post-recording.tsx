@@ -6,6 +6,8 @@ import { Button, Skeleton } from "@renderer/components/ui";
 import { PlayIcon, PauseIcon } from "lucide-react";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { secondsToTimestamp } from "@renderer/lib/utils";
+import { t } from "i18next";
+import { XCircleIcon } from "lucide-react";
 
 export const PostRecording = (props: {
   recording: RecordingType;
@@ -20,6 +22,7 @@ export const PostRecording = (props: {
     threshold: 1,
   });
   const [duration, setDuration] = useState<number>(0);
+  const [error, setError] = useState<string>(null);
 
   const onPlayClick = useCallback(() => {
     wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
@@ -31,6 +34,7 @@ export const PostRecording = (props: {
     if (!entry?.isIntersecting) return;
     if (!recording.src) return;
     if (wavesurfer) return;
+    if (error) return;
 
     const ws = WaveSurfer.create({
       container: containerRef.current,
@@ -48,7 +52,11 @@ export const PostRecording = (props: {
     });
 
     setWavesurfer(ws);
-  }, [recording.src, entry]);
+
+    return () => {
+      setWavesurfer(null);
+    };
+  }, [recording.src, entry, error]);
 
   useEffect(() => {
     if (!wavesurfer) return;
@@ -84,6 +92,9 @@ export const PostRecording = (props: {
         }, 1000);
         setInitialized(true);
       }),
+      wavesurfer.on("error", (err: Error) => {
+        setError(err.message);
+      }),
     ];
 
     return () => {
@@ -91,6 +102,22 @@ export const PostRecording = (props: {
       wavesurfer?.destroy();
     };
   }, [wavesurfer]);
+
+  if (error) {
+    return (
+      <div className="w-full bg-sky-500/30 rounded-lg p-4 border">
+        <div className="flex items-center justify-center mb-2">
+          <XCircleIcon className="w-4 h-4 text-destructive" />
+        </div>
+        <div className="select-text break-all text-center text-sm text-muted-foreground mb-4">
+          {error}
+        </div>
+        <div className="flex items-center justify-center">
+          <Button onClick={() => setError(null)}>{t("retry")}</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

@@ -9,6 +9,7 @@ import Regions, {
 import Chart from "chart.js/auto";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { IPA_MAPPING } from "@/constants";
+import { toast } from "@renderer/components/ui";
 
 type MediaPlayerContextType = {
   media: AudioType | VideoType;
@@ -19,6 +20,8 @@ type MediaPlayerContextType = {
   wavesurfer: WaveSurfer;
   setRef: (ref: any) => void;
   decoded: boolean;
+  decodeError: string;
+  setDecodeError: (error: string) => void;
   // player state
   currentTime: number;
   currentSegmentIndex: number;
@@ -89,6 +92,7 @@ export const MediaPlayerProvider = ({
 
   // Player state
   const [decoded, setDecoded] = useState<boolean>(false);
+  const [decodeError, setDecodeError] = useState<string>(null);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [currentSegmentIndex, setCurrentSegmentIndex] = useState<number>(0);
   const [fitZoomRatio, setFitZoomRatio] = useState<number>(1.0);
@@ -333,6 +337,10 @@ export const MediaPlayerProvider = ({
       wavesurfer.on("ready", () => {
         setDecoded(true);
       }),
+      wavesurfer.on("error", (err: Error) => {
+        toast.error(err.message);
+        setDecodeError(err.message);
+      }),
     ];
 
     return () => {
@@ -360,7 +368,7 @@ export const MediaPlayerProvider = ({
 
     return () => {
       setFitZoomRatio(1.0);
-    }
+    };
   }, [ref, wavesurfer, activeRegion]);
 
   /*
@@ -411,6 +419,8 @@ export const MediaPlayerProvider = ({
    */
   useEffect(() => {
     initializeWavesurfer();
+    setDecoded(false);
+    setDecodeError(null);
   }, [media, ref, mediaProvider]);
 
   return (
@@ -422,6 +432,8 @@ export const MediaPlayerProvider = ({
         wavesurfer,
         setRef,
         decoded,
+        decodeError,
+        setDecodeError,
         currentTime,
         currentSegmentIndex,
         setCurrentSegmentIndex,

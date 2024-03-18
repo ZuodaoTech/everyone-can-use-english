@@ -39,7 +39,6 @@ export const AppSettingsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [initialized, setInitialized] = useState<boolean>(false);
   const [version, setVersion] = useState<string>("");
   const [apiUrl, setApiUrl] = useState<string>(WEB_API_URL);
   const [webApi, setWebApi] = useState<Client>(null);
@@ -61,10 +60,6 @@ export const AppSettingsProvider = ({
     prepareFfmpeg();
     fetchProxyConfig();
   }, []);
-
-  useEffect(() => {
-    validate();
-  }, [user, libraryPath]);
 
   useEffect(() => {
     if (!apiUrl) return;
@@ -192,10 +187,6 @@ export const AppSettingsProvider = ({
     });
   };
 
-  const validate = async () => {
-    setInitialized(Boolean(user && libraryPath));
-  };
-
   return (
     <AppSettingsProviderContext.Provider
       value={{
@@ -214,7 +205,7 @@ export const AppSettingsProvider = ({
         ffmpegWasm,
         proxy,
         setProxy: setProxyConfigHandler,
-        initialized,
+        initialized: Boolean(user && libraryPath),
       }}
     >
       {children}

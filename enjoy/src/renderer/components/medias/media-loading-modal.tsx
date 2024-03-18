@@ -15,7 +15,7 @@ import {
   PingPoint,
   Progress,
 } from "@renderer/components/ui";
-import { CheckCircleIcon, LoaderIcon } from "lucide-react";
+import { CheckCircleIcon, LoaderIcon, XCircleIcon } from "lucide-react";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +23,9 @@ export const MediaLoadingModal = () => {
   const navigate = useNavigate();
   const { whisperConfig } = useContext(AISettingsProviderContext);
   const {
+    media,
     decoded,
+    decodeError,
     transcription,
     transcribing,
     transcribingProgress,
@@ -46,6 +48,21 @@ export const MediaLoadingModal = () => {
             <div className="mb-4 flex items-center space-x-4">
               <CheckCircleIcon className="w-4 h-4 text-green-500" />
               <span>{t("waveformIsDecoded")}</span>
+            </div>
+          ) : decodeError ? (
+            <div className="mb-4 flex items-center space-x-4">
+              <div className="w-4 h-4">
+                <XCircleIcon className="w-4 h-4 text-destructive" />
+              </div>
+              <div className="select-text">
+                <div className="mb-2">
+                  {decodeError}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {t("failedToDecodeWaveform")}:{" "}
+                  <span className="break-all ">{media?.src}</span>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="mb-4 flex items-center space-x-4">

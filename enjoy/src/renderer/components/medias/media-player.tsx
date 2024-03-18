@@ -13,7 +13,9 @@ import {
 } from "@vidstack/react/player/layouts/default";
 
 export const MediaPlayer = () => {
-  const { media, setMediaProvider } = useContext(MediaPlayerProviderContext);
+  const { media, setMediaProvider, setDecodeError } = useContext(
+    MediaPlayerProviderContext
+  );
   const mediaRemote = useMediaRemote();
   if (!media?.src) return null;
 
@@ -31,6 +33,7 @@ export const MediaPlayer = () => {
             setMediaProvider(provider.video);
           }
         }}
+        onError={(err) => setDecodeError(err.message)}
       >
         <MediaProvider />
         <DefaultAudioLayout icons={defaultLayoutIcons} />
