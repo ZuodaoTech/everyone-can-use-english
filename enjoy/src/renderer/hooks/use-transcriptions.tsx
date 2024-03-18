@@ -40,8 +40,10 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
           targetType: media.mediaType,
         })
         .then((t) => {
-          if (t.result && !t.result["originalText"] && !t.result["timeline"]) {
-            t.result = null;
+          if (t.result && !t.result["timeline"]) {
+            t.result = {
+              originalText: t.result?.originalText,
+            };
           }
           setTranscription(t);
           return t;
