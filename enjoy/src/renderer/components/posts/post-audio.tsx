@@ -54,7 +54,9 @@ export const PostAudio = (props: {
         <div className="flex items-center justify-center mb-2">
           <XCircleIcon className="w-4 h-4 text-destructive" />
         </div>
-        <div className="text-center mb-4">{error}</div>
+        <div className="select-text break-all text-center text-sm text-muted-foreground mb-4">
+          {error}
+        </div>
         <div className="flex items-center justify-center">
           <Button onClick={() => setError(null)}>{t("retry")}</Button>
         </div>
