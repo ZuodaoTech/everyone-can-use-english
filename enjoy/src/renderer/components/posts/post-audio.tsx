@@ -14,6 +14,8 @@ import {
 } from "@vidstack/react/player/layouts/default";
 export const STORAGE_WORKER_ENDPOINT = "https://enjoy-storage.baizhiheizi.com";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
+import { t } from "i18next";
+import { XCircleIcon } from "lucide-react";
 
 export const PostAudio = (props: {
   audio: Partial<MediumType>;
@@ -23,6 +25,7 @@ export const PostAudio = (props: {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const { webApi } = useContext(AppSettingsProviderContext);
   const [transcription, setTranscription] = useState<TranscriptionType>();
+  const [error, setError] = useState<string>(null);
 
   const currentTranscription = transcription?.result["transcript"]
     ? (transcription.result?.timeline || []).find(
@@ -45,6 +48,20 @@ export const PostAudio = (props: {
       });
   }, [audio.md5]);
 
+  if (error) {
+    return (
+      <div className="w-full rounded-lg p-4 border">
+        <div className="flex items-center justify-center mb-2">
+          <XCircleIcon className="w-4 h-4 text-destructive" />
+        </div>
+        <div className="text-center mb-4">{error}</div>
+        <div className="flex items-center justify-center">
+          <Button onClick={() => setError(null)}>{t("retry")}</Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full">
       {audio.sourceUrl.startsWith(STORAGE_WORKER_ENDPOINT) ? (
@@ -53,6 +70,7 @@ export const PostAudio = (props: {
           setCurrentTime={setCurrentTime}
           audio={audio}
           height={height}
+          onError={(err) => setError(err.message)}
         />
       ) : (
         <MediaPlayer
@@ -60,6 +78,7 @@ export const PostAudio = (props: {
             setCurrentTime(_currentTime);
           }}
           src={audio.sourceUrl}
+          onError={(err) => setError(err.message)}
         >
           <MediaProvider />
           <DefaultAudioLayout icons={defaultLayoutIcons} />
@@ -88,8 +107,9 @@ const WavesurferPlayer = (props: {
   height?: number;
   currentTime: number;
   setCurrentTime: (currentTime: number) => void;
+  onError?: (error: Error) => void;
 }) => {
-  const { audio, height = 80, currentTime, setCurrentTime } = props;
+  const { audio, height = 80, onError, setCurrentTime } = props;
   const [initialized, setInitialized] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [wavesurfer, setWavesurfer] = useState(null);
@@ -161,6 +181,9 @@ const WavesurferPlayer = (props: {
           });
         }, 1000);
         setInitialized(true);
+      }),
+      wavesurfer.on("error", (err: Error) => {
+        onError(err);
       }),
     ];
 
