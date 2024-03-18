@@ -1,12 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import cloneDeep from "lodash/cloneDeep";
-import {
-  Button,
-  toast,
-  ScrollArea,
-  Separator,
-} from "@renderer/components/ui";
+import { Button, toast, ScrollArea, Separator } from "@renderer/components/ui";
 import { t } from "i18next";
 import { LanguagesIcon, SpeechIcon } from "lucide-react";
 import { Timeline } from "echogarden/dist/utilities/Timeline.d.js";
@@ -356,7 +351,11 @@ export const MediaCaption = () => {
                     {displayIpa && (
                       <div className="text-muted-foreground">
                         {caption.timeline[index].timeline
-                          .map((t) => t.timeline.map((s) => s.text).join(""))
+                          .map((t) =>
+                            t.timeline
+                              .map((s) => IPA_MAPPING[s.text] || s.text)
+                              .join("")
+                          )
                           .join(" · ")}
                       </div>
                     )}
@@ -381,7 +380,11 @@ export const MediaCaption = () => {
                     {displayIpa && (
                       <div className="text-muted-foreground">
                         {w.timeline
-                          .map((t) => t.timeline.map((s) => s.text).join(""))
+                          .map((t) =>
+                            t.timeline
+                              .map((s) => IPA_MAPPING[s.text] || s.text)
+                              .join("")
+                          )
                           .join(" · ")}
                       </div>
                     )}
@@ -413,9 +416,24 @@ export const MediaCaption = () => {
                       {word.text}
                     </div>
                     <div className="text-sm text-serif text-muted-foreground">
-                      {word.timeline
-                        .map((t) => t.timeline.map((s) => s.text).join(""))
-                        .join(" · ")}
+                      <span className="mr-2">
+                        /
+                        {word.timeline
+                          .map((t) =>
+                            t.timeline
+                              .map((s) => IPA_MAPPING[s.text] || s.text)
+                              .join("")
+                          )
+                          .join(" · ")}
+                        /,
+                      </span>
+                      <span>
+                        /
+                        {word.timeline
+                          .map((t) => t.timeline.map((s) => s.text).join(""))
+                          .join(" · ")}
+                        /
+                      </span>
                     </div>
                   </div>
                 );
