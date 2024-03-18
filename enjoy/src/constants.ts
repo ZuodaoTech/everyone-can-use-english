@@ -390,7 +390,7 @@ export const IPA_MAPPING: { [key: string]: string } = {
   r: "r",
   ʀ: "r",
   ⱱ: "",
-  ɾ: "r",
+  ɾ: "t",
   ɽ: "r",
   ɸ: "f",
   β: "v",

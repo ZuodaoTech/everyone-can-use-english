@@ -8,6 +8,7 @@ import { Timeline } from "echogarden/dist/utilities/Timeline.d.js";
 import { IPA_MAPPING } from "@/constants";
 import { useAiCommand } from "@renderer/hooks";
 import { LoaderIcon } from "lucide-react";
+import { convertIpaToNormal } from "@/utils";
 
 export const MediaCaption = () => {
   const {
@@ -353,7 +354,7 @@ export const MediaCaption = () => {
                         {caption.timeline[index].timeline
                           .map((t) =>
                             t.timeline
-                              .map((s) => IPA_MAPPING[s.text] || s.text)
+                              .map((s) => convertIpaToNormal(s.text))
                               .join("")
                           )
                           .join(" · ")}
@@ -382,7 +383,7 @@ export const MediaCaption = () => {
                         {w.timeline
                           .map((t) =>
                             t.timeline
-                              .map((s) => IPA_MAPPING[s.text] || s.text)
+                              .map((s) => convertIpaToNormal(s.text))
                               .join("")
                           )
                           .join(" · ")}
@@ -421,7 +422,7 @@ export const MediaCaption = () => {
                         {word.timeline
                           .map((t) =>
                             t.timeline
-                              .map((s) => IPA_MAPPING[s.text] || s.text)
+                              .map((s) => convertIpaToNormal(s.text))
                               .join("")
                           )
                           .join(" · ")}

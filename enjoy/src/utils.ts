@@ -1,5 +1,6 @@
 import Pitchfinder from "pitchfinder";
 import { END_OF_SENTENCE_REGEX, MAGIC_TOKEN_REGEX } from "./constants";
+import { IPA_MAPPING } from "./constants";
 
 export const extractFrequencies = (props: {
   peaks: Float32Array;
@@ -85,4 +86,16 @@ export const groupTranscription = (
   if (lastSentence) groups.push(lastSentence);
 
   return groups;
+};
+
+export const convertIpaToNormal = (ipa: string) => {
+  const mark = ipa.match(/(\ˈ|ˌ)/);
+  const cleanIpa = ipa.replace(mark ? mark[0] : "", "");
+
+  const converted = IPA_MAPPING[cleanIpa] || cleanIpa;
+  if (mark) {
+    return `${mark[0]}${converted}`;
+  } else {
+    return converted;
+  }
 };
