@@ -8888,7 +8888,7 @@ __metadata:
     html-to-text: "npm:^9.0.5"
     https-proxy-agent: "npm:^7.0.4"
     i18next: "npm:^23.10.1"
-    intl-tel-input: "npm:^19.5.7"
+    intl-tel-input: "npm:^20.0.3"
     js-md5: "npm:^0.8.3"
     langchain: "npm:^0.1.28"
     lodash: "npm:^4.17.21"
@@ -11025,14 +11025,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"intl-tel-input@npm:^19.5.7":
-  version: 19.5.7
-  resolution: "intl-tel-input@npm:19.5.7"
-  dependencies:
-    prop-types: "npm:^15.8.1"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-  checksum: 10c0/99937f79099456759d1c6493c2b57d8a9e9ec4b8d186599be4ee432b4a8edd14fbb889f8866b6a7e001ef6a5092ee6fce81210592e10dfc061aa4f7bb9c07c33
+"intl-tel-input@npm:^20.0.3":
+  version: 20.0.3
+  resolution: "intl-tel-input@npm:20.0.3"
+  checksum: 10c0/430315b65cc29becb3ea7cc2a99036ec3dae07d7c4ea1bbdea4823e798842c00bdc45e78bbebb8b555f6a369b5a99a5ca7f4ae64502082b9443aefbf5d897c5a
   languageName: node
   linkType: hard
 
@@ -12261,7 +12257,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -14037,7 +14033,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-assign@npm:^4.0.1, object-assign@npm:^4.1.1":
+"object-assign@npm:^4.0.1":
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
   checksum: 10c0/1f4df9945120325d041ccf7b86f31e8bcc14e73d29171e37a7903050e96b81323784ec59f93f102ec635bcf6fa8034ba3ea0a8c7e69fa202b87ae3b6cec5a414
@@ -14933,17 +14929,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.8.1":
-  version: 15.8.1
-  resolution: "prop-types@npm:15.8.1"
-  dependencies:
-    loose-envify: "npm:^1.4.0"
-    object-assign: "npm:^4.1.1"
-    react-is: "npm:^16.13.1"
-  checksum: 10c0/59ece7ca2fb9838031d73a48d4becb9a7cc1ed10e610517c7d8f19a1e02fa47f7c27d557d8a5702bec3cfeccddc853579832b43f449e54635803f277b1c78077
-  languageName: node
-  linkType: hard
-
 "property-information@npm:^6.0.0":
   version: 6.4.1
   resolution: "property-information@npm:6.4.1"
@@ -15168,13 +15153,6 @@ __metadata:
     react-native:
       optional: true
   checksum: 10c0/d3e2d1e5183068a7a23f2fefc432d61546baef0afef176929a1a7b33489e5b3a2a892745a4424327c4bd3ab02ee3a6a4e450b57c2598393032a1efdbe57f8841
-  languageName: node
-  linkType: hard
-
-"react-is@npm:^16.13.1":
-  version: 16.13.1
-  resolution: "react-is@npm:16.13.1"
-  checksum: 10c0/33977da7a5f1a287936a0c85639fec6ca74f4f15ef1e59a6bc20338fc73dc69555381e211f7a3529b8150a1f71e4225525b41b60b52965bda53ce7d47377ada1
   languageName: node
   linkType: hard
 
