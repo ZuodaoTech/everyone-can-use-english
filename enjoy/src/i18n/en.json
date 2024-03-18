@@ -474,6 +474,7 @@
   "resolvingDownloadUrl": "Resolving download URL",
   "waveformIsDecoded": "Waveform is decoded",
   "decodingWaveform": "Decoding waveform",
+  "failedToDecodeWaveform": "Failed to decode waveform",
   "transcribedSuccessfully": "Transcribed successfully",
   "transcribing": "Transcribing",
   "notTranscribedYet": "Not transcribed yet",

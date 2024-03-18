@@ -473,6 +473,7 @@
   "resolvingDownloadUrl": "正在解析下载地址",
   "waveformIsDecoded": "波形已解码",
   "decodingWaveform": "正在解码波形",
+  "failedToDecodeWaveform": "解码波形失败",
   "transcribedSuccessfully": "语音转文本成功",
   "transcribing": "正在语音转文本",
   "notTranscribedYet": "尚未语音转文本",
