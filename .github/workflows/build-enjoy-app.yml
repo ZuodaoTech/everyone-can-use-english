@@ -6,6 +6,7 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [macos-12, macos-14, windows-latest, ubuntu-latest]
     steps:
@@ -14,12 +15,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Get current time
-        uses: josStorer/get-current-time@v2
-        id: current-time
-        with:
-          format: YYYYMMDDHHmm
 
       - uses: actions/cache@v4
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
@@ -48,7 +43,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Enjoy-${{ runner.os }}-${{ matrix.os == 'macos-14' && 'arm64' || 'x64' }}-build-${{ github.ref_name }}-${{ steps.current-time.outputs.formattedTime }}
+          name: Enjoy-${{ runner.os }}-${{ matrix.os == 'macos-14' && 'arm64' || 'x64' }}-build-${{ github.sha }}
           path: |
             enjoy/out/make/**/*.deb
             enjoy/out/make/**/*.rpm
