@@ -252,7 +252,7 @@ export const AssistantMessageComponent = (props: {
             </SheetClose>
           </SheetHeader>
 
-          {Boolean(speech) && <AudioPlayer md5={speech.md5} />}
+          {Boolean(speech) && shadowing && <AudioPlayer md5={speech.md5} />}
         </SheetContent>
       </Sheet>
     </div>

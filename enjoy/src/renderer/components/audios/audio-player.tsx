@@ -26,6 +26,10 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
 
   useEffect(() => {
     setRef(ref);
+
+    return () => {
+      setRef(null);
+    };
   }, [ref]);
 
   return (

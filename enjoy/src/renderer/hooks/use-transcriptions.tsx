@@ -9,7 +9,6 @@ import { toast } from "@renderer/components/ui";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@/constants";
 import { t } from "i18next";
-import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
   const { whisperConfig } = useContext(AISettingsProviderContext);
@@ -33,7 +32,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const findOrCreateTranscription =
     async (): Promise<TranscriptionType | void> => {
       if (!media) return;
-      if (transcription) return;
+      if (transcription?.targetId === media.id) return;
 
       return EnjoyApp.transcriptions
         .findOrCreate({
@@ -53,7 +52,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     };
 
   const generateTranscription = async () => {
-    if (transcribing) return;
+    if (transcription?.targetId === media.id) return;
 
     let originalText: string;
     if (transcription) {
