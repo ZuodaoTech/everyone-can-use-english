@@ -425,13 +425,6 @@ export const MediaCaption = () => {
                               .join("")
                           )
                           .join(" · ")}
-                        /,
-                      </span>
-                      <span>
-                        /
-                        {word.timeline
-                          .map((t) => t.timeline.map((s) => s.text).join(""))
-                          .join(" · ")}
                         /
                       </span>
                     </div>
