@@ -229,6 +229,12 @@ export class Audio extends Model<Audio> {
         targetType: "Audio",
       },
     });
+    Transcription.destroy({
+      where: {
+        targetId: audio.id,
+        targetType: "Audio",
+      },
+    });
 
     const webApi = new Client({
       baseUrl: process.env.WEB_API_URL || WEB_API_URL,

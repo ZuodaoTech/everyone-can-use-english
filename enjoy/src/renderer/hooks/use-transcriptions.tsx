@@ -9,6 +9,7 @@ import { toast } from "@renderer/components/ui";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@/constants";
 import { t } from "i18next";
+import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
   const { whisperConfig } = useContext(AISettingsProviderContext);
@@ -29,44 +30,49 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
       setTranscription(record);
     }
   };
-  const findOrCreateTranscription = async () => {
-    if (!media) return;
-    if (transcription) return;
+  const findOrCreateTranscription =
+    async (): Promise<TranscriptionType | void> => {
+      if (!media) return;
+      if (transcription) return;
 
-    return EnjoyApp.transcriptions
-      .findOrCreate({
-        targetId: media.id,
-        targetType: media.mediaType,
-      })
-      .then((t) => {
-        if (t.result && !t.result["transcript"]) {
-          t.result = null;
-        }
-        setTranscription(t);
-      })
-      .catch((err) => {
-        toast.error(err.message);
-      });
-  };
+      return EnjoyApp.transcriptions
+        .findOrCreate({
+          targetId: media.id,
+          targetType: media.mediaType,
+        })
+        .then((t) => {
+          if (t.result && !t.result["originalText"] && !t.result["timeline"]) {
+            t.result = null;
+          }
+          setTranscription(t);
+          return t;
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
+    };
 
   const generateTranscription = async () => {
     if (transcribing) return;
-    if (!transcription) {
-      await findOrCreateTranscription();
+
+    let originalText: string;
+    if (transcription) {
+      originalText = transcription.result?.originalText;
+    } else {
+      const r = await findOrCreateTranscription();
+      if (r) {
+        originalText = r.result?.originalText;
+      }
     }
 
-    const { result } = transcription;
     setTranscribing(true);
     setTranscribingProgress(0);
     try {
-      const { engine, model, alignmentResult, originalText } = await transcribe(
-        media.src,
-        {
-          targetId: media.id,
-          targetType: media.mediaType,
-          originalText: result?.originalText,
-        }
-      );
+      const { engine, model, alignmentResult } = await transcribe(media.src, {
+        targetId: media.id,
+        targetType: media.mediaType,
+        originalText,
+      });
 
       let timeline: TimelineEntry[] = [];
       if (alignmentResult) {
@@ -132,14 +138,16 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     });
 
     const transcript = (res?.transcriptions || []).filter((t) =>
-      ["base", "small", "medium", "large", "whisper-1"].includes(t.model)
+      ["base", "small", "medium", "large", "whisper-1", "original"].includes(
+        t.model
+      )
     )?.[0];
 
     if (!transcript) {
       return Promise.reject("Transcription not found");
     }
 
-    if (!transcript.result["transcript"]) {
+    if (!transcript.result["timeline"]) {
       return Promise.reject("Transcription not aligned");
     }
 
@@ -155,17 +163,23 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     try {
       await findTranscriptionFromWebApi();
     } catch (err) {
-      console.error(err);
+      console.warn(err);
       await generateTranscription();
     }
   };
 
+  /*
+   * find or create transcription
+   */
   useEffect(() => {
     if (!media) return;
 
     findOrCreateTranscription();
   }, [media]);
 
+  /*
+   * auto-generate transcription result
+   */
   useEffect(() => {
     if (!transcription) return;
 
@@ -173,7 +187,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
 
     if (
       transcription.state == "pending" ||
-      !transcription.result?.["transcript"]
+      !transcription.result?.["timeline"]
     ) {
       findOrGenerateTranscription();
     }

@@ -104,6 +104,7 @@ export const AssistantMessageComponent = (props: {
           speech.text.length > 20
             ? speech.text.substring(0, 17).trim() + "..."
             : speech.text,
+        originalText: speech.text,
       });
       setResourcing(false);
     }
