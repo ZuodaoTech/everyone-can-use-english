@@ -336,7 +336,8 @@ export const MediaCaption = () => {
       <ScrollArea className="flex-1 px-6 py-4 font-serif h-full border shadow-lg rounded-lg">
         <div className="flex flex-wrap mb-4">
           {/* use the words splitted by caption text if it is matched with the timeline length, otherwise use the timeline */}
-          {caption.text.includes("-")
+          {caption.text.includes("-") ||
+          caption.text.split(" ").length !== caption.timeline.length
             ? (caption.timeline || []).map((w, index) => (
                 <div
                   key={index}
