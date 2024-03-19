@@ -210,7 +210,7 @@ export const MediaCaption = () => {
     if (!caption?.timeline) return;
     if (!activeRegion) return;
 
-    if (!activeRegion.id.startsWith("word-region")) {
+    if (activeRegion.id.startsWith("segment-region")) {
       setSelectedIndices([]);
       return;
     }
@@ -227,11 +227,6 @@ export const MediaCaption = () => {
       }
     });
 
-    if (indices.length > 0) {
-      const el = document.getElementById(
-        `word-${currentSegmentIndex}-${indices[0]}`
-      );
-    }
     setSelectedIndices(indices);
     setLookupResult(undefined);
   }, [caption, activeRegion]);

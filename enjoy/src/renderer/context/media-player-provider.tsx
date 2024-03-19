@@ -360,10 +360,10 @@ export const MediaPlayerProvider = ({
 
     const containerWidth = ref.current.getBoundingClientRect().width;
     const duration = activeRegion.end - activeRegion.start;
-    if (activeRegion.id.startsWith("segment-region")) {
-      setFitZoomRatio(containerWidth / duration / minPxPerSec);
-    } else if (activeRegion.id.startsWith("word-region")) {
+    if (activeRegion.id.startsWith("word-region")) {
       setFitZoomRatio(containerWidth / 3 / duration / minPxPerSec);
+    } else {
+      setFitZoomRatio(containerWidth / duration / minPxPerSec);
     }
 
     return () => {

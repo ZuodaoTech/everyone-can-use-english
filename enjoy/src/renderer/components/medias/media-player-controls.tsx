@@ -27,6 +27,7 @@ import {
   SaveIcon,
   UndoIcon,
   TextCursorInputIcon,
+  GroupIcon,
 } from "lucide-react";
 import { t } from "i18next";
 import { Tooltip } from "react-tooltip";
@@ -34,6 +35,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
 
 const PLAYBACK_RATE_OPTIONS = [0.75, 0.8, 0.9, 1.0];
 export const MediaPlayerControls = () => {
@@ -58,7 +60,7 @@ export const MediaPlayerControls = () => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("single");
   const [playbackRate, setPlaybackRate] = useState<number>(1);
-  const [isSelectingRegion, setIsSelectingRegion] = useState(false);
+  const [grouping, setGrouping] = useState(false);
 
   const playOrPause = () => {
     if (!wavesurfer) return;
@@ -160,6 +162,46 @@ export const MediaPlayerControls = () => {
   // Debounce updateSegmentRegion
   const debouncedUpdateSegmentRegion = debounce(updateSegmentRegion, 100);
 
+  const groupMeanings = () => {
+    regions
+      .getRegions()
+      .filter((r) => r.id.startsWith("meaning-group-region"))
+      .forEach((r) => r.remove());
+
+    const groups: { start: number; end: number }[] = [];
+    const segment = transcription?.result?.timeline[currentSegmentIndex];
+    if (!segment) return;
+
+    let start = segment.timeline[0].startTime;
+    let end = segment.timeline[0].endTime;
+    segment.timeline.forEach((word: TimelineEntry, i: number) => {
+      if (word.startTime - end < 0.15 || end - start < 0.5) {
+        end = word.endTime;
+      } else {
+        groups.push({ start, end });
+        start = word.startTime;
+        end = word.endTime;
+      }
+    });
+    groups.push({ start, end });
+
+    const groupRegions: RegionType[] = [];
+    groups.forEach((group) => {
+      groupRegions.push(
+        regions.addRegion({
+          id: `meaning-group-region-${Date.now()}`,
+          start: group.start,
+          end: group.end,
+          color: "rgba(76, 201, 240, 0.2)",
+          drag: false,
+          resize: false,
+        })
+      );
+    });
+
+    setActiveRegion(groupRegions[0]);
+  };
+
   /*
    * Update segmentRegion when currentSegmentIndex is updated
    */
@@ -187,31 +229,9 @@ export const MediaPlayerControls = () => {
     if (!regions) return;
     if (!transcription?.result) return;
 
-    let disableSelectingRegion: () => void;
-    if (isSelectingRegion) {
-      wavesurfer
-        .getWrapper()
-        .querySelectorAll(".pitch-contour")
-        .forEach((el: HTMLDivElement) => {
-          el.style.zIndex = "3";
-        });
-      disableSelectingRegion = regions.enableDragSelection({
-        id: `custom-region-${Date.now()}`,
-        color: "rgba(76, 201, 240, 0.2)",
-        drag: false,
-      });
-    } else {
-      regions
-        .getRegions()
-        .filter((r) => r.id.startsWith("custom-region"))
-        .forEach((r) => r.remove());
-
-      if (!activeRegion || activeRegion?.id.startsWith("custom-region")) {
-        setActiveRegion(
-          regions.getRegions().find((r) => r.id.startsWith("segment-region"))
-        );
-      }
-    }
+    const segmentRegion = regions
+      .getRegions()
+      .find((r) => r.id === `segment-region-${currentSegmentIndex}`);
 
     const subscriptions = [
       wavesurfer.on("finish", () => {
@@ -221,19 +241,7 @@ export const MediaPlayerControls = () => {
       }),
 
       regions.on("region-updated", (region) => {
-        const segmentRegion = regions
-          .getRegions()
-          .find((r) => r.id === `segment-region-${currentSegmentIndex}`);
-
-        // limit the custom region always in the segment region
-        if (region.id.startsWith("custom-region")) {
-          if (region.start < segmentRegion.start) {
-            region.setOptions({ start: segmentRegion.start });
-          }
-          if (region.end > segmentRegion.end) {
-            region.setOptions({ start: region.start, end: segmentRegion.end });
-          }
-        } else if (region !== segmentRegion) {
+        if (region !== segmentRegion) {
           return;
         }
 
@@ -261,18 +269,21 @@ export const MediaPlayerControls = () => {
         setTranscriptionDraft(draft);
       }),
 
-      regions.on("region-created", (region: RegionType) => {
-        if (region.id.startsWith("custom-region")) {
-          disableSelectingRegion?.();
+      regions.on("region-clicked", (region, event) => {
+        if (region.id.startsWith("meaning-group-region")) {
           setActiveRegion(region);
+          region.play();
+          event.stopPropagation();
         }
       }),
 
       regions.on("region-out", (region) => {
+        if (region !== activeRegion && region !== segmentRegion) return;
+
         if (playMode === "loop") {
           wavesurfer.pause();
           setTimeout(() => {
-            region.play();
+            activeRegion.play();
           }, 500);
         } else if (playMode === "single") {
           wavesurfer.pause();
@@ -281,16 +292,9 @@ export const MediaPlayerControls = () => {
     ];
 
     return () => {
-      disableSelectingRegion?.();
       subscriptions.forEach((unsub) => unsub());
     };
-  }, [
-    playMode,
-    regions,
-    transcription,
-    currentSegmentIndex,
-    isSelectingRegion,
-  ]);
+  }, [playMode, regions, transcription, currentSegmentIndex, activeRegion]);
 
   /*
    * Auto select the firt segment when everything is ready
@@ -372,6 +376,10 @@ export const MediaPlayerControls = () => {
     [wavesurfer]
   );
 
+  /*
+   * Fit zoom ratio when activeRegion is word or segment
+   * not in playMode all
+   */
   useEffect(() => {
     if (!activeRegion) return;
     if (zoomRatio === fitZoomRatio) return;
@@ -385,19 +393,47 @@ export const MediaPlayerControls = () => {
     }
   }, [activeRegion, fitZoomRatio]);
 
+  /*
+   * Remove word regions when meaning group region is active
+   * and vice versa
+   */
   useEffect(() => {
     if (!regions) return;
     if (!activeRegion) return;
 
-    if (activeRegion.id.startsWith("custom-region")) {
+    if (activeRegion.id.startsWith("meaning-group-region")) {
       regions
         .getRegions()
         .filter((r) => r.id.startsWith("word-region"))
         .forEach((r) => r.remove());
     } else {
-      setIsSelectingRegion(false);
+      setGrouping(false);
     }
   }, [regions, activeRegion]);
+
+  /*
+   * toggle meaning groups
+   */
+  useEffect(() => {
+    if (grouping) {
+      groupMeanings();
+    }
+
+    return () => {
+      const currentRegions = regions.getRegions();
+      currentRegions
+        .filter((r) => r.id.startsWith("meaning-group-region"))
+        .forEach((r) => r.remove());
+
+      const wordRegion = currentRegions.find((r) =>
+        r.id.startsWith("word-region")
+      );
+      const segmentRegion = currentRegions.find((r) =>
+        r.id.startsWith("segment-region")
+      );
+      setActiveRegion(wordRegion || segmentRegion);
+    };
+  }, [grouping]);
 
   return (
     <div className="w-full h-20 flex items-center justify-center px-6">
@@ -527,14 +563,14 @@ export const MediaPlayerControls = () => {
         </Button>
 
         <Button
-          variant={isSelectingRegion ? "secondary" : "ghost"}
+          variant={grouping ? "secondary" : "ghost"}
           size="icon"
           data-tooltip-id="media-player-controls-tooltip"
-          data-tooltip-content={t("selectRegion")}
+          data-tooltip-content={t("groupMeanings")}
           className="relative aspect-square p-0 h-10"
-          onClick={() => setIsSelectingRegion(!isSelectingRegion)}
+          onClick={() => setGrouping(!grouping)}
         >
-          <TextCursorInputIcon className="w-6 h-6" />
+          <GroupIcon className="w-6 h-6" />
         </Button>
 
         <div className="relative">
