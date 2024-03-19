@@ -3,6 +3,7 @@
 @import "@vidstack/react/player/styles/default/layouts/audio.css";
 @import "@vidstack/react/player/styles/default/layouts/video.css";
 @import "intl-tel-input/build/css/intlTelInput.css";
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
 
 @tailwind base;
 @tailwind components;

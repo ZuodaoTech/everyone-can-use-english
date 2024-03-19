@@ -11,6 +11,9 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        code: ['"Source Code Pro"'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

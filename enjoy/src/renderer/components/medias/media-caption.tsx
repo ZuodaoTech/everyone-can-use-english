@@ -5,7 +5,6 @@ import { Button, toast, ScrollArea, Separator } from "@renderer/components/ui";
 import { t } from "i18next";
 import { LanguagesIcon, SpeechIcon } from "lucide-react";
 import { Timeline } from "echogarden/dist/utilities/Timeline.d.js";
-import { IPA_MAPPING } from "@/constants";
 import { useAiCommand } from "@renderer/hooks";
 import { LoaderIcon } from "lucide-react";
 import { convertIpaToNormal } from "@/utils";
@@ -354,7 +353,7 @@ export const MediaCaption = () => {
                   <div className="">
                     <div className="text-2xl">{w.text}</div>
                     {displayIpa && (
-                      <div className="text-muted-foreground">
+                      <div className="text-muted-foreground font-code">
                         {w.timeline
                           .map((t) =>
                             t.timeline
@@ -379,7 +378,7 @@ export const MediaCaption = () => {
                   <div className="">
                     <div className="text-2xl">{word}</div>
                     {displayIpa && (
-                      <div className="text-muted-foreground">
+                      <div className="text-muted-foreground font-code">
                         {caption.timeline[index].timeline
                           .map((t) =>
                             t.timeline
@@ -417,7 +416,7 @@ export const MediaCaption = () => {
                       {word.text}
                     </div>
                     <div className="text-sm text-serif text-muted-foreground">
-                      <span className="mr-2">
+                      <span className="mr-2 font-code">
                         /
                         {word.timeline
                           .map((t) =>
