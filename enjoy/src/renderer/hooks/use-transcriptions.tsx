@@ -113,9 +113,9 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
           const words = sentence.text.split(" ");
 
           sentence.timeline.forEach((token, j) => {
-            const word = words[j].trim().toLowerCase();
+            const word = words[j]?.trim()?.toLowerCase();
 
-            const match = word.match(/-|%/);
+            const match = word?.match(/-|%/);
             if (!match) return;
 
             for (let k = j + 1; k <= sentence.timeline.length - 1; k++) {

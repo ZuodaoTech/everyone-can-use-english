@@ -56,6 +56,28 @@ export const Sidebar = () => {
               </Link>
 
               <Link
+                to="/conversations"
+                data-tooltip-id="sidebar-tooltip"
+                data-tooltip-content={t("sidebar.aiAssistant")}
+                data-testid="sidebar-conversations"
+                className="block"
+              >
+                <Button
+                  variant={
+                    activeTab.startsWith("conversations")
+                      ? "secondary"
+                      : "ghost"
+                  }
+                  className="w-full xl:justify-start"
+                >
+                  <BotIcon className="xl:mr-2 h-5 w-5" />
+                  <span className="hidden xl:block">
+                    {t("sidebar.aiAssistant")}
+                  </span>
+                </Button>
+              </Link>
+
+              <Link
                 to="/community"
                 data-tooltip-id="sidebar-tooltip"
                 data-tooltip-content={t("sidebar.community")}
@@ -163,28 +185,6 @@ export const Sidebar = () => {
                 {t("sidebar.mine")}
               </h3>
               <div className="xl:pl-3 space-y-2">
-                <Link
-                  to="/conversations"
-                  data-tooltip-id="sidebar-tooltip"
-                  data-tooltip-content={t("sidebar.aiAssistant")}
-                  data-testid="sidebar-conversations"
-                  className="block"
-                >
-                  <Button
-                    variant={
-                      activeTab.startsWith("conversations")
-                        ? "secondary"
-                        : "ghost"
-                    }
-                    className="w-full xl:justify-start"
-                  >
-                    <BotIcon className="xl:mr-2 h-5 w-5" />
-                    <span className="hidden xl:block">
-                      {t("sidebar.aiAssistant")}
-                    </span>
-                  </Button>
-                </Link>
-
                 <Link
                   to="/vocabulary"
                   data-tooltip-id="sidebar-tooltip"
