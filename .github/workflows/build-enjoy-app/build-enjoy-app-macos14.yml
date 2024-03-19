@@ -1,14 +1,10 @@
-name: Build Enjoy App
+name: Build Enjoy App (macos-14)
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-12, macos-14, windows-latest, ubuntu-latest]
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
 
@@ -20,13 +16,12 @@ jobs:
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: "**/node_modules"
-          key: ${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
         run: yarn install
 
       - name: Install Apple certificate
-        if: contains(matrix.os, 'macos')
         env:
           MACOS_CERTIFICATE_APPLICATION_BASE64: ${{ secrets.MACOS_CERTIFICATE_APPLICATION_BASE64 }}
           MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
@@ -35,17 +30,14 @@ jobs:
       - name: Make
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-          APPLE_ID: ${{ runner.os == 'macOS' && secrets.APPLE_ID || '' }}
-          APPLE_APP_PASSWORD: ${{ runner.os == 'macOS' && secrets.APPLE_APP_PASSWORD || '' }}
-          APPLE_TEAM_ID: ${{ runner.os == 'macOS' && secrets.APPLE_TEAM_ID || '' }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: yarn run enjoy:make
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Enjoy-${{ runner.os }}-${{ matrix.os == 'macos-14' && 'arm64' || 'x64' }}-build-${{ github.sha }}
+          name: Enjoy-${{ runner.os }}-arm64-build-${{ github.sha }}
           path: |
-            enjoy/out/make/**/*.deb
-            enjoy/out/make/**/*.rpm
-            enjoy/out/make/**/*.exe
             enjoy/out/make/**/*.dmg
