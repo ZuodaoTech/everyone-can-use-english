@@ -37,6 +37,8 @@ import {
   ChevronDownIcon,
   MoreVerticalIcon,
   TextCursorInputIcon,
+  MicIcon,
+  SquareIcon,
 } from "lucide-react";
 import { t } from "i18next";
 import { formatDuration } from "@renderer/lib/utils";
@@ -46,6 +48,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
   const { height = 192 } = props;
   const {
     isRecording,
+    setIsRecording,
     currentRecording,
     renderPitchContour: renderMediaPitchContour,
     regions: mediaRegions,
@@ -67,6 +70,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
 
   const [frequencies, setFrequencies] = useState<number[]>([]);
   const [peaks, setPeaks] = useState<number[]>([]);
+  const [width, setWidth] = useState<number>();
 
   const ref = useRef(null);
 
@@ -191,6 +195,15 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
       });
   };
 
+  const calContainerWidth = () => {
+    const w = document
+      .querySelector(".media-recording-container")
+      ?.getBoundingClientRect()?.width;
+    if (!w) return;
+
+    setWidth(w - 48);
+  };
+
   useEffect(() => {
     if (!ref.current) return;
     if (isRecording) return;
@@ -305,9 +318,6 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     const scrollContainer = player.getWrapper()?.closest(".scroll");
     if (!scrollContainer) return;
 
-    scrollContainer.style.width = `${
-      ref.current.getBoundingClientRect().width
-    }px`;
     scrollContainer.style.scrollbarWidth = "thin";
   }, [ref, player]);
 
@@ -335,6 +345,25 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     mediaActiveRegion,
   ]);
 
+  useEffect(() => {
+    if (!ref?.current) return;
+
+    ref.current.style.width = `${width}px`;
+  }, [width]);
+
+  useEffect(() => {
+    calContainerWidth();
+    window.addEventListener("resize", () => {
+      calContainerWidth();
+    });
+
+    return () => {
+      window.removeEventListener("resize", () => {
+        calContainerWidth();
+      });
+    };
+  }, []);
+
   useHotkeys(
     ["Ctrl+R", "Meta+R"],
     (keyboardEvent, hotkeyEvent) => {
@@ -354,18 +383,27 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
   if (isRecording) return <MediaRecorder />;
   if (!currentRecording?.src)
     return (
-      <div className="h-full w-full border rounded-xl shadow-lg flex items-center justify-center">
-        <div
-          className="m-auto"
-          dangerouslySetInnerHTML={{
-            __html: t("noRecordingForThisSegmentYet"),
-          }}
-        ></div>
+      <div className="h-full w-full flex items-center space-x-4">
+        <div className="flex-1 h-full border rounded-xl shadow-lg flex items-start">
+          <div
+            className="m-auto"
+            dangerouslySetInnerHTML={{
+              __html: t("noRecordingForThisSegmentYet"),
+            }}
+          ></div>
+        </div>
+
+        <div className="h-full flex flex-col justify-start space-y-1.5">
+          <MediaRecordButton
+            isRecording={isRecording}
+            setIsRecording={setIsRecording}
+          />
+        </div>
       </div>
     );
 
   return (
-    <div className="flex space-x-4">
+    <div className="flex space-x-4 media-recording-container">
       <div className="border rounded-xl shadow-lg flex-1 relative">
         <div ref={ref}></div>
 
@@ -380,7 +418,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         </div>
       </div>
 
-      <div className="flex flex-col space-y-1.5">
+      <div className="flex flex-col justify-around space-y-1.5">
         <Button
           variant="default"
           size="icon"
@@ -406,6 +444,11 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
             <PlayIcon className="w-4 h-4" />
           )}
         </Button>
+
+        <MediaRecordButton
+          isRecording={isRecording}
+          setIsRecording={setIsRecording}
+        />
 
         <Button
           variant={isComparing ? "secondary" : "outline"}
@@ -492,6 +535,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
       <Sheet open={detailIsOpen} onOpenChange={(open) => setDetailIsOpen(open)}>
         <SheetContent
           side="bottom"
@@ -508,5 +552,31 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         </SheetContent>
       </Sheet>
     </div>
+  );
+};
+
+export const MediaRecordButton = (props: {
+  isRecording: boolean;
+  setIsRecording: (value: boolean) => void;
+}) => {
+  const { isRecording, setIsRecording } = props;
+
+  return (
+    <Button
+      variant="ghost"
+      onClick={() => setIsRecording(!isRecording)}
+      id="media-record-button"
+      data-tooltip-id="media-player-controls-tooltip"
+      data-tooltip-content={
+        isRecording ? t("stopRecording") : t("startRecording")
+      }
+      className="aspect-square p-0 h-8 rounded-full bg-red-500 hover:bg-red-500/90"
+    >
+      {isRecording ? (
+        <SquareIcon fill="white" className="w-4 h-4 text-white" />
+      ) : (
+        <MicIcon className="w-4 h-4 text-white" />
+      )}
+    </Button>
   );
 };

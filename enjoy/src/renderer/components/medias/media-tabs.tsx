@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import {
-  MediaPlayer,
+  MediaProvider,
   MediaTranscription,
   MediaInfoPanel,
   MediaRecordings,
@@ -11,7 +11,7 @@ import { t } from "i18next";
 
 export const MediaTabs = () => {
   const { media, decoded } = useContext(MediaPlayerProviderContext);
-  const [tab, setTab] = useState("player");
+  const [tab, setTab] = useState("provider");
 
   useEffect(() => {
     if (!decoded) return;
@@ -27,9 +27,9 @@ export const MediaTabs = () => {
         {media.mediaType === "Video" && (
           <div
             className={`rounded cursor-pointer px-2 py-1 text-sm text-center capitalize ${
-              tab === "player" ? "bg-background" : ""
+              tab === "provider" ? "bg-background" : ""
             }`}
-            onClick={() => setTab("player")}
+            onClick={() => setTab("provider")}
           >
             {t("player")}
           </div>
@@ -61,8 +61,8 @@ export const MediaTabs = () => {
         </div>
       </div>
 
-      <div className={tab === "player" ? "" : "hidden"}>
-        <MediaPlayer />
+      <div className={tab === "provider" ? "" : "hidden"}>
+        <MediaProvider />
       </div>
       <div className={tab === "recordings" ? "" : "hidden"}>
         <MediaRecordings />

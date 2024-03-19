@@ -6,31 +6,20 @@ import {
   MediaPlayerControls,
   MediaTabs,
   MediaCurrentRecording,
+  MediaPlayer,
 } from "@renderer/components";
-import { formatDuration } from "@renderer/lib/utils";
 import { useAudio } from "@renderer/hooks";
 
 export const AudioPlayer = (props: { id?: string; md5?: string }) => {
   const { id, md5 } = props;
-  const { media, currentTime, setMedia, setRef } = useContext(
-    MediaPlayerProviderContext
-  );
+  const { setMedia } = useContext(MediaPlayerProviderContext);
   const { audio } = useAudio({ id, md5 });
-  const ref = useRef(null);
 
   useEffect(() => {
     if (!audio) return;
 
     setMedia(audio);
   }, [audio]);
-
-  useEffect(() => {
-    setRef(ref);
-
-    return () => {
-      setRef(null);
-    };
-  }, [ref]);
 
   return (
     <div data-testid="audio-player">
@@ -51,18 +40,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
         </div>
 
         <div className="w-full h-[13rem] px-6 py-2 mb-4">
-          <div className="border rounded-xl shadow-lg relative">
-            <div data-testid="media-player-container" ref={ref} />
-            <div className="absolute right-2 top-1">
-              <span className="text-sm">
-                {formatDuration(currentTime || 0)}
-              </span>
-              <span className="mx-1">/</span>
-              <span className="text-sm">
-                {formatDuration(media?.duration || 0)}
-              </span>
-            </div>
-          </div>
+          <MediaPlayer />
         </div>
 
         <div className="w-full bg-background z-10 shadow-xl">

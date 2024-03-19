@@ -1,15 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { type Region as RegionType } from "wavesurfer.js/dist/plugins/regions";
 import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogCancel,
-  AlertDialogAction,
   DropdownMenu,
   DropdownMenuItem,
   DropdownMenuTrigger,
@@ -18,7 +9,6 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  toast,
 } from "@renderer/components/ui";
 import {
   MediaPlayerProviderContext,
@@ -31,17 +21,9 @@ import {
   Repeat1Icon,
   RepeatIcon,
   GaugeIcon,
-  ZoomInIcon,
-  ZoomOutIcon,
-  MicIcon,
-  MinimizeIcon,
-  GalleryHorizontalIcon,
-  SpellCheckIcon,
-  Share2Icon,
   ListRestartIcon,
   SkipForwardIcon,
   SkipBackIcon,
-  SquareIcon,
   SaveIcon,
   UndoIcon,
   TextCursorInputIcon,
@@ -54,14 +36,8 @@ import debounce from "lodash/debounce";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 
 const PLAYBACK_RATE_OPTIONS = [0.75, 0.8, 0.9, 1.0];
-const ZOOM_RATIO_OPTIONS = [
-  0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 3.5, 4.0,
-];
-const MIN_ZOOM_RATIO = 0.25;
-const MAX_ZOOM_RATIO = 4.0;
 export const MediaPlayerControls = () => {
   const {
-    media,
     decoded,
     wavesurfer,
     currentTime,
@@ -71,7 +47,6 @@ export const MediaPlayerControls = () => {
     setZoomRatio,
     fitZoomRatio,
     transcription,
-    pitchChart,
     regions,
     activeRegion,
     setActiveRegion,
@@ -79,14 +54,10 @@ export const MediaPlayerControls = () => {
     setEditingRegion,
     transcriptionDraft,
     setTranscriptionDraft,
-    isRecording,
-    setIsRecording,
   } = useContext(MediaPlayerProviderContext);
-  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("single");
   const [playbackRate, setPlaybackRate] = useState<number>(1);
-  const [displayInlineCaption, setDisplayInlineCaption] =
-    useState<boolean>(true);
   const [isSelectingRegion, setIsSelectingRegion] = useState(false);
 
   const playOrPause = () => {
@@ -114,34 +85,6 @@ export const MediaPlayerControls = () => {
     if (!segment) return;
 
     setCurrentSegmentIndex(currentSegmentIndex + 1);
-  };
-
-  const onShare = async () => {
-    if (!media.source && !media.isUploaded) {
-      try {
-        await EnjoyApp.audios.upload(media.id);
-      } catch (err) {
-        toast.error(t("shareFailed"), {
-          description: err.message,
-        });
-        return;
-      }
-    }
-    webApi
-      .createPost({
-        targetType: media.mediaType,
-        targetId: media.id,
-      })
-      .then(() => {
-        toast.success(t("sharedSuccessfully"), {
-          description: t("sharedAudio"),
-        });
-      })
-      .catch((err) => {
-        toast.error(t("shareFailed"), {
-          description: err.message,
-        });
-      });
   };
 
   /*
@@ -457,228 +400,144 @@ export const MediaPlayerControls = () => {
   }, [regions, activeRegion]);
 
   return (
-    <div className="w-full h-20 flex items-center justify-between px-6">
-      <div className="flex items-center justify-start space-x-6">
-        <div className="flex items-center space-x-1">
-          {wavesurfer?.isPlaying() ? (
+    <div className="w-full h-20 flex items-center justify-center px-6">
+      <div className="flex items-center justify-center space-x-2">
+        <Popover>
+          <PopoverTrigger asChild>
             <Button
-              variant="default"
-              onClick={debouncedPlayOrPause}
-              id="media-play-or-pause-button"
+              variant={`${playbackRate == 1.0 ? "ghost" : "secondary"}`}
               data-tooltip-id="media-player-controls-tooltip"
-              data-tooltip-content={t("pause")}
-              className="aspect-square p-0 h-12 rounded-full"
+              data-tooltip-content={t("playbackSpeed")}
+              className="relative aspect-square p-0 h-10"
             >
-              <PauseIcon fill="white" className="w-6 h-6" />
+              <GaugeIcon className="w-6 h-6" />
+              {playbackRate != 1.0 && (
+                <span className="absolute left-[1.25rem] top-6 text-[0.6rem] font-bold text-gray-400">
+                  {playbackRate.toFixed(2)}
+                </span>
+              )}
             </Button>
-          ) : (
+          </PopoverTrigger>
+          <PopoverContent className="w-96">
+            <div className="mb-4 text-center">{t("playbackRate")}</div>
+            <div className="w-full rounded-full flex items-center justify-between bg-muted">
+              {PLAYBACK_RATE_OPTIONS.map((rate, i) => (
+                <div
+                  key={i}
+                  className={`cursor-pointer h-10 w-10 leading-10 rounded-full flex items-center justify-center ${
+                    rate === playbackRate
+                      ? "bg-primary text-white text-md"
+                      : "text-black/70 text-xs"
+                  }`}
+                  onClick={() => {
+                    setPlaybackRate(rate);
+                  }}
+                >
+                  <span className="">{rate}</span>
+                </div>
+              ))}
+            </div>
+          </PopoverContent>
+        </Popover>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
             <Button
-              variant="default"
-              onClick={debouncedPlayOrPause}
-              id="media-play-or-pause-button"
+              variant="ghost"
               data-tooltip-id="media-player-controls-tooltip"
-              data-tooltip-content={t("play")}
-              className="aspect-square p-0 h-12 rounded-full"
+              data-tooltip-content={t("switchPlayMode")}
+              className="aspect-square p-0 h-10"
             >
-              <PlayIcon fill="white" className="w-6 h-6" />
+              {playMode === "single" && <RepeatIcon className="w-6 h-6" />}
+              {playMode === "loop" && <Repeat1Icon className="w-6 h-6" />}
+              {playMode === "all" && <ListRestartIcon className="w-6 h-6" />}
             </Button>
-          )}
-        </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem
+              className={playMode === "single" ? "bg-muted" : ""}
+              onClick={() => setPlayMode("single")}
+            >
+              <RepeatIcon className="w-4 h-4 mr-2" />
+              <span>{t("playSingleSegment")}</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className={playMode === "loop" ? "bg-muted" : ""}
+              onClick={() => setPlayMode("loop")}
+            >
+              <Repeat1Icon className="w-4 h-4 mr-2" />
+              <span>{t("playInLoop")}</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className={playMode === "all" ? "bg-muted" : ""}
+              onClick={() => setPlayMode("all")}
+            >
+              <ListRestartIcon className="w-4 h-4 mr-2" />
+              <span>{t("playAllSegments")}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
-        <div className="flex items-center space-x-1">
+        <Button
+          variant="ghost"
+          size="lg"
+          onClick={onPrev}
+          id="media-play-previous-button"
+          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-content={t("playPreviousSegment")}
+          className="aspect-square p-0 h-10"
+        >
+          <SkipBackIcon className="w-6 h-6" />
+        </Button>
+
+        {wavesurfer?.isPlaying() ? (
           <Button
-            variant="ghost"
-            size="lg"
-            onClick={onPrev}
-            id="media-play-previous-button"
+            variant="default"
+            onClick={debouncedPlayOrPause}
+            id="media-play-or-pause-button"
             data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("playPreviousSegment")}
-            className="aspect-square p-0 h-10"
+            data-tooltip-content={t("pause")}
+            className="aspect-square p-0 h-12 rounded-full"
           >
-            <SkipBackIcon className="w-6 h-6" />
+            <PauseIcon fill="white" className="w-6 h-6" />
           </Button>
-
+        ) : (
           <Button
-            variant="ghost"
-            size="lg"
-            onClick={onNext}
-            id="media-play-next-button"
+            variant="default"
+            onClick={debouncedPlayOrPause}
+            id="media-play-or-pause-button"
             data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("playNextSegment")}
-            className="aspect-square p-0 h-10"
+            data-tooltip-content={t("play")}
+            className="aspect-square p-0 h-12 rounded-full"
           >
-            <SkipForwardIcon className="w-6 h-6" />
+            <PlayIcon fill="white" className="w-6 h-6" />
           </Button>
+        )}
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                data-tooltip-id="media-player-controls-tooltip"
-                data-tooltip-content={t("switchPlayMode")}
-                className="aspect-square p-0 h-10"
-              >
-                {playMode === "single" && <RepeatIcon className="w-6 h-6" />}
-                {playMode === "loop" && <Repeat1Icon className="w-6 h-6" />}
-                {playMode === "all" && <ListRestartIcon className="w-6 h-6" />}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem
-                className={playMode === "single" ? "bg-muted" : ""}
-                onClick={() => setPlayMode("single")}
-              >
-                <RepeatIcon className="w-4 h-4 mr-2" />
-                <span>{t("playSingleSegment")}</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className={playMode === "loop" ? "bg-muted" : ""}
-                onClick={() => setPlayMode("loop")}
-              >
-                <Repeat1Icon className="w-4 h-4 mr-2" />
-                <span>{t("playInLoop")}</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className={playMode === "all" ? "bg-muted" : ""}
-                onClick={() => setPlayMode("all")}
-              >
-                <ListRestartIcon className="w-4 h-4 mr-2" />
-                <span>{t("playAllSegments")}</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <Button
+          variant="ghost"
+          size="lg"
+          onClick={onNext}
+          id="media-play-next-button"
+          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-content={t("playNextSegment")}
+          className="aspect-square p-0 h-10"
+        >
+          <SkipForwardIcon className="w-6 h-6" />
+        </Button>
 
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={`${playbackRate == 1.0 ? "ghost" : "secondary"}`}
-                data-tooltip-id="media-player-controls-tooltip"
-                data-tooltip-content={t("playbackSpeed")}
-                className="relative aspect-square p-0 h-10"
-              >
-                <GaugeIcon className="w-6 h-6" />
-                {playbackRate != 1.0 && (
-                  <span className="absolute left-[1.25rem] top-6 text-[0.6rem] font-bold text-gray-400">
-                    {playbackRate.toFixed(2)}
-                  </span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-96">
-              <div className="mb-4 text-center">{t("playbackRate")}</div>
-              <div className="w-full rounded-full flex items-center justify-between bg-muted">
-                {PLAYBACK_RATE_OPTIONS.map((rate, i) => (
-                  <div
-                    key={i}
-                    className={`cursor-pointer h-10 w-10 leading-10 rounded-full flex items-center justify-center ${
-                      rate === playbackRate
-                        ? "bg-primary text-white text-md"
-                        : "text-black/70 text-xs"
-                    }`}
-                    onClick={() => {
-                      setPlaybackRate(rate);
-                    }}
-                  >
-                    <span className="">{rate}</span>
-                  </div>
-                ))}
-              </div>
-            </PopoverContent>
-          </Popover>
+        <Button
+          variant={isSelectingRegion ? "secondary" : "ghost"}
+          size="icon"
+          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-content={t("selectRegion")}
+          className="relative aspect-square p-0 h-10"
+          onClick={() => setIsSelectingRegion(!isSelectingRegion)}
+        >
+          <TextCursorInputIcon className="w-6 h-6" />
+        </Button>
 
-          <Button
-            variant={`${zoomRatio > 1.0 ? "secondary" : "ghost"}`}
-            data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("zoomIn")}
-            className="relative aspect-square p-0 h-10"
-            onClick={() => {
-              if (zoomRatio < MAX_ZOOM_RATIO) {
-                const nextZoomRatio = ZOOM_RATIO_OPTIONS.find(
-                  (rate) => rate > zoomRatio
-                );
-                setZoomRatio(nextZoomRatio || MAX_ZOOM_RATIO);
-              }
-            }}
-          >
-            <ZoomInIcon className="w-6 h-6" />
-          </Button>
-
-          <Button
-            variant={`${zoomRatio < 1.0 ? "secondary" : "ghost"}`}
-            data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("zoomOut")}
-            className="relative aspect-square p-0 h-10"
-            onClick={() => {
-              if (zoomRatio > MIN_ZOOM_RATIO) {
-                const nextZoomRatio = ZOOM_RATIO_OPTIONS.reverse().find(
-                  (rate) => rate < zoomRatio
-                );
-                setZoomRatio(nextZoomRatio || MIN_ZOOM_RATIO);
-              }
-            }}
-          >
-            <ZoomOutIcon className="w-6 h-6" />
-          </Button>
-
-          <Button
-            variant={`${zoomRatio === fitZoomRatio ? "secondary" : "ghost"}`}
-            data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("zoomToFit")}
-            className="relative aspect-square p-0 h-10"
-            onClick={() => {
-              if (zoomRatio == fitZoomRatio) {
-                setZoomRatio(1.0);
-              } else {
-                setZoomRatio(fitZoomRatio);
-              }
-            }}
-          >
-            <MinimizeIcon className="w-6 h-6" />
-          </Button>
-
-          <Button
-            variant={`${displayInlineCaption ? "secondary" : "ghost"}`}
-            data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("inlineCaption")}
-            className="relative aspect-square p-0 h-10"
-            onClick={() => {
-              setDisplayInlineCaption(!displayInlineCaption);
-              if (pitchChart) {
-                pitchChart.options.scales.x.display = !displayInlineCaption;
-                pitchChart.update();
-              }
-            }}
-          >
-            <SpellCheckIcon className="w-6 h-6" />
-          </Button>
-
-          <Button
-            variant={`${
-              wavesurfer?.options?.autoCenter ? "secondary" : "ghost"
-            }`}
-            data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("autoCenter")}
-            className="relative aspect-square p-0 h-10"
-            onClick={() => {
-              wavesurfer.setOptions({
-                autoCenter: !wavesurfer?.options?.autoCenter,
-              });
-            }}
-          >
-            <GalleryHorizontalIcon className="w-6 h-6" />
-          </Button>
-
-          <Button
-            variant={isSelectingRegion ? "secondary" : "ghost"}
-            size="icon"
-            data-tooltip-id="media-player-controls-tooltip"
-            data-tooltip-content={t("selectRegion")}
-            className="relative aspect-square p-0 h-10"
-            onClick={() => setIsSelectingRegion(!isSelectingRegion)}
-          >
-            <TextCursorInputIcon className="w-6 h-6" />
-          </Button>
-
+        <div className="relative">
           <Button
             variant={`${editingRegion ? "secondary" : "ghost"}`}
             data-tooltip-id="media-player-controls-tooltip"
@@ -692,99 +551,44 @@ export const MediaPlayerControls = () => {
           >
             <ScissorsIcon className="w-6 h-6" />
           </Button>
-        </div>
 
-        {editingRegion && (
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="secondary"
-              className="relative aspect-square p-0 h-10"
-              data-tooltip-id="media-player-controls-tooltip"
-              data-tooltip-content={t("cancel")}
-              onClick={() => {
-                setEditingRegion(false);
-                setTranscriptionDraft(null);
-              }}
-            >
-              <UndoIcon className="w-6 h-6" />
-            </Button>
-            <Button
-              variant="default"
-              className="relative aspect-square p-0 h-10"
-              data-tooltip-id="media-player-controls-tooltip"
-              data-tooltip-content={t("save")}
-              onClick={() => {
-                if (!transcriptionDraft) return;
+          {editingRegion && (
+            <div className="absolute top-0 left-12 flex items-center space-x-2">
+              <Button
+                variant="secondary"
+                className="relative aspect-square p-0 h-10"
+                data-tooltip-id="media-player-controls-tooltip"
+                data-tooltip-content={t("cancel")}
+                onClick={() => {
+                  setEditingRegion(false);
+                  setTranscriptionDraft(null);
+                }}
+              >
+                <UndoIcon className="w-6 h-6" />
+              </Button>
+              <Button
+                variant="default"
+                className="relative aspect-square p-0 h-10"
+                data-tooltip-id="media-player-controls-tooltip"
+                data-tooltip-content={t("save")}
+                onClick={() => {
+                  if (!transcriptionDraft) return;
 
-                EnjoyApp.transcriptions
-                  .update(transcription.id, {
-                    result: transcriptionDraft,
-                  })
-                  .then(() => {
-                    setTranscriptionDraft(null);
-                    setEditingRegion(false);
-                  });
-              }}
-            >
-              <SaveIcon className="w-6 h-6" />
-            </Button>
-          </div>
-        )}
-      </div>
-
-      <div className="ml-auto flex items-center space-x-4">
-        <AlertDialog>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                {media?.mediaType === "Audio"
-                  ? t("shareAudio")
-                  : t("shareVideo")}
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                {media?.mediaType === "Audio"
-                  ? t("areYouSureToShareThisAudioToCommunity")
-                  : t("areYouSureToShareThisVideoToCommunity")}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-              <AlertDialogAction asChild>
-                <Button variant="default" onClick={onShare}>
-                  {t("share")}
-                </Button>
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-
-          <AlertDialogTrigger asChild>
-            <Button
-              variant="ghost"
-              data-tooltip-id="media-player-controls-tooltip"
-              data-tooltip-content={t("share")}
-              className="relative aspect-square p-0 h-10"
-            >
-              <Share2Icon className="w-6 h-6" />
-            </Button>
-          </AlertDialogTrigger>
-        </AlertDialog>
-
-        <Button
-          variant="ghost"
-          onClick={() => setIsRecording(!isRecording)}
-          id="media-record-button"
-          data-tooltip-id="media-player-controls-tooltip"
-          data-tooltip-content={
-            isRecording ? t("stopRecording") : t("startRecording")
-          }
-          className="aspect-square p-0 h-12 rounded-full bg-red-500 hover:bg-red-500/90"
-        >
-          {isRecording ? (
-            <SquareIcon fill="white" className="w-6 h-6 text-white" />
-          ) : (
-            <MicIcon className="w-6 h-6 text-white" />
+                  EnjoyApp.transcriptions
+                    .update(transcription.id, {
+                      result: transcriptionDraft,
+                    })
+                    .then(() => {
+                      setTranscriptionDraft(null);
+                      setEditingRegion(false);
+                    });
+                }}
+              >
+                <SaveIcon className="w-6 h-6" />
+              </Button>
+            </div>
           )}
-        </Button>
+        </div>
       </div>
 
       <Tooltip className="z-10" id="media-player-controls-tooltip" />

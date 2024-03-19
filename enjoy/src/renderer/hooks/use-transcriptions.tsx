@@ -90,7 +90,9 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
 
       /*
        * Pre-process
-       * Some words end with period should not be a single sentence, like Mr./Ms./Dr. etc
+       * 1. Some words end with period should not be a single sentence, like Mr./Ms./Dr. etc
+       * 2. Some words connected by `-`(like scrach-off) are split into multiple words in words timeline, merge them for display;
+       * 3. Some numbers with `%` are split into `number + percent` in words timeline, merge thme for display;
        */
       timeline.forEach((sentence, i) => {
         const nextSentence = timeline[i + 1];
@@ -107,6 +109,35 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
           ];
           nextSentence.startTime = sentence.startTime;
           timeline.splice(i, 1);
+        } else {
+          const words = sentence.text.split(" ");
+
+          sentence.timeline.forEach((token, j) => {
+            const word = words[j]?.trim()?.toLowerCase();
+
+            const match = word?.match(/-|%/);
+            if (!match) return;
+
+            for (let k = j + 1; k <= sentence.timeline.length - 1; k++) {
+              if (word.includes(sentence.timeline[k].text.toLowerCase())) {
+                let connector = "";
+                if (match[0] === "-") {
+                  connector = "-";
+                }
+                token.text = [token.text, sentence.timeline[k].text].join(
+                  connector
+                );
+                token.timeline = [
+                  ...token.timeline,
+                  ...sentence.timeline[k].timeline,
+                ];
+                token.endTime = sentence.timeline[k].endTime;
+                sentence.timeline.splice(k, 1);
+              } else {
+                break;
+              }
+            }
+          });
         }
       });
 

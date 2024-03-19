@@ -273,7 +273,7 @@
   "editResource": "编辑资源",
   "deleteResource": "删除资源",
   "deleteResourceConfirmation": "您确定要删除资源 {{name}} 吗？",
-  "transcribeAudioConfirmation": "这将删除原来的语音文本，您确定要重新对 {{name}} 进行语音转文本吗？",
+  "transcribeMediaConfirmation": "这将删除原来的语音文本，您确定要重新对 {{name}} 进行语音转文本吗？",
   "localFile": "本地文件",
   "recentlyAdded": "最近添加",
   "resourcesYouAddedRecently": "最近添加的资源",
