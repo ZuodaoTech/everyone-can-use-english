@@ -8,10 +8,8 @@ import WaveSurfer from "wavesurfer.js";
 import { t } from "i18next";
 import { useTranscribe } from "@renderer/hooks";
 import { toast } from "@renderer/components/ui";
-import {
-  FFMPEG_TRIM_SILENCE_OPTIONS,
-  FFMPEG_CONVERT_WAV_OPTIONS,
-} from "@/constants";
+import { MediaRecordButton } from "@renderer/components";
+import { FFMPEG_CONVERT_WAV_OPTIONS } from "@/constants";
 
 export const MediaRecorder = (props: { height?: number }) => {
   const { height = 192 } = props;
@@ -74,7 +72,7 @@ export const MediaRecorder = (props: { height?: number }) => {
         success: t("recordingSaved"),
         error: (e) => t("failedToSaveRecording" + " : " + e.message),
         position: "bottom-right",
-      },
+      }
     );
   };
 
@@ -134,12 +132,21 @@ export const MediaRecorder = (props: { height?: number }) => {
   }, []);
 
   return (
-    <div className="border rounded-xl shadow-lg relative">
-      <span className="absolute bottom-2 right-2 serif">
-        {duration / 10}
-        <span className="text-xs"> / 300</span>
-      </span>
-      <div className="h-full" ref={ref}></div>
+    <div className="h-full w-full flex items-center space-x-4">
+      <div className="flex-1 h-full border rounded-xl shadow-lg relative">
+        <span className="absolute bottom-2 right-2 serif">
+          {duration / 10}
+          <span className="text-xs"> / 300</span>
+        </span>
+        <div className="h-full" ref={ref}></div>
+      </div>
+
+      <div className="h-full flex flex-col justify-start space-y-1.5">
+        <MediaRecordButton
+          isRecording={isRecording}
+          setIsRecording={setIsRecording}
+        />
+      </div>
     </div>
   );
 };
