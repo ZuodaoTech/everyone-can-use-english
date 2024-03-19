@@ -1,4 +1,4 @@
-import { useEffect, useContext, useRef } from "react";
+import { useEffect, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import {
   MediaLoadingModal,
@@ -6,27 +6,20 @@ import {
   MediaPlayerControls,
   MediaTabs,
   MediaCurrentRecording,
+  MediaPlayer,
 } from "@renderer/components";
-import { formatDuration } from "@renderer/lib/utils";
 import { useVideo } from "@renderer/hooks";
 
 export const VideoPlayer = (props: { id?: string; md5?: string }) => {
   const { id, md5 } = props;
-  const { media, currentTime, setMedia, setRef } = useContext(
-    MediaPlayerProviderContext
-  );
+  const { setMedia } = useContext(MediaPlayerProviderContext);
   const { video } = useVideo({ id, md5 });
-  const ref = useRef(null);
 
   useEffect(() => {
     if (!video) return;
 
     setMedia(video);
   }, [video]);
-
-  useEffect(() => {
-    setRef(ref);
-  }, [ref]);
 
   return (
     <div data-testid="video-player">
@@ -47,18 +40,7 @@ export const VideoPlayer = (props: { id?: string; md5?: string }) => {
         </div>
 
         <div className="w-full h-[13rem] px-6 py-2 mb-4">
-          <div className="border rounded-xl shadow-lg relative">
-            <div data-testid="media-player-container" ref={ref} />
-            <div className="absolute right-2 top-1">
-              <span className="text-sm">
-                {formatDuration(currentTime || 0)}
-              </span>
-              <span className="mx-1">/</span>
-              <span className="text-sm">
-                {formatDuration(media?.duration || 0)}
-              </span>
-            </div>
-          </div>
+          <MediaPlayer />
         </div>
 
         <div className="w-full bg-background z-10 shadow-xl">

@@ -31,7 +31,7 @@ export const MediaTabs = () => {
             }`}
             onClick={() => setTab("provider")}
           >
-            {t("provider")}
+            {t("player")}
           </div>
         )}
 
