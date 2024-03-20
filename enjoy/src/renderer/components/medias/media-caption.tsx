@@ -407,6 +407,10 @@ export const MediaCaption = () => {
   );
 };
 
+/*
+ * Tabs below the caption text.
+ * It provides the translation, analysis, and note features.
+ */
 const CaptionTabs = (props: {
   selectedIndices: number[];
   toggleRegion: (index: number) => void;
@@ -439,8 +443,10 @@ const CaptionTabs = (props: {
     if (selectedIndices.length === 0) return;
 
     const word = selectedIndices
-      .map((index) => caption.timeline[index].text)
+      .map((index) => caption.timeline[index]?.text || "")
       .join(" ");
+    if (!word) return;
+
     setLookingUp(true);
     lookupWord({
       word,
@@ -448,9 +454,9 @@ const CaptionTabs = (props: {
       sourceId: transcription.targetId,
       sourceType: transcription.targetType,
     })
-      .then((lookup) => {
-        if (lookup?.meaning) {
-          setLookupResult(lookup);
+      .then((res) => {
+        if (res?.meaning) {
+          setLookupResult(res);
         }
       })
       .catch((error) => {
@@ -503,8 +509,10 @@ const CaptionTabs = (props: {
     if (!selectedIndices) return;
 
     const word = selectedIndices
-      .map((index) => caption.timeline[index].text)
+      .map((index) => caption.timeline[index]?.text || "")
       .join(" ");
+
+    if (!word) return;
 
     webApi
       .lookup({
@@ -513,15 +521,13 @@ const CaptionTabs = (props: {
         sourceId: transcription.targetId,
         sourceType: transcription.targetType,
       })
-      .then((lookup) => {
-        if (lookup?.meaning) {
-          setLookupResult(lookup);
+      .then((res) => {
+        if (res?.meaning) {
+          setLookupResult(res);
+        } else {
+          setLookupResult(null);
         }
       });
-
-    return () => {
-      setLookupResult(null);
-    };
   }, [caption, selectedIndices]);
 
   /*
@@ -535,23 +541,13 @@ const CaptionTabs = (props: {
     md5Hash.update(caption.text);
     setHash(md5Hash.hex());
 
-    EnjoyApp.cacheObjects.get(`translate-${hash}`).then((cached) => {
-      if (cached) {
-        setTranslation(cached);
-      }
+    EnjoyApp.cacheObjects.get(`translate-${md5Hash.hex()}`).then((cached) => {
+      setTranslation(cached);
     });
 
-    EnjoyApp.cacheObjects.get(`analyze-${hash}`).then((cached) => {
-      console.log(cached);
-      if (cached) {
-        setAnalysisResult(cached);
-      }
+    EnjoyApp.cacheObjects.get(`analyze-${md5Hash.hex()}`).then((cached) => {
+      setAnalysisResult(cached);
     });
-
-    return () => {
-      setTranslation(null);
-      setAnalysisResult(null);
-    };
   }, [caption]);
 
   return (
@@ -648,6 +644,7 @@ const CaptionTabs = (props: {
             <>
               <div className="mb-2 flex items-center justify-end">
                 <Button
+                  variant="secondary"
                   size="sm"
                   onClick={() => translateSetence({ force: true })}
                 >
@@ -679,6 +676,7 @@ const CaptionTabs = (props: {
             <>
               <div className="mb-2 flex items-center space-x-2 justify-end">
                 <Button
+                  variant="secondary"
                   size="sm"
                   onClick={() => analyzeSetence({ force: true })}
                 >
@@ -732,6 +730,12 @@ const CaptionTabs = (props: {
               />
             </div>
           )}
+        </TabsContent>
+
+        <TabsContent value="note">
+          <div className="text-muted-foreground text-center py-4">
+            Comming soon
+          </div>
         </TabsContent>
       </div>
     </Tabs>
