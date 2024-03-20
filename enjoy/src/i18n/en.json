@@ -505,5 +505,8 @@
     "analysis": "Analysis",
     "note": "Note"
   },
-  "translateSetence": "translate setenece"
+  "translateSetence": "translate setenece",
+  "reTranslate": "re-translate",
+  "analyzeSetence": "analyze setenece",
+  "reAnalyze": "re-analyze"
 }

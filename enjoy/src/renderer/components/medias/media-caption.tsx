@@ -13,8 +13,9 @@ import {
   TabsTrigger,
   TabsContent,
 } from "@renderer/components/ui";
+import { ConversationShortcuts } from "@renderer/components";
 import { t } from "i18next";
-import { CopyIcon, CheckIcon, SpeechIcon } from "lucide-react";
+import { BotIcon, CopyIcon, CheckIcon, SpeechIcon } from "lucide-react";
 import { Timeline } from "echogarden/dist/utilities/Timeline.d.js";
 import { useAiCommand } from "@renderer/hooks";
 import { LoaderIcon } from "lucide-react";
@@ -499,6 +500,7 @@ const CaptionTabs = (props: {
    */
   useEffect(() => {
     if (!caption) return;
+    if (!selectedIndices) return;
 
     const word = selectedIndices
       .map((index) => caption.timeline[index].text)
@@ -540,6 +542,7 @@ const CaptionTabs = (props: {
     });
 
     EnjoyApp.cacheObjects.get(`analyze-${hash}`).then((cached) => {
+      console.log(cached);
       if (cached) {
         setAnalysisResult(cached);
       }
@@ -642,9 +645,19 @@ const CaptionTabs = (props: {
 
         <TabsContent value="translation">
           {translation ? (
-            <div className="select-text py-2 text-sm text-foreground">
-              {translation}
-            </div>
+            <>
+              <div className="mb-2 flex items-center justify-end">
+                <Button
+                  size="sm"
+                  onClick={() => translateSetence({ force: true })}
+                >
+                  {t("reTranslate")}
+                </Button>
+              </div>
+              <div className="select-text text-sm text-foreground">
+                {translation}
+              </div>
+            </>
           ) : (
             <div className="flex items-center justify-center space-x-2 py-4">
               <Button
@@ -664,6 +677,22 @@ const CaptionTabs = (props: {
         <TabsContent value="analysis">
           {analysisResult ? (
             <>
+              <div className="mb-2 flex items-center space-x-2 justify-end">
+                <Button
+                  size="sm"
+                  onClick={() => analyzeSetence({ force: true })}
+                >
+                  {t("reAnalyze")}
+                </Button>
+                <AIButton
+                  prompt={caption.text as string}
+                  onReply={(replies) => {
+                    const result = replies.map((m) => m.content).join("\n");
+                    setAnalysisResult(result);
+                    EnjoyApp.cacheObjects.set(`analyze-${hash}`, result);
+                  }}
+                />
+              </div>
               <Markdown
                 className="select-text prose prose-sm prose-h3:text-base max-w-full"
                 components={{
@@ -693,10 +722,45 @@ const CaptionTabs = (props: {
                 )}
                 <span>{t("analyzeSetence")}</span>
               </Button>
+              <AIButton
+                prompt={caption.text as string}
+                onReply={(replies) => {
+                  const result = replies.map((m) => m.content).join("\n");
+                  setAnalysisResult(result);
+                  EnjoyApp.cacheObjects.set(`analyze-${hash}`, result);
+                }}
+              />
             </div>
           )}
         </TabsContent>
       </div>
     </Tabs>
+  );
+};
+
+const AIButton = (props: {
+  prompt: string;
+  onReply: (replies: MessageType[]) => void;
+}) => {
+  const { prompt, onReply } = props;
+  const [asking, setAsking] = useState<boolean>(false);
+  return (
+    <ConversationShortcuts
+      open={asking}
+      onOpenChange={setAsking}
+      prompt={prompt}
+      onReply={onReply}
+      trigger={
+        <Button
+          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-content={t("sendToAIAssistant")}
+          variant="outline"
+          size="sm"
+          className="p-0 w-8 h-8 rounded-full"
+        >
+          <BotIcon className="w-5 h-5 text-muted-foreground hover:text-primary" />
+        </Button>
+      }
+    />
   );
 };

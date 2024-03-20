@@ -504,5 +504,8 @@
     "analysis": "句子分析",
     "note": "笔记"
   },
-  "translateSetence": "整句翻译"
+  "translateSetence": "整句翻译",
+  "reTranslate": "重新翻译",
+  "analyzeSetence": "分析句子",
+  "reAnalyze": "重新分析"
 }
