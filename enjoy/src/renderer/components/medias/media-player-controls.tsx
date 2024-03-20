@@ -163,6 +163,8 @@ export const MediaPlayerControls = () => {
   const debouncedUpdateSegmentRegion = debounce(updateSegmentRegion, 100);
 
   const groupMeanings = () => {
+    if (!regions) return;
+
     regions
       .getRegions()
       .filter((r) => r.id.startsWith("meaning-group-region"))
@@ -172,14 +174,32 @@ export const MediaPlayerControls = () => {
     const segment = transcription?.result?.timeline[currentSegmentIndex];
     if (!segment) return;
 
+    const words = segment.text.split(" ");
+    const silenceThreshold = 0.15;
+    const groupThreshold = 0.5;
+
     let start = segment.timeline[0].startTime;
     let end = segment.timeline[0].endTime;
+
     segment.timeline.forEach((word: TimelineEntry, i: number) => {
-      if (word.startTime - end < 0.15 || end - start < 0.5) {
-        end = word.endTime;
-      } else {
+      const text = words[i - 1];
+      const lastWord = segment.timeline[i - 1];
+
+      if (
+        // split group when silence is longer than silenceThreshold
+        (word.startTime - end > silenceThreshold ||
+          // split group when there is a comma or colon at the end of the word
+          (text &&
+            lastWord &&
+            text.match(/,|:$/) &&
+            text.includes(lastWord.text))) &&
+        // split group only when group duration is longer than groupThreshold
+        end - start > groupThreshold
+      ) {
         groups.push({ start, end });
         start = word.startTime;
+        end = word.endTime;
+      } else {
         end = word.endTime;
       }
     });
@@ -192,7 +212,7 @@ export const MediaPlayerControls = () => {
           id: `meaning-group-region-${Date.now()}`,
           start: group.start,
           end: group.end,
-          color: "rgba(76, 201, 240, 0.2)",
+          color: "rgba(255, 0, 110, 0.2)",
           drag: false,
           resize: false,
         })
@@ -415,6 +435,8 @@ export const MediaPlayerControls = () => {
    * toggle meaning groups
    */
   useEffect(() => {
+    if (!regions) return;
+
     if (grouping) {
       groupMeanings();
     }
@@ -566,7 +588,7 @@ export const MediaPlayerControls = () => {
           variant={grouping ? "secondary" : "ghost"}
           size="icon"
           data-tooltip-id="media-player-controls-tooltip"
-          data-tooltip-content={t("groupMeanings")}
+          data-tooltip-content={t("autoGroup")}
           className="relative aspect-square p-0 h-10"
           onClick={() => setGrouping(!grouping)}
         >

@@ -229,6 +229,19 @@ export const MediaPlayerProvider = ({
           );
           labels[index] = segment.text.trim();
         });
+      } else if (region.id.startsWith("meaning-group-region")) {
+        const words = caption.timeline.filter(
+          (w: TimelineEntry) =>
+            w.startTime >= region.start &&
+            w.endTime <= region.end &&
+            w.type === "word"
+        );
+        words.forEach((word: TimelineEntry) => {
+          const index = Math.round(
+            ((word.startTime - region.start) / regionDuration) * data.length
+          );
+          labels[index] = word.text.trim();
+        });
       } else if (region.id.startsWith("word-region")) {
         const words = caption.timeline.filter(
           (w: TimelineEntry) =>
