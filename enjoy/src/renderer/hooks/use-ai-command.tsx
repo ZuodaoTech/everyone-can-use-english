@@ -71,13 +71,10 @@ export const useAiCommand = () => {
     });
   };
 
-  const translate = async (text: string): Promise<string> => {
-    const hash = md5.create();
-    hash.update(text);
-    const cacheKey = `translate-${hash.hex()}`;
-    const cached = await EnjoyApp.cacheObjects.get(cacheKey);
-    if (cached) return cached;
-
+  const translate = async (
+    text: string,
+    cacheKey?: string
+  ): Promise<string> => {
     return translateCommand(text, {
       key: currentEngine.key,
       modelName: currentEngine.model,

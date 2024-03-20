@@ -497,5 +497,12 @@
   "currentRegionIsBeingEdited": "当前区域正在编辑中",
   "compare": "对比",
   "selectRegion": "选取区域",
-  "autoGroup": "智能断句"
+  "autoGroup": "智能断句",
+  "captionTabs": {
+    "selected": "选词",
+    "translation": "整句翻译",
+    "analysis": "句子分析",
+    "note": "笔记"
+  },
+  "translateSetence": "整句翻译"
 }
