@@ -117,6 +117,7 @@
     "cheerio": "^1.0.0-rc.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "cmdk": "^1.0.0",
     "command-exists": "^1.2.9",
     "compromise": "^14.12.0",
     "compromise-paragraphs": "^0.1.0",
