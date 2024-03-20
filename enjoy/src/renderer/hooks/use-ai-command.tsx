@@ -7,9 +7,8 @@ import {
   lookupCommand,
   extractStoryCommand,
   translateCommand,
-  ipaCommand,
+  analyzeCommand,
 } from "@commands";
-import { md5 } from "js-md5";
 
 export const useAiCommand = () => {
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
@@ -80,34 +79,23 @@ export const useAiCommand = () => {
       modelName: currentEngine.model,
       baseUrl: currentEngine.baseUrl,
     }).then((res) => {
-      EnjoyApp.cacheObjects.set(cacheKey, res);
+      if (cacheKey) {
+        EnjoyApp.cacheObjects.set(cacheKey, res);
+      }
       return res;
     });
   };
 
-  const pronounce = async (
-    text: string
-  ): Promise<
-    {
-      word?: string;
-      ipa?: string;
-    }[]
-  > => {
-    const hash = md5.create();
-    hash.update(text);
-    const cacheKey = `ipa-${hash.hex()}`;
-    const cached = await EnjoyApp.cacheObjects.get(cacheKey);
-    if (cached) return cached;
-
-    return ipaCommand(text, {
+  const analyzeText = async (text: string, cacheKey?: string) => {
+    return analyzeCommand(text, {
       key: currentEngine.key,
       modelName: currentEngine.model,
       baseUrl: currentEngine.baseUrl,
-    }).then((result) => {
-      if (result?.words?.length > 0) {
-        EnjoyApp.cacheObjects.set(cacheKey, result.words);
+    }).then((res) => {
+      if (cacheKey) {
+        EnjoyApp.cacheObjects.set(cacheKey, res);
       }
-      return result.words;
+      return res;
     });
   };
 
@@ -115,6 +103,6 @@ export const useAiCommand = () => {
     lookupWord,
     extractStory,
     translate,
-    pronounce,
+    analyzeText,
   };
 };

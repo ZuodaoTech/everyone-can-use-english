@@ -1,7 +1,7 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 
-export const translateCommand = async (
+export const analyzeCommand = async (
   text: string,
   options: {
     key: string;
@@ -37,9 +37,17 @@ export const translateCommand = async (
   return response.text;
 };
 
-const SYSTEM_PROMPT =
-  "You are a professional, authentic translation engine, only returns translations.";
-const TRANSLATION_PROMPT = `Translate the text to {native_language} Language, please do not explain my original text.:
-
+const SYSTEM_PROMPT = `You are a language coach of English, and you are helping a student to learn {native_language}.`;
+const TRANSLATION_PROMPT = `
 {text}
-`;
+
+Please analyze the text above, including sentence structure, grammar, and vocabulary/phrases, and provide a detailed explanation of the text. Please reply in {native_language} and return the result only in the following format:
+
+  ### Sentence structure
+  (explain every element of the sentence)
+
+  ### Grammar
+  (explain the grammar of the sentence)
+
+  ### Vocabulary/phrases 
+  (explain the key vocabulary and phrases used)`;

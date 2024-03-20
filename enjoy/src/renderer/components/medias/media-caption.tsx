@@ -21,6 +21,7 @@ import { LoaderIcon } from "lucide-react";
 import { convertIpaToNormal } from "@/utils";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { md5 } from "js-md5";
+import Markdown from "react-markdown";
 
 export const MediaCaption = () => {
   const {
@@ -421,11 +422,14 @@ const CaptionTabs = (props: {
   const [lookingUp, setLookingUp] = useState<boolean>(false);
   const [lookupResult, setLookupResult] = useState<LookupType>();
 
+  const [analyzing, setAnalyzing] = useState<boolean>(false);
+  const [analysisResult, setAnalysisResult] = useState<string>();
+
   const [hash, setHash] = useState<string>();
 
   const [tab, setTab] = useState<string>("selected");
 
-  const { translate, lookupWord } = useAiCommand();
+  const { translate, lookupWord, analyzeText } = useAiCommand();
   const caption = (transcription?.result?.timeline as Timeline)?.[
     currentSegmentIndex
   ];
@@ -456,11 +460,12 @@ const CaptionTabs = (props: {
       });
   };
 
-  const translateSetence = async () => {
+  const translateSetence = async (options?: { force?: boolean }) => {
     if (translating) return;
 
-    const cacheKey = `translate-${hash}`;
-    translate(caption.text, cacheKey)
+    const { force } = options || {};
+    setTranslating(true);
+    translate(caption.text, force ? null : `translate-${hash}`)
       .then((result) => {
         if (result) {
           setTranslation(result);
@@ -469,6 +474,23 @@ const CaptionTabs = (props: {
       .catch((err) => t("translationFailed", { error: err.message }))
       .finally(() => {
         setTranslating(false);
+      });
+  };
+
+  const analyzeSetence = async (options?: { force?: boolean }) => {
+    if (analyzing) return;
+
+    const { force } = options || {};
+    setAnalyzing(true);
+    analyzeText(caption.text, force ? null : `analyze-${hash}`)
+      .then((result) => {
+        if (result) {
+          setAnalysisResult(result);
+        }
+      })
+      .catch((err) => t("analysisFailed", { error: err.message }))
+      .finally(() => {
+        setAnalyzing(false);
       });
   };
 
@@ -510,15 +532,22 @@ const CaptionTabs = (props: {
     const md5Hash = md5.create();
     md5Hash.update(caption.text);
     setHash(md5Hash.hex());
-    const cacheKey = `translate-${hash}`;
-    EnjoyApp.cacheObjects.get(cacheKey).then((cached) => {
+
+    EnjoyApp.cacheObjects.get(`translate-${hash}`).then((cached) => {
       if (cached) {
         setTranslation(cached);
       }
     });
 
+    EnjoyApp.cacheObjects.get(`analyze-${hash}`).then((cached) => {
+      if (cached) {
+        setAnalysisResult(cached);
+      }
+    });
+
     return () => {
       setTranslation(null);
+      setAnalysisResult(null);
     };
   }, [caption]);
 
@@ -621,12 +650,48 @@ const CaptionTabs = (props: {
               <Button
                 size="sm"
                 disabled={translating}
-                onClick={translateSetence}
+                onClick={() => translateSetence()}
               >
                 {translating && (
                   <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
                 )}
                 <span>{t("translateSetence")}</span>
+              </Button>
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="analysis">
+          {analysisResult ? (
+            <>
+              <Markdown
+                className="select-text prose prose-sm prose-h3:text-base max-w-full"
+                components={{
+                  a({ node, children, ...props }) {
+                    try {
+                      new URL(props.href ?? "");
+                      props.target = "_blank";
+                      props.rel = "noopener noreferrer";
+                    } catch (e) {}
+
+                    return <a {...props}>{children}</a>;
+                  },
+                }}
+              >
+                {analysisResult}
+              </Markdown>
+            </>
+          ) : (
+            <div className="flex items-center justify-center space-x-2 py-4">
+              <Button
+                size="sm"
+                disabled={analyzing}
+                onClick={() => analyzeSetence()}
+              >
+                {analyzing && (
+                  <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
+                )}
+                <span>{t("analyzeSetence")}</span>
               </Button>
             </div>
           )}
