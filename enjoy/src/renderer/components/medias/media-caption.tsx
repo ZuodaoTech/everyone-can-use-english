@@ -348,7 +348,16 @@ export const MediaCaption = () => {
                   <div className="">
                     <div className="text-2xl">{w.text}</div>
                     {displayIpa && (
-                      <div className="text-muted-foreground font-code">
+                      <div
+                        className={`text-muted-foreground font-code ${
+                          index === 0 ? "before:content-['/']" : ""
+                        }
+                        ${
+                          index === caption.timeline.length - 1
+                            ? "after:content-['/']"
+                            : ""
+                        }`}
+                      >
                         {w.timeline
                           .map((t) =>
                             t.timeline
@@ -373,7 +382,16 @@ export const MediaCaption = () => {
                   <div className="">
                     <div className="text-2xl">{word}</div>
                     {displayIpa && (
-                      <div className="text-muted-foreground font-code">
+                      <div
+                        className={`text-muted-foreground font-code ${
+                          index === 0 ? "before:content-['/']" : ""
+                        }
+                        ${
+                          index === caption.text.split(" ").length - 1
+                            ? "after:content-['/']"
+                            : ""
+                        }`}
+                      >
                         {caption.timeline[index].timeline
                           .map((t) =>
                             t.timeline
@@ -402,7 +420,7 @@ export const MediaCaption = () => {
           <>
             <Separator className="my-2" />
             <div className="flex flex-wrap items-center space-x-2 select-text mb-4">
-              {selectedIndices.map((index) => {
+              {selectedIndices.map((index, i) => {
                 const word = caption.timeline[index];
                 if (!word) return;
                 return (
@@ -411,8 +429,16 @@ export const MediaCaption = () => {
                       {word.text}
                     </div>
                     <div className="text-sm text-serif text-muted-foreground">
-                      <span className="mr-2 font-code">
-                        /
+                      <span
+                        className={`mr-2 font-code ${
+                          i === 0 ? "before:content-['/']" : ""
+                        }
+                        ${
+                          i === selectedIndices.length - 1
+                            ? "after:content-['/']"
+                            : ""
+                        }`}
+                      >
                         {word.timeline
                           .map((t) =>
                             t.timeline
@@ -420,7 +446,6 @@ export const MediaCaption = () => {
                               .join("")
                           )
                           .join(" · ")}
-                        /
                       </span>
                     </div>
                   </div>

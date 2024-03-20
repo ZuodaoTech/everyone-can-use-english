@@ -212,7 +212,7 @@ export const MediaPlayerControls = () => {
           id: `meaning-group-region-${Date.now()}`,
           start: group.start,
           end: group.end,
-          color: "rgba(255, 0, 110, 0.2)",
+          color: "#fb6f9233",
           drag: false,
           resize: false,
         })
