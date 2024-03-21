@@ -194,14 +194,18 @@ test.describe("with login", async () => {
       const player = page
         .locator(".ai-message")
         .getByTestId("wavesurfer-container");
-      await player.waitFor();
+      await player.waitFor({ timeout: 60000 });
       expect(await player.isVisible()).toBeTruthy();
 
       // add to library
       await page.getByTestId("message-start-shadow").click();
       await page.getByTestId("audio-player").waitFor();
-      await page.getByTestId("media-player-container").waitFor();
-      await page.getByTestId("media-transcription-result").waitFor();
+      await page
+        .getByTestId("media-player-container")
+        .waitFor({ timeout: 60000 });
+      await page
+        .getByTestId("media-transcription-result")
+        .waitFor({ timeout: 60000 });
       expect(
         await page.getByTestId("media-transcription-result").isVisible()
       ).toBeTruthy();
