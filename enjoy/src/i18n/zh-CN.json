@@ -496,5 +496,16 @@
   "clickAnyWordToSelect": "点击任意单词可以选中，同时按下 Shift 键可以多选",
   "currentRegionIsBeingEdited": "当前区域正在编辑中",
   "compare": "对比",
-  "selectRegion": "选取区域"
+  "selectRegion": "选取区域",
+  "autoGroup": "智能断句",
+  "captionTabs": {
+    "selected": "选词",
+    "translation": "整句翻译",
+    "analysis": "句子分析",
+    "note": "笔记"
+  },
+  "translateSetence": "整句翻译",
+  "reTranslate": "重新翻译",
+  "analyzeSetence": "分析句子",
+  "reAnalyze": "重新分析"
 }

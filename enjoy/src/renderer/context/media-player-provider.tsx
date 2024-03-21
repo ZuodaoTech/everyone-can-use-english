@@ -229,6 +229,19 @@ export const MediaPlayerProvider = ({
           );
           labels[index] = segment.text.trim();
         });
+      } else if (region.id.startsWith("meaning-group-region")) {
+        const words = caption.timeline.filter(
+          (w: TimelineEntry) =>
+            w.startTime >= region.start &&
+            w.endTime <= region.end &&
+            w.type === "word"
+        );
+        words.forEach((word: TimelineEntry) => {
+          const index = Math.round(
+            ((word.startTime - region.start) / regionDuration) * data.length
+          );
+          labels[index] = word.text.trim();
+        });
       } else if (region.id.startsWith("word-region")) {
         const words = caption.timeline.filter(
           (w: TimelineEntry) =>
@@ -360,10 +373,10 @@ export const MediaPlayerProvider = ({
 
     const containerWidth = ref.current.getBoundingClientRect().width;
     const duration = activeRegion.end - activeRegion.start;
-    if (activeRegion.id.startsWith("segment-region")) {
-      setFitZoomRatio(containerWidth / duration / minPxPerSec);
-    } else if (activeRegion.id.startsWith("word-region")) {
+    if (activeRegion.id.startsWith("word-region")) {
       setFitZoomRatio(containerWidth / 3 / duration / minPxPerSec);
+    } else {
+      setFitZoomRatio(containerWidth / duration / minPxPerSec);
     }
 
     return () => {
