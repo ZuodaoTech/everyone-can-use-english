@@ -467,12 +467,11 @@ const CaptionTabs = (props: {
       });
   };
 
-  const translateSetence = async (options?: { force?: boolean }) => {
+  const translateSetence = async () => {
     if (translating) return;
 
-    const { force } = options || {};
     setTranslating(true);
-    translate(caption.text, force ? null : `translate-${hash}`)
+    translate(caption.text, `translate-${hash}`)
       .then((result) => {
         if (result) {
           setTranslation(result);
@@ -484,12 +483,11 @@ const CaptionTabs = (props: {
       });
   };
 
-  const analyzeSetence = async (options?: { force?: boolean }) => {
+  const analyzeSetence = async () => {
     if (analyzing) return;
 
-    const { force } = options || {};
     setAnalyzing(true);
-    analyzeText(caption.text, force ? null : `analyze-${hash}`)
+    analyzeText(caption.text, `analyze-${hash}`)
       .then((result) => {
         if (result) {
           setAnalysisResult(result);
@@ -646,8 +644,12 @@ const CaptionTabs = (props: {
                 <Button
                   variant="secondary"
                   size="sm"
-                  onClick={() => translateSetence({ force: true })}
+                  disabled={translating}
+                  onClick={translateSetence}
                 >
+                  {translating && (
+                    <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
+                  )}
                   {t("reTranslate")}
                 </Button>
               </div>
@@ -678,8 +680,12 @@ const CaptionTabs = (props: {
                 <Button
                   variant="secondary"
                   size="sm"
-                  onClick={() => analyzeSetence({ force: true })}
+                  disabled={analyzing}
+                  onClick={analyzeSetence}
                 >
+                  {analyzing && (
+                    <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
+                  )}
                   {t("reAnalyze")}
                 </Button>
                 <AIButton
@@ -710,11 +716,7 @@ const CaptionTabs = (props: {
             </>
           ) : (
             <div className="flex items-center justify-center space-x-2 py-4">
-              <Button
-                size="sm"
-                disabled={analyzing}
-                onClick={() => analyzeSetence()}
-              >
+              <Button size="sm" disabled={analyzing} onClick={analyzeSetence}>
                 {analyzing && (
                   <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
                 )}
