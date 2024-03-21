@@ -28,7 +28,7 @@ jobs:
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: "**/node_modules"
-          key: ${{ github.event.inputs.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
         run: yarn install
