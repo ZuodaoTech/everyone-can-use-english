@@ -227,6 +227,8 @@
   "welcomeBack": "欢迎回来, {{name}}",
   "download": "下载",
   "downloading": "正在下载 {{file}}",
+  "downloadedSuccessfully": "下载成功",
+  "downloadFailed": "下载失败",
   "chooseAIModelDependingOnYourHardware": "根据您的硬件选择合适的 AI 模型, 以便语音转文本服务正常工作",
   "areYouSureToDownload": "您确定要下载 {{name}} 吗？",
   "yourModelsWillBeDownloadedTo": "您的模型将下载到目录 {{path}}",

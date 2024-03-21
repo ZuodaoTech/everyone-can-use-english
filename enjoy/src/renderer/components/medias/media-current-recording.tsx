@@ -39,6 +39,7 @@ import {
   TextCursorInputIcon,
   MicIcon,
   SquareIcon,
+  DownloadIcon,
 } from "lucide-react";
 import { t } from "i18next";
 import { formatDuration } from "@renderer/lib/utils";
@@ -192,6 +193,28 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         toast.error(t("shareFailed"), {
           description: error.message,
         });
+      });
+  };
+
+  const handleDownload = () => {
+    EnjoyApp.dialog
+      .showSaveDialog({
+        title: t("download"),
+        defaultPath: currentRecording.filename,
+      })
+      .then((savePath) => {
+        toast.promise(
+          EnjoyApp.download.start(currentRecording.src, savePath as string),
+          {
+            loading: t("downloading", { file: currentRecording.filename }),
+            success: t("downloadedSuccessfully"),
+            error: t("downloadFailed"),
+            position: "bottom-right",
+          }
+        );
+      })
+      .catch((err) => {
+        toast.error(err.message);
       });
   };
 
@@ -514,6 +537,14 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
             >
               <Share2Icon className="w-4 h-4 mr-4" />
               <span>{t("share")}</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={handleDownload}
+            >
+              <DownloadIcon className="w-4 h-4 mr-4" />
+              <span>{t("download")}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
