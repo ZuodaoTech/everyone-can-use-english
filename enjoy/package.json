@@ -16,6 +16,8 @@
     "publish": "rimraf .vite && yarn run download && electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
     "test": "yarn run package && playwright test",
+    "test:main": "yarn run playwright test e2e/main.spec.ts",
+    "test:renderer": "yarn run playwright test e2e/renderer.spec.ts",
     "create-migration": "zx ./src/main/db/create-migration.mjs",
     "download-whisper-model": "zx ./scripts/download-whisper-model.mjs",
     "download-ffmpeg-wasm": "zx ./scripts/download-ffmpeg-wasm.mjs",

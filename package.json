@@ -9,6 +9,8 @@
     "enjoy:dev": "yarn workspace enjoy dev",
     "enjoy:start": "yarn workspace enjoy start",
     "enjoy:test": "yarn workspace enjoy test",
+    "enjoy:test:main": "yarn workspace enjoy test:main",
+    "enjoy:test:renderer": "yarn workspace enjoy test:renderer",
     "enjoy:package": "yarn workspace enjoy package",
     "enjoy:make": "yarn workspace enjoy make",
     "enjoy:publish": "yarn workspace enjoy publish",
