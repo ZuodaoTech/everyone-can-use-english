@@ -76,7 +76,7 @@ type EnjoyAppType = {
     ) => Promise<string[] | undefined>;
     showSaveDialog: (
       options: Electron.SaveDialogOptions
-    ) => Promise<Electron.SaveDialogReturnValue>;
+    ) => Promise<string | undefined>;
     showMessageBox: (
       options: Electron.MessageBoxOptions
     ) => Promise<Electron.MessageBoxReturnValue>;
@@ -244,7 +244,7 @@ type EnjoyAppType = {
   };
   download: {
     onState: (callback: (event, state) => void) => void;
-    start: (url: string, savePath?: string) => void;
+    start: (url: string, savePath?: string) => Promise<string | undefined>;
     cancel: (filename: string) => Promise<void>;
     cancelAll: () => void;
     dashboard: () => Promise<DownloadStateType[]>;

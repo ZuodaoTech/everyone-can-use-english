@@ -134,6 +134,11 @@ export class Video extends Model<Video> {
     return "Video";
   }
 
+  @Column(DataType.VIRTUAL)
+  get filename(): string {
+    return this.getDataValue("md5") + this.extname;
+  }
+
   get extname(): string {
     return (
       this.getDataValue("metadata").extname ||

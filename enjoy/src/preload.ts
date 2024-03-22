@@ -406,7 +406,7 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       callback: (event: IpcRendererEvent, state: DownloadStateType) => void
     ) => ipcRenderer.on("download-on-state", callback),
     start: (url: string, savePath?: string) => {
-      ipcRenderer.invoke("download-start", url, savePath);
+      return ipcRenderer.invoke("download-start", url, savePath);
     },
     cancel: (filename: string) => {
       ipcRenderer.invoke("download-cancel", filename);

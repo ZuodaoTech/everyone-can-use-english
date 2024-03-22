@@ -105,6 +105,11 @@ export class Speech extends Model<Speech> {
   }
 
   @Column(DataType.VIRTUAL)
+  get filename(): string {
+    return this.getDataValue("md5") + this.getDataValue("extname");
+  }
+
+  @Column(DataType.VIRTUAL)
   get filePath(): string {
     return path.join(
       settings.userDataPath(),

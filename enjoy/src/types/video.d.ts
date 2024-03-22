@@ -3,6 +3,7 @@ type VideoType = {
   id: string;
   source: string;
   name: string;
+  filename: string;
   description?: string;
   filename?: string;
   coverUrl?: string;

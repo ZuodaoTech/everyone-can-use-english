@@ -29,6 +29,7 @@ import {
   ZoomInIcon,
   ZoomOutIcon,
   MoreVerticalIcon,
+  DownloadIcon,
 } from "lucide-react";
 
 const ZOOM_RATIO_OPTIONS = [
@@ -91,6 +92,27 @@ export const MediaPlayer = () => {
     if (!w) return;
 
     setWidth(w - 48);
+  };
+
+  const handleDownload = () => {
+    EnjoyApp.dialog
+      .showSaveDialog({
+        title: t("download"),
+        defaultPath: media.filename,
+      })
+      .then((savePath) => {
+        if (!savePath) return;
+
+        toast.promise(EnjoyApp.download.start(media.src, savePath as string), {
+          loading: t("downloading", { file: media.filename }),
+          success: () => t("downloadedSuccessfully"),
+          error: t("downloadFailed"),
+          position: "bottom-right",
+        });
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
 
   useEffect(() => {
@@ -232,6 +254,14 @@ export const MediaPlayer = () => {
             >
               <Share2Icon className="w-4 h-4 mr-4" />
               <span>{t("share")}</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={handleDownload}
+            >
+              <DownloadIcon className="w-4 h-4 mr-4" />
+              <span>{t("download")}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
