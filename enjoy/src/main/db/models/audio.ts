@@ -134,6 +134,11 @@ export class Audio extends Model<Audio> {
     return "Audio";
   }
 
+  @Column(DataType.VIRTUAL)
+  get filename(): string {
+    return this.getDataValue("md5") + this.extname;
+  }
+
   get extname(): string {
     return (
       this.getDataValue("metadata").extname ||
