@@ -510,5 +510,6 @@
   "translateSetence": "translate setenece",
   "reTranslate": "re-translate",
   "analyzeSetence": "analyze setenece",
+  "useAIAssistantToAnalyze": "Use AI assistant to analyze",
   "reAnalyze": "re-analyze"
 }

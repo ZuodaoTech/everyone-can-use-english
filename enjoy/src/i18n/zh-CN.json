@@ -509,5 +509,6 @@
   "translateSetence": "整句翻译",
   "reTranslate": "重新翻译",
   "analyzeSetence": "分析句子",
+  "useAIAssistantToAnalyze": "使用智能助手分析",
   "reAnalyze": "重新分析"
 }

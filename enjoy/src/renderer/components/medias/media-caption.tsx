@@ -282,8 +282,8 @@ export const MediaCaption = () => {
 
   return (
     <div className="h-full flex justify-between space-x-4">
-      <ScrollArea className="flex-1 px-6 py-4 font-serif h-full border shadow-lg rounded-lg">
-        <div className="flex flex-wrap mb-4">
+      <ScrollArea className="flex-1 font-serif h-full border shadow-lg rounded-lg">
+        <div className="flex flex-wrap px-4 py-2">
           {/* use the words splitted by caption text if it is matched with the timeline length, otherwise use the timeline */}
           {caption.text.split(" ").length !== caption.timeline.length
             ? (caption.timeline || []).map((w, index) => (
@@ -300,10 +300,12 @@ export const MediaCaption = () => {
                   onClick={() => toggleRegion(index)}
                 >
                   <div className="">
-                    <div className="text-2xl">{w.text}</div>
+                    <div className="text-lg xl:text-xl 2xl:text-2xl">
+                      {w.text}
+                    </div>
                     {displayIpa && (
                       <div
-                        className={`text-muted-foreground font-code ${
+                        className={`text-sm 2xl:text-base text-muted-foreground font-code ${
                           index === 0 ? "before:content-['/']" : ""
                         }
                         ${
@@ -334,10 +336,12 @@ export const MediaCaption = () => {
                   onClick={() => toggleRegion(index)}
                 >
                   <div className="">
-                    <div className="text-2xl">{word}</div>
+                    <div className="text-lg xl:text-xl 2xl:text-2xl">
+                      {word}
+                    </div>
                     {displayIpa && (
                       <div
-                        className={`text-muted-foreground font-code ${
+                        className={`text-sm 2xl:text-base text-muted-foreground font-code ${
                           index === 0 ? "before:content-['/']" : ""
                         }
                         ${
@@ -371,18 +375,23 @@ export const MediaCaption = () => {
           variant={displayIpa ? "secondary" : "outline"}
           size="icon"
           className="rounded-full w-8 h-8 p-0"
-          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("displayIpa")}
           onClick={() => setDisplayIpa(!displayIpa)}
         >
           <SpeechIcon className="w-4 h-4" />
         </Button>
 
+        <AIButton
+          prompt={caption.text as string}
+          tooltip={t("sendToAIAssistant")}
+        />
+
         <Button
           variant="outline"
           size="icon"
           className="rounded-full w-8 h-8 p-0"
-          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("copyText")}
           onClick={() => {
             copyToClipboard(caption.text);
@@ -396,7 +405,7 @@ export const MediaCaption = () => {
             <CheckIcon className="w-4 h-4 text-green-500" />
           ) : (
             <CopyIcon
-              data-tooltip-id="media-player-controls-tooltip"
+              data-tooltip-id="media-player-tooltip"
               data-tooltip-content={t("copyText")}
               className="w-4 h-4"
             />
@@ -549,12 +558,8 @@ const CaptionTabs = (props: {
   }, [caption]);
 
   return (
-    <Tabs
-      value={tab}
-      onValueChange={(value) => setTab(value)}
-      className="border rounded-lg"
-    >
-      <TabsList className="grid grid-cols-4 gap-4 rounded-b-none sticky top-0">
+    <Tabs value={tab} onValueChange={(value) => setTab(value)} className="">
+      <TabsList className="grid grid-cols-4 gap-4 rounded-none sticky top-0 px-4 mb-4">
         <TabsTrigger value="selected">{t("captionTabs.selected")}</TabsTrigger>
         <TabsTrigger value="translation">
           {t("captionTabs.translation")}
@@ -563,7 +568,7 @@ const CaptionTabs = (props: {
         <TabsTrigger value="note">{t("captionTabs.note")}</TabsTrigger>
       </TabsList>
 
-      <div className="px-4 pb-2 min-h-32">
+      <div className="px-4 pb-4 min-h-32">
         <TabsContent value="selected">
           {selectedIndices.length > 0 ? (
             <>
@@ -631,7 +636,7 @@ const CaptionTabs = (props: {
               </div>
             </>
           ) : (
-            <div className="text-muted-foreground py-4">
+            <div className="text-sm text-muted-foreground py-4">
               {t("clickAnyWordToSelect")}
             </div>
           )}
@@ -640,7 +645,11 @@ const CaptionTabs = (props: {
         <TabsContent value="translation">
           {translation ? (
             <>
-              <div className="mb-2 flex items-center justify-end">
+              <Markdown className="select-text prose prose-sm prose-h3:text-base max-w-full mb-4">
+                {translation}
+              </Markdown>
+
+              <div className="flex items-center justify-end">
                 <Button
                   variant="secondary"
                   size="sm"
@@ -652,9 +661,6 @@ const CaptionTabs = (props: {
                   )}
                   {t("reTranslate")}
                 </Button>
-              </div>
-              <div className="select-text text-sm text-foreground">
-                {translation}
               </div>
             </>
           ) : (
@@ -676,7 +682,24 @@ const CaptionTabs = (props: {
         <TabsContent value="analysis">
           {analysisResult ? (
             <>
-              <div className="mb-2 flex items-center space-x-2 justify-end">
+              <Markdown
+                className="select-text prose prose-sm prose-h3:text-base max-w-full mb-4"
+                components={{
+                  a({ node, children, ...props }) {
+                    try {
+                      new URL(props.href ?? "");
+                      props.target = "_blank";
+                      props.rel = "noopener noreferrer";
+                    } catch (e) {}
+
+                    return <a {...props}>{children}</a>;
+                  },
+                }}
+              >
+                {analysisResult}
+              </Markdown>
+
+              <div className="flex items-center space-x-2 justify-end">
                 <Button
                   variant="secondary"
                   size="sm"
@@ -695,24 +718,9 @@ const CaptionTabs = (props: {
                     setAnalysisResult(result);
                     EnjoyApp.cacheObjects.set(`analyze-${hash}`, result);
                   }}
+                  tooltip={t("useAIAssistantToAnalyze")}
                 />
               </div>
-              <Markdown
-                className="select-text prose prose-sm prose-h3:text-base max-w-full"
-                components={{
-                  a({ node, children, ...props }) {
-                    try {
-                      new URL(props.href ?? "");
-                      props.target = "_blank";
-                      props.rel = "noopener noreferrer";
-                    } catch (e) {}
-
-                    return <a {...props}>{children}</a>;
-                  },
-                }}
-              >
-                {analysisResult}
-              </Markdown>
             </>
           ) : (
             <div className="flex items-center justify-center space-x-2 py-4">
@@ -729,6 +737,7 @@ const CaptionTabs = (props: {
                   setAnalysisResult(result);
                   EnjoyApp.cacheObjects.set(`analyze-${hash}`, result);
                 }}
+                tooltip={t("useAIAssistantToAnalyze")}
               />
             </div>
           )}
@@ -746,9 +755,10 @@ const CaptionTabs = (props: {
 
 const AIButton = (props: {
   prompt: string;
-  onReply: (replies: MessageType[]) => void;
+  onReply?: (replies: MessageType[]) => void;
+  tooltip: string;
 }) => {
-  const { prompt, onReply } = props;
+  const { prompt, onReply, tooltip } = props;
   const [asking, setAsking] = useState<boolean>(false);
   return (
     <ConversationShortcuts
@@ -756,15 +766,16 @@ const AIButton = (props: {
       onOpenChange={setAsking}
       prompt={prompt}
       onReply={onReply}
+      title={tooltip}
       trigger={
         <Button
-          data-tooltip-id="media-player-controls-tooltip"
-          data-tooltip-content={t("sendToAIAssistant")}
+          data-tooltip-id="media-player-tooltip"
+          data-tooltip-content={tooltip}
           variant="outline"
           size="sm"
           className="p-0 w-8 h-8 rounded-full"
         >
-          <BotIcon className="w-5 h-5 text-muted-foreground hover:text-primary" />
+          <BotIcon className="w-5 h-5" />
         </Button>
       }
     />

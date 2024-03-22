@@ -158,7 +158,7 @@ export const MediaPlayer = () => {
       <div className="flex flex-col justify-around space-y-1.5">
         <Button
           variant={`${zoomRatio === fitZoomRatio ? "secondary" : "outline"}`}
-          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("zoomToFit")}
           className="relative aspect-square rounded-full p-0 h-8"
           onClick={() => {
@@ -174,7 +174,7 @@ export const MediaPlayer = () => {
 
         <Button
           variant={`${zoomRatio > 1.0 ? "secondary" : "outline"}`}
-          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("zoomIn")}
           className="relative aspect-square rounded-full p-0 h-8"
           onClick={() => {
@@ -191,7 +191,7 @@ export const MediaPlayer = () => {
 
         <Button
           variant={`${zoomRatio < 1.0 ? "secondary" : "outline"}`}
-          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("zoomOut")}
           className="relative aspect-square rounded-full p-0 h-8"
           onClick={() => {
@@ -208,7 +208,7 @@ export const MediaPlayer = () => {
 
         <Button
           variant={`${displayInlineCaption ? "secondary" : "outline"}`}
-          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("inlineCaption")}
           className="relative aspect-square rounded-full p-0 h-8"
           onClick={() => {
@@ -227,7 +227,7 @@ export const MediaPlayer = () => {
             <Button
               variant="outline"
               size="icon"
-              data-tooltip-id="media-player-controls-tooltip"
+              data-tooltip-id="media-player-tooltip"
               data-tooltip-content={t("more")}
               className="rounded-full w-8 h-8 p-0"
             >
