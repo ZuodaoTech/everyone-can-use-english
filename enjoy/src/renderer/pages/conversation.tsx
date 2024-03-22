@@ -169,6 +169,17 @@ export default () => {
     }, 500);
   };
 
+  const resizeTextarea = () => {
+    if (!inputRef?.current) return;
+
+    inputRef.current.style.height = "auto";
+    inputRef.current.style.height = inputRef.current.scrollHeight + "px";
+  };
+
+  useEffect(() => {
+    resizeTextarea();
+  }, [content]);
+
   useEffect(() => {
     setOffest(0);
     setContent(searchParams.get("text") || "");
@@ -299,8 +310,8 @@ export default () => {
           </ScrollArea>
         </MediaPlayerProvider>
 
-        <div className="px-4 absolute w-full bottom-0 left-0 h-14 bg-muted z-50">
-          <div className="focus-within:bg-background px-4 py-2 flex items-center space-x-4 rounded-lg border">
+        <div className="px-4 absolute w-full bottom-0 left-0 bg-muted z-50">
+          <div className="focus-within:bg-background pr-4 py-2 flex items-end space-x-4 rounded-lg shadow-lg border scrollbar">
             <Textarea
               ref={inputRef}
               disabled={submitting}
@@ -308,18 +319,20 @@ export default () => {
               onChange={(e) => setContent(e.target.value)}
               placeholder={t("pressEnterToSend")}
               data-testid="conversation-page-input"
-              className="px-0 py-0 shadow-none border-none focus-visible:outline-0 focus-visible:ring-0 border-none bg-muted focus:bg-background min-h-[1.25rem] max-h-[3.5rem] !overflow-x-hidden"
+              className="text-base px-4 py-0 shadow-none border-none focus-visible:outline-0 focus-visible:ring-0 border-none bg-muted focus:bg-background min-h-[1rem] max-h-[70vh] scrollbar-thin scrollbar-thumb-sky-500  !overflow-x-hidden"
             />
-            <Button
-              type="submit"
-              ref={submitRef}
-              disabled={submitting || !content}
-              data-testid="conversation-page-submit"
-              onClick={() => handleSubmit(content)}
-              className=""
-            >
-              <SendIcon className="w-5 h-5" />
-            </Button>
+            <div className="h-12 py-1">
+              <Button
+                type="submit"
+                ref={submitRef}
+                disabled={submitting || !content}
+                data-testid="conversation-page-submit"
+                onClick={() => handleSubmit(content)}
+                className="h-10"
+              >
+                <SendIcon className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
