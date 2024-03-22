@@ -10,6 +10,7 @@ import Chart from "chart.js/auto";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { IPA_MAPPING } from "@/constants";
 import { toast } from "@renderer/components/ui";
+import { Tooltip } from "react-tooltip";
 
 type MediaPlayerContextType = {
   media: AudioType | VideoType;
@@ -437,48 +438,51 @@ export const MediaPlayerProvider = ({
   }, [media, ref, mediaProvider]);
 
   return (
-    <MediaPlayerProviderContext.Provider
-      value={{
-        media,
-        setMedia,
-        setMediaProvider,
-        wavesurfer,
-        setRef,
-        decoded,
-        decodeError,
-        setDecodeError,
-        currentTime,
-        currentSegmentIndex,
-        setCurrentSegmentIndex,
-        waveform,
-        zoomRatio,
-        setZoomRatio,
-        fitZoomRatio,
-        minPxPerSec,
-        transcription,
-        regions,
-        renderPitchContour,
-        pitchChart,
-        activeRegion,
-        setActiveRegion,
-        editingRegion,
-        setEditingRegion,
-        generateTranscription,
-        transcribing,
-        transcribingProgress,
-        transcriptionDraft,
-        setTranscriptionDraft,
-        isRecording,
-        setIsRecording,
-        currentRecording,
-        setCurrentRecording,
-        recordings,
-        fetchRecordings,
-        loadingRecordings,
-        hasMoreRecordings,
-      }}
-    >
-      {children}
-    </MediaPlayerProviderContext.Provider>
+    <>
+      <MediaPlayerProviderContext.Provider
+        value={{
+          media,
+          setMedia,
+          setMediaProvider,
+          wavesurfer,
+          setRef,
+          decoded,
+          decodeError,
+          setDecodeError,
+          currentTime,
+          currentSegmentIndex,
+          setCurrentSegmentIndex,
+          waveform,
+          zoomRatio,
+          setZoomRatio,
+          fitZoomRatio,
+          minPxPerSec,
+          transcription,
+          regions,
+          renderPitchContour,
+          pitchChart,
+          activeRegion,
+          setActiveRegion,
+          editingRegion,
+          setEditingRegion,
+          generateTranscription,
+          transcribing,
+          transcribingProgress,
+          transcriptionDraft,
+          setTranscriptionDraft,
+          isRecording,
+          setIsRecording,
+          currentRecording,
+          setCurrentRecording,
+          recordings,
+          fetchRecordings,
+          loadingRecordings,
+          hasMoreRecordings,
+        }}
+      >
+        {children}
+      </MediaPlayerProviderContext.Provider>
+      <Tooltip className="z-10" id="media-player-tooltip" />
+    </>
   );
 };

@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 
 export const ConversationShortcuts = (props: {
   trigger: React.ReactNode;
+  title?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   prompt: string;
@@ -32,6 +33,7 @@ export const ConversationShortcuts = (props: {
 }) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const {
+    title,
     prompt,
     onReply,
     excludedIds = [],
@@ -196,7 +198,7 @@ export const ConversationShortcuts = (props: {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t("sendToAIAssistant")}</DialogTitle>
+          <DialogTitle>{title || t("sendToAIAssistant")}</DialogTitle>
         </DialogHeader>
         {dialogContent()}
       </DialogContent>

@@ -448,7 +448,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
           variant="default"
           size="icon"
           id="recording-play-or-pause-button"
-          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("playRecording")}
           className="rounded-full w-8 h-8 p-0"
           onClick={() => {
@@ -478,7 +478,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         <Button
           variant={isComparing ? "secondary" : "outline"}
           size="icon"
-          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("compare")}
           className="rounded-full w-8 h-8 p-0"
           onClick={toggleCompare}
@@ -489,7 +489,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         <Button
           variant={isSelectingRegion ? "secondary" : "outline"}
           size="icon"
-          data-tooltip-id="media-player-controls-tooltip"
+          data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("selectRegion")}
           className="rounded-full w-8 h-8 p-0"
           onClick={() => setIsSelectingRegion(!isSelectingRegion)}
@@ -502,7 +502,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
             <Button
               variant="outline"
               size="icon"
-              data-tooltip-id="media-player-controls-tooltip"
+              data-tooltip-id="media-player-tooltip"
               data-tooltip-content={t("more")}
               className="rounded-full w-8 h-8 p-0"
             >
@@ -599,7 +599,7 @@ export const MediaRecordButton = (props: {
       variant="ghost"
       onClick={() => setIsRecording(!isRecording)}
       id="media-record-button"
-      data-tooltip-id="media-player-controls-tooltip"
+      data-tooltip-id="media-player-tooltip"
       data-tooltip-content={
         isRecording ? t("stopRecording") : t("startRecording")
       }
