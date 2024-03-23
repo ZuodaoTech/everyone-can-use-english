@@ -16,44 +16,54 @@ class Camdict {
     "dictionaries",
     "cam_dict.refined.sqlite"
   );
-  public sequelize: Sequelize;
-  public db: any;
+  private sequelize: Sequelize;
+  private db: any;
 
-  constructor() {
-    this.sequelize = new Sequelize({
-      dialect: "sqlite",
-      storage: this.dbPath,
-    });
-    this.sequelize.sync();
-    this.sequelize.authenticate();
-    this.db = this.sequelize.define(
-      "Camdict",
-      {
-        id: {
-          type: DataType.INTEGER,
-          primaryKey: true,
+  async init() {
+    if (this.db) return;
+
+    try {
+      this.sequelize = new Sequelize({
+        dialect: "sqlite",
+        storage: this.dbPath,
+      });
+      this.sequelize.sync();
+      this.sequelize.authenticate();
+      this.db = this.sequelize.define(
+        "Camdict",
+        {
+          id: {
+            type: DataType.INTEGER,
+            primaryKey: true,
+          },
+          oid: {
+            type: DataType.STRING,
+          },
+          word: {
+            type: DataType.STRING,
+          },
+          posItems: {
+            type: DataType.JSON,
+          },
         },
-        oid: {
-          type: DataType.STRING,
-        },
-        word: {
-          type: DataType.STRING,
-        },
-        posItems: {
-          type: DataType.JSON,
-        },
-      },
-      {
-        modelName: "Camdict",
-        tableName: "camdict",
-        underscored: true,
-        timestamps: true,
-      }
-    );
+        {
+          modelName: "Camdict",
+          tableName: "camdict",
+          underscored: true,
+          timestamps: true,
+        }
+      );
+
+      return this.db;
+    } catch (err) {
+      logger.error("Failed to initialize camdict", err);
+    }
   }
 
   async lookup(word: string) {
-    const item = await this.db.findOne({
+    await this.init();
+
+    const item = await this.db?.findOne({
       where: { word: word.trim().toLowerCase() },
     });
     return item?.toJSON();
