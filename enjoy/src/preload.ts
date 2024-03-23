@@ -178,6 +178,11 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       ipcRenderer.removeAllListeners("db-on-transaction");
     },
   },
+  camdict: {
+    lookup: (word: string) => {
+      return ipcRenderer.invoke("camdict-lookup", word);
+    }
+  },
   audios: {
     findAll: (params: {
       offset: number | undefined;

@@ -22,6 +22,7 @@ import Ffmpeg from "@main/ffmpeg";
 import { Waveform } from "./waveform";
 import url from "url";
 import echogarden from "./echogarden";
+import camdict from "./camdict";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,6 +47,8 @@ main.init = () => {
 
   // Prepare local database
   db.registerIpcHandlers();
+
+  camdict.registerIpcHandlers();
 
   // Prepare Settings
   settings.registerIpcHandlers();
