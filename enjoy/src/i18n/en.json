@@ -511,5 +511,8 @@
   "reTranslate": "re-translate",
   "analyzeSetence": "analyze setenece",
   "useAIAssistantToAnalyze": "Use AI assistant to analyze",
-  "reAnalyze": "re-analyze"
+  "reAnalyze": "re-analyze",
+  "AiDictionary": "AI dictionary",
+  "AiTranslate": "AI translate",
+  "cambridgeDictionary": "Cambridge dictionary"
 }

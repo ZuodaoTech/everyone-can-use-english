@@ -53,8 +53,6 @@ class Camdict {
           timestamps: true,
         }
       );
-
-      return this.db;
     } catch (err) {
       logger.error("Failed to initialize camdict", err);
     }
