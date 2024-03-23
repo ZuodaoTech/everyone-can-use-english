@@ -33,3 +33,4 @@ jobs:
           path: |
             enjoy/out/make/**/*.deb
             enjoy/out/make/**/*.rpm
+            enjoy/out/make/**/*.zip

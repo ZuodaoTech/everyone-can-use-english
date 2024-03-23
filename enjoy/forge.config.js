@@ -45,14 +45,14 @@ const config = {
         mimeType: ["x-scheme-handler/enjoy"],
       },
     }),
-    new MakerRpm({
-      options: {
-        name: "enjoy",
-        productName: "Enjoy",
-        icon: "./assets/icon.png",
-        mimeType: ["x-scheme-handler/enjoy"],
-      },
-    }),
+    // new MakerRpm({
+    //   options: {
+    //     name: "enjoy",
+    //     productName: "Enjoy",
+    //     icon: "./assets/icon.png",
+    //     mimeType: ["x-scheme-handler/enjoy"],
+    //   },
+    // }),
   ],
   publishers: [
     {
