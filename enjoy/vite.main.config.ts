@@ -56,6 +56,10 @@ export default defineConfig((env) => {
             dest: "lib/youtubedr",
           },
           {
+            src: "lib/dictionaries/*",
+            dest: "lib/dictionaries",
+          },
+          {
             src: "src/main/db/migrations/*",
             dest: "migrations",
           },

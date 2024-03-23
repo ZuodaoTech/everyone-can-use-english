@@ -111,6 +111,9 @@ type EnjoyAppType = {
     ) => Promise<void>;
     removeListeners: () => Promise<void>;
   };
+  camdict: {
+    lookup: (word: string) => Promise<CamdictWordType | null>;
+  };
   audios: {
     findAll: (params: any) => Promise<AudioType[]>;
     findOne: (params: any) => Promise<AudioType>;

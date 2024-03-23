@@ -510,5 +510,8 @@
   "reTranslate": "重新翻译",
   "analyzeSetence": "分析句子",
   "useAIAssistantToAnalyze": "使用智能助手分析",
-  "reAnalyze": "重新分析"
+  "reAnalyze": "重新分析",
+  "AiDictionary": "智能词典",
+  "AiTranslate": "智能翻译",
+  "cambridgeDictionary": "剑桥词典"
 }

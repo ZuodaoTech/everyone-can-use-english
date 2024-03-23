@@ -32,7 +32,7 @@ export const MeaningCard = (props: {
           </span>
         )}
         {pronunciation && (
-          <span className="text-sm mr-2">/{pronunciation}/</span>
+          <span className="text-sm font-code mr-2">/{pronunciation}/</span>
         )}
         {lemma && lemma !== word && <span className="text-sm">({lemma})</span>}
       </div>

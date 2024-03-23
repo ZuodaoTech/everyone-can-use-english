@@ -21,7 +21,8 @@
     "create-migration": "zx ./src/main/db/create-migration.mjs",
     "download-whisper-model": "zx ./scripts/download-whisper-model.mjs",
     "download-ffmpeg-wasm": "zx ./scripts/download-ffmpeg-wasm.mjs",
-    "download": "yarn run download-whisper-model && yarn run download-ffmpeg-wasm"
+    "download-dictionaries": "zx ./scripts/download-dictionaries.mjs",
+    "download": "yarn run download-whisper-model && yarn run download-ffmpeg-wasm && yarn run download-dictionaries"
   },
   "keywords": [],
   "author": {

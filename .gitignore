@@ -129,5 +129,8 @@ ffmpeg-core.wasm
 ffmpeg-core.js
 ffmpeg-core.worker.js
 
+# dict
+cam_dict.refined.sqlite
+
 .vitepress/cache/
 /public/jupyter-notebooks/*.mp3

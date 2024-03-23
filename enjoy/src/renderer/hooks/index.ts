@@ -8,3 +8,5 @@ export * from './use-conversation';
 
 export * from './use-audio';
 export * from './use-video';
+
+export * from './use-camdict';
