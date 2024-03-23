@@ -5,7 +5,10 @@ import { Button, toast, ScrollArea } from "@renderer/components/ui";
 import { ConversationShortcuts, MediaCaptionTabs } from "@renderer/components";
 import { t } from "i18next";
 import { BotIcon, CopyIcon, CheckIcon, SpeechIcon } from "lucide-react";
-import { Timeline } from "echogarden/dist/utilities/Timeline.d.js";
+import {
+  Timeline,
+  TimelineEntry,
+} from "echogarden/dist/utilities/Timeline.d.js";
 import { convertIpaToNormal } from "@/utils";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 
@@ -30,9 +33,7 @@ export const MediaCaption = () => {
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
 
-  const caption = (transcription?.result?.timeline as Timeline)?.[
-    currentSegmentIndex
-  ];
+  const [caption, setCaption] = useState<TimelineEntry | null>(null);
 
   const toggleMultiSelect = (event: KeyboardEvent) => {
     setMultiSelecting(event.shiftKey && event.type === "keydown");
@@ -248,6 +249,12 @@ export const MediaCaption = () => {
   }, [editingRegion]);
 
   useEffect(() => {
+    setCaption(
+      (transcription?.result?.timeline as Timeline)?.[currentSegmentIndex]
+    );
+  }, [currentSegmentIndex, transcription]);
+
+  useEffect(() => {
     document.addEventListener("keydown", (event: KeyboardEvent) =>
       toggleMultiSelect(event)
     );
@@ -348,6 +355,7 @@ export const MediaCaption = () => {
         </div>
 
         <MediaCaptionTabs
+          caption={caption}
           selectedIndices={selectedIndices}
           toggleRegion={toggleRegion}
         />
