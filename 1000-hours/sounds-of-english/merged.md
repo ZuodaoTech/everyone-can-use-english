@@ -171,17 +171,17 @@ Voice: Nova (US Female)
 
 英文的音节构成大抵上有以下几种形式（其中，`c` 代表辅音，`v` 代表元音）：
 
- * `v`： *awe* `/ɔː/` <span class="speak-word-inline" data-audio-us="/audios/awe-us.mp3"></span>
- * `vc`： *add* `/æd/` <span class="speak-word-inline" data-audio-us="/audios/add-us.mp3"></span>
- * `cv`： *the* `/ðə/` <span class="speak-word-inline" data-audio-us="/audios/the-us.mp3"></span>
- * `cvc`： *dog* `/dɔg/` <span class="speak-word-inline" data-audio-us="/audios/dog-us.mp3"></span>
- * `ccv`： *flee* `/fliː/` <span class="speak-word-inline" data-audio-us="/audios/flee-us.mp3"></span>
- * `vcc`： *east* `/iːst/` <span class="speak-word-inline" data-audio-us="/audios/east-us.mp3"></span>
- * `cvcc`： *task* `/tæsk/` <span class="speak-word-inline" data-audio-us="/audios/task-us.mp3"></span>
- * `ccvc`： *speed* `/spiːd/` <span class="speak-word-inline" data-audio-us="/audios/speed-us.mp3"></span>
- * `ccvcc`： *thrust* `/θrʌst/` <span class="speak-word-inline" data-audio-us="/audios/thrust-us.mp3"></span>
- * `cvccc`： *text* `/tekst/` <span class="speak-word-inline" data-audio-us="/audios/text-us.mp3"></span>
- * `ccvccc`： *flexed* `/flekst/` <span class="speak-word-inline" data-audio-us="/audios/flexed-us.mp3"></span>
+ * `v`： *awe* `/ɔː/`<span class="speak-word-inline" data-audio-us="/audios/awe-us.mp3"></span>
+ * `vc`： *add* `/æd/`<span class="speak-word-inline" data-audio-us="/audios/add-us.mp3"></span>
+ * `cv`： *the* `/ðə/`<span class="speak-word-inline" data-audio-us="/audios/the-us.mp3"></span>
+ * `cvc`： *dog* `/dɔg/`<span class="speak-word-inline" data-audio-us="/audios/dog-us.mp3"></span>
+ * `ccv`： *flee* `/fliː/`<span class="speak-word-inline" data-audio-us="/audios/flee-us.mp3"></span>
+ * `vcc`： *east* `/iːst/`<span class="speak-word-inline" data-audio-us="/audios/east-us.mp3"></span>
+ * `cvcc`： *task* `/tæsk/`<span class="speak-word-inline" data-audio-us="/audios/task-us.mp3"></span>
+ * `ccvc`： *speed* `/spiːd/`<span class="speak-word-inline" data-audio-us="/audios/speed-us.mp3"></span>
+ * `ccvcc`： *thrust* `/θrʌst/`<span class="speak-word-inline" data-audio-us="/audios/thrust-us.mp3"></span>
+ * `cvccc`： *text* `/tekst/`<span class="speak-word-inline" data-audio-us="/audios/text-us.mp3"></span>
+ * `ccvccc`： *flexed* `/flekst/`<span class="speak-word-inline" data-audio-us="/audios/flexed-us.mp3"></span>
 
 如果一个单词由多个音节构成的话，那么为了能够读得顺畅、清晰且易于识别，那么其中可能会有某个音节是**重音**；如果音节数量更多，可能还会有某个或某些音节是**次重音**。一般来说，**一个词汇只有一个重音**，**但有可能存在多个次重音**。比如 *serendipity* `/ˌserənˈdɪpɪti/`。之前的那个 *19* 个音节构成的词汇，其中有 *7* 个**次重音**，*1* 个**重音**。
 
@@ -253,9 +253,9 @@ Voice: Nova (US Female)
 
 美国人在发 `ʌ` 这个音的时候，干脆完全是 `ə`。也就是说，对美国人来说，短元音只剩下了 *5* 个，而不是英国人习惯的 *6* 个。
 
-比如，*encourage* 这个词，英国人读作 `ɪnˈkʌrɪdʒ` <span class="speak-word-inline" data-audio-uk="/audios/encourage-uk.mp3"></span>，美国人读作  `ənˈkərɪdʒ`  <span class="speak-word-inline" data-audio-us="/audios/encourage-us.mp3"></span>—— 他们更倾向于把一些非重音音节里的  `ɪ` 读作 `ə`。
+比如，*encourage* 这个词，英国人读作 `ɪnˈkʌrɪdʒ`<span class="speak-word-inline" data-audio-uk="/audios/encourage-uk.mp3"></span>，美国人读作  `ənˈkərɪdʒ`  <span class="speak-word-inline" data-audio-us="/audios/encourage-us.mp3"></span>—— 他们更倾向于把一些非重音音节里的  `ɪ` 读作 `ə`。
 
-美国人在这个长元音 `ɑː` 的时候，常常会在末尾加上一个 `r`，常常用 `ɑr`  或者 `ɑʳ`  标注。比如 *card* `/kɑːd, kɑrd/` <span class="speak-word-inline" data-audio-uk="/audios/card-uk.mp3" data-audio-us="/audios/card-us.mp3"></span>。
+美国人在这个长元音 `ɑː` 的时候，常常会在末尾加上一个 `r`，常常用 `ɑr`  或者 `ɑʳ`  标注。比如 *card* `/kɑːd, kɑrd/`<span class="speak-word-inline" data-audio-uk="/audios/card-uk.mp3" data-audio-us="/audios/card-us.mp3"></span>。
 
 另外，在大多数美国人的发音习惯中，`ɑː` 对应的短版本 `ɑ`，相当于是英式发音中的 `ɒ`，比如 *hot* `/hɒt, hɑt/`<span class="speak-word-inline" data-audio-uk="/audios/hot-uk.mp3" data-audio-us="/audios/hot-us.mp3"></span>。
 
@@ -281,7 +281,7 @@ Voice: Nova (US Female)
 
 这一对元音，不只是长短的区别。 `ɪ`  常常被认为实际上并不完全是长元音 `iː` 的更短版本，它更像是 `e` 和 `i` 之间的一个音，发声时 “口腔内气流共鸣位置” 相对于 `iː` 略微靠后。听起来很像是更短版本的 `eɪ`……
 
-另外，这个音实际上还有第 3 个版本，`ɪ` 在词汇末尾的时候，更倾向于像是 `iː`  这个长元音的更短版本，`i`，长度介于 `ɪ` 和 `iː` 之间。比如，*responsibility* `/riˌspɑnsəˈbɪləti/` <span class="speak-word-inline" data-audio-uk="/audios/responsibility-uk.mp3" data-audio-us="/audios/responsibility-us.mp3"></span>。
+另外，这个音实际上还有第 3 个版本，`ɪ` 在词汇末尾的时候，更倾向于像是 `iː`  这个长元音的更短版本，`i`，长度介于 `ɪ` 和 `iː` 之间。比如，*responsibility* `/riˌspɑnsəˈbɪləti/`<span class="speak-word-inline" data-audio-uk="/audios/responsibility-uk.mp3" data-audio-us="/audios/responsibility-us.mp3"></span>。
 
 ::: info
 
@@ -337,7 +337,7 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 
 于是，老的习惯一不小心就会冲进新学的语言，总是不由自主地在这些音后面加上一个 `ə`…… 比如，很多人总是把 *please* <span class="speak-word-inline" data-audio-uk="/audios/please-uk.mp3" data-audio-us="/audios/please-us.mp3"></span>读得听起来像是 *police* <span class="speak-word-inline" data-audio-uk="/audios/police-uk.mp3" data-audio-us="/audios/police-us.mp3"></span>的第一个音节……
 
-如果发现自己总是不小心在这些辅音后加上不应该有的 `ə` 的话，不妨新学一个英文中没有的元音 `ɤ` <span class="speak-word-inline" data-audio-uk="/audios/ɤ-Close-mid_back_unrounded_vowel.ogg.mp3"></span> —— 用这个 `ɤ`  音替代那个不应该有的 `ə`，效果也还不错。
+如果发现自己总是不小心在这些辅音后加上不应该有的 `ə` 的话，不妨新学一个英文中没有的元音 `ɤ`<span class="speak-word-inline" data-audio-uk="/audios/ɤ-Close-mid_back_unrounded_vowel.ogg.mp3"></span> —— 用这个 `ɤ`  音替代那个不应该有的 `ə`，效果也还不错。
 
 ::: tip
 关于 `ɤ`，你可以尝试一下用 *academically* 这个 6 个音节的词汇仔细体会一下。
@@ -400,7 +400,7 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 
 另外，美国人在说 `t` 这个辅音的时候，经常会把它读成**送气音**（*asperated*），即，发着 `h` 的音读出，比如 *time* `/tʰaɪm/`<span class="speak-word-inline" data-audio-uk="/audios/time-uk.mp3" data-audio-us="/audios/time-us.mp3"></span>。
 
-对中文普通话使用者来说，必须为这几个辅音学习新的发声方式。可以用 *students* `/ˈstudənts/` <span class="speak-word-inline" data-audio-uk="/audios/students-uk.mp3" data-audio-us="/audios/students-us.mp3"></span> 这个词作为起步反复练习。以后随时注意这些辅音发声时起始的**舌尖位置**。
+对中文普通话使用者来说，必须为这几个辅音学习新的发声方式。可以用 *students* `/ˈstudənts/`<span class="speak-word-inline" data-audio-uk="/audios/students-uk.mp3" data-audio-us="/audios/students-us.mp3"></span> 这个词作为起步反复练习。以后随时注意这些辅音发声时起始的**舌尖位置**。
 # 2.2.5. `t, d`
 
 `t` 和 `d` 在英文语音中出现频率实在太高，乃至于我们不得不格外注意有关它的细节。
@@ -409,7 +409,7 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 
 `t` 和 `d` 之后直接跟着辅音的时候，它的舌尖动作完整，但，不送气流，所以我们听不到它。有人把这种现象叫做 **省音**（*elision*）；但，这种说法容易产生误导 —— 听不到不意味着说没有，它是一个 **“看不见” 甚至 “听不到”，但 “的确存在” 的停顿**。`t, d` 的那个位置会有个**细微的停顿** —— 有时，即便舌尖动作并不完整，但那个停顿依然在 —— 通常会被非母语使用者直接忽视。这种停顿，语音学里叫做**声门停顿** *(glottal stop, a momentary tight closure of the vocal cords, )*。
 
-*hotdog*, 不是`/ˈhɑˌdɔg/`，而是 `/ˈhɑ·ˌdɔg/` <span class="speak-word-inline" data-audio-uk="/audios/hotdog-uk.mp3" data-audio-us="/audios/hotdog-us.mp3"></span>—— 这里的 `·` 代表那个极短的停顿。同样，*partner*，不是 `/ˈpɑrnər/` 而是 `/ˈpɑr·nər/` <span class="speak-word-inline" data-audio-uk="/audios/partner-uk.mp3" data-audio-us="/audios/partner-us.mp3"></span>；*hard-nosed*, 不是 `/ˌhɑːˈnəʊzd/`，而是 `/ˌhɑːr·ˈnəʊzd/` <span class="speak-word-inline" data-audio-uk="/audios/hardnosed-uk.mp3" data-audio-us="/audios/hardnosed-us.mp3"></span>。
+*hotdog*, 不是`/ˈhɑˌdɔg/`，而是 `/ˈhɑ·ˌdɔg/`<span class="speak-word-inline" data-audio-uk="/audios/hotdog-uk.mp3" data-audio-us="/audios/hotdog-us.mp3"></span>—— 这里的 `·` 代表那个极短的停顿。同样，*partner*，不是 `/ˈpɑrnər/` 而是 `/ˈpɑr·nər/`<span class="speak-word-inline" data-audio-uk="/audios/partner-uk.mp3" data-audio-us="/audios/partner-us.mp3"></span>；*hard-nosed*, 不是 `/ˌhɑːˈnəʊzd/`，而是 `/ˌhɑːr·ˈnəʊzd/`<span class="speak-word-inline" data-audio-uk="/audios/hardnosed-uk.mp3" data-audio-us="/audios/hardnosed-us.mp3"></span>。
 
 ## 2.2.5.2. 叠音
 

@@ -12,17 +12,17 @@
 
 In general, there are the following few forms of syllable composition in English (where `c` stands for consonant and `v` means vowel):
 
-* `v`： *awe* `/ɔː/` <span class="speak-word-inline" data-audio-us="/audios/awe-us.mp3"></span>
-* `vc`： *add* `/æd/` <span class="speak-word-inline" data-audio-us="/audios/add-us.mp3"></span>
-* `cv`： *the* `/ðə/` <span class="speak-word-inline" data-audio-us="/audios/the-us.mp3"></span>
-* `cvc`： *dog* `/dɔg/` <span class="speak-word-inline" data-audio-us="/audios/dog-us.mp3"></span>
-* `ccv`： *flee* `/fliː/` <span class="speak-word-inline" data-audio-us="/audios/flee-us.mp3"></span>
-* `vcc`： *east* `/iːst/` <span class="speak-word-inline" data-audio-us="/audios/east-us.mp3"></span>
-* `cvcc`： *task* `/tæsk/` <span class="speak-word-inline" data-audio-us="/audios/task-us.mp3"></span>
-* `ccvc`： *speed* `/spiːd/` <span class="speak-word-inline" data-audio-us="/audios/speed-us.mp3"></span>
-* `ccvcc`： *thrust* `/θrʌst/` <span class="speak-word-inline" data-audio-us="/audios/thrust-us.mp3"></span>
-* `cvccc`： *text* `/tekst/` <span class="speak-word-inline" data-audio-us="/audios/text-us.mp3"></span>
-* `ccvccc`： *flexed* `/flekst/` <span class="speak-word-inline" data-audio-us="/audios/flexed-us.mp3"></span>
+* `v`： *awe* `/ɔː/`<span class="speak-word-inline" data-audio-us="/audios/awe-us.mp3"></span>
+* `vc`： *add* `/æd/`<span class="speak-word-inline" data-audio-us="/audios/add-us.mp3"></span>
+* `cv`： *the* `/ðə/`<span class="speak-word-inline" data-audio-us="/audios/the-us.mp3"></span>
+* `cvc`： *dog* `/dɔg/`<span class="speak-word-inline" data-audio-us="/audios/dog-us.mp3"></span>
+* `ccv`： *flee* `/fliː/`<span class="speak-word-inline" data-audio-us="/audios/flee-us.mp3"></span>
+* `vcc`： *east* `/iːst/`<span class="speak-word-inline" data-audio-us="/audios/east-us.mp3"></span>
+* `cvcc`： *task* `/tæsk/`<span class="speak-word-inline" data-audio-us="/audios/task-us.mp3"></span>
+* `ccvc`： *speed* `/spiːd/`<span class="speak-word-inline" data-audio-us="/audios/speed-us.mp3"></span>
+* `ccvcc`： *thrust* `/θrʌst/`<span class="speak-word-inline" data-audio-us="/audios/thrust-us.mp3"></span>
+* `cvccc`： *text* `/tekst/`<span class="speak-word-inline" data-audio-us="/audios/text-us.mp3"></span>
+* `ccvccc`： *flexed* `/flekst/`<span class="speak-word-inline" data-audio-us="/audios/flexed-us.mp3"></span>
 
 如果一个单词由多个音节构成的话，那么为了能够读得顺畅、清晰且易于识别，那么其中可能会有某个音节是**重音**；如果音节数量更多，可能还会有某个或某些音节是**次重音**。一般来说，**一个词汇只有一个重音**，**但有可能存在多个次重音**。比如 *serendipity* `/ˌserənˈdɪpɪti/`<span class="speak-word-inline" data-audio-uk="/audios/us/serendipity-us-jen.mp3"></span>。之前的那个 *19* 个音节构成的词汇，其中有 *7* 个**次重音**，*1* 个**重音**。
 
