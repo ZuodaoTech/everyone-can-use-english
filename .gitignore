@@ -134,3 +134,5 @@ cam_dict.refined.sqlite
 
 .vitepress/cache/
 /public/jupyter-notebooks/*.mp3
+
+*.sqlite
