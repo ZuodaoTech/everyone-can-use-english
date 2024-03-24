@@ -108,8 +108,8 @@ export default withMermaid(
                     link: "/sounds-of-american-english/1.2-phonemes",
                   },
                   {
-                    text: "1.3. 音标",
-                    link: "/sounds-of-american-english/1.3-phonetics",
+                    text: "1.3. 口音",
+                    link: "/sounds-of-american-english/1.3-accents",
                   },
                   {
                     text: "1.4. 器官",
