@@ -148,15 +148,15 @@ export default withMermaid(
                         link: "/sounds-of-american-english/2.1.5-ə",
                       },
                       {
-                        text: "2.1.6. ɪ/iː",
+                        text: "2.1.6. ɪ/i/iː",
                         link: "/sounds-of-american-english/2.1.6-i",
                       },
                       {
-                        text: "2.1.7. ʊ/uː",
+                        text: "2.1.7. ʊ/u/uː",
                         link: "/sounds-of-american-english/2.1.7-u",
                       },
                       {
-                        text: "2.1.8. ɔ/ɔː",
+                        text: "2.1.8. ɑː/ɔː",
                         link: "/sounds-of-american-english/2.1.8-ɔ",
                       },
                       {
