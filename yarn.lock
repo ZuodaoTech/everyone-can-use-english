@@ -9686,7 +9686,7 @@ __metadata:
     rimraf: "npm:^5.0.5"
     sequelize: "npm:^6.37.1"
     sequelize-typescript: "npm:^2.1.6"
-    sonner: "npm:^1.4.32"
+    sonner: "npm:^1.4.41"
     sqlite3: "npm:^5.1.7"
     tailwind-merge: "npm:^2.2.2"
     tailwind-scrollbar: "npm:^3.1.0"
@@ -17156,13 +17156,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sonner@npm:^1.4.32":
-  version: 1.4.32
-  resolution: "sonner@npm:1.4.32"
+"sonner@npm:^1.4.41":
+  version: 1.4.41
+  resolution: "sonner@npm:1.4.41"
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 10c0/880fcfe9fd31a69418640b262552a8dacdc662b215b889bb8480d2789e315895c64f41741df68f0aef7bfa15287a6ead2dc17d8e32503d24c03fba1bb90b30be
+  checksum: 10c0/31467ecab0fcbd5161fb76d158c698841b524686f7f598eecbc2a58d76bc496b5d5242df4350e274575aa3df59428d3aacd534415c968b19fc309c192c443330
   languageName: node
   linkType: hard
 
