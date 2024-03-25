@@ -26,28 +26,21 @@ export const analyzeCommand = async (
 
   const prompt = ChatPromptTemplate.fromMessages([
     ["system", SYSTEM_PROMPT],
-    ["human", TRANSLATION_PROMPT],
+    ["human", text],
   ]);
 
-  const response = await prompt.pipe(chatModel).invoke({
-    native_language: "Chinese",
-    text,
-  });
+  const response = await prompt.pipe(chatModel).invoke({});
 
   return response.text;
 };
 
-const SYSTEM_PROMPT = `You are a language coach of English, and you are helping a student to learn {native_language}.`;
-const TRANSLATION_PROMPT = `
-{text}
+const SYSTEM_PROMPT = `你是我的英语教练，我将提供英语文本，你将帮助我分析文本的句子结构、语法和词汇/短语，并对文本进行详细解释。请用中文回答，并按以下格式返回结果：
 
-Please analyze the text above, including sentence structure, grammar, and vocabulary/phrases, and provide a detailed explanation of the text. Please reply in {native_language} and return the result only in the following format:
+  ### 句子结构
+  (解释句子的每个元素)
 
-  ### Sentence structure
-  (explain every element of the sentence)
+  ### 语法
+  (解释句子的语法)
 
-  ### Grammar
-  (explain the grammar of the sentence)
-
-  ### Vocabulary/phrases 
-  (explain the key vocabulary and phrases used)`;
+  ### 词汇/短语
+  (解释使用的关键词汇和短语)`;

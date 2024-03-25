@@ -222,7 +222,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
 
   const calContainerWidth = () => {
     const w = document
-      .querySelector(".media-recording-container")
+      .querySelector(".media-recording-wrapper")
       ?.getBoundingClientRect()?.width;
     if (!w) return;
 
@@ -371,10 +371,15 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
   ]);
 
   useEffect(() => {
-    if (!ref?.current) return;
+    if (!width) return;
 
-    ref.current.style.width = `${width}px`;
-  }, [width]);
+    const container: HTMLDivElement = document.querySelector(
+      ".media-recording-container"
+    );
+    if (!container) return;
+
+    container.style.width = `${width}px`;
+  }, [width, currentRecording, isRecording]);
 
   useEffect(() => {
     calContainerWidth();
@@ -387,7 +392,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         calContainerWidth();
       });
     };
-  }, []);
+  }, [currentRecording, isRecording]);
 
   useHotkeys(
     ["Ctrl+R", "Meta+R"],
@@ -428,9 +433,9 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     );
 
   return (
-    <div className="flex space-x-4 media-recording-container">
-      <div className="border rounded-xl shadow-lg flex-1 relative">
-        <div ref={ref}></div>
+    <div className="flex space-x-4 media-recording-wrapper">
+      <div className="border rounded-xl shadow-lg flex-1 relative media-recording-container">
+        <div className="w-full" ref={ref}></div>
 
         <div className="absolute right-2 top-1">
           <span className="text-sm">{formatDuration(currentTime || 0)}</span>

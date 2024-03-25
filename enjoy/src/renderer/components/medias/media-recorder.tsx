@@ -109,10 +109,10 @@ export const MediaRecorder = (props: { height?: number }) => {
           setDuration(0);
           interval = setInterval(() => {
             setDuration((duration) => {
-              if (duration >= 300) {
+              if (duration >= 3000) {
                 setIsRecording(false);
               }
-              return duration + 1;
+              return duration + 0.1;
             });
           }, 100);
         } else {
@@ -135,7 +135,7 @@ export const MediaRecorder = (props: { height?: number }) => {
     <div className="h-full w-full flex items-center space-x-4">
       <div className="flex-1 h-full border rounded-xl shadow-lg relative">
         <span className="absolute bottom-2 right-2 serif">
-          {duration / 10}
+          {duration.toFixed(1)}
           <span className="text-xs"> / 300</span>
         </span>
         <div className="h-full" ref={ref}></div>
