@@ -26,6 +26,7 @@ import { Client } from "@/api";
 import { WEB_API_URL } from "@/constants";
 import { AzureSpeechSdk } from "@main/azure-speech-sdk";
 import Ffmpeg from "@main/ffmpeg";
+import echogarden from "@main/echogarden";
 import camelcaseKeys from "camelcase-keys";
 
 const logger = log.scope("db/models/recording");
@@ -312,12 +313,17 @@ export class Recording extends Model<Recording> {
       throw new Error("Unknown recording format");
     }
 
+    const { denoisedAudio } = await echogarden.denoise(
+      Buffer.from(blob.arrayBuffer),
+      {}
+    );
+
     const file = path.join(
       settings.userDataPath(),
       "recordings",
       `${Date.now()}.${format}`
     );
-    await fs.outputFile(file, Buffer.from(blob.arrayBuffer));
+    await fs.outputFile(file, echogarden.encodeWaveBuffer(denoisedAudio));
 
     try {
       const ffmpeg = new Ffmpeg();

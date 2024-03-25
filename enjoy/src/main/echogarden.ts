@@ -2,6 +2,10 @@ import { ipcMain } from "electron";
 import * as Echogarden from "echogarden/dist/api/API.js";
 import { AlignmentOptions } from "echogarden/dist/api/API";
 import { AudioSourceParam } from "echogarden/dist/audio/AudioUtilities";
+import {
+  encodeWaveBuffer,
+  decodeWaveBuffer,
+} from "echogarden/dist/audio/AudioUtilities.js";
 import path from "path";
 import log from "@main/logger";
 import url from "url";
@@ -25,9 +29,15 @@ const __dirname = path
 const logger = log.scope("echogarden");
 class EchogardenWrapper {
   public align: typeof Echogarden.align;
+  public denoise: typeof Echogarden.denoise;
+  public encodeWaveBuffer: typeof encodeWaveBuffer;
+  public decodeWaveBuffer: typeof decodeWaveBuffer;
 
   constructor() {
     this.align = Echogarden.align;
+    this.denoise = Echogarden.denoise;
+    this.encodeWaveBuffer = encodeWaveBuffer;
+    this.decodeWaveBuffer = decodeWaveBuffer;
   }
 
   async check() {

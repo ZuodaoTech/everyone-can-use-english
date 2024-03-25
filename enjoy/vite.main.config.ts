@@ -23,7 +23,11 @@ export default defineConfig((env) => {
         formats: ["es"],
       },
       rollupOptions: {
-        external: [...external, "echogarden/dist/api/API.js"],
+        external: [
+          ...external,
+          "echogarden/dist/api/API.js",
+          "echogarden/dist/audio/AudioUtilities.js",
+        ],
         output: {
           strict: false,
         },
