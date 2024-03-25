@@ -6,6 +6,7 @@
   ],
   "scripts": {
     "start:enjoy": "echo 'Please use `yarn enjoy:start` instead'",
+    "enjoy:add": "yarn workspace enjoy add",
     "enjoy:dev": "yarn workspace enjoy dev",
     "enjoy:start": "yarn workspace enjoy start",
     "enjoy:test": "yarn workspace enjoy test",

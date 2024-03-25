@@ -5522,6 +5522,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/ahoy.js@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "@types/ahoy.js@npm:0.4.2"
+  checksum: 10c0/2be990ab96b57e749e35bf3f80c37ce375e0f7b58bd0cc75848a70e22adb0f63c5b657c82a1915d40f4272b8e973103e993ac1b125e28e24e208002621010a15
+  languageName: node
+  linkType: hard
+
 "@types/argparse@npm:1.0.38":
   version: 1.0.38
   resolution: "@types/argparse@npm:1.0.38"
@@ -6616,6 +6623,13 @@ __metadata:
     clean-stack: "npm:^2.0.0"
     indent-string: "npm:^4.0.0"
   checksum: 10c0/a42f67faa79e3e6687a4923050e7c9807db3848a037076f791d10e092677d65c1d2d863b7848560699f40fc0502c19f40963fb1cd1fb3d338a7423df8e45e039
+  languageName: node
+  linkType: hard
+
+"ahoy.js@npm:^0.4.3":
+  version: 0.4.3
+  resolution: "ahoy.js@npm:0.4.3"
+  checksum: 10c0/eaacbf267d2094cb80651485af0d58034ec89d48f3755159ec850fb75d62b776222e6e9aa333aeb54d6ba1f0bac58f03653294244f1b01e69458a76fae3c2855
   languageName: node
   linkType: hard
 
@@ -9469,6 +9483,7 @@ __metadata:
     "@radix-ui/react-toggle": "npm:^1.0.3"
     "@radix-ui/react-tooltip": "npm:^1.0.7"
     "@tailwindcss/typography": "npm:^0.5.10"
+    "@types/ahoy.js": "npm:^0.4.2"
     "@types/autosize": "npm:^4.0.3"
     "@types/command-exists": "npm:^1.2.3"
     "@types/electron-squirrel-startup": "npm:^1.0.2"
@@ -9487,6 +9502,7 @@ __metadata:
     "@uidotdev/usehooks": "npm:^2.4.1"
     "@vidstack/react": "npm:^1.10.9"
     "@vitejs/plugin-react": "npm:^4.2.1"
+    ahoy.js: "npm:^0.4.3"
     autoprefixer: "npm:^10.4.19"
     autosize: "npm:^6.0.1"
     axios: "npm:^1.6.8"
