@@ -4917,6 +4917,120 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry-internal/feedback@npm:7.107.0":
+  version: 7.107.0
+  resolution: "@sentry-internal/feedback@npm:7.107.0"
+  dependencies:
+    "@sentry/core": "npm:7.107.0"
+    "@sentry/types": "npm:7.107.0"
+    "@sentry/utils": "npm:7.107.0"
+  checksum: 10c0/b79a68eaefef8fb83f0d423a7aa1e80cf83d82be95396e79170452ed7fe82b0c3b75f6ffa2cef525127c5fe0caf64bdffdab5e374d8912b2496e9aa379e6d500
+  languageName: node
+  linkType: hard
+
+"@sentry-internal/replay-canvas@npm:7.107.0":
+  version: 7.107.0
+  resolution: "@sentry-internal/replay-canvas@npm:7.107.0"
+  dependencies:
+    "@sentry/core": "npm:7.107.0"
+    "@sentry/replay": "npm:7.107.0"
+    "@sentry/types": "npm:7.107.0"
+    "@sentry/utils": "npm:7.107.0"
+  checksum: 10c0/5223d66bb69cde2ba73049cacd55e5712dda6187c87df8514e8642a26ff13b8c3e34a8ec8f6c59437cb3f52a8785c3dc960eb9e046ca3bb2a74573ca99f8b77f
+  languageName: node
+  linkType: hard
+
+"@sentry-internal/tracing@npm:7.107.0":
+  version: 7.107.0
+  resolution: "@sentry-internal/tracing@npm:7.107.0"
+  dependencies:
+    "@sentry/core": "npm:7.107.0"
+    "@sentry/types": "npm:7.107.0"
+    "@sentry/utils": "npm:7.107.0"
+  checksum: 10c0/d87143c548659ce018ba320406b098cc04429904b6194ae03e4626ccc71f2838256cee3390a1c8cd9b0ca945e8349456cf6da460772164545199682962218564
+  languageName: node
+  linkType: hard
+
+"@sentry/browser@npm:7.107.0":
+  version: 7.107.0
+  resolution: "@sentry/browser@npm:7.107.0"
+  dependencies:
+    "@sentry-internal/feedback": "npm:7.107.0"
+    "@sentry-internal/replay-canvas": "npm:7.107.0"
+    "@sentry-internal/tracing": "npm:7.107.0"
+    "@sentry/core": "npm:7.107.0"
+    "@sentry/replay": "npm:7.107.0"
+    "@sentry/types": "npm:7.107.0"
+    "@sentry/utils": "npm:7.107.0"
+  checksum: 10c0/6cefdb519815f14419135274da22d1748e28d01f9d85d4a77ae8d999dcde08d998b4a7bc417a55c46aa45cd07d5a1abba82701f4f662be15679e6f97b0a26343
+  languageName: node
+  linkType: hard
+
+"@sentry/core@npm:7.107.0":
+  version: 7.107.0
+  resolution: "@sentry/core@npm:7.107.0"
+  dependencies:
+    "@sentry/types": "npm:7.107.0"
+    "@sentry/utils": "npm:7.107.0"
+  checksum: 10c0/4d28df638aec9f8b88700a09d6a5d71e05b627a4bd6e75e062a523a51d0aed3dc080909859a2a72fc49e1d7637b732ae616468a3e14482900df7c4b55739f537
+  languageName: node
+  linkType: hard
+
+"@sentry/electron@npm:^4.21.0":
+  version: 4.21.0
+  resolution: "@sentry/electron@npm:4.21.0"
+  dependencies:
+    "@sentry/browser": "npm:7.107.0"
+    "@sentry/core": "npm:7.107.0"
+    "@sentry/node": "npm:7.107.0"
+    "@sentry/types": "npm:7.107.0"
+    "@sentry/utils": "npm:7.107.0"
+    deepmerge: "npm:4.3.0"
+    tslib: "npm:^2.5.0"
+  checksum: 10c0/596fd402d96c26ae4af7b016010231f9748b3c801022529472e25cfc7caa334fce65f5b5cf44055c10232e35676644e53f96afd0d54b162ac171605919ee26b2
+  languageName: node
+  linkType: hard
+
+"@sentry/node@npm:7.107.0":
+  version: 7.107.0
+  resolution: "@sentry/node@npm:7.107.0"
+  dependencies:
+    "@sentry-internal/tracing": "npm:7.107.0"
+    "@sentry/core": "npm:7.107.0"
+    "@sentry/types": "npm:7.107.0"
+    "@sentry/utils": "npm:7.107.0"
+  checksum: 10c0/a2992e2c54a17cd323c7f7362c7742417b4fdff800f104f8de0506ca7c0c225b6709b4580bb82cebfbb28e2c53642f663d9e2ad7a68f5ef71f7b4bc8e1564501
+  languageName: node
+  linkType: hard
+
+"@sentry/replay@npm:7.107.0":
+  version: 7.107.0
+  resolution: "@sentry/replay@npm:7.107.0"
+  dependencies:
+    "@sentry-internal/tracing": "npm:7.107.0"
+    "@sentry/core": "npm:7.107.0"
+    "@sentry/types": "npm:7.107.0"
+    "@sentry/utils": "npm:7.107.0"
+  checksum: 10c0/2bb4b0c05bed77a4ad4f7b6b5b653714d02cb4892d403115bddadb1c88ccbe7d2433a7a097973204b89da1587bc9d74e2b4b402dd2e2cff27c558fc762d9b0b9
+  languageName: node
+  linkType: hard
+
+"@sentry/types@npm:7.107.0":
+  version: 7.107.0
+  resolution: "@sentry/types@npm:7.107.0"
+  checksum: 10c0/08a2b95a27106a974a42a1e2462c979b8d61d9ae63cef0d7bd36eb37603009e1e8e9bb181586d1a449b7fe52a4b696b01a4228ac13083a7c4088774f16c89421
+  languageName: node
+  linkType: hard
+
+"@sentry/utils@npm:7.107.0":
+  version: 7.107.0
+  resolution: "@sentry/utils@npm:7.107.0"
+  dependencies:
+    "@sentry/types": "npm:7.107.0"
+  checksum: 10c0/c0a0cd612f4db3d12853311ba8437e0315dee2f842d8ad741afeef75ab030965fc4288d8751c42f0b263d409792388d51257c3d665fba7efdf175527ef8891c4
+  languageName: node
+  linkType: hard
+
 "@shikijs/core@npm:1.1.7, @shikijs/core@npm:^1.1.5":
   version: 1.1.7
   resolution: "@shikijs/core@npm:1.1.7"
@@ -5519,6 +5633,13 @@ __metadata:
   version: 1.0.4
   resolution: "@tsconfig/node16@npm:1.0.4"
   checksum: 10c0/05f8f2734e266fb1839eb1d57290df1664fe2aa3b0fdd685a9035806daa635f7519bf6d5d9b33f6e69dd545b8c46bd6e2b5c79acb2b1f146e885f7f11a42a5bb
+  languageName: node
+  linkType: hard
+
+"@types/ahoy.js@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "@types/ahoy.js@npm:0.4.2"
+  checksum: 10c0/2be990ab96b57e749e35bf3f80c37ce375e0f7b58bd0cc75848a70e22adb0f63c5b657c82a1915d40f4272b8e973103e993ac1b125e28e24e208002621010a15
   languageName: node
   linkType: hard
 
@@ -6616,6 +6737,13 @@ __metadata:
     clean-stack: "npm:^2.0.0"
     indent-string: "npm:^4.0.0"
   checksum: 10c0/a42f67faa79e3e6687a4923050e7c9807db3848a037076f791d10e092677d65c1d2d863b7848560699f40fc0502c19f40963fb1cd1fb3d338a7423df8e45e039
+  languageName: node
+  linkType: hard
+
+"ahoy.js@npm:^0.4.3":
+  version: 0.4.3
+  resolution: "ahoy.js@npm:0.4.3"
+  checksum: 10c0/eaacbf267d2094cb80651485af0d58034ec89d48f3755159ec850fb75d62b776222e6e9aa333aeb54d6ba1f0bac58f03653294244f1b01e69458a76fae3c2855
   languageName: node
   linkType: hard
 
@@ -8752,6 +8880,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"deepmerge@npm:4.3.0":
+  version: 4.3.0
+  resolution: "deepmerge@npm:4.3.0"
+  checksum: 10c0/7ff5c6294b3316c1bc6bca9d3ef2193c1d7beec4e62252db8bcb8a6366d85b924850492eb1a746a5f33d609862e03dfb907ce9fa8769583300f65f20a337cec5
+  languageName: node
+  linkType: hard
+
 "deepmerge@npm:^4.3.1":
   version: 4.3.1
   resolution: "deepmerge@npm:4.3.1"
@@ -9468,7 +9603,9 @@ __metadata:
     "@radix-ui/react-toast": "npm:^1.1.5"
     "@radix-ui/react-toggle": "npm:^1.0.3"
     "@radix-ui/react-tooltip": "npm:^1.0.7"
+    "@sentry/electron": "npm:^4.21.0"
     "@tailwindcss/typography": "npm:^0.5.10"
+    "@types/ahoy.js": "npm:^0.4.2"
     "@types/autosize": "npm:^4.0.3"
     "@types/command-exists": "npm:^1.2.3"
     "@types/electron-squirrel-startup": "npm:^1.0.2"
@@ -9487,6 +9624,7 @@ __metadata:
     "@uidotdev/usehooks": "npm:^2.4.1"
     "@vidstack/react": "npm:^1.10.9"
     "@vitejs/plugin-react": "npm:^4.2.1"
+    ahoy.js: "npm:^0.4.3"
     autoprefixer: "npm:^10.4.19"
     autosize: "npm:^6.0.1"
     axios: "npm:^1.6.8"
