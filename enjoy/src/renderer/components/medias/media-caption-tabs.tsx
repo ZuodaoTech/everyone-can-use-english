@@ -348,7 +348,7 @@ const TranslationTabContent = (props: { text: string }) => {
           setTranslation(result);
         }
       })
-      .catch((err) => t("translationFailed", { error: err.message }))
+      .catch((err) => toast.error(err.message))
       .finally(() => {
         setTranslating(false);
       });
@@ -422,7 +422,7 @@ const AnalysisTabContent = (props: { text: string }) => {
           setAnalysisResult(result);
         }
       })
-      .catch((err) => t("analysisFailed", { error: err.message }))
+      .catch((err) => toast.error(err.message))
       .finally(() => {
         setAnalyzing(false);
       });
