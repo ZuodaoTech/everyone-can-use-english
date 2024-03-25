@@ -344,9 +344,13 @@ export default withMermaid(
             ],
           },
           {
-            text: "使用案例",
+            text: "其他",
             collapsed: false,
             items: [
+              {
+                text: "常见问题",
+                link: "/enjoy-app/faq",
+              },
               {
                 text: "利用 AI 生成训练材料",
                 link: "/enjoy-app/use-case-generate-audio-resources",
