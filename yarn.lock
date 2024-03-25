@@ -2386,9 +2386,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/community@npm:^0.0.41":
-  version: 0.0.41
-  resolution: "@langchain/community@npm:0.0.41"
+"@langchain/community@npm:^0.0.42":
+  version: 0.0.42
+  resolution: "@langchain/community@npm:0.0.42"
   dependencies:
     "@langchain/core": "npm:~0.1.44"
     "@langchain/openai": "npm:~0.0.19"
@@ -2423,6 +2423,7 @@ __metadata:
     "@opensearch-project/opensearch": "*"
     "@pinecone-database/pinecone": "*"
     "@planetscale/database": ^1.8.0
+    "@premai/prem-sdk": ^0.3.25
     "@qdrant/js-client-rest": ^1.2.0
     "@raycast/api": ^1.55.2
     "@rockset/client": ^0.9.1
@@ -2537,6 +2538,8 @@ __metadata:
     "@pinecone-database/pinecone":
       optional: true
     "@planetscale/database":
+      optional: true
+    "@premai/prem-sdk":
       optional: true
     "@qdrant/js-client-rest":
       optional: true
@@ -2666,7 +2669,7 @@ __metadata:
       optional: true
     ws:
       optional: true
-  checksum: 10c0/1dcd6e2680ef6782285d107fd3cfcb503798963e52d9e9a165f05ab00fb9c52bbe157903b8c77bf4ce83e8bfece2d2843a504cb0798320fcf6f15bc6c8daeea8
+  checksum: 10c0/56a1e2875b6c45575a926a740f0a4b9d57bdabdca8d792c37ee1436c5eb438dc3a0484fcba8bd2612e76ea255ff82e67f808817c58b3035bbe359163f276065a
   languageName: node
   linkType: hard
 
@@ -9577,7 +9580,7 @@ __metadata:
     "@ffmpeg/ffmpeg": "npm:^0.12.10"
     "@ffmpeg/util": "npm:^0.12.1"
     "@hookform/resolvers": "npm:^3.3.4"
-    "@langchain/community": "npm:^0.0.41"
+    "@langchain/community": "npm:^0.0.42"
     "@langchain/google-genai": "npm:^0.0.10"
     "@mozilla/readability": "npm:^0.5.0"
     "@playwright/test": "npm:^1.42.1"
