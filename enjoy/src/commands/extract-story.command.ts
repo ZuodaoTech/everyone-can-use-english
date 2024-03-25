@@ -39,6 +39,7 @@ export const extractStoryCommand = async (
     },
     cache: true,
     verbose: true,
+    maxRetries: 2,
   }).bind({
     tools: [
       {
