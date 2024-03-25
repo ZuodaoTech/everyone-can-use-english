@@ -78,7 +78,6 @@ export const AppSettingsProvider = ({
       ahoy.configure({
         urlPrefix: apiUrl,
       });
-      ahoy.debug();
       ahoy.track("logged in", { user: user.id });
     }
   }, [user, apiUrl, language]);
