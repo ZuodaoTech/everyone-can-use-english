@@ -308,37 +308,39 @@ export class Recording extends Model<Recording> {
       throw new Error("Empty recording");
     }
 
-    const format = blob.type.split("/")[1]?.split(";")?.[0];
-    if (!format) {
-      throw new Error("Unknown recording format");
-    }
+    // transcode audio to .wav
+    const rawAudio = await echogarden.ensureRawAudio(Buffer.from(blob.arrayBuffer));
 
+    // denoise audio
     const { denoisedAudio } = await echogarden.denoise(
-      Buffer.from(blob.arrayBuffer),
+      rawAudio,
       {}
     );
 
-    const file = path.join(
-      settings.userDataPath(),
-      "recordings",
-      `${Date.now()}.${format}`
-    );
-    await fs.outputFile(file, echogarden.encodeWaveBuffer(denoisedAudio));
+    // trim audio
+    let trimmedSamples = echogarden.trimAudioStart(denoisedAudio.audioChannels[0]);
+    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples);
+    denoisedAudio.audioChannels[0] = trimmedSamples;
 
-    try {
-      const ffmpeg = new Ffmpeg();
-      const metadata = await ffmpeg.generateMetadata(file);
-      duration = Math.floor(metadata.format.duration * 1000);
-    } catch (err) {
-      logger.error(err);
-    }
+    duration = echogarden.getRawAudioDuration(denoisedAudio) * 1000;
 
     if (duration === 0) {
       throw new Error("Failed to get duration of the recording");
     }
 
+    // save recording to file
+    const file = path.join(
+      settings.userDataPath(),
+      "recordings",
+      `${Date.now()}.wav`
+    );
+    await fs.outputFile(file, echogarden.encodeWaveBuffer(denoisedAudio));
+
+    // hash file
     const md5 = await hashFile(file, { algo: "md5" });
-    const filename = `${md5}.${format}`;
+
+    // rename file
+    const filename = `${md5}.wav`;
     fs.renameSync(file, path.join(path.dirname(file), filename));
 
     return this.create(

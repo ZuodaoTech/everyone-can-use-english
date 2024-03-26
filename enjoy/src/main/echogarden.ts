@@ -5,6 +5,10 @@ import { AudioSourceParam } from "echogarden/dist/audio/AudioUtilities";
 import {
   encodeWaveBuffer,
   decodeWaveBuffer,
+  ensureRawAudio,
+  getRawAudioDuration,
+  trimAudioStart,
+  trimAudioEnd,
 } from "echogarden/dist/audio/AudioUtilities.js";
 import path from "path";
 import log from "@main/logger";
@@ -32,12 +36,20 @@ class EchogardenWrapper {
   public denoise: typeof Echogarden.denoise;
   public encodeWaveBuffer: typeof encodeWaveBuffer;
   public decodeWaveBuffer: typeof decodeWaveBuffer;
+  public ensureRawAudio: typeof ensureRawAudio;
+  public getRawAudioDuration: typeof getRawAudioDuration;
+  public trimAudioStart: typeof trimAudioStart;
+  public trimAudioEnd: typeof trimAudioEnd;
 
   constructor() {
     this.align = Echogarden.align;
     this.denoise = Echogarden.denoise;
     this.encodeWaveBuffer = encodeWaveBuffer;
     this.decodeWaveBuffer = decodeWaveBuffer;
+    this.ensureRawAudio = ensureRawAudio;
+    this.getRawAudioDuration = getRawAudioDuration;
+    this.trimAudioStart = trimAudioStart;
+    this.trimAudioEnd = trimAudioEnd;
   }
 
   async check() {
