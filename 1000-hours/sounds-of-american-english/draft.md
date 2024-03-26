@@ -1,8 +1,8 @@
 # Drafts
 
-辅音 `t` 在美式英语中有个弹舌音变体，`t̬`，例如，*cutting* `/ˈkʌt̬·ɪŋ/`。
+辅音 `t` 在美式英语中有个弹舌音变体，`t̬`，例如，*cutting* `/ˈkʌt̬ɪŋ/`。
 
-The consonant `t` has a flapping variant, `t̬`, as in the word *cutting*, pronounced `/ˈkʌt̬·ɪŋ/`.
+The consonant `t` has a flapping variant, `t̬`, as in the word *cutting*, pronounced `/ˈkʌt̬ɪŋ/`.
 
 辅音 `l` 是音节辅音（[2.2.14](2.2.14-lr)），有时会在之前自然附带一个 `ə` 音，可能被标注为 `əl`、`ᵊl`（上标式 `ə`） 或者 `l̩`（注意 `l` 下的那根小竖线）。
 
@@ -12,13 +12,13 @@ The consonant `l` is a syllabic consonant ([2.2.14](2.2.14-lr)), which sometimes
 In the 6 basic vowels, `ə` and `ɪ` have relatively more variants, or *allophones*:
 
 * `ɪ`：
-  * 除了长元音版本 `iː` 之外，还有一个半长版本 `i`，例如 *happy* `/ˈhæp·i/`[^1]；
-  * In addition to the long vowel version `i`ː, there's also a semi-long version `i`, as in *happy* `/ˈhæp·i/`.
+  * 除了长元音版本 `iː` 之外，还有一个半长版本 `i`，例如 *happy* `/ˈhæpi/`[^1]；
+  * In addition to the long vowel version `i`ː, there's also a semi-long version `i`, as in *happy* `/ˈhæpi/`.
 * `ə`：
   * 长元音版本 `əː` 在 CEPD[^2] 中被标注为 `ɜː`，例如 *bird* `/bɜːd/` (UK)
   * The long vowel version `əː` is annotated as `ɜː` in the CEPD[^2], like in *bird* `/bɜːd/` (UK).
-  * 儿化的短元音 `ə` 被标注为 `ɚ`，例如 *mother* `/ˈmʌð·ɚ/`；
-  * The rhotacized short vowel `ə` is annotated as `ɚ`, as in *mother* pronounced `/ˈmʌð·ɚ/`.
+  * 儿化的短元音 `ə` 被标注为 `ɚ`，例如 *mother* `/ˈmʌðɚ/`；
+  * The rhotacized short vowel `ə` is annotated as `ɚ`, as in *mother* pronounced `/ˈmʌðɚ/`.
   * 儿化的长元音 `əː` 被标注为 `ɝː` 例如 *bird* `/bɝːd/` (US)
   * The rhotacized long vowel `əː` is annotated as `ɝː`, like in *bird* pronounced `/bɝːd/` (US).
 
@@ -30,7 +30,7 @@ The sounds represented by `eə`, `ɪə`, and `ʊə` in British English are rhota
 
 Furthermore, in British English, there are two triphthongs: `aɪə` as in *fire* pronounced `/faɪə/` and `aʊə` as in *hour* pronounced `/aʊə/`. In American English, these two triphthongs simplify into more apparent rhotacized diphthongs, `aɪə` → `aɪr`, for example, *fire* pronounced `/faɪr/`, and *hour* pronounced `/aʊr/`.
 
-[^1]: The middle dot `·` in `/ˈhæp·i/` is an annotation of syllable division. A dot `.` is used in CEPD, but for clearer html rendering, we use a raised one here.
+[^1]: The middle dot `` in `/ˈhæpi/` is an annotation of syllable division. A dot `.` is used in CEPD, but for clearer html rendering, we use a raised one here.
 [^2]: CEPD, Cambridge English Pronunciation Dictionary, https://dictionary.cambridge.org/help/phonetics.html.
 
 
@@ -62,13 +62,9 @@ Here are some key points to take note of when it comes to phonetic representatio
 > - `t` 的弹舌音用 `t̬` 标注。
 > - The flapping `t` sound in American English is represented by `t̬`.
 
-
-
-
-
 ### `ʌ`
 
-*but* `/bʌt/`, *chum* `/tʃʌm/`, *cut* `/kʌt/`, *drum* `/drʌm/`, *duck* `/dʌk/`, *fun* `/fʌn/`, *gun* `/ɡʌn/`, *hut* `/hʌt/`, *jump* `/dʒʌmp/`, *luck* `/lʌk/`, *mud* `/mʌd/`, *nut* `/nʌt/`, *pup* `/pʌp/`, *run* `/rʌn/`, *shut* `/ʃʌt/`, *sun* `/sʌn/`, *thug* `/θʌɡ/`, *thus* `/ðʌs/`, *truck* `/trʌk/`, *tut* `/tʌt/`, *vulgar* `/ˈvʌl·ɡɚ/`, *won* `/wʌn/`, *yum*  `/jʌm/`
+*but* `/bʌt/`, *chum* `/tʃʌm/`, *cut* `/kʌt/`, *drum* `/drʌm/`, *duck* `/dʌk/`, *fun* `/fʌn/`, *gun* `/ɡʌn/`, *hut* `/hʌt/`, *jump* `/dʒʌmp/`, *luck* `/lʌk/`, *mud* `/mʌd/`, *nut* `/nʌt/`, *pup* `/pʌp/`, *run* `/rʌn/`, *shut* `/ʃʌt/`, *sun* `/sʌn/`, *thug* `/θʌɡ/`, *thus* `/ðʌs/`, *truck* `/trʌk/`, *tut* `/tʌt/`, *vulgar* `/ˈvʌlɡɚ/`, *won* `/wʌn/`, *yum*  `/jʌm/`
 
 
 ### `e`
@@ -77,19 +73,19 @@ Here are some key points to take note of when it comes to phonetic representatio
 
 ### `ə`
 
-*ago* `/əˈɡoʊ/`, *button* `/ˈbʌt̬·ən/`, *develop* `/dɪˈvel·əp/`, *dramatic* `/drəˈmæt̬·ɪk/`, *expression* `/ɪkˈspreʃ·ən/`, *onion* `/ˈʌn·jən/`, *realize* `/ˈriː·ə·laɪz/`, *standard* `/ˈstæn·dɚd/`, *system* `/ˈsɪs·təm/`, *telegram* `/ˈtel·ə·ɡræm/`
+*ago* `/əˈɡoʊ/`, *button* `/ˈbʌt̬ən/`, *develop* `/dɪˈveləp/`, *dramatic* `/drəˈmæt̬ɪk/`, *expression* `/ɪkˈspreʃən/`, *onion* `/ˈʌnjən/`, *realize* `/ˈriːəlaɪz/`, *standard* `/ˈstændɚd/`, *system* `/ˈsɪstəm/`, *telegram* `/ˈteləɡræm/`
 
 注意：没有儿化的 `ə` 在美式英语中，被称作 *schwa*，非重读央元音 —— 即，只出现在非重读音节中。
 
 ### `ɚ`
 
-*danger* `/ˈdeɪn·dʒɚ/`, *freezer* `/ˈfriː·zɚ/`, *harder* `/hɑːrdɚ/`, *larger* `/lɑːrdʒɚ/`, *paper* `/ˈpeɪ·pɚ/`, *server* `/ˈsɝː·vɚ/`, *teacher* `/ˈtiː·tʃɚ/`, *water* `/ˈwɑː·t̬ɚ/`, *worker* `/ˈwɝː·kɚ/`
+*danger* `/ˈdeɪndʒɚ/`, *freezer* `/ˈfriːzɚ/`, *harder* `/hɑːrdɚ/`, *larger* `/lɑːrdʒɚ/`, *paper* `/ˈpeɪpɚ/`, *server* `/ˈsɝːvɚ/`, *teacher* `/ˈtiːtʃɚ/`, *water* `/ˈwɑːt̬ɚ/`, *worker* `/ˈwɝːkɚ/`
 
 注意：儿化的短元音 `ɚ` 只出现在非重读音节中。
 
 ### `ɪ`
 
-*bit* `/bɪt/`, *chip* `/tʃɪp/`, *did* `/dɪd/`, *drill* `/drɪl/`, *gig* `/ɡɪɡ/`, *gin* `/dʒɪn/`, *his* `/hɪz/`, *if* `/ɪf/`, *kick* `/kɪk/`, *lip* `/lɪp/`, *milk* `/mɪlk/`, *nil* `/nɪl/`, *pick* `/pɪk/`, *rip* `/rɪp/`, *ship* `/ʃɪp/`, *sit* `/sɪt/`, *thick* `/θɪk/`, *this* `/ðɪs/`, *tip* `/tɪp/`, *trick* `/trɪk/`, *vivid* `/ˈvɪv·ɪd/`, *wit* `/wɪ/`, *zip* `/zɪp/`
+*bit* `/bɪt/`, *chip* `/tʃɪp/`, *did* `/dɪd/`, *drill* `/drɪl/`, *gig* `/ɡɪɡ/`, *gin* `/dʒɪn/`, *his* `/hɪz/`, *if* `/ɪf/`, *kick* `/kɪk/`, *lip* `/lɪp/`, *milk* `/mɪlk/`, *nil* `/nɪl/`, *pick* `/pɪk/`, *rip* `/rɪp/`, *ship* `/ʃɪp/`, *sit* `/sɪt/`, *thick* `/θɪk/`, *this* `/ðɪs/`, *tip* `/tɪp/`, *trick* `/trɪk/`, *vivid* `/ˈvɪvɪd/`, *wit* `/wɪ/`, *zip* `/zɪp/`
 
 ### `ʊ`
 
