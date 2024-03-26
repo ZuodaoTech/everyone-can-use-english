@@ -2043,29 +2043,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ffmpeg/ffmpeg@npm:^0.12.10":
-  version: 0.12.10
-  resolution: "@ffmpeg/ffmpeg@npm:0.12.10"
-  dependencies:
-    "@ffmpeg/types": "npm:^0.12.2"
-  checksum: 10c0/224185b24b4fe9d3d1d6d17e741205793f74b29cce04435d6c25e5d17b7e12b608e876a64ad33d3e92114d4f0079f4e2e4d809632b354ad1a5f775f5bdb1b8e6
-  languageName: node
-  linkType: hard
-
-"@ffmpeg/types@npm:^0.12.2":
-  version: 0.12.2
-  resolution: "@ffmpeg/types@npm:0.12.2"
-  checksum: 10c0/5c3f250c7ed828a3f66073504e3e92ee9f7cd73ddf3bbdf777263710beb6e757da3d7178b2bae29bef6d602abbc21b561bcc659455420d3aed1b30a535ca1d0a
-  languageName: node
-  linkType: hard
-
-"@ffmpeg/util@npm:^0.12.1":
-  version: 0.12.1
-  resolution: "@ffmpeg/util@npm:0.12.1"
-  checksum: 10c0/943cc8b886cdfd3c448d3618acc3fe02abda46472c11aefb9e90a4a814962142632e90ab475374357fddb6ba8176757dbbe434147e0cd1a8fcd5133f95bee0a6
-  languageName: node
-  linkType: hard
-
 "@floating-ui/core@npm:^1.0.0":
   version: 1.6.0
   resolution: "@floating-ui/core@npm:1.6.0"
@@ -9007,8 +8984,6 @@ __metadata:
     "@electron-forge/plugin-vite": "npm:^7.3.1"
     "@electron-forge/publisher-github": "npm:^7.3.1"
     "@electron/fuses": "npm:^1.8.0"
-    "@ffmpeg/ffmpeg": "npm:^0.12.10"
-    "@ffmpeg/util": "npm:^0.12.1"
     "@hookform/resolvers": "npm:^3.3.4"
     "@langchain/community": "npm:^0.0.43"
     "@langchain/google-genai": "npm:^0.0.10"
