@@ -309,7 +309,7 @@ export class Recording extends Model<Recording> {
     }
 
     // transcode audio to .wav
-    const rawAudio = await echogarden.ensureRawAudio(Buffer.from(blob.arrayBuffer));
+    const rawAudio = await echogarden.ensureRawAudio(Buffer.from(blob.arrayBuffer), 16000);
 
     // denoise audio
     const { denoisedAudio } = await echogarden.denoise(
@@ -322,7 +322,7 @@ export class Recording extends Model<Recording> {
     trimmedSamples = echogarden.trimAudioEnd(trimmedSamples);
     denoisedAudio.audioChannels[0] = trimmedSamples;
 
-    duration = echogarden.getRawAudioDuration(denoisedAudio) * 1000;
+    duration = Math.round(echogarden.getRawAudioDuration(denoisedAudio) * 1000);
 
     if (duration === 0) {
       throw new Error("Failed to get duration of the recording");

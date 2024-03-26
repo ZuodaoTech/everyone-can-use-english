@@ -5,9 +5,10 @@ import Ffmpeg from "fluent-ffmpeg";
 import log from "@main/logger";
 import path from "path";
 import fs from "fs-extra";
-import settings from "./settings";
+import settings from "@main/settings";
 import url from "url";
 import { FFMPEG_CONVERT_WAV_OPTIONS } from "@/constants";
+import { enjoyUrlToPath, pathToEnjoyUrl } from "@main/utils";
 
 /*
  * ffmpeg and ffprobe bin file will be in /app.asar.unpacked instead of /app.asar
@@ -189,27 +190,12 @@ export default class FfmpegWrapper {
     output?: string,
     options?: string[]
   ): Promise<string> {
-    if (input.match(/enjoy:\/\/library\/(audios|videos|recordings)/g)) {
-      input = path.join(
-        settings.userDataPath(),
-        input.replace("enjoy://library/", "")
-      );
-    } else if (input.startsWith("enjoy://library/")) {
-      input = path.join(
-        settings.libraryPath(),
-        input.replace("enjoy://library/", "")
-      );
-    }
+    input = enjoyUrlToPath(input);
 
     if (!output) {
       output = path.join(settings.cachePath(), `${path.basename(input)}.wav`);
-    }
-
-    if (output.startsWith("enjoy://library/")) {
-      output = path.join(
-        settings.libraryPath(),
-        output.replace("enjoy://library/", "")
-      );
+    } else {
+      output = enjoyUrlToPath(output);
     }
 
     options = options || FFMPEG_CONVERT_WAV_OPTIONS;
@@ -234,7 +220,7 @@ export default class FfmpegWrapper {
           }
 
           if (fs.existsSync(output)) {
-            resolve(output);
+            resolve(pathToEnjoyUrl(output));
           } else {
             reject(new Error("FFmpeg command failed"));
           }

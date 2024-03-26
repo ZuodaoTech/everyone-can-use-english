@@ -16,6 +16,9 @@ import url from "url";
 import settings from "@main/settings";
 import fs from "fs-extra";
 import ffmpegPath from "ffmpeg-static";
+import { enjoyUrlToPath, hashFile, pathToEnjoyUrl } from "./utils";
+import { extractFrequencies } from "@/utils";
+import { Waveform } from "./waveform";
 
 Echogarden.setGlobalOption(
   "ffmpegPath",
@@ -74,6 +77,32 @@ class EchogardenWrapper {
     }
   }
 
+  /**
+   * Transcodes the audio file at the enjoy:// protocol URL into a WAV format.
+   * @param url - The URL of the audio file to transcode.
+   * @returns A promise that resolves to the enjoy:// protocal URL of the transcoded WAV file.
+   */
+  async transcode(url: string, sampleRate = 16000): Promise<string> {
+    const filePath = enjoyUrlToPath(url);
+    const fileHash = await hashFile(filePath, { algo: 'md5' });
+
+    const rawAudio = await this.ensureRawAudio(filePath, sampleRate);
+
+    const peaks = rawAudio.audioChannels[0];
+    const frequencies = extractFrequencies({ peaks, sampleRate });
+    const duration = this.getRawAudioDuration(rawAudio);
+
+    const waveform = new Waveform();
+    waveform.save(fileHash, { peaks: Array.from(peaks), duration, frequencies, sampleRate});
+
+    const audioBuffer = this.encodeWaveBuffer(rawAudio);
+
+    const outputFilePath = path.join(settings.cachePath(), `${Date.now()}.wav`);
+    fs.writeFileSync(outputFilePath, audioBuffer);
+
+    return pathToEnjoyUrl(outputFilePath);
+  }
+
   registerIpcHandlers() {
     ipcMain.handle(
       "echogarden-align",
@@ -94,6 +123,18 @@ class EchogardenWrapper {
         }
       }
     );
+
+    ipcMain.handle("echogarden-transcode", async (event, url: string, sampleRate?: number) => {
+      try {
+        return await this.transcode(url, sampleRate);
+      } catch (err) {
+        logger.error(err);
+        event.sender.send("on-notification", {
+          type: "error",
+          message: err.message,
+        });
+      }
+    });
 
     ipcMain.handle("echogarden-check", async (_event) => {
       return this.check();
