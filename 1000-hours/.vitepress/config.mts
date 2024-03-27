@@ -462,121 +462,75 @@ export default withMermaid(
           //     },
           //   ],
           // },
-        //   // {
-        //   //   text: "大脑内部",
-        //   //   collapsed: true,
-        //   //   items: [
-        //   //     { text: "1. 小空间大世界", link: "/in-the-brain/01-inifinite" },
-        //   //     { text: "2. 一切都是连接", link: "/in-the-brain/02-links" },
-        //   //     { text: "3. 一切都是体育课", link: "/in-the-brain/03-sports" },
-        //   //     {
-        //   //       text: "4. 一切都是语文课",
-        //   //       link: "/in-the-brain/04-literature",
-        //   //     },
-        //   //     { text: "5. 一切都需要能量", link: "/in-the-brain/05-energy" },
-        //   //     {
-        //   //       text: "6. 用进废退循环利用",
-        //   //       link: "/in-the-brain/06-use-or-lose",
-        //   //     },
-        //   //     {
-        //   //       text: "7. 短时间内足量重复",
-        //   //       link: "/in-the-brain/07-repitition",
-        //   //     },
-        //   //     {
-        //   //       text: "8. 新旧网络间的竞争",
-        //   //       link: "/in-the-brain/08-compitition",
-        //   //     },
-        //   //     {
-        //   //       text: "9. 注意不到就不存在",
-        //   //       link: "/in-the-brain/09-unnoticed",
-        //   //     },
-        //   //     {
-        //   //       text: "10. 熟练就是卸载负担",
-        //   //       link: "/in-the-brain/10-unloading",
-        //   //     },
-        //   //     { text: "11. 被关注是最大负担", link: "/in-the-brain/11-burden" },
-        //   //     {
-        //   //       text: "12. 有限排它不可再生",
-        //   //       link: "/in-the-brain/12-unreproducible",
-        //   //     },
-        //   //     {
-        //   //       text: "13. 一切都是化学反应",
-        //   //       link: "/in-the-brain/13-chemical",
-        //   //     },
-        //   //     {
-        //   //       text: "14. 安全阈值决定成果",
-        //   //       link: "/in-the-brain/14-threshold",
-        //   //     },
-        //   //   ],
-        //   // },
-        //   // {
-        //   //   text: "自我训练",
-        //   //   collapsed: true,
-        //   //   link: `/self-training/00-intro`,
-        //   //   items: [
-        //   //     { text: "1. 用兵打仗", link: "/self-training/01-fight" },
-        //   //     { text: "2. 只能自学", link: "/self-training/02-last-resort" },
-        //   //     {
-        //   //       text: "3. 生学硬练",
-        //   //       link: "/self-training/03-trials-and-errors",
-        //   //     },
-        //   //     { text: "4. 走出迷宫", link: "/self-training/04-maze" },
-        //   //     { text: "5. 自我纠正", link: "/self-training/05-correction" },
-        //   //     { text: "6. 自主驱动", link: "/self-training/06-motives" },
-        //   //     { text: "7. 自我鼓励", link: "/self-training/07-encouraging" },
-        //   //     { text: "8. 自我监督", link: "/self-training/08-supervising" },
-        //   //     { text: "9. 自主计划", link: "/self-training/09-planning" },
-        //   //     { text: "10. 返璞归真", link: "/self-training/10-going-back" },
-        //   //   ],
-        //   // },
-        // ],
-
-        // "/enjoy-app/": [
-        //   {
-        //     text: "快速开始",
-        //     collapsed: false,
-        //     items: [
-        //       { text: "Enjoy 简介", link: "/enjoy-app/" },
-        //       { text: "下载安装", link: "/enjoy-app/install" },
-        //       { text: "软件设置", link: "/enjoy-app/settings" },
-        //     ],
-        //   },
-        //   {
-        //     text: "跟读训练",
-        //     collapsed: false,
-        //     items: [
-        //       { text: "音频资源", link: "/enjoy-app/audios" },
-        //       { text: "视频资源", link: "/enjoy-app/videos" },
-        //     ],
-        //   },
-        //   {
-        //     text: "阅读文本",
-        //     collapsed: false,
-        //     items: [
-        //       { text: "在线文章", link: "/enjoy-app/webpage" },
-        //       { text: "本地电子书", link: "/enjoy-app/ebook" },
-        //     ],
-        //   },
-        //   {
-        //     text: "智能助手",
-        //     collapsed: false,
-        //     items: [
-        //       { text: "简介", link: "/enjoy-app/ai-assistant" },
-        //       { text: "GPT 服务", link: "/enjoy-app/gpt-conversation" },
-        //       { text: "TTS 服务", link: "/enjoy-app/tts-conversation" },
-        //     ],
-        //   },
-        //   {
-        //     text: "使用案例",
-        //     collapsed: false,
-        //     items: [
-        //       {
-        //         text: "利用 AI 生成训练材料",
-        //         link: "/enjoy-app/use-case-generate-audio-resources",
-        //       },
-        //     ],
-        //   },
-        // ],
+          {
+            text: "大脑内部",
+            collapsed: true,
+            items: [
+              { text: "1. 小空间大世界", link: "/in-the-brain/01-inifinite" },
+              { text: "2. 一切都是连接", link: "/in-the-brain/02-links" },
+              { text: "3. 一切都是体育课", link: "/in-the-brain/03-sports" },
+              {
+                text: "4. 一切都是语文课",
+                link: "/in-the-brain/04-literature",
+              },
+              { text: "5. 一切都需要能量", link: "/in-the-brain/05-energy" },
+              {
+                text: "6. 用进废退循环利用",
+                link: "/in-the-brain/06-use-or-lose",
+              },
+              {
+                text: "7. 短时间内足量重复",
+                link: "/in-the-brain/07-repitition",
+              },
+              {
+                text: "8. 新旧网络间的竞争",
+                link: "/in-the-brain/08-compitition",
+              },
+              {
+                text: "9. 注意不到就不存在",
+                link: "/in-the-brain/09-unnoticed",
+              },
+              {
+                text: "10. 熟练就是卸载负担",
+                link: "/in-the-brain/10-unloading",
+              },
+              { text: "11. 被关注是最大负担", link: "/in-the-brain/11-burden" },
+              {
+                text: "12. 有限排它不可再生",
+                link: "/in-the-brain/12-unreproducible",
+              },
+              {
+                text: "13. 一切都是化学反应",
+                link: "/in-the-brain/13-chemical",
+              },
+              {
+                text: "14. 安全阈值决定成果",
+                link: "/in-the-brain/14-threshold",
+              },
+            ],
+          },
+          {
+            text: "自我训练",
+            collapsed: true,
+            link: `/self-training/00-intro`,
+            items: [
+              { text: "1. 用兵打仗", link: "/self-training/01-fight" },
+              { text: "2. 只能自学", link: "/self-training/02-last-resort" },
+              {
+                text: "3. 生学硬练",
+                link: "/self-training/03-trials-and-errors",
+              },
+              { text: "4. 走出迷宫", link: "/self-training/04-maze" },
+              { text: "5. 自我纠正", link: "/self-training/05-correction" },
+              { text: "6. 自主驱动", link: "/self-training/06-motives" },
+              { text: "7. 自我鼓励", link: "/self-training/07-encouraging" },
+              { text: "8. 自我监督", link: "/self-training/08-supervising" },
+              { text: "9. 自主计划", link: "/self-training/09-planning" },
+              { text: "10. 返璞归真", link: "/self-training/10-going-back" },
+            ],
+          },
+        ],
+        
       },
 
       socialLinks: [
