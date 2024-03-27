@@ -530,6 +530,57 @@ export default withMermaid(
             ],
           },
         ],
+
+        "/enjoy-app/": [
+          {
+            text: "快速开始",
+            collapsed: false,
+            items: [
+              { text: "Enjoy 简介", link: "/enjoy-app/" },
+              { text: "下载安装", link: "/enjoy-app/install" },
+              { text: "软件设置", link: "/enjoy-app/settings" },
+            ],
+          },
+          {
+            text: "跟读训练",
+            collapsed: false,
+            items: [
+              { text: "音频资源", link: "/enjoy-app/audios" },
+              { text: "视频资源", link: "/enjoy-app/videos" },
+            ],
+          },
+          {
+            text: "阅读文本",
+            collapsed: false,
+            items: [
+              { text: "在线文章", link: "/enjoy-app/webpage" },
+              { text: "本地电子书", link: "/enjoy-app/ebook" },
+            ],
+          },
+          {
+            text: "智能助手",
+            collapsed: false,
+            items: [
+              { text: "简介", link: "/enjoy-app/ai-assistant" },
+              { text: "GPT 服务", link: "/enjoy-app/gpt-conversation" },
+              { text: "TTS 服务", link: "/enjoy-app/tts-conversation" },
+            ],
+          },
+          {
+            text: "其他",
+            collapsed: false,
+            items: [
+              {
+                text: "常见问题",
+                link: "/enjoy-app/faq",
+              },
+              {
+                text: "利用 AI 生成训练材料",
+                link: "/enjoy-app/use-case-generate-audio-resources",
+              },
+            ],
+          },
+        ],
         
       },
 
