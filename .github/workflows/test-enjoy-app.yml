@@ -9,6 +9,7 @@ on:
       - "enjoy/**/*.tsx"
       - "enjoy/**/*.js"
       - "enjoy/**/*.mjs"
+      - "yarn.lock"
 jobs:
   e2e-test:
     timeout-minutes: 60
