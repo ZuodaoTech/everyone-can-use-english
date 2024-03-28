@@ -118,6 +118,17 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
             const match = word?.match(/-|%/);
             if (!match) return;
 
+            if (word === '-') {
+              sentence.timeline.splice(j, 0, {
+                type: 'token',
+                text: '-',
+                startTime: sentence.timeline[j - 1].endTime,
+                endTime: token.startTime,
+                timeline: [],
+              })
+              return;
+            }
+
             for (let k = j + 1; k <= sentence.timeline.length - 1; k++) {
               if (word.includes(sentence.timeline[k].text.toLowerCase())) {
                 let connector = "";

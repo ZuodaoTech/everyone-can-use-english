@@ -193,22 +193,26 @@ const SelectedTabContent = (props: {
               <div className="font-serif text-lg font-semibold tracking-tight">
                 {word.text}
               </div>
-              <div className="text-sm text-serif text-muted-foreground">
-                <span
-                  className={`mr-2 font-code ${i === 0 ? "before:content-['/']" : ""
-                    }
+              {
+                word.timeline.length > 0 && (
+                  <div className="text-sm text-serif text-muted-foreground">
+                    <span
+                      className={`mr-2 font-code ${i === 0 ? "before:content-['/']" : ""
+                        }
                         ${i === selectedIndices.length - 1
-                      ? "after:content-['/']"
-                      : ""
-                    }`}
-                >
-                  {word.timeline
-                    .map((t) =>
-                      t.timeline.map((s) => convertIpaToNormal(s.text)).join("")
-                    )
-                    .join("")}
-                </span>
-              </div>
+                          ? "after:content-['/']"
+                          : ""
+                        }`}
+                    >
+                      {word.timeline
+                        .map((t) =>
+                          t.timeline.map((s) => convertIpaToNormal(s.text)).join("")
+                        )
+                        .join("")}
+                    </span>
+                  </div>
+                )
+              }
             </div>
           );
         })}
