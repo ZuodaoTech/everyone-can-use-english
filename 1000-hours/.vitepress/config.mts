@@ -255,7 +255,7 @@ export default withMermaid(
                       {
                         text: "2.4.1. 停顿",
                         link: "/sounds-of-american-english/2.4.1-stop",
-                      },                      
+                      },
                       {
                         text: "2.4.2. 辅音 + 元音",
                         link: "/sounds-of-american-english/2.4.2-cv",
@@ -278,7 +278,7 @@ export default withMermaid(
                       {
                         text: "2.5.1. 高低",
                         link: "/sounds-of-american-english/2.5.1-pitch",
-                      },                      
+                      },
                       {
                         text: "2.5.2. 起伏",
                         link: "/sounds-of-american-english/2.5.2-tone",
@@ -309,7 +309,7 @@ export default withMermaid(
                     link: "/sounds-of-american-english/3.2-emotions",
                   },
                 ],
-              },              
+              },
             ],
           },
           // {
@@ -462,6 +462,7 @@ export default withMermaid(
           //     },
           //   ],
           // },
+          
           {
             text: "大脑内部",
             collapsed: true,
@@ -581,7 +582,7 @@ export default withMermaid(
             ],
           },
         ],
-        
+
       },
 
       socialLinks: [
