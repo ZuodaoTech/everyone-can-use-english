@@ -1,14 +1,17 @@
 name: Test Enjoy App
 on:
   workflow_dispatch:
-  pull_request_target:
+  push:
     branches:
       - main
     paths:
-      - "enjoy/**/*.ts"
-      - "enjoy/**/*.tsx"
-      - "enjoy/**/*.js"
-      - "enjoy/**/*.mjs"
+      - "enjoy/**"
+      - "yarn.lock"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "enjoy/**"
       - "yarn.lock"
 jobs:
   e2e-test:
