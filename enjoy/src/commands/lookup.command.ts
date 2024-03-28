@@ -71,6 +71,7 @@ export const lookupCommand = async (
     },
     cache: true,
     verbose: true,
+    maxRetries: 2,
   });
 
   const prompt = ChatPromptTemplate.fromMessages([

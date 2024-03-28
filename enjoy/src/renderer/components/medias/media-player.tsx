@@ -87,7 +87,7 @@ export const MediaPlayer = () => {
 
   const calContainerWidth = () => {
     const w = document
-      .querySelector(".media-player-container")
+      .querySelector(".media-player-wrapper")
       ?.getBoundingClientRect()?.width;
     if (!w) return;
 
@@ -122,7 +122,10 @@ export const MediaPlayer = () => {
   }, [ref]);
 
   useEffect(() => {
-    if (!ref?.current) return;
+    const container: HTMLDivElement = document.querySelector(
+      ".media-player-container"
+    );
+    if (!container) return;
 
     ref.current.style.width = `${width}px`;
   }, [width]);
@@ -141,11 +144,11 @@ export const MediaPlayer = () => {
   }, []);
 
   return (
-    <div
-      data-testid="media-player-container"
-      className="flex space-x-4 media-player-container"
-    >
-      <div className="flex-1 border rounded-xl shadow-lg relative">
+    <div className="flex space-x-4 media-player-wrapper">
+      <div
+        data-testid="media-player-container"
+        className="flex-1 border rounded-xl shadow-lg relative media-player-container"
+      >
         <div ref={ref} />
         <div className="absolute right-2 top-1">
           <span className="text-sm">{formatDuration(currentTime || 0)}</span>

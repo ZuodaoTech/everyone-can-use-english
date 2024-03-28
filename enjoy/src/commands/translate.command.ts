@@ -22,6 +22,7 @@ export const translateCommand = async (
     },
     cache: false,
     verbose: true,
+    maxRetries: 2,
   });
 
   const prompt = ChatPromptTemplate.fromMessages([

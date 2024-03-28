@@ -39,7 +39,7 @@ export const useConversation = () => {
         configuration: {
           baseURL: `${apiUrl}/api/ai`,
         },
-        maxRetries: 3,
+        maxRetries: 2,
         modelName: model,
         temperature,
         maxTokens,
@@ -55,6 +55,7 @@ export const useConversation = () => {
         configuration: {
           baseURL: baseUrl || openai.baseUrl,
         },
+        maxRetries: 2,
         modelName: model,
         temperature,
         maxTokens,
@@ -69,6 +70,7 @@ export const useConversation = () => {
         temperature,
         frequencyPenalty,
         presencePenalty,
+        maxRetries: 2,
       });
     } else if (conversation.engine === "googleGenerativeAi") {
       if (!googleGenerativeAi) throw new Error("Google Generative AI API key is required");
@@ -78,6 +80,7 @@ export const useConversation = () => {
         modelName: model,
         temperature: temperature,
         maxOutputTokens: maxTokens,
+        maxRetries: 2,
       });
     }
   };

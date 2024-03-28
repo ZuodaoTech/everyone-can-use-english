@@ -59,6 +59,7 @@ export const ipaCommand = async (
     },
     cache: true,
     verbose: true,
+    maxRetries: 2,
   });
 
   const prompt = ChatPromptTemplate.fromMessages([

@@ -5,6 +5,7 @@ import { Client } from "@/api";
 import i18n from "@renderer/i18n";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { toBlobURL } from "@ffmpeg/util";
+import ahoy from "ahoy.js";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -23,6 +24,7 @@ type AppSettingsProviderState = {
   switchLanguage?: (language: "en" | "zh-CN") => void;
   proxy?: ProxyConfigType;
   setProxy?: (config: ProxyConfigType) => Promise<void>;
+  ahoy?: typeof ahoy;
 };
 
 const initialState: AppSettingsProviderState = {
@@ -71,6 +73,13 @@ export const AppSettingsProvider = ({
         locale: language,
       })
     );
+
+    if (user) {
+      ahoy.configure({
+        urlPrefix: apiUrl,
+      });
+      ahoy.track("logged in", { user: user.id });
+    }
   }, [user, apiUrl, language]);
 
   const prepareFfmpeg = async () => {
@@ -206,6 +215,7 @@ export const AppSettingsProvider = ({
         proxy,
         setProxy: setProxyConfigHandler,
         initialized: Boolean(user && libraryPath),
+        ahoy,
       }}
     >
       {children}
