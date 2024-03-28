@@ -169,7 +169,7 @@ export const AssistantMessageComponent = (props: {
                   new URL(props.href ?? "");
                   props.target = "_blank";
                   props.rel = "noopener noreferrer";
-                } catch (e) {}
+                } catch (e) { }
 
                 return <a {...props}>{children}</a>;
               },
@@ -252,7 +252,7 @@ export const AssistantMessageComponent = (props: {
               <DownloadIcon
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("download")}
-                data-testid="message-start-shadow"
+                data-testid="message-download"
                 onClick={handleDownload}
                 className="w-3 h-3 cursor-pointer"
               />

@@ -142,6 +142,7 @@ export const MediaPlayerProvider = ({
   } = useRecordings(media, currentSegmentIndex);
 
   const initializeWavesurfer = async () => {
+    if (!layout?.playerHeight) return;
     if (!media) return;
     if (!mediaProvider) return;
     if (!ref?.current) return;
@@ -464,17 +465,12 @@ export const MediaPlayerProvider = ({
    * and mediaProvider is available
    */
   useEffect(() => {
-    if (!layout?.playerHeight) return;
-    if (!media) return;
-    if (!ref) return;
-    if (!mediaProvider) return;
-
     initializeWavesurfer();
-    setDecoded(false);
-    setDecodeError(null);
 
     return () => {
       if (wavesurfer) wavesurfer.destroy();
+      setDecoded(false);
+      setDecodeError(null);
     }
   }, [media, ref, mediaProvider, layout?.playerHeight]);
 
