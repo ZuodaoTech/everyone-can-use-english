@@ -96,6 +96,8 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
    * with the original pitch contour.
    */
   const renderComparingPitchContour = () => {
+    if (!currentRecording) return;
+
     const region = mediaRegions
       .getRegions()
       .find((r) => r.id.startsWith("segment-region"));
@@ -171,6 +173,8 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
   };
 
   const handleShare = async () => {
+    if (!currentRecording) return;
+
     if (!currentRecording.uploadedAt) {
       try {
         await EnjoyApp.recordings.upload(currentRecording.id);
