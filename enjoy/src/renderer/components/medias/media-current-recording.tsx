@@ -48,6 +48,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 export const MediaCurrentRecording = (props: { height?: number }) => {
   const { height } = props;
   const {
+    layout,
     isRecording,
     setIsRecording,
     currentRecording,
@@ -383,16 +384,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
 
   useEffect(() => {
     calContainerWidth();
-    window.addEventListener("resize", () => {
-      calContainerWidth();
-    });
-
-    return () => {
-      window.removeEventListener("resize", () => {
-        calContainerWidth();
-      });
-    };
-  }, [currentRecording, isRecording]);
+  }, [currentRecording, isRecording, layout?.width]);
 
   useHotkeys(
     ["Ctrl+R", "Meta+R"],
