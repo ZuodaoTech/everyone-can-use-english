@@ -14,24 +14,23 @@
 
 ## 2.2 放慢播放速度仔细听
 
-要慢速听**很多遍**。从 2 大层面总计 7 个方面分别去分析，详情参见《[语音塑造：进阶](/sounds-of-english/29-advanced)》：
+要慢速听**很多遍**。从 2 大层面总计 7 个方面分别去分析，详情参见《[语音塑造](/sounds-of-american-english/1-basics)》：
 
 > * 韵律节奏
->   * 停顿（[3.2](/sounds-of-english/31-pause)）
->   * 高低（[3.3](/sounds-of-english/32-high-low)）
->   * 轻重（[3.4](/sounds-of-english/33-up-down)）
->   * 起伏（[3.5](/sounds-of-english/34-strong-weak)）
->   * 缓急（[3.6](/sounds-of-english/35-fast-slow)）
->   * 长短（[3.7](/sounds-of-english/36-long-short)）
+>   * 停顿（[2.4.1](/sounds-of-american-english/2.4.1-stop)）
+>   * 高低（[2.5.1](/sounds-of-american-english/2.5.1-pitch)）
+>   * 起伏（[2.5.2](/sounds-of-american-english/2.5.2-tone)）
+>   * 轻重（[2.5.3](/sounds-of-american-english/2.5.3-emphasis)）
+>   * 缓急（[2.5.4](/sounds-of-american-english/2.5.4-pace)）
 > * 音素变化
->   * 元音（[2.1](/sounds-of-english/03-vowels-overview)）
->   * 辅音（[2.2](/sounds-of-english/12-consonants-overview)）
+>   * 元音（[2.1](/sounds-of-american-english/2.1-vowels)）
+>   * 辅音（[2.2](/sounds-of-american-english/2.2-consonants)）
 
 **仔细听**的意思是说，按照以上的顺序，逐条分析，直至每个**音素**都认真分析过、认真体会过、认真尝试过。这一步最需要**注意力集中**，也是整个训练中最关键的部分 —— 这场训练，从另外一个角度来看，实际上都是**注意力训练**。
 
 如果这一点没做到、没做好的话，就会出现 “**明明听到的是一回事，脑子里反应的却是另外一回事**”。
 
-比如，假设过去你一直习惯于把 *recent* `/ˈrisənt/` 里的 `/s/` 读成了 `/z/`，而后在这一步中你并没有做到**仔细听并分析到音素级别**的话…… 那么接下来弄不好无论听多少遍，无论跟读多少遍，你都有可能依然**无法发现**你有一个音竟然读错了 —— 你的大脑会固执地用原有的连接和网络，乃至于自己毫无察觉。如果有人提醒，你会感觉特别奇怪，感觉上那么**明显**的差异，自己怎么就**竟然**一直没注意到？这里有个示例，<span class="speak-word-inline" data-audio-other="/audios/recent-z.mp3"></span>（*recent health tips*）—— 这是某位同学被发现之前完全没有意识到的错误。
+比如，假设过去你一直习惯于把 *recent* `/ˈrisənt/` 里的 `/s/` 读成了 `/z/`，而后在这一步中你并没有做到**仔细听并分析到音素级别**的话…… 那么接下来弄不好无论听多少遍，无论跟读多少遍，你都有可能依然**无法发现**你有一个音竟然读错了 —— 你的大脑会固执地用原有的连接和网络，乃至于自己毫无察觉。如果有人提醒，你会感觉特别奇怪，感觉上那么**明显**的差异，自己怎么就**竟然**一直没注意到？这里有个示例，<span class="speak-word-inline" data-audio-other="/audios/us/recent-z.mp3"></span>（*recent health tips*）—— 这是某位同学被发现之前完全没有意识到的错误。
 
 在这一步，每个单词都可以跟读一下，通过试验感觉自己的声音，认真找自己需要调整的地方。
 
