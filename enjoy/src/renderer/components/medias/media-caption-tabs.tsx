@@ -195,14 +195,12 @@ const SelectedTabContent = (props: {
               </div>
               <div className="text-sm text-serif text-muted-foreground">
                 <span
-                  className={`mr-2 font-code ${
-                    i === 0 ? "before:content-['/']" : ""
-                  }
-                        ${
-                          i === selectedIndices.length - 1
-                            ? "after:content-['/']"
-                            : ""
-                        }`}
+                  className={`mr-2 font-code ${i === 0 ? "before:content-['/']" : ""
+                    }
+                        ${i === selectedIndices.length - 1
+                      ? "after:content-['/']"
+                      : ""
+                    }`}
                 >
                   {word.timeline
                     .map((t) =>
@@ -342,7 +340,7 @@ const TranslationTabContent = (props: { text: string }) => {
     if (translating) return;
 
     setTranslating(true);
-    translate(text)
+    translate(text, `translate-${md5(text)}`)
       .then((result) => {
         if (result) {
           setTranslation(result);
@@ -450,7 +448,7 @@ const AnalysisTabContent = (props: { text: string }) => {
                   new URL(props.href ?? "");
                   props.target = "_blank";
                   props.rel = "noopener noreferrer";
-                } catch (e) {}
+                } catch (e) { }
 
                 return <a {...props}>{children}</a>;
               },
