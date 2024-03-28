@@ -296,7 +296,7 @@
   "releaseToStop": "Release to stop",
   "deleteRecording": "delete recording",
   "deleteRecordingConfirmation": "Are you sure to delete this recording?",
-  "myRecordings": "my recordings",
+  "myRecordings": "recordings",
   "noRecordingForThisSegmentYet": "No recordings for this segment yet. Press <kbd>R</kbd> to start recording.",
   "lastYear": "last year",
   "less": "less",

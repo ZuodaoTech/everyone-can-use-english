@@ -11,8 +11,10 @@ import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { IPA_MAPPING } from "@/constants";
 import { toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
+import { debounce } from "lodash";
 
 type MediaPlayerContextType = {
+  layout: { name: string, width: number, height: number, upperWrapper: string, lowerWrapper: string, playerWrapper: string, panelWrapper: string, playerHeight: number };
   media: AudioType | VideoType;
   setMedia: (media: AudioType | VideoType) => void;
   setMediaProvider: (mediaProvider: HTMLAudioElement | null) => void;
@@ -68,14 +70,34 @@ type MediaPlayerContextType = {
 export const MediaPlayerProviderContext =
   createContext<MediaPlayerContextType>(null);
 
+const LAYOUT = {
+  sm: {
+    name: 'sm',
+    upperWrapper: "h-[calc(100vh-27.5rem)]",
+    lowerWrapper: "h-[23rem]",
+    playerWrapper: "h-[9rem] mb-2",
+    panelWrapper: "h-16",
+    playerHeight: 128,
+  },
+  lg: {
+    name: 'lg',
+    upperWrapper: "h-[calc(100vh-37.5rem)]",
+    lowerWrapper: "h-[33rem]",
+    panelWrapper: "h-20",
+    playerWrapper: "h-[13rem] mb-4",
+    playerHeight: 192,
+  },
+}
+
 export const MediaPlayerProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const height = 192;
   const minPxPerSec = 150;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+
+  const [layout, setLayout] = useState<{ name: string, width: number, height: number, upperWrapper: string, lowerWrapper: string, playerWrapper: string, panelWrapper: string, playerHeight: number }>();
 
   const [media, setMedia] = useState<AudioType | VideoType>(null);
   const [mediaProvider, setMediaProvider] = useState<HTMLAudioElement | null>(
@@ -126,7 +148,7 @@ export const MediaPlayerProvider = ({
 
     const ws = WaveSurfer.create({
       container: ref.current,
-      height,
+      height: layout.playerHeight,
       waveColor: "#eaeaea",
       progressColor: "#c0d6df",
       cursorColor: "#ff0054",
@@ -196,7 +218,7 @@ export const MediaPlayerProvider = ({
     const canvasId = options?.canvasId || `pitch-contour-${region.id}-canvas`;
     canvas.id = canvasId;
     canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
+    canvas.style.height = `${layout.playerHeight}px`;
     pitchContourWidthContainer.appendChild(canvas);
 
     pitchContourWidthContainer.style.position = "absolute";
@@ -204,7 +226,7 @@ export const MediaPlayerProvider = ({
     pitchContourWidthContainer.style.left = "0";
 
     pitchContourWidthContainer.style.width = `${width}px`;
-    pitchContourWidthContainer.style.height = `${height}px`;
+    pitchContourWidthContainer.style.height = `${layout.playerHeight}px`;
     pitchContourWidthContainer.style.marginLeft = `${offsetLeft}px`;
     pitchContourWidthContainer.classList.add(
       "pitch-contour",
@@ -316,6 +338,16 @@ export const MediaPlayerProvider = ({
       })
     );
   };
+
+  const calculateHeight = () => {
+    if (window.innerHeight <= 1080) {
+      setLayout({ ...LAYOUT.sm, width: window.innerWidth, height: window.innerHeight });
+    } else {
+      setLayout({ ...LAYOUT.lg, width: window.innerWidth, height: window.innerHeight });
+    }
+  }
+
+  const deboundeCalculateHeight = debounce(calculateHeight, 100);
 
   /*
    * When wavesurfer is decoded,
@@ -432,15 +464,37 @@ export const MediaPlayerProvider = ({
    * and mediaProvider is available
    */
   useEffect(() => {
+    if (!layout?.playerHeight) return;
+    if (!media) return;
+    if (!ref) return;
+    if (!mediaProvider) return;
+
     initializeWavesurfer();
     setDecoded(false);
     setDecodeError(null);
-  }, [media, ref, mediaProvider]);
+
+    return () => {
+      if (wavesurfer) wavesurfer.destroy();
+    }
+  }, [media, ref, mediaProvider, layout?.playerHeight]);
+
+  useEffect(() => {
+    calculateHeight();
+
+    EnjoyApp.window.onResize((event, bounds) => {
+      deboundeCalculateHeight();
+    })
+
+    return () => {
+      EnjoyApp.window.removeListeners();
+    }
+  }, [])
 
   return (
     <>
       <MediaPlayerProviderContext.Provider
         value={{
+          layout,
           media,
           setMedia,
           setMediaProvider,
