@@ -24,15 +24,13 @@ export const MediaTabs = () => {
   return (
     <ScrollArea className="h-full">
       <div
-        className={`p-1 bg-muted rounded-t-lg mb-2 text-sm sticky top-0 z-10 grid gap-4 ${
-          media?.mediaType === "Video" ? "grid-cols-4" : "grid-cols-3"
-        }`}
+        className={`p-1 bg-muted rounded-t-lg mb-2 text-sm sticky top-0 z-10 grid gap-4 ${media?.mediaType === "Video" ? "grid-cols-4" : "grid-cols-3"
+          }`}
       >
         {media.mediaType === "Video" && (
           <div
-            className={`rounded cursor-pointer px-2 py-1 text-sm text-center capitalize ${
-              tab === "provider" ? "bg-background" : ""
-            }`}
+            className={`rounded cursor-pointer px-2 py-1 text-sm text-center capitalize truncate ${tab === "provider" ? "bg-background" : ""
+              }`}
             onClick={() => setTab("provider")}
           >
             {t("player")}
@@ -40,25 +38,22 @@ export const MediaTabs = () => {
         )}
 
         <div
-          className={`rounded cursor-pointer px-2 py-1 text-sm text-center capitalize ${
-            tab === "transcription" ? "bg-background" : ""
-          }`}
+          className={`rounded cursor-pointer px-2 py-1 text-sm text-center capitalize truncate ${tab === "transcription" ? "bg-background" : ""
+            }`}
           onClick={() => setTab("transcription")}
         >
           {t("transcription")}
         </div>
         <div
-          className={`rounded cursor-pointer px-2 py-1 text-sm text-center capitalize ${
-            tab === "recordings" ? "bg-background" : ""
-          }`}
+          className={`rounded cursor-pointer px-2 py-1 text-sm text-center capitalize truncate ${tab === "recordings" ? "bg-background" : ""
+            }`}
           onClick={() => setTab("recordings")}
         >
           {t("myRecordings")}
         </div>
         <div
-          className={`rounded cursor-pointer px-2 py-1 text-sm text-center capitalize ${
-            tab === "info" ? "bg-background" : ""
-          }`}
+          className={`rounded cursor-pointer px-2 py-1 text-sm text-center capitalize truncate ${tab === "info" ? "bg-background" : ""
+            }`}
           onClick={() => setTab("info")}
         >
           {t("mediaInfo")}

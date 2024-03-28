@@ -46,8 +46,9 @@ import { formatDuration } from "@renderer/lib/utils";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const MediaCurrentRecording = (props: { height?: number }) => {
-  const { height = 192 } = props;
+  const { height } = props;
   const {
+    layout,
     isRecording,
     setIsRecording,
     currentRecording,
@@ -281,9 +282,9 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     });
 
     return () => {
-      ws.destroy();
+      ws?.destroy();
     };
-  }, [ref, currentRecording, isRecording]);
+  }, [ref, currentRecording, isRecording, height]);
 
   useEffect(() => {
     setIsComparing(false);
@@ -315,7 +316,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     }
 
     const subscriptions = [
-      regions.on("region-created", () => {}),
+      regions.on("region-created", () => { }),
 
       regions.on("region-clicked", (region, e) => {
         e.stopPropagation();
@@ -383,16 +384,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
 
   useEffect(() => {
     calContainerWidth();
-    window.addEventListener("resize", () => {
-      calContainerWidth();
-    });
-
-    return () => {
-      window.removeEventListener("resize", () => {
-        calContainerWidth();
-      });
-    };
-  }, [currentRecording, isRecording]);
+  }, [currentRecording, isRecording, layout?.width]);
 
   useHotkeys(
     ["Ctrl+R", "Meta+R"],
@@ -410,7 +402,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     [player]
   );
 
-  if (isRecording) return <MediaRecorder />;
+  if (isRecording) return <MediaRecorder height={height} />;
   if (!currentRecording?.src)
     return (
       <div className="h-full w-full flex items-center space-x-4">
@@ -480,27 +472,31 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
           setIsRecording={setIsRecording}
         />
 
-        <Button
-          variant={isComparing ? "secondary" : "outline"}
-          size="icon"
-          data-tooltip-id="media-player-tooltip"
-          data-tooltip-content={t("compare")}
-          className="rounded-full w-8 h-8 p-0"
-          onClick={toggleCompare}
-        >
-          <GitCompareIcon className="w-4 h-4" />
-        </Button>
+        {
+          height >= 192 && <>
+            <Button
+              variant={isComparing ? "secondary" : "outline"}
+              size="icon"
+              data-tooltip-id="media-player-tooltip"
+              data-tooltip-content={t("compare")}
+              className="rounded-full w-8 h-8 p-0"
+              onClick={toggleCompare}
+            >
+              <GitCompareIcon className="w-4 h-4" />
+            </Button>
 
-        <Button
-          variant={isSelectingRegion ? "secondary" : "outline"}
-          size="icon"
-          data-tooltip-id="media-player-tooltip"
-          data-tooltip-content={t("selectRegion")}
-          className="rounded-full w-8 h-8 p-0"
-          onClick={() => setIsSelectingRegion(!isSelectingRegion)}
-        >
-          <TextCursorInputIcon className="w-4 h-4" />
-        </Button>
+            <Button
+              variant={isSelectingRegion ? "secondary" : "outline"}
+              size="icon"
+              data-tooltip-id="media-player-tooltip"
+              data-tooltip-content={t("selectRegion")}
+              className="rounded-full w-8 h-8 p-0"
+              onClick={() => setIsSelectingRegion(!isSelectingRegion)}
+            >
+              <TextCursorInputIcon className="w-4 h-4" />
+            </Button>
+          </>
+        }
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -522,17 +518,16 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
             >
               <GaugeCircleIcon
                 className={`w-4 h-4 mr-4
-                    ${
-                      currentRecording.pronunciationAssessment
-                        ? currentRecording.pronunciationAssessment
-                            .pronunciationScore >= 80
-                          ? "text-green-500"
-                          : currentRecording.pronunciationAssessment
-                              .pronunciationScore >= 60
-                          ? "text-yellow-600"
-                          : "text-red-500"
-                        : ""
-                    }
+                    ${currentRecording.pronunciationAssessment
+                    ? currentRecording.pronunciationAssessment
+                      .pronunciationScore >= 80
+                      ? "text-green-500"
+                      : currentRecording.pronunciationAssessment
+                        .pronunciationScore >= 60
+                        ? "text-yellow-600"
+                        : "text-red-500"
+                    : ""
+                  }
                     `}
               />
               <span>{t("pronunciationAssessment")}</span>

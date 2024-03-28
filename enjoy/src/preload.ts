@@ -34,6 +34,17 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     version,
   },
+  window: {
+    onResize: (
+      callback: (
+        event: IpcRendererEvent,
+        bounds: { x: number; y: number; width: number; height: number }
+      ) => void
+    ) => ipcRenderer.on("window-on-resize", callback),
+    removeListeners: () => {
+      ipcRenderer.removeAllListeners("window-on-resize");
+    },
+  },
   system: {
     preferences: {
       mediaAccess: (mediaType: "microphone" | "camera") => {

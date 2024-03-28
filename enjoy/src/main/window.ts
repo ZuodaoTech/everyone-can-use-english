@@ -440,14 +440,18 @@ ${log}
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     icon: "./assets/icon.png",
-    width: 1920,
-    height: 1080,
-    minWidth: 1440,
-    minHeight: 900,
+    width: 1440,
+    height: 900,
+    minWidth: 1024,
+    minHeight: 768,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       spellcheck: false,
     },
+  });
+
+  mainWindow.on("resize", () => {
+    mainWindow.webContents.send("window-on-resize", mainWindow.getBounds());
   });
 
   mainWindow.webContents.setWindowOpenHandler(() => {

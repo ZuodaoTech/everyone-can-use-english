@@ -456,7 +456,7 @@ export const MediaPlayerControls = () => {
   }, [grouping]);
 
   return (
-    <div className="w-full h-20 flex items-center justify-center px-6">
+    <div className="w-full h-full flex items-center justify-center px-6">
       <div className="flex items-center justify-center space-x-2">
         <Popover>
           <PopoverTrigger asChild>
@@ -480,11 +480,10 @@ export const MediaPlayerControls = () => {
               {PLAYBACK_RATE_OPTIONS.map((rate, i) => (
                 <div
                   key={i}
-                  className={`cursor-pointer h-10 w-10 leading-10 rounded-full flex items-center justify-center ${
-                    rate === playbackRate
+                  className={`cursor-pointer h-10 w-10 leading-10 rounded-full flex items-center justify-center ${rate === playbackRate
                       ? "bg-primary text-white text-md"
                       : "text-black/70 text-xs"
-                  }`}
+                    }`}
                   onClick={() => {
                     setPlaybackRate(rate);
                   }}

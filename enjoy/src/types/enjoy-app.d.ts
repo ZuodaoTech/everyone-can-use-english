@@ -11,6 +11,10 @@ type EnjoyAppType = {
     createIssue: (title: string, body: string) => Promise<void>;
     version: string;
   };
+  window: {
+    onResize: (callback: (event, bounds: any) => void) => void;
+    removeListeners: () => void;
+  };
   system: {
     preferences: {
       mediaAccess: (mediaType: "microphone") => Promise<boolean>;
