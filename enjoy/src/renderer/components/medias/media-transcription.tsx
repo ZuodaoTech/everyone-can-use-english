@@ -134,12 +134,12 @@ export const MediaTranscription = () => {
           <div
             key={index}
             id={`segment-${index}`}
-            className={`py-2 px-4 cursor-pointer hover:bg-yellow-400/10 ${
-              currentSegmentIndex === index ? "bg-yellow-400/25" : ""
-            }`}
+            className={`py-2 px-4 cursor-pointer hover:bg-yellow-400/10 ${currentSegmentIndex === index ? "bg-yellow-400/25" : ""
+              }`}
             onClick={() => {
+              const duration = wavesurfer.getDuration();
               wavesurfer.seekTo(
-                Math.floor((sentence.startTime / media.duration) * 1e8) / 1e8
+                Math.floor((sentence.startTime / duration) * 1e8) / 1e8
               );
               wavesurfer.setScrollTime(sentence.startTime);
               setCurrentSegmentIndex(index);
