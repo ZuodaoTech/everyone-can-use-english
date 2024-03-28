@@ -217,7 +217,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         );
       })
       .catch((err) => {
-        toast.error(err.message);
+        if (err) toast.error(err.message);
       });
   };
 
