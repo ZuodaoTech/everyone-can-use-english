@@ -4792,10 +4792,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shikijs/core@npm:1.1.7, @shikijs/core@npm:^1.1.5":
-  version: 1.1.7
-  resolution: "@shikijs/core@npm:1.1.7"
-  checksum: 10c0/ee59b88d4c81422792651c0ca52ff378c3035f9d1e4907b58c1d6da06fad02d530775a2e6f43bb033832cd3d2a5f69c9aa4eb5b6b05311396acc503f15442f37
+"@shikijs/core@npm:1.2.1, @shikijs/core@npm:^1.2.0":
+  version: 1.2.1
+  resolution: "@shikijs/core@npm:1.2.1"
+  checksum: 10c0/60b5a1cdaf4389c1377b1527657377dac67173d5fd79fe4d9775392c037d6b0fe46c42bb3e3fbe42a88f4f62295f20f5cf3e43cdf1f070f4ccfedf9077379ecd
   languageName: node
   linkType: hard
 
@@ -17522,7 +17522,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.3.1, tslib@npm:^2.6.2":
+"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.3.1, tslib@npm:^2.5.0, tslib@npm:^2.6.2":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 10c0/e03a8a4271152c8b26604ed45535954c0a45296e32445b4b87f8a5abdb2421f40b59b4ca437c4346af0f28179780d604094eb64546bee2019d903d01c6c19bdb
