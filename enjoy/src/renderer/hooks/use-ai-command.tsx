@@ -20,7 +20,10 @@ export const useAiCommand = () => {
     sourceId?: string;
     sourceType?: string;
   }) => {
-    const { word, context, sourceId, sourceType } = params;
+    const { context, sourceId, sourceType } = params;
+    let { word } = params;
+    word = word.trim();
+    if (!word) return;
 
     const lookup = await webApi.lookup({
       word,
