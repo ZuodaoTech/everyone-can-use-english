@@ -1123,12 +1123,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.23.9, @babel/parser@npm:^7.24.0, @babel/parser@npm:^7.24.1":
+"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.24.0, @babel/parser@npm:^7.24.1":
   version: 7.24.1
   resolution: "@babel/parser@npm:7.24.1"
   bin:
     parser: ./bin/babel-parser.js
   checksum: 10c0/d2a8b99aa5f33182b69d5569367403a40e7c027ae3b03a1f81fd8ac9b06ceb85b31f6ee4267fb90726dc2ac99909c6bdaa9cf16c379efab73d8dfe85cee32c50
+  languageName: node
+  linkType: hard
+
+"@babel/parser@npm:^7.23.9":
+  version: 7.23.9
+  resolution: "@babel/parser@npm:7.23.9"
+  bin:
+    parser: ./bin/babel-parser.js
+  checksum: 10c0/7df97386431366d4810538db4b9ec538f4377096f720c0591c7587a16f6810e62747e9fbbfa1ff99257fd4330035e4fb1b5b77c7bd3b97ce0d2e3780a6618975
   languageName: node
   linkType: hard
 
@@ -5794,9 +5803,9 @@ __metadata:
   linkType: hard
 
 "@types/prop-types@npm:*":
-  version: 15.7.12
-  resolution: "@types/prop-types@npm:15.7.12"
-  checksum: 10c0/1babcc7db6a1177779f8fde0ccc78d64d459906e6ef69a4ed4dd6339c920c2e05b074ee5a92120fe4e9d9f1a01c952f843ebd550bee2332fc2ef81d1706878f8
+  version: 15.7.11
+  resolution: "@types/prop-types@npm:15.7.11"
+  checksum: 10c0/e53423cf9d510515ef8b47ff42f4f1b65a7b7b37c8704e2dbfcb9a60defe0c0e1f3cb1acfdeb466bad44ca938d7c79bffdd51b48ffb659df2432169d0b27a132
   languageName: node
   linkType: hard
 
@@ -6419,9 +6428,9 @@ __metadata:
   linkType: hard
 
 "ahoy.js@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "ahoy.js@npm:0.4.3"
-  checksum: 10c0/eaacbf267d2094cb80651485af0d58034ec89d48f3755159ec850fb75d62b776222e6e9aa333aeb54d6ba1f0bac58f03653294244f1b01e69458a76fae3c2855
+  version: 0.4.4
+  resolution: "ahoy.js@npm:0.4.4"
+  checksum: 10c0/d0e0251beaefc1aed7d4c2b0d5b88972547fd103de98acbe82841377748d7c035f971173dfe41d4ca9e229161b67a3f3eb20a6380b10d92eb1e2767b7979eb2c
   languageName: node
   linkType: hard
 
@@ -6907,7 +6916,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"binary-extensions@npm:^2.0.0, binary-extensions@npm:^2.2.0":
+"binary-extensions@npm:^2.0.0":
+  version: 2.2.0
+  resolution: "binary-extensions@npm:2.2.0"
+  checksum: 10c0/d73d8b897238a2d3ffa5f59c0241870043aa7471335e89ea5e1ff48edb7c2d0bb471517a3e4c5c3f4c043615caa2717b5f80a5e61e07503d51dc85cb848e665d
+  languageName: node
+  linkType: hard
+
+"binary-extensions@npm:^2.2.0":
   version: 2.3.0
   resolution: "binary-extensions@npm:2.3.0"
   checksum: 10c0/75a59cafc10fb12a11d510e77110c6c7ae3f4ca22463d52487709ca7f18f69d886aa387557cc9864fbdb10153d0bdb4caacabf11541f55e89ed6e18d12ece2b5
@@ -8162,11 +8178,11 @@ __metadata:
   linkType: hard
 
 "d3-geo@npm:3":
-  version: 3.1.1
-  resolution: "d3-geo@npm:3.1.1"
+  version: 3.1.0
+  resolution: "d3-geo@npm:3.1.0"
   dependencies:
     d3-array: "npm:2.5.0 - 3"
-  checksum: 10c0/d32270dd2dc8ac3ea63e8805d63239c4c8ec6c0d339d73b5e5a30a87f8f54db22a78fb434369799465eae169503b25f9a107c642c8a16c32a3285bc0e6d8e8c1
+  checksum: 10c0/5b0a26d232787ca9e824a660827c28626a51004328dde7c76a1bd300d3cad8c7eeb55fea64c8cd6495d5a34fea434fb1418d59926a6cb24e6fb6e2b6f62c6bd9
   languageName: node
   linkType: hard
 
@@ -8232,12 +8248,12 @@ __metadata:
   linkType: hard
 
 "d3-scale-chromatic@npm:3":
-  version: 3.1.0
-  resolution: "d3-scale-chromatic@npm:3.1.0"
+  version: 3.0.0
+  resolution: "d3-scale-chromatic@npm:3.0.0"
   dependencies:
     d3-color: "npm:1 - 3"
     d3-interpolate: "npm:1 - 3"
-  checksum: 10c0/9a3f4671ab0b971f4a411b42180d7cf92bfe8e8584e637ce7e698d705e18d6d38efbd20ec64f60cc0dfe966c20d40fc172565bc28aaa2990c0a006360eed91af
+  checksum: 10c0/920a80f2e31b5686798c116e99d1671c32f55fb60fa920b742aa4ac5175b878c615adb4e55a246d65367e6e1061fdbcc55807be731fb5b18ae628d1df62bfac1
   languageName: node
   linkType: hard
 
@@ -8333,8 +8349,8 @@ __metadata:
   linkType: hard
 
 "d3@npm:^7.0.0, d3@npm:^7.4.0, d3@npm:^7.8.2":
-  version: 7.9.0
-  resolution: "d3@npm:7.9.0"
+  version: 7.8.5
+  resolution: "d3@npm:7.8.5"
   dependencies:
     d3-array: "npm:3"
     d3-axis: "npm:3"
@@ -8366,7 +8382,7 @@ __metadata:
     d3-timer: "npm:3"
     d3-transition: "npm:3"
     d3-zoom: "npm:3"
-  checksum: 10c0/3dd9c08c73cfaa69c70c49e603c85e049c3904664d9c79a1a52a0f52795828a1ff23592dc9a7b2257e711d68a615472a13103c212032f38e016d609796e087e8
+  checksum: 10c0/408758dcc2437cbff8cd207b9d82760030b5c53c1df6a2ce5b1a76633388a6892fd65c0632cfa83da963e239722d49805062e5fb05d99e0fb078bda14cb22222
   languageName: node
   linkType: hard
 
@@ -8839,9 +8855,9 @@ __metadata:
   linkType: hard
 
 "dompurify@npm:^3.0.5":
-  version: 3.0.11
-  resolution: "dompurify@npm:3.0.11"
-  checksum: 10c0/38740deed057da8076e85026853635312a6720a21430218a85875e5f43e453c78637d93aa08c744460b0e91c652b06c736efb481c408a8f9c81894d8f76e0de1
+  version: 3.0.9
+  resolution: "dompurify@npm:3.0.9"
+  checksum: 10c0/4da4b86e4010822d01392e25f0686367a4f1e1048a4681178c725de9a817410c5650c17b326c08a018f79437b3177a4bdc7faf4c37b0cf2547bc280aa2038a16
   languageName: node
   linkType: hard
 
@@ -9172,9 +9188,9 @@ __metadata:
   linkType: hard
 
 "elkjs@npm:^0.9.0":
-  version: 0.9.2
-  resolution: "elkjs@npm:0.9.2"
-  checksum: 10c0/f1ebb0995276a039fffcf5f460d4f69c69eb6059752332fdfe2f786732dc577248f7be863e94da078e7a18c6f9a4bca1cd78ac9a78bbc88a7014cbf3a255a456
+  version: 0.9.1
+  resolution: "elkjs@npm:0.9.1"
+  checksum: 10c0/2472dd26fafd009632f17609b36f8b61cfbd0c29d516d3e66ee54f2b078c21f559ff7db05de6590b1e0136272d141dfa8e7f7edbe963166ae45e4d5f9ed8c386
   languageName: node
   linkType: hard
 
@@ -12750,7 +12766,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^10.0.0, lru-cache@npm:^10.0.1, lru-cache@npm:^9.1.1 || ^10.0.0":
+"lru-cache@npm:^10.0.0, lru-cache@npm:^10.0.1, lru-cache@npm:^10.2.0":
   version: 10.2.0
   resolution: "lru-cache@npm:10.2.0"
   checksum: 10c0/c9847612aa2daaef102d30542a8d6d9b2c2bb36581c1bf0dc3ebf5e5f3352c772a749e604afae2e46873b930a9e9523743faac4e5b937c576ab29196774712ee
@@ -15060,12 +15076,12 @@ __metadata:
   linkType: hard
 
 "path-scurry@npm:^1.10.1":
-  version: 1.10.1
-  resolution: "path-scurry@npm:1.10.1"
+  version: 1.10.2
+  resolution: "path-scurry@npm:1.10.2"
   dependencies:
-    lru-cache: "npm:^9.1.1 || ^10.0.0"
+    lru-cache: "npm:^10.2.0"
     minipass: "npm:^5.0.0 || ^6.0.2 || ^7.0.0"
-  checksum: 10c0/e5dc78a7348d25eec61ab166317e9e9c7b46818aa2c2b9006c507a6ff48c672d011292d9662527213e558f5652ce0afcc788663a061d8b59ab495681840c0c1e
+  checksum: 10c0/d723777fbf9627f201e64656680f66ebd940957eebacf780e6cce1c2919c29c116678b2d7dbf8821b3a2caa758d125f4444005ccec886a25c8f324504e48e601
   languageName: node
   linkType: hard
 
