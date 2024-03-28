@@ -82,7 +82,7 @@ export const MediaCaption = () => {
 
         setActiveRegion(region);
       }
-      activeRegion.remove();
+      activeRegion?.remove();
     } else if (activeRegion.id.startsWith("meaning-group-region")) {
       setActiveRegion(
         regions.getRegions().find((r) => r.id.startsWith("segment-region"))
@@ -277,81 +277,74 @@ export const MediaCaption = () => {
           {/* use the words splitted by caption text if it is matched with the timeline length, otherwise use the timeline */}
           {caption.text.split(" ").length !== caption.timeline.length
             ? (caption.timeline || []).map((w, index) => (
-                <div
-                  key={index}
-                  id={`word-${currentSegmentIndex}-${index}`}
-                  className={`pr-2 pb-2 cursor-pointer hover:bg-red-500/10 ${
-                    index === activeIndex ? "text-red-500" : ""
-                  } ${
-                    selectedIndices.includes(index)
-                      ? "bg-red-500/10 selected"
-                      : ""
+              <div
+                key={index}
+                id={`word-${currentSegmentIndex}-${index}`}
+                className={`pr-2 pb-2 cursor-pointer hover:bg-red-500/10 ${index === activeIndex ? "text-red-500" : ""
+                  } ${selectedIndices.includes(index)
+                    ? "bg-red-500/10 selected"
+                    : ""
                   }`}
-                  onClick={() => toggleRegion(index)}
-                >
-                  <div className="">
-                    <div className="text-lg xl:text-xl 2xl:text-2xl">
-                      {w.text}
-                    </div>
-                    {displayIpa && (
-                      <div
-                        className={`text-sm 2xl:text-base text-muted-foreground font-code ${
-                          index === 0 ? "before:content-['/']" : ""
-                        }
-                        ${
-                          index === caption.timeline.length - 1
-                            ? "after:content-['/']"
-                            : ""
-                        }`}
-                      >
-                        {w.timeline
-                          .map((t) =>
-                            t.timeline
-                              .map((s) => convertIpaToNormal(s.text))
-                              .join("")
-                          )
-                          .join(" · ")}
-                      </div>
-                    )}
+                onClick={() => toggleRegion(index)}
+              >
+                <div className="">
+                  <div className="text-lg xl:text-xl 2xl:text-2xl">
+                    {w.text}
                   </div>
+                  {displayIpa && (
+                    <div
+                      className={`text-sm 2xl:text-base text-muted-foreground font-code ${index === 0 ? "before:content-['/']" : ""
+                        }
+                        ${index === caption.timeline.length - 1
+                          ? "after:content-['/']"
+                          : ""
+                        }`}
+                    >
+                      {w.timeline
+                        .map((t) =>
+                          t.timeline
+                            .map((s) => convertIpaToNormal(s.text))
+                            .join("")
+                        )
+                        .join(" · ")}
+                    </div>
+                  )}
                 </div>
-              ))
+              </div>
+            ))
             : caption.text.split(" ").map((word, index) => (
-                <div
-                  key={index}
-                  id={`word-${currentSegmentIndex}-${index}`}
-                  className={`pr-2 pb-2 cursor-pointer hover:bg-red-500/10 ${
-                    index === activeIndex ? "text-red-500" : ""
+              <div
+                key={index}
+                id={`word-${currentSegmentIndex}-${index}`}
+                className={`pr-2 pb-2 cursor-pointer hover:bg-red-500/10 ${index === activeIndex ? "text-red-500" : ""
                   } ${selectedIndices.includes(index) ? "bg-red-500/10" : ""}`}
-                  onClick={() => toggleRegion(index)}
-                >
-                  <div className="">
-                    <div className="text-lg xl:text-xl 2xl:text-2xl">
-                      {word}
-                    </div>
-                    {displayIpa && (
-                      <div
-                        className={`text-sm 2xl:text-base text-muted-foreground font-code ${
-                          index === 0 ? "before:content-['/']" : ""
-                        }
-                        ${
-                          index === caption.text.split(" ").length - 1
-                            ? "after:content-['/']"
-                            : ""
-                        }`}
-                      >
-                        {caption.timeline[index].timeline
-                          .map((t) =>
-                            t.timeline
-                              .map((s) => convertIpaToNormal(s.text))
-                              .join("")
-                          )
-                          .join(" · ")}
-                      </div>
-                    )}
+                onClick={() => toggleRegion(index)}
+              >
+                <div className="">
+                  <div className="text-lg xl:text-xl 2xl:text-2xl">
+                    {word}
                   </div>
+                  {displayIpa && (
+                    <div
+                      className={`text-sm 2xl:text-base text-muted-foreground font-code ${index === 0 ? "before:content-['/']" : ""
+                        }
+                        ${index === caption.text.split(" ").length - 1
+                          ? "after:content-['/']"
+                          : ""
+                        }`}
+                    >
+                      {caption.timeline[index].timeline
+                        .map((t) =>
+                          t.timeline
+                            .map((s) => convertIpaToNormal(s.text))
+                            .join("")
+                        )
+                        .join(" · ")}
+                    </div>
+                  )}
                 </div>
-              ))}
+              </div>
+            ))}
         </div>
 
         <MediaCaptionTabs
