@@ -11,9 +11,9 @@ import { toast } from "@renderer/components/ui";
 import { MediaRecordButton } from "@renderer/components";
 import { FFMPEG_CONVERT_WAV_OPTIONS } from "@/constants";
 
-export const MediaRecorder = (props: { height?: number }) => {
-  const { height = 192 } = props;
+export const MediaRecorder = () => {
   const {
+    layout,
     media,
     isRecording,
     setIsRecording,
@@ -80,11 +80,12 @@ export const MediaRecorder = (props: { height?: number }) => {
     if (!access) return;
     if (!isRecording) return;
     if (!ref.current) return;
+    if (!layout?.playerHeight) return;
 
     const ws = WaveSurfer.create({
       container: ref.current,
       fillParent: true,
-      height,
+      height: layout.playerHeight,
       autoCenter: false,
       normalize: false,
     });
@@ -123,9 +124,9 @@ export const MediaRecorder = (props: { height?: number }) => {
     return () => {
       clearInterval(interval);
       record.stopRecording();
-      ws.destroy();
+      ws?.destroy();
     };
-  }, [ref, isRecording, access]);
+  }, [ref, isRecording, access, layout?.playerHeight]);
 
   useEffect(() => {
     askForMediaAccess();
