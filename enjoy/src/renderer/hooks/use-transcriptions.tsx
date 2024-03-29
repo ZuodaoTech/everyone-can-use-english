@@ -123,7 +123,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
                 type: 'token',
                 text: '-',
                 startTime: sentence.timeline[j - 1].endTime,
-                endTime: token.startTime,
+                endTime: sentence.timeline[j - 1].endTime,
                 timeline: [],
               })
               return;

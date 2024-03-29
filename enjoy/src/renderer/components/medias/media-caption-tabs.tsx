@@ -227,7 +227,7 @@ const SelectedTabContent = (props: {
           <div className="select-text">
             {camdictResult.posItems.map((posItem, index) => (
               <div key={index} className="mb-4">
-                <div className="flex items-center space-x-4 mb-2">
+                <div className="flex items-center space-x-4 mb-2 flex-wrap">
                   <div className="italic text-sm text-muted-foreground">
                     {posItem.type}
                   </div>
