@@ -136,7 +136,7 @@ export default withMermaid(
                         link: "/sounds-of-american-english/2.1.2-tongue",
                       },
                       {
-                        text: "2.1.3. ʌ/ɑː/ar",
+                        text: "2.1.3. ʌ/ɑː/ɑːr",
                         link: "/sounds-of-american-english/2.1.3-ʌ",
                       },
                       {
