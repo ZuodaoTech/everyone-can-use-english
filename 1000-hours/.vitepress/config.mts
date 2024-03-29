@@ -163,6 +163,10 @@ export default withMermaid(
                         text: "2.1.9. aɪ... əʊ",
                         link: "/sounds-of-american-english/2.1.9-aɪ",
                       },
+                      {
+                        text: "2.1.10. ɤ",
+                        link: "/sounds-of-american-english/2.1.10-ɤ",
+                      },
                     ]
                   },
                   {
