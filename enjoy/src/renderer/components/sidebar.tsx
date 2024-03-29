@@ -56,6 +56,28 @@ export const Sidebar = () => {
               </Link>
 
               <Link
+                to="/conversations"
+                data-tooltip-id="sidebar-tooltip"
+                data-tooltip-content={t("sidebar.aiAssistant")}
+                data-testid="sidebar-conversations"
+                className="block"
+              >
+                <Button
+                  variant={
+                    activeTab.startsWith("conversations")
+                      ? "secondary"
+                      : "ghost"
+                  }
+                  className="w-full xl:justify-start"
+                >
+                  <BotIcon className="xl:mr-2 h-5 w-5" />
+                  <span className="hidden xl:block">
+                    {t("sidebar.aiAssistant")}
+                  </span>
+                </Button>
+              </Link>
+
+              <Link
                 to="/community"
                 data-tooltip-id="sidebar-tooltip"
                 data-tooltip-content={t("sidebar.community")}
@@ -164,28 +186,6 @@ export const Sidebar = () => {
               </h3>
               <div className="xl:pl-3 space-y-2">
                 <Link
-                  to="/conversations"
-                  data-tooltip-id="sidebar-tooltip"
-                  data-tooltip-content={t("sidebar.aiAssistant")}
-                  data-testid="sidebar-conversations"
-                  className="block"
-                >
-                  <Button
-                    variant={
-                      activeTab.startsWith("conversations")
-                        ? "secondary"
-                        : "ghost"
-                    }
-                    className="w-full xl:justify-start"
-                  >
-                    <BotIcon className="xl:mr-2 h-5 w-5" />
-                    <span className="hidden xl:block">
-                      {t("sidebar.aiAssistant")}
-                    </span>
-                  </Button>
-                </Link>
-
-                <Link
                   to="/vocabulary"
                   data-tooltip-id="sidebar-tooltip"
                   data-tooltip-content={t("sidebar.vocabulary")}
@@ -243,7 +243,7 @@ export const Sidebar = () => {
                     </Button>
                   </DialogTrigger>
 
-                  <DialogContent className="max-w-full max-w-screen-md xl:max-w-screen-lg h-5/6 p-0">
+                  <DialogContent className="max-w-screen-md xl:max-w-screen-lg h-5/6 p-0">
                     <Preferences />
                   </DialogContent>
                 </Dialog>

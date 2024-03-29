@@ -5,6 +5,7 @@ import { Client } from "@/api";
 import i18n from "@renderer/i18n";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { toBlobURL } from "@ffmpeg/util";
+import ahoy from "ahoy.js";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -23,6 +24,7 @@ type AppSettingsProviderState = {
   switchLanguage?: (language: "en" | "zh-CN") => void;
   proxy?: ProxyConfigType;
   setProxy?: (config: ProxyConfigType) => Promise<void>;
+  ahoy?: typeof ahoy;
 };
 
 const initialState: AppSettingsProviderState = {
@@ -39,7 +41,6 @@ export const AppSettingsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [initialized, setInitialized] = useState<boolean>(false);
   const [version, setVersion] = useState<string>("");
   const [apiUrl, setApiUrl] = useState<string>(WEB_API_URL);
   const [webApi, setWebApi] = useState<Client>(null);
@@ -63,10 +64,6 @@ export const AppSettingsProvider = ({
   }, []);
 
   useEffect(() => {
-    validate();
-  }, [user, libraryPath]);
-
-  useEffect(() => {
     if (!apiUrl) return;
 
     setWebApi(
@@ -77,6 +74,14 @@ export const AppSettingsProvider = ({
       })
     );
   }, [user, apiUrl, language]);
+
+  useEffect(() => {
+    if (!apiUrl) return;
+
+    ahoy.configure({
+      urlPrefix: apiUrl,
+    });
+  }, [apiUrl]);
 
   const prepareFfmpeg = async () => {
     try {
@@ -192,10 +197,6 @@ export const AppSettingsProvider = ({
     });
   };
 
-  const validate = async () => {
-    setInitialized(Boolean(user && libraryPath));
-  };
-
   return (
     <AppSettingsProviderContext.Provider
       value={{
@@ -214,7 +215,8 @@ export const AppSettingsProvider = ({
         ffmpegWasm,
         proxy,
         setProxy: setProxyConfigHandler,
-        initialized,
+        initialized: Boolean(user && libraryPath),
+        ahoy,
       }}
     >
       {children}

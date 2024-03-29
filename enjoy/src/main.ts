@@ -4,8 +4,33 @@ import settings from "@main/settings";
 import "@main/i18n";
 import mainWindow from "@main/window";
 import ElectronSquirrelStartup from "electron-squirrel-startup";
+import contextMenu from "electron-context-menu";
+import { t } from "i18next";
+import * as Sentry from "@sentry/electron";
+import { SENTRY_DSN } from "@/constants";
+
+Sentry.init({
+  dsn: SENTRY_DSN,
+});
 
 app.commandLine.appendSwitch("enable-features", "SharedArrayBuffer");
+
+// Add context menu
+contextMenu({
+  showSearchWithGoogle: false,
+  showInspectElement: false,
+  showLookUpSelection: false,
+  showLearnSpelling: false,
+  labels: {
+    copy: t("copy"),
+    cut: t("cut"),
+    paste: t("paste"),
+    selectAll: t("selectAll"),
+  },
+  shouldShowMenu: (_event, params) => {
+    return params.isEditable;
+  },
+});
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (ElectronSquirrelStartup) {

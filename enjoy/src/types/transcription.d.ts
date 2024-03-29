@@ -5,7 +5,7 @@ type TranscriptionType = {
   state: "pending" | "processing" | "finished";
   engine: string;
   model: string;
-  result: TranscriptionResultSegmentGroupType[];
+  result: AlignmentResult & { original?: string };
 };
 
 type TranscriptionResultSegmentType = {

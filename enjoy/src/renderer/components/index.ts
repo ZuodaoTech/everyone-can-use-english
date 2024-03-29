@@ -25,7 +25,6 @@ export * from "./login-form";
 export * from "./choose-library-path-input";
 export * from "./whisper-model-options";
 
-export * from "./pitch-contour";
 export * from "./reset-all-button";
 
 export * from "./loader-spin";

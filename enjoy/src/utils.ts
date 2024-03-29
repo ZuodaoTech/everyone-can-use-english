@@ -1,7 +1,17 @@
 import Pitchfinder from "pitchfinder";
+import { END_OF_SENTENCE_REGEX, MAGIC_TOKEN_REGEX } from "./constants";
+import { IPA_MAPPING } from "./constants";
 
-export function generatePitch(peaks: Float32Array, sampleRate: number) {
-  const detectPitch = Pitchfinder.YIN({ sampleRate });
+export const extractFrequencies = (props: {
+  peaks: Float32Array;
+  sampleRate: number;
+}): number[] => {
+  const { peaks, sampleRate } = props;
+
+  const detectPitch = Pitchfinder.AMDF({
+    sampleRate,
+    sensitivity: 0.05,
+  });
   const duration = peaks.length / sampleRate;
   const bpm = peaks.length / duration / 60;
 
@@ -10,24 +20,8 @@ export function generatePitch(peaks: Float32Array, sampleRate: number) {
     quantization: bpm,
   });
 
-  // Find the baseline frequency (the value that appears most often)
-  const frequencyMap: any = {};
-  let maxAmount = 0;
-  let baseFrequency = 0;
-  frequencies.forEach((frequency) => {
-    if (!frequency) return;
-    const tolerance = 10;
-    frequency = Math.round(frequency * tolerance) / tolerance;
-    if (!frequencyMap[frequency]) frequencyMap[frequency] = 0;
-    frequencyMap[frequency] += 1;
-    if (frequencyMap[frequency] > maxAmount) {
-      maxAmount = frequencyMap[frequency];
-      baseFrequency = frequency;
-    }
-  });
-
-  return { frequencies, baseFrequency };
-}
+  return frequencies;
+};
 
 export function milisecondsToTimestamp(ms: number) {
   const hours = Math.floor(ms / 3600000).toString();
@@ -40,8 +34,6 @@ export function milisecondsToTimestamp(ms: number) {
   )}:${seconds.padStart(2, "0")},${milliseconds}`;
 }
 
-export const MAGIC_TOKENS = ["Mrs.", "Ms.", "Mr.", "Dr.", "Prof.", "St."];
-export const END_OF_WORD_REGEX = /[^\.!,\?][\.!\?]/g;
 export const groupTranscription = (
   transcription: TranscriptionResultSegmentType[]
 ): TranscriptionResultSegmentGroupType[] => {
@@ -75,8 +67,8 @@ export const groupTranscription = (
     group.push(segment);
 
     if (
-      !MAGIC_TOKENS.includes(text) &&
-      segment.text.trim().match(END_OF_WORD_REGEX)
+      !text.match(MAGIC_TOKEN_REGEX) &&
+      segment.text.trim().match(END_OF_SENTENCE_REGEX)
     ) {
       // Group a complete sentence;
       groups.push(generateGroup(group));
@@ -91,4 +83,16 @@ export const groupTranscription = (
   if (lastSentence) groups.push(lastSentence);
 
   return groups;
+};
+
+export const convertIpaToNormal = (ipa: string) => {
+  const mark = ipa.match(/(\ˈ|ˌ)/);
+  const cleanIpa = ipa.replace(mark ? mark[0] : "", "");
+
+  const converted = IPA_MAPPING[cleanIpa] || cleanIpa;
+  if (mark) {
+    return `${mark[0]}${converted}`;
+  } else {
+    return converted;
+  }
 };

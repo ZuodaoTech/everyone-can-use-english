@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { PitchContour } from "@renderer/components";
+import { renderPitchContour } from "@renderer/lib/utils";
+import { extractFrequencies } from "@/utils";
 import WaveSurfer from "wavesurfer.js";
 import { Button, Skeleton } from "@renderer/components/ui";
 import { PlayIcon, PauseIcon } from "lucide-react";
@@ -12,6 +13,9 @@ import {
   defaultLayoutIcons,
 } from "@vidstack/react/player/layouts/default";
 export const STORAGE_WORKER_ENDPOINT = "https://enjoy-storage.baizhiheizi.com";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
+import { t } from "i18next";
+import { XCircleIcon } from "lucide-react";
 
 export const PostAudio = (props: {
   audio: Partial<MediumType>;
@@ -21,12 +25,18 @@ export const PostAudio = (props: {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const { webApi } = useContext(AppSettingsProviderContext);
   const [transcription, setTranscription] = useState<TranscriptionType>();
+  const [error, setError] = useState<string>(null);
 
-  const currentTranscription = (transcription?.result || []).find(
-    (s) =>
-      currentTime >= s.offsets.from / 1000.0 &&
-      currentTime <= s.offsets.to / 1000.0
-  );
+  const currentTranscription = transcription?.result["transcript"]
+    ? (transcription.result?.timeline || []).find(
+        (s: TimelineEntry) =>
+          currentTime >= s.startTime && currentTime <= s.endTime
+      )
+    : (transcription?.result || []).find(
+        (s: TranscriptionResultSegmentType) =>
+          currentTime >= s.offsets.from / 1000.0 &&
+          currentTime <= s.offsets.to / 1000.0
+      );
 
   useEffect(() => {
     webApi
@@ -38,6 +48,22 @@ export const PostAudio = (props: {
       });
   }, [audio.md5]);
 
+  if (error) {
+    return (
+      <div className="w-full rounded-lg p-4 border">
+        <div className="flex items-center justify-center mb-2">
+          <XCircleIcon className="w-4 h-4 text-destructive" />
+        </div>
+        <div className="select-text break-all text-center text-sm text-muted-foreground mb-4">
+          {error}
+        </div>
+        <div className="flex items-center justify-center">
+          <Button onClick={() => setError(null)}>{t("retry")}</Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full">
       {audio.sourceUrl.startsWith(STORAGE_WORKER_ENDPOINT) ? (
@@ -46,6 +72,7 @@ export const PostAudio = (props: {
           setCurrentTime={setCurrentTime}
           audio={audio}
           height={height}
+          onError={(err) => setError(err.message)}
         />
       ) : (
         <MediaPlayer
@@ -53,6 +80,7 @@ export const PostAudio = (props: {
             setCurrentTime(_currentTime);
           }}
           src={audio.sourceUrl}
+          onError={(err) => setError(err.message)}
         >
           <MediaProvider />
           <DefaultAudioLayout icons={defaultLayoutIcons} />
@@ -81,8 +109,9 @@ const WavesurferPlayer = (props: {
   height?: number;
   currentTime: number;
   setCurrentTime: (currentTime: number) => void;
+  onError?: (error: Error) => void;
 }) => {
-  const { audio, height = 80, currentTime, setCurrentTime } = props;
+  const { audio, height = 80, onError, setCurrentTime } = props;
   const [initialized, setInitialized] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [wavesurfer, setWavesurfer] = useState(null);
@@ -134,18 +163,29 @@ const WavesurferPlayer = (props: {
       wavesurfer.on("timeupdate", (time: number) => {
         setCurrentTime(time);
       }),
-      wavesurfer.on("decode", () => {
+      wavesurfer.on("ready", () => {
         setDuration(wavesurfer.getDuration());
         const peaks = wavesurfer.getDecodedData().getChannelData(0);
         const sampleRate = wavesurfer.options.sampleRate;
-        wavesurfer.renderer.getWrapper().appendChild(
-          PitchContour({
-            peaks,
-            sampleRate,
-            height,
-          })
-        );
+        const data = extractFrequencies({ peaks, sampleRate });
+        setTimeout(() => {
+          renderPitchContour({
+            wrapper: wavesurfer.getWrapper(),
+            canvasId: `pitch-contour-${audio.id}-canvas`,
+            labels: new Array(data.length).fill(""),
+            datasets: [
+              {
+                data,
+                cubicInterpolationMode: "monotone",
+                pointRadius: 1,
+              },
+            ],
+          });
+        }, 1000);
         setInitialized(true);
+      }),
+      wavesurfer.on("error", (err: Error) => {
+        onError(err);
       }),
     ];
 

@@ -78,6 +78,16 @@ test("valid ffmpeg command", async () => {
   expect(res).toBeTruthy();
 });
 
+test("validate echogarden align command", async () => {
+  const res = await page.evaluate(() => {
+    return window.__ENJOY_APP__.echogarden.check();
+  });
+  expect(res).toBeTruthy();
+
+  const settings = fs.readJsonSync(path.join(resultDir, "settings.json"));
+  expect(settings.whisper.service).toBe("local");
+});
+
 test("should setup default library path", async () => {
   const settings = fs.readJsonSync(path.join(resultDir, "settings.json"));
   expect(settings.library).not.toBeNull();

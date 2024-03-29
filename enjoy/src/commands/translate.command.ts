@@ -1,6 +1,5 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { RESPONSE_JSON_FORMAT_MODELS } from "@/constants";
 
 export const translateCommand = async (
   text: string,
@@ -14,10 +13,6 @@ export const translateCommand = async (
   const { key, temperature = 0, baseUrl } = options;
   let { modelName = "gpt-4-turbo-preview" } = options;
 
-  if (RESPONSE_JSON_FORMAT_MODELS.indexOf(modelName) === -1) {
-    modelName = "gpt-4-turbo-preview";
-  }
-
   const chatModel = new ChatOpenAI({
     openAIApiKey: key,
     modelName,
@@ -25,8 +20,9 @@ export const translateCommand = async (
     configuration: {
       baseURL: baseUrl,
     },
-    cache: true,
+    cache: false,
     verbose: true,
+    maxRetries: 2,
   });
 
   const prompt = ChatPromptTemplate.fromMessages([

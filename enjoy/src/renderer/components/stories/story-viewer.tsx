@@ -49,6 +49,7 @@ export const StoryViewer = (props: {
 
   const handleSelectionChanged = debounce(() => {
     const selection = document.getSelection();
+    if (!selection?.anchorNode?.parentElement) return;
     if (!ref.current?.contains(selection.anchorNode.parentElement)) return;
 
     const word = selection

@@ -34,6 +34,17 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     version,
   },
+  window: {
+    onResize: (
+      callback: (
+        event: IpcRendererEvent,
+        bounds: { x: number; y: number; width: number; height: number }
+      ) => void
+    ) => ipcRenderer.on("window-on-resize", callback),
+    removeListeners: () => {
+      ipcRenderer.removeAllListeners("window-on-resize");
+    },
+  },
   system: {
     preferences: {
       mediaAccess: (mediaType: "microphone" | "camera") => {
@@ -177,6 +188,11 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     removeListeners: () => {
       ipcRenderer.removeAllListeners("db-on-transaction");
     },
+  },
+  camdict: {
+    lookup: (word: string) => {
+      return ipcRenderer.invoke("camdict-lookup", word);
+    }
   },
   audios: {
     findAll: (params: {
@@ -350,6 +366,14 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       return ipcRenderer.invoke("audiowaveform-frequencies", file);
     },
   },
+  echogarden: {
+    align: (input: string, transcript: string, options: any) => {
+      return ipcRenderer.invoke("echogarden-align", input, transcript, options);
+    },
+    check: () => {
+      return ipcRenderer.invoke("echogarden-check");
+    },
+  },
   whisper: {
     config: () => {
       return ipcRenderer.invoke("whisper-config");
@@ -398,7 +422,7 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       callback: (event: IpcRendererEvent, state: DownloadStateType) => void
     ) => ipcRenderer.on("download-on-state", callback),
     start: (url: string, savePath?: string) => {
-      ipcRenderer.invoke("download-start", url, savePath);
+      return ipcRenderer.invoke("download-start", url, savePath);
     },
     cancel: (filename: string) => {
       ipcRenderer.invoke("download-cancel", filename);

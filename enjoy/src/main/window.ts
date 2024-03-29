@@ -21,6 +21,8 @@ import { AudibleProvider, TedProvider } from "@main/providers";
 import Ffmpeg from "@main/ffmpeg";
 import { Waveform } from "./waveform";
 import url from "url";
+import echogarden from "./echogarden";
+import camdict from "./camdict";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,8 +48,13 @@ main.init = () => {
   // Prepare local database
   db.registerIpcHandlers();
 
+  camdict.registerIpcHandlers();
+
   // Prepare Settings
   settings.registerIpcHandlers();
+
+  // echogarden
+  echogarden.registerIpcHandlers();
 
   // Whisper
   whisper.registerIpcHandlers();
@@ -433,13 +440,18 @@ ${log}
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     icon: "./assets/icon.png",
-    width: 1600,
-    height: 1200,
+    width: 1440,
+    height: 900,
     minWidth: 1024,
     minHeight: 768,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      spellcheck: false,
     },
+  });
+
+  mainWindow.on("resize", () => {
+    mainWindow.webContents.send("window-on-resize", mainWindow.getBounds());
   });
 
   mainWindow.webContents.setWindowOpenHandler(() => {

@@ -1,0 +1,43 @@
+name: Build Enjoy App (macos-12)
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/cache@v4
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: "**/node_modules"
+          key: macos-12-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Install Apple certificate
+        env:
+          MACOS_CERTIFICATE_APPLICATION_BASE64: ${{ secrets.MACOS_CERTIFICATE_APPLICATION_BASE64 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: ./enjoy/scripts/add-macos-cert.sh
+
+      - name: Make
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: yarn run enjoy:make
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Enjoy-${{ runner.os }}-x64-build-${{ github.sha }}
+          path: |
+            enjoy/out/make/**/*.dmg

@@ -1,0 +1,34 @@
+name: Build Enjoy App (Windows)
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/cache@v4
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: "**/node_modules"
+          key: windows-latest-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Make
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+        run: yarn run enjoy:make
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Enjoy-${{ runner.os }}-x64-build-${{ github.sha }}
+          path: |
+            enjoy/out/make/**/*.exe

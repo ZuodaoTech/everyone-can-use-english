@@ -64,12 +64,12 @@ export default () => {
 
   const presets = CONVERSATION_PRESETS.map((preset) =>
     Object.assign({}, preset, {
-      engine: currentEngine.name,
+      engine: currentEngine?.name,
       configuration: {
         ...preset.configuration,
         tts: {
           ...preset.configuration.tts,
-          engine: currentEngine.name,
+          engine: currentEngine?.name,
         },
       },
     })
@@ -78,7 +78,7 @@ export default () => {
   const customPreset = {
     key: "custom",
     name: t("custom"),
-    engine: currentEngine.name,
+    engine: currentEngine?.name,
     configuration: {
       type: "gpt",
       model: "gpt-4-turbo-preview",
@@ -92,7 +92,7 @@ export default () => {
       historyBufferSize: 0,
       tts: {
         baseUrl: "",
-        engine: currentEngine.name,
+        engine: currentEngine?.name,
         model: "tts-1",
         voice: "alloy",
       },
@@ -107,7 +107,7 @@ export default () => {
       type: "tts",
       tts: {
         baseUrl: "",
-        engine: currentEngine.name,
+        engine: currentEngine?.name,
         model: "tts-1",
         voice: "alloy",
       },

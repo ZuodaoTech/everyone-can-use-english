@@ -14,4 +14,4 @@
 
 另外，美国人在说 `t` 这个辅音的时候，经常会把它读成**送气音**（*asperated*），即，发着 `h` 的音读出，比如 *time* `/tʰaɪm/`<span class="speak-word-inline" data-audio-uk="/audios/time-uk.mp3" data-audio-us="/audios/time-us.mp3"></span>。
 
-对中文普通话使用者来说，必须为这几个辅音学习新的发声方式。可以用 *students* `/ˈstudənts/` <span class="speak-word-inline" data-audio-uk="/audios/students-uk.mp3" data-audio-us="/audios/students-us.mp3"></span> 这个词作为起步反复练习。以后随时注意这些辅音发声时起始的**舌尖位置**。
+对中文普通话使用者来说，必须为这几个辅音学习新的发声方式。可以用 *students* `/ˈstudənts/`<span class="speak-word-inline" data-audio-uk="/audios/students-uk.mp3" data-audio-us="/audios/students-us.mp3"></span> 这个词作为起步反复练习。以后随时注意这些辅音发声时起始的**舌尖位置**。

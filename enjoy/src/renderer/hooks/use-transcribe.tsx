@@ -12,11 +12,10 @@ import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import axios from "axios";
 import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
-import {
-  groupTranscription,
-  END_OF_WORD_REGEX,
-  milisecondsToTimestamp,
-} from "@/utils";
+import { groupTranscription, milisecondsToTimestamp } from "@/utils";
+import { END_OF_SENTENCE_REGEX } from "@/constants";
+import { AlignmentResult } from "echogarden/dist/api/API.d.js";
+import { FFMPEG_CONVERT_WAV_OPTIONS } from "@/constants";
 
 export const useTranscribe = () => {
   const { EnjoyApp, ffmpegWasm, ffmpegValid, user, webApi } = useContext(
@@ -28,12 +27,16 @@ export const useTranscribe = () => {
     if (ffmpegValid) {
       if (src instanceof Blob) {
         src = await EnjoyApp.cacheObjects.writeFile(
-          `${Date.now()}.${src.type.split("/")[1]}`,
+          `${Date.now()}.${src.type.split("/")[1].split(";")[0]}`,
           await src.arrayBuffer()
         );
       }
 
-      const output = `enjoy://library/cache/${src.split("/").pop()}.wav`;
+      const output = `enjoy://library/cache/${src
+        .split("/")
+        .pop()
+        .split(";")
+        .shift()}.wav`;
       await EnjoyApp.ffmpeg.transcode(src, output, options);
       const data = await fetchFile(output);
       return new Blob([data], { type: "audio/wav" });
@@ -45,7 +48,7 @@ export const useTranscribe = () => {
   const transcodeUsingWasm = async (src: string | Blob, options?: string[]) => {
     if (!ffmpegWasm?.loaded) return;
 
-    options = options || ["-ar", "16000", "-ac", "1", "-c:a", "pcm_s16le"];
+    options = options || FFMPEG_CONVERT_WAV_OPTIONS;
 
     try {
       let uri: URL;
@@ -76,25 +79,45 @@ export const useTranscribe = () => {
     params?: {
       targetId?: string;
       targetType?: string;
+      originalText?: string;
     }
   ): Promise<{
     engine: string;
     model: string;
-    result: TranscriptionResultSegmentGroupType[];
+    alignmentResult: AlignmentResult;
+    originalText?: string;
   }> => {
     const blob = await transcode(mediaSrc);
+    const { targetId, targetType, originalText } = params || {};
 
-    if (whisperConfig.service === "local") {
-      return transcribeByLocal(blob);
+    let result;
+    if (originalText) {
+      result = {
+        engine: "original",
+        model: "original",
+      };
+    } else if (whisperConfig.service === "local") {
+      result = await transcribeByLocal(blob);
     } else if (whisperConfig.service === "cloudflare") {
-      return transcribeByCloudflareAi(blob);
+      result = await transcribeByCloudflareAi(blob);
     } else if (whisperConfig.service === "openai") {
-      return transcribeByOpenAi(blob);
+      result = await transcribeByOpenAi(blob);
     } else if (whisperConfig.service === "azure") {
-      return transcribeByAzureAi(blob, params);
+      result = await transcribeByAzureAi(blob, { targetId, targetType });
     } else {
       throw new Error(t("whisperServiceNotSupported"));
     }
+
+    const alignmentResult = await EnjoyApp.echogarden.align(
+      new Uint8Array(await blob.arrayBuffer()),
+      originalText || result.result.map((segment) => segment.text).join(" ")
+    );
+
+    return {
+      ...result,
+      originalText,
+      alignmentResult,
+    };
   };
 
   const transcribeByLocal = async (blob: Blob) => {
@@ -267,7 +290,7 @@ export const useTranscribe = () => {
 
             if (
               index === best.Words.length - 1 &&
-              !text.trim().match(END_OF_WORD_REGEX)
+              !text.trim().match(END_OF_SENTENCE_REGEX)
             ) {
               text = text + ".";
             }

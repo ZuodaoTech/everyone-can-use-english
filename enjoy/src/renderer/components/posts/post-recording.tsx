@@ -1,10 +1,13 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { PitchContour } from "@renderer/components";
+import { renderPitchContour } from "@renderer/lib/utils";
+import { extractFrequencies } from "@/utils";
 import WaveSurfer from "wavesurfer.js";
 import { Button, Skeleton } from "@renderer/components/ui";
 import { PlayIcon, PauseIcon } from "lucide-react";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { secondsToTimestamp } from "@renderer/lib/utils";
+import { t } from "i18next";
+import { XCircleIcon } from "lucide-react";
 
 export const PostRecording = (props: {
   recording: RecordingType;
@@ -19,6 +22,7 @@ export const PostRecording = (props: {
     threshold: 1,
   });
   const [duration, setDuration] = useState<number>(0);
+  const [error, setError] = useState<string>(null);
 
   const onPlayClick = useCallback(() => {
     wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
@@ -30,6 +34,7 @@ export const PostRecording = (props: {
     if (!entry?.isIntersecting) return;
     if (!recording.src) return;
     if (wavesurfer) return;
+    if (error) return;
 
     const ws = WaveSurfer.create({
       container: containerRef.current,
@@ -47,7 +52,11 @@ export const PostRecording = (props: {
     });
 
     setWavesurfer(ws);
-  }, [recording.src, entry]);
+
+    return () => {
+      setWavesurfer(null);
+    };
+  }, [recording.src, entry, error]);
 
   useEffect(() => {
     if (!wavesurfer) return;
@@ -59,18 +68,32 @@ export const PostRecording = (props: {
       wavesurfer.on("pause", () => {
         setIsPlaying(false);
       }),
-      wavesurfer.on("decode", () => {
+      wavesurfer.on("ready", () => {
         setDuration(wavesurfer.getDuration());
         const peaks = wavesurfer.getDecodedData().getChannelData(0);
         const sampleRate = wavesurfer.options.sampleRate;
-        wavesurfer.renderer.getWrapper().appendChild(
-          PitchContour({
-            peaks,
-            sampleRate,
-            height,
-          })
-        );
+        const data = extractFrequencies({ peaks, sampleRate });
+        setTimeout(() => {
+          renderPitchContour({
+            wrapper: wavesurfer.getWrapper(),
+            canvasId: `pitch-contour-${recording.id}-canvas`,
+            labels: new Array(data.length).fill(""),
+            datasets: [
+              {
+                data,
+                cubicInterpolationMode: "monotone",
+                pointRadius: 1,
+                borderColor: "#fb6f92",
+                pointBorderColor: "#fb6f92",
+                pointBackgroundColor: "#ff8fab",
+              },
+            ],
+          });
+        }, 1000);
         setInitialized(true);
+      }),
+      wavesurfer.on("error", (err: Error) => {
+        setError(err.message);
       }),
     ];
 
@@ -79,6 +102,22 @@ export const PostRecording = (props: {
       wavesurfer?.destroy();
     };
   }, [wavesurfer]);
+
+  if (error) {
+    return (
+      <div className="w-full bg-sky-500/30 rounded-lg p-4 border">
+        <div className="flex items-center justify-center mb-2">
+          <XCircleIcon className="w-4 h-4 text-destructive" />
+        </div>
+        <div className="select-text break-all text-center text-sm text-muted-foreground mb-4">
+          {error}
+        </div>
+        <div className="flex items-center justify-center">
+          <Button onClick={() => setError(null)}>{t("retry")}</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
@@ -119,15 +158,13 @@ export const PostRecording = (props: {
         ></div>
       </div>
 
-      {
-        recording.referenceText && (
-          <div className="mt-2 bg-muted px-4 py-2 rounded">
-            <div className="text-muted-foreground text-center font-serif">
-              {recording.referenceText}
-            </div>
+      {recording.referenceText && (
+        <div className="mt-2 bg-muted px-4 py-2 rounded">
+          <div className="text-muted-foreground text-center font-serif">
+            {recording.referenceText}
           </div>
-        )
-      }
+        </div>
+      )}
     </div>
   );
 };

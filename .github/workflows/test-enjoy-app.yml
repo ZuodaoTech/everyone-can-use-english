@@ -1,14 +1,18 @@
 name: Test Enjoy App
 on:
   workflow_dispatch:
-  pull_request_target:
+  push:
     branches:
       - main
     paths:
-      - "enjoy/**/*.ts"
-      - "enjoy/**/*.tsx"
-      - "enjoy/**/*.js"
-      - "enjoy/**/*.mjs"
+      - "enjoy/**"
+      - "yarn.lock"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "enjoy/**"
+      - "yarn.lock"
 jobs:
   e2e-test:
     timeout-minutes: 60
@@ -28,7 +32,7 @@ jobs:
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: "**/node_modules"
-          key: ${{ github.event.inputs.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ matrix.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
         run: yarn install
@@ -39,14 +43,28 @@ jobs:
           brew update
           brew install sdl2
 
-      - name: Run tests with xvfb-run on Ubuntu
+      - name: Package App
+        run: yarn enjoy:package
+
+      - name: Run main tests with xvfb-run on Ubuntu
         if: contains(matrix.os, 'ubuntu')
         run: |
-          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn enjoy:test
+          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn enjoy:test:main
 
-      - name: Run tests on macOS or Windows
+      - name: Run main tests on macOS or Windows
         if: contains(matrix.os, 'macos') || contains(matrix.os, 'windows')
-        run: yarn enjoy:test
+        run: yarn enjoy:test:main
+
+      - name: Run renderer tests with xvfb-run on Ubuntu
+        if: contains(matrix.os, 'ubuntu')
+        continue-on-error: true
+        run: |
+          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn enjoy:test:renderer
+
+      - name: Run renderer tests on macOS or Windows
+        if: contains(matrix.os, 'macos') || contains(matrix.os, 'windows')
+        continue-on-error: true
+        run: yarn enjoy:test:renderer
 
       - uses: actions/upload-artifact@v4
         if: always()

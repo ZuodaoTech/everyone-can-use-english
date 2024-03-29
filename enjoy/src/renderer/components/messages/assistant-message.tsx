@@ -14,7 +14,7 @@ import {
 } from "@renderer/components/ui";
 import {
   SpeechPlayer,
-  AudioDetail,
+  AudioPlayer,
   ConversationShortcuts,
 } from "@renderer/components";
 import { useState, useEffect, useContext } from "react";
@@ -28,6 +28,7 @@ import {
   ForwardIcon,
   AlertCircleIcon,
   MoreVerticalIcon,
+  DownloadIcon,
 } from "lucide-react";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
@@ -104,11 +105,35 @@ export const AssistantMessageComponent = (props: {
           speech.text.length > 20
             ? speech.text.substring(0, 17).trim() + "..."
             : speech.text,
+        originalText: speech.text,
       });
       setResourcing(false);
     }
 
     setShadowing(true);
+  };
+
+  const handleDownload = async () => {
+    if (!speech) return;
+
+    EnjoyApp.dialog
+      .showSaveDialog({
+        title: t("download"),
+        defaultPath: speech.filename,
+      })
+      .then((savePath) => {
+        if (!savePath) return;
+
+        toast.promise(EnjoyApp.download.start(speech.src, savePath as string), {
+          loading: t("downloading", { file: speech.filename }),
+          success: () => t("downloadedSuccessfully"),
+          error: t("downloadFailed"),
+          position: "bottom-right",
+        });
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
 
   return (
@@ -144,7 +169,7 @@ export const AssistantMessageComponent = (props: {
                   new URL(props.href ?? "");
                   props.target = "_blank";
                   props.rel = "noopener noreferrer";
-                } catch (e) {}
+                } catch (e) { }
 
                 return <a {...props}>{children}</a>;
               },
@@ -223,6 +248,15 @@ export const AssistantMessageComponent = (props: {
                   className="w-3 h-3 cursor-pointer"
                 />
               ))}
+            {Boolean(speech) && (
+              <DownloadIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("download")}
+                data-testid="message-download"
+                onClick={handleDownload}
+                className="w-3 h-3 cursor-pointer"
+              />
+            )}
 
             <DropdownMenuTrigger>
               <MoreVerticalIcon className="w-3 h-3" />
@@ -242,16 +276,16 @@ export const AssistantMessageComponent = (props: {
       <Sheet open={shadowing} onOpenChange={(value) => setShadowing(value)}>
         <SheetContent
           side="bottom"
-          className="rounded-t-2xl shadow-lg"
+          className="h-100vh p-0"
           displayClose={false}
         >
-          <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
+          <SheetHeader className="flex items-center justify-center h-14">
             <SheetClose>
               <ChevronDownIcon />
             </SheetClose>
           </SheetHeader>
 
-          {Boolean(speech) && <AudioDetail md5={speech.md5} />}
+          {Boolean(speech) && shadowing && <AudioPlayer md5={speech.md5} />}
         </SheetContent>
       </Sheet>
     </div>

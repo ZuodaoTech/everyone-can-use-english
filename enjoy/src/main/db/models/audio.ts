@@ -129,6 +129,16 @@ export class Audio extends Model<Audio> {
     return this.getDataValue("metadata").duration;
   }
 
+  @Column(DataType.VIRTUAL)
+  get mediaType(): string {
+    return "Audio";
+  }
+
+  @Column(DataType.VIRTUAL)
+  get filename(): string {
+    return this.getDataValue("md5") + this.extname;
+  }
+
   get extname(): string {
     return (
       this.getDataValue("metadata").extname ||
@@ -219,6 +229,12 @@ export class Audio extends Model<Audio> {
   static cleanupFile(audio: Audio) {
     fs.remove(audio.filePath);
     Recording.destroy({
+      where: {
+        targetId: audio.id,
+        targetType: "Audio",
+      },
+    });
+    Transcription.destroy({
       where: {
         targetId: audio.id,
         targetType: "Audio",

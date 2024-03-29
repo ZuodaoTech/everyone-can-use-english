@@ -12,7 +12,7 @@ const config = {
     asar: {
       // Binary files won't work in asar, so we need to unpack them
       unpackDir:
-        "{.vite/build/lib,.vite/build/samples,node_modules/ffmpeg-static,node_modules/@andrkrn/ffprobe-static}",
+        "{.vite/build/lib,.vite/build/samples,node_modules/ffmpeg-static,node_modules/@andrkrn/ffprobe-static,node_modules/onnxruntime-node/bin,lib/dictionaries}",
     },
     icon: "./assets/icon",
     name: "Enjoy",
@@ -45,14 +45,14 @@ const config = {
         mimeType: ["x-scheme-handler/enjoy"],
       },
     }),
-    new MakerRpm({
-      options: {
-        name: "enjoy",
-        productName: "Enjoy",
-        icon: "./assets/icon.png",
-        mimeType: ["x-scheme-handler/enjoy"],
-      },
-    }),
+    // new MakerRpm({
+    //   options: {
+    //     name: "enjoy",
+    //     productName: "Enjoy",
+    //     icon: "./assets/icon.png",
+    //     mimeType: ["x-scheme-handler/enjoy"],
+    //   },
+    // }),
   ],
   publishers: [
     {

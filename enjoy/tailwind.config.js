@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+
+const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
   darkMode: ["class"],
   content: ["./src/renderer/**/*.{ts,tsx}"],
@@ -11,6 +13,9 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        code: ['"Source Code Pro"', ...defaultTheme.fontFamily.mono],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -70,6 +75,7 @@ module.exports = {
   plugins: [
     require("tailwindcss-animate"),
     require("@tailwindcss/typography"),
+    require("tailwind-scrollbar"),
     require("tailwind-scrollbar-hide"),
     require("@vidstack/react/tailwind.cjs"),
   ],

@@ -1,4 +1,12 @@
+import { useEffect, useContext, useRef, useState } from "react";
 import {
+  AppSettingsProviderContext,
+  DbProviderContext,
+  MediaPlayerProviderContext,
+} from "@renderer/context";
+import { t } from "i18next";
+import {
+  Button,
   AlertDialog,
   AlertDialogTrigger,
   AlertDialogFooter,
@@ -8,182 +16,150 @@ import {
   AlertDialogDescription,
   AlertDialogCancel,
   AlertDialogAction,
-  Skeleton,
-  ScrollArea,
-  Button,
   PingPoint,
 } from "@renderer/components/ui";
-import React, { useEffect, useContext, useState } from "react";
-import { t } from "i18next";
 import { LoaderIcon, CheckCircleIcon, MicIcon } from "lucide-react";
-import {
-  DbProviderContext,
-  AppSettingsProviderContext,
-  AISettingsProviderContext,
-} from "@renderer/context";
+import { AlignmentResult } from "echogarden/dist/api/API.d.js";
+import { formatDuration } from "@renderer/lib/utils";
 
-export const MediaTranscription = (props: {
-  transcription: TranscriptionType;
-  progress: number;
-  transcribe: () => void;
-  transcribing: boolean;
-  mediaId: string;
-  mediaType: "Audio" | "Video";
-  mediaName?: string;
-  currentSegmentIndex?: number;
-  onSelectSegment?: (index: number) => void;
-}) => {
-  const { addDblistener, removeDbListener } = useContext(DbProviderContext);
-  const { whisperConfig } = useContext(AISettingsProviderContext);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+export const MediaTranscription = () => {
+  const containerRef = useRef<HTMLDivElement>();
   const {
-    transcription,
-    transcribing,
-    progress,
-    transcribe,
-    mediaId,
-    mediaType,
-    mediaName,
+    media,
     currentSegmentIndex,
-    onSelectSegment,
-  } = props;
-  const containerRef = React.createRef<HTMLDivElement>();
+    wavesurfer,
+    setCurrentSegmentIndex,
+    transcription,
+    generateTranscription,
+    transcribing,
+    transcribingProgress,
+  } = useContext(MediaPlayerProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { addDblistener, removeDbListener } = useContext(DbProviderContext);
 
   const [recordingStats, setRecordingStats] =
     useState<SegementRecordingStatsType>([]);
 
   const fetchSegmentStats = async () => {
-    if (!mediaId) return;
+    if (!media) return;
 
-    EnjoyApp.recordings.groupBySegment(mediaId, mediaType).then((stats) => {
-      setRecordingStats(stats);
-    });
+    EnjoyApp.recordings
+      .groupBySegment(media.id, media.mediaType)
+      .then((stats) => {
+        setRecordingStats(stats);
+      });
   };
 
   useEffect(() => {
+    if (!transcription?.result) return;
+
     addDblistener(fetchSegmentStats);
     fetchSegmentStats();
 
     return () => {
       removeDbListener(fetchSegmentStats);
     };
-  }, [transcription]);
+  }, [transcription?.result]);
 
   useEffect(() => {
+    if (!containerRef?.current) return;
+
     containerRef.current
       ?.querySelector(`#segment-${currentSegmentIndex}`)
       ?.scrollIntoView({
         block: "center",
         inline: "center",
       } as ScrollIntoViewOptions);
-  }, [currentSegmentIndex, transcription]);
+  }, [currentSegmentIndex, transcription, containerRef]);
 
-  if (!transcription)
-    return (
-      <div className="p-4 w-full">
-        <TranscriptionPlaceholder />
-      </div>
-    );
+  if (!transcription?.result?.timeline) {
+    return null;
+  }
 
   return (
-    <div
-      className="w-full h-full flex flex-col"
-      data-testid="media-transcription"
-    >
-      <div className="mb-4 flex items-cener justify-between">
-        <div className="flex items-center space-x-2">
-          {transcribing || transcription.state === "processing" ? (
-            <>
-              <PingPoint colorClassName="bg-yellow-500" />
-              <div className="text-sm">
-                {whisperConfig.service === "local" && `${progress}%`}
-              </div>
-            </>
-          ) : transcription.state === "finished" ? (
-            <CheckCircleIcon className="text-green-500 w-4 h-4" />
-          ) : (
-            <PingPoint colorClassName="bg-mute" />
-          )}
-          <span className="capitalize">{t("transcript")}</span>
-        </div>
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              disabled={transcribing || transcription.state === "processing"}
-              className="capitalize"
-            >
-              {(transcribing || transcription.state === "processing") && (
-                <LoaderIcon className="animate-spin w-4 mr-2" />
-              )}
-              {transcription.result ? t("regenerate") : t("transcribe")}
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{t("transcribe")}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {t("transcribeAudioConfirmation", {
-                  name: mediaName,
-                })}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-              <AlertDialogAction onClick={transcribe}>
-                {t("transcribe")}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
-
-      {transcription?.result ? (
-        <ScrollArea
-          ref={containerRef}
-          className="flex-1 px-2"
-          data-testid="media-transcription-result"
-        >
-          {transcription.result.map((t, index) => (
-            <div
-              key={index}
-              id={`segment-${index}`}
-              className={`py-1 px-2 mb-2 cursor-pointer hover:bg-yellow-400/25 ${
-                currentSegmentIndex === index ? "bg-yellow-400/25" : ""
-              }`}
-              onClick={() => {
-                onSelectSegment?.(index);
-              }}
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xs opacity-50">#{index + 1}</span>
-
-                <div className="flex items-center space-x-2">
-                  {(recordingStats || []).findIndex(
-                    (s) => s.referenceId === index
-                  ) !== -1 && <MicIcon className="w-3 h-3 text-sky-500" />}
-                  <span className="text-xs opacity-50">
-                    {t.timestamps.from.split(",")[0]}
-                  </span>
+    <div ref={containerRef} data-testid="media-transcription-result">
+      <div className="px-4 py-1 bg-background">
+        <div className="flex items-cener justify-between">
+          <div className="flex items-center space-x-2">
+            {transcribing || transcription.state === "processing" ? (
+              <>
+                <PingPoint colorClassName="bg-yellow-500" />
+                <div className="text-sm">
+                  {transcribingProgress > 0 && `${transcribingProgress}%`}
                 </div>
-              </div>
-              <p className="">{t.text}</p>
-            </div>
-          ))}
-        </ScrollArea>
-      ) : (
-        <TranscriptionPlaceholder />
-      )}
-    </div>
-  );
-};
+              </>
+            ) : transcription.state === "finished" ? (
+              <CheckCircleIcon className="text-green-500 w-4 h-4" />
+            ) : (
+              <PingPoint colorClassName="bg-mute" />
+            )}
+            <span className="capitalize">{t("transcript")}</span>
+          </div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={transcribing || transcription.state === "processing"}
+                className="capitalize"
+              >
+                {(transcribing || transcription.state === "processing") && (
+                  <LoaderIcon className="animate-spin w-4 mr-2" />
+                )}
+                {transcription.result ? t("regenerate") : t("transcribe")}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t("transcribe")}</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t("transcribeMediaConfirmation", {
+                    name: media.name,
+                  })}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                <AlertDialogAction onClick={generateTranscription}>
+                  {t("transcribe")}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </div>
 
-export const TranscriptionPlaceholder = () => {
-  return (
-    <div className="p-4">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Skeleton key={i} className="h-4 w-full mb-4" />
-      ))}
-      <Skeleton className="h-4 w-3/5" />
+      {(transcription.result as AlignmentResult).timeline.map(
+        (sentence, index) => (
+          <div
+            key={index}
+            id={`segment-${index}`}
+            className={`py-2 px-4 cursor-pointer hover:bg-yellow-400/10 ${currentSegmentIndex === index ? "bg-yellow-400/25" : ""
+              }`}
+            onClick={() => {
+              const duration = wavesurfer.getDuration();
+              wavesurfer.seekTo(
+                Math.floor((sentence.startTime / duration) * 1e8) / 1e8
+              );
+              wavesurfer.setScrollTime(sentence.startTime);
+              setCurrentSegmentIndex(index);
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs opacity-50">#{index + 1}</span>
+              <div className="flex items-center space-x-2">
+                {(recordingStats || []).findIndex(
+                  (s) => s.referenceId === index
+                ) !== -1 && <MicIcon className="w-3 h-3 text-sky-500" />}
+                <span className="text-xs opacity-50">
+                  {formatDuration(sentence.startTime, "s")}
+                </span>
+              </div>
+            </div>
+            <p className="">{sentence.text}</p>
+          </div>
+        )
+      )}
     </div>
   );
 };

@@ -11,6 +11,10 @@ type EnjoyAppType = {
     createIssue: (title: string, body: string) => Promise<void>;
     version: string;
   };
+  window: {
+    onResize: (callback: (event, bounds: any) => void) => void;
+    removeListeners: () => void;
+  };
   system: {
     preferences: {
       mediaAccess: (mediaType: "microphone") => Promise<boolean>;
@@ -76,7 +80,7 @@ type EnjoyAppType = {
     ) => Promise<string[] | undefined>;
     showSaveDialog: (
       options: Electron.SaveDialogOptions
-    ) => Promise<Electron.SaveDialogReturnValue>;
+    ) => Promise<string | undefined>;
     showMessageBox: (
       options: Electron.MessageBoxOptions
     ) => Promise<Electron.MessageBoxReturnValue>;
@@ -110,6 +114,9 @@ type EnjoyAppType = {
       callback: (event, state: TransactionStateType) => void
     ) => Promise<void>;
     removeListeners: () => Promise<void>;
+  };
+  camdict: {
+    lookup: (word: string) => Promise<CamdictWordType | null>;
   };
   audios: {
     findAll: (params: any) => Promise<AudioType[]>;
@@ -206,6 +213,14 @@ type EnjoyAppType = {
       }
     ) => Promise<SpeechType>;
   };
+  echogarden: {
+    align: (
+      input: string | Uint8Array,
+      transcript: string,
+      options?: any
+    ) => Promise<AlignmentResult>;
+    check: () => Promise<boolean>;
+  };
   whisper: {
     config: () => Promise<WhisperConfigType>;
     check: () => Promise<{ success: boolean; log: string }>;
@@ -236,7 +251,7 @@ type EnjoyAppType = {
   };
   download: {
     onState: (callback: (event, state) => void) => void;
-    start: (url: string, savePath?: string) => void;
+    start: (url: string, savePath?: string) => Promise<string | undefined>;
     cancel: (filename: string) => Promise<void>;
     cancelAll: () => void;
     dashboard: () => Promise<DownloadStateType[]>;

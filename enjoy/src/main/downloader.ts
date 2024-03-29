@@ -24,9 +24,13 @@ class Downloader {
       webContents.downloadURL(url);
       webContents.session.on("will-download", (_event, item, _webContents) => {
         if (savePath) {
-          if (fs.statSync(savePath).isDirectory()) {
-            item.setSavePath(path.join(savePath, item.getFilename()));
-          } else {
+          try {
+            if (fs.statSync(savePath).isDirectory()) {
+              item.setSavePath(path.join(savePath, item.getFilename()));
+            } else {
+              item.setSavePath(savePath);
+            }
+          } catch {
             item.setSavePath(savePath);
           }
         } else {
@@ -106,7 +110,7 @@ class Downloader {
 
   registerIpcHandlers() {
     ipcMain.handle("download-start", (event, url, savePath) => {
-      this.download(url, {
+      return this.download(url, {
         webContents: event.sender,
         savePath,
       });

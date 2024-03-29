@@ -13,7 +13,7 @@
 >
 > 以下是这段音频的 *Waveform*（波谱）和 *Pitch Contour*（音高变化）：
 >
-> ![](/images/yet-it-is-a-fact-of-life.png)
+> ![yet-it-is-a-fact-of-life](/images/yet-it-is-a-fact-of-life.png)
 >
 > * 这段语音出自 *Knowledge and Decisions* by Thomas Sowell 的 Audible 版。
 > * *Pitch Contour* 截图来自学习辅助工具 [Enjoying](https://github.com/xiaolai/everyone-can-use-english)。
