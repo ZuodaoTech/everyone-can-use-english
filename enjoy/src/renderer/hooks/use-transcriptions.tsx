@@ -118,7 +118,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
             const match = word?.match(/-|%/);
             if (!match) return;
 
-            if (word === '-') {
+            if (word === '-' && token.text.toLowerCase() === words[j + 1]?.trim()?.toLowerCase()) {
               sentence.timeline.splice(j, 0, {
                 type: 'token',
                 text: '-',
