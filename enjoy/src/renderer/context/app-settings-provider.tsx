@@ -157,8 +157,6 @@ export const AppSettingsProvider = ({
         logout,
         libraryPath,
         setLibraryPath: setLibraryPathHandler,
-        ffmpegValid,
-        ffmpegWasm,
         proxy,
         setProxy: setProxyConfigHandler,
         initialized: Boolean(user && libraryPath),
