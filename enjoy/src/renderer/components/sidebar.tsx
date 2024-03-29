@@ -243,7 +243,7 @@ export const Sidebar = () => {
                     </Button>
                   </DialogTrigger>
 
-                  <DialogContent className="max-w-full max-w-screen-md xl:max-w-screen-lg h-5/6 p-0">
+                  <DialogContent className="max-w-screen-md xl:max-w-screen-lg h-5/6 p-0">
                     <Preferences />
                   </DialogContent>
                 </Dialog>

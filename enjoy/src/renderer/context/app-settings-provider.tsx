@@ -73,14 +73,15 @@ export const AppSettingsProvider = ({
         locale: language,
       })
     );
-
-    if (user) {
-      ahoy.configure({
-        urlPrefix: apiUrl,
-      });
-      ahoy.track("logged in", { user: user.id });
-    }
   }, [user, apiUrl, language]);
+
+  useEffect(() => {
+    if (!apiUrl) return;
+
+    ahoy.configure({
+      urlPrefix: apiUrl,
+    });
+  }, [apiUrl]);
 
   const prepareFfmpeg = async () => {
     try {
