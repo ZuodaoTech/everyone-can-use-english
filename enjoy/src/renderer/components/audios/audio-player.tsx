@@ -38,7 +38,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
 
       <div className={`${layout.lowerWrapper} flex flex-col`}>
         <div className={`${layout.playerWrapper} py-2 px-6`}>
-          <MediaCurrentRecording height={layout.playerHeight} />
+          <MediaCurrentRecording />
         </div>
 
         <div className={`${layout.playerWrapper} py-2 px-6`}>

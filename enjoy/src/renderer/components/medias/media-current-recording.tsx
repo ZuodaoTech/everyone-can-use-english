@@ -45,8 +45,7 @@ import { t } from "i18next";
 import { formatDuration } from "@renderer/lib/utils";
 import { useHotkeys } from "react-hotkeys-hook";
 
-export const MediaCurrentRecording = (props: { height?: number }) => {
-  const { height } = props;
+export const MediaCurrentRecording = () => {
   const {
     layout,
     isRecording,
@@ -238,11 +237,12 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     if (!ref.current) return;
     if (isRecording) return;
     if (!currentRecording?.src) return;
+    if (!layout?.playerHeight) return;
 
     const ws = WaveSurfer.create({
       container: ref.current,
       url: currentRecording.src,
-      height,
+      height: layout.playerHeight,
       barWidth: 2,
       cursorWidth: 1,
       autoCenter: true,
@@ -288,7 +288,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     return () => {
       ws?.destroy();
     };
-  }, [ref, currentRecording, isRecording, height]);
+  }, [ref, currentRecording, isRecording, layout?.playerHeight]);
 
   useEffect(() => {
     setIsComparing(false);
@@ -406,7 +406,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
     [player]
   );
 
-  if (isRecording) return <MediaRecorder height={height} />;
+  if (isRecording) return <MediaRecorder />;
   if (!currentRecording?.src)
     return (
       <div className="h-full w-full flex items-center space-x-4">
@@ -477,7 +477,7 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
         />
 
         {
-          height >= 192 && <>
+          layout?.name === 'lg' && <>
             <Button
               variant={isComparing ? "secondary" : "outline"}
               size="icon"
@@ -516,6 +516,27 @@ export const MediaCurrentRecording = (props: { height?: number }) => {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent>
+            {
+              layout?.name === 'sm' && (
+                <>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={toggleCompare}
+                  >
+                    <GitCompareIcon className="w-4 h-4 mr-4" />
+                    <span>{t("compare")}</span>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => setIsSelectingRegion(!isSelectingRegion)}
+                  >
+                    <TextCursorInputIcon className="w-4 h-4 mr-4" />
+                    <span>{t("selectRegion")}</span>
+                  </DropdownMenuItem>
+                </>
+              )
+            }
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={() => setDetailIsOpen(true)}
