@@ -8,8 +8,8 @@
 
 <video controls width="720"> <source src="/videos/yet-it-is-a-fact-of-life.mp4" type="video/mp4"></source>Your browser does not support the video tag. </video>
 
-如果你可以唱出 $\frac{4}{4}$ `| 3 2 1 - |` —— 当然，这三个音符其实任何人都可以唱出来……
+如果你可以唱出 $\frac{4}{4}$ <span class="pho">| 3 2 1 - |</span> —— 当然，这三个音符其实任何人都可以唱出来……
 
 <video controls width="720"> <source src="/videos/321.mp4" type="video/mp4"></source>Your browser does not support the video tag. </video>
 
-那你可以把 *fact*, *fact*, *fact*... 用三个不同的音唱出来，`/fækt/(3) /fækt/(2) /fækt/(1-)`，你就能体会到自然语音中的音高变化了。唉…… 不得不叹口气 —— 其实吧，“说话” 真的只不过是 “极其低配版的歌唱”，因为它的曲调（*Melody*）只是在一个特别狭小音高区域（*Pitch region*）里变化。
+那你可以把 *fact*, *fact*, *fact*... 用三个不同的音唱出来，<span class="pho">/fækt/(3) /fækt/(2) /fækt/(1-)</span>，你就能体会到自然语音中的音高变化了。唉…… 不得不叹口气 —— 其实吧，“说话” 真的只不过是 “极其低配版的歌唱”，因为它的曲调（*Melody*）只是在一个特别狭小音高区域（*Pitch region*）里变化。

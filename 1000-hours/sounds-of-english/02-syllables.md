@@ -6,23 +6,23 @@
 
 > *[Pneumonoultramicroscopicsilicovolcanoconiosis](https://en.wikipedia.org/wiki/Pneumonoultramicroscopicsilicovolcanoconiosis)* <span class="speak-word-inline" data-audio-us="/audios/En-us-pneumonoultramicroscopicsilicovolcanoconiosis.ogg.mp3"></span>
 >
-> `/ˌnumənəʊˌəltrəˌmaɪkrəˌskɑpɪkˌsɪləkəʊvɑlˌkeɪnəʊˌkəʊniˈəʊsəs/`
+> <span class="pho alt">ˌnumənəʊˌəltrəˌmaɪkrəˌskɑpɪkˌsɪləkəʊvɑlˌkeɪnəʊˌkəʊniˈəʊsəs</span>
 
-英文的音节构成大抵上有以下几种形式（其中，`c` 代表辅音，`v` 代表元音）：
+英文的音节构成大抵上有以下几种形式（其中，<span class="pho">c</span> 代表辅音，<span class="pho">v</span> 代表元音）：
 
- * `v`： *awe* `/ɔː/`<span class="speak-word-inline" data-audio-us="/audios/awe-us.mp3"></span>
- * `vc`： *add* `/æd/`<span class="speak-word-inline" data-audio-us="/audios/add-us.mp3"></span>
- * `cv`： *the* `/ðə/`<span class="speak-word-inline" data-audio-us="/audios/the-us.mp3"></span>
- * `cvc`： *dog* `/dɔg/`<span class="speak-word-inline" data-audio-us="/audios/dog-us.mp3"></span>
- * `ccv`： *flee* `/fliː/`<span class="speak-word-inline" data-audio-us="/audios/flee-us.mp3"></span>
- * `vcc`： *east* `/iːst/`<span class="speak-word-inline" data-audio-us="/audios/east-us.mp3"></span>
- * `cvcc`： *task* `/tæsk/`<span class="speak-word-inline" data-audio-us="/audios/task-us.mp3"></span>
- * `ccvc`： *speed* `/spiːd/`<span class="speak-word-inline" data-audio-us="/audios/speed-us.mp3"></span>
- * `ccvcc`： *thrust* `/θrʌst/`<span class="speak-word-inline" data-audio-us="/audios/thrust-us.mp3"></span>
- * `cvccc`： *text* `/tekst/`<span class="speak-word-inline" data-audio-us="/audios/text-us.mp3"></span>
- * `ccvccc`： *flexed* `/flekst/`<span class="speak-word-inline" data-audio-us="/audios/flexed-us.mp3"></span>
+ * <span class="pho">v</span>： *awe* <span class="pho alt">ɔː</span><span class="speak-word-inline" data-audio-us="/audios/awe-us.mp3"></span>
+ * <span class="pho">vc</span>： *add* <span class="pho alt">æd</span><span class="speak-word-inline" data-audio-us="/audios/add-us.mp3"></span>
+ * <span class="pho">cv</span>： *the* <span class="pho alt">ðə</span><span class="speak-word-inline" data-audio-us="/audios/the-us.mp3"></span>
+ * <span class="pho">cvc</span>： *dog* <span class="pho alt">dɔg</span><span class="speak-word-inline" data-audio-us="/audios/dog-us.mp3"></span>
+ * <span class="pho">ccv</span>： *flee* <span class="pho alt">fliː</span><span class="speak-word-inline" data-audio-us="/audios/flee-us.mp3"></span>
+ * <span class="pho">vcc</span>： *east* <span class="pho alt">iːst</span><span class="speak-word-inline" data-audio-us="/audios/east-us.mp3"></span>
+ * <span class="pho">cvcc</span>： *task* <span class="pho alt">tæsk</span><span class="speak-word-inline" data-audio-us="/audios/task-us.mp3"></span>
+ * <span class="pho">ccvc</span>： *speed* <span class="pho alt">spiːd</span><span class="speak-word-inline" data-audio-us="/audios/speed-us.mp3"></span>
+ * <span class="pho">ccvcc</span>： *thrust* <span class="pho alt">θrʌst</span><span class="speak-word-inline" data-audio-us="/audios/thrust-us.mp3"></span>
+ * <span class="pho">cvccc</span>： *text* <span class="pho alt">tekst</span><span class="speak-word-inline" data-audio-us="/audios/text-us.mp3"></span>
+ * <span class="pho">ccvccc</span>： *flexed* <span class="pho alt">flekst</span><span class="speak-word-inline" data-audio-us="/audios/flexed-us.mp3"></span>
 
-如果一个单词由多个音节构成的话，那么为了能够读得顺畅、清晰且易于识别，那么其中可能会有某个音节是**重音**；如果音节数量更多，可能还会有某个或某些音节是**次重音**。一般来说，**一个词汇只有一个重音**，**但有可能存在多个次重音**。比如 *serendipity* `/ˌserənˈdɪpɪti/`。之前的那个 *19* 个音节构成的词汇，其中有 *7* 个**次重音**，*1* 个**重音**。
+如果一个单词由多个音节构成的话，那么为了能够读得顺畅、清晰且易于识别，那么其中可能会有某个音节是**重音**；如果音节数量更多，可能还会有某个或某些音节是**次重音**。一般来说，**一个词汇只有一个重音**，**但有可能存在多个次重音**。比如 *serendipity* <span class="pho alt">ˌserənˈdɪpɪti</span>。之前的那个 *19* 个音节构成的词汇，其中有 *7* 个**次重音**，*1* 个**重音**。
 
 从音节长度上来看，与大多数亚洲语言相比：
 
@@ -32,4 +32,4 @@
 
 这是元音之间的比较，我们再看看辅音之间的比较。
 
-亚洲语言的音节几乎没有两个辅音作为开头的情况，在英文中这种情况却非常普遍。亚洲语言的音节同样没有两三个辅音作为结尾并且还要发声清晰的情况，在英文中这种情况同样非常普遍。每个辅音都要发声清晰的话，就会占用一定的时长。比如，上面列表中的最后一个例子，*flexed*, `/flekst/`<span class="speak-word-inline" data-audio-uk="/audios/flexed-uk.mp3" data-audio-us="/audios/flexed-us.mp3"></span> ，整体只是一个音节，可即便这一个音节中的元音 `e` 是短元音，整体发声时它也比任何一个亚洲语言中的 “字”（同样是一个音节）都长。
+亚洲语言的音节几乎没有两个辅音作为开头的情况，在英文中这种情况却非常普遍。亚洲语言的音节同样没有两三个辅音作为结尾并且还要发声清晰的情况，在英文中这种情况同样非常普遍。每个辅音都要发声清晰的话，就会占用一定的时长。比如，上面列表中的最后一个例子，*flexed*, <span class="pho alt">flekst</span><span class="speak-word-inline" data-audio-uk="/audios/flexed-uk.mp3" data-audio-us="/audios/flexed-us.mp3"></span> ，整体只是一个音节，可即便这一个音节中的元音 <span class="pho">e</span> 是短元音，整体发声时它也比任何一个亚洲语言中的 “字”（同样是一个音节）都长。

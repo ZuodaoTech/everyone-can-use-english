@@ -18,11 +18,11 @@
 > * 这段语音出自 *Knowledge and Decisions* by Thomas Sowell 的 Audible 版。
 > * *Pitch Contour* 截图来自学习辅助工具 [Enjoying](https://github.com/xiaolai/everyone-can-use-english)。
 
-在 Waveform 里我们可以清楚地看到，这句话里有两处明显的**可换气停顿**（用 `|` 标注） —— 当然，句子短的话，倒也不一定非要换气：
+在 Waveform 里我们可以清楚地看到，这句话里有两处明显的**可换气停顿**（用 <span class="pho">|</span> 标注） —— 当然，句子短的话，倒也不一定非要换气：
 
 > Yet, | it is a fact of life | that an *un·lettered* peasant is considered ignorant.
 
-还有一处重音之前的**非换气停顿**（用 `·` 标注），需要仔细听才能注意到，在 *un·lettered* 这个词里，*un* 被拉长，而后的 `/le/` 这个音节是重音。
+还有一处重音之前的**非换气停顿**（用 <span class="pho">·</span> 标注），需要仔细听才能注意到，在 *un·lettered* 这个词里，*un* 被拉长，而后的 <span class="pho alt">le</span> 这个音节是重音。
 
 可能会令你意外的是，*an unlettered* 这两个词并没有被连读，*an* 和 *un* 之间倒是有个明显的 “非换气停顿”: *an·un·lettered*。
 
@@ -31,21 +31,21 @@
 > 1. 抬高那个重音音节的声调；
 > 2. 为了做到前面这一点，就需要有所停顿，或者把前面的一个音节略微拉长。
 
-你先按照自己的习惯读一遍 *especially* `/ɪˈspeʃəlɪ/`，然后再换个方式这么读：
+你先按照自己的习惯读一遍 *especially* <span class="pho alt">ɪˈspeʃəlɪ</span>，然后再换个方式这么读：
 
-> * 把 `/ɪs/` 中的 `s` 夸张地拉长，保持气流振动；
-> * 然后再抬高声调清楚地读出那个重音音节 `/ˈpe/`；
-> * 而后顺畅地接着把后面的 `/ʃəlɪ/` 读完……
+> * 把 <span class="pho alt">ɪs</span> 中的 <span class="pho">s</span> 夸张地拉长，保持气流振动；
+> * 然后再抬高声调清楚地读出那个重音音节 <span class="pho alt">ˈpe</span>；
+> * 而后顺畅地接着把后面的 <span class="pho alt">ʃəlɪ</span> 读完……
 
-再试试 *abstraction* `/æbˈstrækʃən/`:
+再试试 *abstraction* <span class="pho alt">æbˈstrækʃən</span>:
 
-> * 读完 `/æb/` 之后夸张地停顿一下 —— 因为 `b` 这个音没办法拉长，嘴闭上了，没有气流振动；
-> * 然后再抬高声调清楚地说出 `/ˈstræk/`；
-> * 而后顺畅地把后面的 `/ʃən/` 读完……
+> * 读完 <span class="pho alt">æb</span> 之后夸张地停顿一下 —— 因为 <span class="pho">b</span> 这个音没办法拉长，嘴闭上了，没有气流振动；
+> * 然后再抬高声调清楚地说出 <span class="pho alt">ˈstræk</span>；
+> * 而后顺畅地把后面的 <span class="pho alt">ʃən</span> 读完……
 
 是不是感觉不一样？—— 亚洲语言里大多没有这种重音、非重音的区别，没有这种强调某个音节的习惯。所以，也没有为了重音有意停顿或者把之前音节拉长的习惯。
 
-还记得吗？之前讲解 `t` 的时候（[2.2.5](17-td#_2-2-5-1-省音)）提到过它可能造成的  **“看不见” 甚至 “听不到”，但 “的确存在” 的停顿**吗？那也是这里所说的 “非换气停顿”。
+还记得吗？之前讲解 <span class="pho">t</span> 的时候（[2.2.5](17-td#_2-2-5-1-省音)）提到过它可能造成的  **“看不见” 甚至 “听不到”，但 “的确存在” 的停顿**吗？那也是这里所说的 “非换气停顿”。
 
 自然语音中的**非换气停顿**总是被第二语言学习者忽略 。不仅如此，也总是被流行的语音教材忽略，它们也好像都不是很在意这个关键细节。
 
