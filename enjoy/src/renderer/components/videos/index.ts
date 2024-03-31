@@ -6,4 +6,5 @@ export * from "./videos-component";
 
 export * from "./videos-segment";
 export * from "./ted-talks-segment";
+export * from "./youtube-videos-segment";
 export * from "./video-card";
