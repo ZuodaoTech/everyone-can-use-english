@@ -2,16 +2,16 @@
 <svg width="1280px" height="550px" viewBox="0 0 1280 550" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>vowels-mouth-shape-aʊ</title>
     <g id="vowels-mouth-shape-aʊ" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <text id="ʊ" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="21" font-weight="normal" fill="#000000">
+        <text id="ʊ" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="24" font-weight="normal" fill="#000000">
             <tspan x="865" y="251">ʊ</tspan>
         </text>
-        <text id="ʊ" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="21" font-weight="normal" fill="#000000">
+        <text id="ʊ" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="24" font-weight="normal" fill="#000000">
             <tspan x="865" y="481">ʊ</tspan>
         </text>
-        <text id="ɑ" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="21" font-weight="normal" fill="#000000">
+        <text id="ɑ" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="24" font-weight="normal" fill="#000000">
             <tspan x="407" y="251">ɑ</tspan>
         </text>
-        <text id="ə" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="21" font-weight="normal" fill="#000000">
+        <text id="ə" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="24" font-weight="normal" fill="#000000">
             <tspan x="407" y="481">ə</tspan>
         </text>
         <path id="Line-17" d="M682.640179,124.51306 L696.472652,131.838542 L682.312783,138.509231 L682.453,132.511 L596.476615,130.499727 L595.476888,130.476341 L595.523659,128.476888 L596.523385,128.500273 L682.499,130.511 L682.640179,124.51306 Z" transform="translate(646.4863, 130.6693) rotate(-1.34) translate(-646.4863, -130.6693)" fill="#656464" fill-rule="nonzero"></path>

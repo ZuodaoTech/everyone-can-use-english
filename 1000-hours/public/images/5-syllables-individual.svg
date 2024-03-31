@@ -45,19 +45,19 @@
             <path d="M55,249.321679 C51.13,249.861679 47.797,249.861679 45,249.321679 C44.765,248.724679 44.265,248.391679 43.5,248.321679 C40.831,248.837679 38.331,249.504679 36,250.321679 C30.359,247.836679 24.693,245.336679 19,242.821679 C18.478,242.260679 18.145,241.593679 18,240.821679 C26.167,220.988679 34.333,201.154679 42.5,181.321679 C47.886,203.752679 52.053,226.419679 55,249.321679 Z" id="Path" fill="#F7F7F6"></path>
             <path d="M55,249.321679 C55.282,250.599679 55.949,251.599679 57,252.321679 C51.847,252.503679 46.514,252.503679 41,252.321679 C41.711,250.620679 43.045,249.620679 45,249.321679 C47.797,249.861679 51.13,249.861679 55,249.321679 Z" id="Path" fill="#454544"></path>
         </g>
-        <text id="wəl" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="18" font-weight="normal" fill="#000000">
+        <text id="wəl" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="18" font-weight="normal" fill="#000000">
             <tspan x="614" y="447">wəl</tspan>
         </text>
-        <text id="dʒə" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="18" font-weight="normal" fill="#000000">
+        <text id="dʒə" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="18" font-weight="normal" fill="#000000">
             <tspan x="510" y="447">dʒə</tspan>
         </text>
-        <text id="ˈvɪ" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="18" font-weight="normal" fill="#000000">
+        <text id="ˈvɪ" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="18" font-weight="normal" fill="#000000">
             <tspan x="392" y="447">ˈvɪ</tspan>
         </text>
-        <text id="də" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="18" font-weight="normal" fill="#000000">
+        <text id="də" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="18" font-weight="normal" fill="#000000">
             <tspan x="278" y="447">də</tspan>
         </text>
-        <text id="ˌɪn" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="18" font-weight="normal" fill="#000000">
+        <text id="ˌɪn" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="18" font-weight="normal" fill="#000000">
             <tspan x="159" y="447">ˌɪn</tspan>
         </text>
     </g>

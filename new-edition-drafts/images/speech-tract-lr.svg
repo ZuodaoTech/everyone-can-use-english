@@ -19,10 +19,10 @@
                 <path d="M397.908722,511.104213 C397.908722,511.104213 375.271018,512.619198 361.340123,515.457618 C354.278901,516.894241 350.891952,520.681703 350.891952,520.681703 C350.891952,520.681703 365.649994,517.869404 370.046932,518.06966 C374.443871,518.269917 391.970678,522.222808 396.16736,522.423065 C400.364042,522.623321 405.927693,521.94419 415.32234,520.681703 C428.051695,518.966462 441.442768,516.328298 441.442768,516.328298 C441.442768,516.328298 436.915227,515.274775 430.123916,513.716256 C427.224548,513.054538 418.613514,511.217401 413.05857,510.72982 C401.661357,509.728537 397.908722,511.104213 397.908722,511.104213 Z" id="Path" stroke="#000000" stroke-width="2"></path>
                 <path d="M147.580415,259.027573 C146.64648,263.778232 149.898949,269.872998 157.337822,277.311872 C164.776695,284.750745 173.713759,290.845512 184.149014,295.596171" id="Line-6-Copy" stroke="#0E568D" stroke-width="5" stroke-linecap="square"></path>
                 <path d="M130.580415,262.027573 C129.64648,266.778232 132.898949,272.872998 140.337822,280.311872 C147.776695,287.750745 156.713759,293.845512 167.149014,298.596171" id="Line-6-Copy-3" stroke="#7D4417" stroke-width="5" stroke-linecap="square"></path>
-                <text id="r" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="24" font-weight="normal" fill="#0E568D">
+                <text id="r" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="24" font-weight="normal" fill="#0E568D">
                     <tspan x="207.635676" y="290.553234">r</tspan>
                 </text>
-                <text id="l" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="24" font-weight="normal" fill="#7D4417">
+                <text id="l" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="24" font-weight="normal" fill="#7D4417">
                     <tspan x="117.635676" y="309.553234">l</tspan>
                 </text>
             </g>
@@ -41,10 +41,10 @@
                 <path d="M397.908722,511.104213 C397.908722,511.104213 375.271018,512.619198 361.340123,515.457618 C354.278901,516.894241 350.891952,520.681703 350.891952,520.681703 C350.891952,520.681703 365.649994,517.869404 370.046932,518.06966 C374.443871,518.269917 391.970678,522.222808 396.16736,522.423065 C400.364042,522.623321 405.927693,521.94419 415.32234,520.681703 C428.051695,518.966462 441.442768,516.328298 441.442768,516.328298 C441.442768,516.328298 436.915227,515.274775 430.123916,513.716256 C427.224548,513.054538 418.613514,511.217401 413.05857,510.72982 C401.661357,509.728537 397.908722,511.104213 397.908722,511.104213 Z" id="Path" stroke="#000000" stroke-width="2"></path>
                 <path d="M147.580415,259.027573 C152.020694,256.212177 158.11546,258.679106 165.864715,266.42836 C173.613969,274.177615 179.708736,283.900219 184.149014,295.596171" id="Line-6-Copy" stroke="#0E568D" stroke-width="5" stroke-linecap="square"></path>
                 <path d="M130.580415,262.027573 C135.020694,259.212177 141.11546,261.679106 148.864715,269.42836 C156.613969,277.177615 162.708736,286.900219 167.149014,298.596171" id="Line-6-Copy-2" stroke="#7D4417" stroke-width="5" stroke-linecap="square"></path>
-                <text id="r" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="24" font-weight="normal" fill="#0E568D">
+                <text id="r" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="24" font-weight="normal" fill="#0E568D">
                     <tspan x="207.635676" y="290.553234">r</tspan>
                 </text>
-                <text id="l" font-family="SauceCodeProNF, SauceCodePro Nerd Font" font-size="24" font-weight="normal" fill="#7D4417">
+                <text id="l" font-family="CharisSIL, SauceCodePro Nerd Font" font-size="24" font-weight="normal" fill="#7D4417">
                     <tspan x="117.635676" y="309.553234">l</tspan>
                 </text>
             </g>

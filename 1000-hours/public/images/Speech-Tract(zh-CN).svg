@@ -4,7 +4,7 @@
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Speech-Tract(zh-CN)">
             <rect id="Rectangle" x="0" y="0" width="1280" height="800"></rect>
-            <text id="硬颚" font-family="PingFangSC-Regular, PingFang SC" font-size="21" font-weight="normal" fill="#000000">
+            <text id="硬颚" font-family="PingFangSC-Regular, PingFang SC" font-size="24" font-weight="normal" fill="#000000">
                 <tspan x="634" y="192">硬颚</tspan>
             </text>
             <g id="speech-tract" transform="translate(353, 30)">
@@ -67,7 +67,7 @@
             <text id="气流" font-family="PingFangSC-Regular, PingFang SC" font-size="18" font-weight="normal" fill="#000000">
                 <tspan x="863" y="507">气流</tspan>
             </text>
-            <text id="软腭" transform="translate(738.5, 221) rotate(15) translate(-738.5, -221)" font-family="PingFangSC-Regular, PingFang SC" font-size="21" font-weight="normal" fill="#000000">
+            <text id="软腭" transform="translate(738.5, 221) rotate(15) translate(-738.5, -221)" font-family="PingFangSC-Regular, PingFang SC" font-size="24" font-weight="normal" fill="#000000">
                 <tspan x="717.5" y="228.5">软腭</tspan>
             </text>
         </g>
