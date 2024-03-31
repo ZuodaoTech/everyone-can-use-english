@@ -17,7 +17,7 @@ import fs from "fs-extra";
 import "@main/i18n";
 import log from "@main/logger";
 import { WEB_API_URL, REPO_URL } from "@/constants";
-import { AudibleProvider, TedProvider } from "@main/providers";
+import { AudibleProvider, TedProvider, YoutubeProvider } from "@main/providers";
 import Ffmpeg from "@main/ffmpeg";
 import { Waveform } from "./waveform";
 import url from "url";
@@ -31,6 +31,7 @@ const logger = log.scope("window");
 
 const audibleProvider = new AudibleProvider();
 const tedProvider = new TedProvider();
+const youtubeProvider = new YoutubeProvider();
 const ffmpeg = new Ffmpeg();
 const waveform = new Waveform();
 
@@ -73,6 +74,9 @@ main.init = () => {
 
   // TedProvider
   tedProvider.registerIpcHandlers();
+
+  // YoutubeProvider
+  youtubeProvider.registerIpcHandlers();
 
   // proxy
   ipcMain.handle("system-proxy-get", (_event) => {

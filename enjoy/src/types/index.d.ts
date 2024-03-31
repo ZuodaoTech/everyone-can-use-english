@@ -153,3 +153,10 @@ type ProxyConfigType = {
   enabled: boolean;
   url: string;
 };
+
+type YoutubeVideoType = {
+  title: string;
+  thumbnail: string;
+  videoId: string;
+  duration: string;
+};

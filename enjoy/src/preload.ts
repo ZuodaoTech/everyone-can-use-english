@@ -84,6 +84,11 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
         return ipcRenderer.invoke("ted-provider-download-talk", url);
       },
     },
+    youtube: {
+      videos: () => {
+        return ipcRenderer.invoke("youtube-provider-videos");
+      },
+    },
   },
   view: {
     load: (
@@ -192,7 +197,7 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   camdict: {
     lookup: (word: string) => {
       return ipcRenderer.invoke("camdict-lookup", word);
-    }
+    },
   },
   audios: {
     findAll: (params: {

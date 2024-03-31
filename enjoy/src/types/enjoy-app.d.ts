@@ -41,6 +41,9 @@ type EnjoyAppType = {
       ideas: () => Promise<TedIdeaType[]>;
       downloadTalk: (url: string) => Promise<{ audio: string; video: string }>;
     };
+    youtube: {
+      videos: () => Promise<YoutubeVideoType[]>;
+    };
   };
   view: {
     load: (
