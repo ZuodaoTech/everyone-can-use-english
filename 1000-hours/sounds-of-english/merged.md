@@ -22,17 +22,17 @@
 
 ::: tip
 
-* 除了 `ɪ`、`iː` 之外， 还有一个介乎二者长度之间的 `i`，比如 *happy* `/ˈhæpi/`<span class="speak-word-inline" data-audio-uk="/audios/happy-uk.mp3" data-audio-us="/audios/happy-us.mp3"></span>。
-* 有些外来语可能有鼻化的元音，会在元音之上标注一个波浪号 `˜`，比如来自法语的 [*penchant*](https://www.oxfordlearnersdictionaries.com/definition/english/penchant) `/ˈpɒ̃ʃɒ̃, pɒ̃ŋʃɒ̃ŋ/`<span class="speak-word-inline" data-audio-uk="/audios/penchant-uk.mp3"></span>  ，而大多数美国人会把这个词读作 `ˈ/pɛnʧənt/`<span class="speak-word-inline" data-audio-us="/audios/penchant-us.mp3"></span>。
+* 除了 <span class="pho">ɪ</span>、<span class="pho">iː</span> 之外， 还有一个介乎二者长度之间的 <span class="pho">i</span>，比如 *happy* <span class="pho alt">ˈhæpi</span><span class="speak-word-inline" data-audio-uk="/audios/happy-uk.mp3" data-audio-us="/audios/happy-us.mp3"></span>。
+* 有些外来语可能有鼻化的元音，会在元音之上标注一个波浪号 <span class="pho">˜</span>，比如来自法语的 [*penchant*](https://www.oxfordlearnersdictionaries.com/definition/english/penchant) <span class="pho alt">ˈpɒ̃ʃɒ̃, pɒ̃ŋʃɒ̃ŋ</span><span class="speak-word-inline" data-audio-uk="/audios/penchant-uk.mp3"></span>  ，而大多数美国人会把这个词读作 <span class="pho">ˈ/pɛnʧənt/</span><span class="speak-word-inline" data-audio-us="/audios/penchant-us.mp3"></span>。
 
 :::
 
 ::: tip
-在 D.J. 的某些版本里， `əʊ`，也被写作`oʊ` —— 所以现在也有一些词典用的是 `oʊ`。我的个人看法是，写作  `əʊ` 相对更合理，因为 `o` 并没有在 6 个基础音素里出现过。
+在 D.J. 的某些版本里， <span class="pho">əʊ</span>，也被写作<span class="pho">oʊ</span> —— 所以现在也有一些词典用的是 <span class="pho">oʊ</span>。我的个人看法是，写作  <span class="pho">əʊ</span> 相对更合理，因为 <span class="pho">o</span> 并没有在 6 个基础音素里出现过。
 :::
 
 ::: info
-有时你会看到三种颜色的小喇叭图标，暗红色<span class="speak-word-inline" data-audio-uk="null-file.mp3"></span>、浅蓝色<span class="speak-word-inline" data-audio-us="null-file.mp3"></span>，或者黑色<span class="speak-word-inline" data-audio-other="null-file.mp3"></span>，用鼠标点击它可以听音频播放。比如，*happy* `/ˈhæpi/` —— 暗红色喇叭<span class="speak-word-inline" data-audio-uk="/audios/happy-uk.mp3"></span>是英式发音；浅蓝色<span class="speak-word-inline" data-audio-us="/audios/happy-us.mp3"></span>是美式发音；黑色<span class="speak-word-inline" data-audio-other="/audios/happy-zh-liaoning.mp3"></span>是其他口音。
+有时你会看到三种颜色的小喇叭图标，暗红色<span class="speak-word-inline" data-audio-uk="null-file.mp3"></span>、浅蓝色<span class="speak-word-inline" data-audio-us="null-file.mp3"></span>，或者黑色<span class="speak-word-inline" data-audio-other="null-file.mp3"></span>，用鼠标点击它可以听音频播放。比如，*happy* <span class="pho alt">ˈhæpi</span> —— 暗红色喇叭<span class="speak-word-inline" data-audio-uk="/audios/happy-uk.mp3"></span>是英式发音；浅蓝色<span class="speak-word-inline" data-audio-us="/audios/happy-us.mp3"></span>是美式发音；黑色<span class="speak-word-inline" data-audio-other="/audios/happy-zh-liaoning.mp3"></span>是其他口音。
 :::
 
 # 1.1.2. 辅音
@@ -89,7 +89,7 @@
 
 ::: info
 
-* 有些词典不认为 `ts`、`dz` 是独立的辅音。
+* 有些词典不认为 <span class="pho">ts</span>、<span class="pho">dz</span> 是独立的辅音。
 
 :::
 # 1.1.3. 美式语音标注
@@ -98,24 +98,24 @@
 
 关于美式发音的音标标注，可以大致总结为以下几点：
 
-> * 短元音 `ʌ` 变得与 `ə` 非常接近，甚至常常直接被 `ə` 替代。比如，*but* `/bʌt/` 直接被标注为 `/bət/`。
-> * 长短元音不统一使用 `ː` 区分，而是`ə/ɑ`、`ə/ɜ`、`ɚ/ɝ`、 `e/æ`、`ɪ/i`、`ʊ/u`、`ɒ/ɔ`。
-> * 短元音 `e` 有时用 `ɛ` 标注。
-> * 短元音 `ə` ，由于经常附带着 `ʳ` 音，常常被标注为 `ɚ`；不带有 `ʳ` 音的时候，被标注为 `ɜ`。
-> * 长元音 `əː`，同样由于经常附带着 `ʳ` 音，常常被标注为 `ɝ`。
-> * `ə` 结尾的双元音，都用 `r`：`ɪə` ⭢ `ɪr`，`eə` ⭢ `er`，`ʊə` ⭢ `ʊr`。
-> * 非重音音节中的 `ɪ` 可能会被标注为 `ə`。
-> * 短元音 `ɒ` 在美式发音中读作 `ɑ`，也如此标注，比如，*hot* `/hɑt/`。
-> * `t` 的弹舌音用 `t̬` 标注。
+> * 短元音 <span class="pho">ʌ</span> 变得与 <span class="pho">ə</span> 非常接近，甚至常常直接被 <span class="pho">ə</span> 替代。比如，*but* <span class="pho alt">bʌt</span> 直接被标注为 <span class="pho alt">bət</span>。
+> * 长短元音不统一使用 <span class="pho">ː</span> 区分，而是<span class="pho">ə/ɑ</span>、<span class="pho">ə/ɜ</span>、<span class="pho">ɚ/ɝ</span>、 <span class="pho">e/æ</span>、<span class="pho">ɪ/i</span>、<span class="pho">ʊ/u</span>、<span class="pho">ɒ/ɔ</span>。
+> * 短元音 <span class="pho">e</span> 有时用 <span class="pho">ɛ</span> 标注。
+> * 短元音 <span class="pho">ə</span> ，由于经常附带着 <span class="pho">ʳ</span> 音，常常被标注为 <span class="pho">ɚ</span>；不带有 <span class="pho">ʳ</span> 音的时候，被标注为 <span class="pho">ɜ</span>。
+> * 长元音 <span class="pho">əː</span>，同样由于经常附带着 <span class="pho">ʳ</span> 音，常常被标注为 <span class="pho">ɝ</span>。
+> * <span class="pho">ə</span> 结尾的双元音，都用 <span class="pho">r</span>：<span class="pho">ɪə</span> ⭢ <span class="pho">ɪr</span>，<span class="pho">eə</span> ⭢ <span class="pho">er</span>，<span class="pho">ʊə</span> ⭢ <span class="pho">ʊr</span>。
+> * 非重音音节中的 <span class="pho">ɪ</span> 可能会被标注为 <span class="pho">ə</span>。
+> * 短元音 <span class="pho">ɒ</span> 在美式发音中读作 <span class="pho">ɑ</span>，也如此标注，比如，*hot* <span class="pho alt">hɑt</span>。
+> * <span class="pho">t</span> 的弹舌音用 <span class="pho">t̬</span> 标注。
 
-另外，总体上来看，说短元音的时候，英国人相对于美国人更加短促 —— 虽然不是特别明显。不妨比较一下：but `/bʌt, bət/`<span class="speak-word-inline" data-audio-uk="/audios/but-uk.mp3" data-audio-us="/audios/but-us.mp3"></span>,  text `/tekst, tɛkst/`<span class="speak-word-inline" data-audio-uk="/audios/text-uk.mp3" data-audio-us="/audios/text-us.mp3"></span>, sit `/sɪt/`<span class="speak-word-inline" data-audio-uk="/audios/sit-uk.mp3" data-audio-us="/audios/sit-us.mp3"></span>, book `/bʊk/`<span class="speak-word-inline" data-audio-uk="/audios/book-uk.mp3" data-audio-us="/audios/book-us.mp3"></span>, hot `/hɒt, hɑt/`<span class="speak-word-inline" data-audio-uk="/audios/hot-uk.mp3" data-audio-us="/audios/hot-us.mp3"></span> ……
+另外，总体上来看，说短元音的时候，英国人相对于美国人更加短促 —— 虽然不是特别明显。不妨比较一下：but <span class="pho alt">bʌt, bət</span><span class="speak-word-inline" data-audio-uk="/audios/but-uk.mp3" data-audio-us="/audios/but-us.mp3"></span>,  text <span class="pho alt">tekst, tɛkst</span><span class="speak-word-inline" data-audio-uk="/audios/text-uk.mp3" data-audio-us="/audios/text-us.mp3"></span>, sit <span class="pho alt">sɪt</span><span class="speak-word-inline" data-audio-uk="/audios/sit-uk.mp3" data-audio-us="/audios/sit-us.mp3"></span>, book <span class="pho alt">bʊk</span><span class="speak-word-inline" data-audio-uk="/audios/book-uk.mp3" data-audio-us="/audios/book-us.mp3"></span>, hot <span class="pho alt">hɒt, hɑt</span><span class="speak-word-inline" data-audio-uk="/audios/hot-uk.mp3" data-audio-us="/audios/hot-us.mp3"></span> ……
 # 1.1.4. 示例
 
 以下是一个 *English Phonetic Pangram*[^1]，52 个词的篇幅里包含了所有**元音**和**辅音**。
 
 > Jane, a dramatic young girl, loves to read  books at leisure in rooms or play on a sunny day outdoor here and there under the trees with boys. She vowed to buy a red ear dog. She thought it was unique, for sure. Now she feeds it dough, nuts, and cheese bar.
 >
-> `/dʒeɪn, ə drəˈmætɪk jʌŋ gəː(r)l, lʌvz tuː riːd bʊks æt ˈliːʒə(r) ɪn rumz ɔː(r) pleɪ ɒŋ ə ˈsʌni deɪ ˈaʊtˌdɔr hiə(r) ənd ðeə ˈʌndə(r) ðə triz wɪθ bɔɪz. ʃiː vaʊd tʊ baɪ ə red ɪə(r) dɒg. ʃiː θɒt ɪt wɒz juˈniːk, fə(r) ʃʊə(r). naʊ ʃiː fiːdz ɪt dəʊ, nʌts, ənd tʃiːz bɑː(r)./`
+> <span class="pho alt">dʒeɪn, ə drəˈmætɪk jʌŋ gəː(r)l, lʌvz tuː riːd bʊks æt ˈliːʒə(r) ɪn rumz ɔː(r) pleɪ ɒŋ ə ˈsʌni deɪ ˈaʊtˌdɔr hiə(r) ənd ðeə ˈʌndə(r) ðə triz wɪθ bɔɪz. ʃiː vaʊd tʊ baɪ ə red ɪə(r) dɒg. ʃiː θɒt ɪt wɒz juˈniːk, fə(r) ʃʊə(r). naʊ ʃiː fiːdz ɪt dəʊ, nʌts, ənd tʃiːz bɑː(r).</span>
 
 Voice: Alloy (US Male)
 
@@ -125,7 +125,7 @@ Voice: Nova (US Female)
 
 > <audio controls><source src="/audios/phonetic-pangram-nova.mp3" type="audio/mpeg">Your browser does not support the audio element.</source></audio>
 
-注意，以上的 *Pangram* 也包括 `tr`、`dr`、`ts` 和 `dz`。
+注意，以上的 *Pangram* 也包括 <span class="pho">tr</span>、<span class="pho">dr</span>、<span class="pho">ts</span> 和 <span class="pho">dz</span>。
 
 
 ::: info
@@ -134,7 +134,7 @@ Voice: Nova (US Female)
 -----
 
 ::: tip
-音素在自然语流中经常会有变化，比如，*on a sunny day* 中的 *on* `/ɒŋ/`，由于后面紧跟着一个元音，所以，会被读成 `/ɒn/` —— 也就是说，`ŋ` 变成了 `n`（[2.2.3](15-mn)）……
+音素在自然语流中经常会有变化，比如，*on a sunny day* 中的 *on* <span class="pho alt">ɒŋ</span>，由于后面紧跟着一个元音，所以，会被读成 <span class="pho alt">ɒn</span> —— 也就是说，<span class="pho">ŋ</span> 变成了 <span class="pho">n</span>（[2.2.3](15-mn)）……
 :::
 
 [^1]: 所谓 *pangram*，指的是一个尽可能短的包含所有字母的句子。*The quick brown fox jumps over the lazy dog.* 就是大家练打字的时候都用过的经典 *pangram*。
@@ -167,23 +167,23 @@ Voice: Nova (US Female)
 
 > *[Pneumonoultramicroscopicsilicovolcanoconiosis](https://en.wikipedia.org/wiki/Pneumonoultramicroscopicsilicovolcanoconiosis)* <span class="speak-word-inline" data-audio-us="/audios/En-us-pneumonoultramicroscopicsilicovolcanoconiosis.ogg.mp3"></span>
 >
-> `/ˌnumənəʊˌəltrəˌmaɪkrəˌskɑpɪkˌsɪləkəʊvɑlˌkeɪnəʊˌkəʊniˈəʊsəs/`
+> <span class="pho alt">ˌnumənəʊˌəltrəˌmaɪkrəˌskɑpɪkˌsɪləkəʊvɑlˌkeɪnəʊˌkəʊniˈəʊsəs</span>
 
-英文的音节构成大抵上有以下几种形式（其中，`c` 代表辅音，`v` 代表元音）：
+英文的音节构成大抵上有以下几种形式（其中，<span class="pho">c</span> 代表辅音，<span class="pho">v</span> 代表元音）：
 
- * `v`： *awe* `/ɔː/`<span class="speak-word-inline" data-audio-us="/audios/awe-us.mp3"></span>
- * `vc`： *add* `/æd/`<span class="speak-word-inline" data-audio-us="/audios/add-us.mp3"></span>
- * `cv`： *the* `/ðə/`<span class="speak-word-inline" data-audio-us="/audios/the-us.mp3"></span>
- * `cvc`： *dog* `/dɔg/`<span class="speak-word-inline" data-audio-us="/audios/dog-us.mp3"></span>
- * `ccv`： *flee* `/fliː/`<span class="speak-word-inline" data-audio-us="/audios/flee-us.mp3"></span>
- * `vcc`： *east* `/iːst/`<span class="speak-word-inline" data-audio-us="/audios/east-us.mp3"></span>
- * `cvcc`： *task* `/tæsk/`<span class="speak-word-inline" data-audio-us="/audios/task-us.mp3"></span>
- * `ccvc`： *speed* `/spiːd/`<span class="speak-word-inline" data-audio-us="/audios/speed-us.mp3"></span>
- * `ccvcc`： *thrust* `/θrʌst/`<span class="speak-word-inline" data-audio-us="/audios/thrust-us.mp3"></span>
- * `cvccc`： *text* `/tekst/`<span class="speak-word-inline" data-audio-us="/audios/text-us.mp3"></span>
- * `ccvccc`： *flexed* `/flekst/`<span class="speak-word-inline" data-audio-us="/audios/flexed-us.mp3"></span>
+ * <span class="pho">v</span>： *awe* <span class="pho alt">ɔː</span><span class="speak-word-inline" data-audio-us="/audios/awe-us.mp3"></span>
+ * <span class="pho">vc</span>： *add* <span class="pho alt">æd</span><span class="speak-word-inline" data-audio-us="/audios/add-us.mp3"></span>
+ * <span class="pho">cv</span>： *the* <span class="pho alt">ðə</span><span class="speak-word-inline" data-audio-us="/audios/the-us.mp3"></span>
+ * <span class="pho">cvc</span>： *dog* <span class="pho alt">dɔg</span><span class="speak-word-inline" data-audio-us="/audios/dog-us.mp3"></span>
+ * <span class="pho">ccv</span>： *flee* <span class="pho alt">fliː</span><span class="speak-word-inline" data-audio-us="/audios/flee-us.mp3"></span>
+ * <span class="pho">vcc</span>： *east* <span class="pho alt">iːst</span><span class="speak-word-inline" data-audio-us="/audios/east-us.mp3"></span>
+ * <span class="pho">cvcc</span>： *task* <span class="pho alt">tæsk</span><span class="speak-word-inline" data-audio-us="/audios/task-us.mp3"></span>
+ * <span class="pho">ccvc</span>： *speed* <span class="pho alt">spiːd</span><span class="speak-word-inline" data-audio-us="/audios/speed-us.mp3"></span>
+ * <span class="pho">ccvcc</span>： *thrust* <span class="pho alt">θrʌst</span><span class="speak-word-inline" data-audio-us="/audios/thrust-us.mp3"></span>
+ * <span class="pho">cvccc</span>： *text* <span class="pho alt">tekst</span><span class="speak-word-inline" data-audio-us="/audios/text-us.mp3"></span>
+ * <span class="pho">ccvccc</span>： *flexed* <span class="pho alt">flekst</span><span class="speak-word-inline" data-audio-us="/audios/flexed-us.mp3"></span>
 
-如果一个单词由多个音节构成的话，那么为了能够读得顺畅、清晰且易于识别，那么其中可能会有某个音节是**重音**；如果音节数量更多，可能还会有某个或某些音节是**次重音**。一般来说，**一个词汇只有一个重音**，**但有可能存在多个次重音**。比如 *serendipity* `/ˌserənˈdɪpɪti/`。之前的那个 *19* 个音节构成的词汇，其中有 *7* 个**次重音**，*1* 个**重音**。
+如果一个单词由多个音节构成的话，那么为了能够读得顺畅、清晰且易于识别，那么其中可能会有某个音节是**重音**；如果音节数量更多，可能还会有某个或某些音节是**次重音**。一般来说，**一个词汇只有一个重音**，**但有可能存在多个次重音**。比如 *serendipity* <span class="pho alt">ˌserənˈdɪpɪti</span>。之前的那个 *19* 个音节构成的词汇，其中有 *7* 个**次重音**，*1* 个**重音**。
 
 从音节长度上来看，与大多数亚洲语言相比：
 
@@ -193,16 +193,16 @@ Voice: Nova (US Female)
 
 这是元音之间的比较，我们再看看辅音之间的比较。
 
-亚洲语言的音节几乎没有两个辅音作为开头的情况，在英文中这种情况却非常普遍。亚洲语言的音节同样没有两三个辅音作为结尾并且还要发声清晰的情况，在英文中这种情况同样非常普遍。每个辅音都要发声清晰的话，就会占用一定的时长。比如，上面列表中的最后一个例子，*flexed*, `/flekst/`<span class="speak-word-inline" data-audio-uk="/audios/flexed-uk.mp3" data-audio-us="/audios/flexed-us.mp3"></span> ，整体只是一个音节，可即便这一个音节中的元音 `e` 是短元音，整体发声时它也比任何一个亚洲语言中的 “字”（同样是一个音节）都长。
+亚洲语言的音节几乎没有两个辅音作为开头的情况，在英文中这种情况却非常普遍。亚洲语言的音节同样没有两三个辅音作为结尾并且还要发声清晰的情况，在英文中这种情况同样非常普遍。每个辅音都要发声清晰的话，就会占用一定的时长。比如，上面列表中的最后一个例子，*flexed*, <span class="pho alt">flekst</span><span class="speak-word-inline" data-audio-uk="/audios/flexed-uk.mp3" data-audio-us="/audios/flexed-us.mp3"></span> ，整体只是一个音节，可即便这一个音节中的元音 <span class="pho">e</span> 是短元音，整体发声时它也比任何一个亚洲语言中的 “字”（同样是一个音节）都长。
 
 # 2. 详解
 
 虽然总计就那么四十几个**音素**，但，其中的细节的确错综复杂 —— 只能靠反复学习、整理、归纳总结才能彻底掌握，并且，重复的量还要足够大。
 # 2.1. 元音
 
-流行的教科书里通常不会把 `æ` 列为长元音，可能是因为 D.J. 音标在 1917 年最初发表的时候，[Daniel Jones](https://en.wikipedia.org/wiki/Daniel_Jones_(phonetician)) 并没有为它加上一个长元音符号，不是 `æː`, 而是 `æ`，这也很容易理解，毕竟 `æ` 已经和 `e` 看起来已经并不相同…… 但，无论如何，`æ` 的确是短元音 `e` 的更长版本。
+流行的教科书里通常不会把 <span class="pho">æ</span> 列为长元音，可能是因为 D.J. 音标在 1917 年最初发表的时候，[Daniel Jones](https://en.wikipedia.org/wiki/Daniel_Jones_(phonetician)) 并没有为它加上一个长元音符号，不是 <span class="pho">æː</span>, 而是 <span class="pho">æ</span>，这也很容易理解，毕竟 <span class="pho">æ</span> 已经和 <span class="pho">e</span> 看起来已经并不相同…… 但，无论如何，<span class="pho">æ</span> 的确是短元音 <span class="pho">e</span> 的更长版本。
 
-`ʌ, e, ə, ɪ, ʊ, ɒ` 这 *6* 个短元音，就是英文元音基础元音，它们就好像是 “根” 一样，因为剩下 *16* 个元音要么是它们**略有变化**的更长版本，即，长元音 —— `ɑː, æ, əː, iː, uː, ɔː`，要么是它们的组合版本，即，双元音 —— `aɪ, eɪ, ɔɪ, aʊ, əʊ, eə, ɪə, ʊə`。
+<span class="pho">ʌ, e, ə, ɪ, ʊ, ɒ</span> 这 *6* 个短元音，就是英文元音基础元音，它们就好像是 “根” 一样，因为剩下 *16* 个元音要么是它们**略有变化**的更长版本，即，长元音 —— <span class="pho">ɑː, æ, əː, iː, uː, ɔː</span>，要么是它们的组合版本，即，双元音 —— <span class="pho">aɪ, eɪ, ɔɪ, aʊ, əʊ, eə, ɪə, ʊə</span>。
 
 ::: tip
 
@@ -210,11 +210,11 @@ Voice: Nova (US Female)
 
 :::
 
-上文中所谓的**略有变化**，指的是，`ʌ/ɑː`、`e/æ`、`ɪ/iː`、`ə/əː`、`ʊ/uː`、`ɒ/ɔː` 这六组对应的短元音和长元音，从细节上来看，其实都不是同一个音的长短不同的两个版本 —— 它们在发声时口腔内气流共鸣位置都各不相同。
+上文中所谓的**略有变化**，指的是，<span class="pho">ʌ/ɑː</span>、<span class="pho">e/æ</span>、<span class="pho">ɪ/iː</span>、<span class="pho">ə/əː</span>、<span class="pho">ʊ/uː</span>、<span class="pho">ɒ/ɔː</span> 这六组对应的短元音和长元音，从细节上来看，其实都不是同一个音的长短不同的两个版本 —— 它们在发声时口腔内气流共鸣位置都各不相同。
 
 长元音相对于短元音更长，双元音相当于长元音的长度。然而，在实际的自然语音里，首先，长元音和双元音到底多长并没有统一标准；其次，随着讲话者的强调方式，元音长短可能会发生变化。
 
-另外，`ɪ`  和 `ʊ` 这两个基础音素实际上总计有 3 个长短不一的版本，分别是 `ɪ/i/iː` 和 ` ʊ/u/uː`（[1.1](01-phonemes#_1-1-元音)）。
+另外，<span class="pho">ɪ</span>  和 <span class="pho">ʊ</span> 这两个基础音素实际上总计有 3 个长短不一的版本，分别是 <span class="pho">ɪ/i/iː</span> 和 <span class="pho"> ʊ/u/uː</span>（[1.1](01-phonemes#_1-1-元音)）。
 
 
 # 3.1 口腔内气流共鸣位置
@@ -237,73 +237,73 @@ Voice: Nova (US Female)
 
 > **凡是和母语发声方式不一样的地方，就是语音塑造的重点**。
 
-怎么做呢？仔细听以下 3 个  `ɑ` 音的不同变体，随后多揣摩多尝试（音频来自 [Wikipedia](https://en.wikipedia.org/wiki/Vowel)）就会了：
+怎么做呢？仔细听以下 3 个  <span class="pho">ɑ</span> 音的不同变体，随后多揣摩多尝试（音频来自 [Wikipedia](https://en.wikipedia.org/wiki/Vowel)）就会了：
 
-*  `ɑ` 气流共鸣位置靠前<span class="speak-word-inline" data-audio-us="/audios/ɑ-01-PR-open_front_unrounded_vowel.ogg.mp3"></span>
+*  <span class="pho">ɑ</span> 气流共鸣位置靠前<span class="speak-word-inline" data-audio-us="/audios/ɑ-01-PR-open_front_unrounded_vowel.ogg.mp3"></span>
 
-*  `ɑ` 气流共鸣位置居中<span class="speak-word-inline" data-audio-us="/audios/ɑ-02-Open_central_unrounded_vowel.ogg.mp3"></span>
+*  <span class="pho">ɑ</span> 气流共鸣位置居中<span class="speak-word-inline" data-audio-us="/audios/ɑ-02-Open_central_unrounded_vowel.ogg.mp3"></span>
 
-*  `ɑ` 气流共鸣位置靠后<span class="speak-word-inline" data-audio-us="/audios/ɑ-03-Open_back_unrounded_vowel.ogg.mp3"></span>
-
-
+*  <span class="pho">ɑ</span> 气流共鸣位置靠后<span class="speak-word-inline" data-audio-us="/audios/ɑ-03-Open_back_unrounded_vowel.ogg.mp3"></span>
 
 
 
-# 2.1.2. `ʌ`/`ɑː`
 
-美国人在发 `ʌ` 这个音的时候，干脆完全是 `ə`。也就是说，对美国人来说，短元音只剩下了 *5* 个，而不是英国人习惯的 *6* 个。
 
-比如，*encourage* 这个词，英国人读作 `ɪnˈkʌrɪdʒ`<span class="speak-word-inline" data-audio-uk="/audios/encourage-uk.mp3"></span>，美国人读作  `ənˈkərɪdʒ`  <span class="speak-word-inline" data-audio-us="/audios/encourage-us.mp3"></span>—— 他们更倾向于把一些非重音音节里的  `ɪ` 读作 `ə`。
+# 2.1.2. <span class="pho">ʌ</span>/<span class="pho">ɑː</span>
 
-美国人在这个长元音 `ɑː` 的时候，常常会在末尾加上一个 `r`，常常用 `ɑr`  或者 `ɑʳ`  标注。比如 *card* `/kɑːd, kɑrd/`<span class="speak-word-inline" data-audio-uk="/audios/card-uk.mp3" data-audio-us="/audios/card-us.mp3"></span>。
+美国人在发 <span class="pho">ʌ</span> 这个音的时候，干脆完全是 <span class="pho">ə</span>。也就是说，对美国人来说，短元音只剩下了 *5* 个，而不是英国人习惯的 *6* 个。
 
-另外，在大多数美国人的发音习惯中，`ɑː` 对应的短版本 `ɑ`，相当于是英式发音中的 `ɒ`，比如 *hot* `/hɒt, hɑt/`<span class="speak-word-inline" data-audio-uk="/audios/hot-uk.mp3" data-audio-us="/audios/hot-us.mp3"></span>。
+比如，*encourage* 这个词，英国人读作 <span class="pho">ɪnˈkʌrɪdʒ</span><span class="speak-word-inline" data-audio-uk="/audios/encourage-uk.mp3"></span>，美国人读作  <span class="pho">ənˈkərɪdʒ</span>  <span class="speak-word-inline" data-audio-us="/audios/encourage-us.mp3"></span>—— 他们更倾向于把一些非重音音节里的  <span class="pho">ɪ</span> 读作 <span class="pho">ə</span>。
 
-# 2.1.3. `e`/`æ`
+美国人在这个长元音 <span class="pho">ɑː</span> 的时候，常常会在末尾加上一个 <span class="pho">r</span>，常常用 <span class="pho">ɑr</span>  或者 <span class="pho">ɑʳ</span>  标注。比如 *card* <span class="pho alt">kɑːd, kɑrd</span><span class="speak-word-inline" data-audio-uk="/audios/card-uk.mp3" data-audio-us="/audios/card-us.mp3"></span>。
 
-有些词典，针对美式发音，常常会用 `ɛ` 标注 `e` 这个音。
+另外，在大多数美国人的发音习惯中，<span class="pho">ɑː</span> 对应的短版本 <span class="pho">ɑ</span>，相当于是英式发音中的 <span class="pho">ɒ</span>，比如 *hot* <span class="pho alt">hɒt, hɑt</span><span class="speak-word-inline" data-audio-uk="/audios/hot-uk.mp3" data-audio-us="/audios/hot-us.mp3"></span>。
 
-`æ` 相当于是 `e` 的更长版本。虽然 `æ` 后面没有长元音符号 `ː`。但，它其实应该算作 “长元音”。亚洲人在读这个音的时候，都能做到把嘴巴张得更大一点，但，都会不由自主地将它读成更短的版本。这里有两个要点:
+# 2.1.3. <span class="pho">e</span>/<span class="pho">æ</span>
+
+有些词典，针对美式发音，常常会用 <span class="pho">ɛ</span> 标注 <span class="pho">e</span> 这个音。
+
+<span class="pho">æ</span> 相当于是 <span class="pho">e</span> 的更长版本。虽然 <span class="pho">æ</span> 后面没有长元音符号 <span class="pho">ː</span>。但，它其实应该算作 “长元音”。亚洲人在读这个音的时候，都能做到把嘴巴张得更大一点，但，都会不由自主地将它读成更短的版本。这里有两个要点:
 
 > 1. 音拉长一点
 > 2. 嘴张大一点
 
-其中，第一个要点相对更为重要。你可以多试试这两个词，*apple* `ˈæpəl`<span class="speak-word-inline" data-audio-us="/audios/apple-us.mp3"></span>，*banana* `bəˈnænə`<span class="speak-word-inline" data-audio-us="/audios/banana-us.mp3"></span>，并刻意把其中的 `æ` 拉得更长一点。
-# 2.1.4. `ə`/`əː`
+其中，第一个要点相对更为重要。你可以多试试这两个词，*apple* <span class="pho">ˈæpəl</span><span class="speak-word-inline" data-audio-us="/audios/apple-us.mp3"></span>，*banana* <span class="pho">bəˈnænə</span><span class="speak-word-inline" data-audio-us="/audios/banana-us.mp3"></span>，并刻意把其中的 <span class="pho">æ</span> 拉得更长一点。
+# 2.1.4. <span class="pho">ə</span>/<span class="pho">əː</span>
 
-美国人在读这两个音的时候，常常会在末尾加上一个 `ʳ`，但，也不是每一次都会加上 `ʳ`。初学者容易矫枉过正，遇到这两个音就加上 `ʳ`，比如，可能会把 *focus*<span class="speak-word-inline" data-audio-us="/audios/focus-us.mp3"></span>错读成 `fəʊkəʳs`<span class="speak-word-inline" data-audio-us="/audios/focurs-us.mp3"></span>。
+美国人在读这两个音的时候，常常会在末尾加上一个 <span class="pho">ʳ</span>，但，也不是每一次都会加上 <span class="pho">ʳ</span>。初学者容易矫枉过正，遇到这两个音就加上 <span class="pho">ʳ</span>，比如，可能会把 *focus*<span class="speak-word-inline" data-audio-us="/audios/focus-us.mp3"></span>错读成 <span class="pho">fəʊkəʳs</span><span class="speak-word-inline" data-audio-us="/audios/focurs-us.mp3"></span>。
 
-有些词典，常常会用 `ɜ` 标注 `ə` 这个音。另外，针对美式发音，`əʳ` 会被写成 `ɚ`，`əːʳ` 会被写成 `ɜː` 或者 `ɝ`。
+有些词典，常常会用 <span class="pho">ɜ</span> 标注 <span class="pho">ə</span> 这个音。另外，针对美式发音，<span class="pho">əʳ</span> 会被写成 <span class="pho">ɚ</span>，<span class="pho">əːʳ</span> 会被写成 <span class="pho">ɜː</span> 或者 <span class="pho">ɝ</span>。
 
-注意，在连贯的自然语音中，很多非重音音节的元音，都有被简化成 `ə` 的倾向，尤其是 `ɪ`。比如，*individual*, `ˌɪndɪˈvɪdʒjʊəl`，实际上会被读作 `ˌɪndəˈvɪdʒəwəl`<span class="speak-word-inline" data-audio-us="/audios/individual-us.mp3"></span> —— `jʊ` 也变成了 `ə`，而后 `ʊ` 和 `ə` 之间有个加音 `w`（[2.2.13](25-jw)）…… 事实上，现在已经有很多词典干脆直接标注成了后者。
+注意，在连贯的自然语音中，很多非重音音节的元音，都有被简化成 <span class="pho">ə</span> 的倾向，尤其是 <span class="pho">ɪ</span>。比如，*individual*, <span class="pho">ˌɪndɪˈvɪdʒjʊəl</span>，实际上会被读作 <span class="pho">ˌɪndəˈvɪdʒəwəl</span><span class="speak-word-inline" data-audio-us="/audios/individual-us.mp3"></span> —— <span class="pho">jʊ</span> 也变成了 <span class="pho">ə</span>，而后 <span class="pho">ʊ</span> 和 <span class="pho">ə</span> 之间有个加音 <span class="pho">w</span>（[2.2.13](25-jw)）…… 事实上，现在已经有很多词典干脆直接标注成了后者。
 
-# 2.1.5. `ɪ`/`iː`
+# 2.1.5. <span class="pho">ɪ</span>/<span class="pho">iː</span>
 
-这一对元音，不只是长短的区别。 `ɪ`  常常被认为实际上并不完全是长元音 `iː` 的更短版本，它更像是 `e` 和 `i` 之间的一个音，发声时 “口腔内气流共鸣位置” 相对于 `iː` 略微靠后。听起来很像是更短版本的 `eɪ`……
+这一对元音，不只是长短的区别。 <span class="pho">ɪ</span>  常常被认为实际上并不完全是长元音 <span class="pho">iː</span> 的更短版本，它更像是 <span class="pho">e</span> 和 <span class="pho">i</span> 之间的一个音，发声时 “口腔内气流共鸣位置” 相对于 <span class="pho">iː</span> 略微靠后。听起来很像是更短版本的 <span class="pho">eɪ</span>……
 
-另外，这个音实际上还有第 3 个版本，`ɪ` 在词汇末尾的时候，更倾向于像是 `iː`  这个长元音的更短版本，`i`，长度介于 `ɪ` 和 `iː` 之间。比如，*responsibility* `/riˌspɑnsəˈbɪləti/`<span class="speak-word-inline" data-audio-uk="/audios/responsibility-uk.mp3" data-audio-us="/audios/responsibility-us.mp3"></span>。
-
-::: info
-
-Daniel Jones 去世之后，Alfred C. Gimson 接受了他的工作，于 1977 年发布了 D.J. 音标第 14 版。引入 `ɪ ʊ ɒ ɜː` 等符号取代之前使用的 `i u ɔ əː`。1997 年，Peter Roach 再次接手，*English Pronouncing Dictionary* (*EPD*) 更名为 *Cambridge English Pronouncing Dictionary* (*CEPD*)，并发布 D.J. 音标第 15 版。除了引入能够标注美式发音的 `ɝ, ɚ, t̬` 之外， 还特意修改了词汇末尾的 `ɪ`，将其统一改成了 `i`。也就是说，*happy* 不再被标注为 `ˈhæpɪ`，而是 `ˈhæpi`<span class="speak-word-inline" data-audio-uk="/audios/happy-uk.mp3" data-audio-us="/audios/happy-us.mp3"></span>。与此同时，大多数词典所配的真人发音示范，都相应第做了修订。
-
-:::
-# 2.1.6. `ʊ`/`uː`
-
-这一对元音，地球上的任何语言都用，并且还几乎是一模一样地用，所以，大家读起来都不费劲。只有一个细节值得注意，英文里长元音 `uː` 相对于短元音`ʊ` 嘴形缩得更小，嘴唇相对更加略微凸出。
-
-# 2.1.7. `ɔ`/`ɔː`
-
-这一对元音在发声的时候，嘴唇动作非常明显，嘴唇得形成一个小的圆形之后开始发音。另外，`ɔː` 可能会被美国人读成 `ɔʳ` ，更像是双元音 `ɔəʳ`  —— 但，再一次，还是不一定都如此，需要逐个核对。
+另外，这个音实际上还有第 3 个版本，<span class="pho">ɪ</span> 在词汇末尾的时候，更倾向于像是 <span class="pho">iː</span>  这个长元音的更短版本，<span class="pho">i</span>，长度介于 <span class="pho">ɪ</span> 和 <span class="pho">iː</span> 之间。比如，*responsibility* <span class="pho alt">riˌspɑnsəˈbɪləti</span><span class="speak-word-inline" data-audio-uk="/audios/responsibility-uk.mp3" data-audio-us="/audios/responsibility-us.mp3"></span>。
 
 ::: info
-D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短元音 `ɔ` 开始使用笔划上闭口的 `ɒ`，长元音依然使用带着长音符号且笔划上开口的 `ɔː`。
+
+Daniel Jones 去世之后，Alfred C. Gimson 接受了他的工作，于 1977 年发布了 D.J. 音标第 14 版。引入 <span class="pho">ɪ ʊ ɒ ɜː</span> 等符号取代之前使用的 <span class="pho">i u ɔ əː</span>。1997 年，Peter Roach 再次接手，*English Pronouncing Dictionary* (*EPD*) 更名为 *Cambridge English Pronouncing Dictionary* (*CEPD*)，并发布 D.J. 音标第 15 版。除了引入能够标注美式发音的 <span class="pho">ɝ, ɚ, t̬</span> 之外， 还特意修改了词汇末尾的 <span class="pho">ɪ</span>，将其统一改成了 <span class="pho">i</span>。也就是说，*happy* 不再被标注为 <span class="pho">ˈhæpɪ</span>，而是 <span class="pho">ˈhæpi</span><span class="speak-word-inline" data-audio-uk="/audios/happy-uk.mp3" data-audio-us="/audios/happy-us.mp3"></span>。与此同时，大多数词典所配的真人发音示范，都相应第做了修订。
+
 :::
-# 2.1.8. `aɪ, eɪ, ɔɪ, aʊ, əʊ, eə, ɪə, ʊə`
+# 2.1.6. <span class="pho">ʊ</span>/<span class="pho">uː</span>
+
+这一对元音，地球上的任何语言都用，并且还几乎是一模一样地用，所以，大家读起来都不费劲。只有一个细节值得注意，英文里长元音 <span class="pho">uː</span> 相对于短元音<span class="pho">ʊ</span> 嘴形缩得更小，嘴唇相对更加略微凸出。
+
+# 2.1.7. <span class="pho">ɔ</span>/<span class="pho">ɔː</span>
+
+这一对元音在发声的时候，嘴唇动作非常明显，嘴唇得形成一个小的圆形之后开始发音。另外，<span class="pho">ɔː</span> 可能会被美国人读成 <span class="pho">ɔʳ</span> ，更像是双元音 <span class="pho">ɔəʳ</span>  —— 但，再一次，还是不一定都如此，需要逐个核对。
+
+::: info
+D.J. 音标最初的时候短元音用 <span class="pho">ɔ</span>，长元音用 <span class="pho">ɔː</span>；但后来短元音 <span class="pho">ɔ</span> 开始使用笔划上闭口的 <span class="pho">ɒ</span>，长元音依然使用带着长音符号且笔划上开口的 <span class="pho">ɔː</span>。
+:::
+# 2.1.8. <span class="pho">aɪ, eɪ, ɔɪ, aʊ, əʊ, eə, ɪə, ʊə</span>
 
 亚洲语系基本上都没有和英文一样的双元音。韩文日文的母音和中文的韵母虽然都有少数由两个基础音素构成的组合音，但，它们和英文的双元音不同的地方在于，它们都是和其它韵母或者母音等长的，而不是像英文双元音的长度那样几乎是短元音的两倍。
 
-比如，当中国人说 “太累了” <span class="speak-word-inline" data-audio-uk="/audios/太累了-zh-cn-female.mp3" data-audio-us="/audios/太累了-zh-cn-male.mp3"></span>的时候，“太”（`tài`）这个字的 “韵母” 就很接近英文的双元音 `aɪ`；“累”（`lèi`）这个字的韵母就很接近英文的双元音 `eɪ`…… 但，它们很不一样，英文的双元音就是更长。
+比如，当中国人说 “太累了” <span class="speak-word-inline" data-audio-uk="/audios/太累了-zh-cn-female.mp3" data-audio-us="/audios/太累了-zh-cn-male.mp3"></span>的时候，“太”（<span class="pho">tài</span>）这个字的 “韵母” 就很接近英文的双元音 <span class="pho">aɪ</span>；“累”（<span class="pho">lèi</span>）这个字的韵母就很接近英文的双元音 <span class="pho">eɪ</span>…… 但，它们很不一样，英文的双元音就是更长。
 
 英文的双元音，都是两个元音的组合。它们都是从第一个元音滑向第二个元音，所以，它们从长度上来看，相当于是长元音；节奏在感觉上大抵是乐谱里的 “一拍里均放着三个等长音符的三连音”，前一个基础音素更长一些，后一个基础音素相对较短。
 
@@ -311,7 +311,7 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 
 亚洲人常常会把所有双元音都读成单元音的长度。不仅如此，他们也常常会不由自主地把很多长元音也读成相应更短的版本。这是因为在亚洲语系往往以字（而不是词）为最小单位，而后，每个字都是单音节，每个音节里的元音（比如，中文中的 “韵母”）都是等长的。
 
-另外，有 3 个双元音里有 `ʊ` 这个音，`aʊ, əʊ, ʊə` —— 若是不配合着嘴唇的动作，就读不准它们。而剩下的 5 个双元音，`aɪ, eɪ, ɔɪ, eə, ɪə` 都是在嘴唇几乎不动的情况下完成的，全靠喉咙部位的动作。
+另外，有 3 个双元音里有 <span class="pho">ʊ</span> 这个音，<span class="pho">aʊ, əʊ, ʊə</span> —— 若是不配合着嘴唇的动作，就读不准它们。而剩下的 5 个双元音，<span class="pho">aɪ, eɪ, ɔɪ, eə, ɪə</span> 都是在嘴唇几乎不动的情况下完成的，全靠喉咙部位的动作。
 # 2.2. 辅音
 
 相对来看，影响理解的不正确发音，更多来自元音而不是辅音。每个音节都有且只有一个元音。如果一个音节是一个细胞的话，那么，其中唯一的元音，就相当于是它的细胞核。虽然 “辅音” 常常被认为是 “地方口音” 的主要根源，但实际上，最影响 “信息交流顺畅” 的，其实是 “元音错误”。相对来看，“辅音错误” 常常除了会显得有明显的 “口音” 之外，并不影响交流。
@@ -329,109 +329,109 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 其实，这个文档中的每一个小节，你都有可能需要自己补充。因为即便是中文普通话，也有很多地方口音。根据你原本的口音不同，你需要仔细分析自己每一个音的发声方式，找到需要修正或者调整的地方。如果你是日本人，就需要认真分析每个音素与日文相似发音的具体不同；如果你是韩国人，就需要认真分析每个音素与朝鲜语相似发音的具体不同…… 总之，**一定要把这个文档变成针对自己的个性化文档**。
 
 :::
-# 2.2.1. `p, b, m, n, f, k, g, h`
+# 2.2.1. <span class="pho">p, b, m, n, f, k, g, h</span>
 
 这几个辅音，中国人读得都很正确，因为它们在两种语言里的发声方式都差不多。
 
-但中国大陆地区的人也有个小问题。因为小时候学过中文拼音，习惯了这么读这些声母的：`bo, po, mo, fo, ge, ke, he, ne`，写作 D.J. 音标的话，就是，`bə, pə, mə, fə, gə, kə, hə，nə`……
+但中国大陆地区的人也有个小问题。因为小时候学过中文拼音，习惯了这么读这些声母的：<span class="pho">bo, po, mo, fo, ge, ke, he, ne</span>，写作 D.J. 音标的话，就是，<span class="pho">bə, pə, mə, fə, gə, kə, hə，nə</span>……
 
-于是，老的习惯一不小心就会冲进新学的语言，总是不由自主地在这些音后面加上一个 `ə`…… 比如，很多人总是把 *please* <span class="speak-word-inline" data-audio-uk="/audios/please-uk.mp3" data-audio-us="/audios/please-us.mp3"></span>读得听起来像是 *police* <span class="speak-word-inline" data-audio-uk="/audios/police-uk.mp3" data-audio-us="/audios/police-us.mp3"></span>的第一个音节……
+于是，老的习惯一不小心就会冲进新学的语言，总是不由自主地在这些音后面加上一个 <span class="pho">ə</span>…… 比如，很多人总是把 *please* <span class="speak-word-inline" data-audio-uk="/audios/please-uk.mp3" data-audio-us="/audios/please-us.mp3"></span>读得听起来像是 *police* <span class="speak-word-inline" data-audio-uk="/audios/police-uk.mp3" data-audio-us="/audios/police-us.mp3"></span>的第一个音节……
 
-如果发现自己总是不小心在这些辅音后加上不应该有的 `ə` 的话，不妨新学一个英文中没有的元音 `ɤ`<span class="speak-word-inline" data-audio-uk="/audios/ɤ-Close-mid_back_unrounded_vowel.ogg.mp3"></span> —— 用这个 `ɤ`  音替代那个不应该有的 `ə`，效果也还不错。
+如果发现自己总是不小心在这些辅音后加上不应该有的 <span class="pho">ə</span> 的话，不妨新学一个英文中没有的元音 <span class="pho">ɤ</span><span class="speak-word-inline" data-audio-uk="/audios/ɤ-Close-mid_back_unrounded_vowel.ogg.mp3"></span> —— 用这个 <span class="pho">ɤ</span>  音替代那个不应该有的 <span class="pho">ə</span>，效果也还不错。
 
 ::: tip
-关于 `ɤ`，你可以尝试一下用 *academically* 这个 6 个音节的词汇仔细体会一下。
+关于 <span class="pho">ɤ</span>，你可以尝试一下用 *academically* 这个 6 个音节的词汇仔细体会一下。
 
-词典里，它的音标标注一般是：`/ˌækəˈdemɪk(ə)li/`<span class="speak-word-inline" data-audio-uk="/audios/academically-uk.mp3" data-audio-us="/audios/academically-us.mp3"></span>—— `k` 后面的 `ə` 带着括号的意思是说，它 “可有可无” —— 所以，你可以把它读成 `/ˌækəˈdemɪkli/` 或者 `/ˌækəˈdemɪkəli/`。未经矫正的带有明显中国口音的人，可能会把 `ə` 误读成 `əu`，也就是 `/ˌækəˈdemɪkəuli/`…… 不过，
+词典里，它的音标标注一般是：<span class="pho alt">ˌækəˈdemɪk(ə)li</span><span class="speak-word-inline" data-audio-uk="/audios/academically-uk.mp3" data-audio-us="/audios/academically-us.mp3"></span>—— <span class="pho">k</span> 后面的 <span class="pho">ə</span> 带着括号的意思是说，它 “可有可无” —— 所以，你可以把它读成 <span class="pho alt">ˌækəˈdemɪkli</span> 或者 <span class="pho alt">ˌækəˈdemɪkəli</span>。未经矫正的带有明显中国口音的人，可能会把 <span class="pho">ə</span> 误读成 <span class="pho">əu</span>，也就是 <span class="pho alt">ˌækəˈdemɪkəuli</span>…… 不过，
 
-无论哪种情况，如果你把 `ə` 直接改成很轻的 `ɤ` —— `/ˌækəˈdemɪkɤli/` —— 听起来就是全无口音的状态。甚至，你还可以试试 `/ˌækɤˈdemɪkɤli/`，也就是说，把两个 `ə` 都变成 `ɤ`，再感觉一下。
+无论哪种情况，如果你把 <span class="pho">ə</span> 直接改成很轻的 <span class="pho">ɤ</span> —— <span class="pho alt">ˌækəˈdemɪkɤli</span> —— 听起来就是全无口音的状态。甚至，你还可以试试 <span class="pho alt">ˌækɤˈdemɪkɤli</span>，也就是说，把两个 <span class="pho">ə</span> 都变成 <span class="pho">ɤ</span>，再感觉一下。
 :::
 
-`ɤ` 和 `ə` 的重点差别在于，`ɤ` 发声时，口腔内气流共鸣位置很靠前，且相当轻微；`ə` 发声时，口腔内气流共鸣位置靠后，相对声音略大且更为清楚。
-# 2.2.2. `f`, `v`
+<span class="pho">ɤ</span> 和 <span class="pho">ə</span> 的重点差别在于，<span class="pho">ɤ</span> 发声时，口腔内气流共鸣位置很靠前，且相当轻微；<span class="pho">ə</span> 发声时，口腔内气流共鸣位置靠后，相对声音略大且更为清楚。
+# 2.2.2. <span class="pho">f</span>, <span class="pho">v</span>
 
-`f` 这个辅音，对中文普通话的使用者来说毫不费力，因为中文普通话里有这个声母。
+<span class="pho">f</span> 这个辅音，对中文普通话的使用者来说毫不费力，因为中文普通话里有这个声母。
 
-但是，这个清辅音 `f` 的浊辅音版本，`v`，就是中文普通话里没有的了。所以需要 “新学” 并且还得 “专门练习”，不能用近似的 `w` 替代 `v`。比如，不能把 *every* 读成 `/ˈewərɪ/`。朝鲜语也没有这两个音，所以韩国人常常会用 `p` 替代 `f`，把 *photo* 读成 `/ˈpɔtɔ/`<span class="speak-word-inline" data-audio-uk="/audios/photo-ko-kr.mp3"></span>；也常常会用 `b` 替代，把 *video* 读成 `/ˈbɪdiəʊ/`<span class="speak-word-inline" data-audio-uk="/audios/video-ko-kr.mp3"></span>。
+但是，这个清辅音 <span class="pho">f</span> 的浊辅音版本，<span class="pho">v</span>，就是中文普通话里没有的了。所以需要 “新学” 并且还得 “专门练习”，不能用近似的 <span class="pho">w</span> 替代 <span class="pho">v</span>。比如，不能把 *every* 读成 <span class="pho alt">ˈewərɪ</span>。朝鲜语也没有这两个音，所以韩国人常常会用 <span class="pho">p</span> 替代 <span class="pho">f</span>，把 *photo* 读成 <span class="pho alt">ˈpɔtɔ</span><span class="speak-word-inline" data-audio-uk="/audios/photo-ko-kr.mp3"></span>；也常常会用 <span class="pho">b</span> 替代，把 *video* 读成 <span class="pho alt">ˈbɪdiəʊ</span><span class="speak-word-inline" data-audio-uk="/audios/video-ko-kr.mp3"></span>。
 
-`f` 和 `v` 可能对中国南部地区的一些人会造成困难。需要反复练习一个原本生活里没用过的发声方式：**上牙齿接触下嘴唇之后再开始发音**。
+<span class="pho">f</span> 和 <span class="pho">v</span> 可能对中国南部地区的一些人会造成困难。需要反复练习一个原本生活里没用过的发声方式：**上牙齿接触下嘴唇之后再开始发音**。
 
 事实上，有研究表明，**母语中<u>不存在的音</u>**和**母语中<u>存在类似音</u>** 相比，学习前者更加容易[^1]。这和人们的感觉相反。因为前者只要靠生学硬练就可以了，但遇到后者，人们常常会神不知鬼不觉地借用自己母语中存在的类似音。所以，绝不能养成用近似音替代的习惯。千万不要误以为自己永远发不出某个音，只要不断尝试，早晚可以做到。
 
 [^1]: Flege, J. (1995). "Second language speech learning: Theory, findings and problems". In Winifred Strange (ed.). *Speech perception and linguistic experience: Theoretical and methodological issues*. Baltimore: York Press. pp. 233–277
 
-# 2.2.3. `m, n, ŋ`
+# 2.2.3. <span class="pho">m, n, ŋ</span>
 
-`m` 在音节末尾的情况，对中文普通话使用者来说，基本没有任何难度。
+<span class="pho">m</span> 在音节末尾的情况，对中文普通话使用者来说，基本没有任何难度。
 
-只是，少数人可能会在 `m` 后面不小心加上一个嘴巴略微张开声带轻微振动的很短的 `ʊ` —— 应该是读中文拼音养成的习惯。比如，他们会把 *room* 读成 `/ruːmʊ/`……
+只是，少数人可能会在 <span class="pho">m</span> 后面不小心加上一个嘴巴略微张开声带轻微振动的很短的 <span class="pho">ʊ</span> —— 应该是读中文拼音养成的习惯。比如，他们会把 *room* 读成 <span class="pho alt">ruːmʊ</span>……
 
-`m` 后面跟着 `f` 的时候，由于 `f` 要上牙齿咬着下嘴唇发声，前面的 `m` 常常自然读成 `n`，比如 *comfort*<span class="speak-word-inline" data-audio-uk="/audios/comfort-uk.mp3" data-audio-us="/audios/comfort-us.mp3"></span>, *pamphlet*<span class="speak-word-inline" data-audio-uk="/audios/pamphlet-uk.mp3" data-audio-us="/audios/pamphlet-us.mp3"></span>, *triumph*<span class="speak-word-inline" data-audio-uk="/audios/triumph-uk.mp3" data-audio-us="/audios/triumph-us.mp3"></span>……
+<span class="pho">m</span> 后面跟着 <span class="pho">f</span> 的时候，由于 <span class="pho">f</span> 要上牙齿咬着下嘴唇发声，前面的 <span class="pho">m</span> 常常自然读成 <span class="pho">n</span>，比如 *comfort*<span class="speak-word-inline" data-audio-uk="/audios/comfort-uk.mp3" data-audio-us="/audios/comfort-us.mp3"></span>, *pamphlet*<span class="speak-word-inline" data-audio-uk="/audios/pamphlet-uk.mp3" data-audio-us="/audios/pamphlet-us.mp3"></span>, *triumph*<span class="speak-word-inline" data-audio-uk="/audios/triumph-uk.mp3" data-audio-us="/audios/triumph-us.mp3"></span>……
 
-能准确说中文普通话的人，也都可以分清楚音节末尾的前鼻音 `n` 和后鼻音 `ŋ` 之间的区别。对中国南部地区的一些人就困难了，他们说普通话的时候就分不清楚前鼻音和后鼻音，比如，“英雄”，会被说成 `yīn xión`，而不是 `yīng xióng`。这没什么别的办法，只能硬逼着自己生学硬练后鼻音的发声方式。
+能准确说中文普通话的人，也都可以分清楚音节末尾的前鼻音 <span class="pho">n</span> 和后鼻音 <span class="pho">ŋ</span> 之间的区别。对中国南部地区的一些人就困难了，他们说普通话的时候就分不清楚前鼻音和后鼻音，比如，“英雄”，会被说成 <span class="pho">yīn xión</span>，而不是 <span class="pho">yīng xióng</span>。这没什么别的办法，只能硬逼着自己生学硬练后鼻音的发声方式。
 
-前鼻音 `n` 随后跟着软腭音 `k/g`  的时候，会自然变成后鼻音，读作 `ŋ`，比如 *tank*，词典里的音标通常也直接标注成 `/tæŋk/`<span class="speak-word-inline" data-audio-uk="/audios/tank-uk.mp3" data-audio-us="/audios/tank-us.mp3"></span>。再比如，*two main goals* `/tuː meɪn gəʊlz/`, 听起来多少像是 `/tuː meɪŋ gəʊlz/`<span class="speak-word-inline" data-audio-uk="/audios/two-main-goals-uk.mp3" data-audio-us="/audios/two-main-goals-us.mp3"></span>
+前鼻音 <span class="pho">n</span> 随后跟着软腭音 <span class="pho">k/g</span>  的时候，会自然变成后鼻音，读作 <span class="pho">ŋ</span>，比如 *tank*，词典里的音标通常也直接标注成 <span class="pho alt">tæŋk</span><span class="speak-word-inline" data-audio-uk="/audios/tank-uk.mp3" data-audio-us="/audios/tank-us.mp3"></span>。再比如，*two main goals* <span class="pho alt">tuː meɪn gəʊlz</span>, 听起来多少像是 <span class="pho alt">tuː meɪŋ gəʊlz</span><span class="speak-word-inline" data-audio-uk="/audios/two-main-goals-uk.mp3" data-audio-us="/audios/two-main-goals-us.mp3"></span>
 
-`ŋ` 在词汇末尾的时候，若是后面跟着个元音开头的音节，经常会被读成 `n`，与后面的音节连读，比如：
+<span class="pho">ŋ</span> 在词汇末尾的时候，若是后面跟着个元音开头的音节，经常会被读成 <span class="pho">n</span>，与后面的音节连读，比如：
 
-> * *going out*  ⭢  `/gəʊɪn aʊt/`
-> * *sing a song* ⭢ `/sɪn ə sɔŋ/`
-> * *wrong idea* ⭢ `/rɔn aɪˈdiə/`
-> * *thinking of* ⭢ `/ˈθɪŋkɪn əv/`
+> * *going out*  ⭢  <span class="pho alt">gəʊɪn aʊt</span>
+> * *sing a song* ⭢ <span class="pho alt">sɪn ə sɔŋ</span>
+> * *wrong idea* ⭢ <span class="pho alt">rɔn aɪˈdiə</span>
+> * *thinking of* ⭢ <span class="pho alt">ˈθɪŋkɪn əv</span>
 
-另外，`m`、`n` 常常会使之前的辅音，尤其是 `d`、`t` 变成**音节辅音**（*syllabic consonant*），比如，*didn't* `/ˈdɪd̩nt/`<span class="speak-word-inline" data-audio-uk="/audios/didn't-uk.mp3" data-audio-us="/audios/didn't-us.mp3"></span>, *wouldn't* `/ˈwʊd̩nt/`<span class="speak-word-inline" data-audio-uk="/audios/wouldn't-uk.mp3" data-audio-us="/audios/wouldn't-us.mp3"></span> —— 独自构成音节的那个辅音，例如这里的 `d`，下面多了个竖线作为标注，`d̩`。再比如，*rhythm* `/ˈrɪð̩m/`<span class="speak-word-inline" data-audio-uk="/audios/rhythm-uk.mp3" data-audio-us="/audios/rhythm-us.mp3"></span>。
+另外，<span class="pho">m</span>、<span class="pho">n</span> 常常会使之前的辅音，尤其是 <span class="pho">d</span>、<span class="pho">t</span> 变成**音节辅音**（*syllabic consonant*），比如，*didn't* <span class="pho alt">ˈdɪd̩nt</span><span class="speak-word-inline" data-audio-uk="/audios/didn't-uk.mp3" data-audio-us="/audios/didn't-us.mp3"></span>, *wouldn't* <span class="pho alt">ˈwʊd̩nt</span><span class="speak-word-inline" data-audio-uk="/audios/wouldn't-uk.mp3" data-audio-us="/audios/wouldn't-us.mp3"></span> —— 独自构成音节的那个辅音，例如这里的 <span class="pho">d</span>，下面多了个竖线作为标注，<span class="pho">d̩</span>。再比如，*rhythm* <span class="pho alt">ˈrɪð̩m</span><span class="speak-word-inline" data-audio-uk="/audios/rhythm-uk.mp3" data-audio-us="/audios/rhythm-us.mp3"></span>。
 
-有些词典会直接将 *didn't* 标注为 `/ˈdɪdənt/`，将 *wouldn't* 标注为 `/ˈwʊdənt/`，将 *rhythm* 标注成 `/ˈrɪðəm/`…… 但是，音节辅音内的元音音素，更准确地讲，更接近 `ɤ`（[2.2.1](13-pbmnfkgh)）而不是 `ə` —— 这个细微差异，竟然会使美国人轻易地听出外国口音[^1]。
+有些词典会直接将 *didn't* 标注为 <span class="pho alt">ˈdɪdənt</span>，将 *wouldn't* 标注为 <span class="pho alt">ˈwʊdənt</span>，将 *rhythm* 标注成 <span class="pho alt">ˈrɪðəm</span>…… 但是，音节辅音内的元音音素，更准确地讲，更接近 <span class="pho">ɤ</span>（[2.2.1](13-pbmnfkgh)）而不是 <span class="pho">ə</span> —— 这个细微差异，竟然会使美国人轻易地听出外国口音[^1]。
 
 [^1]: *Manual of Amewrican English Pronuciation*, 4th edition, by Clifford H. Prator, Jr. Betty Wallace Robinett. Page 118.
-# 2.2.4. `t, d, s, z; ʃ, tʃ, dʒ`
+# 2.2.4. <span class="pho">t, d, s, z; ʃ, tʃ, dʒ</span>
 
-`t, d, s, z` 这 4 个辅音，是中文普通话使用者必须调整的重点。它们在中文普通话里都有近似版本，所以，它们在两种语言中那微妙的发声方式区别会很容易被忽视。但，那一点点的差别却极大地影响整个**音质** —— 因为这 4 个辅音以及直接受它们所影响的 `ʃ, tʃ, dʒ`，总计 7 个辅音， 在英文语音中所占的比例实在太高。
+<span class="pho">t, d, s, z</span> 这 4 个辅音，是中文普通话使用者必须调整的重点。它们在中文普通话里都有近似版本，所以，它们在两种语言中那微妙的发声方式区别会很容易被忽视。但，那一点点的差别却极大地影响整个**音质** —— 因为这 4 个辅音以及直接受它们所影响的 <span class="pho">ʃ, tʃ, dʒ</span>，总计 7 个辅音， 在英文语音中所占的比例实在太高。
 
-`t, d, s, z` 这 4 个辅音的发声关键，在于它们发声时起始的**舌尖位置**。
+<span class="pho">t, d, s, z</span> 这 4 个辅音的发声关键，在于它们发声时起始的**舌尖位置**。
 
 <img src="/images/speech-tract-tdsz.svg" class="themed" />
 
-在中文普通话里，`t, d` 这两个声母发声时起始的**舌尖位置** 贴在牙齿上；`s, z` 这两个声母发声时起始的 “舌尖位置” 接近牙齿，但留了个空隙以便气流通过。你可以试着用中文普通话说一遍 “我踢死你”（`wǒ tī sǐ nǐ`<span class="speak-word-inline" data-audio-uk="/audios/我踢死你-zh-cn-male.mp3"></span>）。
+在中文普通话里，<span class="pho">t, d</span> 这两个声母发声时起始的**舌尖位置** 贴在牙齿上；<span class="pho">s, z</span> 这两个声母发声时起始的 “舌尖位置” 接近牙齿，但留了个空隙以便气流通过。你可以试着用中文普通话说一遍 “我踢死你”（<span class="pho">wǒ tī sǐ nǐ</span><span class="speak-word-inline" data-audio-uk="/audios/我踢死你-zh-cn-male.mp3"></span>）。
 
-在英文里，`t, d,` 这两个辅音发声时起始的**舌尖位置** 贴在牙齿和牙龈分界再往后一点点（如上图所示），而不是在牙齿上。而 `s, z` 这两个辅音，发声时起始的**舌尖位置** 是同样的，但留了个空隙以便气流通过。
+在英文里，<span class="pho">t, d,</span> 这两个辅音发声时起始的**舌尖位置** 贴在牙齿和牙龈分界再往后一点点（如上图所示），而不是在牙齿上。而 <span class="pho">s, z</span> 这两个辅音，发声时起始的**舌尖位置** 是同样的，但留了个空隙以便气流通过。
 
-而 `t, d, s, z` 这四个辅音发声时起始的**舌尖位置**，同样影响基于它们的另外三个辅音，`ʃ, tʃ, dʒ`…… 比较有趣的是，中文的普通话里恰好有对应的**卷舌音**，`sh, ch, zh`。找对发这三个声母发声时起始的舌尖位置，从那里开始读英文的 `t, d, s, z` 就对了。只不过，有一点点的区别，中文的 `sh, zh` 舌尖顶着上颚，同样的方式读出来的是英文的 `ʃ, dʒ`。而英文的 `s, z` 离上颚还有一点距离，但，不像中文的 `s, z` 那样靠近牙齿。
+而 <span class="pho">t, d, s, z</span> 这四个辅音发声时起始的**舌尖位置**，同样影响基于它们的另外三个辅音，<span class="pho">ʃ, tʃ, dʒ</span>…… 比较有趣的是，中文的普通话里恰好有对应的**卷舌音**，<span class="pho">sh, ch, zh</span>。找对发这三个声母发声时起始的舌尖位置，从那里开始读英文的 <span class="pho">t, d, s, z</span> 就对了。只不过，有一点点的区别，中文的 <span class="pho">sh, zh</span> 舌尖顶着上颚，同样的方式读出来的是英文的 <span class="pho">ʃ, dʒ</span>。而英文的 <span class="pho">s, z</span> 离上颚还有一点距离，但，不像中文的 <span class="pho">s, z</span> 那样靠近牙齿。
 
-另外，美国人在说 `t` 这个辅音的时候，经常会把它读成**送气音**（*asperated*），即，发着 `h` 的音读出，比如 *time* `/tʰaɪm/`<span class="speak-word-inline" data-audio-uk="/audios/time-uk.mp3" data-audio-us="/audios/time-us.mp3"></span>。
+另外，美国人在说 <span class="pho">t</span> 这个辅音的时候，经常会把它读成**送气音**（*asperated*），即，发着 <span class="pho">h</span> 的音读出，比如 *time* <span class="pho alt">tʰaɪm</span><span class="speak-word-inline" data-audio-uk="/audios/time-uk.mp3" data-audio-us="/audios/time-us.mp3"></span>。
 
-对中文普通话使用者来说，必须为这几个辅音学习新的发声方式。可以用 *students* `/ˈstudənts/`<span class="speak-word-inline" data-audio-uk="/audios/students-uk.mp3" data-audio-us="/audios/students-us.mp3"></span> 这个词作为起步反复练习。以后随时注意这些辅音发声时起始的**舌尖位置**。
-# 2.2.5. `t, d`
+对中文普通话使用者来说，必须为这几个辅音学习新的发声方式。可以用 *students* <span class="pho alt">ˈstudənts</span><span class="speak-word-inline" data-audio-uk="/audios/students-uk.mp3" data-audio-us="/audios/students-us.mp3"></span> 这个词作为起步反复练习。以后随时注意这些辅音发声时起始的**舌尖位置**。
+# 2.2.5. <span class="pho">t, d</span>
 
-`t` 和 `d` 在英文语音中出现频率实在太高，乃至于我们不得不格外注意有关它的细节。
+<span class="pho">t</span> 和 <span class="pho">d</span> 在英文语音中出现频率实在太高，乃至于我们不得不格外注意有关它的细节。
 
 ## 2.2.5.1. 省音
 
-`t` 和 `d` 之后直接跟着辅音的时候，它的舌尖动作完整，但，不送气流，所以我们听不到它。有人把这种现象叫做 **省音**（*elision*）；但，这种说法容易产生误导 —— 听不到不意味着说没有，它是一个 **“看不见” 甚至 “听不到”，但 “的确存在” 的停顿**。`t, d` 的那个位置会有个**细微的停顿** —— 有时，即便舌尖动作并不完整，但那个停顿依然在 —— 通常会被非母语使用者直接忽视。这种停顿，语音学里叫做**声门停顿** *(glottal stop, a momentary tight closure of the vocal cords, )*。
+<span class="pho">t</span> 和 <span class="pho">d</span> 之后直接跟着辅音的时候，它的舌尖动作完整，但，不送气流，所以我们听不到它。有人把这种现象叫做 **省音**（*elision*）；但，这种说法容易产生误导 —— 听不到不意味着说没有，它是一个 **“看不见” 甚至 “听不到”，但 “的确存在” 的停顿**。<span class="pho">t, d</span> 的那个位置会有个**细微的停顿** —— 有时，即便舌尖动作并不完整，但那个停顿依然在 —— 通常会被非母语使用者直接忽视。这种停顿，语音学里叫做**声门停顿** *(glottal stop, a momentary tight closure of the vocal cords, )*。
 
-*hotdog*, 不是`/ˈhɑˌdɔg/`，而是 `/ˈhɑ·ˌdɔg/`<span class="speak-word-inline" data-audio-uk="/audios/hotdog-uk.mp3" data-audio-us="/audios/hotdog-us.mp3"></span>—— 这里的 `·` 代表那个极短的停顿。同样，*partner*，不是 `/ˈpɑrnər/` 而是 `/ˈpɑr·nər/`<span class="speak-word-inline" data-audio-uk="/audios/partner-uk.mp3" data-audio-us="/audios/partner-us.mp3"></span>；*hard-nosed*, 不是 `/ˌhɑːˈnəʊzd/`，而是 `/ˌhɑːr·ˈnəʊzd/`<span class="speak-word-inline" data-audio-uk="/audios/hardnosed-uk.mp3" data-audio-us="/audios/hardnosed-us.mp3"></span>。
+*hotdog*, 不是<span class="pho alt">ˈhɑˌdɔg</span>，而是 <span class="pho alt">ˈhɑ·ˌdɔg</span><span class="speak-word-inline" data-audio-uk="/audios/hotdog-uk.mp3" data-audio-us="/audios/hotdog-us.mp3"></span>—— 这里的 <span class="pho">·</span> 代表那个极短的停顿。同样，*partner*，不是 <span class="pho alt">ˈpɑrnər</span> 而是 <span class="pho alt">ˈpɑr·nər</span><span class="speak-word-inline" data-audio-uk="/audios/partner-uk.mp3" data-audio-us="/audios/partner-us.mp3"></span>；*hard-nosed*, 不是 <span class="pho alt">ˌhɑːˈnəʊzd</span>，而是 <span class="pho alt">ˌhɑːr·ˈnəʊzd</span><span class="speak-word-inline" data-audio-uk="/audios/hardnosed-uk.mp3" data-audio-us="/audios/hardnosed-us.mp3"></span>。
 
 ## 2.2.5.2. 叠音
 
-这不是 `t, d` 才有的现象。
+这不是 <span class="pho">t, d</span> 才有的现象。
 
 上一个音节末尾的辅音和下一个音节开头的辅音相同的时候，叫做**叠音**（*geminates*）。在连贯的自然语音中，着两个辅音就只发声一次 —— 但听起来的时候，有可能感受到前一个辅音存在造成细微停顿。它从机制上来看，其实和**省音**（[2.2.5.1](17-td#_2-2-5-1-省音)）一样。其实哪怕相邻的两个辅音相似的时候，也会发生同样的现象。
 
-比如，*at that time*, 不是 `/ət ðæt taɪm/`，而是 `/ə·ðætaɪm/`<span class="speak-word-inline" data-audio-uk="/audios/i-was-tired-at-that-time.-uk.mp3" data-audio-us="/audios/i-was-tired-at-that-time.-us.mp3"></span> —— 第一个 `t` 由于后面跟着一个辅音，于是产生了**省音**（[2.2.5.1](17-td#_2-2-5-1-省音)），听不到了，但，该有的停顿却依然在，在这里我们用 `·` 代表那个停顿 ；而后，第二个 `t` 与 第三个 `t`  是**叠音**，这两个 `t` 只发声一次。再比如，*a bad day*, 不是 `/ə bæd deɪ/`，而是 `/ə bæ deɪ/`<span class="speak-word-inline" data-audio-uk="/audios/this-is-really-a-bad-day.-uk.mp3" data-audio-us="/audios/this-is-really-a-bad-day.-us.mp3"></span>。
+比如，*at that time*, 不是 <span class="pho alt">ət ðæt taɪm</span>，而是 <span class="pho alt">ə·ðætaɪm</span><span class="speak-word-inline" data-audio-uk="/audios/i-was-tired-at-that-time.-uk.mp3" data-audio-us="/audios/i-was-tired-at-that-time.-us.mp3"></span> —— 第一个 <span class="pho">t</span> 由于后面跟着一个辅音，于是产生了**省音**（[2.2.5.1](17-td#_2-2-5-1-省音)），听不到了，但，该有的停顿却依然在，在这里我们用 <span class="pho">·</span> 代表那个停顿 ；而后，第二个 <span class="pho">t</span> 与 第三个 <span class="pho">t</span>  是**叠音**，这两个 <span class="pho">t</span> 只发声一次。再比如，*a bad day*, 不是 <span class="pho alt">ə bæd deɪ</span>，而是 <span class="pho alt">ə bæ deɪ</span><span class="speak-word-inline" data-audio-uk="/audios/this-is-really-a-bad-day.-uk.mp3" data-audio-us="/audios/this-is-really-a-bad-day.-us.mp3"></span>。
 
 ## 2.2.5.3. 同化
 
-`t` 为末尾的单词，遇到 `ju` 开头的单词，连起来读的时候，`t` 往往会变成 `tʃ`；而 `d` 遇到 `ju` 的话，`d` 会变成 `dʒ`。这种现象被称为**同化**（*assimilation*）。最常见的比如，*Don't you?* `/dəʊn tʃju?/`<span class="speak-word-inline" data-audio-uk="/audios/dont-you-uk.mp3" data-audio-us="/audios/dont-you-us.mp3"></span>；以及，*Would you?* `/wʊ dʒju?/`<span class="speak-word-inline" data-audio-uk="/audios/would-you-uk.mp3" data-audio-us="/audios/would-you-us.mp3"></span> 这里的关键在于，`t, d` 发声时起始的舌尖位置如果放对了（[2.2.4](16-tdsz)），它与后面的 `/ju/` 连起来的发声就只能如此。
+<span class="pho">t</span> 为末尾的单词，遇到 <span class="pho">ju</span> 开头的单词，连起来读的时候，<span class="pho">t</span> 往往会变成 <span class="pho">tʃ</span>；而 <span class="pho">d</span> 遇到 <span class="pho">ju</span> 的话，<span class="pho">d</span> 会变成 <span class="pho">dʒ</span>。这种现象被称为**同化**（*assimilation*）。最常见的比如，*Don't you?* <span class="pho alt">dəʊn tʃju?</span><span class="speak-word-inline" data-audio-uk="/audios/dont-you-uk.mp3" data-audio-us="/audios/dont-you-us.mp3"></span>；以及，*Would you?* <span class="pho alt">wʊ dʒju?</span><span class="speak-word-inline" data-audio-uk="/audios/would-you-uk.mp3" data-audio-us="/audios/would-you-us.mp3"></span> 这里的关键在于，<span class="pho">t, d</span> 发声时起始的舌尖位置如果放对了（[2.2.4](16-tdsz)），它与后面的 <span class="pho alt">ju</span> 连起来的发声就只能如此。
 
-同化主要发生在 `j` 这个音上。除了已经讲过的 `j` 前面遇到 `t` 和 `d` 时会产生同化之外，`s+j` 以及 `z+j` 也**可能**会产生同化 —— 请注意，这两组是**可能**，并非一定，并非所有英文母语使用者都如此发音。`s+j` 可能会被读成 `ʃ`，`z+j` 可能会被读成 `ʒ`。比如，*Miss you so much.* `/mɪ ʃu səʊ mʌʧ./`<span class="speak-word-inline" data-audio-uk="/audios/miss-you-so-much-uk.mp3" data-audio-us="/audios/miss-you-so-much-us.mp3"></span>；*It was your job.* `/ɪt wɒ ʒʊr ʤɒb./`<span class="speak-word-inline" data-audio-uk="/audios/it-was-your-job-uk.mp3" data-audio-us="/audios/it-was-your-job-us.mp3"></span>。
+同化主要发生在 <span class="pho">j</span> 这个音上。除了已经讲过的 <span class="pho">j</span> 前面遇到 <span class="pho">t</span> 和 <span class="pho">d</span> 时会产生同化之外，<span class="pho">s+j</span> 以及 <span class="pho">z+j</span> 也**可能**会产生同化 —— 请注意，这两组是**可能**，并非一定，并非所有英文母语使用者都如此发音。<span class="pho">s+j</span> 可能会被读成 <span class="pho">ʃ</span>，<span class="pho">z+j</span> 可能会被读成 <span class="pho">ʒ</span>。比如，*Miss you so much.* <span class="pho alt">mɪ ʃu səʊ mʌʧ.</span><span class="speak-word-inline" data-audio-uk="/audios/miss-you-so-much-uk.mp3" data-audio-us="/audios/miss-you-so-much-us.mp3"></span>；*It was your job.* <span class="pho alt">ɪt wɒ ʒʊr ʤɒb.</span><span class="speak-word-inline" data-audio-uk="/audios/it-was-your-job-uk.mp3" data-audio-us="/audios/it-was-your-job-us.mp3"></span>。
 
 ## 2.2.5.4. 弹舌音
 
-这是**美式**发音的一个特点 —— `t` 被夹在两个元音之间的时候，可能是单词之内，也可能是单词之间，它会变成所谓的弹舌音，往往被标注为 `t̬`，被称为**弹舌音** （*alveolar flapping t*） —— 听起来非常接近 `d`。这种情况在英文语音中出现的情况实在太多，比如，*bottom*<span class="speak-word-inline" data-audio-us="/audios/bottom-us.mp3"></span>, *butter*<span class="speak-word-inline" data-audio-us="/audios/butter-us.mp3"></span>, *daughter*<span class="speak-word-inline" data-audio-us="/audios/daughter-us.mp3"></span>, *here at our university*<span class="speak-word-inline" data-audio-us="/audios/here-at-our-university-us.mp3"></span>, *not at all*<span class="speak-word-inline" data-audio-us="/audios/not-at-all-us.mp3"></span>, *set it up*<span class="speak-word-inline" data-audio-us="/audios/set-it-up-us.mp3"></span>, *water*<span class="speak-word-inline" data-audio-us="/audios/water-us.mp3"></span>...
+这是**美式**发音的一个特点 —— <span class="pho">t</span> 被夹在两个元音之间的时候，可能是单词之内，也可能是单词之间，它会变成所谓的弹舌音，往往被标注为 <span class="pho">t̬</span>，被称为**弹舌音** （*alveolar flapping t*） —— 听起来非常接近 <span class="pho">d</span>。这种情况在英文语音中出现的情况实在太多，比如，*bottom*<span class="speak-word-inline" data-audio-us="/audios/bottom-us.mp3"></span>, *butter*<span class="speak-word-inline" data-audio-us="/audios/butter-us.mp3"></span>, *daughter*<span class="speak-word-inline" data-audio-us="/audios/daughter-us.mp3"></span>, *here at our university*<span class="speak-word-inline" data-audio-us="/audios/here-at-our-university-us.mp3"></span>, *not at all*<span class="speak-word-inline" data-audio-us="/audios/not-at-all-us.mp3"></span>, *set it up*<span class="speak-word-inline" data-audio-us="/audios/set-it-up-us.mp3"></span>, *water*<span class="speak-word-inline" data-audio-us="/audios/water-us.mp3"></span>...
 
 ## 2.2.5.5. 击穿
 
-很多美国人在 `t` 这个音上还有另外一个特殊的习惯，`t` 跟在 `n` 之后的时候，美国人说话的方式会让我们听不到那个 `t`，即所谓的击穿（*dropping*）。比如，他们说 *interview* 的时候你听到的可能是 `/ˈɪnəˌvju/`<span class="speak-word-inline" data-audio-us="/audios/interview-alloy.mp3"></span>。另外一个更常见被击穿的音是 `h`（[2.2.8](20-h)）
+很多美国人在 <span class="pho">t</span> 这个音上还有另外一个特殊的习惯，<span class="pho">t</span> 跟在 <span class="pho">n</span> 之后的时候，美国人说话的方式会让我们听不到那个 <span class="pho">t</span>，即所谓的击穿（*dropping*）。比如，他们说 *interview* 的时候你听到的可能是 <span class="pho alt">ˈɪnəˌvju</span><span class="speak-word-inline" data-audio-us="/audios/interview-alloy.mp3"></span>。另外一个更常见被击穿的音是 <span class="pho">h</span>（[2.2.8](20-h)）
 
 <br />
 
@@ -442,141 +442,141 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 ::: tip
 告诉你个很好玩的事儿：
 
-> 只要你把所有 `t` 都读成 `d`，你听起来就很像印度人，要是把所有长元音都读短，就更像……
+> 只要你把所有 <span class="pho">t</span> 都读成 <span class="pho">d</span>，你听起来就很像印度人，要是把所有长元音都读短，就更像……
 
 比如，你可以试着玩玩这句：<span class="speak-word-inline" data-audio-other="/audios/en-IN-Dont-tell-me.mp3"></span>*Don't tell me what to do!*
 :::
-# 2.2.6. `tr, dr, ts, dz`
+# 2.2.6. <span class="pho">tr, dr, ts, dz</span>
 
-`tr/tʃ` 声音上很接近，它们发声时起始的舌尖位置相同，但舌尖姿势略有不同。`tr` 是舌尖顶着上颚（贴在牙齿和牙龈分界再往后一点点 [2.2.4](#2.2.4.-`t,-d,-s,-z;-ʃ,-tʃ,-dʒ`)），`tʃ` 是紧挨着舌尖的那一小部分舌面贴着上颚。`dr` 和 `dʒ` 的区别也是如此。
+<span class="pho">tr/tʃ</span> 声音上很接近，它们发声时起始的舌尖位置相同，但舌尖姿势略有不同。<span class="pho">tr</span> 是舌尖顶着上颚（贴在牙齿和牙龈分界再往后一点点 [2.2.4](#2.2.4.-<span class="pho">t,-d,-s,-z;-ʃ,-tʃ,-dʒ</span>)），<span class="pho">tʃ</span> 是紧挨着舌尖的那一小部分舌面贴着上颚。<span class="pho">dr</span> 和 <span class="pho">dʒ</span> 的区别也是如此。
 
-`tr, dr` 和 `tʃ, dʒ` 不一样的地方在于，`tr, dr` 在发声之前嘴唇要有个缩小成圆形的动作，所以它们开头的音节，总是听起来夹带着一个 `w`，tree `/triː`/ 听起来好像是 `/tʃwiː/`<span class="speak-word-inline" data-audio-uk="/audios/tree-uk.mp3" data-audio-us="/audios/tree-us.mp3"></span>，dry `/draɪ/` 听起来好像是 `/dʒwaɪ/`<span class="speak-word-inline" data-audio-uk="/audios/dry-uk.mp3" data-audio-us="/audios/dry-us.mp3"></span>。
+<span class="pho">tr, dr</span> 和 <span class="pho">tʃ, dʒ</span> 不一样的地方在于，<span class="pho">tr, dr</span> 在发声之前嘴唇要有个缩小成圆形的动作，所以它们开头的音节，总是听起来夹带着一个 <span class="pho">w</span>，tree <span class="pho">/triː</span>/ 听起来好像是 <span class="pho alt">tʃwiː</span><span class="speak-word-inline" data-audio-uk="/audios/tree-uk.mp3" data-audio-us="/audios/tree-us.mp3"></span>，dry <span class="pho alt">draɪ</span> 听起来好像是 <span class="pho alt">dʒwaɪ</span><span class="speak-word-inline" data-audio-uk="/audios/dry-uk.mp3" data-audio-us="/audios/dry-us.mp3"></span>。
 
-很多地区的人基于自身母语的习惯，对它们有自然的区分，因为在他们的母语里，`tr` 和 `dr` 总是分开连续读出的。比如，*tree*，印度人可能会把它读成 `/t·riː/`<span class="speak-word-inline" data-audio-other="/audios/tree-ru-ru.mp3"></span>，其中的 `r` 会用齿龈颤音；再比如，*driver*，可能会被俄罗斯人读成 `/d·raɪvə/`<span class="speak-word-inline" data-audio-other="/audios/driver-ru-ru.mp3"></span>，其中的 `r` 同样会用齿龈颤音。
+很多地区的人基于自身母语的习惯，对它们有自然的区分，因为在他们的母语里，<span class="pho">tr</span> 和 <span class="pho">dr</span> 总是分开连续读出的。比如，*tree*，印度人可能会把它读成 <span class="pho alt">t·riː</span><span class="speak-word-inline" data-audio-other="/audios/tree-ru-ru.mp3"></span>，其中的 <span class="pho">r</span> 会用齿龈颤音；再比如，*driver*，可能会被俄罗斯人读成 <span class="pho alt">d·raɪvə</span><span class="speak-word-inline" data-audio-other="/audios/driver-ru-ru.mp3"></span>，其中的 <span class="pho">r</span> 同样会用齿龈颤音。
 
-`ts` 和 `dz` 发声时起始的舌尖位置和 `t` 以及 `d` 一样。`ts` 很像中文普通话拼音里的 `c`，只不过，发生时起始的舌尖位置不在牙齿上。`dz`，只要是调整好 `d` 的发生时起始的舌尖位置（`z` 的舌尖位置也是同一个地方），就不会有任何问题，`dz` 实际上也的确听起来和 `z` 没有区别。
-
-
-# 2.2.7. `sp, st, str, sk`
-
-`p, t, k` 这三个清辅音对应着三个浊辅音： `b, d, g`。
-
-需要注意的是，`p, t, k` 这三个清辅音在 `s` 之后的时候会发生 “浊化” 现象。另外请注意，`tr` 也会在 `s` 之后变成 `dr`。
-
-> * *speak* `/spiːk/` 实际上读作 `/sbiːk/`<span class="speak-word-inline" data-audio-uk="/audios/speak-uk.mp3" data-audio-us="/audios/speak-us.mp3"></span>
-> * *student* `/ˈstudənt/` 实际上读作 `/ˈsdudənt/`<span class="speak-word-inline" data-audio-uk="/audios/student-uk.mp3" data-audio-us="/audios/student-us.mp3"></span>
-> * *school* `/skuːl/` 实际上读作 `/sguːl/`<span class="speak-word-inline" data-audio-uk="/audios/school-uk.mp3" data-audio-us="/audios/school-us.mp3"></span>
-> * *frustrate* `/ˈfrʌˌstreɪt/` 实际上读作 `/ˈfrʌˌsdreɪt/`<span class="speak-word-inline" data-audio-uk="/audios/frustrate-uk.mp3" data-audio-us="/audios/frustrate-us.mp3"></span>
-# 2.2.8. `h`
-
-`h` 这个音单独发声的时候，大家都没问题，但有个另外的细节需要注意。
-
-`h` 前面有另外一个辅音的时候，`h` 常常会被 “击穿”（*Dropping*）。
-
-比如，*Was he hurt?* 三个单词分开读，应该是 `/wɒz hi həːt/` 在连贯的语音中，会被读成 `/wɒzi həːt/`<span class="speak-word-inline" data-audio-uk="/audios/Was-he-hurt-uk.mp3" data-audio-us="/audios/Was-he-hurt-us.mp3"></span>—— `h` 不见了，被击穿了。
-
-再比如，*let him*，会变成 `/letɪm/`<span class="speak-word-inline" data-audio-uk="/audios/let-him-uk.mp3" data-audio-us="/audios/let-him-us.mp3"></span>，而后，因为 `h` 被击穿了之后，`t` 相当于被夹在两个元音之间，所以美国人会读成弹舌音 `t̬`（[2.2.5.4](17-td#_2-2-5-4-弹舌音)），与此同时，他们还倾向于把非重音上的 `ɪ` 读成 `ə`（[1.1.3](01-3-us-phonemes)），于是，他们说的是 `/let̬əm/`；
-
-又比如，*household* 这个词听起来更像是`ˈ/haʊˌsəʊld/`<span class="speak-word-inline" data-audio-uk="/audios/household-uk.mp3" data-audio-us="/audios/household-us.mp3"></span>……
+<span class="pho">ts</span> 和 <span class="pho">dz</span> 发声时起始的舌尖位置和 <span class="pho">t</span> 以及 <span class="pho">d</span> 一样。<span class="pho">ts</span> 很像中文普通话拼音里的 <span class="pho">c</span>，只不过，发生时起始的舌尖位置不在牙齿上。<span class="pho">dz</span>，只要是调整好 <span class="pho">d</span> 的发生时起始的舌尖位置（<span class="pho">z</span> 的舌尖位置也是同一个地方），就不会有任何问题，<span class="pho">dz</span> 实际上也的确听起来和 <span class="pho">z</span> 没有区别。
 
 
+# 2.2.7. <span class="pho">sp, st, str, sk</span>
 
-# 2.2.9. `θ, ð`
+<span class="pho">p, t, k</span> 这三个清辅音对应着三个浊辅音： <span class="pho">b, d, g</span>。
 
-`θ, ð` 这两个辅音，学校里常见教材一般都强调说**一定要把舌尖夹在齿间**再开始发音。其实不一定要那么严格，实际上，舌尖即便没有伸出到齿外也可以，大多数时候，只要舌尖贴到上齿之后开始发音就可以了。
+需要注意的是，<span class="pho">p, t, k</span> 这三个清辅音在 <span class="pho">s</span> 之后的时候会发生 “浊化” 现象。另外请注意，<span class="pho">tr</span> 也会在 <span class="pho">s</span> 之后变成 <span class="pho">dr</span>。
+
+> * *speak* <span class="pho alt">spiːk</span> 实际上读作 <span class="pho alt">sbiːk</span><span class="speak-word-inline" data-audio-uk="/audios/speak-uk.mp3" data-audio-us="/audios/speak-us.mp3"></span>
+> * *student* <span class="pho alt">ˈstudənt</span> 实际上读作 <span class="pho alt">ˈsdudənt</span><span class="speak-word-inline" data-audio-uk="/audios/student-uk.mp3" data-audio-us="/audios/student-us.mp3"></span>
+> * *school* <span class="pho alt">skuːl</span> 实际上读作 <span class="pho alt">sguːl</span><span class="speak-word-inline" data-audio-uk="/audios/school-uk.mp3" data-audio-us="/audios/school-us.mp3"></span>
+> * *frustrate* <span class="pho alt">ˈfrʌˌstreɪt</span> 实际上读作 <span class="pho alt">ˈfrʌˌsdreɪt</span><span class="speak-word-inline" data-audio-uk="/audios/frustrate-uk.mp3" data-audio-us="/audios/frustrate-us.mp3"></span>
+# 2.2.8. <span class="pho">h</span>
+
+<span class="pho">h</span> 这个音单独发声的时候，大家都没问题，但有个另外的细节需要注意。
+
+<span class="pho">h</span> 前面有另外一个辅音的时候，<span class="pho">h</span> 常常会被 “击穿”（*Dropping*）。
+
+比如，*Was he hurt?* 三个单词分开读，应该是 <span class="pho alt">wɒz hi həːt</span> 在连贯的语音中，会被读成 <span class="pho alt">wɒzi həːt</span><span class="speak-word-inline" data-audio-uk="/audios/Was-he-hurt-uk.mp3" data-audio-us="/audios/Was-he-hurt-us.mp3"></span>—— <span class="pho">h</span> 不见了，被击穿了。
+
+再比如，*let him*，会变成 <span class="pho alt">letɪm</span><span class="speak-word-inline" data-audio-uk="/audios/let-him-uk.mp3" data-audio-us="/audios/let-him-us.mp3"></span>，而后，因为 <span class="pho">h</span> 被击穿了之后，<span class="pho">t</span> 相当于被夹在两个元音之间，所以美国人会读成弹舌音 <span class="pho">t̬</span>（[2.2.5.4](17-td#_2-2-5-4-弹舌音)），与此同时，他们还倾向于把非重音上的 <span class="pho">ɪ</span> 读成 <span class="pho">ə</span>（[1.1.3](01-3-us-phonemes)），于是，他们说的是 <span class="pho alt">let̬əm</span>；
+
+又比如，*household* 这个词听起来更像是<span class="pho">ˈ/haʊˌsəʊld/</span><span class="speak-word-inline" data-audio-uk="/audios/household-uk.mp3" data-audio-us="/audios/household-us.mp3"></span>……
+
+
+
+# 2.2.9. <span class="pho">θ, ð</span>
+
+<span class="pho">θ, ð</span> 这两个辅音，学校里常见教材一般都强调说**一定要把舌尖夹在齿间**再开始发音。其实不一定要那么严格，实际上，舌尖即便没有伸出到齿外也可以，大多数时候，只要舌尖贴到上齿之后开始发音就可以了。
 
 <img src="/images/speech-tract-θð.svg" class="themed" />
 
 
 
 #### 
-# 2.2.10. `r`
+# 2.2.10. <span class="pho">r</span>
 
-`r` 这个辅音原本不难，但，美式英语有个独特之处造成了困难。它的难度并不在于发音起始的 “舌尖位置”，而是 “舌尖姿势”。英式英语中，`r` 只有一种 “舌尖姿势”，舌尖向前贴在上颚；可在美式英语中，*rock* `r/ɔk/`<span class="speak-word-inline" data-audio-us="/audios/rock-us.mp3"></span> 是舌尖向前的，但，*card* `/kɑːʳd/`<span class="speak-word-inline" data-audio-us="/audios/card-us.mp3"></span> 的舌尖姿势却是后卷的。
+<span class="pho">r</span> 这个辅音原本不难，但，美式英语有个独特之处造成了困难。它的难度并不在于发音起始的 “舌尖位置”，而是 “舌尖姿势”。英式英语中，<span class="pho">r</span> 只有一种 “舌尖姿势”，舌尖向前贴在上颚；可在美式英语中，*rock* <span class="pho">r/ɔk/</span><span class="speak-word-inline" data-audio-us="/audios/rock-us.mp3"></span> 是舌尖向前的，但，*card* <span class="pho alt">kɑːʳd</span><span class="speak-word-inline" data-audio-us="/audios/card-us.mp3"></span> 的舌尖姿势却是后卷的。
 
 <img src="/images/speech-tract-r.svg" class="themed" />
 
-与 `l` 一样（[2.2.11](23-l)），处于元音之后的 `r` 由于有完整的舌尖动作，会使之前的元音附加一个音标标注里看不到的 `ə`，比如：
+与 <span class="pho">l</span> 一样（[2.2.11](23-l)），处于元音之后的 <span class="pho">r</span> 由于有完整的舌尖动作，会使之前的元音附加一个音标标注里看不到的 <span class="pho">ə</span>，比如：
 
-> * *fear* `/fɪr/` → `/fɪər/`<span class="speak-word-inline" data-audio-uk="/audios/fear-uk.mp3" data-audio-us="/audios/fear-us.mp3"></span>
-> * *wear* `/wer/` → `/weər/`<span class="speak-word-inline" data-audio-uk="/audios/wear-uk.mp3" data-audio-us="/audios/wear-us.mp3"></span>
-# 2.2.11. `l`
+> * *fear* <span class="pho alt">fɪr</span> → <span class="pho alt">fɪər</span><span class="speak-word-inline" data-audio-uk="/audios/fear-uk.mp3" data-audio-us="/audios/fear-us.mp3"></span>
+> * *wear* <span class="pho alt">wer</span> → <span class="pho alt">weər</span><span class="speak-word-inline" data-audio-uk="/audios/wear-uk.mp3" data-audio-us="/audios/wear-us.mp3"></span>
+# 2.2.11. <span class="pho">l</span>
 
-`l` 这个辅音，和 `r` 一样，在元音前后都有出现的可能 —— 亚洲语言里多少都有 `r` 化音，所以，`r` 在元音之后的情况对亚洲人来说都不是问题。难点在于 `l` 在元音之后的情况 —— 这种情况在亚洲语言里几乎不存在。
+<span class="pho">l</span> 这个辅音，和 <span class="pho">r</span> 一样，在元音前后都有出现的可能 —— 亚洲语言里多少都有 <span class="pho">r</span> 化音，所以，<span class="pho">r</span> 在元音之后的情况对亚洲人来说都不是问题。难点在于 <span class="pho">l</span> 在元音之后的情况 —— 这种情况在亚洲语言里几乎不存在。
 
-难点在于 `l` 在元音之后的情况。比如，*individual* `/ˌɪndɪˈvɪdʒəwəl/`<span class="speak-word-inline" data-audio-uk="/audios/individual-uk.mp3" data-audio-us="/audios/individual-us.mp3"></span>这个词，或者更简单的单音节单词，*girl* `/gəːl/`<span class="speak-word-inline" data-audio-uk="/audios/girl-uk.mp3" data-audio-us="/audios/girl-us.mp3"></span>，元音后的 `l` 常常会被不小心忽略。
+难点在于 <span class="pho">l</span> 在元音之后的情况。比如，*individual* <span class="pho alt">ˌɪndɪˈvɪdʒəwəl</span><span class="speak-word-inline" data-audio-uk="/audios/individual-uk.mp3" data-audio-us="/audios/individual-us.mp3"></span>这个词，或者更简单的单音节单词，*girl* <span class="pho alt">gəːl</span><span class="speak-word-inline" data-audio-uk="/audios/girl-uk.mp3" data-audio-us="/audios/girl-us.mp3"></span>，元音后的 <span class="pho">l</span> 常常会被不小心忽略。
 
-关键在于，元音之后的 `l` 有一个完整的舌尖动作，在发完 `ə` 这个音之后，舌尖会被推上去直至贴到上颚。
+关键在于，元音之后的 <span class="pho">l</span> 有一个完整的舌尖动作，在发完 <span class="pho">ə</span> 这个音之后，舌尖会被推上去直至贴到上颚。
 
-有些人能听出末尾的那个 `l`，所以不会忽略它；但，由于看不到口腔内舌尖的位置和姿势，仅凭听力，人们会借用别的方式完成自己感受到的差异，比如，末尾的 `l` 中国人会用带有嘴唇动作的 `əʊ` 替代，于是就把 *girl* 读作 `/gəʊ/`；而韩国人会用 `r` 替代 `l`，于是把 *girl* 读成 `/gəːr/`。
+有些人能听出末尾的那个 <span class="pho">l</span>，所以不会忽略它；但，由于看不到口腔内舌尖的位置和姿势，仅凭听力，人们会借用别的方式完成自己感受到的差异，比如，末尾的 <span class="pho">l</span> 中国人会用带有嘴唇动作的 <span class="pho">əʊ</span> 替代，于是就把 *girl* 读作 <span class="pho alt">gəʊ</span>；而韩国人会用 <span class="pho">r</span> 替代 <span class="pho">l</span>，于是把 *girl* 读成 <span class="pho alt">gəːr</span>。
 
-所以，要格外注意 `l` 在元音之后的情况，注意舌尖位置正确，动作完整，不能有嘴唇动作 —— 否则就会出现 `ʊ` 音。
+所以，要格外注意 <span class="pho">l</span> 在元音之后的情况，注意舌尖位置正确，动作完整，不能有嘴唇动作 —— 否则就会出现 <span class="pho">ʊ</span> 音。
 
 <img alt="speech tract of /l/" src="/images/speech-tract-l.svg" class="themed" />
 
-格外需要注意的是，由于处于音节末尾的 `l` 有这个完整的舌尖动作，于是，它之前的`ɪ`、`iː`、`eɪ`、`e`、`æ` 都会附加这一个未标注音标的 `ə` 音 —— 完整舌尖动作的自然结果。
+格外需要注意的是，由于处于音节末尾的 <span class="pho">l</span> 有这个完整的舌尖动作，于是，它之前的<span class="pho">ɪ</span>、<span class="pho">iː</span>、<span class="pho">eɪ</span>、<span class="pho">e</span>、<span class="pho">æ</span> 都会附加这一个未标注音标的 <span class="pho">ə</span> 音 —— 完整舌尖动作的自然结果。
 
-> * seal `/siːl/` → `/siːəl/`<span class="speak-word-inline" data-audio-uk="/audios/seal-uk.mp3" data-audio-us="/audios/seal-us.mp3"></span>
-> * fill `/fɪl/` → `/fɪəl/`<span class="speak-word-inline" data-audio-uk="/audios/fill-uk.mp3" data-audio-us="/audios/fill-us.mp3"></span>
-> * tale `/teɪl/` → `/teɪəl/`<span class="speak-word-inline" data-audio-uk="/audios/tale-uk.mp3" data-audio-us="/audios/tale-us.mp3"></span>
-> * well `/wel/` → `/weəl/`<span class="speak-word-inline" data-audio-uk="/audios/well-uk.mp3" data-audio-us="/audios/well-us.mp3"></span>
-> * shall `/ʃæl/` → `/ʃæəl/`<span class="speak-word-inline" data-audio-uk="/audios/shall-uk.mp3" data-audio-us="/audios/shall-us.mp3"></span>
+> * seal <span class="pho alt">siːl</span> → <span class="pho alt">siːəl</span><span class="speak-word-inline" data-audio-uk="/audios/seal-uk.mp3" data-audio-us="/audios/seal-us.mp3"></span>
+> * fill <span class="pho alt">fɪl</span> → <span class="pho alt">fɪəl</span><span class="speak-word-inline" data-audio-uk="/audios/fill-uk.mp3" data-audio-us="/audios/fill-us.mp3"></span>
+> * tale <span class="pho alt">teɪl</span> → <span class="pho alt">teɪəl</span><span class="speak-word-inline" data-audio-uk="/audios/tale-uk.mp3" data-audio-us="/audios/tale-us.mp3"></span>
+> * well <span class="pho alt">wel</span> → <span class="pho alt">weəl</span><span class="speak-word-inline" data-audio-uk="/audios/well-uk.mp3" data-audio-us="/audios/well-us.mp3"></span>
+> * shall <span class="pho alt">ʃæl</span> → <span class="pho alt">ʃæəl</span><span class="speak-word-inline" data-audio-uk="/audios/shall-uk.mp3" data-audio-us="/audios/shall-us.mp3"></span>
 
-注意，`r` 之前也常常有同样的现象（[2.2.10](22-r)）。
+注意，<span class="pho">r</span> 之前也常常有同样的现象（[2.2.10](22-r)）。
 
-另外，`l` 和 `m`、`n` 一样，有时也会使之前的辅音变成**音节辅音**（[2.2.3](15-mn)）。比如，*little* `/ˈlɪt̩l/`<span class="speak-word-inline" data-audio-uk="/audios/little-uk.mp3" data-audio-us="/audios/little-us.mp3"></span>（注意，这里的 `t` 会被浊化，变成弹舌音 `t̬`，听起来像是 `d`），*awful* `/ˈɔf̩l/`<span class="speak-word-inline" data-audio-uk="/audios/awful-uk.mp3" data-audio-us="/audios/awful-us.mp3"></span>。
+另外，<span class="pho">l</span> 和 <span class="pho">m</span>、<span class="pho">n</span> 一样，有时也会使之前的辅音变成**音节辅音**（[2.2.3](15-mn)）。比如，*little* <span class="pho alt">ˈlɪt̩l</span><span class="speak-word-inline" data-audio-uk="/audios/little-uk.mp3" data-audio-us="/audios/little-us.mp3"></span>（注意，这里的 <span class="pho">t</span> 会被浊化，变成弹舌音 <span class="pho">t̬</span>，听起来像是 <span class="pho">d</span>），*awful* <span class="pho alt">ˈɔf̩l</span><span class="speak-word-inline" data-audio-uk="/audios/awful-uk.mp3" data-audio-us="/audios/awful-us.mp3"></span>。
 
-# 2.2.12. `ʒ`
+# 2.2.12. <span class="pho">ʒ</span>
 
-`ʒ` 这个音在中文中不存在，是位于 `r` 和 `dʒ` 之间的音。这个音对亚洲人来说，有点难。其实，只要肯反复练习，这个音对中文普通话使用者来说并不像最初以为的那么难。先试试说一下 `dʒ`（中文普通话拼音中的 `zh`），然后，把顶在上颚上的舌面略微下放一点点，留出一个缝隙以便气流通过 —— `ʒ`和 `dʒ` 的区别就是这个缝隙。
+<span class="pho">ʒ</span> 这个音在中文中不存在，是位于 <span class="pho">r</span> 和 <span class="pho">dʒ</span> 之间的音。这个音对亚洲人来说，有点难。其实，只要肯反复练习，这个音对中文普通话使用者来说并不像最初以为的那么难。先试试说一下 <span class="pho">dʒ</span>（中文普通话拼音中的 <span class="pho">zh</span>），然后，把顶在上颚上的舌面略微下放一点点，留出一个缝隙以便气流通过 —— <span class="pho">ʒ</span>和 <span class="pho">dʒ</span> 的区别就是这个缝隙。
 
-还记得吗？**母语中不存在的音素其实相对更容易学**（[2.2.2](14-fv)），但，有相似的就相对更难。`ʒ` 就因为与 `dʒ`（中文普通话拼音中的 `zh`）太相似了，所以才被中文普通话使用者全部都用 `dʒ` 替代……
+还记得吗？**母语中不存在的音素其实相对更容易学**（[2.2.2](14-fv)），但，有相似的就相对更难。<span class="pho">ʒ</span> 就因为与 <span class="pho">dʒ</span>（中文普通话拼音中的 <span class="pho">zh</span>）太相似了，所以才被中文普通话使用者全部都用 <span class="pho">dʒ</span> 替代……
 
 幸运的是，含有这个音在英文词汇其实很少，在最常用的 10,000 英语词汇里只有 69 个，而最常用的也就十几个：
 
-> * *beige* `/beɪʒ/`<span class="speak-word-inline" data-audio-uk="/audios/beige-uk.mp3" data-audio-us="/audios/beige-us.mp3"></span> A pale sandy yellow-brown color
-> * *collage* `/kəˈlɑːʒ/`<span class="speak-word-inline" data-audio-uk="/audios/collage-uk.mp3" data-audio-us="/audios/collage-us.mp3"></span> A piece of art made by sticking various different materials such as photographs and pieces of paper or fabric onto a backing
-> * *corsage* `/kɔːrˈsɑːʒ/`<span class="speak-word-inline" data-audio-uk="/audios/corsage-uk.mp3" data-audio-us="/audios/corsage-us.mp3"></span> A small bouquet of flowers worn on a woman's dress or around her wrist
-> * *decision* `/dɪˈsɪʒən/`<span class="speak-word-inline" data-audio-uk="/audios/decision-uk.mp3" data-audio-us="/audios/decision-us.mp3"></span> A conclusion or resolution reached after consideration
-> * *decoupage* `/ˌdeɪkuːˈpɑːʒ/`<span class="speak-word-inline" data-audio-uk="/audios/decoupage-uk.mp3" data-audio-us="/audios/decoupage-us.mp3"></span> The art or craft of decorating objects with paper cut-outs
-> * *garage* `/ɡəˈrɑːʒ/`<span class="speak-word-inline" data-audio-uk="/audios/garage-uk.mp3" data-audio-us="/audios/garage-us.mp3"></span> A building for housing a motor vehicle
-> * *genre* `/ˈʒɑːnrə/`<span class="speak-word-inline" data-audio-uk="/audios/genre-uk.mp3" data-audio-us="/audios/genre-us.mp3"></span> A category of artistic composition, as in music or literature
-> * *leisure* `/ˈleʒər/`<span class="speak-word-inline" data-audio-uk="/audios/leisure-uk.mp3" data-audio-us="/audios/leisure-us.mp3"></span> Time free from work or duties
-> * *massage* `/məˈsɑʒ/`<span class="speak-word-inline" data-audio-uk="/audios/massage-uk.mp3" data-audio-us="/audios/massage-us.mp3"></span> The rubbing and kneading of muscles and joints of the body with the hands, especially to relieve tension or pain
-> * *measure* `/ˈmeʒər/`<span class="speak-word-inline" data-audio-uk="/audios/measure-uk.mp3" data-audio-us="/audios/measure-us.mp3"></span> To ascertain the size, amount, or degree of something
-> * *mirage* `/mɪˈrɑːʒ/`<span class="speak-word-inline" data-audio-uk="/audios/mirage-uk.mp3" data-audio-us="/audios/mirage-us.mp3"></span> An optical illusion caused by atmospheric conditions
-> * *montage* `/mɒnˈtɑːʒ/`<span class="speak-word-inline" data-audio-uk="/audios/montage-uk.mp3" data-audio-us="/audios/montage-us.mp3"></span> The technique of producing a new composite whole from fragments of pictures, text, or music
-> * *pleasure* `/ˈpleʒər/`<span class="speak-word-inline" data-audio-uk="/audios/pleasure-uk.mp3" data-audio-us="/audios/pleasure-us.mp3"></span> A feeling of happy satisfaction and enjoyment
-> * *regime* `/reɪˈʒiːm/`<span class="speak-word-inline" data-audio-uk="/audios/regime-uk.mp3" data-audio-us="/audios/regime-us.mp3"></span> A government, especially an authoritarian one
-> * *rouge* `/ruːʒ/`<span class="speak-word-inline" data-audio-uk="/audios/rouge-uk.mp3" data-audio-us="/audios/rouge-us.mp3"></span> A red powder or cream used as a cosmetic for coloring the cheeks or lips
-> * *treasure* `/ˈtreʒər/`<span class="speak-word-inline" data-audio-uk="/audios/treasure-uk.mp3" data-audio-us="/audios/treasure-us.mp3"></span> A quantity of precious metals, gems, or other valuable objects
-> * *usual* `/ˈjuʒəwəl/`<span class="speak-word-inline" data-audio-uk="/audios/usual-uk.mp3" data-audio-us="/audios/usual-us.mp3"></span> Habitually or typically occurring or done
-> * *vision* `/ˈvɪʒən/`<span class="speak-word-inline" data-audio-uk="/audios/vision-uk.mp3" data-audio-us="/audios/vision-us.mp3"></span> The ability to see; sight
+> * *beige* <span class="pho alt">beɪʒ</span><span class="speak-word-inline" data-audio-uk="/audios/beige-uk.mp3" data-audio-us="/audios/beige-us.mp3"></span> A pale sandy yellow-brown color
+> * *collage* <span class="pho alt">kəˈlɑːʒ</span><span class="speak-word-inline" data-audio-uk="/audios/collage-uk.mp3" data-audio-us="/audios/collage-us.mp3"></span> A piece of art made by sticking various different materials such as photographs and pieces of paper or fabric onto a backing
+> * *corsage* <span class="pho alt">kɔːrˈsɑːʒ</span><span class="speak-word-inline" data-audio-uk="/audios/corsage-uk.mp3" data-audio-us="/audios/corsage-us.mp3"></span> A small bouquet of flowers worn on a woman's dress or around her wrist
+> * *decision* <span class="pho alt">dɪˈsɪʒən</span><span class="speak-word-inline" data-audio-uk="/audios/decision-uk.mp3" data-audio-us="/audios/decision-us.mp3"></span> A conclusion or resolution reached after consideration
+> * *decoupage* <span class="pho alt">ˌdeɪkuːˈpɑːʒ</span><span class="speak-word-inline" data-audio-uk="/audios/decoupage-uk.mp3" data-audio-us="/audios/decoupage-us.mp3"></span> The art or craft of decorating objects with paper cut-outs
+> * *garage* <span class="pho alt">ɡəˈrɑːʒ</span><span class="speak-word-inline" data-audio-uk="/audios/garage-uk.mp3" data-audio-us="/audios/garage-us.mp3"></span> A building for housing a motor vehicle
+> * *genre* <span class="pho alt">ˈʒɑːnrə</span><span class="speak-word-inline" data-audio-uk="/audios/genre-uk.mp3" data-audio-us="/audios/genre-us.mp3"></span> A category of artistic composition, as in music or literature
+> * *leisure* <span class="pho alt">ˈleʒər</span><span class="speak-word-inline" data-audio-uk="/audios/leisure-uk.mp3" data-audio-us="/audios/leisure-us.mp3"></span> Time free from work or duties
+> * *massage* <span class="pho alt">məˈsɑʒ</span><span class="speak-word-inline" data-audio-uk="/audios/massage-uk.mp3" data-audio-us="/audios/massage-us.mp3"></span> The rubbing and kneading of muscles and joints of the body with the hands, especially to relieve tension or pain
+> * *measure* <span class="pho alt">ˈmeʒər</span><span class="speak-word-inline" data-audio-uk="/audios/measure-uk.mp3" data-audio-us="/audios/measure-us.mp3"></span> To ascertain the size, amount, or degree of something
+> * *mirage* <span class="pho alt">mɪˈrɑːʒ</span><span class="speak-word-inline" data-audio-uk="/audios/mirage-uk.mp3" data-audio-us="/audios/mirage-us.mp3"></span> An optical illusion caused by atmospheric conditions
+> * *montage* <span class="pho alt">mɒnˈtɑːʒ</span><span class="speak-word-inline" data-audio-uk="/audios/montage-uk.mp3" data-audio-us="/audios/montage-us.mp3"></span> The technique of producing a new composite whole from fragments of pictures, text, or music
+> * *pleasure* <span class="pho alt">ˈpleʒər</span><span class="speak-word-inline" data-audio-uk="/audios/pleasure-uk.mp3" data-audio-us="/audios/pleasure-us.mp3"></span> A feeling of happy satisfaction and enjoyment
+> * *regime* <span class="pho alt">reɪˈʒiːm</span><span class="speak-word-inline" data-audio-uk="/audios/regime-uk.mp3" data-audio-us="/audios/regime-us.mp3"></span> A government, especially an authoritarian one
+> * *rouge* <span class="pho alt">ruːʒ</span><span class="speak-word-inline" data-audio-uk="/audios/rouge-uk.mp3" data-audio-us="/audios/rouge-us.mp3"></span> A red powder or cream used as a cosmetic for coloring the cheeks or lips
+> * *treasure* <span class="pho alt">ˈtreʒər</span><span class="speak-word-inline" data-audio-uk="/audios/treasure-uk.mp3" data-audio-us="/audios/treasure-us.mp3"></span> A quantity of precious metals, gems, or other valuable objects
+> * *usual* <span class="pho alt">ˈjuʒəwəl</span><span class="speak-word-inline" data-audio-uk="/audios/usual-uk.mp3" data-audio-us="/audios/usual-us.mp3"></span> Habitually or typically occurring or done
+> * *vision* <span class="pho alt">ˈvɪʒən</span><span class="speak-word-inline" data-audio-uk="/audios/vision-uk.mp3" data-audio-us="/audios/vision-us.mp3"></span> The ability to see; sight
 
 
-# 2.2.13. `j, w`
+# 2.2.13. <span class="pho">j, w</span>
 
 这两个辅音在单个音节里作为开头时，对绝大多数人来说没有任何障碍。
 
 值得注意的是，有时候，在 “前面一个以元音结尾的音节” 与 “后面一个以元音开头的音节” 相连之时，这两个音会 “莫名其妙地插入”…… 语音学里对这个现象有个专门的称呼，叫做**加音**（ *intrusion*）。
 
-* `j` *intrusion*（前一个音节以 `ɪ` 结尾）
+* <span class="pho">j</span> *intrusion*（前一个音节以 <span class="pho">ɪ</span> 结尾）
 
-> * *I am* - `/ˈaɪ ˈæm/` ⭢ `/ˈaɪjæm/`
-> * *He is* - `/ˈhiː ˈɪz/` ⭢ `/ˈhiːjɪz/`.
-> * *She is* - `/ˈʃiː ˈɪz/` ⭢ `/ˈʃiːjɪz/`.
-> * *They are* - `/ˈðeɪ ˈɑːr/` ⭢ `/ˈðeɪjɑːr/`.
+> * *I am* - <span class="pho alt">ˈaɪ ˈæm</span> ⭢ <span class="pho alt">ˈaɪjæm</span>
+> * *He is* - <span class="pho alt">ˈhiː ˈɪz</span> ⭢ <span class="pho alt">ˈhiːjɪz</span>.
+> * *She is* - <span class="pho alt">ˈʃiː ˈɪz</span> ⭢ <span class="pho alt">ˈʃiːjɪz</span>.
+> * *They are* - <span class="pho alt">ˈðeɪ ˈɑːr</span> ⭢ <span class="pho alt">ˈðeɪjɑːr</span>.
 
-* `w` *intrusion*（前一个音节以 `ʊ` 结尾）
+* <span class="pho">w</span> *intrusion*（前一个音节以 <span class="pho">ʊ</span> 结尾）
 
-> * *Go away* - `/ˈɡəʊ əˈweɪ/` ⭢ `/ˈɡəʊwəˈweɪ/`
-> * *Do all* - `/ˈduː ˈɔːl/` ⭢ `/ˈduːwɔːl/`
-> * *Do it* - `/ˈduː ˈɪt/` ⭢ `/ˈduːwɪt/`
-> * *Throw it* - `/ˈθrəʊ ˈɪt/` ⭢  `/ˈθrəʊwɪt/`
+> * *Go away* - <span class="pho alt">ˈɡəʊ əˈweɪ</span> ⭢ <span class="pho alt">ˈɡəʊwəˈweɪ</span>
+> * *Do all* - <span class="pho alt">ˈduː ˈɔːl</span> ⭢ <span class="pho alt">ˈduːwɔːl</span>
+> * *Do it* - <span class="pho alt">ˈduː ˈɪt</span> ⭢ <span class="pho alt">ˈduːwɪt</span>
+> * *Throw it* - <span class="pho alt">ˈθrəʊ ˈɪt</span> ⭢  <span class="pho alt">ˈθrəʊwɪt</span>
 
-之前提到过的例子 *individual* `/ˌɪndɪˈvɪdʒəwəl/`（[2.1.4](07-ə), [2.2.11](23-l)），是个多音节词汇，如果仔细看的话，就会发现，后半部分， /`dʒə-wəl/` ，其实也是 `/dʒju-əl/` 经过 *intrusion* 插入了一个 `w` 而演化过来的。
+之前提到过的例子 *individual* <span class="pho alt">ˌɪndɪˈvɪdʒəwəl</span>（[2.1.4](07-ə), [2.2.11](23-l)），是个多音节词汇，如果仔细看的话，就会发现，后半部分， /<span class="pho">dʒə-wəl/</span> ，其实也是 <span class="pho alt">dʒju-əl</span> 经过 *intrusion* 插入了一个 <span class="pho">w</span> 而演化过来的。
 
-另外，请注意复习一下 `t+j`、`d+j`、`s+j`、`z+j` 可能会产生的同化现象（[2.2.5.3](17-td#_2-2-5-3-同化)）。
+另外，请注意复习一下 <span class="pho">t+j</span>、<span class="pho">d+j</span>、<span class="pho">s+j</span>、<span class="pho">z+j</span> 可能会产生的同化现象（[2.2.5.3](17-td#_2-2-5-3-同化)）。
 # 2.3. 连读
 
 在流行的语音教材中，**连读**往往被归类到**高级技巧** 之中。这种分类其实毫无必要，因为它实际上就很基础。
@@ -589,21 +589,21 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 
 既然 “所有自然语音都以音节为最基础单位”，那么 “把相邻的音节处理明白而后说清楚” 原本就是基础。
 
-比如，前后两个词在音上的连读现象（*catenation*）：*clean up*，前一个音节末尾的 `n` 和后一个元音开头的音节 `/ʌp/` 听起来像是同一个音节，到最后听起来是 `/kli ˈnʌp/`<span class="speak-word-inline" data-audio-uk="/audios/clean-up-uk.mp3" data-audio-us="/audios/clean-up-us.mp3"></span> —— 之所以如此，关键就在于，所有自然语音都以音节为最基础单位。
+比如，前后两个词在音上的连读现象（*catenation*）：*clean up*，前一个音节末尾的 <span class="pho">n</span> 和后一个元音开头的音节 <span class="pho alt">ʌp</span> 听起来像是同一个音节，到最后听起来是 <span class="pho alt">kli ˈnʌp</span><span class="speak-word-inline" data-audio-uk="/audios/clean-up-uk.mp3" data-audio-us="/audios/clean-up-us.mp3"></span> —— 之所以如此，关键就在于，所有自然语音都以音节为最基础单位。
 
 而又因为连贯的语音，往往还带着高低起伏（[3.3](#3.3.-高低)，[3.4](#3.4.-起伏)），有着轻重缓急（[3.5](#3.5.-轻重)，[3.6](#3.6.-缓急)），于是在这个过程中某些因素会自然发生一些变化，甚至变体，简直不可能更自然了。
 
 不仅相邻的音节可能连起来，在连接的过程中，有些音素还会因此产生变化，总结一下：
 
-> * 非重音上的元音常常被简化成 ` ə`（[2.1.4](07-ə)）
-> * `t, d` 常常有各种变化（[2.2.5](17-td)）：
+> * 非重音上的元音常常被简化成 <span class="pho"> ə</span>（[2.1.4](07-ə)）
+> * <span class="pho">t, d</span> 常常有各种变化（[2.2.5](17-td)）：
 >   * 省音（*elision*，[2.2.5.1](17-td#_2-2-5-1-省音)）
 >   * 叠音（*geminates*，[2.2.5.2](17-td#_2-2-5-2-叠音)）
 >   * 同化（*assimilation*，[2.2.5.3](17-td#_2-2-5-3-同化)）；
 >  * 弹舌音 （*alveolar flapping*，[2.2.5.4](17-td#_2-2-5-4-弹舌音)）
-> * `h` 和 `t` 可能会被击穿（*dropping*, [2.2.8](20-h)，[2.2.5.5](17-td#_2-2-5-5-击穿)）；
-> * `ŋ` 可能会读成 `n`（[2.2.3](15-mn)）；
-> * `j` 和 `w` 可能会不知不觉地被插入，形成加音（*intrusion*, [2.2.13](25-jw)）
+> * <span class="pho">h</span> 和 <span class="pho">t</span> 可能会被击穿（*dropping*, [2.2.8](20-h)，[2.2.5.5](17-td#_2-2-5-5-击穿)）；
+> * <span class="pho">ŋ</span> 可能会读成 <span class="pho">n</span>（[2.2.3](15-mn)）；
+> * <span class="pho">j</span> 和 <span class="pho">w</span> 可能会不知不觉地被插入，形成加音（*intrusion*, [2.2.13](25-jw)）
 > * 相同或相似的辅音叠音（*geminates*，[2.2.5.2](17-td#_2-2-5-2-叠音)）
 
 …… 可是，这些其实都是基础，一点都不高级；非说它们高级，颇有些误导。
@@ -612,17 +612,17 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 
 > *Come on... you're going out with the guy... there's got to be something wrong with him.*
 >
-> <span class="speak-word-inline" data-audio-us="/audios/friends-s01e01-joey.mp3"></span>`kʌm ʌn... jʊ-ar gəʊɪŋ aʊt wɪθ ðə gaɪ... ðez gɒt tʊ biː ˈsʌmθɪŋ rɔŋ wɪθ hɪm.`
+> <span class="speak-word-inline" data-audio-us="/audios/friends-s01e01-joey.mp3"></span><span class="pho">kʌm ʌn... jʊ-ar gəʊɪŋ aʊt wɪθ ðə gaɪ... ðez gɒt tʊ biː ˈsʌmθɪŋ rɔŋ wɪθ hɪm.</span>
 
 短短一句话之中有很多细节需要注意 —— 当然，你现在应该大多都能理解：
 
-> * *Come on*，连起来了，说成 `/ˈkə·ˈmɑːn/`，*Joey* 当然是美式发音，美国人的 `ʌ` 基本上干脆就是 `ə`，`ʌn` 是重音，所以被拉长了，听起来是 `ɑː`（[3.5](34-strong-weak)）；
-> * *you're* `/jʊ-ar/`，会有 `w` 的加音，但，很轻，需要仔细分辨才听得出来：`/jʊ war/`（ [2.2.13](25-jw)）；
-> * *going out*，`/gəʊɪŋ aʊt/` 中 `ŋ` 说成了 `n`（[2.2.3](15-mn)），与后面的音节连起来，`/gəʊwɪ·naʊt/`，这里也有个 `w` 的加音（ [2.2.13](25-jw)）；
-> * *with the*，`/wɪθ ðə/`，`θ· ð` 两个相近的辅音叠在一起，前一个只剩下了停顿，`/wɪ·ðə/`（[2.2.5.2](17-td#_2-2-5-2-叠音)）；
-> * *got to*，`/gɒt tʊ/`，两个 `t` 叠在一起，前一个只剩下了停顿（[2.2.5.2](17-td#_2-2-5-2-叠音)），后面的 `to` 被弱读（[3.5](34-strong-weak)）成了 `/tə/`，`t` 还是弹舌音（[2.2.5.4](17-td#_2-2-5-4-弹舌音)）： `/gɒ·t̬(ə)/`；
-> * *something*, 说的是 `/ˈsəmθɪn/`（[2.2.3](15-mn)）；
-> * *with him*，`h` 被击穿（[2.2.8](20-h)），说成了 `/wɪ·θəm/`……
+> * *Come on*，连起来了，说成 <span class="pho alt">ˈkə·ˈmɑːn</span>，*Joey* 当然是美式发音，美国人的 <span class="pho">ʌ</span> 基本上干脆就是 <span class="pho">ə</span>，<span class="pho">ʌn</span> 是重音，所以被拉长了，听起来是 <span class="pho">ɑː</span>（[3.5](34-strong-weak)）；
+> * *you're* <span class="pho alt">jʊ-ar</span>，会有 <span class="pho">w</span> 的加音，但，很轻，需要仔细分辨才听得出来：<span class="pho alt">jʊ war</span>（ [2.2.13](25-jw)）；
+> * *going out*，<span class="pho alt">gəʊɪŋ aʊt</span> 中 <span class="pho">ŋ</span> 说成了 <span class="pho">n</span>（[2.2.3](15-mn)），与后面的音节连起来，<span class="pho alt">gəʊwɪ·naʊt</span>，这里也有个 <span class="pho">w</span> 的加音（ [2.2.13](25-jw)）；
+> * *with the*，<span class="pho alt">wɪθ ðə</span>，<span class="pho">θ· ð</span> 两个相近的辅音叠在一起，前一个只剩下了停顿，<span class="pho alt">wɪ·ðə</span>（[2.2.5.2](17-td#_2-2-5-2-叠音)）；
+> * *got to*，<span class="pho alt">gɒt tʊ</span>，两个 <span class="pho">t</span> 叠在一起，前一个只剩下了停顿（[2.2.5.2](17-td#_2-2-5-2-叠音)），后面的 <span class="pho">to</span> 被弱读（[3.5](34-strong-weak)）成了 <span class="pho alt">tə</span>，<span class="pho">t</span> 还是弹舌音（[2.2.5.4](17-td#_2-2-5-4-弹舌音)）： <span class="pho alt">gɒ·t̬(ə)</span>；
+> * *something*, 说的是 <span class="pho alt">ˈsəmθɪn</span>（[2.2.3](15-mn)）；
+> * *with him*，<span class="pho">h</span> 被击穿（[2.2.8](20-h)），说成了 <span class="pho alt">wɪ·θəm</span>……
 
 等到你完整理解 [3. 进阶](29-advanced) 之后，你可能还会注意到另外一些更重要的细节（比如以上例子中两次提到的 [3.5](34-strong-weak)。
 # 2.4. 关于音标的学习
@@ -718,11 +718,11 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 > * 这段语音出自 *Knowledge and Decisions* by Thomas Sowell 的 Audible 版。
 > * *Pitch Contour* 截图来自学习辅助工具 [Enjoying](https://github.com/xiaolai/everyone-can-use-english)。
 
-在 Waveform 里我们可以清楚地看到，这句话里有两处明显的**可换气停顿**（用 `|` 标注） —— 当然，句子短的话，倒也不一定非要换气：
+在 Waveform 里我们可以清楚地看到，这句话里有两处明显的**可换气停顿**（用 <span class="pho">|</span> 标注） —— 当然，句子短的话，倒也不一定非要换气：
 
 > Yet, | it is a fact of life | that an *un·lettered* peasant is considered ignorant.
 
-还有一处重音之前的**非换气停顿**（用 `·` 标注），需要仔细听才能注意到，在 *un·lettered* 这个词里，*un* 被拉长，而后的 `/le/` 这个音节是重音。
+还有一处重音之前的**非换气停顿**（用 <span class="pho">·</span> 标注），需要仔细听才能注意到，在 *un·lettered* 这个词里，*un* 被拉长，而后的 <span class="pho alt">le</span> 这个音节是重音。
 
 可能会令你意外的是，*an unlettered* 这两个词并没有被连读，*an* 和 *un* 之间倒是有个明显的 “非换气停顿”: *an·un·lettered*。
 
@@ -731,21 +731,21 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 > 1. 抬高那个重音音节的声调；
 > 2. 为了做到前面这一点，就需要有所停顿，或者把前面的一个音节略微拉长。
 
-你先按照自己的习惯读一遍 *especially* `/ɪˈspeʃəlɪ/`，然后再换个方式这么读：
+你先按照自己的习惯读一遍 *especially* <span class="pho alt">ɪˈspeʃəlɪ</span>，然后再换个方式这么读：
 
-> * 把 `/ɪs/` 中的 `s` 夸张地拉长，保持气流振动；
-> * 然后再抬高声调清楚地读出那个重音音节 `/ˈpe/`；
-> * 而后顺畅地接着把后面的 `/ʃəlɪ/` 读完……
+> * 把 <span class="pho alt">ɪs</span> 中的 <span class="pho">s</span> 夸张地拉长，保持气流振动；
+> * 然后再抬高声调清楚地读出那个重音音节 <span class="pho alt">ˈpe</span>；
+> * 而后顺畅地接着把后面的 <span class="pho alt">ʃəlɪ</span> 读完……
 
-再试试 *abstraction* `/æbˈstrækʃən/`:
+再试试 *abstraction* <span class="pho alt">æbˈstrækʃən</span>:
 
-> * 读完 `/æb/` 之后夸张地停顿一下 —— 因为 `b` 这个音没办法拉长，嘴闭上了，没有气流振动；
-> * 然后再抬高声调清楚地说出 `/ˈstræk/`；
-> * 而后顺畅地把后面的 `/ʃən/` 读完……
+> * 读完 <span class="pho alt">æb</span> 之后夸张地停顿一下 —— 因为 <span class="pho">b</span> 这个音没办法拉长，嘴闭上了，没有气流振动；
+> * 然后再抬高声调清楚地说出 <span class="pho alt">ˈstræk</span>；
+> * 而后顺畅地把后面的 <span class="pho alt">ʃən</span> 读完……
 
 是不是感觉不一样？—— 亚洲语言里大多没有这种重音、非重音的区别，没有这种强调某个音节的习惯。所以，也没有为了重音有意停顿或者把之前音节拉长的习惯。
 
-还记得吗？之前讲解 `t` 的时候（[2.2.5](17-td#_2-2-5-1-省音)）提到过它可能造成的  **“看不见” 甚至 “听不到”，但 “的确存在” 的停顿**吗？那也是这里所说的 “非换气停顿”。
+还记得吗？之前讲解 <span class="pho">t</span> 的时候（[2.2.5](17-td#_2-2-5-1-省音)）提到过它可能造成的  **“看不见” 甚至 “听不到”，但 “的确存在” 的停顿**吗？那也是这里所说的 “非换气停顿”。
 
 自然语音中的**非换气停顿**总是被第二语言学习者忽略 。不仅如此，也总是被流行的语音教材忽略，它们也好像都不是很在意这个关键细节。
 
@@ -760,42 +760,42 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 
 <video controls width="720"> <source src="/videos/yet-it-is-a-fact-of-life.mp4" type="video/mp4"></source>Your browser does not support the video tag. </video>
 
-如果你可以唱出 $\frac{4}{4}$ `| 3 2 1 - |` —— 当然，这三个音符其实任何人都可以唱出来……
+如果你可以唱出 $\frac{4}{4}$ <span class="pho">| 3 2 1 - |</span> —— 当然，这三个音符其实任何人都可以唱出来……
 
 <video controls width="720"> <source src="/videos/321.mp4" type="video/mp4"></source>Your browser does not support the video tag. </video>
 
-那你可以把 *fact*, *fact*, *fact*... 用三个不同的音唱出来，`/fækt/(3) /fækt/(2) /fækt/(1-)`，你就能体会到自然语音中的音高变化了。唉…… 不得不叹口气 —— 其实吧，“说话” 真的只不过是 “极其低配版的歌唱”，因为它的曲调（*Melody*）只是在一个特别狭小音高区域（*Pitch region*）里变化。
+那你可以把 *fact*, *fact*, *fact*... 用三个不同的音唱出来，<span class="pho">/fækt/(3) /fækt/(2) /fækt/(1-)</span>，你就能体会到自然语音中的音高变化了。唉…… 不得不叹口气 —— 其实吧，“说话” 真的只不过是 “极其低配版的歌唱”，因为它的曲调（*Melody*）只是在一个特别狭小音高区域（*Pitch region*）里变化。
 # 3.4. 起伏
 
-外国人学中文的时候，最麻烦的一件事是学习中文每个字的声调，一二三四声以及轻声。`ma` 这个音，可以有 `mā, má, mǎ, mà` 以及 `ma`。对外国人来说（比如英文母语使用者），这一点令他们格外头痛：中文同一个音的不同声调会影响其含义。
+外国人学中文的时候，最麻烦的一件事是学习中文每个字的声调，一二三四声以及轻声。<span class="pho">ma</span> 这个音，可以有 <span class="pho">mā, má, mǎ, mà</span> 以及 <span class="pho">ma</span>。对外国人来说（比如英文母语使用者），这一点令他们格外头痛：中文同一个音的不同声调会影响其含义。
 
 英文的音节不仅没有指定的声调，并且，声调的变化也不影响音节的含义。一般来说，声调主要在**重音音节**上有所体现。偶尔，在**句末**或者**换气停顿**之前的最后一个**非重音音节**也可能带着声调 —— 这时一般只有**平调**。
 
-理论上，重音音节都可以有最常见的三种声调的读法，**平调**、**升调**、**降调**。比如，`→`*big*, `↗`*big*, `↘`*big*，`→`*fact*, `↗`*fact*, `↘`*fact*……
+理论上，重音音节都可以有最常见的三种声调的读法，**平调**、**升调**、**降调**。比如，<span class="pho">→</span>*big*, <span class="pho">↗</span>*big*, <span class="pho">↘</span>*big*，<span class="pho">→</span>*fact*, <span class="pho">↗</span>*fact*, <span class="pho">↘</span>*fact*……
 
-偶尔，你也会听到一些人会使用**降升调**，一般是在**双元音**上。比如，`⤻`sure, i`⤻`dea……
+偶尔，你也会听到一些人会使用**降升调**，一般是在**双元音**上。比如，<span class="pho">⤻</span>sure, i<span class="pho">⤻</span>dea……
 
 注意：如果**短元音**的音节用**平调**读出来，会自然而然地有所**拉长**。
 
 如果是多音节词汇，要分两种情况：
 
-> * 最后一个音节是**重音**：*adapt*, a`→`dapt，a`↗`dapt，a`↘`dapt
+> * 最后一个音节是**重音**：*adapt*, a<span class="pho">→</span>dapt，a<span class="pho">↗</span>dapt，a<span class="pho">↘</span>dapt
 >
 > * 倒数第二个音节是重音：
 >
->   * 第一种情况是**重音**用更高**音调** —— 以下用 `↑` 表示音调（*pitch*）的提高：
+>   * 第一种情况是**重音**用更高**音调** —— 以下用 <span class="pho">↑</span> 表示音调（*pitch*）的提高：
 >
->     * *component*, com`↑`po·nent
+>     * *component*, com<span class="pho">↑</span>po·nent
 >
->     * *condition*, con`↑`di·tion
+>     * *condition*, con<span class="pho">↑</span>di·tion
 >
 >       在这种情况下，最后一个音节只能继续轻声读出来……
 >
 >   * 第二种情况是**重音**用**降调**
 >
->     * *component*, com`↘`po`→`nent，com`↘`po`↗`nent，com`↘`po·nent
+>     * *component*, com<span class="pho">↘</span>po<span class="pho">→</span>nent，com<span class="pho">↘</span>po<span class="pho">↗</span>nent，com<span class="pho">↘</span>po·nent
 >
->     * *condition*, con`↘`di`→`tion，con`↘`di`↗`tion，con`↘`di·tion
+>     * *condition*, con<span class="pho">↘</span>di<span class="pho">→</span>tion，con<span class="pho">↘</span>di<span class="pho">↗</span>tion，con<span class="pho">↘</span>di·tion
 >
 >       由于倒数第二个音节是重音，声调在那里已经明显完成，所以，随后的最后一个音节只需要轻声读出来就可以了。
 
@@ -848,7 +848,7 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 
 各种语言都有这种现象，主要原因可能是因为**太常见**、**太容易理解**、**不可能被误解**、**相对于不那么重要**等等诸如此类的原因，乃至于说话者在说那些**词汇**（或者**音节**）的时候会**更快**或者**更轻**，甚至**合并**或者**省略**。
 
-北京人在说 “不知道” 这三个字的时候，有可能说出来的是用拼音都很难标记的 `bù(r)dào`，其中原本应该的 `zhī` 被糊弄成了甚至好像没有韵母的 `r`…… 但，谁都听得懂，哪怕最初不习惯，听个两三次也就适应了。
+北京人在说 “不知道” 这三个字的时候，有可能说出来的是用拼音都很难标记的 <span class="pho">bù(r)dào</span>，其中原本应该的 <span class="pho">zhī</span> 被糊弄成了甚至好像没有韵母的 <span class="pho">r</span>…… 但，谁都听得懂，哪怕最初不习惯，听个两三次也就适应了。
 
 某个单词被强读或者被弱读的时候，该单词的元音长短和重音所在（如果是多音节单词的话）都会相应发生变化，具体常见变化如下：
 
@@ -864,64 +864,64 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 
 > - 长元音会变得短一些（几乎与短元音的长度相当）；
 > - 重音音节会变得与非重音音节一样轻；
-> - 很多元音都会发生变化，向 `ə` 靠拢；
-> - 清辅音 `s`、`t`、`k`、`f` 之后的元音 `ə` 可能会直接被省略掉；
+> - 很多元音都会发生变化，向 <span class="pho">ə</span> 靠拢；
+> - 清辅音 <span class="pho">s</span>、<span class="pho">t</span>、<span class="pho">k</span>、<span class="pho">f</span> 之后的元音 <span class="pho">ə</span> 可能会直接被省略掉；
 > - 整个单词所处的音高往往是 “高”、“中”、“低” 之中的 “低”，最多是 “中”……
 
-其实，哪怕在单独读某一个单词的时候，其中元音的长短都会受到重音重读的影响。比如，*city* 这个单词，重音在第一个音节上，而两处的元音是一样的：`/ˈsɪ-t̬ɪ/`；但是只要你把第一个音节读得足够重，自然而然就能感觉到第一个 `ɪ` 只能比第二个 `ɪ` 更长。
+其实，哪怕在单独读某一个单词的时候，其中元音的长短都会受到重音重读的影响。比如，*city* 这个单词，重音在第一个音节上，而两处的元音是一样的：<span class="pho alt">ˈsɪ-t̬ɪ</span>；但是只要你把第一个音节读得足够重，自然而然就能感觉到第一个 <span class="pho">ɪ</span> 只能比第二个 <span class="pho">ɪ</span> 更长。
 
 大多数助动词、系动词、介词、连词、冠词、代词，都有两种发音形式：**强读式**（*accented form*）、**弱读式**（*weak form*） —— 这些单词往往都是单音节单词。在自然语流中，它们更多的情况下是以**弱读式**读出的。以下是其中最常见的强读式、弱读式对照列表。注意，以下的列表不能当作硬规则使用，不是所有的虚词都必须被弱读；也不是所有的实词都必须被强读。下面的列表只是在描述现象。
 
-> - a: `/eɪ/` → `/ə/`
-> - am: `/æm/` → `/əm, m/`
-> - an: `/æn/` → `/ən, n/`
-> - and: `/ænd/` → `/ənd, nd, ən, n/`
-> - any: `/'eni/` → `/ni/`
-> - are: `/ɑ/:` → `/ə/`
-> - as: `/æs/` → `/əz/`
-> - at: `/æt/` → `/ət/`
-> - but: `/bʌt/` → `/bət/`
-> - can: `/kæn/` → `/kən, kn, kŋ/`
-> - could: `/kud/` → `/kəd, kd/`
-> - do: `/duː/` → `/du, də, d/`
-> - does: `/dʌz/` → `/dəz/`
-> - for: `/fɔː/` → `/fə, f/`
-> - from: `/frɔm/` → `/frəm, frm/`
-> - had: `/hæd/` → `/həd, əd, d/`
-> - has: `/hæz/` → `/həz, əz/`
-> - have: `/hæv/` → `/həv, həf, əv, əf/`
-> - he: `/hiː/` → `/hi, iː, i/`
-> - her: `/həː/` → `/hə, əː, ə/`
-> - him: `/him/` → `/im/`
-> - his: `/hiz/` → `/iz/`
-> - I: `/ai/` → `/aː, ə/`
-> - is: `/iz/` → `/s, z/`
-> - many: `/'meni/` → `/mni/`
-> - me: `/miː/` → `/mi/`
-> - must: `/mʌst/` → `/məst, məs/`
-> - my: `/mai/` → `/mi/`
-> - of: `/əv/` → `/əv, v, f, ə/`
-> - our: `/ɑʊɚ/` → `/ɑr` ⭢ `ɑ/`
-> - shall: `/ʃæl/` → `/ʃəl, ʃl/`
-> - she: `/ʃiː/` → `/ʃi/`
-> - should: `/ʃud/` → `/ʃəd, ʃd, ʃt/`
-> - so: `/səʊ/` → `/sə/`
-> - some: `/sʌm/` → `/səm, sm/`
-> - such: `/sʌʧ/` → `/səʧ/`
-> - than: `/ðæn/` → `/ðən, ðn/`
-> - that: `/ðæt/` → `/ðət/`
-> - the: `/ði/:` → `/ði, ðə/`
-> - them: `/ðem/` → `/ðəm, ðm, əm, m/`
-> - then: `/ðen/` → `/ðən/`
-> - to: `/tuː/` → `/tu, tə, t/`
-> - us: `/us/` → `/əs/`
-> - was: `/wɔz/` → `/wəz, wə/`
-> - we: `/wiː/` → `/wi/`
-> - were: `/wəː/` → `/wə/`
-> - when: `/wen/` → `/wən/`
-> - will: `/wɪl/` → `/əl, l`/
-> - would: `/wuːd/` → `/wəd, əd/`
-> - you: `/juː/` → `/ju, jə/`
+> - a: <span class="pho alt">eɪ</span> → <span class="pho alt">ə</span>
+> - am: <span class="pho alt">æm</span> → <span class="pho alt">əm, m</span>
+> - an: <span class="pho alt">æn</span> → <span class="pho alt">ən, n</span>
+> - and: <span class="pho alt">ænd</span> → <span class="pho alt">ənd, nd, ən, n</span>
+> - any: <span class="pho alt">'eni</span> → <span class="pho alt">ni</span>
+> - are: <span class="pho">/ɑ/:</span> → <span class="pho alt">ə</span>
+> - as: <span class="pho alt">æs</span> → <span class="pho alt">əz</span>
+> - at: <span class="pho alt">æt</span> → <span class="pho alt">ət</span>
+> - but: <span class="pho alt">bʌt</span> → <span class="pho alt">bət</span>
+> - can: <span class="pho alt">kæn</span> → <span class="pho alt">kən, kn, kŋ</span>
+> - could: <span class="pho alt">kud</span> → <span class="pho alt">kəd, kd</span>
+> - do: <span class="pho alt">duː</span> → <span class="pho alt">du, də, d</span>
+> - does: <span class="pho alt">dʌz</span> → <span class="pho alt">dəz</span>
+> - for: <span class="pho alt">fɔː</span> → <span class="pho alt">fə, f</span>
+> - from: <span class="pho alt">frɔm</span> → <span class="pho alt">frəm, frm</span>
+> - had: <span class="pho alt">hæd</span> → <span class="pho alt">həd, əd, d</span>
+> - has: <span class="pho alt">hæz</span> → <span class="pho alt">həz, əz</span>
+> - have: <span class="pho alt">hæv</span> → <span class="pho alt">həv, həf, əv, əf</span>
+> - he: <span class="pho alt">hiː</span> → <span class="pho alt">hi, iː, i</span>
+> - her: <span class="pho alt">həː</span> → <span class="pho alt">hə, əː, ə</span>
+> - him: <span class="pho alt">him</span> → <span class="pho alt">im</span>
+> - his: <span class="pho alt">hiz</span> → <span class="pho alt">iz</span>
+> - I: <span class="pho alt">ai</span> → <span class="pho alt">aː, ə</span>
+> - is: <span class="pho alt">iz</span> → <span class="pho alt">s, z</span>
+> - many: <span class="pho alt">'meni</span> → <span class="pho alt">mni</span>
+> - me: <span class="pho alt">miː</span> → <span class="pho alt">mi</span>
+> - must: <span class="pho alt">mʌst</span> → <span class="pho alt">məst, məs</span>
+> - my: <span class="pho alt">mai</span> → <span class="pho alt">mi</span>
+> - of: <span class="pho alt">əv</span> → <span class="pho alt">əv, v, f, ə</span>
+> - our: <span class="pho alt">ɑʊɚ</span> → <span class="pho">/ɑr</span> ⭢ <span class="pho">ɑ/</span>
+> - shall: <span class="pho alt">ʃæl</span> → <span class="pho alt">ʃəl, ʃl</span>
+> - she: <span class="pho alt">ʃiː</span> → <span class="pho alt">ʃi</span>
+> - should: <span class="pho alt">ʃud</span> → <span class="pho alt">ʃəd, ʃd, ʃt</span>
+> - so: <span class="pho alt">səʊ</span> → <span class="pho alt">sə</span>
+> - some: <span class="pho alt">sʌm</span> → <span class="pho alt">səm, sm</span>
+> - such: <span class="pho alt">sʌʧ</span> → <span class="pho alt">səʧ</span>
+> - than: <span class="pho alt">ðæn</span> → <span class="pho alt">ðən, ðn</span>
+> - that: <span class="pho alt">ðæt</span> → <span class="pho alt">ðət</span>
+> - the: <span class="pho">/ði/:</span> → <span class="pho alt">ði, ðə</span>
+> - them: <span class="pho alt">ðem</span> → <span class="pho alt">ðəm, ðm, əm, m</span>
+> - then: <span class="pho alt">ðen</span> → <span class="pho alt">ðən</span>
+> - to: <span class="pho alt">tuː</span> → <span class="pho alt">tu, tə, t</span>
+> - us: <span class="pho alt">us</span> → <span class="pho alt">əs</span>
+> - was: <span class="pho alt">wɔz</span> → <span class="pho alt">wəz, wə</span>
+> - we: <span class="pho alt">wiː</span> → <span class="pho alt">wi</span>
+> - were: <span class="pho alt">wəː</span> → <span class="pho alt">wə</span>
+> - when: <span class="pho alt">wen</span> → <span class="pho alt">wən</span>
+> - will: <span class="pho alt">wɪl</span> → <span class="pho">/əl, l</span>/
+> - would: <span class="pho alt">wuːd</span> → <span class="pho alt">wəd, əd</span>
+> - you: <span class="pho alt">juː</span> → <span class="pho alt">ju, jə</span>
 
 
 # 3.6. 缓急
@@ -936,12 +936,12 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 
 <audio controls><source src="/audios/toefl-sampe-01.mp3" type="audio/mpeg">Your browser does not support the audio element.</source></audio>
 
-请仔细注意这一串音节：*here at our uni*·**ver**·*sity*... 它们原本应该被读作  `/ˈhiə æt ɑʊə ˌjunəˈvvəː(r)səti/`…… 可你听到的是什么呢？`ˈ/hiə·(æ)t̬ɑ(ʊə)ˌjunə·ˈvvəː(r)sət̬i/`（括号里的音素省略到几乎听不清）……
+请仔细注意这一串音节：*here at our uni*·**ver**·*sity*... 它们原本应该被读作  <span class="pho alt">ˈhiə æt ɑʊə ˌjunəˈvvəː(r)səti</span>…… 可你听到的是什么呢？<span class="pho">ˈ/hiə·(æ)t̬ɑ(ʊə)ˌjunə·ˈvvəː(r)sət̬i/</span>（括号里的音素省略到几乎听不清）……
 
-> * *at* 被轻读成 `/ət/`，而其中的 `ə` 又几乎被省略掉了；
-> * 而 *our* 原本单独朗读的话，应该是 `/ɑʊə/`，却只变成了 `/ɑ/`（[3.5](34-strong-weak)）；又由于这是美式发音（毕竟是 TOEFL 听力考试题），好像是多了个 `r`，所以是 `/ɑr/`（[2.1.2](05-Ʌ)）；
-> * *at* 中的 `t`，由于前后被两个元音夹着，所以变成了和 `d` 非常接近的 `t̬`（[2.2.5](17-td#_2-2-5-4-弹舌音)）；
-> * 为了把 *university* 中的长元音重读音节 `/vəː/` 读清楚，与前一个音节 `/junə/` 之间有个细微的停顿（[3.2](31-pause)），而  `/vəː/`  读成了平调（[3.4](33-up-down)）……
+> * *at* 被轻读成 <span class="pho alt">ət</span>，而其中的 <span class="pho">ə</span> 又几乎被省略掉了；
+> * 而 *our* 原本单独朗读的话，应该是 <span class="pho alt">ɑʊə</span>，却只变成了 <span class="pho alt">ɑ</span>（[3.5](34-strong-weak)）；又由于这是美式发音（毕竟是 TOEFL 听力考试题），好像是多了个 <span class="pho">r</span>，所以是 <span class="pho alt">ɑr</span>（[2.1.2](05-Ʌ)）；
+> * *at* 中的 <span class="pho">t</span>，由于前后被两个元音夹着，所以变成了和 <span class="pho">d</span> 非常接近的 <span class="pho">t̬</span>（[2.2.5](17-td#_2-2-5-4-弹舌音)）；
+> * 为了把 *university* 中的长元音重读音节 <span class="pho alt">vəː</span> 读清楚，与前一个音节 <span class="pho alt">junə</span> 之间有个细微的停顿（[3.2](31-pause)），而  <span class="pho alt">vəː</span>  读成了平调（[3.4](33-up-down)）……
 
 日常生活中，绝大多数人讲话并不会刻意在乎**节奏**，也常常感觉并无必要。但，总有一些人是训练有素的，比如，他们需要朗读、录音、演讲，甚至表演…… 于是，他们会有意无意地控制**节奏**。
 
@@ -981,7 +981,7 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 英语的元音天然有**长短**之分，短元音当然短，长元音和双元音相对于短元音更长。如果韵律节奏相对更重要，那么，若是某个或者某些音节的**长短**搞错了的话，整个语音的节奏都会乱掉。
 
 ::: tip
-总是需要格外提醒的是， `æ` 是长元音（[2.1.3](06-e)），虽然这个音标并没有长元音符号 `ː`……
+总是需要格外提醒的是， <span class="pho">æ</span> 是长元音（[2.1.3](06-e)），虽然这个音标并没有长元音符号 <span class="pho">ː</span>……
 :::
 
 对于**韵律节奏**，需要在脑子里生成一个简单清晰却又记忆深刻的框架：
@@ -1026,7 +1026,7 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 除此之外，元音长度还有很多细节，比如：
 
 > * 一些细微的停顿（[3.2](31-pause)）
-> * 因强调而发生的短元音变长的情况（[3.5](34-strong-weak)）。比如，请你试着说一遍：*This is a **big** **city**!* —— 为了强调 ***big***，你会不由自主地将它读成长长的 `biːg`，而不是 `bɪg`，如果强调 ***city***，它的第一个 `ɪ` 也会稍微变长一点点……
+> * 因强调而发生的短元音变长的情况（[3.5](34-strong-weak)）。比如，请你试着说一遍：*This is a **big** **city**!* —— 为了强调 ***big***，你会不由自主地将它读成长长的 <span class="pho">biːg</span>，而不是 <span class="pho">bɪg</span>，如果强调 ***city***，它的第一个 <span class="pho">ɪ</span> 也会稍微变长一点点……
 
 并且，平均来看，英文的音节中辅音数量可能是亚洲语言的两三倍以上（[1.2](02-syllables)） —— 这造成的结果就是，说英文的时候，舌头比说中文的时候相对要忙太多…… 并且，因此英文单个音节的发声时长也相对更长。
 
@@ -1042,7 +1042,7 @@ D.J. 音标最初的时候短元音用 `ɔ`，长元音用 `ɔː`；但后来短
 
 基于上面这个普遍误解的下一个误解，更微妙，人们常常误以为**语速够快**就能构成**讲得足够流利**。其实，**流利**的构成与**语速快慢**几乎全无关系**。是否流利**更多是发音是否正确，措辞是否准确，句法和用法是否符合习惯，逻辑是否顺畅，等等等等 —— 以及，很多人可能并未意识到的另外一个很重要的东西，叫做**节奏**（停顿 [3.2](31-pause)、轻重 [3.5](34-strong-weak)、缓急 [3.6](35-fast-slow)）。
 
-把**长元音**和**双元音**读成更短的版本（尤其是 `æ`，[2.1.3](06-e)），很多**辅音**没有清楚地发音，很多实际存在的微妙**停顿**（[2.2.5.1](17-td#_2-2-5-1-省音), [2.2.5.2](17-td#_2-2-5-2-叠音)）全都忽略，甚至可能在某些辅音之后插入了原本**不存在的元音**，但是，反过来常见的**加音**（[2.2.13](25-jw)）却实际上缺席…… 这种节奏上的**出人意料**才最影响识别，尤其所谓**语速的不同** —— 主要，常常不是慢了，而是快了 —— 在这一方越是自觉流利，另一方就越是听不懂，跟不上。
+把**长元音**和**双元音**读成更短的版本（尤其是 <span class="pho">æ</span>，[2.1.3](06-e)），很多**辅音**没有清楚地发音，很多实际存在的微妙**停顿**（[2.2.5.1](17-td#_2-2-5-1-省音), [2.2.5.2](17-td#_2-2-5-2-叠音)）全都忽略，甚至可能在某些辅音之后插入了原本**不存在的元音**，但是，反过来常见的**加音**（[2.2.13](25-jw)）却实际上缺席…… 这种节奏上的**出人意料**才最影响识别，尤其所谓**语速的不同** —— 主要，常常不是慢了，而是快了 —— 在这一方越是自觉流利，另一方就越是听不懂，跟不上。
 
 所以，说话的时候要放松 —— 只要你能听懂了，幻觉就会消失；你的大脑就能轻松处理绝大多数信息，CPU 不会超载，内存不会溢出，对方的语速就 “感觉上慢了下来” —— 这只不过是日拱一卒假以时日就可以自动解决的问题。
 

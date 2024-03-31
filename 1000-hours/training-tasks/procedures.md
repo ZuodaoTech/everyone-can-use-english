@@ -6,7 +6,7 @@
 
 在挣扎着**读准**之前，**首先要避免读错**。这只是一个习惯，遇到任何不确定的词汇都要查词典 —— 当然，在有各种辅助工具的情况下（[GPT: Phonetic Transcriber](https://chat.openai.com/g/g-nWwuxUVqO-phonetic-transcriber)），甚至可以整句查询音标。
 
-望文生音非常可怕。我曾经在很多年里把 *facade* 读成 `/ˈfækeɪd/` （其实是 `/fəˈsɑːd/`<span class="speak-word-inline" data-audio-uk="/audios/facade-uk.mp3" data-audio-us="/audios/facade-us.mp3"></span>）把 *specific* 读成 `/ˈspesɪfɪk/` （其实是 `/spəˈsɪfɪk/`<span class="speak-word-inline" data-audio-uk="/audios/specific-uk.mp3" data-audio-us="/audios/specific-us.mp3"></span>）…… 不妨再猜猜 *plaid* 这个词怎么读？我在很长一段时间里误以为是 `/pleɪd/` …… 后来才发现并非如此 —— 其实是 `/plæd/`：<span class="speak-word-inline" data-audio-uk="/audios/plaid-uk.mp3" data-audio-us="/audios/plaid-us.mp3"></span>。
+望文生音非常可怕。我曾经在很多年里把 *facade* 读成 <span class="pho alt">ˈfækeɪd</span> （其实是 <span class="pho alt">fəˈsɑːd</span><span class="speak-word-inline" data-audio-uk="/audios/facade-uk.mp3" data-audio-us="/audios/facade-us.mp3"></span>）把 *specific* 读成 <span class="pho alt">ˈspesɪfɪk</span> （其实是 <span class="pho alt">spəˈsɪfɪk</span><span class="speak-word-inline" data-audio-uk="/audios/specific-uk.mp3" data-audio-us="/audios/specific-us.mp3"></span>）…… 不妨再猜猜 *plaid* 这个词怎么读？我在很长一段时间里误以为是 <span class="pho alt">pleɪd</span> …… 后来才发现并非如此 —— 其实是 <span class="pho alt">plæd</span>：<span class="speak-word-inline" data-audio-uk="/audios/plaid-uk.mp3" data-audio-us="/audios/plaid-us.mp3"></span>。
 
 如果不养成这个习惯，那么读错的单词会越来越多，等于时时刻刻在为自己的牢墙添砖加瓦，到最后再也无法逃脱 —— Github 上有个[常见中国程序员发音错误的单词列表](https://github.com/shimohq/chinese-programmer-wrong-pronunciation)，不妨去看看，当作自己的警钟。
 
@@ -30,17 +30,17 @@
 
 如果这一点没做到、没做好的话，就会出现 “**明明听到的是一回事，脑子里反应的却是另外一回事**”。
 
-比如，假设过去你一直习惯于把 *recent* `/ˈrisənt/` 里的 `/s/` 读成了 `/z/`，而后在这一步中你并没有做到**仔细听并分析到音素级别**的话…… 那么接下来弄不好无论听多少遍，无论跟读多少遍，你都有可能依然**无法发现**你有一个音竟然读错了 —— 你的大脑会固执地用原有的连接和网络，乃至于自己毫无察觉。如果有人提醒，你会感觉特别奇怪，感觉上那么**明显**的差异，自己怎么就**竟然**一直没注意到？这里有个示例，<span class="speak-word-inline" data-audio-other="/audios/us/recent-z.mp3"></span>（*recent health tips*）—— 这是某位同学被发现之前完全没有意识到的错误。
+比如，假设过去你一直习惯于把 *recent* <span class="pho alt">ˈrisənt</span> 里的 <span class="pho alt">s</span> 读成了 <span class="pho alt">z</span>，而后在这一步中你并没有做到**仔细听并分析到音素级别**的话…… 那么接下来弄不好无论听多少遍，无论跟读多少遍，你都有可能依然**无法发现**你有一个音竟然读错了 —— 你的大脑会固执地用原有的连接和网络，乃至于自己毫无察觉。如果有人提醒，你会感觉特别奇怪，感觉上那么**明显**的差异，自己怎么就**竟然**一直没注意到？这里有个示例，<span class="speak-word-inline" data-audio-other="/audios/us/recent-z.mp3"></span>（*recent health tips*）—— 这是某位同学被发现之前完全没有意识到的错误。
 
 在这一步，每个单词都可以跟读一下，通过试验感觉自己的声音，认真找自己需要调整的地方。
 
 在最初尚不熟悉的时候，可以把文本和音标打印出来，在纸上用笔做各种标记。
 
-> * 用 `|` 标注**可换气停顿**，用 `·` 标注**非换气停顿**；
-> * 在**音高**（*pitch*）被拔高的音节上标注一个 `^`；
+> * 用 <span class="pho">|</span> 标注**可换气停顿**，用 <span class="pho">·</span> 标注**非换气停顿**；
+> * 在**音高**（*pitch*）被拔高的音节上标注一个 <span class="pho">^</span>；
 > * 在**重读**的单词可用加重字体作为标注；
 > * 需要读长的**元音**在下面或者上面画一段直线；
-> * 用箭头标注**声调**，比如，`→`、`↗`、`↘` 或 `⤻`；
+> * 用箭头标注**声调**，比如，<span class="pho">→</span>、<span class="pho">↗</span>、<span class="pho">↘</span> 或 <span class="pho">⤻</span>；
 > * 在**连起来读得很快的几个词汇**下画波浪线；
 > * 格外需要注意并调整的**音素**，引出一个箭头之后写上各种必要的笔记……
 

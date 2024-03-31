@@ -52,6 +52,6 @@
 
 ::: info
 
-* 有些词典不认为 `ts`、`dz` 是独立的辅音。
+* 有些词典不认为 <span class="pho">ts</span>、<span class="pho">dz</span> 是独立的辅音。
 
 :::

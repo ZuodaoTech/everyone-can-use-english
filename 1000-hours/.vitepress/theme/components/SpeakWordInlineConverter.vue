@@ -29,7 +29,7 @@ function buildPlayButton(parent, accent, gender, url) {
   emojiEl.classList.add('emoji');
 
   let svg = '/images/speaker-white.svg';
-  let iconEmoji = '';
+  let iconEmoji = '🇺🇸';
   if (accent === 'uk') {
     iconEmoji = '🇬🇧';
   } else if (accent === 'us') {
