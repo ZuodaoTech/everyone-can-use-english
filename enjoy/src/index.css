@@ -3,7 +3,6 @@
 @import "@vidstack/react/player/styles/default/layouts/audio.css";
 @import "@vidstack/react/player/styles/default/layouts/video.css";
 @import "intl-tel-input/build/css/intlTelInput.css";
-@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -80,11 +79,18 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  @font-face {
+    font-family: "CharisSIL";
+    src: url("assets/fonts/CharisSIL-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
 }
 
 @layer components {
   .scroll {
-    @appply scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary;
+    @apply scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary;
   }
 }
 
