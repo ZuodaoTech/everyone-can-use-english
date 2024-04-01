@@ -54,7 +54,7 @@
     "@types/mark.js": "^8.11.12",
     "@types/node": "^20.11.30",
     "@types/react": "^18.2.73",
-    "@types/react-dom": "^18.2.22",
+    "@types/react-dom": "^18.2.23",
     "@types/validator": "^13.11.9",
     "@types/wavesurfer.js": "^6.0.12",
     "@typescript-eslint/eslint-plugin": "^7.4.0",

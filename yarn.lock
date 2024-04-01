@@ -5544,12 +5544,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.2.22":
-  version: 18.2.22
-  resolution: "@types/react-dom@npm:18.2.22"
+"@types/react-dom@npm:^18.2.23":
+  version: 18.2.23
+  resolution: "@types/react-dom@npm:18.2.23"
   dependencies:
     "@types/react": "npm:*"
-  checksum: 10c0/cd85b5f402126e44b8c7b573e74737389816abcc931b2b14d8f946ba81cce8637ea490419488fcae842efb1e2f69853bc30522e43fd8359e1007d4d14b8d8146
+  checksum: 10c0/9348e93558aa67b4b237bd0eab62e72e85f3e17a1c45fde04d874476269730f7c671b3d62390c4fca588da2a026e90cc74148abc349dbfd4ee5535a82ccdf38e
   languageName: node
   linkType: hard
 
@@ -9049,7 +9049,7 @@ __metadata:
     "@types/mark.js": "npm:^8.11.12"
     "@types/node": "npm:^20.11.30"
     "@types/react": "npm:^18.2.73"
-    "@types/react-dom": "npm:^18.2.22"
+    "@types/react-dom": "npm:^18.2.23"
     "@types/validator": "npm:^13.11.9"
     "@types/wavesurfer.js": "npm:^6.0.12"
     "@typescript-eslint/eslint-plugin": "npm:^7.4.0"
