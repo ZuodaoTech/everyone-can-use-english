@@ -24,7 +24,11 @@ yarn install
 yarn enjoy:start
 ```
 
-# 人人都能用英语
+# 语音塑造（新版）（2024）
+
+请参阅 https://1000h.org/sounds-of-english/01-basics.html
+
+# 人人都能用英语（2010）
 
 ## 目录
 
