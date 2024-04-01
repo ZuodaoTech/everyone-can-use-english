@@ -84,16 +84,7 @@ class EchogardenWrapper {
    */
   async transcode(url: string, sampleRate = 16000): Promise<string> {
     const filePath = enjoyUrlToPath(url);
-    const fileHash = await hashFile(filePath, { algo: 'md5' });
-
     const rawAudio = await this.ensureRawAudio(filePath, sampleRate);
-
-    const peaks = rawAudio.audioChannels[0];
-    const frequencies = extractFrequencies({ peaks, sampleRate });
-    const duration = this.getRawAudioDuration(rawAudio);
-
-    waveform.save(fileHash, { peaks: Array.from(peaks), duration, frequencies, sampleRate});
-
     const audioBuffer = this.encodeWaveBuffer(rawAudio);
 
     const outputFilePath = path.join(settings.cachePath(), `${Date.now()}.wav`);
@@ -104,20 +95,25 @@ class EchogardenWrapper {
 
   /**
    * Decodes the audio file at the enjoy:// protocol URL into a waveform data object.
-   * @param url 
-   * @param sampleRate 
+   * @param url
+   * @param sampleRate
    * @returns WaveFormDataType
    */
   async decode(url: string, sampleRate = 16000): Promise<WaveFormDataType> {
     const filePath = enjoyUrlToPath(url);
-    const fileHash = await hashFile(filePath, { algo: 'md5' });
+    const fileHash = await hashFile(filePath, { algo: "md5" });
 
     const rawAudio = await this.ensureRawAudio(filePath, sampleRate);
     const peaks = rawAudio.audioChannels[0];
     const frequencies = extractFrequencies({ peaks, sampleRate });
     const duration = this.getRawAudioDuration(rawAudio);
 
-    const data = { peaks: Array.from(peaks), duration, frequencies, sampleRate};
+    const data = {
+      peaks: Array.from(peaks),
+      duration,
+      frequencies,
+      sampleRate,
+    };
     waveform.save(fileHash, data);
 
     return data;
@@ -144,29 +140,35 @@ class EchogardenWrapper {
       }
     );
 
-    ipcMain.handle("echogarden-transcode", async (event, url: string, sampleRate?: number) => {
-      try {
-        return await this.transcode(url, sampleRate);
-      } catch (err) {
-        logger.error(err);
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
+    ipcMain.handle(
+      "echogarden-transcode",
+      async (event, url: string, sampleRate?: number) => {
+        try {
+          return await this.transcode(url, sampleRate);
+        } catch (err) {
+          logger.error(err);
+          event.sender.send("on-notification", {
+            type: "error",
+            message: err.message,
+          });
+        }
       }
-    });
+    );
 
-    ipcMain.handle("echogarden-decode", async (event, url: string, sampleRate?: number) => {
-      try {
-        return await this.decode(url, sampleRate);
-      } catch (err) {
-        logger.error(err);
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
+    ipcMain.handle(
+      "echogarden-decode",
+      async (event, url: string, sampleRate?: number) => {
+        try {
+          return await this.decode(url, sampleRate);
+        } catch (err) {
+          logger.error(err);
+          event.sender.send("on-notification", {
+            type: "error",
+            message: err.message,
+          });
+        }
       }
-    });
+    );
 
     ipcMain.handle("echogarden-check", async (_event) => {
       return this.check();
