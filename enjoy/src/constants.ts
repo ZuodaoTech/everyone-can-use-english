@@ -7,7 +7,8 @@ export const WEB_API_URL = "https://enjoy-web.fly.dev";
 
 export const REPO_URL = "https://github.com/xiaolai/everyone-can-use-english";
 
-export const SENTRY_DSN = "https://d51056d7af7d14eae446c0c15b4f3d31@o1168905.ingest.us.sentry.io/4506969353289728"
+export const SENTRY_DSN =
+  "https://d51056d7af7d14eae446c0c15b4f3d31@o1168905.ingest.us.sentry.io/4506969353289728";
 
 export const MAGIC_TOKEN_REGEX =
   /\b(Mrs|Ms|Mr|Dr|Prof|St|[a-zA-Z]{1,2}|\d{1,2})\.\b/g;
@@ -431,7 +432,7 @@ export const IPA_MAPPING: { [key: string]: string } = {
   ɭ: "l",
   ʎ: "j",
   ʟ: "l",
-  i: "iː",
+  i: "i",
   yɨ: "iː",
   ʉɯ: "uː",
   u: "uː",
@@ -459,6 +460,7 @@ export const IPA_MAPPING: { [key: string]: string } = {
   uː: "uː",
   ɔː: "ɔː",
   ɛː: "e:",
+  eː: "i:",
   æ: "æ",
   a: "ɑ",
   ɶ: "ɑ",
@@ -490,7 +492,8 @@ export const IPA_MAPPING: { [key: string]: string } = {
   ʊr: "ʊr",
   ɛr: "er",
   ɛɹ: "er",
-  əl: "ə",
+  əl: "əl",
   aɪɚ: "aɪ",
   aɪə: "aɪə",
+  ts: "tz",
 };
