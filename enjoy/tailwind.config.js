@@ -14,7 +14,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        code: ['"Source Code Pro"', ...defaultTheme.fontFamily.mono],
+        code: ["CharisSIL", ...defaultTheme.fontFamily.mono],
       },
       colors: {
         border: "hsl(var(--border))",
