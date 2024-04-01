@@ -9115,7 +9115,7 @@ __metadata:
     react-markdown: "npm:^9.0.1"
     react-router-dom: "npm:^6.22.3"
     react-tooltip: "npm:^5.26.3"
-    reflect-metadata: "npm:^0.2.1"
+    reflect-metadata: "npm:^0.2.2"
     rimraf: "npm:^5.0.5"
     sequelize: "npm:^6.37.1"
     sequelize-typescript: "npm:^2.1.6"
@@ -15652,10 +15652,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reflect-metadata@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "reflect-metadata@npm:0.2.1"
-  checksum: 10c0/6ca3c674bb43cf8ec3a3f5f38c8730a6116335f8e562fcdcdf3a492af168c5a7f0e8f17476a5710c3fe6bf9b5d22e8a463f14c0e26e326339cab65e099900ef7
+"reflect-metadata@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "reflect-metadata@npm:0.2.2"
+  checksum: 10c0/1cd93a15ea291e420204955544637c264c216e7aac527470e393d54b4bb075f10a17e60d8168ec96600c7e0b9fcc0cb0bb6e91c3fbf5b0d8c9056f04e6ac1ec2
   languageName: node
   linkType: hard
 
