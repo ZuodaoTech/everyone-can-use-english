@@ -358,6 +358,7 @@ export const MediaPlayerControls = () => {
    * Always stay in the active region when playMode is single/loop
    */
   useEffect(() => {
+    if (!decoded) return;
     if (wavesurfer?.isPlaying()) return;
     if (!activeRegion) return;
     if (playMode === "all") return;
@@ -368,7 +369,7 @@ export const MediaPlayerControls = () => {
         Math.floor((activeRegion.start / wavesurfer.getDuration()) * 1e8) / 1e8
       );
     }
-  }, [wavesurfer, playMode, activeRegion, currentTime]);
+  }, [wavesurfer, decoded, playMode, activeRegion, currentTime]);
 
   useHotkeys(
     ["Space", "p", "n", "r"],
@@ -481,8 +482,8 @@ export const MediaPlayerControls = () => {
                 <div
                   key={i}
                   className={`cursor-pointer h-10 w-10 leading-10 rounded-full flex items-center justify-center ${rate === playbackRate
-                      ? "bg-primary text-white text-md"
-                      : "text-black/70 text-xs"
+                    ? "bg-primary text-white text-md"
+                    : "text-black/70 text-xs"
                     }`}
                   onClick={() => {
                     setPlaybackRate(rate);
