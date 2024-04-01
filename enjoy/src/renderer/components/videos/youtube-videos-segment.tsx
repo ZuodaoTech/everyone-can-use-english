@@ -41,6 +41,12 @@ export const YoutubeVideosSegment = () => {
   };
 
   const fetchYoutubeVideos = async () => {
+    const cachedVideos = await EnjoyApp.cacheObjects.get("youtube-videos");
+    if (cachedVideos) {
+      setvideos(cachedVideos);
+      return;
+    }
+
     EnjoyApp.providers.youtube
       .videos()
       .then((videos) => {
