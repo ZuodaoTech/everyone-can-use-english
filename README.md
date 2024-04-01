@@ -26,7 +26,7 @@ yarn enjoy:start
 
 # 语音塑造（新版）（2024）
 
-请参阅 https://1000h.org/sounds-of-english/01-basics.html
+请参阅 https://1000h.org/sounds-of-american-english/1-basics.html
 
 # 人人都能用英语（2010）
 
