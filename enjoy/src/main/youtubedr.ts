@@ -1,12 +1,12 @@
 import { app } from "electron";
 import path from "path";
-import { exec } from "child_process";
+import { exec, spawn } from "child_process";
 import fs from "fs-extra";
 import os from "os";
 import log from "@main/logger";
 import snakeCase from "lodash/snakeCase";
 import settings from "@main/settings";
-import url from 'url';
+import url from "url";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -107,37 +107,74 @@ class Youtubedr {
 
     logger.info(`Running command: ${command}`);
     return new Promise((resolve, reject) => {
-      exec(
-        command,
-        {
-          timeout: ONE_MINUTE * 15,
-        },
-        (error, stdout, stderr) => {
-          if (error) {
-            logger.error("error", error);
-          }
+      const proc = spawn(this.binFile, [
+        "download",
+        url,
+        `--quality=${quality || "medium"}`,
+        `--filename=${filename}`,
+        `--directory=${directory}`,
+      ]);
 
-          if (stderr) {
-            logger.error("stderr", stderr);
-          }
-
-          if (stdout) {
-            logger.debug(stdout);
-          }
-
-          if (fs.existsSync(path.join(directory, filename))) {
-            const stat = fs.statSync(path.join(directory, filename));
-            if (stat.size === 0) {
-              reject(new Error("Youtubedr download failed: empty file"));
-            } else {
-              resolve(path.join(directory, filename));
-            }
-          } else {
-            reject(new Error("Youtubedr download failed: unknown error"));
-          }
+      proc.stdout.on("data", (data) => {
+        const output = data.toString();
+        const match = output.match(/ib (\d+) % \[/);
+        if (match) {
+          console.log(`Download progress: ${match[1]}%`);
+          console.log(output);
         }
-      );
+      });
+
+      proc.on("close", (code) => {
+        if (code !== 0) {
+          return reject(
+            new Error(`Youtubedr download failed with code: ${code}`)
+          );
+        }
+
+        if (fs.existsSync(path.join(directory, filename))) {
+          const stat = fs.statSync(path.join(directory, filename));
+          if (stat.size === 0) {
+            reject(new Error("Youtubedr download failed: empty file"));
+          } else {
+            resolve(path.join(directory, filename));
+          }
+        } else {
+          reject(new Error("Youtubedr download failed: unknown error"));
+        }
+      });
     });
+    // return new Promise((resolve, reject) => {
+    //   exec(
+    //     command,
+    //     {
+    //       timeout: ONE_MINUTE * 15,
+    //     },
+    //     (error, stdout, stderr) => {
+    //       if (error) {
+    //         logger.error("error", error);
+    //       }
+
+    //       if (stderr) {
+    //         logger.error("stderr", stderr);
+    //       }
+
+    //       if (stdout) {
+    //         logger.debug(stdout);
+    //       }
+
+    //       if (fs.existsSync(path.join(directory, filename))) {
+    //         const stat = fs.statSync(path.join(directory, filename));
+    //         if (stat.size === 0) {
+    //           reject(new Error("Youtubedr download failed: empty file"));
+    //         } else {
+    //           resolve(path.join(directory, filename));
+    //         }
+    //       } else {
+    //         reject(new Error("Youtubedr download failed: unknown error"));
+    //       }
+    //     }
+    //   );
+    // });
   }
 
   async info(url: string): Promise<YoutubeInfoType> {

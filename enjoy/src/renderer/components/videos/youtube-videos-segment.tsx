@@ -24,7 +24,7 @@ export const YoutubeVideosSegment = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const addToLibrary = () => {
-    let url = `https://www.youtube.com/watch?v=${selectedVideo?.videoId}`;
+    let url = `https://www.youtube.com/watch?v=wnhvanMdx4s`;
     setSubmitting(true);
     EnjoyApp.videos
       .create(url, {
