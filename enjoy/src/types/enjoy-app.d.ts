@@ -219,6 +219,7 @@ type EnjoyAppType = {
       transcript: string,
       options?: any
     ) => Promise<AlignmentResult>;
+    transcode: (input: string) => Promise<string>;
     check: () => Promise<boolean>;
   };
   whisper: {

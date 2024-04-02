@@ -1,5 +1,7 @@
 import { createHash } from "crypto";
 import { createReadStream } from "fs";
+import settings from "./settings";
+import path from "path";
 
 export function hashFile(
   path: string,
@@ -35,4 +37,54 @@ export function hashBlob(
     reader.onerror = reject;
     reader.readAsArrayBuffer(blob);
   });
+}
+
+/*
+ * Convert enjoy url to file path
+ *
+ * @param {string} enjoyUrl - enjoy url
+ * @returns {string} file path
+ */
+export function enjoyUrlToPath(enjoyUrl: string): string {
+  let filePath = enjoyUrl;
+
+  if (
+    enjoyUrl.match(/enjoy:\/\/library\/(audios|videos|recordings|speeches)/g)
+  ) {
+    filePath = path.posix.join(
+      settings.userDataPath(),
+      enjoyUrl.replace("enjoy://library/", "")
+    );
+  } else if (enjoyUrl.startsWith("enjoy://library/")) {
+    filePath = path.posix.join(
+      settings.libraryPath(),
+      filePath.replace("enjoy://library/", "")
+    );
+  }
+
+  return filePath;
+}
+
+/*
+ * Convert file path to enjoy url
+ *
+ * @param {string} filePath - file path
+ * @returns {string} enjoy url
+ */
+export function pathToEnjoyUrl(filePath: string): string {
+  let enjoyUrl = filePath;
+
+  if (filePath.startsWith(settings.userDataPath())) {
+    enjoyUrl = `enjoy://library/${filePath.replace(
+      settings.userDataPath(),
+      ""
+    )}`;
+  } else if (filePath.startsWith(settings.libraryPath())) {
+    enjoyUrl = `enjoy://library/${filePath.replace(
+      settings.libraryPath(),
+      ""
+    )}`;
+  }
+
+  return enjoyUrl;
 }

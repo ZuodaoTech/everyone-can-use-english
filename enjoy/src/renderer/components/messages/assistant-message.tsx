@@ -252,7 +252,7 @@ export const AssistantMessageComponent = (props: {
               <DownloadIcon
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("download")}
-                data-testid="message-download"
+                data-testid="message-download-speech"
                 onClick={handleDownload}
                 className="w-3 h-3 cursor-pointer"
               />

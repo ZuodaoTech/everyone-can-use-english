@@ -2,12 +2,23 @@ import { ipcMain } from "electron";
 import * as Echogarden from "echogarden/dist/api/API.js";
 import { AlignmentOptions } from "echogarden/dist/api/API";
 import { AudioSourceParam } from "echogarden/dist/audio/AudioUtilities";
+import {
+  encodeWaveBuffer,
+  decodeWaveBuffer,
+  ensureRawAudio,
+  getRawAudioDuration,
+  trimAudioStart,
+  trimAudioEnd,
+} from "echogarden/dist/audio/AudioUtilities.js";
 import path from "path";
 import log from "@main/logger";
 import url from "url";
 import settings from "@main/settings";
 import fs from "fs-extra";
 import ffmpegPath from "ffmpeg-static";
+import { enjoyUrlToPath, hashFile, pathToEnjoyUrl } from "./utils";
+import { extractFrequencies } from "@/utils";
+import waveform from "./waveform";
 
 Echogarden.setGlobalOption(
   "ffmpegPath",
@@ -25,9 +36,23 @@ const __dirname = path
 const logger = log.scope("echogarden");
 class EchogardenWrapper {
   public align: typeof Echogarden.align;
+  public denoise: typeof Echogarden.denoise;
+  public encodeWaveBuffer: typeof encodeWaveBuffer;
+  public decodeWaveBuffer: typeof decodeWaveBuffer;
+  public ensureRawAudio: typeof ensureRawAudio;
+  public getRawAudioDuration: typeof getRawAudioDuration;
+  public trimAudioStart: typeof trimAudioStart;
+  public trimAudioEnd: typeof trimAudioEnd;
 
   constructor() {
     this.align = Echogarden.align;
+    this.denoise = Echogarden.denoise;
+    this.encodeWaveBuffer = encodeWaveBuffer;
+    this.decodeWaveBuffer = decodeWaveBuffer;
+    this.ensureRawAudio = ensureRawAudio;
+    this.getRawAudioDuration = getRawAudioDuration;
+    this.trimAudioStart = trimAudioStart;
+    this.trimAudioEnd = trimAudioEnd;
   }
 
   async check() {
@@ -52,11 +77,27 @@ class EchogardenWrapper {
     }
   }
 
+  /**
+   * Transcodes the audio file at the enjoy:// protocol URL into a WAV format.
+   * @param url - The URL of the audio file to transcode.
+   * @returns A promise that resolves to the enjoy:// protocal URL of the transcoded WAV file.
+   */
+  async transcode(url: string, sampleRate = 16000): Promise<string> {
+    const filePath = enjoyUrlToPath(url);
+    const rawAudio = await this.ensureRawAudio(filePath, sampleRate);
+    const audioBuffer = this.encodeWaveBuffer(rawAudio);
+
+    const outputFilePath = path.join(settings.cachePath(), `${Date.now()}.wav`);
+    fs.writeFileSync(outputFilePath, audioBuffer);
+
+    return pathToEnjoyUrl(outputFilePath);
+  }
+
   registerIpcHandlers() {
     ipcMain.handle(
       "echogarden-align",
       async (
-        event,
+        _event,
         input: AudioSourceParam,
         transcript: string,
         options: AlignmentOptions
@@ -65,10 +106,19 @@ class EchogardenWrapper {
           return await this.align(input, transcript, options);
         } catch (err) {
           logger.error(err);
-          event.sender.send("on-notification", {
-            type: "error",
-            message: err.message,
-          });
+          throw err;
+        }
+      }
+    );
+
+    ipcMain.handle(
+      "echogarden-transcode",
+      async (_event, url: string, sampleRate?: number) => {
+        try {
+          return await this.transcode(url, sampleRate);
+        } catch (err) {
+          logger.error(err);
+          throw err;
         }
       }
     );
