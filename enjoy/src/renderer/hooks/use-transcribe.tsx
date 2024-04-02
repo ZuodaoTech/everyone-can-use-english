@@ -9,10 +9,12 @@ import { AI_WORKER_ENDPOINT } from "@/constants";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import axios from "axios";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
+import { useAiCommand } from "./use-ai-command";
 
 export const useTranscribe = () => {
   const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
   const { whisperConfig, openai } = useContext(AISettingsProviderContext);
+  const { punctuateText } = useAiCommand();
 
   const transcode = async (src: string | Blob): Promise<string> => {
     if (src instanceof Blob) {
@@ -61,9 +63,19 @@ export const useTranscribe = () => {
       throw new Error(t("whisperServiceNotSupported"));
     }
 
+    let transcript = originalText || result.text;
+    // if the transcript does not contain any punctuation, use AI command to add punctuation
+    if (!transcript.match(/\w[.,!?](\s|$)/)) {
+      try {
+        transcript = await punctuateText(transcript);
+      } catch (err) {
+        console.warn(err.message);
+      }
+    }
+
     const alignmentResult = await EnjoyApp.echogarden.align(
       new Uint8Array(await blob.arrayBuffer()),
-      originalText || result.text
+      transcript
     );
 
     return {

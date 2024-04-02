@@ -8,6 +8,7 @@ import {
   extractStoryCommand,
   translateCommand,
   analyzeCommand,
+  punctuateCommand,
 } from "@commands";
 
 export const useAiCommand = () => {
@@ -102,10 +103,19 @@ export const useAiCommand = () => {
     });
   };
 
+  const punctuateText = async (text: string) => {
+    return punctuateCommand(text, {
+      key: currentEngine.key,
+      modelName: currentEngine.model,
+      baseUrl: currentEngine.baseUrl,
+    })
+  }
+
   return {
     lookupWord,
     extractStory,
     translate,
     analyzeText,
+    punctuateText
   };
 };
