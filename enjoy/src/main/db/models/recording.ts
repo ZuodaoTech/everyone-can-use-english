@@ -308,17 +308,16 @@ export class Recording extends Model<Recording> {
       throw new Error("Empty recording");
     }
 
-    // transcode audio to .wav
-    const rawAudio = await echogarden.ensureRawAudio(Buffer.from(blob.arrayBuffer), 16000);
-
     // denoise audio
     const { denoisedAudio } = await echogarden.denoise(
-      rawAudio,
+      Buffer.from(blob.arrayBuffer),
       {}
     );
 
     // trim audio
-    let trimmedSamples = echogarden.trimAudioStart(denoisedAudio.audioChannels[0]);
+    let trimmedSamples = echogarden.trimAudioStart(
+      denoisedAudio.audioChannels[0]
+    );
     trimmedSamples = echogarden.trimAudioEnd(trimmedSamples);
     denoisedAudio.audioChannels[0] = trimmedSamples;
 
