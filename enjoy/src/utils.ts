@@ -1,5 +1,4 @@
 import Pitchfinder from "pitchfinder";
-import { END_OF_SENTENCE_REGEX, MAGIC_TOKEN_REGEX } from "./constants";
 import { IPA_MAPPING } from "./constants";
 
 export const extractFrequencies = (props: {
@@ -33,57 +32,6 @@ export function milisecondsToTimestamp(ms: number) {
     "0"
   )}:${seconds.padStart(2, "0")},${milliseconds}`;
 }
-
-export const groupTranscription = (
-  transcription: TranscriptionResultSegmentType[]
-): TranscriptionResultSegmentGroupType[] => {
-  const generateGroup = (group?: TranscriptionResultSegmentType[]) => {
-    if (!group || group.length === 0) return;
-
-    const firstWord = group[0];
-    const lastWord = group[group.length - 1];
-
-    return {
-      offsets: {
-        from: firstWord.offsets.from,
-        to: lastWord.offsets.to,
-      },
-      text: group.map((w) => w.text.trim()).join(" "),
-      timestamps: {
-        from: firstWord.timestamps.from,
-        to: lastWord.timestamps.to,
-      },
-      segments: group,
-    };
-  };
-
-  const groups: TranscriptionResultSegmentGroupType[] = [];
-  let group: TranscriptionResultSegmentType[] = [];
-
-  transcription.forEach((segment) => {
-    const text = segment.text.trim();
-    if (!text) return;
-
-    group.push(segment);
-
-    if (
-      !text.match(MAGIC_TOKEN_REGEX) &&
-      segment.text.trim().match(END_OF_SENTENCE_REGEX)
-    ) {
-      // Group a complete sentence;
-      groups.push(generateGroup(group));
-
-      // init a new group
-      group = [];
-    }
-  });
-
-  // Group the last group
-  const lastSentence = generateGroup(group);
-  if (lastSentence) groups.push(lastSentence);
-
-  return groups;
-};
 
 export const convertIpaToNormal = (ipa: string) => {
   const mark = ipa.match(/(\ˈ|ˌ)/);
