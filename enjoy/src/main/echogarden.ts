@@ -123,7 +123,7 @@ class EchogardenWrapper {
     ipcMain.handle(
       "echogarden-align",
       async (
-        event,
+        _event,
         input: AudioSourceParam,
         transcript: string,
         options: AlignmentOptions
@@ -132,40 +132,31 @@ class EchogardenWrapper {
           return await this.align(input, transcript, options);
         } catch (err) {
           logger.error(err);
-          event.sender.send("on-notification", {
-            type: "error",
-            message: err.message,
-          });
+          throw err;
         }
       }
     );
 
     ipcMain.handle(
       "echogarden-transcode",
-      async (event, url: string, sampleRate?: number) => {
+      async (_event, url: string, sampleRate?: number) => {
         try {
           return await this.transcode(url, sampleRate);
         } catch (err) {
           logger.error(err);
-          event.sender.send("on-notification", {
-            type: "error",
-            message: err.message,
-          });
+          throw err;
         }
       }
     );
 
     ipcMain.handle(
       "echogarden-decode",
-      async (event, url: string, sampleRate?: number) => {
+      async (_event, url: string, sampleRate?: number) => {
         try {
           return await this.decode(url, sampleRate);
         } catch (err) {
           logger.error(err);
-          event.sender.send("on-notification", {
-            type: "error",
-            message: err.message,
-          });
+          throw err;
         }
       }
     );
