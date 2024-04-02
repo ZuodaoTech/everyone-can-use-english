@@ -36,3 +36,5 @@ export class Waveform {
     });
   }
 }
+
+export default new Waveform();

@@ -25,7 +25,7 @@ import storage from "@main/storage";
 import { Client } from "@/api";
 import { WEB_API_URL } from "@/constants";
 import { AzureSpeechSdk } from "@main/azure-speech-sdk";
-import Ffmpeg from "@main/ffmpeg";
+import echogarden from "@main/echogarden";
 import camelcaseKeys from "camelcase-keys";
 
 const logger = log.scope("db/models/recording");
@@ -307,32 +307,38 @@ export class Recording extends Model<Recording> {
       throw new Error("Empty recording");
     }
 
-    const format = blob.type.split("/")[1]?.split(";")?.[0];
-    if (!format) {
-      throw new Error("Unknown recording format");
-    }
-
-    const file = path.join(
-      settings.userDataPath(),
-      "recordings",
-      `${Date.now()}.${format}`
+    // denoise audio
+    const { denoisedAudio } = await echogarden.denoise(
+      Buffer.from(blob.arrayBuffer),
+      {}
     );
-    await fs.outputFile(file, Buffer.from(blob.arrayBuffer));
 
-    try {
-      const ffmpeg = new Ffmpeg();
-      const metadata = await ffmpeg.generateMetadata(file);
-      duration = Math.floor(metadata.format.duration * 1000);
-    } catch (err) {
-      logger.error(err);
-    }
+    // trim audio
+    let trimmedSamples = echogarden.trimAudioStart(
+      denoisedAudio.audioChannels[0]
+    );
+    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples);
+    denoisedAudio.audioChannels[0] = trimmedSamples;
+
+    duration = Math.round(echogarden.getRawAudioDuration(denoisedAudio) * 1000);
 
     if (duration === 0) {
       throw new Error("Failed to get duration of the recording");
     }
 
+    // save recording to file
+    const file = path.join(
+      settings.userDataPath(),
+      "recordings",
+      `${Date.now()}.wav`
+    );
+    await fs.outputFile(file, echogarden.encodeWaveBuffer(denoisedAudio));
+
+    // hash file
     const md5 = await hashFile(file, { algo: "md5" });
-    const filename = `${md5}.${format}`;
+
+    // rename file
+    const filename = `${md5}.wav`;
     fs.renameSync(file, path.join(path.dirname(file), filename));
 
     return this.create(

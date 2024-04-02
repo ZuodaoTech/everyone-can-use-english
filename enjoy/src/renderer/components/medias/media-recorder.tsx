@@ -6,10 +6,8 @@ import {
 import RecordPlugin from "wavesurfer.js/dist/plugins/record";
 import WaveSurfer from "wavesurfer.js";
 import { t } from "i18next";
-import { useTranscribe } from "@renderer/hooks";
 import { toast } from "@renderer/components/ui";
 import { MediaRecordButton } from "@renderer/components";
-import { FFMPEG_CONVERT_WAV_OPTIONS } from "@/constants";
 
 export const MediaRecorder = () => {
   const {
@@ -23,7 +21,6 @@ export const MediaRecorder = () => {
   const [access, setAccess] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { transcode } = useTranscribe();
 
   const ref = useRef(null);
 
@@ -45,12 +42,6 @@ export const MediaRecorder = () => {
 
     toast.promise(
       async () => {
-        let output: Blob;
-        output = await transcode(blob, [
-          // ...FFMPEG_TRIM_SILENCE_OPTIONS,
-          ...FFMPEG_CONVERT_WAV_OPTIONS,
-        ]);
-
         const currentSegment =
           transcription?.result?.timeline?.[currentSegmentIndex];
         if (!currentSegment) return;
@@ -59,8 +50,8 @@ export const MediaRecorder = () => {
           targetId: media.id,
           targetType: media.mediaType,
           blob: {
-            type: output.type.split(";")[0],
-            arrayBuffer: await output.arrayBuffer(),
+            type: blob.type.split(";")[0],
+            arrayBuffer: await blob.arrayBuffer(),
           },
           referenceId: currentSegmentIndex,
           referenceText: currentSegment.text,

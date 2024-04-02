@@ -6,6 +6,7 @@ import { exec, spawn } from "child_process";
 import fs from "fs-extra";
 import log from "@main/logger";
 import url from "url";
+import { enjoyUrlToPath } from "./utils";
 
 const __filename = url.fileURLToPath(import.meta.url);
 /*
@@ -150,22 +151,22 @@ class Whipser {
 
     const { blob } = params;
     let { file } = params;
-    if (!file && !blob) {
-      throw new Error("No file or blob provided");
-    }
 
-    const model = this.currentModel();
-
-    if (blob) {
+    if (file) {
+      file = enjoyUrlToPath(file);
+    } else if (blob) {
       const format = blob.type.split("/")[1];
-
       if (format !== "wav") {
         throw new Error("Only wav format is supported");
       }
 
       file = path.join(settings.cachePath(), `${Date.now()}.${format}`);
       await fs.outputFile(file, Buffer.from(blob.arrayBuffer));
+    } else {
+      throw new Error("No file or blob provided");
     }
+
+    const model = this.currentModel();
 
     const { force = false, extra = [], onProgress } = options || {};
     const filename = path.basename(file, path.extname(file));

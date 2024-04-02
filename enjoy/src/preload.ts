@@ -370,6 +370,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     align: (input: string, transcript: string, options: any) => {
       return ipcRenderer.invoke("echogarden-align", input, transcript, options);
     },
+    transcode: (input: string) => {
+      return ipcRenderer.invoke("echogarden-transcode", input);
+    },
     check: () => {
       return ipcRenderer.invoke("echogarden-check");
     },

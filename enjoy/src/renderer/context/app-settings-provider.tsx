@@ -1,10 +1,7 @@
-import { createContext, useEffect, useState, useRef } from "react";
-import { toast } from "@renderer/components/ui";
+import { createContext, useEffect, useState } from "react";
 import { WEB_API_URL } from "@/constants";
 import { Client } from "@/api";
 import i18n from "@renderer/i18n";
-import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { toBlobURL } from "@ffmpeg/util";
 import ahoy from "ahoy.js";
 
 type AppSettingsProviderState = {
@@ -17,8 +14,6 @@ type AppSettingsProviderState = {
   login?: (user: UserType) => void;
   logout?: () => void;
   setLibraryPath?: (path: string) => Promise<void>;
-  ffmpegWasm?: FFmpeg;
-  ffmpegValid?: boolean;
   EnjoyApp?: EnjoyAppType;
   language?: "en" | "zh-CN";
   switchLanguage?: (language: "en" | "zh-CN") => void;
@@ -46,20 +41,15 @@ export const AppSettingsProvider = ({
   const [webApi, setWebApi] = useState<Client>(null);
   const [user, setUser] = useState<UserType | null>(null);
   const [libraryPath, setLibraryPath] = useState("");
-  const [ffmpegWasm, setFfmpegWasm] = useState<FFmpeg>(null);
-  const [ffmpegValid, setFfmpegValid] = useState<boolean>(false);
   const [language, setLanguage] = useState<"en" | "zh-CN">();
   const [proxy, setProxy] = useState<ProxyConfigType>();
   const EnjoyApp = window.__ENJOY_APP__;
-
-  const ffmpegRef = useRef(new FFmpeg());
 
   useEffect(() => {
     fetchVersion();
     fetchUser();
     fetchLibraryPath();
     fetchLanguage();
-    prepareFfmpeg();
     fetchProxyConfig();
   }, []);
 
@@ -82,50 +72,6 @@ export const AppSettingsProvider = ({
       urlPrefix: apiUrl,
     });
   }, [apiUrl]);
-
-  const prepareFfmpeg = async () => {
-    try {
-      const valid = await EnjoyApp.ffmpeg.check();
-      setFfmpegValid(valid);
-    } catch (err) {
-      console.error(err);
-      toast.error(err.message);
-    }
-
-    loadFfmpegWASM();
-  };
-
-  const loadFfmpegWASM = async () => {
-    const baseURL = "assets/libs";
-    ffmpegRef.current.on("log", ({ message }) => {
-      console.log(message);
-    });
-
-    const coreURL = await toBlobURL(
-      `${baseURL}/ffmpeg-core.js`,
-      "text/javascript"
-    );
-    const wasmURL = await toBlobURL(
-      `${baseURL}/ffmpeg-core.wasm`,
-      "application/wasm"
-    );
-    const workerURL = await toBlobURL(
-      `${baseURL}/ffmpeg-core.worker.js`,
-      "text/javascript"
-    );
-
-    try {
-      await ffmpegRef.current.load({
-        coreURL,
-        wasmURL,
-        workerURL,
-      });
-      setFfmpegWasm(ffmpegRef.current);
-      (window as any).ffmpeg = ffmpegRef.current;
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
 
   const fetchLanguage = async () => {
     const language = await EnjoyApp.settings.getLanguage();
@@ -211,8 +157,6 @@ export const AppSettingsProvider = ({
         logout,
         libraryPath,
         setLibraryPath: setLibraryPathHandler,
-        ffmpegValid,
-        ffmpegWasm,
         proxy,
         setProxy: setProxyConfigHandler,
         initialized: Boolean(user && libraryPath),

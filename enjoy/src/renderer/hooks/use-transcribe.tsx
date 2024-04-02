@@ -4,9 +4,7 @@ import {
 } from "@renderer/context";
 import OpenAI from "openai";
 import { useContext } from "react";
-import { toast } from "@renderer/components/ui";
 import { t } from "i18next";
-import { fetchFile } from "@ffmpeg/util";
 import { AI_WORKER_ENDPOINT } from "@/constants";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import axios from "axios";
@@ -15,63 +13,21 @@ import sortedUniqBy from "lodash/sortedUniqBy";
 import { groupTranscription, milisecondsToTimestamp } from "@/utils";
 import { END_OF_SENTENCE_REGEX } from "@/constants";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
-import { FFMPEG_CONVERT_WAV_OPTIONS } from "@/constants";
 
 export const useTranscribe = () => {
-  const { EnjoyApp, ffmpegWasm, ffmpegValid, user, webApi } = useContext(
-    AppSettingsProviderContext
-  );
+  const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
   const { whisperConfig, openai } = useContext(AISettingsProviderContext);
 
-  const transcode = async (src: string | Blob, options?: string[]) => {
-    if (ffmpegValid) {
-      if (src instanceof Blob) {
-        src = await EnjoyApp.cacheObjects.writeFile(
-          `${Date.now()}.${src.type.split("/")[1].split(";")[0]}`,
-          await src.arrayBuffer()
-        );
-      }
-
-      const output = `enjoy://library/cache/${src
-        .split("/")
-        .pop()
-        .split(";")
-        .shift()}.wav`;
-      await EnjoyApp.ffmpeg.transcode(src, output, options);
-      const data = await fetchFile(output);
-      return new Blob([data], { type: "audio/wav" });
-    } else {
-      return transcodeUsingWasm(src, options);
+  const transcode = async (src: string | Blob): Promise<string> => {
+    if (src instanceof Blob) {
+      src = await EnjoyApp.cacheObjects.writeFile(
+        `${Date.now()}.${src.type.split("/")[1].split(";")[0]}`,
+        await src.arrayBuffer()
+      );
     }
-  };
 
-  const transcodeUsingWasm = async (src: string | Blob, options?: string[]) => {
-    if (!ffmpegWasm?.loaded) return;
-
-    options = options || FFMPEG_CONVERT_WAV_OPTIONS;
-
-    try {
-      let uri: URL;
-      if (src instanceof Blob) {
-        uri = new URL(URL.createObjectURL(src));
-      } else {
-        uri = new URL(src);
-      }
-
-      const input = uri.pathname.split("/").pop();
-      let output: string;
-      if (src instanceof Blob) {
-        output = input + ".wav";
-      } else {
-        output = input.replace(/\.[^/.]+$/, ".wav");
-      }
-      await ffmpegWasm.writeFile(input, await fetchFile(src));
-      await ffmpegWasm.exec(["-i", input, ...options, output]);
-      const data = await ffmpegWasm.readFile(output);
-      return new Blob([data], { type: "audio/wav" });
-    } catch (e) {
-      toast.error(t("transcodeError"));
-    }
+    const output = await EnjoyApp.echogarden.transcode(src);
+    return output;
   };
 
   const transcribe = async (
@@ -87,8 +43,9 @@ export const useTranscribe = () => {
     alignmentResult: AlignmentResult;
     originalText?: string;
   }> => {
-    const blob = await transcode(mediaSrc);
+    const url = await transcode(mediaSrc);
     const { targetId, targetType, originalText } = params || {};
+    const blob = await (await fetch(url)).blob();
 
     let result;
     if (originalText) {
@@ -97,7 +54,7 @@ export const useTranscribe = () => {
         model: "original",
       };
     } else if (whisperConfig.service === "local") {
-      result = await transcribeByLocal(blob);
+      result = await transcribeByLocal(url);
     } else if (whisperConfig.service === "cloudflare") {
       result = await transcribeByCloudflareAi(blob);
     } else if (whisperConfig.service === "openai") {
@@ -120,13 +77,10 @@ export const useTranscribe = () => {
     };
   };
 
-  const transcribeByLocal = async (blob: Blob) => {
+  const transcribeByLocal = async (url: string) => {
     const res = await EnjoyApp.whisper.transcribe(
       {
-        blob: {
-          type: blob.type.split(";")[0],
-          arrayBuffer: await blob.arrayBuffer(),
-        },
+        file: url,
       },
       {
         force: true,

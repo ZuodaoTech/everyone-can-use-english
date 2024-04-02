@@ -20,9 +20,8 @@
     "test:renderer": "yarn run playwright test e2e/renderer.spec.ts",
     "create-migration": "zx ./src/main/db/create-migration.mjs",
     "download-whisper-model": "zx ./scripts/download-whisper-model.mjs",
-    "download-ffmpeg-wasm": "zx ./scripts/download-ffmpeg-wasm.mjs",
     "download-dictionaries": "zx ./scripts/download-dictionaries.mjs",
-    "download": "yarn run download-whisper-model && yarn run download-ffmpeg-wasm && yarn run download-dictionaries"
+    "download": "yarn run download-whisper-model && yarn run download-dictionaries"
   },
   "keywords": [],
   "author": {
@@ -82,8 +81,6 @@
   },
   "dependencies": {
     "@andrkrn/ffprobe-static": "^5.2.0",
-    "@ffmpeg/ffmpeg": "^0.12.10",
-    "@ffmpeg/util": "^0.12.1",
     "@hookform/resolvers": "^3.3.4",
     "@langchain/community": "^0.0.43",
     "@langchain/google-genai": "^0.0.10",
