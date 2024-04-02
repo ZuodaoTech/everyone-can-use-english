@@ -19,6 +19,7 @@ type DownloadStateType = {
   state: "progressing" | "interrupted" | "completed" | "cancelled";
   received: number;
   total: number;
+  speed?: string;
 };
 
 type NotificationType = {

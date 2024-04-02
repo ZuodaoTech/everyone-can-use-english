@@ -1,12 +1,13 @@
 import { app } from "electron";
 import path from "path";
-import { exec } from "child_process";
+import { exec, spawn } from "child_process";
 import fs from "fs-extra";
 import os from "os";
 import log from "@main/logger";
 import snakeCase from "lodash/snakeCase";
 import settings from "@main/settings";
-import url from 'url';
+import url from "url";
+import mainWin from "@main/window";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -88,14 +89,15 @@ class Youtubedr {
       quality?: string | number;
       filename?: string;
       directory?: string;
+      webContents?: Electron.WebContents;
     } = {}
   ): Promise<string> {
     const {
       quality,
       filename = this.getYtVideoId(url) + ".mp4",
       directory = app.getPath("downloads"),
+      webContents = mainWin.win.webContents,
     } = options;
-
     const command = [
       this.binFile,
       "download",
@@ -106,37 +108,58 @@ class Youtubedr {
     ].join(" ");
 
     logger.info(`Running command: ${command}`);
+
+    let currentSpeed = "";
+
     return new Promise((resolve, reject) => {
-      exec(
-        command,
-        {
-          timeout: ONE_MINUTE * 15,
-        },
-        (error, stdout, stderr) => {
-          if (error) {
-            logger.error("error", error);
-          }
+      const proc = spawn(this.binFile, [
+        "download",
+        url,
+        `--quality=${quality || "medium"}`,
+        `--filename=${filename}`,
+        `--directory=${directory}`,
+      ]);
 
-          if (stderr) {
-            logger.error("stderr", stderr);
-          }
+      proc.stdout.on("data", (data) => {
+        const output = data.toString();
+        const match = output.match(/iB (\d+) % \[/);
 
-          if (stdout) {
-            logger.debug(stdout);
+        if (match) {
+          let speed = output.match(/\ ] (.*)/);
+          if (speed) {
+            currentSpeed = speed[1];
           }
-
-          if (fs.existsSync(path.join(directory, filename))) {
-            const stat = fs.statSync(path.join(directory, filename));
-            if (stat.size === 0) {
-              reject(new Error("Youtubedr download failed: empty file"));
-            } else {
-              resolve(path.join(directory, filename));
-            }
-          } else {
-            reject(new Error("Youtubedr download failed: unknown error"));
-          }
+          webContents.send("download-on-state", {
+            name: filename,
+            state: "progressing",
+            received: parseInt(match[1]),
+            speed: currentSpeed,
+          });
         }
-      );
+      });
+
+      proc.on("close", (code) => {
+        if (code !== 0) {
+          webContents.send("download-on-state", {
+            name: filename,
+            state: "interrupted",
+          });
+          return reject(
+            new Error(`Youtubedr download failed with code: ${code}`)
+          );
+        }
+
+        if (fs.existsSync(path.join(directory, filename))) {
+          const stat = fs.statSync(path.join(directory, filename));
+          if (stat.size === 0) {
+            reject(new Error("Youtubedr download failed: empty file"));
+          } else {
+            resolve(path.join(directory, filename));
+          }
+        } else {
+          reject(new Error("Youtubedr download failed: unknown error"));
+        }
+      });
     });
   }
 
