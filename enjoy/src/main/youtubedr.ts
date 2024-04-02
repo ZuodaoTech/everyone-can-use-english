@@ -140,6 +140,10 @@ class Youtubedr {
 
       proc.on("close", (code) => {
         if (code !== 0) {
+          webContents.send("download-on-state", {
+            name: filename,
+            state: "interrupted",
+          });
           return reject(
             new Error(`Youtubedr download failed with code: ${code}`)
           );
