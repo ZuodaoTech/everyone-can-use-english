@@ -5,6 +5,7 @@ import {
   TedIdeasSegment,
   VideosSegment,
   TedTalksSegment,
+  YoutubeVideosSegment,
 } from "@renderer/components";
 
 export default () => {
@@ -17,6 +18,7 @@ export default () => {
         <AudibleBooksSegment />
         <TedTalksSegment />
         <TedIdeasSegment />
+        <YoutubeVideosSegment />
       </div>
     </div>
   );
