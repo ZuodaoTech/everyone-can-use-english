@@ -8,10 +8,6 @@ import { t } from "i18next";
 import { AI_WORKER_ENDPOINT } from "@/constants";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import axios from "axios";
-import take from "lodash/take";
-import sortedUniqBy from "lodash/sortedUniqBy";
-import { groupTranscription, milisecondsToTimestamp } from "@/utils";
-import { END_OF_SENTENCE_REGEX } from "@/constants";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 
 export const useTranscribe = () => {
@@ -67,7 +63,7 @@ export const useTranscribe = () => {
 
     const alignmentResult = await EnjoyApp.echogarden.align(
       new Uint8Array(await blob.arrayBuffer()),
-      originalText || result.result.map((segment) => segment.text).join(" ")
+      originalText || result.text
     );
 
     return {
@@ -88,12 +84,10 @@ export const useTranscribe = () => {
       }
     );
 
-    const result = groupTranscription(res.transcription);
-
     return {
       engine: "whisper",
       model: res.model.type,
-      result,
+      text: res.transcription.map((segment) => segment.text).join(" "),
     };
   };
 
@@ -108,41 +102,16 @@ export const useTranscribe = () => {
       dangerouslyAllowBrowser: true,
     });
 
-    const res: {
-      words: {
-        word: string;
-        start: number;
-        end: number;
-      }[];
-    } = (await client.audio.transcriptions.create({
+    const res: { text: string } = (await client.audio.transcriptions.create({
       file: new File([blob], "audio.wav"),
       model: "whisper-1",
-      response_format: "verbose_json",
-      timestamp_granularities: ["word"],
+      response_format: "json",
     })) as any;
-
-    const transcription: TranscriptionResultSegmentType[] = res.words.map(
-      (word) => {
-        return {
-          offsets: {
-            from: word.start * 1000,
-            to: word.end * 1000,
-          },
-          timestamps: {
-            from: milisecondsToTimestamp(word.start * 1000),
-            to: milisecondsToTimestamp(word.end * 1000),
-          },
-          text: word.word,
-        };
-      }
-    );
-
-    const result = groupTranscription(transcription);
 
     return {
       engine: "openai",
       model: "whisper-1",
-      result,
+      text: res.text,
     };
   };
 
@@ -155,28 +124,11 @@ export const useTranscribe = () => {
         timeout: 1000 * 60 * 5,
       })
     ).data;
-    const transcription: TranscriptionResultSegmentType[] = res.words.map(
-      (word) => {
-        return {
-          offsets: {
-            from: word.start * 1000,
-            to: word.end * 1000,
-          },
-          timestamps: {
-            from: milisecondsToTimestamp(word.start * 1000),
-            to: milisecondsToTimestamp(word.end * 1000),
-          },
-          text: word.word,
-        };
-      }
-    );
-
-    const result = groupTranscription(transcription);
 
     return {
       engine: "cloudflare",
       model: "@cf/openai/whisper",
-      result,
+      text: res.text,
     };
   };
 
@@ -189,7 +141,7 @@ export const useTranscribe = () => {
   ): Promise<{
     engine: string;
     model: string;
-    result: TranscriptionResultSegmentGroupType[];
+    text: string;
   }> => {
     const { token, region } = await webApi.generateSpeechToken(params);
     const config = sdk.SpeechConfig.fromAuthorizationToken(token, region);
@@ -230,43 +182,10 @@ export const useTranscribe = () => {
       reco.sessionStopped = (_s, _e) => {
         reco.stopContinuousRecognitionAsync();
 
-        const transcription: TranscriptionResultSegmentType[] = [];
-
-        results.forEach((result) => {
-          const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
-          const words = best.Display.trim().split(" ");
-
-          best.Words.map((word, index) => {
-            let text = word.Word;
-            if (words.length === best.Words.length) {
-              text = words[index];
-            }
-
-            if (
-              index === best.Words.length - 1 &&
-              !text.trim().match(END_OF_SENTENCE_REGEX)
-            ) {
-              text = text + ".";
-            }
-
-            transcription.push({
-              offsets: {
-                from: word.Offset / 1e4,
-                to: (word.Offset + word.Duration) / 1e4,
-              },
-              timestamps: {
-                from: milisecondsToTimestamp(word.Offset / 1e4),
-                to: milisecondsToTimestamp((word.Offset + word.Duration) * 1e4),
-              },
-              text,
-            });
-          });
-        });
-
         resolve({
           engine: "azure",
           model: "whisper",
-          result: groupTranscription(transcription),
+          text: results.map((result) => result.DisplayText).join(' '),
         });
       };
 

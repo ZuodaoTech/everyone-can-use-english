@@ -188,9 +188,6 @@ class Whipser {
       "--output-file",
       path.join(tmpDir, filename),
       "-pp",
-      "--split-on-word",
-      "--max-len",
-      "1",
       ...extra,
     ];
 
