@@ -1,5 +1,6 @@
 import { app, BrowserWindow, protocol, net } from "electron";
 import path from "path";
+import fs from "fs-extra";
 import settings from "@main/settings";
 import "@main/i18n";
 import mainWindow from "@main/window";
@@ -88,5 +89,9 @@ app.on("activate", () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+// Clean up cache folder before quit
+app.on("before-quit", () => {
+  try {
+    fs.emptyDirSync(settings.cachePath());
+  } catch (err) {}
+});
