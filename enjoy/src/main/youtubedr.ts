@@ -7,6 +7,7 @@ import log from "@main/logger";
 import snakeCase from "lodash/snakeCase";
 import settings from "@main/settings";
 import url from "url";
+import mainWin from "@main/window";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -88,14 +89,15 @@ class Youtubedr {
       quality?: string | number;
       filename?: string;
       directory?: string;
+      webContents?: Electron.WebContents;
     } = {}
   ): Promise<string> {
     const {
       quality,
       filename = this.getYtVideoId(url) + ".mp4",
       directory = app.getPath("downloads"),
+      webContents = mainWin.win.webContents,
     } = options;
-
     const command = [
       this.binFile,
       "download",
@@ -106,6 +108,9 @@ class Youtubedr {
     ].join(" ");
 
     logger.info(`Running command: ${command}`);
+
+    let currentSpeed = "";
+
     return new Promise((resolve, reject) => {
       const proc = spawn(this.binFile, [
         "download",
@@ -117,10 +122,19 @@ class Youtubedr {
 
       proc.stdout.on("data", (data) => {
         const output = data.toString();
-        const match = output.match(/ib (\d+) % \[/);
+        const match = output.match(/iB (\d+) % \[/);
+
         if (match) {
-          console.log(`Download progress: ${match[1]}%`);
-          console.log(output);
+          let speed = output.match(/\ ] (.*)/);
+          if (speed) {
+            currentSpeed = speed[1];
+          }
+          webContents.send("download-on-state", {
+            name: filename,
+            state: "progressing",
+            received: parseInt(match[1]),
+            speed: currentSpeed,
+          });
         }
       });
 
@@ -143,38 +157,6 @@ class Youtubedr {
         }
       });
     });
-    // return new Promise((resolve, reject) => {
-    //   exec(
-    //     command,
-    //     {
-    //       timeout: ONE_MINUTE * 15,
-    //     },
-    //     (error, stdout, stderr) => {
-    //       if (error) {
-    //         logger.error("error", error);
-    //       }
-
-    //       if (stderr) {
-    //         logger.error("stderr", stderr);
-    //       }
-
-    //       if (stdout) {
-    //         logger.debug(stdout);
-    //       }
-
-    //       if (fs.existsSync(path.join(directory, filename))) {
-    //         const stat = fs.statSync(path.join(directory, filename));
-    //         if (stat.size === 0) {
-    //           reject(new Error("Youtubedr download failed: empty file"));
-    //         } else {
-    //           resolve(path.join(directory, filename));
-    //         }
-    //       } else {
-    //         reject(new Error("Youtubedr download failed: unknown error"));
-    //       }
-    //     }
-    //   );
-    // });
   }
 
   async info(url: string): Promise<YoutubeInfoType> {

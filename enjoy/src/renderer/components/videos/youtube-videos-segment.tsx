@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogFooter,
+  Progress,
 } from "@renderer/components/ui";
 import { useNavigate } from "react-router-dom";
 import { LoaderIcon } from "lucide-react";
@@ -22,10 +23,14 @@ export const YoutubeVideosSegment = () => {
     null
   );
   const [submitting, setSubmitting] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [downloadSpeed, setDownloadSpeed] = useState(null);
 
   const addToLibrary = () => {
-    let url = `https://www.youtube.com/watch?v=wnhvanMdx4s`;
+    let url = `https://www.youtube.com/watch?v=${selectedVideo?.videoId}`;
     setSubmitting(true);
+    setProgress(0);
+
     EnjoyApp.videos
       .create(url, {
         name: selectedVideo?.title,
@@ -64,6 +69,20 @@ export const YoutubeVideosSegment = () => {
     fetchYoutubeVideos();
   }, []);
 
+  useEffect(() => {
+    EnjoyApp.download.onState((_, downloadState) => {
+      const { state, received, speed } = downloadState;
+      if (state === "progressing") {
+        setProgress(received);
+        setDownloadSpeed(speed);
+      }
+    });
+
+    return () => {
+      EnjoyApp.download.removeAllListeners();
+    };
+  }, [submitting]);
+
   if (!videos?.length) return null;
 
   return (
@@ -101,7 +120,6 @@ export const YoutubeVideosSegment = () => {
           <DialogHeader>
             <DialogTitle>{t("downloadVideo")}</DialogTitle>
           </DialogHeader>
-
           <div className="flex items-center mb-4 bg-muted rounded-lg">
             <div className="aspect-square h-28 overflow-hidden rounded-l-lg">
               <img
@@ -119,7 +137,6 @@ export const YoutubeVideosSegment = () => {
               </div>
             </div>
           </div>
-
           <DialogFooter>
             <Button
               variant="ghost"
@@ -144,6 +161,14 @@ export const YoutubeVideosSegment = () => {
               {t("downloadVideo")}
             </Button>
           </DialogFooter>
+          {submitting && (
+            <div>
+              <Progress value={progress} className="mb-2" />
+              <div className="text-xs line-clamp-1 mb-2 text-right">
+                {downloadSpeed}
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </>
