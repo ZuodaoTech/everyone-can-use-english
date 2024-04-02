@@ -25,7 +25,6 @@ import storage from "@main/storage";
 import { Client } from "@/api";
 import { WEB_API_URL } from "@/constants";
 import { AzureSpeechSdk } from "@main/azure-speech-sdk";
-import Ffmpeg from "@main/ffmpeg";
 import echogarden from "@main/echogarden";
 import camelcaseKeys from "camelcase-keys";
 
