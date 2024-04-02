@@ -198,12 +198,12 @@ body {
 
   // @TODO 回头撤销对 code 的字体设置，因为 CharisSIL 不是等宽
   code {
-    font-family: "CharisSIL", "DejaVu Sans Mono", "Courier New", monospace;
+    font-family: "SauceCodePro Nerd Font Mono", "CharisSIL", "DejaVu Sans Mono", "Courier New", monospace;
   }
 
   span.pho {
     border-radius: 4px;
-    padding: 3px 6px;
+    padding: 1px 4px;
     background-color: var(--vp-code-bg);
     transition: color 0.25s, background-color 0.5s;
     font-family: "CharisSIL", "DejaVu Sans Mono", "Courier New", monospace;
