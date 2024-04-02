@@ -93,32 +93,6 @@ class EchogardenWrapper {
     return pathToEnjoyUrl(outputFilePath);
   }
 
-  /**
-   * Decodes the audio file at the enjoy:// protocol URL into a waveform data object.
-   * @param url
-   * @param sampleRate
-   * @returns WaveFormDataType
-   */
-  async decode(url: string, sampleRate = 16000): Promise<WaveFormDataType> {
-    const filePath = enjoyUrlToPath(url);
-    const fileHash = await hashFile(filePath, { algo: "md5" });
-
-    const rawAudio = await this.ensureRawAudio(filePath, sampleRate);
-    const peaks = rawAudio.audioChannels[0];
-    const frequencies = extractFrequencies({ peaks, sampleRate });
-    const duration = this.getRawAudioDuration(rawAudio);
-
-    const data = {
-      peaks: Array.from(peaks),
-      duration,
-      frequencies,
-      sampleRate,
-    };
-    waveform.save(fileHash, data);
-
-    return data;
-  }
-
   registerIpcHandlers() {
     ipcMain.handle(
       "echogarden-align",
@@ -142,18 +116,6 @@ class EchogardenWrapper {
       async (_event, url: string, sampleRate?: number) => {
         try {
           return await this.transcode(url, sampleRate);
-        } catch (err) {
-          logger.error(err);
-          throw err;
-        }
-      }
-    );
-
-    ipcMain.handle(
-      "echogarden-decode",
-      async (_event, url: string, sampleRate?: number) => {
-        try {
-          return await this.decode(url, sampleRate);
         } catch (err) {
           logger.error(err);
           throw err;
