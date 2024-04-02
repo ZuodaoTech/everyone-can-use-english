@@ -18,6 +18,7 @@ export const MediaRecorder = () => {
     transcription,
     currentSegmentIndex,
   } = useContext(MediaPlayerProviderContext);
+  const [player, setPlayer] = useState<WaveSurfer>();
   const [access, setAccess] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -80,6 +81,7 @@ export const MediaRecorder = () => {
       autoCenter: false,
       normalize: false,
     });
+    setPlayer(ws);
 
     const record = ws.registerPlugin(RecordPlugin.create());
     let startAt = 0;
@@ -113,9 +115,9 @@ export const MediaRecorder = () => {
       });
 
     return () => {
-      clearInterval(interval);
-      record.stopRecording();
-      ws?.destroy();
+      if (interval) clearInterval(interval);
+      record?.stopRecording();
+      player?.destroy();
     };
   }, [ref, isRecording, access, layout?.playerHeight]);
 
