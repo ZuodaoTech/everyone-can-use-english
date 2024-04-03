@@ -11,6 +11,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@renderer/components/ui";
 import { formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
 import Markdown from "react-markdown";
+import { Link } from "react-router-dom";
 
 export const PostCard = (props: {
   post: PostType;
@@ -23,12 +24,14 @@ export const PostCard = (props: {
     <div className="rounded p-4 bg-background space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <Avatar>
-            <AvatarImage src={post.user.avatarUrl} />
-            <AvatarFallback className="text-xl">
-              {post.user.name[0].toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+          <Link to={`/users/${post.user.id}`}>
+            <Avatar>
+              <AvatarImage src={post.user.avatarUrl} />
+              <AvatarFallback className="text-xl">
+                {post.user.name[0].toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </Link>
           <div className="flex flex-col justify-between">
             <div className="">{post.user.name}</div>
             <div className="text-xs text-muted-foreground">

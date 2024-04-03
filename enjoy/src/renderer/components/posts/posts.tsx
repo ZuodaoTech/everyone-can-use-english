@@ -4,7 +4,8 @@ import { PostCard, LoaderSpin } from "@renderer/components";
 import { toast, Button } from "@renderer/components//ui";
 import { t } from "i18next";
 
-export const Posts = () => {
+export const Posts = (props: { userId?: string }) => {
+  const { userId } = props;
   const { webApi } = useContext(AppSettingsProviderContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -29,6 +30,7 @@ export const Posts = () => {
       .posts({
         page,
         items: 10,
+        userId
       })
       .then((res) => {
         setPosts([...posts, ...res.posts]);

@@ -100,7 +100,11 @@ export class Client {
     return this.api.get("/api/users", { params: { filter } });
   }
 
-  userFollowing(id: number): Promise<
+  user(id: string): Promise<UserType> {
+    return this.api.get(`/api/users/${id}`);
+  }
+
+  userFollowing(id: string): Promise<
     {
       users: UserType[];
     } & PagyResponseType
@@ -108,7 +112,7 @@ export class Client {
     return this.api.get(`/api/users/${id}/following`);
   }
 
-  userFollowers(id: number): Promise<
+  userFollowers(id: string): Promise<
     {
       users: UserType[];
     } & PagyResponseType
@@ -116,7 +120,7 @@ export class Client {
     return this.api.get(`/api/users/${id}/following`);
   }
 
-  follow(id: number): Promise<
+  follow(id: string): Promise<
     {
       user: UserType;
     } & {
@@ -126,7 +130,7 @@ export class Client {
     return this.api.post(`/api/users/${id}/follow`);
   }
 
-  unfollow(id: number): Promise<
+  unfollow(id: string): Promise<
     {
       user: UserType;
     } & {
@@ -136,7 +140,7 @@ export class Client {
     return this.api.post(`/api/users/${id}/unfollow`);
   }
 
-  posts(params?: { page?: number; items?: number }): Promise<
+  posts(params?: { page?: number; items?: number; userId?: string }): Promise<
     {
       posts: PostType[];
     } & PagyResponseType
