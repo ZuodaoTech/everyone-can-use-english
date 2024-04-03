@@ -513,5 +513,11 @@
   "reAnalyze": "重新分析",
   "AiDictionary": "智能词典",
   "AiTranslate": "智能翻译",
-  "cambridgeDictionary": "剑桥词典"
+  "cambridgeDictionary": "剑桥词典",
+  "following": "关注中",
+  "followers": "被关注",
+  "follow": "关注",
+  "unfollow": "取消关注",
+  "noFollowersYet": "还没有人关注",
+  "notFollowingAnyoneYet": "还没有关注任何人"
 }

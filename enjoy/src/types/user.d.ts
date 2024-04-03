@@ -7,5 +7,6 @@ type UserType = {
   recordingsCount?: number;
   recordingsDuration?: number;
   hasMixin?: boolean;
+  following?: boolean;
   createdAt?: string;
 };

@@ -514,5 +514,11 @@
   "reAnalyze": "re-analyze",
   "AiDictionary": "AI dictionary",
   "AiTranslate": "AI translate",
-  "cambridgeDictionary": "Cambridge dictionary"
+  "cambridgeDictionary": "Cambridge dictionary",
+  "following": "following",
+  "followers": "followers",
+  "follow": "follow",
+  "unfollow": "unfollow",
+  "noFollowersYet": "No followers yet",
+  "notFollowingAnyoneYet": "Not following anyone yet"
 }

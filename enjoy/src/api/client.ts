@@ -104,20 +104,30 @@ export class Client {
     return this.api.get(`/api/users/${id}`);
   }
 
-  userFollowing(id: string): Promise<
+  userFollowing(
+    id: string,
+    options: { page: number }
+  ): Promise<
     {
       users: UserType[];
     } & PagyResponseType
   > {
-    return this.api.get(`/api/users/${id}/following`);
+    return this.api.get(`/api/users/${id}/following`, {
+      params: decamelizeKeys(options),
+    });
   }
 
-  userFollowers(id: string): Promise<
+  userFollowers(
+    id: string,
+    options: { page: number }
+  ): Promise<
     {
       users: UserType[];
     } & PagyResponseType
   > {
-    return this.api.get(`/api/users/${id}/following`);
+    return this.api.get(`/api/users/${id}/followers`, {
+      params: decamelizeKeys(options),
+    });
   }
 
   follow(id: string): Promise<
