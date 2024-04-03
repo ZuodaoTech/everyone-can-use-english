@@ -320,7 +320,7 @@ export const MediaCurrentRecording = () => {
     }
 
     const subscriptions = [
-      regions.on("region-created", () => { }),
+      regions.on("region-created", () => {}),
 
       regions.on("region-clicked", (region, e) => {
         e.stopPropagation();
@@ -476,11 +476,12 @@ export const MediaCurrentRecording = () => {
           setIsRecording={setIsRecording}
         />
 
-        {
-          layout?.name === 'lg' && <>
+        {layout?.name === "lg" && (
+          <>
             <Button
               variant={isComparing ? "secondary" : "outline"}
               size="icon"
+              id="media-compare-button"
               data-tooltip-id="media-player-tooltip"
               data-tooltip-content={t("compare")}
               className="rounded-full w-8 h-8 p-0"
@@ -500,7 +501,7 @@ export const MediaCurrentRecording = () => {
               <TextCursorInputIcon className="w-4 h-4" />
             </Button>
           </>
-        }
+        )}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -516,43 +517,42 @@ export const MediaCurrentRecording = () => {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent>
-            {
-              layout?.name === 'sm' && (
-                <>
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={toggleCompare}
-                  >
-                    <GitCompareIcon className="w-4 h-4 mr-4" />
-                    <span>{t("compare")}</span>
-                  </DropdownMenuItem>
+            {layout?.name === "sm" && (
+              <>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={toggleCompare}
+                >
+                  <GitCompareIcon className="w-4 h-4 mr-4" />
+                  <span>{t("compare")}</span>
+                </DropdownMenuItem>
 
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={() => setIsSelectingRegion(!isSelectingRegion)}
-                  >
-                    <TextCursorInputIcon className="w-4 h-4 mr-4" />
-                    <span>{t("selectRegion")}</span>
-                  </DropdownMenuItem>
-                </>
-              )
-            }
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => setIsSelectingRegion(!isSelectingRegion)}
+                >
+                  <TextCursorInputIcon className="w-4 h-4 mr-4" />
+                  <span>{t("selectRegion")}</span>
+                </DropdownMenuItem>
+              </>
+            )}
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={() => setDetailIsOpen(true)}
             >
               <GaugeCircleIcon
                 className={`w-4 h-4 mr-4
-                    ${currentRecording.pronunciationAssessment
-                    ? currentRecording.pronunciationAssessment
-                      .pronunciationScore >= 80
-                      ? "text-green-500"
-                      : currentRecording.pronunciationAssessment
-                        .pronunciationScore >= 60
-                        ? "text-yellow-600"
-                        : "text-red-500"
-                    : ""
-                  }
+                    ${
+                      currentRecording.pronunciationAssessment
+                        ? currentRecording.pronunciationAssessment
+                            .pronunciationScore >= 80
+                          ? "text-green-500"
+                          : currentRecording.pronunciationAssessment
+                              .pronunciationScore >= 60
+                          ? "text-yellow-600"
+                          : "text-red-500"
+                        : ""
+                    }
                     `}
               />
               <span>{t("pronunciationAssessment")}</span>
