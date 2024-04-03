@@ -92,6 +92,50 @@ export class Client {
     return this.api.get("/api/users/rankings", { params: { range } });
   }
 
+  users(filter: "following" | "followers" = "followers"): Promise<
+    {
+      users: UserType[];
+    } & PagyResponseType
+  > {
+    return this.api.get("/api/users", { params: { filter } });
+  }
+
+  userFollowing(id: number): Promise<
+    {
+      users: UserType[];
+    } & PagyResponseType
+  > {
+    return this.api.get(`/api/users/${id}/following`);
+  }
+
+  userFollowers(id: number): Promise<
+    {
+      users: UserType[];
+    } & PagyResponseType
+  > {
+    return this.api.get(`/api/users/${id}/following`);
+  }
+
+  follow(id: number): Promise<
+    {
+      user: UserType;
+    } & {
+      following: boolean;
+    }
+  > {
+    return this.api.post(`/api/users/${id}/follow`);
+  }
+
+  unfollow(id: number): Promise<
+    {
+      user: UserType;
+    } & {
+      following: boolean;
+    }
+  > {
+    return this.api.post(`/api/users/${id}/unfollow`);
+  }
+
   posts(params?: { page?: number; items?: number }): Promise<
     {
       posts: PostType[];
