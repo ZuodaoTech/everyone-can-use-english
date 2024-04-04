@@ -508,6 +508,7 @@ export const MediaCurrentRecording = () => {
             <Button
               variant="outline"
               size="icon"
+              id="media-compare-button"
               data-tooltip-id="media-player-tooltip"
               data-tooltip-content={t("more")}
               className="rounded-full w-8 h-8 p-0"
