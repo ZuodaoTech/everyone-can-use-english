@@ -150,7 +150,13 @@ export class Client {
     return this.api.post(`/api/users/${id}/unfollow`);
   }
 
-  posts(params?: { page?: number; items?: number; userId?: string }): Promise<
+  posts(params?: {
+    page?: number;
+    items?: number;
+    userId?: string;
+    type?: "all" | "recording" | "medium" | "story" | "prompt" | "text" | "gpt";
+    by?: "following" | "all";
+  }): Promise<
     {
       posts: PostType[];
     } & PagyResponseType

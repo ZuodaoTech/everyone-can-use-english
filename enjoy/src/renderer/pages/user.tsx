@@ -12,12 +12,28 @@ export default () => {
 	const { webApi, user: currentUser } = useContext(AppSettingsProviderContext);
 	const navigate = useNavigate();
 
-	useEffect(() => {
+	const fetchUser = async () => {
 		if (!id) return;
 
 		webApi.user(id).then((user) => {
 			setUser(user);
 		});
+	}
+
+	const follow = () => {
+		webApi.follow(id).then(() => {
+			setUser({ ...user, following: true });
+		});
+	}
+
+	const unfollow = () => {
+		webApi.unfollow(id).then(() => {
+			setUser({ ...user, following: false });
+		});
+	}
+
+	useEffect(() => {
+		fetchUser();
 	}, [id]);
 
 	if (!user) return <LoaderSpin />;
@@ -43,7 +59,9 @@ export default () => {
 					</div>
 
 					{
-						currentUser.id != user.id && <div className="flex justify-center"></div>
+						currentUser.id != user.id && <div className="flex justify-center">{
+							user.following ? <Button variant="link" className="text-destructive" size="sm" onClick={unfollow}>{t('unfollow')}</Button> : <Button size="sm" onClick={follow}>{t('follow')}</Button>
+						}</div>
 					}
 				</div>
 
@@ -152,7 +170,7 @@ const UserFollowing = (props: { id: string }) => {
 }
 
 const UserCard = ({ user }: { user: UserType }) => {
-	const { webApi } = useContext(AppSettingsProviderContext);
+	const { webApi, user: currentUser } = useContext(AppSettingsProviderContext);
 	const [following, setFollowing] = useState<boolean>(user.following);
 
 	const handleFollow = () => {
@@ -185,13 +203,15 @@ const UserCard = ({ user }: { user: UserType }) => {
 			</div>
 
 			<div className="">
-				<Button
-					variant={following ? "secondary" : "default"}
-					size="sm"
-					onClick={handleFollow}
-				>
-					{following ? t("unfollow") : t("follow")}
-				</Button>
+				{
+					currentUser.id != user.id && <Button
+						variant={following ? "secondary" : "default"}
+						size="sm"
+						onClick={handleFollow}
+					>
+						{following ? t("unfollow") : t("follow")}
+					</Button>
+				}
 			</div>
 		</div>
 	);

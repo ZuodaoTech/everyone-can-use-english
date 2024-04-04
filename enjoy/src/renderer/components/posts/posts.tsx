@@ -1,13 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { PostCard, LoaderSpin } from "@renderer/components";
-import { toast, Button } from "@renderer/components//ui";
+import { toast, Button, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@renderer/components//ui";
 import { t } from "i18next";
 
 export const Posts = (props: { userId?: string }) => {
   const { userId } = props;
   const { webApi } = useContext(AppSettingsProviderContext);
   const [loading, setLoading] = useState<boolean>(true);
+  const [type, setType] = useState<'all' | 'recording' | 'medium' | 'story' | 'prompt' | 'gpt'>("all");
+  const [by, setBy] = useState<'all' | 'following'>("following");
   const [posts, setPosts] = useState<PostType[]>([]);
   const [nextPage, setNextPage] = useState(1);
 
@@ -30,10 +32,16 @@ export const Posts = (props: { userId?: string }) => {
       .posts({
         page,
         items: 10,
-        userId
+        userId,
+        by,
+        type
       })
       .then((res) => {
-        setPosts([...posts, ...res.posts]);
+        if (page === 1) {
+          setPosts(res.posts);
+        } else {
+          setPosts([...posts, ...res.posts]);
+        }
         setNextPage(res.next);
       })
       .catch((err) => {
@@ -45,8 +53,8 @@ export const Posts = (props: { userId?: string }) => {
   };
 
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    fetchPosts(1);
+  }, [type, by]);
 
   if (loading) {
     return <LoaderSpin />;
@@ -54,8 +62,36 @@ export const Posts = (props: { userId?: string }) => {
 
   return (
     <div className="max-w-screen-sm mx-auto">
+      <div className="flex justify-end space-x-4 py-4">
+        {
+          !userId && <Select value={by} onValueChange={(value: 'all' | 'following') => setBy(value)}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem key="following" value="following">{t('following')}</SelectItem>
+              <SelectItem key="all" value="all">{t('allUsers')}</SelectItem>
+            </SelectContent>
+          </Select>
+        }
+
+        <Select value={type} onValueChange={(value: 'all' | 'recording' | 'medium' | 'story' | 'prompt' | 'gpt') => setType(value)}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem key="all" value="all">{t('allTypes')}</SelectItem>
+            <SelectItem key="recording" value="recording">{t('recordingType')}</SelectItem>
+            <SelectItem key="prompt" value="prompt">{t('promptType')}</SelectItem>
+            <SelectItem key="gpt" value="gpt">{t('gptType')}</SelectItem>
+            <SelectItem key="medium" value="medium">{t('mediumType')}</SelectItem>
+            <SelectItem key="story" value="story">{t('storyType')}</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       {posts.length === 0 && (
-        <div className="text-center text-gray-500">{t("noOneSharedYet")}</div>
+        <div className="text-center text-muted-foreground py-4">{t("noOneSharedYet")}</div>
       )}
 
       <div className="space-y-4">
