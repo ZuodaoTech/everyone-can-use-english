@@ -372,7 +372,7 @@ export const MediaPlayerControls = () => {
   }, [wavesurfer, decoded, playMode, activeRegion, currentTime]);
 
   useHotkeys(
-    ["Space", "p", "n", "r"],
+    ["Space", "p", "n", "r", "c"],
     (keyboardEvent, hotkeyEvent) => {
       if (!wavesurfer) return;
       keyboardEvent.preventDefault();
@@ -389,6 +389,9 @@ export const MediaPlayerControls = () => {
           break;
         case "r":
           document.getElementById("media-record-button").click();
+          break;
+        case "c":
+          document.getElementById("media-compare-button").click();
           break;
       }
     },
@@ -481,10 +484,11 @@ export const MediaPlayerControls = () => {
               {PLAYBACK_RATE_OPTIONS.map((rate, i) => (
                 <div
                   key={i}
-                  className={`cursor-pointer h-10 w-10 leading-10 rounded-full flex items-center justify-center ${rate === playbackRate
-                    ? "bg-primary text-white text-md"
-                    : "text-black/70 text-xs"
-                    }`}
+                  className={`cursor-pointer h-10 w-10 leading-10 rounded-full flex items-center justify-center ${
+                    rate === playbackRate
+                      ? "bg-primary text-white text-md"
+                      : "text-black/70 text-xs"
+                  }`}
                   onClick={() => {
                     setPlaybackRate(rate);
                   }}
