@@ -133,6 +133,6 @@ ffmpeg-core.worker.js
 cam_dict.refined.sqlite
 
 .vitepress/cache/
-/public/jupyter-notebooks/*.mp3
+public/jupyter-notebooks/*.mp3
 
 *.sqlite
