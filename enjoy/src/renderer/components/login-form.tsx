@@ -6,6 +6,7 @@ import {
   Sheet,
   SheetContent,
   SheetTrigger,
+  Label,
 } from "@renderer/components/ui";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
@@ -15,7 +16,7 @@ import {
   LanguageSettings,
   LoaderSpin,
 } from "@renderer/components";
-import { ChevronLeftIcon, Mail, MailIcon } from "lucide-react";
+import { ChevronLeftIcon } from "lucide-react";
 import intlTelInput from "intl-tel-input";
 import "intl-tel-input/build/css/intlTelInput.css";
 
@@ -110,78 +111,71 @@ export const LoginForm = () => {
 
   return (
     <>
-      <div className="w-full max-w-sm px-6 flex flex-col space-y-4">
-        <Sheet>
-          <SheetTrigger asChild>
+      <div className="w-full max-w-sm px-6 grid gap-6">
+        <EmailLoginForm />
+
+        <div className="">
+          <Separator className="my-4" />
+          <div className="flex items-center justify-center text-xs text-muted-foreground mb-4">
+            {t('youCanAlsoLoginWith')}
+          </div>
+          <div className="flex items-center space-x-2 justify-center">
             <Button
               variant="outline"
-              size="lg"
-              className="w-full h-12 relative rounded-full"
-            >
-              <MailIcon className="w-8 h-8 absolute left-4" />
-              <span className="text-lg">Email</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="bottom" className="h-screen">
-            <div className="w-full h-full flex">
-              <div className="m-auto">
-                <EmailLoginForm />
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
-
-        <Button
-          variant="outline"
-          size="lg"
-          className="w-full h-12 relative rounded-full"
-          onClick={() => handleLogin("github")}
-        >
-          <img
-            src="assets/github-mark.png"
-            className="w-8 h-8 absolute left-4"
-            alt="github-logo"
-          />
-          <span className="text-lg">GitHub</span>
-        </Button>
-
-        <Button
-          variant="outline"
-          size="lg"
-          className="w-full h-12 relative rounded-full"
-          onClick={() => handleLogin("mixin")}
-        >
-          <img
-            src="assets/mixin-logo.png"
-            className="w-8 h-8 absolute left-4"
-            alt="mixin-logo"
-          />
-          <span className="text-lg">Mixin Messenger</span>
-        </Button>
-
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full h-12 relative rounded-full"
+              size="icon"
+              data-tooltip-id="global-tooltip"
+              data-tooltip-content="GitHub"
+              className="w-10 h-10 rounded-full"
+              onClick={() => handleLogin("github")}
             >
               <img
-                src="assets/bandu-logo.svg"
-                className="w-10 h-10 absolute left-4"
-                alt="bandu-logo"
+                src="assets/github-mark.png"
+                className="w-full h-full"
+                alt="github-logo"
               />
-              <span className="text-lg">学升</span>
             </Button>
-          </SheetTrigger>
-          <SheetContent side="bottom" className="h-screen">
-            <div className="w-full h-full flex">
-              <div className="m-auto">
-                <PandoLoginForm />
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
+
+            <Button
+              variant="outline"
+              size="icon"
+              data-tooltip-id="global-tooltip"
+              data-tooltip-content="Mixin"
+              className="w-10 h-10 rounded-full p-1"
+              onClick={() => handleLogin("mixin")}
+            >
+              <img
+                src="assets/mixin-logo.png"
+                className="w-full h-full"
+                alt="mixin-logo"
+              />
+            </Button>
+
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content="学升"
+                  className="w-10 h-10 rounded-full"
+                >
+                  <img
+                    src="assets/bandu-logo.svg"
+                    className="w-full h-full"
+                    alt="bandu-logo"
+                  />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="bottom" className="h-screen">
+                <div className="w-full h-full flex">
+                  <div className="m-auto">
+                    <PandoLoginForm />
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
       </div>
 
       <div
@@ -218,83 +212,79 @@ const EmailLoginForm = () => {
   }, [countdown]);
 
   return (
-    <div>
-      <div className="flex items-center justify-center mb-4">
-        <MailIcon className="w-16 h-16 text-muted-foreground" />
-      </div>
-
-      <div className="mb-12">
-        <div className="mb-2">
-          <input
+    <div className="w-full">
+      <div className="w-full grid gap-4 mb-6">
+        <div className="grid gap-2">
+          <Label htmlFor="email">{t('email')}</Label>
+          <Input
+            id="email"
+            className="h-10"
             type="email"
-            placeholder="Email"
+            placeholder="m@example.com"
+            required
+            value={email}
+            disabled={countdown > 0}
             onChange={(e) => setEmail(e.target.value)}
-            className="border text-lg py-2 px-4 rounded"
           />
         </div>
 
-        {email && (
-          <div className="mb-8">
-            <Button
-              variant="default"
-              size="lg"
-              className="w-full"
-              disabled={countdown > 0}
-              onClick={() => {
-                webApi
-                  .loginCode({ email })
-                  .then(() => {
-                    toast.success(t("codeSent"));
-                    setCodeSent(true);
-                    setCountdown(120);
-                  })
-                  .catch((err) => {
-                    toast.error(err.message);
-                  });
-              }}
-            >
-              {countdown > 0 && <span className="mr-2">{countdown}</span>}
-              <span>{codeSent ? t("resend") : t("sendCode")}</span>
-            </Button>
-          </div>
-        )}
+        <div className="grid gap-2">
+          <Label htmlFor="code">{t('verificationCode')}</Label>
+          <Input
+            id="code"
+            className="h-10"
+            type="text"
+            required
+            minLength={5}
+            maxLength={5}
+            placeholder={t("verificationCode")}
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          />
+        </div>
+      </div>
 
-        {codeSent && (
-          <div className="mb-2 w-full">
-            <Input
-              className="border py-2 h-10 px-4 rounded"
-              type="text"
-              minLength={5}
-              maxLength={5}
-              placeholder={t("verificationCode")}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-            />
-          </div>
-        )}
+      <div className="grid grid-cols-2 gap-4">
+        <Button
+          variant="secondary"
+          size="lg"
+          className="w-full"
+          disabled={!email || countdown > 0}
+          onClick={() => {
+            webApi
+              .loginCode({ email })
+              .then(() => {
+                toast.success(t("codeSent"));
+                setCodeSent(true);
+                setCountdown(120);
+              })
+              .catch((err) => {
+                toast.error(err.message);
+              });
+          }}
+        >
+          {countdown > 0 && <span className="mr-2">{countdown}</span>}
+          <span>{codeSent ? t("resend") : t("sendCode")}</span>
+        </Button>
 
-        {code && (
-          <div>
-            <Button
-              variant="default"
-              size="lg"
-              className="w-full"
-              disabled={!code || code.length < 5 || !email}
-              onClick={() => {
-                webApi
-                  .auth({ provider: "email", code, email })
-                  .then((user) => {
-                    if (user?.id && user?.accessToken) login(user);
-                  })
-                  .catch((err) => {
-                    toast.error(err.message);
-                  });
-              }}
-            >
-              {t("login")}
-            </Button>
-          </div>
-        )}
+        <Button
+          variant="default"
+          size="lg"
+          className="w-full"
+          disabled={!code || code.length < 5 || !email}
+          onClick={() => {
+            webApi
+              .auth({ provider: "email", code, email })
+              .then((user) => {
+                if (user?.id && user?.accessToken) login(user);
+              })
+              .catch((err) => {
+                toast.error(err.message);
+              });
+          }}
+        >
+          {t("login")}
+        </Button>
       </div>
     </div>
   );
@@ -353,45 +343,23 @@ const PandoLoginForm = () => {
         <img src="assets/bandu-logo.svg" className="w-20 h-20" alt="bandu" />
       </div>
 
-      <div className="mb-12">
-        <div className="mb-2">
-          <input
-            onInput={validatePhone}
-            onBlur={validatePhone}
-            className="border text-lg py-2 px-4 rounded"
-            ref={ref}
-          />
-        </div>
-
-        {phoneNumber && (
-          <div className="mb-8">
-            <Button
-              variant="default"
-              size="lg"
-              className="w-full"
-              disabled={countdown > 0}
-              onClick={() => {
-                webApi
-                  .loginCode({ phoneNumber })
-                  .then(() => {
-                    toast.success(t("codeSent"));
-                    setCodeSent(true);
-                    setCountdown(60);
-                  })
-                  .catch((err) => {
-                    toast.error(err.message);
-                  });
-              }}
-            >
-              {countdown > 0 && <span className="mr-2">{countdown}</span>}
-              <span>{codeSent ? t("resend") : t("sendCode")}</span>
-            </Button>
+      <div className="grid gap-6">
+        <div className="grid gap-4">
+          <div className="grid gap-2">
+            <Label htmlFor="phone">{t('phoneNumber')}</Label>
+            <input
+              id="phone"
+              value={phoneNumber}
+              onInput={validatePhone}
+              onBlur={validatePhone}
+              className="border text-lg py-2 px-4 rounded"
+              ref={ref}
+            />
           </div>
-        )}
-
-        {codeSent && (
-          <div className="mb-2 w-full">
+          <div className="grid gap-2">
+            <Label htmlFor="verrificationCode">{t('verificationCode')}</Label>
             <Input
+              id="verrificationCode"
               className="border py-2 h-10 px-4 rounded"
               type="text"
               minLength={5}
@@ -401,30 +369,49 @@ const PandoLoginForm = () => {
               onChange={(e) => setCode(e.target.value)}
             />
           </div>
-        )}
+        </div>
 
-        {code && (
-          <div>
-            <Button
-              variant="default"
-              size="lg"
-              className="w-full"
-              disabled={!code || code.length < 5 || !phoneNumber}
-              onClick={() => {
-                webApi
-                  .auth({ provider: "bandu", code, phoneNumber })
-                  .then((user) => {
-                    if (user?.id && user?.accessToken) login(user);
-                  })
-                  .catch((err) => {
-                    toast.error(err.message);
-                  });
-              }}
-            >
-              {t("login")}
-            </Button>
-          </div>
-        )}
+        <div className="grid grid-cols-2 gap-4">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-full"
+            disabled={!phoneNumber || countdown > 0}
+            onClick={() => {
+              webApi
+                .loginCode({ phoneNumber })
+                .then(() => {
+                  toast.success(t("codeSent"));
+                  setCodeSent(true);
+                  setCountdown(60);
+                })
+                .catch((err) => {
+                  toast.error(err.message);
+                });
+            }}
+          >
+            {countdown > 0 && <span className="mr-2">{countdown}</span>}
+            <span>{codeSent ? t("resend") : t("sendCode")}</span>
+          </Button>
+          <Button
+            variant="default"
+            size="lg"
+            className="w-full"
+            disabled={!code || code.length < 5 || !phoneNumber}
+            onClick={() => {
+              webApi
+                .auth({ provider: "bandu", code, phoneNumber })
+                .then((user) => {
+                  if (user?.id && user?.accessToken) login(user);
+                })
+                .catch((err) => {
+                  toast.error(err.message);
+                });
+            }}
+          >
+            {t("login")}
+          </Button>
+        </div>
       </div>
     </div>
   );
