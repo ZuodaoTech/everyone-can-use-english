@@ -214,10 +214,16 @@ const EmailLoginForm = () => {
   const { login, webApi } = useContext(AppSettingsProviderContext);
 
   useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
     if (countdown > 0) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         setCountdown(countdown - 1);
       }, 1000);
+    }
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
     }
   }, [countdown]);
 
@@ -340,10 +346,16 @@ const PandoLoginForm = () => {
   }, [iti]);
 
   useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
     if (countdown > 0) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         setCountdown(countdown - 1);
       }, 1000);
+    }
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
     }
   }, [countdown]);
 

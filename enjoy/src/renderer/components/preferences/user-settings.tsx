@@ -13,7 +13,6 @@ import {
   AvatarImage,
   AvatarFallback,
   Button,
-  Separator,
   Dialog,
   DialogTrigger,
   DialogContent,
@@ -24,29 +23,19 @@ import {
   toast,
 } from "@renderer/components/ui";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { redirect } from "react-router-dom";
 
 export const UserSettings = () => {
   const { user, login, logout, webApi } = useContext(AppSettingsProviderContext);
-  const [email, setEmail] = useState(user.email);
-  const [code, setCode] = useState('');
-  const [codeSent, setCodeSent] = useState<boolean>(false);
-  const [countdown, setCountdown] = useState<number>(0);
+  const [name, setName] = useState(user.name);
+  const [editing, setEditing] = useState(false);
 
   const refreshProfile = () => {
     webApi.me().then((profile: UserType) => {
       login(Object.assign({}, user, profile));
     });
   };
-
-  useEffect(() => {
-    if (countdown > 0) {
-      setTimeout(() => {
-        setCountdown(countdown - 1);
-      }, 1000);
-    }
-  }, [countdown]);
 
   if (!user) return null;
   return (
@@ -67,116 +56,74 @@ export const UserSettings = () => {
           </div>
         </div>
 
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="secondary" className="text-destructive" size="sm">
-              {t("logout")}
-            </Button>
-          </AlertDialogTrigger>
+        <div className="grid grid-cols-2 gap-2">
+          <Dialog open={editing} onOpenChange={(value) => setEditing(value)}>
+            <DialogTrigger asChild>
+              <Button variant="secondary" size="sm">
+                {t("edit")}
+              </Button>
+            </DialogTrigger>
 
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{t("logout")}</AlertDialogTitle>
-            </AlertDialogHeader>
-            <AlertDialogDescription>
-              {t("logoutConfirmation")}
-            </AlertDialogDescription>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-              <AlertDialogAction
-                className="bg-destructive hover:bg-destructive-hover"
-                onClick={() => {
-                  logout();
-                  redirect("/");
-                }}
-              >
-                {t("logout")}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{t('updateUserName')}</DialogTitle>
+              </DialogHeader>
 
-      <Separator />
-
-      <div className="flex items-start justify-between py-4">
-        <div className="">
-          <div className="mb-2">{t("email")}</div>
-          <div className="text-sm text-muted-foreground mb-2">{user.email || '-'}</div>
-        </div>
-
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="secondary" size="sm">
-              {t('edit')}
-            </Button>
-          </DialogTrigger>
-
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>
-                {t('editEmail')}
-              </DialogTitle>
-            </DialogHeader>
-
-            <div className="w-full max-w-sm mx-auto py-6">
-              <div className="grid gap-4 mb-6">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">{t('email')}</Label>
+              <div className="w-full max-w-sm mx-auto py-6">
+                <div className="grid gap-2 mb-6">
+                  <Label htmlFor="name">{t('userName')}</Label>
                   <Input
-                    id="email"
-                    required
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    placeholder="m@example.com" />
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="code">{t('verificationCode')}</Label>
-                  <Input
-                    id="code"
-                    required
-                    value={code}
-                    onChange={e => setCode(e.target.value)}
-                    placeholder={t('verificationCode')}
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
+                <div className="">
+                  <Button className="w-full" onClick={() => {
+                    webApi
+                      .updateProfile(user.id, { name })
+                      .then(() => {
+                        toast.success('profileUpdated')
+                        setEditing(false);
+                        refreshProfile();
+                      }).catch(err => {
+                        toast.error(err.message);
+                      })
+                  }}>{t('save')}</Button>
+                </div>
               </div>
+            </DialogContent>
+          </Dialog>
 
-              <div className="grid grid-cols-2 gap-4">
-                <Button variant="secondary" disabled={!email} onClick={() => {
-                  webApi
-                    .loginCode({ email })
-                    .then(() => {
-                      toast.success(t("codeSent"));
-                      setCodeSent(true);
-                      setCountdown(120);
-                    })
-                    .catch((err) => {
-                      toast.error(err.message);
-                    });
-                }}>
-                  {countdown > 0 && <span className="mr-2">{countdown}</span>}
-                  <span>{codeSent ? t("resend") : t("sendCode")}</span>
-                </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="secondary" className="text-destructive" size="sm">
+                {t("logout")}
+              </Button>
+            </AlertDialogTrigger>
 
-                <Button disabled={!code} onClick={() => {
-                  webApi.updateProfile(user.id, {
-                    email,
-                    code
-                  })
-                    .then(() => {
-                      toast.success(t("emailUpdated"));
-                      refreshProfile();
-                    })
-                    .catch((err) => {
-                      toast.error(err.message);
-                    });
-                }}>{t("confirm")}</Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t("logout")}</AlertDialogTitle>
+              </AlertDialogHeader>
+              <AlertDialogDescription>
+                {t("logoutConfirmation")}
+              </AlertDialogDescription>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                <AlertDialogAction
+                  className="bg-destructive hover:bg-destructive-hover"
+                  onClick={() => {
+                    logout();
+                    redirect("/");
+                  }}
+                >
+                  {t("logout")}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </div>
     </>
   );

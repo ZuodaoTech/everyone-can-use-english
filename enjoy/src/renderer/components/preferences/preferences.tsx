@@ -17,6 +17,7 @@ import {
 } from "@renderer/components";
 import { useState } from "react";
 import { Tooltip } from "react-tooltip";
+import { EmailSettings } from "./email-settings";
 
 export const Preferences = () => {
   const TABS = [
@@ -68,6 +69,8 @@ export const Preferences = () => {
           </div>
           <UserSettings />
           <Separator />
+          <EmailSettings />
+          <Separator />
           <BalanceSettings />
           <Separator />
           <LanguageSettings />
@@ -102,9 +105,8 @@ export const Preferences = () => {
               key={tab.value}
               variant={activeTab === tab.value ? "default" : "ghost"}
               size="sm"
-              className={`capitilized w-full justify-start mb-2 ${
-                activeTab === tab.value ? "" : "hover:bg-muted"
-              }`}
+              className={`capitilized w-full justify-start mb-2 ${activeTab === tab.value ? "" : "hover:bg-muted"
+                }`}
               onClick={() => setActiveTab(tab.value)}
             >
               <span className="text-sm">{tab.label}</span>
