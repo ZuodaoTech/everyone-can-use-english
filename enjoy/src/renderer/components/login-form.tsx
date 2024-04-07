@@ -15,7 +15,7 @@ import {
   LanguageSettings,
   LoaderSpin,
 } from "@renderer/components";
-import { ChevronLeftIcon } from "lucide-react";
+import { ChevronLeftIcon, Mail, MailIcon } from "lucide-react";
 import intlTelInput from "intl-tel-input";
 import "intl-tel-input/build/css/intlTelInput.css";
 
@@ -111,6 +111,26 @@ export const LoginForm = () => {
   return (
     <>
       <div className="w-full max-w-sm px-6 flex flex-col space-y-4">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full h-12 relative rounded-full"
+            >
+              <MailIcon className="w-8 h-8 absolute left-4" />
+              <span className="text-lg">Email</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="bottom" className="h-screen">
+            <div className="w-full h-full flex">
+              <div className="m-auto">
+                <EmailLoginForm />
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+
         <Button
           variant="outline"
           size="lg"
@@ -124,6 +144,7 @@ export const LoginForm = () => {
           />
           <span className="text-lg">GitHub</span>
         </Button>
+
         <Button
           variant="outline"
           size="lg"
@@ -137,6 +158,7 @@ export const LoginForm = () => {
           />
           <span className="text-lg">Mixin Messenger</span>
         </Button>
+
         <Sheet>
           <SheetTrigger asChild>
             <Button
@@ -163,9 +185,8 @@ export const LoginForm = () => {
       </div>
 
       <div
-        className={`absolute top-0 left-0 w-screen h-screen z-10 flex flex-col overflow-hidden ${
-          webviewUrl ? "" : "hidden"
-        }`}
+        className={`absolute top-0 left-0 w-screen h-screen z-10 flex flex-col overflow-hidden ${webviewUrl ? "" : "hidden"
+          }`}
       >
         <div className="flex items-center py-2 px-6">
           <Button variant="ghost" onClick={() => setWebviewUrl(null)}>
@@ -180,6 +201,104 @@ export const LoginForm = () => {
     </>
   );
 };
+
+const EmailLoginForm = () => {
+  const [email, setEmail] = useState<string>("");
+  const [code, setCode] = useState<string>("");
+  const [codeSent, setCodeSent] = useState<boolean>(false);
+  const [countdown, setCountdown] = useState<number>(0);
+  const { login, webApi } = useContext(AppSettingsProviderContext);
+
+  useEffect(() => {
+    if (countdown > 0) {
+      setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+    }
+  }, [countdown]);
+
+  return (
+    <div>
+      <div className="flex items-center justify-center mb-4">
+        <MailIcon className="w-16 h-16 text-muted-foreground" />
+      </div>
+
+      <div className="mb-12">
+        <div className="mb-2">
+          <input
+            type="email"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+            className="border text-lg py-2 px-4 rounded"
+          />
+        </div>
+
+        {email && (
+          <div className="mb-8">
+            <Button
+              variant="default"
+              size="lg"
+              className="w-full"
+              disabled={countdown > 0}
+              onClick={() => {
+                webApi
+                  .loginCode({ email })
+                  .then(() => {
+                    toast.success(t("codeSent"));
+                    setCodeSent(true);
+                    setCountdown(120);
+                  })
+                  .catch((err) => {
+                    toast.error(err.message);
+                  });
+              }}
+            >
+              {countdown > 0 && <span className="mr-2">{countdown}</span>}
+              <span>{codeSent ? t("resend") : t("sendCode")}</span>
+            </Button>
+          </div>
+        )}
+
+        {codeSent && (
+          <div className="mb-2 w-full">
+            <Input
+              className="border py-2 h-10 px-4 rounded"
+              type="text"
+              minLength={5}
+              maxLength={5}
+              placeholder={t("verificationCode")}
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
+          </div>
+        )}
+
+        {code && (
+          <div>
+            <Button
+              variant="default"
+              size="lg"
+              className="w-full"
+              disabled={!code || code.length < 5 || !email}
+              onClick={() => {
+                webApi
+                  .auth({ provider: "email", code, email })
+                  .then((user) => {
+                    if (user?.id && user?.accessToken) login(user);
+                  })
+                  .catch((err) => {
+                    toast.error(err.message);
+                  });
+              }}
+            >
+              {t("login")}
+            </Button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 const PandoLoginForm = () => {
   const ref = useRef<HTMLInputElement>(null);
