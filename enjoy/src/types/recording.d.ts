@@ -10,6 +10,7 @@ type RecordingType = {
   duration?: number;
   src?: string;
   md5: string;
+  isSynced?: boolean;
   uploadedAt?: Date;
   createdAt: Date;
   updatedAt: Date;

@@ -174,6 +174,14 @@ export const MediaCurrentRecording = () => {
   const handleShare = async () => {
     if (!currentRecording) return;
 
+    if (!currentRecording.isSynced) {
+      try {
+        await EnjoyApp.recordings.sync(currentRecording.id);
+      } catch (error) {
+        toast.error(t("shareFailed"), { description: error.message });
+        return;
+      }
+    }
     if (!currentRecording.uploadedAt) {
       try {
         await EnjoyApp.recordings.upload(currentRecording.id);
@@ -320,7 +328,7 @@ export const MediaCurrentRecording = () => {
     }
 
     const subscriptions = [
-      regions.on("region-created", () => {}),
+      regions.on("region-created", () => { }),
 
       regions.on("region-clicked", (region, e) => {
         e.stopPropagation();
@@ -543,17 +551,16 @@ export const MediaCurrentRecording = () => {
             >
               <GaugeCircleIcon
                 className={`w-4 h-4 mr-4
-                    ${
-                      currentRecording.pronunciationAssessment
-                        ? currentRecording.pronunciationAssessment
-                            .pronunciationScore >= 80
-                          ? "text-green-500"
-                          : currentRecording.pronunciationAssessment
-                              .pronunciationScore >= 60
-                          ? "text-yellow-600"
-                          : "text-red-500"
-                        : ""
-                    }
+                    ${currentRecording.pronunciationAssessment
+                    ? currentRecording.pronunciationAssessment
+                      .pronunciationScore >= 80
+                      ? "text-green-500"
+                      : currentRecording.pronunciationAssessment
+                        .pronunciationScore >= 60
+                        ? "text-yellow-600"
+                        : "text-red-500"
+                    : ""
+                  }
                     `}
               />
               <span>{t("pronunciationAssessment")}</span>
