@@ -67,6 +67,20 @@ class RecordingsHandler {
       });
   }
 
+  private async sync(_event: IpcMainEvent, id: string) {
+    const recording = await Recording.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!recording) {
+      throw new Error(t("models.recording.notFound"));
+    }
+
+    return await recording.sync();
+  }
+
   private async syncAll(event: IpcMainEvent) {
     const recordings = await Recording.findAll({
       where: { syncedAt: null },
@@ -150,7 +164,7 @@ class RecordingsHandler {
     });
   }
 
-  private async upload(event: IpcMainEvent, id: string) {
+  private async upload(_event: IpcMainEvent, id: string) {
     const recording = await Recording.findOne({
       where: {
         id,
@@ -158,23 +172,10 @@ class RecordingsHandler {
     });
 
     if (!recording) {
-      event.sender.send("on-notification", {
-        type: "error",
-        message: t("models.recording.notFound"),
-      });
+      throw new Error(t("models.recording.notFound"));
     }
 
-    recording
-      .upload()
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    return await recording.upload();
   }
 
   private async assess(event: IpcMainEvent, id: string) {
@@ -361,6 +362,7 @@ class RecordingsHandler {
   register() {
     ipcMain.handle("recordings-find-all", this.findAll);
     ipcMain.handle("recordings-find-one", this.findOne);
+    ipcMain.handle("recordings-sync", this.sync);
     ipcMain.handle("recordings-sync-all", this.syncAll);
     ipcMain.handle("recordings-create", this.create);
     ipcMain.handle("recordings-destroy", this.destroy);

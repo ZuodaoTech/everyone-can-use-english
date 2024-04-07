@@ -257,6 +257,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findOne: (params: any) => {
       return ipcRenderer.invoke("recordings-find-one", params);
     },
+    sync: (id: string) => {
+      return ipcRenderer.invoke("recordings-sync", id);
+    },
     syncAll: () => {
       return ipcRenderer.invoke("recordings-sync-all");
     },
