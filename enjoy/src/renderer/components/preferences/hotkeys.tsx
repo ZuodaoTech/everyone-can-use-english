@@ -96,7 +96,7 @@ export const Hotkeys = () => {
                 keyName: "StartOrStopRecording",
               })
             }
-            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground"
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
           >
             {currentHotkeys.StartOrStopRecording}
           </kbd>
@@ -115,7 +115,7 @@ export const Hotkeys = () => {
                 keyName: "PlayOrPauseRecording",
               })
             }
-            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground"
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
           >
             {currentHotkeys.PlayOrPauseRecording}
           </kbd>
@@ -134,7 +134,7 @@ export const Hotkeys = () => {
                 keyName: "PlayPreviousSegment",
               })
             }
-            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground"
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
           >
             {currentHotkeys.PlayPreviousSegment}
           </kbd>
@@ -153,7 +153,7 @@ export const Hotkeys = () => {
                 keyName: "PlayNextSegment",
               })
             }
-            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground"
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
           >
             {currentHotkeys.PlayNextSegment}
           </kbd>
@@ -165,13 +165,20 @@ export const Hotkeys = () => {
           <div className="flex items-center space-x-2 capitalize">
             {t("compare")}
           </div>
-          <kbd className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground">
-            c
+          <kbd
+            onClick={() =>
+              handleItemSelected({
+                name: t("compare"),
+                keyName: "Compare",
+              })
+            }
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
+          >
+            {currentHotkeys.Compare}
           </kbd>
         </div>
 
         <Separator />
-
       </div>
 
       <ChangeHotkeyDialog
