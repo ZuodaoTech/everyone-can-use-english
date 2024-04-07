@@ -297,7 +297,7 @@
   "deleteRecording": "delete recording",
   "deleteRecordingConfirmation": "Are you sure to delete this recording?",
   "myRecordings": "recordings",
-  "noRecordingForThisSegmentYet": "No recordings for this segment yet. Press <kbd>R</kbd> to start recording.",
+  "noRecordingForThisSegmentYet": "No recordings for this segment yet. Press <kbd>{{key}}</kbd> to start recording.",
   "lastYear": "last year",
   "less": "less",
   "more": "more",
@@ -514,5 +514,9 @@
   "reAnalyze": "re-analyze",
   "AiDictionary": "AI dictionary",
   "AiTranslate": "AI translate",
-  "cambridgeDictionary": "Cambridge dictionary"
+  "cambridgeDictionary": "Cambridge dictionary",
+  "customizeShortcuts": "Customize shortcuts",
+  "customizeShortcutsTip":"Press any sequence of keys to set a shortcut",
+  "customizeShortcutsInvalidToast": "Your shortcut should only have one modifier (Ctrl, Alt, Shift, or Meta) and one key, like 'Ctrl+C'.",
+  "customizeShortcutsConflictToast": "{{input}} conflicts with the existing {{otherHotkeyName}} shortcut."
 }

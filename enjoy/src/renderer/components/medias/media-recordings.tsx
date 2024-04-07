@@ -17,6 +17,7 @@ import {
 } from "@renderer/components/ui";
 import {
   AppSettingsProviderContext,
+  HotKeysSettingsProviderContext,
   MediaPlayerProviderContext,
 } from "@renderer/context";
 import {
@@ -29,6 +30,7 @@ import { t } from "i18next";
 import { formatDateTime, formatDuration } from "@renderer/lib/utils";
 
 export const MediaRecordings = () => {
+  const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
   const containerRef = useRef<HTMLDivElement>();
   const {
     recordings = [],
@@ -59,7 +61,9 @@ export const MediaRecordings = () => {
         <div
           className="text-center px-6 py-8 text-sm text-muted-foreground"
           dangerouslySetInnerHTML={{
-            __html: t("noRecordingForThisSegmentYet"),
+            __html: t("noRecordingForThisSegmentYet", {
+              key: currentHotkeys.StartOrStopRecording?.toUpperCase(),
+            }),
           }}
         ></div>
       )}

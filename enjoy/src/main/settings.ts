@@ -34,7 +34,7 @@ const libraryPath = () => {
     settings.setSync(
       "library",
       process.env.LIBRARY_PATH ||
-        path.join(app.getPath("documents"), LIBRARY_PATH_SUFFIX)
+      path.join(app.getPath("documents"), LIBRARY_PATH_SUFFIX)
     );
   } else if (path.parse(_library).base !== LIBRARY_PATH_SUFFIX) {
     settings.setSync("library", path.join(_library, LIBRARY_PATH_SUFFIX));
@@ -91,6 +91,7 @@ const userDataPath = () => {
 
   return userData;
 };
+
 
 export default {
   registerIpcHandlers: () => {
@@ -151,6 +152,14 @@ export default {
 
     ipcMain.handle("settings-set-default-engine", (_event, engine) => {
       return settings.setSync("defaultEngine", engine);
+    });
+
+    ipcMain.handle("settings-get-default-hotkeys", (_event) => {
+      return settings.getSync("defaultHotkeys");
+    });
+
+    ipcMain.handle("settings-set-default-hotkeys", (_event, records) => {
+      return settings.setSync("defaultHotkeys", records);
     });
   },
   cachePath,
