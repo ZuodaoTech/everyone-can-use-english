@@ -7,6 +7,10 @@ import {
   SheetContent,
   SheetTrigger,
   Label,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
 } from "@renderer/components/ui";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
@@ -111,72 +115,78 @@ export const LoginForm = () => {
 
   return (
     <>
-      <div className="w-full max-w-sm px-6 grid gap-6">
-        <EmailLoginForm />
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>{t('login')}</CardTitle>
+        </CardHeader>
 
-        <div className="">
-          <Separator className="my-4" />
-          <div className="flex items-center justify-center text-xs text-muted-foreground mb-4">
-            {t('youCanAlsoLoginWith')}
-          </div>
-          <div className="flex items-center space-x-2 justify-center">
-            <Button
-              variant="outline"
-              size="icon"
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content="GitHub"
-              className="w-10 h-10 rounded-full"
-              onClick={() => handleLogin("github")}
-            >
-              <img
-                src="assets/github-mark.png"
-                className="w-full h-full"
-                alt="github-logo"
-              />
-            </Button>
+        <CardContent>
+          <EmailLoginForm />
 
-            <Button
-              variant="outline"
-              size="icon"
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content="Mixin"
-              className="w-10 h-10 rounded-full p-1"
-              onClick={() => handleLogin("mixin")}
-            >
-              <img
-                src="assets/mixin-logo.png"
-                className="w-full h-full"
-                alt="mixin-logo"
-              />
-            </Button>
+          <div className="">
+            <Separator className="my-4" />
+            <div className="flex items-center justify-center text-xs text-muted-foreground mb-4">
+              {t('youCanAlsoLoginWith')}
+            </div>
+            <div className="flex items-center space-x-2 justify-center">
+              <Button
+                variant="outline"
+                size="icon"
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content="GitHub"
+                className="w-10 h-10 rounded-full"
+                onClick={() => handleLogin("github")}
+              >
+                <img
+                  src="assets/github-mark.png"
+                  className="w-full h-full"
+                  alt="github-logo"
+                />
+              </Button>
 
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  data-tooltip-id="global-tooltip"
-                  data-tooltip-content="学升"
-                  className="w-10 h-10 rounded-full"
-                >
-                  <img
-                    src="assets/bandu-logo.svg"
-                    className="w-full h-full"
-                    alt="bandu-logo"
-                  />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="bottom" className="h-screen">
-                <div className="w-full h-full flex">
-                  <div className="m-auto">
-                    <PandoLoginForm />
+              <Button
+                variant="outline"
+                size="icon"
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content="Mixin"
+                className="w-10 h-10 rounded-full p-1"
+                onClick={() => handleLogin("mixin")}
+              >
+                <img
+                  src="assets/mixin-logo.png"
+                  className="w-full h-full"
+                  alt="mixin-logo"
+                />
+              </Button>
+
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content="学升"
+                    className="w-10 h-10 rounded-full"
+                  >
+                    <img
+                      src="assets/bandu-logo.svg"
+                      className="w-full h-full"
+                      alt="bandu-logo"
+                    />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="bottom" className="h-screen">
+                  <div className="w-full h-full flex">
+                    <div className="m-auto">
+                      <PandoLoginForm />
+                    </div>
                   </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       <div
         className={`absolute top-0 left-0 w-screen h-screen z-10 flex flex-col overflow-hidden ${webviewUrl ? "" : "hidden"
