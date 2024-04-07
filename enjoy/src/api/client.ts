@@ -70,9 +70,10 @@ export class Client {
   }
 
   auth(params: {
-    provider: "mixin" | "github" | "bandu";
+    provider: "mixin" | "github" | "bandu" | "email";
     code: string;
     phoneNumber?: string;
+    email?: string;
   }): Promise<UserType> {
     return this.api.post("/api/sessions", decamelizeKeys(params));
   }
@@ -81,7 +82,18 @@ export class Client {
     return this.api.get("/api/me");
   }
 
-  loginCode(params: { phoneNumber: string }): Promise<void> {
+  updateProfile(
+    id: string,
+    params: {
+      name?: string;
+      email?: string;
+      code?: string;
+    }
+  ): Promise<UserType> {
+    return this.api.put(`/api/users/${id}`, decamelizeKeys(params));
+  }
+
+  loginCode(params: { phoneNumber?: string; email?: string }): Promise<void> {
     return this.api.post("/api/sessions/login_code", decamelizeKeys(params));
   }
 
@@ -92,7 +104,71 @@ export class Client {
     return this.api.get("/api/users/rankings", { params: { range } });
   }
 
-  posts(params?: { page?: number; items?: number }): Promise<
+  users(filter: "following" | "followers" = "followers"): Promise<
+    {
+      users: UserType[];
+    } & PagyResponseType
+  > {
+    return this.api.get("/api/users", { params: { filter } });
+  }
+
+  user(id: string): Promise<UserType> {
+    return this.api.get(`/api/users/${id}`);
+  }
+
+  userFollowing(
+    id: string,
+    options: { page: number }
+  ): Promise<
+    {
+      users: UserType[];
+    } & PagyResponseType
+  > {
+    return this.api.get(`/api/users/${id}/following`, {
+      params: decamelizeKeys(options),
+    });
+  }
+
+  userFollowers(
+    id: string,
+    options: { page: number }
+  ): Promise<
+    {
+      users: UserType[];
+    } & PagyResponseType
+  > {
+    return this.api.get(`/api/users/${id}/followers`, {
+      params: decamelizeKeys(options),
+    });
+  }
+
+  follow(id: string): Promise<
+    {
+      user: UserType;
+    } & {
+      following: boolean;
+    }
+  > {
+    return this.api.post(`/api/users/${id}/follow`);
+  }
+
+  unfollow(id: string): Promise<
+    {
+      user: UserType;
+    } & {
+      following: boolean;
+    }
+  > {
+    return this.api.post(`/api/users/${id}/unfollow`);
+  }
+
+  posts(params?: {
+    page?: number;
+    items?: number;
+    userId?: string;
+    type?: "all" | "recording" | "medium" | "story" | "prompt" | "text" | "gpt";
+    by?: "following" | "all";
+  }): Promise<
     {
       posts: PostType[];
     } & PagyResponseType

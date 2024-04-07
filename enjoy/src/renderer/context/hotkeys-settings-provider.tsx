@@ -51,6 +51,7 @@ const defaultKeyMap = {
   PlayOrPauseRecording: `${ControlOrCommand}+r`,
   PlayPreviousSegment: "p",
   PlayNextSegment: "n",
+  Compare: "c",
   // dev tools
   OpenDevTools: `${ControlOrCommand}+Shift+I`,
 };

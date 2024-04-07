@@ -178,6 +178,14 @@ export const MediaCurrentRecording = () => {
   const handleShare = async () => {
     if (!currentRecording) return;
 
+    if (!currentRecording.isSynced) {
+      try {
+        await EnjoyApp.recordings.sync(currentRecording.id);
+      } catch (error) {
+        toast.error(t("shareFailed"), { description: error.message });
+        return;
+      }
+    }
     if (!currentRecording.uploadedAt) {
       try {
         await EnjoyApp.recordings.upload(currentRecording.id);
@@ -488,6 +496,7 @@ export const MediaCurrentRecording = () => {
             <Button
               variant={isComparing ? "secondary" : "outline"}
               size="icon"
+              id="media-compare-button"
               data-tooltip-id="media-player-tooltip"
               data-tooltip-content={t("compare")}
               className="rounded-full w-8 h-8 p-0"
@@ -514,6 +523,7 @@ export const MediaCurrentRecording = () => {
             <Button
               variant="outline"
               size="icon"
+              id="media-compare-button"
               data-tooltip-id="media-player-tooltip"
               data-tooltip-content={t("more")}
               className="rounded-full w-8 h-8 p-0"

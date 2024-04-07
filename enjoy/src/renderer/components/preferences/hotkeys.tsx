@@ -158,7 +158,20 @@ export const Hotkeys = () => {
             {currentHotkeys.PlayNextSegment}
           </kbd>
         </div>
+
         <Separator />
+
+        <div className="flex items-center justify-between py-4">
+          <div className="flex items-center space-x-2 capitalize">
+            {t("compare")}
+          </div>
+          <kbd className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground">
+            c
+          </kbd>
+        </div>
+
+        <Separator />
+
       </div>
 
       <ChangeHotkeyDialog

@@ -374,7 +374,7 @@ export const MediaPlayerControls = () => {
   }, [wavesurfer, decoded, playMode, activeRegion, currentTime]);
 
   useHotkeys(
-    [currentHotkeys.PlayOrPause, currentHotkeys.PlayPreviousSegment, currentHotkeys.PlayNextSegment, currentHotkeys.StartOrStopRecording],
+    [currentHotkeys.PlayOrPause, currentHotkeys.PlayPreviousSegment, currentHotkeys.PlayNextSegment, currentHotkeys.StartOrStopRecording, currentHotkeys.Compare],
     (keyboardEvent, hotkeyEvent) => {
       if (!wavesurfer) return;
       keyboardEvent.preventDefault();
@@ -391,6 +391,9 @@ export const MediaPlayerControls = () => {
           break;
         case currentHotkeys.StartOrStopRecording.toLowerCase():
           document.getElementById("media-record-button").click();
+          break;
+        case currentHotkeys.Compare.toLowerCase():
+          document.getElementById("media-compare-button").click();
           break;
       }
     },{
@@ -485,10 +488,11 @@ export const MediaPlayerControls = () => {
               {PLAYBACK_RATE_OPTIONS.map((rate, i) => (
                 <div
                   key={i}
-                  className={`cursor-pointer h-10 w-10 leading-10 rounded-full flex items-center justify-center ${rate === playbackRate
-                    ? "bg-primary text-white text-md"
-                    : "text-black/70 text-xs"
-                    }`}
+                  className={`cursor-pointer h-10 w-10 leading-10 rounded-full flex items-center justify-center ${
+                    rate === playbackRate
+                      ? "bg-primary text-white text-md"
+                      : "text-black/70 text-xs"
+                  }`}
                   onClick={() => {
                     setPlaybackRate(rate);
                   }}

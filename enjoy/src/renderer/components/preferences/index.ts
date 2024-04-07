@@ -10,6 +10,7 @@ export * from "./whisper-settings";
 export * from "./google-generative-ai-settings";
 
 export * from "./user-settings";
+export * from "./email-settings";
 export * from "./balance-settings";
 
 export * from "./reset-settings";

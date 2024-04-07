@@ -142,6 +142,7 @@ type EnjoyAppType = {
   recordings: {
     findAll: (where: any) => Promise<RecordingType[]>;
     findOne: (where: any) => Promise<RecordingType>;
+    sync: (id: string) => Promise<void>;
     syncAll: () => Promise<void>;
     create: (params: any) => Promise<RecordingType>;
     update: (id: string, params: any) => Promise<RecordingType | undefined>;
