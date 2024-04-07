@@ -82,6 +82,17 @@ export class Client {
     return this.api.get("/api/me");
   }
 
+  updateProfile(
+    id: string,
+    params: {
+      name?: string;
+      email?: string;
+      code?: string;
+    }
+  ): Promise<UserType> {
+    return this.api.put(`/api/users/${id}`, decamelizeKeys(params));
+  }
+
   loginCode(params: { phoneNumber?: string; email?: string }): Promise<void> {
     return this.api.post("/api/sessions/login_code", decamelizeKeys(params));
   }
