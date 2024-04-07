@@ -393,7 +393,7 @@ const PandoLoginForm = () => {
                 .then(() => {
                   toast.success(t("codeSent"));
                   setCodeSent(true);
-                  setCountdown(60);
+                  setCountdown(120);
                 })
                 .catch((err) => {
                   toast.error(err.message);
