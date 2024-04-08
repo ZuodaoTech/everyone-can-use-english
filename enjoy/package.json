@@ -139,7 +139,7 @@
     "html-to-text": "^9.0.5",
     "https-proxy-agent": "^7.0.4",
     "i18next": "^23.10.1",
-    "intl-tel-input": "^20.3.0",
+    "intl-tel-input": "^21.0.8",
     "js-md5": "^0.8.3",
     "langchain": "^0.1.30",
     "lodash": "^4.17.21",
