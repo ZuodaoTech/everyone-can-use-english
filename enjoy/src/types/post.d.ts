@@ -1,7 +1,7 @@
 type PostType = {
   id: string;
   metadata: {
-    type: 'text' | 'prompt' | 'llm_configuration';
+    type: "text" | "prompt" | "gpt";
     content:
       | string
       | {

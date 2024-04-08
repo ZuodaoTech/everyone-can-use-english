@@ -143,6 +143,7 @@ export const PostActions = (props: { post: PostType }) => {
             )}
           </Button>
         )}
+
         {post.metadata?.type === "prompt" && (
           <ConversationShortcuts
             open={asking}
@@ -165,6 +166,47 @@ export const PostActions = (props: { post: PostType }) => {
               </Button>
             }
           />
+        )}
+
+        {post.metadata?.type === "gpt" && (
+          <>
+            <Button
+              data-tooltip-id="global-tooltip"
+              data-tooltip-content={t("copy")}
+              data-tooltip-place="bottom"
+              variant="ghost"
+              size="sm"
+              className="px-1.5 rounded-full"
+            >
+              {copied ? (
+                <CheckIcon className="w-5 h-5 text-green-500" />
+              ) : (
+                <CopyPlusIcon
+                  className="w-5 h-5 text-muted-foreground hover:text-primary"
+                  onClick={() => {
+                    copyToClipboard((post.metadata.content as { [key: string]: any }).configuration.roleDefinition as string);
+                    setCopied(true);
+                    setTimeout(() => {
+                      setCopied(false);
+                    }, 3000);
+                  }}
+                />
+              )}
+            </Button>
+
+            <Link to={`/conversations?postId=${post.id}`}>
+              <Button
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("saveAiAssistant")}
+                data-tooltip-place="bottom"
+                variant="ghost"
+                size="sm"
+                className="px-1.5 rounded-full"
+              >
+                <PlusCircleIcon className="w-5 h-5 text-muted-foreground hover:text-primary" />
+              </Button>
+            </Link>
+          </>
         )}
       </div>
 

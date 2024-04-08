@@ -28,13 +28,14 @@ import {
   SelectContent,
   SelectItem,
   Textarea,
+  toast,
 } from "@renderer/components/ui";
 import { useState, useEffect, useContext } from "react";
 import {
   AppSettingsProviderContext,
   AISettingsProviderContext,
 } from "@renderer/context";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, Share2Icon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const conversationFormSchema = z.object({
@@ -125,20 +126,20 @@ export const ConversationForm = (props: {
     // @ts-ignore
     values: conversation?.id
       ? {
-          name: conversation.name,
-          engine: conversation.engine,
-          configuration: {
-            type: conversation.configuration.type || "gpt",
-            ...conversation.configuration,
-          },
-        }
-      : {
-          name: defaultConfig.name,
-          engine: defaultConfig.engine,
-          configuration: {
-            ...defaultConfig.configuration,
-          },
+        name: conversation.name,
+        engine: conversation.engine,
+        configuration: {
+          type: conversation.configuration.type || "gpt",
+          ...conversation.configuration,
         },
+      }
+      : {
+        name: defaultConfig.name,
+        engine: defaultConfig.engine,
+        configuration: {
+          ...defaultConfig.configuration,
+        },
+      },
   });
 
   const onSubmit = async (data: z.infer<typeof conversationFormSchema>) => {
@@ -203,8 +204,11 @@ export const ConversationForm = (props: {
         className="h-full flex flex-col pt-6"
         data-testid="conversation-form"
       >
-        <div className="mb-4 px-6 text-lg font-bold">
-          {conversation.id ? t("editConversation") : t("startConversation")}
+        <div className="mb-4 px-6 flex items-center space-x-4">
+          <div className="text-lg font-bold">
+            {conversation.id ? t("editConversation") : t("startConversation")}
+          </div>
+          <GPTShareButton conversation={conversation} />
         </div>
         <ScrollArea className="flex-1 px-4">
           <div className="space-y-4 px-2 mb-6">
@@ -342,160 +346,160 @@ export const ConversationForm = (props: {
                 {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
                   "temperature"
                 ) && (
-                  <FormField
-                    control={form.control}
-                    name="configuration.temperature"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {t("models.conversation.temperature")}
-                        </FormLabel>
-                        <Input
-                          type="number"
-                          min="0"
-                          max="1.0"
-                          step="0.1"
-                          value={field.value}
-                          onChange={(event) => {
-                            field.onChange(
-                              event.target.value
-                                ? parseFloat(event.target.value)
-                                : 0.0
-                            );
-                          }}
-                        />
-                        <FormDescription>
-                          {t("models.conversation.temperatureDescription")}
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
+                    <FormField
+                      control={form.control}
+                      name="configuration.temperature"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            {t("models.conversation.temperature")}
+                          </FormLabel>
+                          <Input
+                            type="number"
+                            min="0"
+                            max="1.0"
+                            step="0.1"
+                            value={field.value}
+                            onChange={(event) => {
+                              field.onChange(
+                                event.target.value
+                                  ? parseFloat(event.target.value)
+                                  : 0.0
+                              );
+                            }}
+                          />
+                          <FormDescription>
+                            {t("models.conversation.temperatureDescription")}
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
 
                 {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
                   "maxTokens"
                 ) && (
-                  <FormField
-                    control={form.control}
-                    name="configuration.maxTokens"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {t("models.conversation.maxTokens")}
-                        </FormLabel>
-                        <Input
-                          type="number"
-                          min="0"
-                          value={field.value}
-                          onChange={(event) => {
-                            if (!event.target.value) return;
-                            field.onChange(parseInt(event.target.value));
-                          }}
-                        />
-                        <FormDescription>
-                          {t("models.conversation.maxTokensDescription")}
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
+                    <FormField
+                      control={form.control}
+                      name="configuration.maxTokens"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            {t("models.conversation.maxTokens")}
+                          </FormLabel>
+                          <Input
+                            type="number"
+                            min="0"
+                            value={field.value}
+                            onChange={(event) => {
+                              if (!event.target.value) return;
+                              field.onChange(parseInt(event.target.value));
+                            }}
+                          />
+                          <FormDescription>
+                            {t("models.conversation.maxTokensDescription")}
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
 
                 {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
                   "presencePenalty"
                 ) && (
-                  <FormField
-                    control={form.control}
-                    name="configuration.presencePenalty"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {t("models.conversation.presencePenalty")}
-                        </FormLabel>
-                        <Input
-                          type="number"
-                          min="-2"
-                          step="0.1"
-                          max="2"
-                          value={field.value}
-                          onChange={(event) => {
-                            if (!event.target.value) return;
-                            field.onChange(parseInt(event.target.value));
-                          }}
-                        />
-                        <FormDescription>
-                          {t("models.conversation.presencePenaltyDescription")}
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
+                    <FormField
+                      control={form.control}
+                      name="configuration.presencePenalty"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            {t("models.conversation.presencePenalty")}
+                          </FormLabel>
+                          <Input
+                            type="number"
+                            min="-2"
+                            step="0.1"
+                            max="2"
+                            value={field.value}
+                            onChange={(event) => {
+                              if (!event.target.value) return;
+                              field.onChange(parseInt(event.target.value));
+                            }}
+                          />
+                          <FormDescription>
+                            {t("models.conversation.presencePenaltyDescription")}
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
 
                 {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
                   "frequencyPenalty"
                 ) && (
-                  <FormField
-                    control={form.control}
-                    name="configuration.frequencyPenalty"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {t("models.conversation.frequencyPenalty")}
-                        </FormLabel>
-                        <Input
-                          type="number"
-                          min="-2"
-                          step="0.1"
-                          max="2"
-                          value={field.value}
-                          onChange={(event) => {
-                            if (!event.target.value) return;
-                            field.onChange(parseInt(event.target.value));
-                          }}
-                        />
-                        <FormDescription>
-                          {t("models.conversation.frequencyPenaltyDescription")}
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
+                    <FormField
+                      control={form.control}
+                      name="configuration.frequencyPenalty"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            {t("models.conversation.frequencyPenalty")}
+                          </FormLabel>
+                          <Input
+                            type="number"
+                            min="-2"
+                            step="0.1"
+                            max="2"
+                            value={field.value}
+                            onChange={(event) => {
+                              if (!event.target.value) return;
+                              field.onChange(parseInt(event.target.value));
+                            }}
+                          />
+                          <FormDescription>
+                            {t("models.conversation.frequencyPenaltyDescription")}
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
 
                 {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
                   "numberOfChoices"
                 ) && (
-                  <FormField
-                    control={form.control}
-                    name="configuration.numberOfChoices"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {t("models.conversation.numberOfChoices")}
-                        </FormLabel>
-                        <Input
-                          type="number"
-                          min="1"
-                          step="1.0"
-                          value={field.value}
-                          onChange={(event) => {
-                            field.onChange(
-                              event.target.value
-                                ? parseInt(event.target.value)
-                                : 1.0
-                            );
-                          }}
-                        />
-                        <FormDescription>
-                          {t("models.conversation.numberOfChoicesDescription")}
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
+                    <FormField
+                      control={form.control}
+                      name="configuration.numberOfChoices"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            {t("models.conversation.numberOfChoices")}
+                          </FormLabel>
+                          <Input
+                            type="number"
+                            min="1"
+                            step="1.0"
+                            value={field.value}
+                            onChange={(event) => {
+                              field.onChange(
+                                event.target.value
+                                  ? parseInt(event.target.value)
+                                  : 1.0
+                              );
+                            }}
+                          />
+                          <FormDescription>
+                            {t("models.conversation.numberOfChoicesDescription")}
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
 
                 <FormField
                   control={form.control}
@@ -530,25 +534,25 @@ export const ConversationForm = (props: {
                 {LLM_PROVIDERS[form.watch("engine")]?.configurable.includes(
                   "baseUrl"
                 ) && (
-                  <FormField
-                    control={form.control}
-                    name="configuration.baseUrl"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {t("models.conversation.baseUrl")}
-                        </FormLabel>
-                        <Input
-                          {...field}
-                          placeholder={t(
-                            "models.conversation.baseUrlDescription"
-                          )}
-                        />
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
+                    <FormField
+                      control={form.control}
+                      name="configuration.baseUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            {t("models.conversation.baseUrl")}
+                          </FormLabel>
+                          <Input
+                            {...field}
+                            placeholder={t(
+                              "models.conversation.baseUrlDescription"
+                            )}
+                          />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
               </>
             )}
 
@@ -584,95 +588,95 @@ export const ConversationForm = (props: {
             {TTS_PROVIDERS[
               form.watch("configuration.tts.engine")
             ]?.configurable.includes("model") && (
-              <FormField
-                control={form.control}
-                name="configuration.tts.model"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("models.conversation.ttsModel")}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      value={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("selectTtsModel")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {(
-                          TTS_PROVIDERS[form.watch("configuration.tts.engine")]
-                            ?.models || []
-                        ).map((model: string) => (
-                          <SelectItem key={model} value={model}>
-                            {model}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+                <FormField
+                  control={form.control}
+                  name="configuration.tts.model"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("models.conversation.ttsModel")}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t("selectTtsModel")} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {(
+                            TTS_PROVIDERS[form.watch("configuration.tts.engine")]
+                              ?.models || []
+                          ).map((model: string) => (
+                            <SelectItem key={model} value={model}>
+                              {model}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
             {TTS_PROVIDERS[
               form.watch("configuration.tts.engine")
             ]?.configurable.includes("voice") && (
-              <FormField
-                control={form.control}
-                name="configuration.tts.voice"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("models.conversation.ttsVoice")}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      value={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("selectTtsVoice")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {(
-                          TTS_PROVIDERS[form.watch("configuration.tts.engine")]
-                            ?.voices || []
-                        ).map((voice: string) => (
-                          <SelectItem key={voice} value={voice}>
-                            <span className="capitalize">{voice}</span>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+                <FormField
+                  control={form.control}
+                  name="configuration.tts.voice"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("models.conversation.ttsVoice")}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t("selectTtsVoice")} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {(
+                            TTS_PROVIDERS[form.watch("configuration.tts.engine")]
+                              ?.voices || []
+                          ).map((voice: string) => (
+                            <SelectItem key={voice} value={voice}>
+                              <span className="capitalize">{voice}</span>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
             {TTS_PROVIDERS[
               form.watch("configuration.tts.engine")
             ]?.configurable.includes("baseUrl") && (
-              <FormField
-                control={form.control}
-                name="configuration.tts.baseUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("models.conversation.ttsBaseUrl")}</FormLabel>
-                    <Input
-                      {...field}
-                      placeholder={t(
-                        "models.conversation.ttsBaseUrlDescription"
-                      )}
-                    />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+                <FormField
+                  control={form.control}
+                  name="configuration.tts.baseUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("models.conversation.ttsBaseUrl")}</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder={t(
+                          "models.conversation.ttsBaseUrlDescription"
+                        )}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
           </div>
         </ScrollArea>
 
@@ -838,3 +842,80 @@ export const TTS_PROVIDERS: { [key: string]: any } = {
     configurable: ["model", "voice", "baseUrl"],
   },
 };
+
+const GPTShareButton = (props: {
+  conversation: Partial<ConversationType>;
+}) => {
+  const { conversation } = props;
+  const { webApi } = useContext(AppSettingsProviderContext);
+  const navigate = useNavigate();
+
+  const handleShare = () => {
+    const { configuration } = conversation;
+    delete configuration.baseUrl
+    delete configuration?.tts?.baseUrl
+
+    if (!configuration.roleDefinition) {
+      toast.error('shareFailed');
+      return;
+    }
+
+    webApi
+      .createPost({
+        metadata: {
+          type: "gpt",
+          content: {
+            name: conversation.name,
+            engine: conversation.engine,
+            configuration,
+          },
+        },
+      })
+      .then(() => {
+        toast.success(t("sharedSuccessfully"), {
+          description: t("sharedGpt"),
+          action: {
+            label: t("view"),
+            onClick: () => {
+              navigate("/community");
+            },
+          },
+          actionButtonStyle: {
+            backgroundColor: "var(--primary)",
+          },
+        });
+      })
+      .catch((err) => {
+        toast.error(t("shareFailed"), { description: err.message });
+      });
+  }
+
+  if (!conversation.id) return null;
+  if (conversation.type !== "gpt") return null;
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="link" size="icon" className="rounded-full p-0 w-6 h-6">
+          <Share2Icon className="w-4 h-4 text-muted-foreground" />
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{t("shareGpt")}</AlertDialogTitle>
+          <AlertDialogDescription>
+            {t("areYouSureToShareThisGptToCommunity")}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+          <AlertDialogAction asChild>
+            <Button variant="default" onClick={handleShare}>
+              {t("share")}
+            </Button>
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}

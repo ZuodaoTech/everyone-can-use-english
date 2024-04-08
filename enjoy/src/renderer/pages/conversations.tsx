@@ -13,7 +13,7 @@ import {
 import { ConversationForm } from "@renderer/components";
 import { useState, useEffect, useContext, useReducer } from "react";
 import { ChevronLeftIcon, MessageCircleIcon, SpeechIcon } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   DbProviderContext,
   AppSettingsProviderContext,
@@ -24,10 +24,11 @@ import dayjs from "dayjs";
 import { CONVERSATION_PRESETS } from "@/constants";
 
 export default () => {
+  const [searchParams] = useSearchParams();
   const [creating, setCreating] = useState<boolean>(false);
   const [preset, setPreset] = useState<any>({});
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const { currentEngine } = useContext(AISettingsProviderContext);
   const [conversations, dispatchConversations] = useReducer(
     conversationsReducer,
@@ -43,6 +44,21 @@ export default () => {
       removeDbListener(onConversationsUpdate);
     };
   }, []);
+
+  useEffect(() => {
+    const postId = searchParams.get('postId');
+    if (!postId) return;
+
+    webApi.post(postId).then((post) => {
+      const preset: any = post.metadata.content;
+      if (!preset?.configuration?.roleDefinition) {
+        return;
+      }
+
+      setPreset(preset);
+      setCreating(true);
+    })
+  }, [searchParams.get('postId')])
 
   const fetchConversations = async () => {
     const _conversations = await EnjoyApp.conversations.findAll({});
