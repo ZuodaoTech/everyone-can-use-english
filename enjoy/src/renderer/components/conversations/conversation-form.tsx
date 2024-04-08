@@ -855,13 +855,19 @@ const GPTShareButton = (props: {
     delete configuration.baseUrl
     delete configuration?.tts?.baseUrl
 
+    if (!configuration.roleDefinition) {
+      toast.error('shareFailed');
+      return;
+    }
+
     webApi
       .createPost({
         metadata: {
           type: "gpt",
           content: {
+            name: conversation.name,
             engine: conversation.engine,
-            ...configuration,
+            configuration,
           },
         },
       })

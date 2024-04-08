@@ -213,7 +213,7 @@ export default () => {
     inputRef.current.focus();
 
     return () => {
-      inputRef.current?.removeEventListener("keypress", () => {});
+      inputRef.current?.removeEventListener("keypress", () => { });
       autosize.destroy(inputRef.current);
     };
   }, [id, inputRef.current]);
@@ -319,7 +319,7 @@ export default () => {
               onChange={(e) => setContent(e.target.value)}
               placeholder={t("pressEnterToSend")}
               data-testid="conversation-page-input"
-              className="text-base px-4 py-0 shadow-none border-none focus-visible:outline-0 focus-visible:ring-0 border-none bg-muted focus:bg-background min-h-[1rem] max-h-[70vh] scrollbar-thin scrollbar-thumb-sky-500  !overflow-x-hidden"
+              className="text-base px-4 py-0 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none bg-muted focus:bg-background min-h-[1rem] max-h-[70vh] scrollbar-thin scrollbar-thumb-sky-500  !overflow-x-hidden"
             />
             <div className="h-12 py-1">
               <Button
