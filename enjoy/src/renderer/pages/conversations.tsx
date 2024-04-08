@@ -185,7 +185,7 @@ export default () => {
               </div>
 
               <div className="grid grid-cols-2 gap-4 mb-6">
-                <DialogTrigger>
+                <DialogTrigger asChild>
                   <Button
                     data-testid={`conversation-preset-${customPreset.key}`}
                     onClick={() => {
@@ -198,7 +198,7 @@ export default () => {
                     {t("custom")} GPT
                   </Button>
                 </DialogTrigger>
-                <DialogTrigger>
+                <DialogTrigger asChild>
                   <Button
                     data-testid={`conversation-preset-${ttsPreset.key}`}
                     onClick={() => {
