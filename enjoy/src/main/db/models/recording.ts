@@ -155,7 +155,6 @@ export class Recording extends Model<Recording> {
       return assessment;
     }
 
-    await this.upload();
     await this.sync();
     const webApi = new Client({
       baseUrl: process.env.WEB_API_URL || WEB_API_URL,
