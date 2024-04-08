@@ -52,7 +52,7 @@
     "@types/lodash": "^4.17.0",
     "@types/mark.js": "^8.11.12",
     "@types/node": "^20.12.2",
-    "@types/react": "^18.2.73",
+    "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.23",
     "@types/validator": "^13.11.9",
     "@types/wavesurfer.js": "^6.0.12",

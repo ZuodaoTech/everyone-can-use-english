@@ -5541,13 +5541,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.2.73":
-  version: 18.2.73
-  resolution: "@types/react@npm:18.2.73"
+"@types/react@npm:^18.2.74":
+  version: 18.2.74
+  resolution: "@types/react@npm:18.2.74"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/b6645ab3c20efa41cfccf58ce0be45419517a0ba4594e323dd400342fb1c1f9589d169cf9bfa85b5b0605e9097fe9de7734b6d0c533f5b9bc32aaadb624537a4
+  checksum: 10c0/347e38b4c5dc20d50ff71bf04b7caaef490e5ff695e74a0088a13fbb2a0c5d125a5ecfd142adfa30f0176da0e2734942c91ba61d95ce269c43b3265bd7379361
   languageName: node
   linkType: hard
 
@@ -9034,7 +9034,7 @@ __metadata:
     "@types/lodash": "npm:^4.17.0"
     "@types/mark.js": "npm:^8.11.12"
     "@types/node": "npm:^20.12.2"
-    "@types/react": "npm:^18.2.73"
+    "@types/react": "npm:^18.2.74"
     "@types/react-dom": "npm:^18.2.23"
     "@types/validator": "npm:^13.11.9"
     "@types/wavesurfer.js": "npm:^6.0.12"
