@@ -13,6 +13,7 @@ import {
 import {
   MediaPlayerProviderContext,
   AppSettingsProviderContext,
+  HotKeysSettingsProviderContext,
 } from "@renderer/context";
 import {
   ScissorsIcon,
@@ -56,6 +57,7 @@ export const MediaPlayerControls = () => {
     setTranscriptionDraft,
   } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { currentHotkeys, enabled } = useContext(HotKeysSettingsProviderContext)
   const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("single");
   const [playbackRate, setPlaybackRate] = useState<number>(1);
   const [grouping, setGrouping] = useState(false);
@@ -372,30 +374,32 @@ export const MediaPlayerControls = () => {
   }, [wavesurfer, decoded, playMode, activeRegion, currentTime]);
 
   useHotkeys(
-    ["Space", "p", "n", "r", "c"],
+    [currentHotkeys.PlayOrPause, currentHotkeys.PlayPreviousSegment, currentHotkeys.PlayNextSegment, currentHotkeys.StartOrStopRecording, currentHotkeys.Compare],
     (keyboardEvent, hotkeyEvent) => {
       if (!wavesurfer) return;
       keyboardEvent.preventDefault();
 
       switch (hotkeyEvent.keys.join("")) {
-        case "space":
+        case currentHotkeys.PlayOrPause.toLowerCase():
           document.getElementById("media-play-or-pause-button").click();
           break;
-        case "p":
+        case currentHotkeys.PlayPreviousSegment.toLowerCase():
           document.getElementById("media-play-previous-button").click();
           break;
-        case "n":
+        case currentHotkeys.PlayNextSegment.toLowerCase():
           document.getElementById("media-play-next-button").click();
           break;
-        case "r":
+        case currentHotkeys.StartOrStopRecording.toLowerCase():
           document.getElementById("media-record-button").click();
           break;
-        case "c":
+        case currentHotkeys.Compare.toLowerCase():
           document.getElementById("media-compare-button").click();
           break;
       }
+    },{
+      enabled
     },
-    [wavesurfer]
+    [wavesurfer, currentHotkeys]
   );
 
   /*

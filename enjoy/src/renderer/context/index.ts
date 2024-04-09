@@ -4,3 +4,4 @@ export * from "./db-provider";
 export * from "./theme-provider";
 export * from "./wavesurfer-provider";
 export * from "./media-player-provider";
+export * from './hotkeys-settings-provider'

@@ -1,6 +1,7 @@
 import { useEffect, useContext, useRef, useState } from "react";
 import {
   AppSettingsProviderContext,
+  HotKeysSettingsProviderContext,
   MediaPlayerProviderContext,
 } from "@renderer/context";
 import { MediaRecorder, RecordingDetail } from "@renderer/components";
@@ -60,6 +61,9 @@ export const MediaCurrentRecording = () => {
     currentTime: mediaCurrentTime,
   } = useContext(MediaPlayerProviderContext);
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { enabled, currentHotkeys } = useContext(
+    HotKeysSettingsProviderContext
+  );
   const [player, setPlayer] = useState(null);
   const [regions, setRegions] = useState<Regions | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -328,7 +332,7 @@ export const MediaCurrentRecording = () => {
     }
 
     const subscriptions = [
-      regions.on("region-created", () => { }),
+      regions.on("region-created", () => {}),
 
       regions.on("region-clicked", (region, e) => {
         e.stopPropagation();
@@ -399,7 +403,7 @@ export const MediaCurrentRecording = () => {
   }, [currentRecording, isRecording, layout?.width]);
 
   useHotkeys(
-    ["Ctrl+R", "Meta+R"],
+    currentHotkeys.PlayOrPauseRecording,
     (keyboardEvent, hotkeyEvent) => {
       if (!player) return;
       keyboardEvent.preventDefault();
@@ -411,6 +415,7 @@ export const MediaCurrentRecording = () => {
         document.getElementById("recording-play-or-pause-button").click();
       }
     },
+    { enabled },
     [player]
   );
 
@@ -422,7 +427,9 @@ export const MediaCurrentRecording = () => {
           <div
             className="m-auto"
             dangerouslySetInnerHTML={{
-              __html: t("noRecordingForThisSegmentYet"),
+              __html: t("noRecordingForThisSegmentYet", {
+                key: currentHotkeys.StartOrStopRecording?.toUpperCase(),
+              }),
             }}
           ></div>
         </div>
@@ -551,16 +558,17 @@ export const MediaCurrentRecording = () => {
             >
               <GaugeCircleIcon
                 className={`w-4 h-4 mr-4
-                    ${currentRecording.pronunciationAssessment
-                    ? currentRecording.pronunciationAssessment
-                      .pronunciationScore >= 80
-                      ? "text-green-500"
-                      : currentRecording.pronunciationAssessment
-                        .pronunciationScore >= 60
-                        ? "text-yellow-600"
-                        : "text-red-500"
-                    : ""
-                  }
+                    ${
+                      currentRecording.pronunciationAssessment
+                        ? currentRecording.pronunciationAssessment
+                            .pronunciationScore >= 80
+                          ? "text-green-500"
+                          : currentRecording.pronunciationAssessment
+                              .pronunciationScore >= 60
+                          ? "text-yellow-600"
+                          : "text-red-500"
+                        : ""
+                    }
                     `}
               />
               <span>{t("pronunciationAssessment")}</span>
