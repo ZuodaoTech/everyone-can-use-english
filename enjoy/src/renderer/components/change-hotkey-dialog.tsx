@@ -9,7 +9,7 @@ import {
 import { toast } from "@renderer/components/ui";
 import { useContext, useMemo } from "react";
 import { HotKeysSettingsProviderContext } from "../context";
-import { Check, Keyboard, X } from "lucide-react";
+import { CheckIcon, KeyboardIcon, XIcon } from "lucide-react";
 import { t } from "i18next";
 
 export const ChangeHotkeyDialog = ({
@@ -27,7 +27,7 @@ export const ChangeHotkeyDialog = ({
     changeHotkey,
     currentHotkeys,
     recordingHotkeys,
-    stopRecordingHotkeys,
+    resetRecordingHotkeys,
   } = useContext(HotKeysSettingsProviderContext);
 
   const joinedKeys = useMemo(() => [...recordingHotkeys].join("+"), [
@@ -35,7 +35,7 @@ export const ChangeHotkeyDialog = ({
   ]);
 
   const changeKeyMap = async () => {
-    const { error, data, input } = ((await changeHotkey(
+    const ret = ((await changeHotkey(
       keyName,
       recordingHotkeys
     )) as unknown) as {
@@ -43,6 +43,7 @@ export const ChangeHotkeyDialog = ({
       data: string | string[];
       input: string;
     };
+    const { error, data, input } = ret ?? {};
     if (error === "conflict") {
       toast.error(
         t("customizeShortcutsConflictToast", {
@@ -53,12 +54,12 @@ export const ChangeHotkeyDialog = ({
     } else if (error === "invalid") {
       toast.error(t("customizeShortcutsInvalidToast"));
     } else {
-      toast.success(`Changes saved`);
+      toast.success(t("customizeShortcutsUpdated"));
     }
   };
 
   const clear = () => {
-    stopRecordingHotkeys();
+    resetRecordingHotkeys();
   };
 
   return (
@@ -79,16 +80,16 @@ export const ChangeHotkeyDialog = ({
                   {joinedKeys}
                 </p>
                 <div className="cursor-pointer" onClick={changeKeyMap}>
-                  <Check className="text-green-500 w-5 h-5" />
+                  <CheckIcon className="text-green-500 w-5 h-5" />
                 </div>
                 <div className="cursor-pointer" onClick={clear}>
-                  <X className="text-red-500 w-5 h-5" />
+                  <XIcon className="text-red-500 w-5 h-5" />
                 </div>
               </div>
             ) : (
               <div className="inline-block gap-2 border-2 border-black rounded p-[2px]">
                 <span className="text-sm">{t("customizeShortcutsTip")}</span>
-                <Keyboard className="inline ml-1 w-6 h-6 text-muted-foreground" />
+                <KeyboardIcon className="inline ml-1 w-6 h-6 text-muted-foreground" />
               </div>
             )}
           </div>

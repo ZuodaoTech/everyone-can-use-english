@@ -78,6 +78,7 @@ type HotkeysSettingsProviderState = {
   enabled: boolean;
   startRecordingHotkeys?: () => void;
   stopRecordingHotkeys?: () => void;
+  resetRecordingHotkeys?: () => void;
   changeHotkey?: (key: string, recordedHotkeys: Set<string>) => void;
 };
 
@@ -194,7 +195,7 @@ export const HotKeysSettingsProvider = ({
       await EnjoyApp.settings.setDefaultHotkeys(newMap).then(() => {
         setCurrentHotkeys(newMap);
       });
-      stopRecordingHotkeys();
+      resetKeys();
     },
     [currentHotkeys]
   );
@@ -216,6 +217,7 @@ export const HotKeysSettingsProvider = ({
         enabled: !isRecording,
         startRecordingHotkeys,
         stopRecordingHotkeys,
+        resetRecordingHotkeys: resetKeys,
         changeHotkey,
       }}
     >

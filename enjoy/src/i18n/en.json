@@ -522,6 +522,7 @@
   "customizeShortcutsTip":"Press any sequence of keys to set a shortcut",
   "customizeShortcutsInvalidToast": "Your shortcut should only have one modifier (Ctrl, Alt, Shift, or Meta) and one key, like 'Ctrl+C'.",
   "customizeShortcutsConflictToast": "{{input}} conflicts with the existing {{otherHotkeyName}} shortcut.",
+  "customizeShortcutsUpdated": "Changes saved",
   "following": "following",
   "followers": "followers",
   "allUsers": "all users",
