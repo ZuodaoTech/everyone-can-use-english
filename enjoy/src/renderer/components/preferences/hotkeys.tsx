@@ -1,8 +1,17 @@
 import { t } from "i18next";
-import { Separator } from "@renderer/components/ui";
+import { Separator,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  Button,
+  toast
+ } from "@renderer/components/ui";
 import { HotKeysSettingsProviderContext, Hotkey } from "@/renderer/context";
-import { useContext, useState } from "react";
-import { ChangeHotkeyDialog } from "../change-hotkey-dialog";
+import { useContext, useState, useMemo, useEffect } from "react";
 
 export const Hotkeys = () => {
   const [open, setOpen] = useState(false);
@@ -12,23 +21,13 @@ export const Hotkeys = () => {
   } | null>(null);
   const {
     currentHotkeys,
-    startRecordingHotkeys,
-    stopRecordingHotkeys,
   } = useContext(HotKeysSettingsProviderContext);
 
   const commandOrCtrl = navigator.platform.includes("Mac") ? "Cmd" : "Ctrl";
 
   const handleItemSelected = (item: { name: string; keyName: Hotkey }) => {
     setOpen(true);
-    startRecordingHotkeys();
     setSelectedItem(item);
-  };
-
-  const handleOpenChange = (open: boolean) => {
-    setOpen(open);
-    if (!open) {
-      stopRecordingHotkeys();
-    }
   };
 
   return (
@@ -53,7 +52,7 @@ export const Hotkeys = () => {
           <kbd
             onClick={() =>
               handleItemSelected({
-                name: "Open preferences",
+                name: t("openPreferences"),
                 keyName: "OpenPreferences",
               })
             }
@@ -185,8 +184,112 @@ export const Hotkeys = () => {
         open={open}
         keyName={selectedItem?.keyName}
         name={selectedItem?.name}
-        onOpenChange={handleOpenChange}
+        onOpenChange={setOpen}
       />
     </>
+  );
+};
+
+const ChangeHotkeyDialog = ({
+  open,
+  name,
+  keyName,
+  onOpenChange,
+}: {
+  open: boolean;
+  name: string;
+  keyName: string;
+  onOpenChange: (open: boolean) => void;
+}) => {
+  const {
+    changeHotkey,
+    currentHotkeys,
+    recordingHotkeys,
+    resetRecordingHotkeys,
+    startRecordingHotkeys,
+    stopRecordingHotkeys,
+  } = useContext(HotKeysSettingsProviderContext);
+  const [isRecording, setIsRecording] = useState(false);
+
+  const joinedKeys = useMemo(
+    () => [...recordingHotkeys].join("+"),
+    [recordingHotkeys]
+  );
+
+  const changeKeyMap = async () => {
+    const ret = (await changeHotkey(keyName, recordingHotkeys)) as unknown as {
+      error: "conflict" | "invalid";
+      data: string | string[];
+      input: string;
+    };
+    const { error, data, input } = ret ?? {};
+    if (error === "conflict") {
+      toast.error(
+        t("customizeShortcutsConflictToast", {
+          input,
+          otherHotkeyName: (data as string[]).join(","),
+        })
+      );
+    } else if (error === "invalid") {
+      toast.error(t("customizeShortcutsInvalidToast"));
+    } else {
+      toast.success(t("customizeShortcutsUpdated"));
+    }
+  };
+
+  const clear = () => {
+    resetRecordingHotkeys();
+    setIsRecording(false);
+  };
+
+  useEffect(() => {
+    if (isRecording) {
+      startRecordingHotkeys();
+    } else {
+      stopRecordingHotkeys();
+    }
+  }, [isRecording]);
+
+  useEffect(() => {
+    return () => {
+      setIsRecording(false);
+    };
+  }, [keyName]);
+
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{name}</AlertDialogTitle>
+        </AlertDialogHeader>
+        <div>
+          {isRecording ? (
+            <div className="flex justify-center space-x-2">
+              <Button variant="outline" className="font-mono">
+                {joinedKeys.length > 0 ? joinedKeys : t("pressKey")}
+              </Button>
+            </div>
+          ) : (
+            <div className="flex justify-center">
+              <Button
+                variant="secondary"
+                className="font-mono"
+                onClick={() => {
+                  setIsRecording(true);
+                }}
+              >
+                {currentHotkeys[keyName]}
+              </Button>
+            </div>
+          )}
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogAction disabled={!isRecording} onClick={changeKeyMap}>
+            {t("save")}
+          </AlertDialogAction>
+          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
