@@ -76,6 +76,7 @@ type HotkeysSettingsProviderState = {
   currentHotkeys: Record<string, string>;
   recordingHotkeys?: any;
   enabled: boolean;
+  isRecording: boolean;
   startRecordingHotkeys?: () => void;
   stopRecordingHotkeys?: () => void;
   resetRecordingHotkeys?: () => void;
@@ -85,6 +86,7 @@ type HotkeysSettingsProviderState = {
 const initialState: HotkeysSettingsProviderState = {
   currentHotkeys: {},
   enabled: true,
+  isRecording: false,
 };
 
 export const HotKeysSettingsProviderContext = createContext<
@@ -215,6 +217,7 @@ export const HotKeysSettingsProvider = ({
         currentHotkeys,
         recordingHotkeys: keys,
         enabled: !isRecording,
+        isRecording,
         startRecordingHotkeys,
         stopRecordingHotkeys,
         resetRecordingHotkeys: resetKeys,
