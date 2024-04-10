@@ -51,7 +51,9 @@ export const HotkeysSettings = ({
       toast.error(
         t("customizeShortcutsConflictToast", {
           input,
-          otherHotkeyName: (data as string[]).join(","),
+          otherHotkeyName: (data as string[])
+            .map((str) => t(str.charAt(0).toLowerCase() + str.slice(1)))
+            .join(","),
         })
       );
     } else if (error === "invalid") {
@@ -67,7 +69,7 @@ export const HotkeysSettings = ({
     resetRecordingHotkeys();
   };
 
-  // ensure recording disabled when dialog close 
+  // ensure recording disabled when dialog close
   useEffect(() => {
     return () => {
       stopRecordingHotkeys();
@@ -92,7 +94,9 @@ export const HotkeysSettings = ({
                   )}
                 </Button>
               </div>
-              <div className="py-2 text-center text-sm text-muted-foreground">{t("customizeShortcutsRecordingTip")}</div>
+              <div className="py-2 text-center text-sm text-muted-foreground">
+                {t("customizeShortcutsRecordingTip")}
+              </div>
             </div>
           ) : (
             <div className="">
@@ -107,7 +111,9 @@ export const HotkeysSettings = ({
                   {currentHotkeys[keyName]}
                 </Button>
               </div>
-              <div className="py-2 text-center text-sm text-muted-foreground">{t("customizeShortcutsTip")}</div>
+              <div className="py-2 text-center text-sm text-muted-foreground">
+                {t("customizeShortcutsTip")}
+              </div>
             </div>
           )}
         </div>
