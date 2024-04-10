@@ -19,7 +19,27 @@ export const extractFrequencies = (props: {
     quantization: bpm,
   });
 
-  return frequencies;
+  const cleanedFrequencies = removeNoise(frequencies)
+
+  return cleanedFrequencies;
+};
+
+export const removeNoise = (numbers: number[], threshold: number = 0.2): number[] => {
+  numbers.forEach((num, i) => {
+    if (i === 0) return;
+    if (typeof num !== 'number') return;
+
+    const prevNum = numbers[i - 1] || num;
+    const nextNum = numbers[i + 1] || num;
+    const avgNeighbor = (prevNum + nextNum) / 2.0;
+    const deviation = Math.abs(num - avgNeighbor);
+
+    if (deviation > threshold * avgNeighbor) {
+      numbers[i] = null;
+    }
+  })
+
+  return numbers;
 };
 
 export function milisecondsToTimestamp(ms: number) {
