@@ -47,11 +47,11 @@ const defaultKeyMap = {
   OpenPreferences: `${ControlOrCommand}+Comma`,
   // player
   PlayOrPause: "Space",
-  StartOrStopRecording: "r",
-  PlayOrPauseRecording: `${ControlOrCommand}+r`,
-  PlayPreviousSegment: "p",
-  PlayNextSegment: "n",
-  Compare: "c",
+  StartOrStopRecording: "R",
+  PlayOrPauseRecording: `${ControlOrCommand}+R`,
+  PlayPreviousSegment: "P",
+  PlayNextSegment: "N",
+  Compare: "C",
   // dev tools
   OpenDevTools: `${ControlOrCommand}+Shift+I`,
 };

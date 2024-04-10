@@ -1,15 +1,15 @@
 import { t } from "i18next";
-import { Separator,
+import {
+  Separator,
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   Button,
-  toast
- } from "@renderer/components/ui";
+  toast,
+} from "@renderer/components/ui";
 import { HotKeysSettingsProviderContext, Hotkey } from "@/renderer/context";
 import { useContext, useState, useMemo, useEffect } from "react";
 
@@ -19,9 +19,7 @@ export const Hotkeys = () => {
     name: string;
     keyName: string;
   } | null>(null);
-  const {
-    currentHotkeys,
-  } = useContext(HotKeysSettingsProviderContext);
+  const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
 
   const commandOrCtrl = navigator.platform.includes("Mac") ? "Cmd" : "Ctrl";
 
@@ -222,7 +220,9 @@ const ChangeHotkeyDialog = ({
       data: string | string[];
       input: string;
     };
+    setIsRecording(false);
     const { error, data, input } = ret ?? {};
+
     if (error === "conflict") {
       toast.error(
         t("customizeShortcutsConflictToast", {
@@ -234,6 +234,7 @@ const ChangeHotkeyDialog = ({
       toast.error(t("customizeShortcutsInvalidToast"));
     } else {
       toast.success(t("customizeShortcutsUpdated"));
+      onOpenChange(false);
     }
   };
 
@@ -254,7 +255,7 @@ const ChangeHotkeyDialog = ({
     return () => {
       setIsRecording(false);
     };
-  }, [keyName]);
+  }, [open]);
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -264,30 +265,40 @@ const ChangeHotkeyDialog = ({
         </AlertDialogHeader>
         <div>
           {isRecording ? (
-            <div className="flex justify-center space-x-2">
-              <Button variant="outline" className="font-mono">
-                {joinedKeys.length > 0 ? joinedKeys : t("pressKey")}
-              </Button>
+            <div className="">
+              <div className="flex justify-center mb-4">
+                <Button variant="secondary">
+                  {joinedKeys.length > 0 ? (
+                    <span className="text-sm">{joinedKeys}</span>
+                  ) : (
+                    <span className="font-mono">-</span>
+                  )}
+                </Button>
+              </div>
+              <div className="py-2 text-center text-sm text-muted-foreground">{t("customizeShortcutsRecordingTip")}</div>
             </div>
           ) : (
-            <div className="flex justify-center">
-              <Button
-                variant="secondary"
-                className="font-mono"
-                onClick={() => {
-                  setIsRecording(true);
-                }}
-              >
-                {currentHotkeys[keyName]}
-              </Button>
+            <div className="">
+              <div className="flex justify-center mb-4">
+                <Button
+                  variant="outline"
+                  className="font-mono"
+                  onClick={() => {
+                    setIsRecording(true);
+                  }}
+                >
+                  {currentHotkeys[keyName]}
+                </Button>
+              </div>
+              <div className="py-2 text-center text-sm text-muted-foreground">{t("customizeShortcutsTip")}</div>
             </div>
           )}
         </div>
         <AlertDialogFooter>
-          <AlertDialogAction disabled={!isRecording} onClick={changeKeyMap}>
+          <Button disabled={!isRecording || !joinedKeys} onClick={changeKeyMap}>
             {t("save")}
-          </AlertDialogAction>
-          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+          </Button>
+          <AlertDialogCancel onClick={clear}>{t("cancel")}</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
