@@ -1,8 +1,10 @@
 import { t } from "i18next";
-import { Separator } from "@renderer/components/ui";
-import { HotKeysSettingsProviderContext, Hotkey } from "@/renderer/context";
+import {
+  Separator,
+} from "@renderer/components/ui";
+import { HotKeysSettingsProviderContext, Hotkey } from "@renderer/context";
+import { HotkeysSettings } from "@renderer/components";
 import { useContext, useState } from "react";
-import { ChangeHotkeyDialog } from "../change-hotkey-dialog";
 
 export const Hotkeys = () => {
   const [open, setOpen] = useState(false);
@@ -10,25 +12,13 @@ export const Hotkeys = () => {
     name: string;
     keyName: string;
   } | null>(null);
-  const {
-    currentHotkeys,
-    startRecordingHotkeys,
-    stopRecordingHotkeys,
-  } = useContext(HotKeysSettingsProviderContext);
+  const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
 
   const commandOrCtrl = navigator.platform.includes("Mac") ? "Cmd" : "Ctrl";
 
   const handleItemSelected = (item: { name: string; keyName: Hotkey }) => {
     setOpen(true);
-    startRecordingHotkeys();
     setSelectedItem(item);
-  };
-
-  const handleOpenChange = (open: boolean) => {
-    setOpen(open);
-    if (!open) {
-      stopRecordingHotkeys();
-    }
   };
 
   return (
@@ -39,8 +29,8 @@ export const Hotkeys = () => {
 
         <div className="flex items-center justify-between py-4">
           <div className="flex items-center space-x-2">{t("quitApp")}</div>
-          <kbd className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-not-allowed">
-            {commandOrCtrl} + Q
+          <kbd className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-not-allowed capitalize">
+            {commandOrCtrl}+Q
           </kbd>
         </div>
 
@@ -53,11 +43,11 @@ export const Hotkeys = () => {
           <kbd
             onClick={() =>
               handleItemSelected({
-                name: "Open preferences",
+                name: t("openPreferences"),
                 keyName: "OpenPreferences",
               })
             }
-            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer capitalize"
           >
             {currentHotkeys.OpenPreferences}
           </kbd>
@@ -77,7 +67,7 @@ export const Hotkeys = () => {
                 keyName: "PlayOrPause",
               })
             }
-            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer capitalize"
           >
             {currentHotkeys.PlayOrPause}
           </kbd>
@@ -96,7 +86,7 @@ export const Hotkeys = () => {
                 keyName: "StartOrStopRecording",
               })
             }
-            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer capitalize"
           >
             {currentHotkeys.StartOrStopRecording}
           </kbd>
@@ -115,7 +105,7 @@ export const Hotkeys = () => {
                 keyName: "PlayOrPauseRecording",
               })
             }
-            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer capitalize"
           >
             {currentHotkeys.PlayOrPauseRecording}
           </kbd>
@@ -153,7 +143,7 @@ export const Hotkeys = () => {
                 keyName: "PlayNextSegment",
               })
             }
-            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer capitalize"
           >
             {currentHotkeys.PlayNextSegment}
           </kbd>
@@ -172,7 +162,7 @@ export const Hotkeys = () => {
                 keyName: "Compare",
               })
             }
-            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer capitalize"
           >
             {currentHotkeys.Compare}
           </kbd>
@@ -181,11 +171,11 @@ export const Hotkeys = () => {
         <Separator />
       </div>
 
-      <ChangeHotkeyDialog
+      <HotkeysSettings
         open={open}
         keyName={selectedItem?.keyName}
         name={selectedItem?.name}
-        onOpenChange={handleOpenChange}
+        onOpenChange={setOpen}
       />
     </>
   );
