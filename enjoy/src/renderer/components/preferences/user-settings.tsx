@@ -66,7 +66,7 @@ export const UserSettings = () => {
 
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>{t('updateUserName')}</DialogTitle>
+                <DialogTitle>{t('editUserName')}</DialogTitle>
               </DialogHeader>
 
               <div className="w-full max-w-sm mx-auto py-6">
