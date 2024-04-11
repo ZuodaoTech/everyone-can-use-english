@@ -261,6 +261,7 @@
   "about": "About",
   "currentVersion": "Current version",
   "checkUpdate": "Check update",
+  "checkingLatestVersion": "Checking latest version",
   "userGuide": "User guide",
   "feedback": "Feedback",
   "alreadyLatestVersion": "Already latest version",

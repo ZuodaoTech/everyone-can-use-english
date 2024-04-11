@@ -13,7 +13,7 @@ export const About = () => {
         EnjoyApp.shell.openExternal("https://1000h.org/enjoy-app/install.html");
       }),
       {
-        loading: t("checkingUpdate"),
+        loading: t("checkingLatestVersion"),
       }
     );
   };
