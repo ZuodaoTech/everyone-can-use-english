@@ -23,6 +23,7 @@ import { Waveform } from "./waveform";
 import url from "url";
 import echogarden from "./echogarden";
 import camdict from "./camdict";
+import { updateElectronApp, UpdateSourceType } from "update-electron-app";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -386,6 +387,15 @@ ${log}
     );
   });
 
+  ipcMain.handle("app-update", () => {
+    return updateElectronApp({
+      updateSource: {
+        type: UpdateSourceType.StaticStorage,
+        baseUrl: `https://dl.enjoy.bot/enjoy-updates/${process.platform}/${process.arch}`,
+      },
+    });
+  });
+
   ipcMain.handle(
     "system-preferences-media-access",
     async (_event, mediaType: "microphone" | "camera") => {
@@ -446,7 +456,7 @@ ${log}
     icon: "./assets/icon.png",
     width: 1280,
     height: 720,
-    minWidth: 720 ,
+    minWidth: 720,
     minHeight: 576,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),

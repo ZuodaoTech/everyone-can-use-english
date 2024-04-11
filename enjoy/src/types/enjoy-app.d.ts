@@ -9,6 +9,7 @@ type EnjoyAppType = {
     quit: () => Promise<void>;
     openDevTools: () => Promise<void>;
     createIssue: (title: string, body: string) => Promise<void>;
+    update: () => Promise<void>;
     version: string;
   };
   window: {

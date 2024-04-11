@@ -1,10 +1,22 @@
 import { t } from "i18next";
-import { Button, Separator } from "@renderer/components/ui";
+import { Button, Separator, toast } from "@renderer/components/ui";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { useContext } from "react";
 
 export const About = () => {
   const { version, EnjoyApp } = useContext(AppSettingsProviderContext);
+
+  const checkUpdate = async () => {
+    toast.promise(
+      EnjoyApp.app.update().catch((error) => {
+        toast.error(error);
+        EnjoyApp.shell.openExternal("https://1000h.org/enjoy-app/install.html");
+      }),
+      {
+        loading: t("checkingUpdate"),
+      }
+    );
+  };
 
   return (
     <>
@@ -15,15 +27,7 @@ export const About = () => {
           <div className="mb-2">{t("currentVersion")}</div>
           <div className="text-sm text-muted-foreground mb-2">v{version}</div>
         </div>
-        <Button
-          onClick={() => {
-            EnjoyApp.shell.openExternal(
-              "https://github.com/xiaolai/everyone-can-use-english/releases/latest"
-            );
-          }}
-        >
-          {t("checkUpdate")}
-        </Button>
+        <Button onClick={checkUpdate}>{t("checkUpdate")}</Button>
       </div>
 
       <Separator />
