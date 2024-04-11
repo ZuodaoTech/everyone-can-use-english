@@ -27,7 +27,9 @@ import { useContext, useState } from "react";
 import { redirect } from "react-router-dom";
 
 export const UserSettings = () => {
-  const { user, login, logout, webApi } = useContext(AppSettingsProviderContext);
+  const { user, login, logout, webApi } = useContext(
+    AppSettingsProviderContext
+  );
   const [name, setName] = useState(user.name);
   const [editing, setEditing] = useState(false);
 
@@ -66,12 +68,12 @@ export const UserSettings = () => {
 
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>{t('editUserName')}</DialogTitle>
+                <DialogTitle>{t("editUserName")}</DialogTitle>
               </DialogHeader>
 
               <div className="w-full max-w-sm mx-auto py-6">
                 <div className="grid gap-2 mb-6">
-                  <Label htmlFor="name">{t('userName')}</Label>
+                  <Label htmlFor="name">{t("userName")}</Label>
                   <Input
                     id="name"
                     value={name}
@@ -79,17 +81,23 @@ export const UserSettings = () => {
                   />
                 </div>
                 <div className="">
-                  <Button className="w-full" onClick={() => {
-                    webApi
-                      .updateProfile(user.id, { name })
-                      .then(() => {
-                        toast.success('profileUpdated')
-                        setEditing(false);
-                        refreshProfile();
-                      }).catch(err => {
-                        toast.error(err.message);
-                      })
-                  }}>{t('save')}</Button>
+                  <Button
+                    className="w-full"
+                    onClick={() => {
+                      webApi
+                        .updateProfile(user.id, { name })
+                        .then(() => {
+                          toast.success("profileUpdated");
+                          setEditing(false);
+                          refreshProfile();
+                        })
+                        .catch((err) => {
+                          toast.error(err.message);
+                        });
+                    }}
+                  >
+                    {t("save")}
+                  </Button>
                 </div>
               </div>
             </DialogContent>
@@ -97,7 +105,11 @@ export const UserSettings = () => {
 
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="secondary" className="text-destructive" size="sm">
+              <Button
+                variant="secondary"
+                className="text-destructive"
+                size="sm"
+              >
                 {t("logout")}
               </Button>
             </AlertDialogTrigger>
