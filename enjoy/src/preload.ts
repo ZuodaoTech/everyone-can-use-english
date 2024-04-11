@@ -32,6 +32,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     createIssue: (title: string, body: string) => {
       return ipcRenderer.invoke("app-create-issue", title, body);
     },
+    update: () => {
+      return ipcRenderer.invoke("app-update");
+    },
     version,
   },
   window: {
