@@ -47,9 +47,7 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
           <MediaPlayer />
         </div>
 
-        <div
-          className={`${layout.panelWrapper} bg-background shadow-xl`}
-        >
+        <div className={`${layout.panelWrapper} bg-background shadow-xl`}>
           <MediaPlayerControls />
         </div>
       </div>
