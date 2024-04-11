@@ -2,11 +2,11 @@ import { t } from "i18next";
 import { Button, ScrollArea, Separator } from "@renderer/components/ui";
 import {
   About,
+  Appearance,
   DefaultEngineSettings,
   Hotkeys,
   UserSettings,
   BalanceSettings,
-  LanguageSettings,
   LibrarySettings,
   WhisperSettings,
   OpenaiSettings,
@@ -73,8 +73,6 @@ export const Preferences = () => {
           <Separator />
           <BalanceSettings />
           <Separator />
-          <LanguageSettings />
-          <Separator />
         </div>
       ),
     },
@@ -82,6 +80,11 @@ export const Preferences = () => {
       value: "hotkeys",
       label: t("hotkeys"),
       component: () => <Hotkeys />,
+    },
+    {
+      value: "appearance",
+      label: t("appearance"),
+      component: () => <Appearance />,
     },
     {
       value: "about",

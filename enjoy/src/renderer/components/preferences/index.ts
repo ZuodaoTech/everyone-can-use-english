@@ -1,5 +1,6 @@
 export * from "./preferences";
 export * from "./about";
+export * from "./appearance";
 
 export * from "./hotkeys";
 export * from "./hotkeys-settings";
@@ -17,5 +18,7 @@ export * from "./balance-settings";
 
 export * from "./reset-settings";
 export * from "./reset-all-settings";
+
+export * from "./theme-settings";
 
 export * from "./proxy-settings";
