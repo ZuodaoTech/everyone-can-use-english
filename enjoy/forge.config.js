@@ -54,19 +54,7 @@ const config = {
     //   },
     // }),
   ],
-  publishers: [
-    {
-      name: "@electron-forge/publisher-github",
-      config: {
-        repository: {
-          owner: "xiaolai",
-          name: "everyone-can-use-english",
-        },
-        generateReleaseNotes: true,
-        draft: true,
-      },
-    },
-  ],
+  publishers: [],
   plugins: [
     new VitePlugin({
       // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.
@@ -127,6 +115,43 @@ if (
     ...config.packagerConfig,
     ...macOsCodesignConfig,
   };
+}
+
+if (process.env.GITHUB_TOKEN) {
+  config.publishers = [
+    ...config.publishers,
+    {
+      name: "@electron-forge/publisher-github",
+      config: {
+        repository: {
+          owner: "xiaolai",
+          name: "everyone-can-use-english",
+        },
+        generateReleaseNotes: true,
+        draft: true,
+      },
+    },
+  ];
+}
+
+if (
+  process.env.S3_ACCESS_KEY_ID &&
+  process.env.S3_SECRET_ACCESS_KEY &&
+  process.env.S3_ENDPOINT
+) {
+  config.publishers = [
+    ...config.publishers,
+    {
+      name: "@electron-forge/publisher-s3",
+      config: {
+        accessKeyId: process.env.S3_ACCESS_KEY_ID,
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+        endpoint: process.env.S3_ENDPOINT,
+        bucket: "download",
+        region: "auto",
+      },
+    },
+  ];
 }
 
 export default config;

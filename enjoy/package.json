@@ -81,6 +81,7 @@
   },
   "dependencies": {
     "@andrkrn/ffprobe-static": "^5.2.0",
+    "@electron-forge/publisher-s3": "^7.3.1",
     "@hookform/resolvers": "^3.3.4",
     "@langchain/community": "^0.0.43",
     "@langchain/google-genai": "^0.0.10",
