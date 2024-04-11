@@ -87,7 +87,7 @@ export const UserMessageComponent = (props: {
     >
       <div className="flex flex-col gap-2 px-4 py-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full">
         <Markdown
-          className="select-text prose"
+          className="select-text prose dark:prose-invert"
           components={{
             a({ node, children, ...props }) {
               try {

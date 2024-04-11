@@ -131,7 +131,7 @@ export default () => {
   };
 
   return (
-    <div className="h-full px-4 py-6 lg:px-8 bg-muted flex flex-col">
+    <div className="h-full px-4 py-6 lg:px-8 flex flex-col">
       <div className="w-full max-w-screen-md mx-auto flex-1">
         <div className="flex space-x-1 items-center mb-4">
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
@@ -230,7 +230,7 @@ export default () => {
         {conversations.map((conversation) => (
           <Link key={conversation.id} to={`/conversations/${conversation.id}`}>
             <div
-              className="bg-background text-muted-foreground rounded-full w-full mb-2 p-4 hover:bg-primary hover:text-muted cursor-pointer flex items-center"
+              className="bg-muted text-muted-foreground rounded-full w-full mb-2 p-4 hover:bg-primary hover:text-muted cursor-pointer flex items-center"
               style={{
                 borderLeftColor: `#${conversation.id
                   .replaceAll("-", "")

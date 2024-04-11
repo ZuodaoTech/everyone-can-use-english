@@ -136,7 +136,7 @@ export const RecordingCalendar = (props: {
           }),
         }}
         theme={DEFAULT_THEME}
-        colorScheme={colorScheme}
+        colorScheme={colorScheme as 'light' | 'dark'}
         renderBlock={(block, activity) =>
           React.cloneElement(block, {
             ...block.props,

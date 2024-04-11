@@ -12,7 +12,7 @@ import {
   DefaultAudioLayout,
   defaultLayoutIcons,
 } from "@vidstack/react/player/layouts/default";
-export const STORAGE_WORKER_ENDPOINT = "https://enjoy-storage.baizhiheizi.com";
+import { STORAGE_WORKER_ENDPOINT } from "@/constants";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { t } from "i18next";
 import { XCircleIcon } from "lucide-react";

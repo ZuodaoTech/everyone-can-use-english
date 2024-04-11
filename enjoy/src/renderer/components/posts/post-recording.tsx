@@ -160,7 +160,7 @@ export const PostRecording = (props: {
 
       {recording.referenceText && (
         <div className="mt-2 bg-muted px-4 py-2 rounded">
-          <div className="text-muted-foreground text-center font-serif">
+          <div className="text-muted-foreground text-center font-serif select-text">
             {recording.referenceText}
           </div>
         </div>

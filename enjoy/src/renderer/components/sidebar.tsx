@@ -29,7 +29,7 @@ export const Sidebar = () => {
       className="h-[100vh] w-20 xl:w-48 transition-all relative"
       data-testid="sidebar"
     >
-      <div className="fixed top-0 left-0 h-full w-20 xl:w-48">
+      <div className="fixed top-0 left-0 h-full w-20 xl:w-48 bg-muted">
         <ScrollArea className="w-full h-full">
           <div className="py-4 flex items-center space-x-1 justify-center">
             <img src="./assets/logo-light.svg" className="w-8 h-8" />
@@ -44,10 +44,10 @@ export const Sidebar = () => {
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sidebar.home")}
                 data-tooltip-place="right"
-                className="block"
+                className="block px-2"
               >
                 <Button
-                  variant={activeTab === "" ? "secondary" : "ghost"}
+                  variant={activeTab === "/" ? "default" : "ghost"}
                   className="w-full xl:justify-start"
                 >
                   <HomeIcon className="xl:mr-2 h-5 w-5" />
@@ -61,12 +61,12 @@ export const Sidebar = () => {
                 data-tooltip-content={t("sidebar.aiAssistant")}
                 data-tooltip-place="right"
                 data-testid="sidebar-conversations"
-                className="block"
+                className="block px-2"
               >
                 <Button
                   variant={
-                    activeTab.startsWith("conversations")
-                      ? "secondary"
+                    activeTab.startsWith("/conversations")
+                      ? "default"
                       : "ghost"
                   }
                   className="w-full xl:justify-start"
@@ -83,10 +83,10 @@ export const Sidebar = () => {
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sidebar.community")}
                 data-tooltip-place="right"
-                className="block"
+                className="block px-2"
               >
                 <Button
-                  variant={activeTab === "" ? "secondary" : "ghost"}
+                  variant={activeTab === "/community" ? "default" : "ghost"}
                   className="w-full xl:justify-start"
                 >
                   <UsersRoundIcon className="xl:mr-2 h-5 w-5" />
@@ -108,11 +108,11 @@ export const Sidebar = () => {
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sidebar.audios")}
                 data-tooltip-place="right"
-                className="block"
+                className="block px-2"
               >
                 <Button
                   variant={
-                    activeTab.startsWith("/audios") ? "secondary" : "ghost"
+                    activeTab.startsWith("/audios") ? "default" : "ghost"
                   }
                   className="w-full xl:justify-start"
                 >
@@ -126,11 +126,11 @@ export const Sidebar = () => {
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sidebar.videos")}
                 data-tooltip-place="right"
-                className="block"
+                className="block px-2"
               >
                 <Button
                   variant={
-                    activeTab.startsWith("/videos") ? "secondary" : "ghost"
+                    activeTab.startsWith("/videos") ? "default" : "ghost"
                   }
                   className="w-full xl:justify-start"
                 >
@@ -144,11 +144,11 @@ export const Sidebar = () => {
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sidebar.stories")}
                 data-tooltip-place="right"
-                className="block"
+                className="block px-2"
               >
                 <Button
                   variant={
-                    activeTab.startsWith("/stories") ? "secondary" : "ghost"
+                    activeTab.startsWith("/stories") ? "default" : "ghost"
                   }
                   className="w-full xl:justify-start"
                 >
@@ -171,11 +171,11 @@ export const Sidebar = () => {
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sidebar.vocabulary")}
                 data-tooltip-place="right"
-                className="block"
+                className="block px-2"
               >
                 <Button
                   variant={
-                    activeTab.startsWith("vocabulary") ? "secondary" : "ghost"
+                    activeTab.startsWith("/vocabulary") ? "default" : "ghost"
                   }
                   className="w-full xl:justify-start"
                 >
@@ -191,11 +191,11 @@ export const Sidebar = () => {
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sidebar.profile")}
                 data-tooltip-place="right"
-                className="block"
+                className="block px-2"
               >
                 <Button
                   variant={
-                    activeTab.startsWith("/profile") ? "secondary" : "ghost"
+                    activeTab.startsWith("/profile") ? "default" : "ghost"
                   }
                   className="w-full xl:justify-start"
                 >
@@ -210,7 +210,7 @@ export const Sidebar = () => {
                 <DialogTrigger asChild>
                   <Button
                     variant={
-                      activeTab.startsWith("/settings") ? "secondary" : "ghost"
+                      activeTab.startsWith("/settings") ? "default" : "ghost"
                     }
                     id="preferences-button"
                     className="w-full xl:justify-start"
