@@ -25,7 +25,7 @@ export const VideoPlayer = (props: { id?: string; md5?: string }) => {
   if (!layout) return <LoaderSpin />;
 
   return (
-    <div data-testid="video-player">
+    <div data-testid="video-player" className={layout.wrapper}>
       <div className={`${layout.upperWrapper} mb-4`}>
         <div className="grid grid-cols-5 xl:grid-cols-3 gap-6 px-6 h-full">
           <div className={`col-span-2 xl:col-span-1 rounded-lg border shadow-lg ${layout.upperWrapper}`}>
@@ -46,7 +46,7 @@ export const VideoPlayer = (props: { id?: string; md5?: string }) => {
           <MediaPlayer />
         </div>
 
-        <div className={`${layout.panelWrapper} w-full bg-background z-10 shadow-xl`}>
+        <div className={`${layout.panelWrapper} bg-background shadow-xl`}>
           <MediaPlayerControls />
         </div>
       </div>

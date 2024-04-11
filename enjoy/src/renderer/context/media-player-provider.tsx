@@ -14,7 +14,7 @@ import { Tooltip } from "react-tooltip";
 import { debounce } from "lodash";
 
 type MediaPlayerContextType = {
-  layout: { name: string, width: number, height: number, upperWrapper: string, lowerWrapper: string, playerWrapper: string, panelWrapper: string, playerHeight: number };
+  layout: { name: string, width: number, height: number, wrapper: string, upperWrapper: string, lowerWrapper: string, playerWrapper: string, panelWrapper: string, playerHeight: number };
   media: AudioType | VideoType;
   setMedia: (media: AudioType | VideoType) => void;
   setMediaProvider: (mediaProvider: HTMLAudioElement | null) => void;
@@ -73,17 +73,19 @@ export const MediaPlayerProviderContext =
 const LAYOUT = {
   sm: {
     name: 'sm',
-    upperWrapper: "h-[calc(100vh-27.5rem)]",
+    wrapper: "h-[calc(100vh-3.5rem)]",
+    upperWrapper: "h-[calc(100vh-27.5rem)] min-h-56",
     lowerWrapper: "h-[23rem]",
     playerWrapper: "h-[9rem] mb-2",
-    panelWrapper: "h-16",
+    panelWrapper: "h-16 w-full z-10 sticky bottom-0",
     playerHeight: 128,
   },
   lg: {
     name: 'lg',
+    wrapper: "h-[calc(100vh-3.5rem)]",
     upperWrapper: "h-[calc(100vh-37.5rem)]",
     lowerWrapper: "h-[33rem]",
-    panelWrapper: "h-20",
+    panelWrapper: "h-20 w-full z-10 sticky bottom-0",
     playerWrapper: "h-[13rem] mb-4",
     playerHeight: 192,
   },
@@ -97,7 +99,7 @@ export const MediaPlayerProvider = ({
   const minPxPerSec = 150;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
-  const [layout, setLayout] = useState<{ name: string, width: number, height: number, upperWrapper: string, lowerWrapper: string, playerWrapper: string, panelWrapper: string, playerHeight: number }>();
+  const [layout, setLayout] = useState<{ name: string, width: number, height: number, wrapper: string, upperWrapper: string, lowerWrapper: string, playerWrapper: string, panelWrapper: string, playerHeight: number }>();
 
   const [media, setMedia] = useState<AudioType | VideoType>(null);
   const [mediaProvider, setMediaProvider] = useState<HTMLAudioElement | null>(
