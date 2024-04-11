@@ -35,8 +35,15 @@ const config = {
     new MakerSquirrel({
       name: "Enjoy",
       setupIcon: "./assets/icon.ico",
+      config: (arch) => ({
+        remoteReleases: `https://dl.enjoy.bot/enjoy-updates/win32/${arch}`,
+      }),
     }),
-    new MakerZIP(["win32"]),
+    new MakerZIP({
+      config: (arch) => ({
+        macUpdateManifestBaseUrl: `https://dl.enjoy.bot/enjoy-updates/darwin/${arch}`,
+      }),
+    }),
     new MakerDeb({
       options: {
         name: "enjoy",
@@ -149,6 +156,7 @@ if (
         endpoint: process.env.S3_ENDPOINT,
         bucket: "download",
         region: "auto",
+        public: true,
       },
     },
   ];
