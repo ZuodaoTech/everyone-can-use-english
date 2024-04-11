@@ -4,7 +4,7 @@ import Calendar, {
   Skeleton,
   ThemeInput,
 } from "react-activity-calendar";
-import { AppSettingsProviderContext } from "@renderer/context";
+import { AppSettingsProviderContext, useTheme } from "@renderer/context";
 import { ScrollArea, Button } from "@renderer/components/ui";
 import i18next, { t } from "i18next";
 import dayjs, { Dayjs } from "dayjs";
@@ -22,6 +22,7 @@ export const RecordingCalendar = (props: {
   onSelectRange?: (from: string, to: string) => void;
 }) => {
   const { onSelectRange } = props;
+  const { colorScheme } = useTheme();
 
   dayjs.extend(localeData);
   dayjs.locale(i18next.resolvedLanguage?.toLowerCase() || "en");
@@ -135,6 +136,7 @@ export const RecordingCalendar = (props: {
           }),
         }}
         theme={DEFAULT_THEME}
+        colorScheme={colorScheme as 'light' | 'dark'}
         renderBlock={(block, activity) =>
           React.cloneElement(block, {
             ...block.props,

@@ -1,6 +1,6 @@
 import { PostAudio } from "@renderer/components";
 import { t } from "i18next";
-import { MediaPlayer, MediaProvider } from "@vidstack/react";
+import { MediaPlayer, MediaProvider, PlayerSrc } from "@vidstack/react";
 import {
   DefaultVideoLayout,
   defaultLayoutIcons,
@@ -24,7 +24,7 @@ export const PostMedium = (props: { medium: MediumType }) => {
                 medium.extname.replace(".", "") || "mp4"
               }`,
               src: medium.sourceUrl,
-            }}
+            } as PlayerSrc}
           >
             <MediaProvider />
             <DefaultVideoLayout icons={defaultLayoutIcons} />

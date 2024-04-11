@@ -1,9 +1,9 @@
 import { useCallback, useState, useEffect, useContext } from "react";
-import { AppSettingsProviderContext } from "@/renderer/context";
+import { AppSettingsProviderContext } from "@renderer/context";
 import { formatDate, secondsToTimestamp } from "@renderer/lib/utils";
 import { t } from "i18next";
 import { Link } from "react-router-dom";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, AudioLinesIcon } from "lucide-react";
 
 export const RecordingActivities = (props: { from: string; to: string }) => {
   const { from, to } = props;
@@ -102,7 +102,7 @@ const Activity = (props: {
       )}
       <div className="flex items-center space-x-2 mb-4">
         {activity.targetType === "Audio" && (
-          <img src="./assets/sound-waves.png" className="w-6 h-6" />
+          <AudioLinesIcon className="w-4 h-4" />
         )}
 
         {activity.targetType === "Audio" && (

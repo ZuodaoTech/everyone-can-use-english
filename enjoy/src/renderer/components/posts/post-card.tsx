@@ -12,7 +12,6 @@ import { formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
 import Markdown from "react-markdown";
 import { Link } from "react-router-dom";
-import { BotIcon } from "lucide-react";
 
 export const PostCard = (props: {
   post: PostType;
@@ -22,7 +21,7 @@ export const PostCard = (props: {
   const { user } = useContext(AppSettingsProviderContext);
 
   return (
-    <div className="rounded p-4 bg-background space-y-3">
+    <div className="p-4 rounded-lg space-y-3 hover:bg-muted">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Link to={`/users/${post.user.id}`}>
@@ -51,7 +50,7 @@ export const PostCard = (props: {
           <div className="text-xs text-muted-foreground">
             {t("sharedPrompt")}
           </div>
-          <Markdown className="prose prose-slate prose-pre:whitespace-pre-line select-text">
+          <Markdown className="prose prose-slate prose-pre:whitespace-pre-line dark:prose-invert select-text">
             {"```prompt\n" + post.metadata.content + "\n```"}
           </Markdown>
         </>
@@ -59,16 +58,17 @@ export const PostCard = (props: {
 
       {post.metadata?.type === "gpt" && (
         <>
-          <div className="text-xs text-muted-foreground">
-            {t("sharedGpt")}
-          </div>
+          <div className="text-xs text-muted-foreground">{t("sharedGpt")}</div>
           <div className="text-sm">
-            {t('models.conversation.roleDefinition')}:
+            {t("models.conversation.roleDefinition")}:
           </div>
-          <div className="prose prose-stone prose-pre:whitespace-pre-line select-text">
+          <div className="prose prose-stone prose-pre:whitespace-pre-line dark:prose-invert select-text">
             <blockquote className="not-italic whitespace-pre-line">
               <Markdown>
-                {(post.metadata.content as { [key: string]: any }).configuration?.roleDefinition}
+                {
+                  (post.metadata.content as { [key: string]: any })
+                    .configuration?.roleDefinition
+                }
               </Markdown>
             </blockquote>
           </div>

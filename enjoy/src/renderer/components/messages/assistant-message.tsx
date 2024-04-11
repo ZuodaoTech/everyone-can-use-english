@@ -162,7 +162,7 @@ export const AssistantMessageComponent = (props: {
 
         {configuration.type === "gpt" && (
           <Markdown
-            className="message-content select-text prose"
+            className="message-content select-text prose dark:prose-invert"
             components={{
               a({ node, children, ...props }) {
                 try {

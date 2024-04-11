@@ -444,10 +444,10 @@ ${log}
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     icon: "./assets/icon.png",
-    width: 1440,
-    height: 900,
-    minWidth: 1024,
-    minHeight: 768,
+    width: 1280,
+    height: 720,
+    minWidth: 720 ,
+    minHeight: 576,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       spellcheck: false,

@@ -11,6 +11,7 @@ import {
   TabsTrigger,
   TabsContent,
   Separator,
+  ScrollArea,
 } from "@renderer/components/ui";
 import { ConversationShortcuts } from "@renderer/components";
 import { t } from "i18next";
@@ -30,42 +31,53 @@ export const MediaCaptionTabs = (props: {
   caption: TimelineEntry;
   selectedIndices: number[];
   toggleRegion: (index: number) => void;
+  children?: React.ReactNode;
 }) => {
-  const { caption, selectedIndices, toggleRegion } = props;
+  const { caption, selectedIndices, toggleRegion, children } = props;
 
   const [tab, setTab] = useState<string>("selected");
 
   if (!caption) return null;
 
   return (
-    <Tabs value={tab} onValueChange={(value) => setTab(value)} className="">
-      <TabsList className="grid grid-cols-4 gap-4 rounded-none sticky top-0 px-4 mb-4">
-        <TabsTrigger value="selected">{t("captionTabs.selected")}</TabsTrigger>
-        <TabsTrigger value="translation">
-          {t("captionTabs.translation")}
-        </TabsTrigger>
-        <TabsTrigger value="analysis">{t("captionTabs.analysis")}</TabsTrigger>
-        <TabsTrigger value="note">{t("captionTabs.note")}</TabsTrigger>
-      </TabsList>
+    <ScrollArea className="h-full relative">
+      <Tabs value={tab} onValueChange={(value) => setTab(value)} className="">
+        {children}
 
-      <div className="px-4 pb-4 min-h-32">
-        <SelectedTabContent
-          caption={caption}
-          selectedIndices={selectedIndices}
-          toggleRegion={toggleRegion}
-        />
+        <div className="px-4 pb-10 min-h-32">
+          <SelectedTabContent
+            caption={caption}
+            selectedIndices={selectedIndices}
+            toggleRegion={toggleRegion}
+          />
 
-        <TranslationTabContent text={caption.text} />
+          <TranslationTabContent text={caption.text} />
 
-        <AnalysisTabContent text={caption.text} />
+          <AnalysisTabContent text={caption.text} />
 
-        <TabsContent value="note">
-          <div className="text-muted-foreground text-center py-4">
-            Comming soon
-          </div>
-        </TabsContent>
-      </div>
-    </Tabs>
+          <TabsContent value="note">
+            <div className="text-muted-foreground text-center py-4">
+              Comming soon
+            </div>
+          </TabsContent>
+        </div>
+
+        <TabsList className="grid grid-cols-4 gap-4 rounded-none absolute w-full bottom-0 px-4">
+          <TabsTrigger value="selected" className="block truncate px-1">
+            {t("captionTabs.selected")}
+          </TabsTrigger>
+          <TabsTrigger value="translation" className="block truncate px-1">
+            {t("captionTabs.translation")}
+          </TabsTrigger>
+          <TabsTrigger value="analysis" className="block truncate px-1">
+            {t("captionTabs.analysis")}
+          </TabsTrigger>
+          <TabsTrigger value="note" className="block truncate px-1">
+            {t("captionTabs.note")}
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+    </ScrollArea>
   );
 };
 
@@ -193,26 +205,28 @@ const SelectedTabContent = (props: {
               <div className="font-serif text-lg font-semibold tracking-tight">
                 {word.text}
               </div>
-              {
-                word.timeline.length > 0 && (
-                  <div className="text-sm text-serif text-muted-foreground">
-                    <span
-                      className={`mr-2 font-code ${i === 0 ? "before:content-['/']" : ""
-                        }
-                        ${i === selectedIndices.length - 1
-                          ? "after:content-['/']"
-                          : ""
+              {word.timeline.length > 0 && (
+                <div className="text-sm text-serif text-muted-foreground">
+                  <span
+                    className={`mr-2 font-code ${
+                      i === 0 ? "before:content-['/']" : ""
+                    }
+                        ${
+                          i === selectedIndices.length - 1
+                            ? "after:content-['/']"
+                            : ""
                         }`}
-                    >
-                      {word.timeline
-                        .map((t) =>
-                          t.timeline.map((s) => convertIpaToNormal(s.text)).join("")
-                        )
-                        .join("")}
-                    </span>
-                  </div>
-                )
-              }
+                  >
+                    {word.timeline
+                      .map((t) =>
+                        t.timeline
+                          .map((s) => convertIpaToNormal(s.text))
+                          .join("")
+                      )
+                      .join("")}
+                  </span>
+                </div>
+              )}
             </div>
           );
         })}
@@ -452,7 +466,7 @@ const AnalysisTabContent = (props: { text: string }) => {
                   new URL(props.href ?? "");
                   props.target = "_blank";
                   props.rel = "noopener noreferrer";
-                } catch (e) { }
+                } catch (e) {}
 
                 return <a {...props}>{children}</a>;
               },

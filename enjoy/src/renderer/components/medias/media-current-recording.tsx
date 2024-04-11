@@ -28,6 +28,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetClose,
+  ScrollArea,
 } from "@renderer/components/ui";
 import {
   GitCompareIcon,
@@ -613,16 +614,16 @@ export const MediaCurrentRecording = () => {
       <Sheet open={detailIsOpen} onOpenChange={(open) => setDetailIsOpen(open)}>
         <SheetContent
           side="bottom"
-          className="rounded-t-2xl shadow-lg"
+          className="rounded-t-2xl shadow-lg max-h-screen overflow-y-scroll"
           displayClose={false}
         >
-          <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
-            <SheetClose>
-              <ChevronDownIcon />
-            </SheetClose>
-          </SheetHeader>
+            <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
+              <SheetClose>
+                <ChevronDownIcon />
+              </SheetClose>
+            </SheetHeader>
 
-          <RecordingDetail recording={currentRecording} />
+            <RecordingDetail recording={currentRecording} />
         </SheetContent>
       </Sheet>
     </div>
