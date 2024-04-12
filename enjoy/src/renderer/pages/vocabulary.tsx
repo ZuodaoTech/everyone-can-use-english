@@ -39,51 +39,51 @@ export default () => {
 
   return (
     <div className="h-[100vh]">
-    <div className="max-w-screen-md mx-auto px-4 py-6">
-      <div className="flex space-x-1 items-center mb-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-          <ChevronLeftIcon className="w-5 h-5" />
-        </Button>
-        <span>{t("sidebar.vocabulary")}</span>
-      </div>
-
-      {meanings.length === 0 ? (
-        <div className=""></div>
-      ) : (
-        <div className="h-[calc(100vh-5rem)] flex items-center justify-between space-x-6">
-          <Button
-            variant="secondary"
-            size="icon"
-            className="rounded-full"
-            onClick={() => {
-              if (currentIndex > 0) {
-                setCurrentIndex(currentIndex - 1);
-              }
-            }}
-          >
+      <div className="max-w-screen-md mx-auto p-4">
+        <div className="flex space-x-1 items-center mb-4">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
             <ChevronLeftIcon className="w-5 h-5" />
           </Button>
-          <div className="bg-background flex-1 h-5/6 border p-6 rounded-xl shadow-xl">
-            <MeaningMemorizingCard meaning={meanings[currentIndex]} />
-          </div>
-          <Button
-            variant="secondary"
-            size="icon"
-            className="rounded-full"
-            onClick={() => {
-              if (currentIndex < meanings.length - 1) {
-                setCurrentIndex(currentIndex + 1);
-              }
-              if (currentIndex === meanings.length - 2 && nextPage) {
-                fetchMeanings(nextPage);
-              }
-            }}
-          >
-            <ChevronRightIcon className="w-5 h-5" />
-          </Button>
+          <span>{t("sidebar.vocabulary")}</span>
         </div>
-      )}
-    </div>
+
+        {meanings.length === 0 ? (
+          <div className=""></div>
+        ) : (
+          <div className="h-[calc(100vh-5.25rem)] flex items-center justify-between space-x-6">
+            <Button
+              variant="secondary"
+              size="icon"
+              className="rounded-full"
+              onClick={() => {
+                if (currentIndex > 0) {
+                  setCurrentIndex(currentIndex - 1);
+                }
+              }}
+            >
+              <ChevronLeftIcon className="w-5 h-5" />
+            </Button>
+            <div className="bg-background flex-1 h-5/6 border p-6 rounded-xl shadow-xl">
+              <MeaningMemorizingCard meaning={meanings[currentIndex]} />
+            </div>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="rounded-full"
+              onClick={() => {
+                if (currentIndex < meanings.length - 1) {
+                  setCurrentIndex(currentIndex + 1);
+                }
+                if (currentIndex === meanings.length - 2 && nextPage) {
+                  fetchMeanings(nextPage);
+                }
+              }}
+            >
+              <ChevronRightIcon className="w-5 h-5" />
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
