@@ -17,10 +17,10 @@ export const ipaCommand = async (
   }
 ): Promise<{ words?: { word?: string; ipa?: string }[] }> => {
   const { key, temperature = 0, baseUrl } = options;
-  let { modelName = "gpt-4-turbo-preview" } = options;
+  let { modelName = "gpt-4-turbo" } = options;
 
   if (RESPONSE_JSON_FORMAT_MODELS.indexOf(modelName) === -1) {
-    modelName = "gpt-4-turbo-preview";
+    modelName = "gpt-4-turbo";
   }
 
   const responseSchema = z.object({

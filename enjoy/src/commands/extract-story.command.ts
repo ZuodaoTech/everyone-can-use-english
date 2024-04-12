@@ -14,10 +14,10 @@ export const extractStoryCommand = async (
   }
 ): Promise<{ words: string[]; idioms: string[] }> => {
   const { key, temperature = 0, baseUrl } = options;
-  let { modelName = "gpt-4-turbo-preview" } = options;
+  let { modelName = "gpt-4-turbo" } = options;
 
   if (RESPONSE_JSON_FORMAT_MODELS.indexOf(modelName) === -1) {
-    modelName = "gpt-4-turbo-preview";
+    modelName = "gpt-4-turbo";
   }
 
   const saveExtraction = z.object({

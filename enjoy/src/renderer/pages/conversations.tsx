@@ -97,7 +97,7 @@ export default () => {
     engine: currentEngine?.name,
     configuration: {
       type: "gpt",
-      model: "gpt-4-turbo-preview",
+      model: "gpt-4-turbo",
       baseUrl: "",
       roleDefinition: "",
       temperature: 0.2,
