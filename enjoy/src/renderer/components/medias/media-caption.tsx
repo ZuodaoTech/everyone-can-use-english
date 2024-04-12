@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import cloneDeep from "lodash/cloneDeep";
-import { Button, toast, ScrollArea } from "@renderer/components/ui";
+import { Button, toast } from "@renderer/components/ui";
 import { ConversationShortcuts, MediaCaptionTabs } from "@renderer/components";
 import { t } from "i18next";
 import { BotIcon, CopyIcon, CheckIcon, SpeechIcon } from "lucide-react";
@@ -397,7 +397,22 @@ export const MediaCaption = () => {
           data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("copyText")}
           onClick={() => {
-            copyToClipboard(caption.text);
+            if (displayIpa) {
+              const text = caption.timeline
+                .map((word) => {
+                  const ipa = word.timeline
+                    .map((t) =>
+                      t.timeline.map((s) => convertIpaToNormal(s.text)).join("")
+                    )
+                    .join(" · ");
+                  return `${word.text}(${ipa})`;
+                })
+                .join(" ");
+
+              copyToClipboard(text);
+            } else {
+              copyToClipboard(caption.text);
+            }
             setCopied(true);
             setTimeout(() => {
               setCopied(false);

@@ -46,17 +46,21 @@ const FrontSide = (props: {
 
   return (
     <div className="flex flex-col h-full">
-      <h2 className="py-8 text-4xl font-bold font-serif text-center">{word}</h2>
-      <div className="px-6">
-        <div className="mb-4 italic text-sm">{t("context")}</div>
-      </div>
-      <ScrollArea className="flex-1 px-6 text-lg font-serif">
-        <div ref={ref} className="">
-          {lookups.map((lookup) => (
-            <p key={lookup.id} className="mb-8">
-              {lookup.context}
-            </p>
-          ))}
+      <ScrollArea className="flex-1">
+        <h2 className="py-8 text-4xl font-bold font-serif text-center">
+          {word}
+        </h2>
+        <div className="px-6">
+          <div className="mb-4 italic text-sm">{t("context")}</div>
+        </div>
+        <div className="px-6 text-lg font-serif">
+          <div ref={ref} className="">
+            {lookups.map((lookup) => (
+              <p key={lookup.id} className="mb-8">
+                {lookup.context}
+              </p>
+            ))}
+          </div>
         </div>
       </ScrollArea>
       <div className="mt-4 flex items-center justify-center">
@@ -102,38 +106,42 @@ const BackSide = (props: { meaning: MeaningType; onFlip: () => void }) => {
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      <h2 className="py-8 text-4xl font-bold font-serif text-center">{word}</h2>
-      <div className="px-6">
-        <div className="mb-2">
-          {pos && (
-            <span className="italic text-sm text-muted-foreground mr-2">
-              {pos}
-            </span>
-          )}
-          {pronunciation && (
-            <span className="text-sm mr-2">/{pronunciation}/</span>
-          )}
-          {lemma && lemma !== word && (
-            <span className="text-sm">({lemma})</span>
-          )}
-        </div>
-        {translation && <div className="mb-2">{translation}</div>}
-        <div className="mb-2">
-          <span>{definition}</span>
+      <ScrollArea className="flex-1">
+        <h2 className="py-8 text-4xl font-bold font-serif text-center">
+          {word}
+        </h2>
+        <div className="px-6">
+          <div className="mb-2">
+            {pos && (
+              <span className="italic text-sm text-muted-foreground mr-2">
+                {pos}
+              </span>
+            )}
+            {pronunciation && (
+              <span className="text-sm mr-2">/{pronunciation}/</span>
+            )}
+            {lemma && lemma !== word && (
+              <span className="text-sm">({lemma})</span>
+            )}
+          </div>
+          {translation && <div className="mb-2">{translation}</div>}
+          <div className="mb-2">
+            <span>{definition}</span>
+          </div>
+
+          <Separator className="my-6" />
+          <div className="mb-4 italic text-sm">{t("context")}</div>
         </div>
 
-        <Separator className="my-6" />
-        <div className="mb-4 italic text-sm">{t("context")}</div>
-      </div>
-
-      <ScrollArea className="flex-1 px-6 text-lg font-serif">
-        <div ref={ref} className="">
-          {lookups.map((lookup) => (
-            <div key={lookup.id} className="mb-8">
-              <div className="mb-2">{lookup.context}</div>
-              <div className="text-base">{lookup.contextTranslation}</div>
-            </div>
-          ))}
+        <div className="px-6 text-lg font-serif">
+          <div ref={ref} className="">
+            {lookups.map((lookup) => (
+              <div key={lookup.id} className="mb-8">
+                <div className="mb-2">{lookup.context}</div>
+                <div className="text-base">{lookup.contextTranslation}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </ScrollArea>
 

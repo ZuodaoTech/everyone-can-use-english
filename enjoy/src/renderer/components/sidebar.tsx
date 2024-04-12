@@ -4,6 +4,16 @@ import {
   DialogTrigger,
   DialogContent,
   ScrollArea,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuSub,
+  DropdownMenuPortal,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuItem,
+  Separator,
 } from "@renderer/components/ui";
 import {
   SettingsIcon,
@@ -15,203 +25,112 @@ import {
   UserIcon,
   BotIcon,
   UsersRoundIcon,
+  LucideIcon,
+  HelpCircleIcon,
+  ExternalLinkIcon,
 } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import { t } from "i18next";
 import { Preferences } from "@renderer/components";
+import { AppSettingsProviderContext } from "@renderer/context";
+import { useContext } from "react";
 
 export const Sidebar = () => {
   const location = useLocation();
   const activeTab = location.pathname;
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
   return (
     <div
-      className="h-[100vh] w-20 xl:w-48 transition-all relative"
+      className="h-[100vh] w-16 xl:w-40 transition-all relative"
       data-testid="sidebar"
     >
-      <div className="fixed top-0 left-0 h-full w-20 xl:w-48 bg-muted">
+      <div className="fixed top-0 left-0 h-full w-16 xl:w-40 bg-muted">
         <ScrollArea className="w-full h-full">
-          <div className="py-4 flex items-center space-x-1 justify-center">
+          <div className="py-4 mb-4 flex items-center space-x-1 justify-center">
             <img src="./assets/logo-light.svg" className="w-8 h-8" />
             <span className="hidden xl:block text-xl font-semibold text-[#4797F5]">
               ENJOY
             </span>
           </div>
-          <div className="xl:px-3 py-2">
-            <div className="xl:pl-3">
-              <Link
-                to="/"
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("sidebar.home")}
-                data-tooltip-place="right"
-                className="block px-2"
-              >
-                <Button
-                  variant={activeTab === "/" ? "default" : "ghost"}
-                  className="w-full xl:justify-start"
-                >
-                  <HomeIcon className="xl:mr-2 h-5 w-5" />
-                  <span className="hidden xl:block">{t("sidebar.home")}</span>
-                </Button>
-              </Link>
+          <div className="grid gap-2">
+            <SidebarItem
+              href="/"
+              label={t("sidebar.home")}
+              tooltip={t("sidebar.home")}
+              active={activeTab === "/"}
+              Icon={HomeIcon}
+            />
 
-              <Link
-                to="/conversations"
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("sidebar.aiAssistant")}
-                data-tooltip-place="right"
-                data-testid="sidebar-conversations"
-                className="block px-2"
-              >
-                <Button
-                  variant={
-                    activeTab.startsWith("/conversations")
-                      ? "default"
-                      : "ghost"
-                  }
-                  className="w-full xl:justify-start"
-                >
-                  <BotIcon className="xl:mr-2 h-5 w-5" />
-                  <span className="hidden xl:block">
-                    {t("sidebar.aiAssistant")}
-                  </span>
-                </Button>
-              </Link>
+            <Separator className="hidden xl:block" />
 
-              <Link
-                to="/community"
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("sidebar.community")}
-                data-tooltip-place="right"
-                className="block px-2"
-              >
-                <Button
-                  variant={activeTab === "/community" ? "default" : "ghost"}
-                  className="w-full xl:justify-start"
-                >
-                  <UsersRoundIcon className="xl:mr-2 h-5 w-5" />
-                  <span className="hidden xl:block">
-                    {t("sidebar.community")}
-                  </span>
-                </Button>
-              </Link>
-            </div>
-          </div>
+            <SidebarItem
+              href="/audios"
+              label={t("sidebar.audios")}
+              tooltip={t("sidebar.audios")}
+              active={activeTab.startsWith("/audios")}
+              Icon={HeadphonesIcon}
+            />
 
-          <div className="xl:px-3 py-2">
-            <h3 className="hidden xl:block mb-2 px-4 text-lg font-semibold tracking-tight">
-              {t("sidebar.library")}
-            </h3>
-            <div className="xl:pl-3 space-y-2">
-              <Link
-                to="/audios"
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("sidebar.audios")}
-                data-tooltip-place="right"
-                className="block px-2"
-              >
-                <Button
-                  variant={
-                    activeTab.startsWith("/audios") ? "default" : "ghost"
-                  }
-                  className="w-full xl:justify-start"
-                >
-                  <HeadphonesIcon className="xl:mr-2 h-5 w-5" />
-                  <span className="hidden xl:block">{t("sidebar.audios")}</span>
-                </Button>
-              </Link>
+            <SidebarItem
+              href="/videos"
+              label={t("sidebar.videos")}
+              tooltip={t("sidebar.videos")}
+              active={activeTab.startsWith("/videos")}
+              Icon={VideoIcon}
+            />
 
-              <Link
-                to="/videos"
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("sidebar.videos")}
-                data-tooltip-place="right"
-                className="block px-2"
-              >
-                <Button
-                  variant={
-                    activeTab.startsWith("/videos") ? "default" : "ghost"
-                  }
-                  className="w-full xl:justify-start"
-                >
-                  <VideoIcon className="xl:mr-2 h-5 w-5" />
-                  <span className="hidden xl:block">{t("sidebar.videos")}</span>
-                </Button>
-              </Link>
+            <SidebarItem
+              href="/stories"
+              label={t("sidebar.stories")}
+              tooltip={t("sidebar.stories")}
+              active={activeTab.startsWith("/stories")}
+              Icon={NewspaperIcon}
+            />
 
-              <Link
-                to="/stories"
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("sidebar.stories")}
-                data-tooltip-place="right"
-                className="block px-2"
-              >
-                <Button
-                  variant={
-                    activeTab.startsWith("/stories") ? "default" : "ghost"
-                  }
-                  className="w-full xl:justify-start"
-                >
-                  <NewspaperIcon className="xl:mr-2 h-5 w-5" />
-                  <span className="hidden xl:block">
-                    {t("sidebar.stories")}
-                  </span>
-                </Button>
-              </Link>
-            </div>
-          </div>
+            <Separator className="hidden xl:block" />
 
-          <div className="xl:px-3 py-2">
-            <h3 className="hidden xl:block mb-2 px-4 text-lg font-semibold tracking-tight">
-              {t("sidebar.mine")}
-            </h3>
-            <div className="xl:pl-3 space-y-2">
-              <Link
-                to="/vocabulary"
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("sidebar.vocabulary")}
-                data-tooltip-place="right"
-                className="block px-2"
-              >
-                <Button
-                  variant={
-                    activeTab.startsWith("/vocabulary") ? "default" : "ghost"
-                  }
-                  className="w-full xl:justify-start"
-                >
-                  <BookMarkedIcon className="xl:mr-2 h-5 w-5" />
-                  <span className="hidden xl:block">
-                    {t("sidebar.vocabulary")}
-                  </span>
-                </Button>
-              </Link>
+            <SidebarItem
+              href="/conversations"
+              label={t("sidebar.aiAssistant")}
+              tooltip={t("sidebar.aiAssistant")}
+              active={activeTab.startsWith("/conversations")}
+              Icon={BotIcon}
+            />
 
-              <Link
-                to="/profile"
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("sidebar.profile")}
-                data-tooltip-place="right"
-                className="block px-2"
-              >
-                <Button
-                  variant={
-                    activeTab.startsWith("/profile") ? "default" : "ghost"
-                  }
-                  className="w-full xl:justify-start"
-                >
-                  <UserIcon className="xl:mr-2 h-5 w-5" />
-                  <span className="hidden xl:block">
-                    {t("sidebar.profile")}
-                  </span>
-                </Button>
-              </Link>
+            <SidebarItem
+              href="/vocabulary"
+              label={t("sidebar.vocabulary")}
+              tooltip={t("sidebar.vocabulary")}
+              active={activeTab.startsWith("/vocabulary")}
+              Icon={BookMarkedIcon}
+            />
 
-              <Dialog>
-                <DialogTrigger asChild>
+            <Separator className="hidden xl:block" />
+
+            <SidebarItem
+              href="/community"
+              label={t("sidebar.community")}
+              tooltip={t("sidebar.community")}
+              active={activeTab === "/community"}
+              Icon={UsersRoundIcon}
+            />
+
+            <SidebarItem
+              href="/profile"
+              label={t("sidebar.profile")}
+              tooltip={t("sidebar.profile")}
+              active={activeTab.startsWith("/profile")}
+              Icon={UserIcon}
+            />
+
+            <Separator className="hidden xl:block" />
+
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="px-1 xl:px-2">
                   <Button
-                    variant={
-                      activeTab.startsWith("/settings") ? "default" : "ghost"
-                    }
+                    variant="ghost"
                     id="preferences-button"
                     className="w-full xl:justify-start"
                     data-tooltip-id="global-tooltip"
@@ -223,16 +142,106 @@ export const Sidebar = () => {
                       {t("sidebar.preferences")}
                     </span>
                   </Button>
-                </DialogTrigger>
+                </div>
+              </DialogTrigger>
 
-                <DialogContent className="max-w-screen-md xl:max-w-screen-lg h-5/6 p-0">
-                  <Preferences />
-                </DialogContent>
-              </Dialog>
-            </div>
+              <DialogContent className="max-w-screen-md xl:max-w-screen-lg h-5/6 p-0">
+                <Preferences />
+              </DialogContent>
+            </Dialog>
           </div>
         </ScrollArea>
+
+        <div className="w-full absolute bottom-0 px-1 xl:px-4 py-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="w-full xl:justify-start px-2 xl:px-4"
+              >
+                <HelpCircleIcon className="h-5 w-5" />
+                <span className="ml-2 hidden xl:block">{t("help")}</span>
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent className="px-4">
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  onClick={() =>
+                    EnjoyApp.shell.openExternal("https://1000h.org/enjoy-app/")
+                  }
+                  className="flex justify-between space-x-2"
+                >
+                  <span>{t("userGuide")}</span>
+                  <ExternalLinkIcon className="h-4 w-4" />
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+
+              <DropdownMenuGroup>
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    {t("feedback")}
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuPortal>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          EnjoyApp.shell.openExternal(
+                            "https://mixin.one/codes/f8ff96b8-54fb-4ad8-a6d4-5a5bdb1df13e"
+                          )
+                        }
+                        className="flex justify-between space-x-2"
+                      >
+                        <span>Mixin</span>
+                        <ExternalLinkIcon className="h-4 w-4" />
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          EnjoyApp.shell.openExternal(
+                            "https://github.com/xiaolai/everyone-can-use-english/discussions"
+                          )
+                        }
+                        className="flex justify-between space-x-2"
+                      >
+                        <span>Github</span>
+                        <ExternalLinkIcon className="h-4 w-4" />
+                      </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuPortal>
+                </DropdownMenuSub>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </div>
+  );
+};
+
+const SidebarItem = (props: {
+  href: string;
+  label: string;
+  tooltip: string;
+  active: boolean;
+  Icon: LucideIcon;
+}) => {
+  const { href, label, tooltip, active, Icon } = props;
+
+  return (
+    <Link
+      to={href}
+      data-tooltip-id="global-tooltip"
+      data-tooltip-content={tooltip}
+      data-tooltip-place="right"
+      className="block px-1 xl:px-2"
+    >
+      <Button
+        variant={active ? "default" : "ghost"}
+        className="w-full xl:justify-start px-2 xl:px-4"
+      >
+        <Icon className="h-5 w-5" />
+        <span className="ml-2 hidden xl:block">{label}</span>
+      </Button>
+    </Link>
   );
 };
