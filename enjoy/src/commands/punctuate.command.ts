@@ -11,7 +11,7 @@ export const punctuateCommand = async (
   }
 ): Promise<string> => {
   const { key, temperature = 0, baseUrl } = options;
-  let { modelName = "gpt-4-turbo-preview" } = options;
+  let { modelName = "gpt-4-turbo" } = options;
 
   const chatModel = new ChatOpenAI({
     openAIApiKey: key,
