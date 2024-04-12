@@ -7,15 +7,7 @@ export const About = () => {
   const { version, EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const checkUpdate = async () => {
-    toast.promise(
-      EnjoyApp.app.update().catch((error) => {
-        toast.error(error);
-        EnjoyApp.shell.openExternal("https://1000h.org/enjoy-app/install.html");
-      }),
-      {
-        loading: t("checkingLatestVersion"),
-      }
-    );
+    EnjoyApp.shell.openExternal("https://1000h.org/enjoy-app/install.html");
   };
 
   return (

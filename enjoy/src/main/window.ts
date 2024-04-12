@@ -23,7 +23,6 @@ import { Waveform } from "./waveform";
 import url from "url";
 import echogarden from "./echogarden";
 import camdict from "./camdict";
-import { updateElectronApp, UpdateSourceType } from "update-electron-app";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -385,15 +384,6 @@ ${log}
     shell.openExternal(
       `${REPO_URL}/issues/new?${new URLSearchParams(params).toString()}`
     );
-  });
-
-  ipcMain.handle("app-update", () => {
-    return updateElectronApp({
-      updateSource: {
-        type: UpdateSourceType.StaticStorage,
-        baseUrl: `https://dl.enjoy.bot/enjoy-updates/${process.platform}/${process.arch}`,
-      },
-    });
   });
 
   ipcMain.handle(

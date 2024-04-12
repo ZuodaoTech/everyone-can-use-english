@@ -36,12 +36,12 @@ const config = {
       name: "Enjoy",
       setupIcon: "./assets/icon.ico",
       config: (arch) => ({
-        remoteReleases: `https://dl.enjoy.bot/enjoy-updates/win32/${arch}`,
+        remoteReleases: `https://dl.enjoy.bot/app/win32/${arch}`,
       }),
     }),
     new MakerZIP({
       config: (arch) => ({
-        macUpdateManifestBaseUrl: `https://dl.enjoy.bot/enjoy-updates/darwin/${arch}`,
+        macUpdateManifestBaseUrl: `https://dl.enjoy.bot/app/darwin/${arch}`,
       }),
     }),
     new MakerDeb({
@@ -155,6 +155,7 @@ if (
         secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
         endpoint: process.env.S3_ENDPOINT,
         bucket: "download",
+        folder: "app",
         region: "auto",
         public: true,
       },
