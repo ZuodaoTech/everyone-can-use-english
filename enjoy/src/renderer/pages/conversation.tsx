@@ -229,10 +229,10 @@ export default () => {
   return (
     <div
       data-testid="conversation-page"
-      className="h-screen px-4 py-6 lg:px-8 bg-muted flex flex-col"
+      className="h-screen px-4 py-6 lg:px-8 flex flex-col"
     >
       <div className="h-[calc(100vh-3rem)] relative w-full max-w-screen-md mx-auto flex flex-col">
-        <div className="flex items-center justify-center py-2 bg-gradient-to-b from-muted relative">
+        <div className="flex items-center justify-center py-2 relative">
           <div className="cursor-pointer h-6 opacity-50 hover:opacity-100">
             <Link className="flex items-center" to="/conversations">
               <BotIcon className="h-5 mr-2" />
@@ -243,7 +243,7 @@ export default () => {
           <Sheet open={editting} onOpenChange={(value) => setEditting(value)}>
             <SheetTrigger>
               <div className="absolute right-4 top-0 py-3">
-                <SettingsIcon className="w-4 h-4 text-muted-foreground" />
+                <SettingsIcon className="w-5 h-5 text-muted-foreground" />
               </div>
             </SheetTrigger>
 
@@ -310,7 +310,7 @@ export default () => {
           </ScrollArea>
         </MediaPlayerProvider>
 
-        <div className="px-4 absolute w-full bottom-0 left-0 bg-muted z-50">
+        <div className="px-4 absolute w-full bottom-0 left-0 z-50">
           <div className="focus-within:bg-background pr-4 py-2 flex items-end space-x-4 rounded-lg shadow-lg border scrollbar">
             <Textarea
               ref={inputRef}
@@ -319,7 +319,7 @@ export default () => {
               onChange={(e) => setContent(e.target.value)}
               placeholder={t("pressEnterToSend")}
               data-testid="conversation-page-input"
-              className="text-base px-4 py-0 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none bg-muted focus:bg-background min-h-[1rem] max-h-[70vh] scrollbar-thin scrollbar-thumb-sky-500  !overflow-x-hidden"
+              className="text-base px-4 py-0 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none min-h-[1rem] max-h-[70vh] scrollbar-thin scrollbar-thumb-sky-500  !overflow-x-hidden"
             />
             <div className="h-12 py-1">
               <Button
