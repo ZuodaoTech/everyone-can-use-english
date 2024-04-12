@@ -446,8 +446,8 @@ ${log}
     icon: "./assets/icon.png",
     width: 1280,
     height: 720,
-    minWidth: 720,
-    minHeight: 576,
+    minWidth: 800,
+    minHeight: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       spellcheck: false,
