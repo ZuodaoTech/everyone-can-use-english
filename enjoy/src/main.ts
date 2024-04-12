@@ -3,18 +3,33 @@ import path from "path";
 import fs from "fs-extra";
 import settings from "@main/settings";
 import "@main/i18n";
+import log from "@main/logger";
 import mainWindow from "@main/window";
 import ElectronSquirrelStartup from "electron-squirrel-startup";
 import contextMenu from "electron-context-menu";
 import { t } from "i18next";
 import * as Sentry from "@sentry/electron";
 import { SENTRY_DSN } from "@/constants";
+import { updateElectronApp, UpdateSourceType } from "update-electron-app";
+
+const logger = log.scope("main");
 
 Sentry.init({
   dsn: SENTRY_DSN,
 });
 
 app.commandLine.appendSwitch("enable-features", "SharedArrayBuffer");
+
+// config auto updater
+updateElectronApp({
+  updateSource: {
+    type: UpdateSourceType.StaticStorage,
+    baseUrl: `https://dl.enjoy.bot/app/${process.platform}/${process.arch}`,
+  },
+  updateInterval: "1 hour",
+  logger: logger,
+  notifyUser: true,
+});
 
 // Add context menu
 contextMenu({
