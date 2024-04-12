@@ -96,4 +96,7 @@
 
 body {
   user-select: none;
+  :focus-visible {
+    outline: none;
+  }
 }
