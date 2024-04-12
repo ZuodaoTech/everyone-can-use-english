@@ -166,7 +166,7 @@ MS Word 从 2007 版本开始内嵌了 “鼠标取词” 功能。其所采用�
 
 ![](images/figure27.png)
 
-而后在底部 “地址(A)” 之后的文字输入框里输入：“http://office.microsoft.com/Research/query.asmx”而后按“添加”按钮：
+而后在底部 “地址(A)” 之后的文字输入框里输入：“http://office.microsoft.com/Research/query.asmx” 而后按“添加”按钮：
 
 ![](images/figure272.png)
 
@@ -182,20 +182,22 @@ MS Word 从 2007 版本开始内嵌了 “鼠标取词” 功能。其所采用�
 
 之后再 VBA 编辑器的左侧 “工程” 面板里鼠标双击选定 “Normal – Microsoft Word 对象-ThisDocument”，程序主面板里输入以下 VBA 代码：
 
-<img src="/images/speech-tract-$1.svg" class="themed" />Sub SpeakText()
-<img src="/images/speech-tract-$1.svg" class="themed" />    On Error Resume Next
-<img src="/images/speech-tract-$1.svg" class="themed" />    Set speech = New SpVoice
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.MoveLeft Unit:=wdWord, Count:=1
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.MoveRight Unit:=wdWord, Count:=1, Extend:=wdExtend
-<img src="/images/speech-tract-$1.svg" class="themed" />    If Len(Selection.Text) > 1 Then
-<img src="/images/speech-tract-$1.svg" class="themed" />        speech.Speak Trim(Selection.Text), SVSFlagsAsync + SVSFPurgeBeforeSpeak
-<img src="/images/speech-tract-$1.svg" class="themed" />    End If
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.MoveRight Unit:=wdWord, Count:=1
-<img src="/images/speech-tract-$1.svg" class="themed" />    Do
-<img src="/images/speech-tract-$1.svg" class="themed" />        DoEvents
-<img src="/images/speech-tract-$1.svg" class="themed" />    Loop Until speech.WaitUntilDone(10)
-<img src="/images/speech-tract-$1.svg" class="themed" />    Set speech = Nothing
-<img src="/images/speech-tract-$1.svg" class="themed" />End Sub
+```vba
+Sub SpeakText()
+    On Error Resume Next
+    Set speech = New SpVoice
+    Selection.MoveLeft Unit:=wdWord, Count:=1
+    Selection.MoveRight Unit:=wdWord, Count:=1, Extend:=wdExtend
+    If Len(Selection.Text) > 1 Then
+        speech.Speak Trim(Selection.Text), SVSFlagsAsync + SVSFPurgeBeforeSpeak
+    End If
+    Selection.MoveRight Unit:=wdWord, Count:=1
+    Do
+        DoEvents
+    Loop Until speech.WaitUntilDone(10)
+    Set speech = Nothing
+End Sub
+```
 
 按快捷键 “CTRL+S” 保存之后关闭 VBA 编辑器。而后，就可以为这个宏设置快捷键了 —— 我个人选择是 “CTRL+SHIFT+S”。
 
@@ -234,74 +236,76 @@ MS Word 还有个很好的功能：“选择格式相似的文本(S)”。这样
 
 以下是我个人常用的宏的代码：
 
-<img src="/images/speech-tract-$1.svg" class="themed" />'要使用该宏，需事先安装Merriam-Webster Collegiate Dictionary
-<img src="/images/speech-tract-$1.svg" class="themed" />Sub LookUpMerriamWebsterDictionary()
-<img src="/images/speech-tract-$1.svg" class="themed" />'MWDictionary Macro
-<img src="/images/speech-tract-$1.svg" class="themed" />     Selection.MoveLeft Unit:=wdWord, Count:=1
-<img src="/images/speech-tract-$1.svg" class="themed" />     Selection.MoveRight Unit:=wdWord, Count:=1, Extend:=wdExtend
-<img src="/images/speech-tract-$1.svg" class="themed" />     Selection.Copy
-<img src="/images/speech-tract-$1.svg" class="themed" />     Selection.MoveRight Unit:=wdWord, Count:=1
-<img src="/images/speech-tract-$1.svg" class="themed" />     If Tasks.Exists("Merriam-Webster") = True Then
-<img src="/images/speech-tract-$1.svg" class="themed" />        With Tasks("Merriam-Webster")
-<img src="/images/speech-tract-$1.svg" class="themed" />            .Activate
-<img src="/images/speech-tract-$1.svg" class="themed" />            .WindowState = wdWindowStateNormal
-<img src="/images/speech-tract-$1.svg" class="themed" />        End With
-<img src="/images/speech-tract-$1.svg" class="themed" />         SendKeys "%ep{ENTER}", 1
-<img src="/images/speech-tract-$1.svg" class="themed" />     Else
-<img src="/images/speech-tract-$1.svg" class="themed" />        Response = MsgBox("Task Merriam-Webster doesn't exist! Run the application before use this Macro, please.", vbExclamation, "WARNING!")
-<img src="/images/speech-tract-$1.svg" class="themed" />    End If
-<img src="/images/speech-tract-$1.svg" class="themed" />End Sub
+```vba
+'要使用该宏，需事先安装Merriam-Webster Collegiate Dictionary
+Sub LookUpMerriamWebsterDictionary()
+'MWDictionary Macro
+     Selection.MoveLeft Unit:=wdWord, Count:=1
+     Selection.MoveRight Unit:=wdWord, Count:=1, Extend:=wdExtend
+     Selection.Copy
+     Selection.MoveRight Unit:=wdWord, Count:=1
+     If Tasks.Exists("Merriam-Webster") = True Then
+        With Tasks("Merriam-Webster")
+            .Activate
+            .WindowState = wdWindowStateNormal
+        End With
+         SendKeys "%ep{ENTER}", 1
+     Else
+        Response = MsgBox("Task Merriam-Webster doesn't exist! Run the application before use this Macro, please.", vbExclamation, "WARNING!")
+    End If
+End Sub
 
-<img src="/images/speech-tract-$1.svg" class="themed" />Sub SpeakTheWord()
-<img src="/images/speech-tract-$1.svg" class="themed" />    On Error Resume Next
-<img src="/images/speech-tract-$1.svg" class="themed" />    Set speech = New SpVoice
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.MoveLeft Unit:=wdWord, Count:=1
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.MoveRight Unit:=wdWord, Count:=1, Extend:=wdExtend
-<img src="/images/speech-tract-$1.svg" class="themed" />    If Len(Selection.Text) > 1 Then 'speak selection
-<img src="/images/speech-tract-$1.svg" class="themed" />        speech.Speak Trim(Selection.Text), _
-<img src="/images/speech-tract-$1.svg" class="themed" />        SVSFlagsAsync + SVSFPurgeBeforeSpeak
-<img src="/images/speech-tract-$1.svg" class="themed" />    End If
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.MoveRight Unit:=wdWord, Count:=1
-<img src="/images/speech-tract-$1.svg" class="themed" />    Do
-<img src="/images/speech-tract-$1.svg" class="themed" />        DoEvents
-<img src="/images/speech-tract-$1.svg" class="themed" />    Loop Until speech.WaitUntilDone(10)
-<img src="/images/speech-tract-$1.svg" class="themed" />    Set speech = Nothing
-<img src="/images/speech-tract-$1.svg" class="themed" />End Sub
+Sub SpeakTheWord()
+    On Error Resume Next
+    Set speech = New SpVoice
+    Selection.MoveLeft Unit:=wdWord, Count:=1
+    Selection.MoveRight Unit:=wdWord, Count:=1, Extend:=wdExtend
+    If Len(Selection.Text) > 1 Then 'speak selection
+        speech.Speak Trim(Selection.Text), _
+        SVSFlagsAsync + SVSFPurgeBeforeSpeak
+    End If
+    Selection.MoveRight Unit:=wdWord, Count:=1
+    Do
+        DoEvents
+    Loop Until speech.WaitUntilDone(10)
+    Set speech = Nothing
+End Sub
 
-<img src="/images/speech-tract-$1.svg" class="themed" />' 为选中的文本加上双引号
-<img src="/images/speech-tract-$1.svg" class="themed" />Sub AddDoubleQuotationMarks()
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.InsertBefore ("“")
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.InsertAfter ("”")
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.MoveRight Unit:=wdWord, Count:=1
-<img src="/images/speech-tract-$1.svg" class="themed" />End Sub
+' 为选中的文本加上双引号
+Sub AddDoubleQuotationMarks()
+    Selection.InsertBefore ("“")
+    Selection.InsertAfter ("”")
+    Selection.MoveRight Unit:=wdWord, Count:=1
+End Sub
 
-<img src="/images/speech-tract-$1.svg" class="themed" />' 指定选中文本的字体
-<img src="/images/speech-tract-$1.svg" class="themed" />Sub ChangeFontNameTo()
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.Font.Name = "Georgia"
-<img src="/images/speech-tract-$1.svg" class="themed" />End Sub
+' 指定选中文本的字体
+Sub ChangeFontNameTo()
+    Selection.Font.Name = "Georgia"
+End Sub
 
-<img src="/images/speech-tract-$1.svg" class="themed" />' 指定选中文本的字号大小
-<img src="/images/speech-tract-$1.svg" class="themed" />Sub ChangeFontSizeTo()
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.Font.Size = 28
-<img src="/images/speech-tract-$1.svg" class="themed" />End Sub
+' 指定选中文本的字号大小
+Sub ChangeFontSizeTo()
+    Selection.Font.Size = 28
+End Sub
 
-<img src="/images/speech-tract-$1.svg" class="themed" />' 将选中文本的字号放大
-<img src="/images/speech-tract-$1.svg" class="themed" />Sub FontSizeGrow()
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.Font.Grow
-<img src="/images/speech-tract-$1.svg" class="themed" />End Sub
+' 将选中文本的字号放大
+Sub FontSizeGrow()
+    Selection.Font.Grow
+End Sub
 
-<img src="/images/speech-tract-$1.svg" class="themed" />' 将选中文本的字号缩小
-<img src="/images/speech-tract-$1.svg" class="themed" />Sub FontSizeShrink()
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.Font.Shrink
-<img src="/images/speech-tract-$1.svg" class="themed" />End Sub
+' 将选中文本的字号缩小
+Sub FontSizeShrink()
+    Selection.Font.Shrink
+End Sub
 
-<img src="/images/speech-tract-$1.svg" class="themed" />' 将双标所在的词汇首字母变成大写
-<img src="/images/speech-tract-$1.svg" class="themed" />Sub FirstLetterToUppercase()
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.MoveLeft Unit:=wdWord, Count:=1
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.MoveRight Unit:=wdCharacter, Count:=1, Extend:=wdExtend
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.Text = UCase(Selection.Text)
-<img src="/images/speech-tract-$1.svg" class="themed" />    Selection.MoveRight Unit:=wdWord, Count:=1
-<img src="/images/speech-tract-$1.svg" class="themed" />End Sub
+' 将双标所在的词汇首字母变成大写
+Sub FirstLetterToUppercase()
+    Selection.MoveLeft Unit:=wdWord, Count:=1
+    Selection.MoveRight Unit:=wdCharacter, Count:=1, Extend:=wdExtend
+    Selection.Text = UCase(Selection.Text)
+    Selection.MoveRight Unit:=wdWord, Count:=1
+End Sub
+```
 
 ## 6 .关于韦氏词典
 
