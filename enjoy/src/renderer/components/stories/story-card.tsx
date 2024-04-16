@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { cn } from "@renderer/lib/utils";
+import { cn, imgErrorToDefalut } from "@renderer/lib/utils";
 
 export const StoryCard = (props: { story: StoryType; className?: string }) => {
   const { story, className } = props;
@@ -16,6 +16,7 @@ export const StoryCard = (props: { story: StoryType; className?: string }) => {
             <img
               crossOrigin="anonymous"
               src={story.metadata.image}
+              onError={imgErrorToDefalut} 
               className="w-full h-full object-cover hover:scale-105"
             />
           </div>
