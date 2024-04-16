@@ -72,7 +72,7 @@ const RankingsCard = (props: {
               <div className="max-w-20 truncate">{user.name}</div>
             </div>
 
-            <div className="flex-1 font-serif text-right">
+            <div className="flex-1 text-right">
               {secondsToTimestamp(user.recordingsDuration / 1000.0)}
             </div>
           </div>
