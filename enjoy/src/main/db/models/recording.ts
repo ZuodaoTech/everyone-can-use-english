@@ -314,9 +314,11 @@ export class Recording extends Model<Recording> {
 
     // trim audio
     let trimmedSamples = echogarden.trimAudioStart(
-      denoisedAudio.audioChannels[0]
+      denoisedAudio.audioChannels[0],
+      0,
+      -30
     );
-    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples);
+    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples, 0, -30);
     denoisedAudio.audioChannels[0] = trimmedSamples;
 
     duration = Math.round(echogarden.getRawAudioDuration(denoisedAudio) * 1000);
