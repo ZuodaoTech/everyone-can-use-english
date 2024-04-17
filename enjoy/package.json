@@ -129,7 +129,7 @@
     "dayjs": "^1.11.10",
     "decamelize": "^6.0.0",
     "decamelize-keys": "^2.0.1",
-    "echogarden": "^0.12.2",
+    "echogarden": "^1.0.2",
     "electron-context-menu": "^3.6.1",
     "electron-log": "^5.1.2",
     "electron-settings": "^4.0.3",
