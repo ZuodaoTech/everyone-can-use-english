@@ -384,7 +384,7 @@ const TranslationTabContent = (props: { text: string }) => {
     <TabsContent value="translation">
       {translation ? (
         <>
-          <Markdown className="select-text prose prose-sm prose-h3:text-base max-w-full mb-4">
+          <Markdown className="select-text prose dark:prose-invert prose-sm prose-h3:text-base max-w-full mb-4">
             {translation}
           </Markdown>
 
@@ -459,7 +459,7 @@ const AnalysisTabContent = (props: { text: string }) => {
       {analysisResult ? (
         <>
           <Markdown
-            className="select-text prose prose-sm prose-h3:text-base max-w-full mb-4"
+            className="select-text prose dark:prose-invert prose-sm prose-h3:text-base max-w-full mb-4"
             components={{
               a({ node, children, ...props }) {
                 try {
