@@ -28,7 +28,6 @@ import {
   SheetContent,
   SheetHeader,
   SheetClose,
-  ScrollArea,
 } from "@renderer/components/ui";
 import {
   GitCompareIcon,
@@ -110,7 +109,7 @@ export const MediaCurrentRecording = () => {
     if (!frequencies || !peaks) return;
 
     // Trim the peaks from start to end, so we can render the voicable part of the recording
-    const minValue = 0.01;
+    const minValue = 0.015;
     let voiceStartIndex = 0;
     let voiceEndIndex = peaks.length - 1;
 
@@ -304,6 +303,7 @@ export const MediaCurrentRecording = () => {
   }, [ref, currentRecording, isRecording, layout?.playerHeight]);
 
   useEffect(() => {
+    setCurrentTime(0);
     setIsComparing(false);
     removeComparingPitchContour();
   }, [currentRecording]);
@@ -617,13 +617,13 @@ export const MediaCurrentRecording = () => {
           className="rounded-t-2xl shadow-lg max-h-screen overflow-y-scroll"
           displayClose={false}
         >
-            <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
-              <SheetClose>
-                <ChevronDownIcon />
-              </SheetClose>
-            </SheetHeader>
+          <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
+            <SheetClose>
+              <ChevronDownIcon />
+            </SheetClose>
+          </SheetHeader>
 
-            <RecordingDetail recording={currentRecording} />
+          <RecordingDetail recording={currentRecording} />
         </SheetContent>
       </Sheet>
     </div>

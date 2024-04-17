@@ -314,9 +314,11 @@ export class Recording extends Model<Recording> {
 
     // trim audio
     let trimmedSamples = echogarden.trimAudioStart(
-      denoisedAudio.audioChannels[0]
+      denoisedAudio.audioChannels[0],
+      0,
+      -30
     );
-    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples);
+    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples, 0, -30);
     denoisedAudio.audioChannels[0] = trimmedSamples;
 
     duration = Math.round(echogarden.getRawAudioDuration(denoisedAudio) * 1000);
@@ -331,7 +333,7 @@ export class Recording extends Model<Recording> {
       "recordings",
       `${Date.now()}.wav`
     );
-    await fs.outputFile(file, echogarden.encodeWaveBuffer(denoisedAudio));
+    await fs.outputFile(file, echogarden.encodeRawAudioToWave(denoisedAudio));
 
     // hash file
     const md5 = await hashFile(file, { algo: "md5" });
