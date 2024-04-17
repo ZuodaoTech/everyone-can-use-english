@@ -213,7 +213,7 @@ export default () => {
     inputRef.current.focus();
 
     return () => {
-      inputRef.current?.removeEventListener("keypress", () => { });
+      inputRef.current?.removeEventListener("keypress", () => {});
       autosize.destroy(inputRef.current);
     };
   }, [id, inputRef.current]);
@@ -264,7 +264,7 @@ export default () => {
         <MediaPlayerProvider>
           <ScrollArea ref={containerRef} className="px-4 flex-1">
             <div className="messages flex flex-col-reverse gap-6 my-6">
-              <div className="w-full h-16"></div>
+              <div className="w-full h-24"></div>
               {messages.map((message) => (
                 <MessageComponent
                   key={message.id}
@@ -310,7 +310,7 @@ export default () => {
           </ScrollArea>
         </MediaPlayerProvider>
 
-        <div className="px-4 absolute w-full bottom-0 left-0 z-50">
+        <div className="bg-background px-4 absolute w-full bottom-0 left-0 z-50">
           <div className="focus-within:bg-background pr-4 py-2 flex items-end space-x-4 rounded-lg shadow-lg border scrollbar">
             <Textarea
               ref={inputRef}
@@ -319,7 +319,7 @@ export default () => {
               onChange={(e) => setContent(e.target.value)}
               placeholder={t("pressEnterToSend")}
               data-testid="conversation-page-input"
-              className="text-base px-4 py-0 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none min-h-[1rem] max-h-[70vh] scrollbar-thin scrollbar-thumb-sky-500  !overflow-x-hidden"
+              className="text-base px-4 py-0 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none min-h-[1rem] max-h-[70vh] scrollbar-thin !overflow-x-hidden"
             />
             <div className="h-12 py-1">
               <Button
