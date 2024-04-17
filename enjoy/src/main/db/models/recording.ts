@@ -331,7 +331,7 @@ export class Recording extends Model<Recording> {
       "recordings",
       `${Date.now()}.wav`
     );
-    await fs.outputFile(file, echogarden.encodeWaveBuffer(denoisedAudio));
+    await fs.outputFile(file, echogarden.encodeRawAudioToWave(denoisedAudio));
 
     // hash file
     const md5 = await hashFile(file, { algo: "md5" });

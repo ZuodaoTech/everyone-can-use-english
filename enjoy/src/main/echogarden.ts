@@ -3,8 +3,8 @@ import * as Echogarden from "echogarden/dist/api/API.js";
 import { AlignmentOptions } from "echogarden/dist/api/API";
 import { AudioSourceParam } from "echogarden/dist/audio/AudioUtilities";
 import {
-  encodeWaveBuffer,
-  decodeWaveBuffer,
+  encodeRawAudioToWave,
+  decodeWaveToRawAudio,
   ensureRawAudio,
   getRawAudioDuration,
   trimAudioStart,
@@ -16,9 +16,7 @@ import url from "url";
 import settings from "@main/settings";
 import fs from "fs-extra";
 import ffmpegPath from "ffmpeg-static";
-import { enjoyUrlToPath, hashFile, pathToEnjoyUrl } from "./utils";
-import { extractFrequencies } from "@/utils";
-import waveform from "./waveform";
+import { enjoyUrlToPath, pathToEnjoyUrl } from "./utils";
 
 Echogarden.setGlobalOption(
   "ffmpegPath",
@@ -37,8 +35,8 @@ const logger = log.scope("echogarden");
 class EchogardenWrapper {
   public align: typeof Echogarden.align;
   public denoise: typeof Echogarden.denoise;
-  public encodeWaveBuffer: typeof encodeWaveBuffer;
-  public decodeWaveBuffer: typeof decodeWaveBuffer;
+  public encodeRawAudioToWave: typeof encodeRawAudioToWave;
+  public decodeWaveToRawAudio: typeof decodeWaveToRawAudio;
   public ensureRawAudio: typeof ensureRawAudio;
   public getRawAudioDuration: typeof getRawAudioDuration;
   public trimAudioStart: typeof trimAudioStart;
@@ -47,8 +45,8 @@ class EchogardenWrapper {
   constructor() {
     this.align = Echogarden.align;
     this.denoise = Echogarden.denoise;
-    this.encodeWaveBuffer = encodeWaveBuffer;
-    this.decodeWaveBuffer = decodeWaveBuffer;
+    this.encodeRawAudioToWave = encodeRawAudioToWave;
+    this.decodeWaveToRawAudio = decodeWaveToRawAudio;
     this.ensureRawAudio = ensureRawAudio;
     this.getRawAudioDuration = getRawAudioDuration;
     this.trimAudioStart = trimAudioStart;
@@ -85,7 +83,7 @@ class EchogardenWrapper {
   async transcode(url: string, sampleRate = 16000): Promise<string> {
     const filePath = enjoyUrlToPath(url);
     const rawAudio = await this.ensureRawAudio(filePath, sampleRate);
-    const audioBuffer = this.encodeWaveBuffer(rawAudio);
+    const audioBuffer = this.encodeRawAudioToWave(rawAudio);
 
     const outputFilePath = path.join(settings.cachePath(), `${Date.now()}.wav`);
     fs.writeFileSync(outputFilePath, audioBuffer);
