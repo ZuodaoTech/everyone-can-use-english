@@ -109,7 +109,7 @@ export const MediaCurrentRecording = () => {
     if (!frequencies || !peaks) return;
 
     // Trim the peaks from start to end, so we can render the voicable part of the recording
-    const minValue = 0.01;
+    const minValue = 0.015;
     let voiceStartIndex = 0;
     let voiceEndIndex = peaks.length - 1;
 
@@ -303,6 +303,7 @@ export const MediaCurrentRecording = () => {
   }, [ref, currentRecording, isRecording, layout?.playerHeight]);
 
   useEffect(() => {
+    setCurrentTime(0);
     setIsComparing(false);
     removeComparingPitchContour();
   }, [currentRecording]);
