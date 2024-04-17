@@ -117,8 +117,8 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
               sentence.timeline.splice(j, 0, {
                 type: 'token',
                 text: '-',
-                startTime: sentence.timeline[j - 1].endTime,
-                endTime: sentence.timeline[j - 1].endTime,
+                startTime: sentence.timeline[j - 1]?.endTime || 0,
+                endTime: sentence.timeline[j - 1]?.endTime || 0,
                 timeline: [],
               })
               return;
