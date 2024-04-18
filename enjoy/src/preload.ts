@@ -317,20 +317,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     destroy: (id: string) => {
       return ipcRenderer.invoke("conversations-destroy", id);
     },
-    ask: (
-      id: string,
-      params: {
-        messageId?: string;
-        content?: string;
-        file?: string;
-        blob?: {
-          type: string;
-          arrayBuffer: ArrayBuffer;
-        };
-      }
-    ) => {
-      return ipcRenderer.invoke("conversations-ask", id, params);
-    },
   },
   messages: {
     findAll: (params: { where?: any; offset?: number; limit?: number }) => {

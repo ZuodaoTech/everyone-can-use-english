@@ -113,45 +113,12 @@ class ConversationsHandler {
     });
   }
 
-  private async ask(
-    event: IpcMainEvent,
-    id: string,
-    params: {
-      messageId: string;
-      content?: string;
-      file?: string;
-      blob?: {
-        type: string;
-        arrayBuffer: ArrayBuffer;
-      };
-    }
-  ) {
-    const conversation = await Conversation.findOne({
-      where: { id },
-    });
-    if (!conversation) {
-      event.sender.send("on-notification", {
-        type: "error",
-        message: t("models.conversation.notFound"),
-      });
-      return;
-    }
-
-    return conversation.ask(params).catch((err) => {
-      event.sender.send("on-notification", {
-        type: "error",
-        message: err.message,
-      });
-    });
-  }
-
   register() {
     ipcMain.handle("conversations-find-all", this.findAll);
     ipcMain.handle("conversations-find-one", this.findOne);
     ipcMain.handle("conversations-create", this.create);
     ipcMain.handle("conversations-update", this.update);
     ipcMain.handle("conversations-destroy", this.destroy);
-    ipcMain.handle("conversations-ask", this.ask);
   }
 }
 
