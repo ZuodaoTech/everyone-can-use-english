@@ -18,7 +18,7 @@ import {
   SelectValue,
   SelectContent,
 } from "@renderer/components/ui";
-import { LLM_PROVIDERS } from "@renderer/components";
+import { GPT_PROVIDERS } from "@renderer/components";
 import { AISettingsProviderContext } from "@renderer/context";
 import { useContext, useState } from "react";
 
@@ -28,7 +28,7 @@ export const OpenaiSettings = () => {
 
   const openAiConfigSchema = z.object({
     key: z.string().optional(),
-    model: z.enum(LLM_PROVIDERS.openai.models),
+    model: z.enum(GPT_PROVIDERS.openai.models),
     baseUrl: z.string().optional(),
   });
 
@@ -93,7 +93,7 @@ export const OpenaiSettings = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {(LLM_PROVIDERS.openai.models || []).map(
+                          {(GPT_PROVIDERS.openai.models || []).map(
                             (option: string) => (
                               <SelectItem key={option} value={option}>
                                 {option}
