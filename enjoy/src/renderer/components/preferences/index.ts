@@ -18,7 +18,10 @@ export * from "./balance-settings";
 
 export * from "./reset-settings";
 export * from "./reset-all-settings";
+export * from "./reset-all-button";
 
 export * from "./theme-settings";
 
 export * from "./proxy-settings";
+
+export * from "./whisper-model-options";
