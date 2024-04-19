@@ -83,12 +83,12 @@ class Whipser {
     }
 
     settings.setSync("whisper.model", model.name);
-    return model.savePath;
+    return model;
   }
 
   async check() {
     const model = this.currentModel();
-    logger.debug(`Checking whisper model: ${model}`);
+    logger.debug(`Checking whisper model: ${model.savePath}`);
 
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
     const tmpDir = settings.cachePath();
@@ -98,7 +98,7 @@ class Whipser {
       const commands = [
         `"${this.binMain}"`,
         `--file "${sampleFile}"`,
-        `--model "${model}"`,
+        `--model "${model.savePath}"`,
         "--output-json",
         `--output-file "${path.join(tmpDir, "jfk")}"`,
       ];
@@ -183,11 +183,13 @@ class Whipser {
       "--file",
       file,
       "--model",
-      model,
+      model.savePath,
       "--output-json",
       "--output-file",
       path.join(tmpDir, filename),
-      "-pp",
+      "--print-progress",
+      "--language",
+      model.name.includes("en") ? "en" : "auto",
       ...extra,
     ];
 
