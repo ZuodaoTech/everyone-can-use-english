@@ -409,12 +409,7 @@ export const MediaCurrentRecording = () => {
       if (!player) return;
       keyboardEvent.preventDefault();
 
-      if (
-        (navigator.platform.includes("Mac") && hotkeyEvent.meta) ||
-        hotkeyEvent.ctrl
-      ) {
-        document.getElementById("recording-play-or-pause-button").click();
-      }
+      document.getElementById("recording-play-or-pause-button").click();
     },
     { enabled },
     [player]
@@ -492,39 +487,38 @@ export const MediaCurrentRecording = () => {
           setIsRecording={setIsRecording}
         />
 
-        {layout?.name === "lg" && (
-          <>
-            <Button
-              variant={isComparing ? "secondary" : "outline"}
-              size="icon"
-              id="media-compare-button"
-              data-tooltip-id="media-player-tooltip"
-              data-tooltip-content={t("compare")}
-              className="rounded-full w-8 h-8 p-0"
-              onClick={toggleCompare}
-            >
-              <GitCompareIcon className="w-4 h-4" />
-            </Button>
+        <Button
+          variant={isComparing ? "secondary" : "outline"}
+          size="icon"
+          id="media-compare-button"
+          data-tooltip-id="media-player-tooltip"
+          data-tooltip-content={t("compare")}
+          className={
+            layout?.name === "sm" ? "hidden" : "rounded-full w-8 h-8 p-0"
+          }
+          onClick={toggleCompare}
+        >
+          <GitCompareIcon className="w-4 h-4" />
+        </Button>
 
-            <Button
-              variant={isSelectingRegion ? "secondary" : "outline"}
-              size="icon"
-              data-tooltip-id="media-player-tooltip"
-              data-tooltip-content={t("selectRegion")}
-              className="rounded-full w-8 h-8 p-0"
-              onClick={() => setIsSelectingRegion(!isSelectingRegion)}
-            >
-              <TextCursorInputIcon className="w-4 h-4" />
-            </Button>
-          </>
-        )}
+        <Button
+          variant={isSelectingRegion ? "secondary" : "outline"}
+          size="icon"
+          data-tooltip-id="media-player-tooltip"
+          data-tooltip-content={t("selectRegion")}
+          className={
+            layout?.name === "sm" ? "hidden" : "rounded-full w-8 h-8 p-0"
+          }
+          onClick={() => setIsSelectingRegion(!isSelectingRegion)}
+        >
+          <TextCursorInputIcon className="w-4 h-4" />
+        </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
               size="icon"
-              id="media-compare-button"
               data-tooltip-id="media-player-tooltip"
               data-tooltip-content={t("more")}
               className="rounded-full w-8 h-8 p-0"
