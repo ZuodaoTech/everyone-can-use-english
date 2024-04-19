@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@renderer/components/ui";
 import { useContext } from "react";
-import { AppSettingsProviderContext } from "../context";
+import { AppSettingsProviderContext } from "../../context";
 import { t } from "i18next";
 
 export const ResetAllButton = (props: { children: React.ReactNode }) => {

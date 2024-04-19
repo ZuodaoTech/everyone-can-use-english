@@ -58,7 +58,8 @@ export const AudibleBooksSegment = () => {
 
     EnjoyApp.providers.audible
       .bestsellers()
-      .then(({ books }) => {
+      .then((res) => {
+        const { books = [] } = res || {};
         const filteredBooks =
           books?.filter((book) => book.language === "English") || [];
 

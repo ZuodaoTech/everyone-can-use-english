@@ -181,18 +181,6 @@ type EnjoyAppType = {
     create: (params: any) => Promise<ConversationType>;
     update: (id: string, params: any) => Promise<ConversationType>;
     destroy: (id: string) => Promise<void>;
-    ask: (
-      id: string,
-      params: {
-        messageId?: string;
-        content?: string;
-        file?: string;
-        blob?: {
-          type: string;
-          arrayBuffer: ArrayBuffer;
-        };
-      }
-    ) => Promise<MessageType[]>;
   };
   messages: {
     findAll: (params: any) => Promise<MessageType[]>;
