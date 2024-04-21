@@ -47,8 +47,8 @@
             <text id="下唇" font-family="PingFangSC-Regular, PingFang SC" font-size="18" font-weight="normal" fill="#000000">
                 <tspan x="396" y="428">下唇</tspan>
             </text>
-            <text id="舍" font-family="PingFangSC-Regular, PingFang SC" font-size="18" font-weight="normal" fill="#000000">
-                <tspan x="630" y="458">舍</tspan>
+            <text id="舌" font-family="PingFangSC-Regular, PingFang SC" font-size="18" font-weight="normal" fill="#000000">
+                <tspan x="630" y="458">舌</tspan>
             </text>
             <path d="M810.5,616.5 L914.172822,575.398346 C847.596007,611.837095 814.3076,630.05647 814.3076,630.05647" id="Line-9" stroke="#575757" stroke-width="2" stroke-linecap="square"></path>
             <text id="声带" font-family="PingFangSC-Regular, PingFang SC" font-size="18" font-weight="normal" fill="#000000">
