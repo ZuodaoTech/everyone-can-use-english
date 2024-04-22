@@ -73,7 +73,8 @@ export const useConversation = () => {
         maxRetries: 2,
       });
     } else if (conversation.engine === "googleGenerativeAi") {
-      if (!googleGenerativeAi) throw new Error("Google Generative AI API key is required");
+      if (!googleGenerativeAi)
+        throw new Error("Google Generative AI API key is required");
 
       return new ChatGoogleGenerativeAI({
         apiKey: googleGenerativeAi.key,
@@ -157,7 +158,7 @@ export const useConversation = () => {
 
     const llm = pickLlm(conversation);
     const chain = new ConversationChain({
-      llm,
+      llm: llm as any,
       memory,
       prompt,
       verbose: true,
@@ -240,12 +241,14 @@ export const useConversation = () => {
         apiKey: user.accessToken,
         baseURL: `${apiUrl}/api/ai`,
         dangerouslyAllowBrowser: true,
+        maxRetries: 1,
       });
     } else if (openai) {
       client = new OpenAI({
         apiKey: openai.key,
         baseURL: baseUrl || openai.baseUrl,
         dangerouslyAllowBrowser: true,
+        maxRetries: 1,
       });
     } else {
       throw new Error("OpenAI API key is required");
