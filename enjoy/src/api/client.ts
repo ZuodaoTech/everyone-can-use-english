@@ -232,8 +232,12 @@ export class Client {
     return this.api.post("/api/transcriptions", decamelizeKeys(transcription));
   }
 
-  syncSegment(segment: Partial<Omit<SegmentType, 'audio' | 'video'>>) {
+  syncSegment(segment: Partial<Omit<SegmentType, "audio" | "video">>) {
     return this.api.post("/api/segments", decamelizeKeys(segment));
+  }
+
+  syncNote(note: Partial<Omit<NoteType, "segment">>) {
+    return this.api.post("/api/notes", decamelizeKeys(note));
   }
 
   syncRecording(recording: Partial<RecordingType>) {
