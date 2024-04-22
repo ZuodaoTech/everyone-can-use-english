@@ -108,7 +108,7 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-tooltip": "^1.0.7",
-    "@sentry/electron": "^4.22.0",
+    "@sentry/electron": "^4.23.0",
     "@types/ahoy.js": "^0.4.2",
     "@uidotdev/usehooks": "^2.4.1",
     "@vidstack/react": "^1.11.17",
