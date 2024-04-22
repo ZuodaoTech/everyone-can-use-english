@@ -129,9 +129,9 @@ export default () => {
       })
       .finally(() => {
         setSubmitting(false);
-        setContent("");
         clearTimeout(timeout);
       });
+    setContent("");
   };
 
   const onMessagesUpdate = (event: CustomEvent) => {
@@ -314,7 +314,6 @@ export default () => {
           <div className="focus-within:bg-background pr-4 py-2 flex items-end space-x-4 rounded-lg shadow-lg border scrollbar">
             <Textarea
               ref={inputRef}
-              disabled={submitting}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder={t("pressEnterToSend")}
@@ -328,6 +327,8 @@ export default () => {
                 disabled={submitting || !content}
                 data-testid="conversation-page-submit"
                 onClick={() => handleSubmit(content)}
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("send")}
                 className="h-10"
               >
                 <SendIcon className="w-5 h-5" />
