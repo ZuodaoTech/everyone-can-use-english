@@ -2742,17 +2742,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/community@npm:^0.0.43":
-  version: 0.0.43
-  resolution: "@langchain/community@npm:0.0.43"
+"@langchain/community@npm:^0.0.50":
+  version: 0.0.50
+  resolution: "@langchain/community@npm:0.0.50"
   dependencies:
-    "@langchain/core": "npm:~0.1.44"
-    "@langchain/openai": "npm:~0.0.19"
+    "@langchain/core": "npm:~0.1.56"
+    "@langchain/openai": "npm:~0.0.28"
     expr-eval: "npm:^2.0.2"
     flat: "npm:^5.0.2"
     langsmith: "npm:~0.1.1"
     uuid: "npm:^9.0.0"
     zod: "npm:^3.22.3"
+    zod-to-json-schema: "npm:^3.22.5"
   peerDependencies:
     "@aws-crypto/sha256-js": ^5.0.0
     "@aws-sdk/client-bedrock-agent-runtime": ^3.485.0
@@ -2766,7 +2767,7 @@ __metadata:
     "@azure/search-documents": ^12.0.0
     "@clickhouse/client": ^0.2.5
     "@cloudflare/ai": "*"
-    "@datastax/astra-db-ts": ^0.1.4
+    "@datastax/astra-db-ts": ^1.0.0
     "@elastic/elasticsearch": ^8.4.0
     "@getmetal/metal-sdk": "*"
     "@getzep/zep-js": ^0.9.0
@@ -2793,7 +2794,7 @@ __metadata:
     "@tensorflow/tfjs-converter": "*"
     "@tensorflow/tfjs-core": "*"
     "@upstash/redis": ^1.20.6
-    "@upstash/vector": ^1.0.2
+    "@upstash/vector": ^1.0.7
     "@vercel/kv": ^0.2.3
     "@vercel/postgres": ^0.5.0
     "@writerai/writer-sdk": ^0.40.2
@@ -2812,6 +2813,7 @@ __metadata:
     couchbase: ^4.3.0
     discord.js: ^14.14.1
     dria: ^0.0.3
+    duck-duck-scrape: ^2.2.5
     faiss-node: ^0.5.1
     firebase-admin: ^11.9.0 || ^12.0.0
     google-auth-library: ^8.9.0
@@ -2961,6 +2963,8 @@ __metadata:
       optional: true
     dria:
       optional: true
+    duck-duck-scrape:
+      optional: true
     faiss-node:
       optional: true
     firebase-admin:
@@ -3025,7 +3029,7 @@ __metadata:
       optional: true
     ws:
       optional: true
-  checksum: 10c0/8e23b9ea20b636b25f0a2fee0efcddb716ff2abbef65c2adafbc8ccf1fe18a635384c15d19f3f74b21afe75c3971bc3bf03ea82d7c0b2bb34c4bc28dd7ff27ed
+  checksum: 10c0/4f46fbb153f969d314831efd8237d9544f10da8932f6c4b2c642d625a2966b3f7283054bd853e2dd9b44abd989a25f7237065f32bac00a557ce80063df931aa7
   languageName: node
   linkType: hard
 
@@ -3320,25 +3324,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/core@npm:~0.1.44, @langchain/core@npm:~0.1.45":
-  version: 0.1.47
-  resolution: "@langchain/core@npm:0.1.47"
-  dependencies:
-    ansi-styles: "npm:^5.0.0"
-    camelcase: "npm:6"
-    decamelize: "npm:1.2.0"
-    js-tiktoken: "npm:^1.0.8"
-    langsmith: "npm:~0.1.7"
-    ml-distance: "npm:^4.0.0"
-    p-queue: "npm:^6.6.2"
-    p-retry: "npm:4"
-    uuid: "npm:^9.0.0"
-    zod: "npm:^3.22.4"
-    zod-to-json-schema: "npm:^3.22.3"
-  checksum: 10c0/12c13594fffa0c99f05f7e716d324f3c056c0db3616a86e8be7e04d55235dc7a2c114bd4eabad292d461a01cc6d8c2bbf6f2bf79ba1cb767d59dd5f30a28657e
-  languageName: node
-  linkType: hard
-
 "@langchain/core@npm:~0.1.5":
   version: 0.1.40
   resolution: "@langchain/core@npm:0.1.40"
@@ -3384,19 +3369,6 @@ __metadata:
     "@google/generative-ai": "npm:^0.1.3"
     "@langchain/core": "npm:~0.1.5"
   checksum: 10c0/45aaa70110a3b13676748e67e21151d59ceaa9b4cda0adc9b1cbbeb88cbefd9c9c8f8ee568311dff02371822faffce3651062ac4daf1f770cc7daf8e7475d83a
-  languageName: node
-  linkType: hard
-
-"@langchain/openai@npm:~0.0.19":
-  version: 0.0.20
-  resolution: "@langchain/openai@npm:0.0.20"
-  dependencies:
-    "@langchain/core": "npm:~0.1.45"
-    js-tiktoken: "npm:^1.0.7"
-    openai: "npm:^4.26.0"
-    zod: "npm:^3.22.4"
-    zod-to-json-schema: "npm:^3.22.3"
-  checksum: 10c0/8e25d0da2fd80b6e80ffc54e0d3b640157acdee25974f95226e1d6db7d72bd5fe7c8e7e6828f5b2e93e302efc1e2d0ec880e57d86fad52a77bc7ecaceb2068f4
   languageName: node
   linkType: hard
 
@@ -10031,7 +10003,7 @@ __metadata:
     "@electron-forge/publisher-s3": "npm:^7.4.0"
     "@electron/fuses": "npm:^1.8.0"
     "@hookform/resolvers": "npm:^3.3.4"
-    "@langchain/community": "npm:^0.0.43"
+    "@langchain/community": "npm:^0.0.50"
     "@langchain/google-genai": "npm:^0.0.11"
     "@mozilla/readability": "npm:^0.5.0"
     "@playwright/test": "npm:^1.43.1"
@@ -15374,25 +15346,6 @@ __metadata:
     onnxruntime-common: "npm:1.17.0"
   checksum: 10c0/407b35baf75280b78eaaa41528356628f495121933b7aeaaaf5e5b8d85c9df368626dbfc09091992a24f4f0403bf061b14f02b9f44d6ed339ecb05c6e1813ad6
   conditions: (os=win32 | os=darwin | os=linux)
-  languageName: node
-  linkType: hard
-
-"openai@npm:^4.26.0":
-  version: 4.28.4
-  resolution: "openai@npm:4.28.4"
-  dependencies:
-    "@types/node": "npm:^18.11.18"
-    "@types/node-fetch": "npm:^2.6.4"
-    abort-controller: "npm:^3.0.0"
-    agentkeepalive: "npm:^4.2.1"
-    digest-fetch: "npm:^1.3.0"
-    form-data-encoder: "npm:1.7.2"
-    formdata-node: "npm:^4.3.2"
-    node-fetch: "npm:^2.6.7"
-    web-streams-polyfill: "npm:^3.2.1"
-  bin:
-    openai: bin/cli
-  checksum: 10c0/be0cf2758abf39c1d4f4db30034da312c1a7651cc3b09b8ca9a67d5bc3dd74861612783ac775660c97af91f7afdd1dff34b0e359b41a8aec6afd8049bd578fc8
   languageName: node
   linkType: hard
 
