@@ -53,7 +53,7 @@ export class Transcription extends Model<Transcription> {
   model: string;
 
   @Column(DataType.JSON)
-  result: Partial<AlignmentResult>;
+  result: Partial<AlignmentResult> & { originalText?: string };
 
   @Column(DataType.DATE)
   syncedAt: Date;
