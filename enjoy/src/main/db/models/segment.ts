@@ -11,6 +11,7 @@ import {
   DataType,
   Unique,
   AfterCreate,
+  AllowNull,
 } from "sequelize-typescript";
 import { Audio, Transcription, Video } from "@main/db/models";
 import mainWindow from "@main/window";
@@ -47,12 +48,22 @@ export class Segment extends Model<Segment> {
   @Column(DataType.STRING)
   targetType: string;
 
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
+  segmentIndex: number;
+
   @Unique
   @Column(DataType.STRING)
   md5: string;
 
   @Column(DataType.JSON)
   caption: TimelineEntry;
+
+  @Column(DataType.NUMBER)
+  startItme: number;
+
+  @Column(DataType.NUMBER)
+  endTime: number;
 
   @Column(DataType.DATE)
   syncedAt: Date;
