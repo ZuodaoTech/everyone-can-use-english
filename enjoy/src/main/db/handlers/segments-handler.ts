@@ -1,23 +1,21 @@
 import { ipcMain, IpcMainEvent } from "electron";
-import { Speech } from "@main/db/models";
-import fs from "fs-extra";
-import path from "path";
-import settings from "@main/settings";
-import { hashFile } from "@main/utils";
-import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
+import { Segment, Speech } from "@main/db/models";
 
 class SegmentsHandler {
   private async create(
-    event: IpcMainEvent,
+    _event: IpcMainEvent,
     params: {
       targetId: string;
       targetType: string;
       segmentIndex: number;
-      caption: TimelineEntry;
-      startTime: number;
-      endTime: number;
     }
-  ) {}
+  ) {
+    return Segment.generate({
+      targetId: params.targetId,
+      targetType: params.targetType,
+      segmentIndex: params.segmentIndex,
+    });
+  }
 
   register() {
     ipcMain.handle("segments-create", this.create);

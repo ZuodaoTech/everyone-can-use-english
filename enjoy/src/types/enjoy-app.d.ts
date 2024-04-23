@@ -267,4 +267,18 @@ type EnjoyAppType = {
     find: (id: string) => Promise<WaveFormDataType>;
     save: (id: string, data: WaveFormDataType) => Promise<void>;
   };
+  segments: {
+    create: (params: {
+      targetId: string;
+      targetType: string;
+      segmentIndex: number;
+    }) => Promise<SegmentType>;
+  };
+  notes: {
+    create: (params: {
+      targetId: string;
+      targetType: string;
+      content: string;
+    }) => Promise<NoteType>;
+  };
 };

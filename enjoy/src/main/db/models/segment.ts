@@ -21,15 +21,13 @@ import { WEB_API_URL } from "@/constants";
 import settings from "@main/settings";
 import storage from "@/main/storage";
 import path from "path";
-import {
-  Timeline,
-  TimelineEntry,
-} from "echogarden/dist/utilities/Timeline.d.js";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import FfmpegWrapper from "@/main/ffmpeg";
 import { hashFile } from "@/main/utils";
 import fs from "fs-extra";
 
 const logger = log.scope("db/models/segment");
+const OUTPUT_FORMAT = "mp3";
 @Table({
   modelName: "Segment",
   tableName: "segments",
@@ -91,7 +89,7 @@ export class Segment extends Model<Segment> {
     return path.join(
       settings.userDataPath(),
       "segments",
-      this.getDataValue("md5") + ".mp3"
+      this.getDataValue("md5") + "." + OUTPUT_FORMAT
     );
   }
 
@@ -159,30 +157,26 @@ export class Segment extends Model<Segment> {
     const ffmpeg = new FfmpegWrapper();
     const output = path.join(
       settings.cachePath(),
-      `${target.md5}-${segmentIndex}.mp3`
+      `${target.md5}-${segmentIndex}.${OUTPUT_FORMAT}`
     );
     await ffmpeg.crop(target.filePath, {
       startTime: caption.startTime,
       endTime: caption.endTime,
-      output: path.join(
-        settings.cachePath(),
-        `${target.md5}-${segmentIndex}.mp3`
-      ),
+      output,
     });
 
     const md5 = hashFile(output, { algo: "md5" });
-    const dir = path.join(settings.cachePath(), "segments");
+    const dir = path.join(settings.userDataPath(), "segments");
     fs.ensureDirSync(dir);
-    fs.moveSync(
-      output,
-      path.join(dir, `${md5}.mp3`)
-    );
+    fs.moveSync(output, path.join(dir, `${md5}.${OUTPUT_FORMAT}`));
 
     return Segment.create({
       targetId,
       targetType,
       md5: target.md5,
       caption,
+      startItme: caption.startTime,
+      endTime: caption.endTime,
     });
   }
 

@@ -2,6 +2,7 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 import { version } from "../package.json";
+import { parameterize } from "@sentry/electron/main";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
@@ -471,6 +472,16 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     save: (id: string, data: WaveFormDataType) => {
       return ipcRenderer.invoke("waveforms-save", id, data);
+    },
+  },
+  segments: {
+    create: (params: any) => {
+      return ipcRenderer.invoke("segments-create", params);
+    },
+  },
+  notes: {
+    create: (params: any) => {
+      return ipcRenderer.invoke("notes-create", params);
     },
   },
 });

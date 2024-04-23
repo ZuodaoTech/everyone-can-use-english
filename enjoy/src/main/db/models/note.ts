@@ -9,6 +9,7 @@ import {
   Model,
   DataType,
   AfterCreate,
+  AllowNull,
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
@@ -36,6 +37,7 @@ export class Note extends Model<Note> {
   @Column(DataType.STRING)
   targetType: string;
 
+  @AllowNull(false)
   @Column(DataType.TEXT)
   content: string;
 
