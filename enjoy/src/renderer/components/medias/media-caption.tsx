@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import cloneDeep from "lodash/cloneDeep";
 import { Button, toast } from "@renderer/components/ui";
-import { ConversationShortcuts, MediaCaptionTabs } from "@renderer/components";
+import { ConversationShortcuts } from "@renderer/components";
 import { t } from "i18next";
 import { BotIcon, CopyIcon, CheckIcon, SpeechIcon } from "lucide-react";
 import {
@@ -11,6 +11,7 @@ import {
 } from "echogarden/dist/utilities/Timeline.d.js";
 import { convertIpaToNormal } from "@/utils";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
+import { MediaCaptionTabs } from "./media-captions";
 
 export const MediaCaption = () => {
   const {
@@ -275,6 +276,7 @@ export const MediaCaption = () => {
       <div className="flex-1 font-serif h-full border shadow-lg rounded-lg">
         <MediaCaptionTabs
           caption={caption}
+          currentSegmentIndex={currentSegmentIndex}
           selectedIndices={selectedIndices}
           toggleRegion={toggleRegion}
         >

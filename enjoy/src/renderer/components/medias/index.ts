@@ -1,6 +1,5 @@
 export * from "./media-player-controls";
 export * from "./media-caption";
-export * from "./media-caption-tabs";
 export * from "./media-info-panel";
 export * from "./media-recordings";
 export * from "./media-current-recording";
