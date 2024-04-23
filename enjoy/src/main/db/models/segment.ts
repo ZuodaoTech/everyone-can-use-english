@@ -1,7 +1,6 @@
 import {
   AfterUpdate,
   AfterDestroy,
-  AfterFind,
   BelongsTo,
   Table,
   Column,
@@ -58,7 +57,7 @@ export class Segment extends Model<Segment> {
   caption: TimelineEntry;
 
   @Column(DataType.NUMBER)
-  startItme: number;
+  startTime: number;
 
   @Column(DataType.NUMBER)
   endTime: number;
@@ -132,9 +131,9 @@ export class Segment extends Model<Segment> {
     segmentIndex: number;
   }) {
     let target: Video | Audio;
-    if (params.targetType === "video") {
+    if (params.targetType === "Video") {
       target = await Video.findByPk(params.targetId);
-    } else if (params.targetType === "audio") {
+    } else if (params.targetType === "Audio") {
       target = await Audio.findByPk(params.targetId);
     } else {
       throw new Error("Invalid targetType");
@@ -165,7 +164,7 @@ export class Segment extends Model<Segment> {
       output,
     });
 
-    const md5 = hashFile(output, { algo: "md5" });
+    const md5 = await hashFile(output, { algo: "md5" });
     const dir = path.join(settings.userDataPath(), "segments");
     fs.ensureDirSync(dir);
     fs.moveSync(output, path.join(dir, `${md5}.${OUTPUT_FORMAT}`));
@@ -173,9 +172,10 @@ export class Segment extends Model<Segment> {
     return Segment.create({
       targetId,
       targetType,
-      md5: target.md5,
+      segmentIndex,
+      md5,
       caption,
-      startItme: caption.startTime,
+      startTime: caption.startTime,
       endTime: caption.endTime,
     });
   }

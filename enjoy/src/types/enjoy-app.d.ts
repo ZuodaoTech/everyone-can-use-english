@@ -268,6 +268,8 @@ type EnjoyAppType = {
     save: (id: string, data: WaveFormDataType) => Promise<void>;
   };
   segments: {
+    findAll: (params: any) => Promise<SegmentType[]>;
+    find: (id: string) => Promise<SegmentType>;
     create: (params: {
       targetId: string;
       targetType: string;
@@ -275,6 +277,10 @@ type EnjoyAppType = {
     }) => Promise<SegmentType>;
   };
   notes: {
+    findAll: (params: any) => Promise<NoteType[]>;
+    find: (id: string) => Promise<NoteType>;
+    update: (id: string, params: { content: string }) => Promise<NoteType>;
+    delete: (id: string) => Promise<void>;
     create: (params: {
       targetId: string;
       targetType: string;

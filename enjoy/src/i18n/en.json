@@ -553,5 +553,7 @@
   "follow": "follow",
   "unfollow": "unfollow",
   "noFollowersYet": "No followers yet",
-  "notFollowingAnyoneYet": "Not following anyone yet"
+  "notFollowingAnyoneYet": "Not following anyone yet",
+  "startToNote": "Start to note",
+  "newNote": "New note"
 }

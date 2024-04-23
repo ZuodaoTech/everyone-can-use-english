@@ -1,7 +1,30 @@
 import { ipcMain, IpcMainEvent } from "electron";
-import { Segment, Speech } from "@main/db/models";
+import { Audio, Segment, Video } from "@main/db/models";
 
 class SegmentsHandler {
+  private async find(_event: IpcMainEvent, id: string) {
+    const segment = await Segment.findByPk(id);
+    return segment.toJSON();
+  }
+
+  private async findAll(
+    _event: IpcMainEvent,
+    params: {
+      targetId: string;
+      targetType: string;
+    }
+  ) {
+    const segments = await Segment.findAll({
+      where: {
+        targetId: params.targetId,
+        targetType: params.targetType,
+      },
+      include: [Audio, Video],
+    });
+
+    return segments.map((segment) => segment.toJSON());
+  }
+
   private async create(
     _event: IpcMainEvent,
     params: {
@@ -19,6 +42,8 @@ class SegmentsHandler {
 
   register() {
     ipcMain.handle("segments-create", this.create);
+    ipcMain.handle("segments-find", this.find);
+    ipcMain.handle("segments-find-all", this.findAll);
   }
 }
 

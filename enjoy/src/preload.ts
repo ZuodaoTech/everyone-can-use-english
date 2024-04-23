@@ -3,6 +3,7 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 import { version } from "../package.json";
 import { parameterize } from "@sentry/electron/main";
+import { find, update } from "lodash";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
@@ -475,11 +476,36 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   segments: {
+    findAll: (params: {
+      targetId?: string;
+      targetType?: string;
+      offset?: number;
+      limit?: number;
+    }) => {
+      return ipcRenderer.invoke("segments-find-all", params);
+    },
+    find: (id: string) => {
+      return ipcRenderer.invoke("segments-find", id);
+    },
     create: (params: any) => {
       return ipcRenderer.invoke("segments-create", params);
     },
   },
   notes: {
+    findAll: (params: {
+      targetId?: string;
+      targetType?: string;
+      offset?: number;
+      limit?: number;
+    }) => {
+      return ipcRenderer.invoke("notes-find-all", params);
+    },
+    update: (id: string, params: any) => {
+      return ipcRenderer.invoke("notes-update", id, params);
+    },
+    delete: (id: string) => {
+      return ipcRenderer.invoke("notes-delete", id);
+    },
     create: (params: any) => {
       return ipcRenderer.invoke("notes-create", params);
     },

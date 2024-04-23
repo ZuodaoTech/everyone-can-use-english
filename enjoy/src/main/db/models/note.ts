@@ -44,9 +44,6 @@ export class Note extends Model<Note> {
   @Column(DataType.DATE)
   syncedAt: Date;
 
-  @Column(DataType.DATE)
-  uploadedAt: Date;
-
   @BelongsTo(() => Segment, { foreignKey: "targetId", constraints: false })
   segment: Segment;
 
