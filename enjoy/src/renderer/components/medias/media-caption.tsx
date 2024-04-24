@@ -346,84 +346,50 @@ const Caption = (props: {
     onClick,
   } = props;
 
+  let words = caption.text.split(" ");
+  const ipas = caption.timeline.map((w) =>
+    w.timeline.map((t) => t.timeline.map((s) => s.text))
+  );
+
+  if (words.length !== caption.timeline.length) {
+    words = caption.timeline.map((w) => w.text);
+  }
+
   return (
     <div className="flex flex-wrap px-4 py-2 rounded-t-lg bg-muted/50">
       {/* use the words splitted by caption text if it is matched with the timeline length, otherwise use the timeline */}
-      {caption.text.split(" ").length !== caption.timeline.length
-        ? (caption.timeline || []).map((w, index) => (
+      {words.map((word, index) => (
+        <div
+          className=""
+          key={`word-${currentSegmentIndex}-${index}`}
+          id={`word-${currentSegmentIndex}-${index}`}
+        >
+          <div
+            className={`font-serif text-lg xl:text-xl 2xl:text-2xl cursor-pointer p-1 pb-2 rounded hover:bg-red-500/10 ${
+              index === activeIndex ? "text-red-500" : ""
+            } ${
+              selectedIndices.includes(index) ? "bg-red-500/10 selected" : ""
+            }`}
+            onClick={() => onClick(index)}
+          >
+            {word}
+          </div>
+          {displayIpa && (
             <div
-              key={index}
-              id={`word-${currentSegmentIndex}-${index}`}
-              className={`p-1 pb-2 rounded cursor-pointer hover:bg-red-500/10 ${
-                index === activeIndex ? "text-red-500" : ""
-              } ${
-                selectedIndices.includes(index) ? "bg-red-500/10 selected" : ""
-              }`}
-              onClick={() => onClick(index)}
-            >
-              <div className="">
-                <div className="font-serif text-lg xl:text-xl 2xl:text-2xl">
-                  {w.text}
-                </div>
-                {displayIpa && (
-                  <div
-                    className={`text-sm 2xl:text-base text-muted-foreground font-code ${
-                      index === 0 ? "before:content-['/']" : ""
-                    }
+              className={`select-text text-sm 2xl:text-base text-muted-foreground font-code ${
+                index === 0 ? "before:content-['/']" : ""
+              }
                         ${
                           index === caption.timeline.length - 1
                             ? "after:content-['/']"
                             : ""
                         }`}
-                  >
-                    {w.timeline
-                      .map((t) =>
-                        t.timeline
-                          .map((s) => convertIpaToNormal(s.text))
-                          .join("")
-                      )
-                      .join(" · ")}
-                  </div>
-                )}
-              </div>
-            </div>
-          ))
-        : caption.text.split(" ").map((word, index) => (
-            <div
-              key={index}
-              id={`word-${currentSegmentIndex}-${index}`}
-              className={`p-1 pb-2 rounded cursor-pointer hover:bg-red-500/10 ${
-                index === activeIndex ? "text-red-500" : ""
-              } ${selectedIndices.includes(index) ? "bg-red-500/10" : ""}`}
-              onClick={() => onClick(index)}
             >
-              <div className="">
-                <div className="text-serif text-lg xl:text-xl 2xl:text-2xl">
-                  {word}
-                </div>
-                {displayIpa && (
-                  <div
-                    className={`text-sm 2xl:text-base text-muted-foreground font-code ${
-                      index === 0 ? "before:content-['/']" : ""
-                    }
-                        ${
-                          index === caption.text.split(" ").length - 1
-                            ? "after:content-['/']"
-                            : ""
-                        }`}
-                  >
-                    {caption.timeline[index].timeline
-                      .map((t) =>
-                        t.timeline
-                          .map((s) => convertIpaToNormal(s.text))
-                          .join("")
-                      )
-                      .join(" · ")}
-                  </div>
-                )}
-              </div>
+              {ipas[index]}
             </div>
-          ))}
+          )}
+        </div>
+      ))}
     </div>
   );
 };
