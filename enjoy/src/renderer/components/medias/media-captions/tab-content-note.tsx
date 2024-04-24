@@ -12,7 +12,6 @@ import {
   Textarea,
   toast,
 } from "@renderer/components/ui";
-import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
 import { t } from "i18next";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNotes } from "@/renderer/hooks";
@@ -24,11 +23,10 @@ import { MoreHorizontalIcon } from "lucide-react";
  */
 export function TabContentNote(props: {
   currentSegmentIndex: number;
-  caption: TimelineEntry;
   selectedIndices: number[];
   setSelectedIndices: (indices: number[]) => void;
 }) {
-  const { currentSegmentIndex, caption, selectedIndices, setSelectedIndices } =
+  const { currentSegmentIndex, selectedIndices, setSelectedIndices } =
     props;
   const { media } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
