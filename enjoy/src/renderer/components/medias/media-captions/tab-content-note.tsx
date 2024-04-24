@@ -25,8 +25,9 @@ import { MoreHorizontalIcon } from "lucide-react";
 export function TabContentNote(props: {
   currentSegmentIndex: number;
   caption: TimelineEntry;
+  selectedIndices: number[];
 }) {
-  const { currentSegmentIndex, caption } = props;
+  const { currentSegmentIndex, caption, selectedIndices } = props;
   const { media } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [segment, setSegment] = useState<SegmentType>();
@@ -84,13 +85,18 @@ export function TabContentNote(props: {
 
   return (
     <TabsContent value="note">
-      <SegmentNotes segment={segment} />
+      <div className="py-4">
+        <SegmentNotes segment={segment} selectedIndices={selectedIndices} />
+      </div>
     </TabsContent>
   );
 }
 
-const SegmentNotes = (props: { segment: SegmentType }) => {
-  const { segment } = props;
+const SegmentNotes = (props: {
+  segment: SegmentType;
+  selectedIndices: number[];
+}) => {
+  const { segment, selectedIndices } = props;
   const [editingNote, setEditingNote] = useState<NoteType>();
 
   const { notes, findNotes, hasMore } = useNotes({
@@ -101,10 +107,13 @@ const SegmentNotes = (props: { segment: SegmentType }) => {
   if (!segment) return null;
 
   return (
-    <div className="px-4">
+    <div className="">
       {!editingNote && (
         <div className="mb-4">
-          <NoteForm segment={segment} />
+          <NoteForm
+            segment={segment}
+            parameters={{ wordIndices: selectedIndices }}
+          />
         </div>
       )}
 
@@ -114,6 +123,7 @@ const SegmentNotes = (props: { segment: SegmentType }) => {
             {editingNote?.id === note.id ? (
               <NoteForm
                 segment={segment}
+                parameters={{ wordIndices: selectedIndices }}
                 note={note}
                 onSave={() => setEditingNote(null)}
               />
@@ -190,10 +200,11 @@ const NoteCard = (props: {
 
 const NoteForm = (props: {
   segment: SegmentType;
+  parameters: any;
   note?: NoteType;
   onSave?: (note: NoteType) => void;
 }) => {
-  const { segment, note, onSave } = props;
+  const { segment, parameters, note, onSave } = props;
   const [content, setContent] = useState<string>(note?.content ?? "");
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
@@ -211,7 +222,7 @@ const NoteForm = (props: {
 
     if (note) {
       EnjoyApp.notes
-        .update(note.id, { content })
+        .update(note.id, { content, parameters })
         .then((note) => {
           onSave && onSave(note);
         })
@@ -223,6 +234,7 @@ const NoteForm = (props: {
         .create({
           targetId: segment.id,
           targetType: "Segment",
+          parameters,
           content,
         })
         .then((note) => {
@@ -246,11 +258,14 @@ const NoteForm = (props: {
           ref={inputRef}
           className="w-full"
           value={content}
+          placeholder={t("writeNoteHere")}
           onChange={(e) => setContent(e.target.value)}
         />
       </div>
       <div className="flex justify-end">
-        <Button onClick={handleSubmit}>{t("save")}</Button>
+        <Button size="sm" onClick={handleSubmit}>
+          {t("save")}
+        </Button>
       </div>
     </div>
   );

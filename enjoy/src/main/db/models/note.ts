@@ -10,6 +10,7 @@ import {
   DataType,
   AfterCreate,
   AllowNull,
+  AfterFind,
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
@@ -41,6 +42,10 @@ export class Note extends Model<Note> {
   @Column(DataType.TEXT)
   content: string;
 
+  @Default({})
+  @Column(DataType.JSON)
+  parameters: any;
+
   @Column(DataType.DATE)
   syncedAt: Date;
 
@@ -67,9 +72,28 @@ export class Note extends Model<Note> {
     });
   }
 
+  @AfterFind
+  static async syncAfterFind(notes: Note[]) {
+    if (!notes.length) return;
+
+    const unsyncedNotes = notes.filter((note) => !note.isSynced);
+    if (!unsyncedNotes.length) return;
+
+    unsyncedNotes.forEach((note) => {
+      note.sync().catch((err) => {
+        logger.error("sync error", err);
+      });
+    });
+  }
+
   @AfterCreate
   static syncAndUploadAfterCreate(note: Note) {
     note.sync();
+  }
+
+  @AfterCreate
+  static notifyForCreate(note: Note) {
+    this.notify(note, "create");
   }
 
   @AfterUpdate

@@ -16,6 +16,10 @@ async function up({ context: queryInterface }) {
       type: DataTypes.UUID,
       allowNull: false,
     },
+    parameters: {
+      type: DataTypes.JSON,
+      defaultValue: {},
+    },
     content: {
       type: DataTypes.TEXT,
       allowNull: false,

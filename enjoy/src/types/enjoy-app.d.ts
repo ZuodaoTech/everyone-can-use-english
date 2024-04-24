@@ -279,12 +279,19 @@ type EnjoyAppType = {
   notes: {
     findAll: (params: any) => Promise<NoteType[]>;
     find: (id: string) => Promise<NoteType>;
-    update: (id: string, params: { content: string }) => Promise<NoteType>;
+    update: (
+      id: string,
+      params: {
+        content: string;
+        parameters?: any;
+      }
+    ) => Promise<NoteType>;
     delete: (id: string) => Promise<void>;
     create: (params: {
       targetId: string;
       targetType: string;
       content: string;
+      parameters?: any;
     }) => Promise<NoteType>;
   };
 };

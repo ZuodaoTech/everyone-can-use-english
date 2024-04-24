@@ -11,6 +11,7 @@ import {
   Unique,
   AfterCreate,
   AllowNull,
+  AfterFind,
 } from "sequelize-typescript";
 import { Audio, Transcription, Video } from "@main/db/models";
 import mainWindow from "@main/window";
@@ -24,6 +25,7 @@ import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import FfmpegWrapper from "@/main/ffmpeg";
 import { hashFile } from "@/main/utils";
 import fs from "fs-extra";
+import { v5 as uuidv5 } from "uuid";
 
 const logger = log.scope("db/models/segment");
 const OUTPUT_FORMAT = "mp3";
@@ -165,11 +167,16 @@ export class Segment extends Model<Segment> {
     });
 
     const md5 = await hashFile(output, { algo: "md5" });
+    const userId = settings.getSync("user.id");
+    const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);
     const dir = path.join(settings.userDataPath(), "segments");
     fs.ensureDirSync(dir);
-    fs.moveSync(output, path.join(dir, `${md5}.${OUTPUT_FORMAT}`));
+    fs.moveSync(output, path.join(dir, `${md5}.${OUTPUT_FORMAT}`), {
+      overwrite: true,
+    });
 
     return Segment.create({
+      id,
       targetId,
       targetType,
       segmentIndex,
@@ -177,6 +184,20 @@ export class Segment extends Model<Segment> {
       caption,
       startTime: caption.startTime,
       endTime: caption.endTime,
+    });
+  }
+
+  @AfterFind
+  static async syncAfterFind(segments: Segment[]) {
+    if (!segments.length) return;
+
+    const unsyncedSegments = segments.filter((segment) => !segment.isSynced);
+    if (!unsyncedSegments.length) return;
+
+    unsyncedSegments.forEach((segment) => {
+      segment.sync().catch((err) => {
+        logger.error("sync error", err);
+      });
     });
   }
 

@@ -51,6 +51,7 @@ export const MediaCaptionTabs = (props: {
           <TabContentNote
             currentSegmentIndex={currentSegmentIndex}
             caption={caption}
+            selectedIndices={selectedIndices}
           />
         </div>
 

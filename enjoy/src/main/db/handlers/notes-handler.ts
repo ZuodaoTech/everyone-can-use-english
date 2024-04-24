@@ -30,6 +30,7 @@ class NotesHandler {
     id: string,
     params: {
       content: string;
+      parameters: any;
     }
   ) {
     const note = await Note.findByPk(id);
@@ -39,6 +40,7 @@ class NotesHandler {
 
     await note.update({
       content: params.content,
+      parameters: params.parameters,
     });
 
     return note.toJSON();
@@ -59,9 +61,10 @@ class NotesHandler {
       targetId: string;
       targetType: string;
       content: string;
+      parameters: any;
     }
   ) {
-    const { targetId, targetType, content } = params;
+    const { targetId, targetType, content, parameters } = params;
 
     switch (targetType) {
       case "Segment":
@@ -78,6 +81,7 @@ class NotesHandler {
       targetId,
       targetType,
       content,
+      parameters,
     });
   }
 

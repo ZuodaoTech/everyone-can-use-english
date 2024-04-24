@@ -16,7 +16,7 @@ export const useNotes = (props: { targetId: string; targetType: string }) => {
     if (!hasMore) return;
 
     const { offset = 0 } = params || {};
-    const limit = 10;
+    const limit = 100;
 
     EnjoyApp.notes
       .findAll({
@@ -64,14 +64,14 @@ export const useNotes = (props: { targetId: string; targetType: string }) => {
         }
         return [...notes];
       });
-    } else if (action === "delete") {
+    } else if (action === "destroy") {
       setNotes((notes) => {
         return notes.filter((n) => n.id !== record.id);
       });
     } else if (action === "create") {
       if (record.targetId === targetId && record.targetType === targetType) {
         setNotes((notes) => {
-          return [...notes, record];
+          return [record, ...notes];
         });
       }
     }
