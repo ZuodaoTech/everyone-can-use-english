@@ -26,8 +26,10 @@ export function TabContentNote(props: {
   currentSegmentIndex: number;
   caption: TimelineEntry;
   selectedIndices: number[];
+  setSelectedIndices: (indices: number[]) => void;
 }) {
-  const { currentSegmentIndex, caption, selectedIndices } = props;
+  const { currentSegmentIndex, caption, selectedIndices, setSelectedIndices } =
+    props;
   const { media } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [segment, setSegment] = useState<SegmentType>();
@@ -86,7 +88,11 @@ export function TabContentNote(props: {
   return (
     <TabsContent value="note">
       <div className="py-4">
-        <SegmentNotes segment={segment} selectedIndices={selectedIndices} />
+        <SegmentNotes
+          segment={segment}
+          selectedIndices={selectedIndices}
+          setSelectedIndices={setSelectedIndices}
+        />
       </div>
     </TabsContent>
   );
@@ -95,8 +101,9 @@ export function TabContentNote(props: {
 const SegmentNotes = (props: {
   segment: SegmentType;
   selectedIndices: number[];
+  setSelectedIndices: (indices: number[]) => void;
 }) => {
-  const { segment, selectedIndices } = props;
+  const { segment, selectedIndices, setSelectedIndices } = props;
   const [editingNote, setEditingNote] = useState<NoteType>();
 
   const { notes, findNotes, hasMore } = useNotes({
@@ -110,7 +117,11 @@ const SegmentNotes = (props: {
     <div className="">
       {!editingNote && (
         <div className="mb-4">
-          <NoteForm segment={segment} selectedIndices={selectedIndices} />
+          <NoteForm
+            segment={segment}
+            selectedIndices={selectedIndices}
+            setSelectedIndices={setSelectedIndices}
+          />
         </div>
       )}
 
@@ -121,6 +132,7 @@ const SegmentNotes = (props: {
               <NoteForm
                 segment={segment}
                 selectedIndices={selectedIndices}
+                setSelectedIndices={setSelectedIndices}
                 note={note}
                 onCancel={() => setEditingNote(null)}
                 onSave={() => setEditingNote(null)}
@@ -213,10 +225,18 @@ const NoteForm = (props: {
   segment: SegmentType;
   note?: NoteType;
   selectedIndices?: number[];
+  setSelectedIndices: (indices: number[]) => void;
   onCancel?: () => void;
   onSave?: (note: NoteType) => void;
 }) => {
-  const { segment, note, selectedIndices, onCancel, onSave } = props;
+  const {
+    segment,
+    note,
+    selectedIndices,
+    setSelectedIndices,
+    onCancel,
+    onSave,
+  } = props;
   const [content, setContent] = useState<string>(note?.content ?? "");
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
@@ -269,6 +289,8 @@ const NoteForm = (props: {
   useEffect(() => {
     if (!note) return;
     if (note.parameters?.wordIndices === selectedIndices) return;
+
+    setSelectedIndices(note.parameters?.wordIndices || []);
   }, [note]);
 
   return (

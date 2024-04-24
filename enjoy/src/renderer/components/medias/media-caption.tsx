@@ -12,7 +12,6 @@ import {
 import { convertIpaToNormal } from "@/utils";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { MediaCaptionTabs } from "./media-captions";
-import { set } from "lodash";
 
 export const MediaCaption = () => {
   const {
@@ -73,8 +72,6 @@ export const MediaCaption = () => {
     }
     const startIndex = Math.min(...params);
     const endIndex = Math.max(...params);
-
-    console.log("toggleRegion -> params", params);
 
     const startWord = caption.timeline[startIndex];
     if (!startWord) return;

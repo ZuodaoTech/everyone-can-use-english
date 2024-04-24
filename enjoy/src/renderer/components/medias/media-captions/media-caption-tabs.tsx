@@ -51,6 +51,7 @@ export const MediaCaptionTabs = (props: {
             currentSegmentIndex={currentSegmentIndex}
             caption={caption}
             selectedIndices={selectedIndices}
+            setSelectedIndices={setSelectedIndices}
           />
         </div>
 
