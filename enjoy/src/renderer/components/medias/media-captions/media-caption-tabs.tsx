@@ -16,14 +16,14 @@ export const MediaCaptionTabs = (props: {
   caption: TimelineEntry;
   currentSegmentIndex: number;
   selectedIndices: number[];
-  toggleRegion: (index: number) => void;
+  setSelectedIndices: (indices: number[]) => void;
   children?: React.ReactNode;
 }) => {
   const {
     caption,
     currentSegmentIndex,
     selectedIndices,
-    toggleRegion,
+    setSelectedIndices,
     children,
   } = props;
 
@@ -40,7 +40,7 @@ export const MediaCaptionTabs = (props: {
           <TabContentSelected
             caption={caption}
             selectedIndices={selectedIndices}
-            toggleRegion={toggleRegion}
+            setSelectedIndices={setSelectedIndices}
           />
 
           <TabContentTranslation text={caption.text} />

@@ -12,10 +12,10 @@ import {
 import { convertIpaToNormal } from "@/utils";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { MediaCaptionTabs } from "./media-captions";
+import { set } from "lodash";
 
 export const MediaCaption = () => {
   const {
-    wavesurfer,
     currentSegmentIndex,
     currentTime,
     transcription,
@@ -40,29 +40,63 @@ export const MediaCaption = () => {
     setMultiSelecting(event.shiftKey && event.type === "keydown");
   };
 
-  const toggleRegion = (index: number) => {
+  const toggleSeletedIndex = (index: number) => {
     if (!activeRegion) return;
     if (editingRegion) {
       toast.warning(t("currentRegionIsBeingEdited"));
       return;
     }
 
-    const word = caption.timeline[index];
-    if (!word) return;
+    const startWord = caption.timeline[index];
+    if (!startWord) return;
 
-    const start = word.startTime;
-    const end = word.endTime;
+    if (multiSelecting) {
+      const min = Math.min(index, ...selectedIndices);
+      const max = Math.max(index, ...selectedIndices);
+
+      // Select all the words between the min and max indices.
+      setSelectedIndices(
+        Array.from({ length: max - min + 1 }, (_, i) => i + min)
+      );
+    } else if (selectedIndices.includes(index)) {
+      setSelectedIndices([]);
+    } else {
+      setSelectedIndices([index]);
+    }
+  };
+
+  const toggleRegion = (params: number[]) => {
+    if (!activeRegion) return;
+    if (editingRegion) {
+      toast.warning(t("currentRegionIsBeingEdited"));
+      return;
+    }
+    const startIndex = Math.min(...params);
+    const endIndex = Math.max(...params);
+
+    console.log("toggleRegion -> params", params);
+
+    const startWord = caption.timeline[startIndex];
+    if (!startWord) return;
+
+    const endWord = caption.timeline[endIndex] || startWord;
+
+    const start = startWord.startTime;
+    const end = endWord.endTime;
     const regionStart = activeRegion.start;
     const regionEnd = activeRegion.end;
 
+    // If the active region is a word region, then merge the selected words into a single region.
     if (activeRegion.id.startsWith("word-region")) {
+      activeRegion.remove();
+
       if (start >= regionStart && end <= regionEnd) {
         setActiveRegion(
           regions.getRegions().find((r) => r.id.startsWith("segment-region"))
         );
-      } else if (multiSelecting) {
+      } else {
         const region = regions.addRegion({
-          id: `word-region-${index}`,
+          id: `word-region-${startIndex}`,
           start: Math.min(start, regionStart),
           end: Math.max(end, regionEnd),
           color: "#fb6f9233",
@@ -71,26 +105,16 @@ export const MediaCaption = () => {
         });
 
         setActiveRegion(region);
-      } else {
-        const region = regions.addRegion({
-          id: `word-region-${index}`,
-          start,
-          end,
-          color: "#fb6f9233",
-          drag: false,
-          resize: editingRegion,
-        });
-
-        setActiveRegion(region);
       }
-      activeRegion?.remove();
+      // If the active region is a meaning group region, then active the segment region.
     } else if (activeRegion.id.startsWith("meaning-group-region")) {
       setActiveRegion(
         regions.getRegions().find((r) => r.id.startsWith("segment-region"))
       );
+      // If the active region is a segment region, then create a new word region.
     } else {
       const region = regions.addRegion({
-        id: `word-region-${index}`,
+        id: `word-region-${startIndex}`,
         start,
         end,
         color: "#fb6f9233",
@@ -100,43 +124,6 @@ export const MediaCaption = () => {
 
       setActiveRegion(region);
     }
-  };
-
-  const markPhoneRegions = () => {
-    const phoneRegions = regions
-      .getRegions()
-      .filter((r) => r.id.startsWith("phone-region"));
-    if (phoneRegions.length > 0) {
-      phoneRegions.forEach((r) => {
-        r.remove();
-        r.unAll();
-      });
-      return;
-    }
-
-    if (!activeRegion) return;
-    if (!activeRegion.id.startsWith("word-region")) return;
-    if (!selectedIndices) return;
-
-    selectedIndices.forEach((index) => {
-      const word = caption.timeline[index];
-
-      word.timeline.forEach((token) => {
-        token.timeline.forEach((phone) => {
-          const region = regions.addRegion({
-            id: `phone-region-${index}`,
-            start: phone.startTime,
-            end: phone.endTime,
-            color: "#efefefef",
-            drag: false,
-            resize: editingRegion,
-          });
-          region.on("click", () => {
-            region.play();
-          });
-        });
-      });
-    });
   };
 
   useEffect(() => {
@@ -155,25 +142,8 @@ export const MediaCaption = () => {
     if (!caption?.timeline) return;
     if (!activeRegion) return;
 
-    if (activeRegion.id.startsWith("segment-region")) {
-      setSelectedIndices([]);
-      return;
-    }
-
-    const indices: number[] = [];
-    caption.timeline.forEach((w, index) => {
-      if (
-        w.startTime >= activeRegion.start &&
-        (w.endTime <= activeRegion.end ||
-          // The last word's end time may be a little greater than the duration of the audio in somehow.
-          w.endTime > wavesurfer.getDuration())
-      ) {
-        indices.push(index);
-      }
-    });
-
-    setSelectedIndices(indices);
-  }, [caption, activeRegion]);
+    toggleRegion(selectedIndices);
+  }, [caption, selectedIndices]);
 
   useEffect(() => {
     if (!activeRegion) return;
@@ -278,7 +248,7 @@ export const MediaCaption = () => {
           caption={caption}
           currentSegmentIndex={currentSegmentIndex}
           selectedIndices={selectedIndices}
-          toggleRegion={toggleRegion}
+          setSelectedIndices={setSelectedIndices}
         >
           <div className="flex flex-wrap px-4 py-2 rounded-t-lg bg-muted/50">
             {/* use the words splitted by caption text if it is matched with the timeline length, otherwise use the timeline */}
@@ -294,7 +264,7 @@ export const MediaCaption = () => {
                         ? "bg-red-500/10 selected"
                         : ""
                     }`}
-                    onClick={() => toggleRegion(index)}
+                    onClick={() => toggleSeletedIndex(index)}
                   >
                     <div className="">
                       <div className="font-serif text-lg xl:text-xl 2xl:text-2xl">
@@ -332,7 +302,7 @@ export const MediaCaption = () => {
                     } ${
                       selectedIndices.includes(index) ? "bg-red-500/10" : ""
                     }`}
-                    onClick={() => toggleRegion(index)}
+                    onClick={() => toggleSeletedIndex(index)}
                   >
                     <div className="">
                       <div className="text-serif text-lg xl:text-xl 2xl:text-2xl">

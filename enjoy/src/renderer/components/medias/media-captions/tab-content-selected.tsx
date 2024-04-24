@@ -13,9 +13,9 @@ import { convertIpaToNormal } from "@/utils";
 export function TabContentSelected(props: {
   caption: TimelineEntry;
   selectedIndices: number[];
-  toggleRegion: (index: number) => void;
+  setSelectedIndices: (params: number[]) => void;
 }) {
-  const { selectedIndices, caption, toggleRegion } = props;
+  const { selectedIndices, caption, setSelectedIndices } = props;
 
   const { transcription } = useContext(MediaPlayerProviderContext);
   const { webApi } = useContext(AppSettingsProviderContext);
@@ -232,7 +232,7 @@ export function TabContentSelected(props: {
         <Button
           size="sm"
           variant="secondary"
-          onClick={() => toggleRegion(selectedIndices[0])}
+          onClick={() => setSelectedIndices([])}
         >
           {t("cancel")}
         </Button>
