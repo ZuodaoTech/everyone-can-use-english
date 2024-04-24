@@ -4,7 +4,13 @@ import cloneDeep from "lodash/cloneDeep";
 import { Button, toast } from "@renderer/components/ui";
 import { ConversationShortcuts } from "@renderer/components";
 import { t } from "i18next";
-import { BotIcon, CopyIcon, CheckIcon, SpeechIcon } from "lucide-react";
+import {
+  BotIcon,
+  CopyIcon,
+  CheckIcon,
+  SpeechIcon,
+  NotebookIcon,
+} from "lucide-react";
 import {
   Timeline,
   TimelineEntry,
@@ -30,6 +36,7 @@ export const MediaCaption = () => {
   const [multiSelecting, setMultiSelecting] = useState<boolean>(false);
 
   const [displayIpa, setDisplayIpa] = useState<boolean>(true);
+  const [displayNotes, setDisplayNotes] = useState<boolean>(true);
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
 
@@ -253,6 +260,7 @@ export const MediaCaption = () => {
             currentSegmentIndex={currentSegmentIndex}
             activeIndex={activeIndex}
             displayIpa={displayIpa}
+            displayNotes={displayNotes}
             onClick={toggleSeletedIndex}
           />
         </MediaCaptionTabs>
@@ -268,6 +276,17 @@ export const MediaCaption = () => {
           onClick={() => setDisplayIpa(!displayIpa)}
         >
           <SpeechIcon className="w-4 h-4" />
+        </Button>
+
+        <Button
+          variant={displayNotes ? "secondary" : "outline"}
+          size="icon"
+          className="rounded-full w-8 h-8 p-0"
+          data-tooltip-id="media-player-tooltip"
+          data-tooltip-content={t("displayNotes")}
+          onClick={() => setDisplayNotes(!displayNotes)}
+        >
+          <NotebookIcon className="w-4 h-4" />
         </Button>
 
         <ConversationShortcuts
@@ -335,6 +354,7 @@ const Caption = (props: {
   currentSegmentIndex: number;
   activeIndex: number;
   displayIpa: boolean;
+  displayNotes: boolean;
   onClick: (index: number) => void;
 }) => {
   const {
@@ -343,8 +363,13 @@ const Caption = (props: {
     currentSegmentIndex,
     activeIndex,
     displayIpa,
+    displayNotes,
     onClick,
   } = props;
+
+  const { currentNotes } = useContext(MediaPlayerProviderContext);
+  const notes = currentNotes.filter((note) => note.parameters?.wordIndices);
+  const [notedWordIndices, setNotedWordIndices] = useState<number[]>([]);
 
   let words = caption.text.split(" ");
   const ipas = caption.timeline.map((w) =>
@@ -369,6 +394,10 @@ const Caption = (props: {
               index === activeIndex ? "text-red-500" : ""
             } ${
               selectedIndices.includes(index) ? "bg-red-500/10 selected" : ""
+            } ${
+              notedWordIndices.includes(index)
+                ? "border-b border-red-500 border-dashed"
+                : ""
             }`}
             onClick={() => onClick(index)}
           >
@@ -376,18 +405,34 @@ const Caption = (props: {
           </div>
           {displayIpa && (
             <div
-              className={`select-text text-sm 2xl:text-base text-muted-foreground font-code ${
+              className={`select-text text-sm 2xl:text-base text-muted-foreground font-code mb-1 ${
                 index === 0 ? "before:content-['/']" : ""
-              }
-                        ${
-                          index === caption.timeline.length - 1
-                            ? "after:content-['/']"
-                            : ""
-                        }`}
+              } ${
+                index === caption.timeline.length - 1
+                  ? "after:content-['/']"
+                  : ""
+              }`}
             >
               {ipas[index]}
             </div>
           )}
+          {displayNotes &&
+            notes
+              .filter((note) => note.parameters.wordIndices[0] === index)
+              .map((note) => (
+                <div
+                  className="mb-1 text-xs 2xl:text-sm text-red-500 max-w-64 line-clamp-3 font-code"
+                  onMouseOver={() =>
+                    setNotedWordIndices(note.parameters.wordIndices)
+                  }
+                  onMouseLeave={() => setNotedWordIndices([])}
+                  onClick={() =>
+                    document.getElementById("note-" + note.id)?.scrollIntoView()
+                  }
+                >
+                  {note.parameters.wordIndices[0] === index && note.content}
+                </div>
+              ))}
         </div>
       ))}
     </div>

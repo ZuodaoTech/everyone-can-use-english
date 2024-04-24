@@ -27,7 +27,7 @@ export const MediaCaptionTabs = (props: {
     children,
   } = props;
 
-  const [tab, setTab] = useState<string>("selected");
+  const [tab, setTab] = useState<string>("note");
 
   if (!caption) return null;
 
@@ -37,6 +37,11 @@ export const MediaCaptionTabs = (props: {
         {children}
 
         <div className="px-4 pb-10 min-h-32">
+          <TabContentNote
+            currentSegmentIndex={currentSegmentIndex}
+            selectedIndices={selectedIndices}
+            setSelectedIndices={setSelectedIndices}
+          />
           <TabContentSelected
             caption={caption}
             selectedIndices={selectedIndices}
@@ -46,15 +51,12 @@ export const MediaCaptionTabs = (props: {
           <TabContentTranslation text={caption.text} />
 
           <TabContentAnalysis text={caption.text} />
-
-          <TabContentNote
-            currentSegmentIndex={currentSegmentIndex}
-            selectedIndices={selectedIndices}
-            setSelectedIndices={setSelectedIndices}
-          />
         </div>
 
         <TabsList className="grid grid-cols-4 gap-4 rounded-none absolute w-full bottom-0 px-4">
+          <TabsTrigger value="note" className="block truncate px-1">
+            {t("captionTabs.note")}
+          </TabsTrigger>
           <TabsTrigger value="selected" className="block truncate px-1">
             {t("captionTabs.selected")}
           </TabsTrigger>
@@ -63,9 +65,6 @@ export const MediaCaptionTabs = (props: {
           </TabsTrigger>
           <TabsTrigger value="analysis" className="block truncate px-1">
             {t("captionTabs.analysis")}
-          </TabsTrigger>
-          <TabsTrigger value="note" className="block truncate px-1">
-            {t("captionTabs.note")}
           </TabsTrigger>
         </TabsList>
       </Tabs>

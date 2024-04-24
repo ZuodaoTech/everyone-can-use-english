@@ -26,8 +26,7 @@ export function TabContentNote(props: {
   selectedIndices: number[];
   setSelectedIndices: (indices: number[]) => void;
 }) {
-  const { currentSegmentIndex, selectedIndices, setSelectedIndices } =
-    props;
+  const { currentSegmentIndex, selectedIndices, setSelectedIndices } = props;
   const { media } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [segment, setSegment] = useState<SegmentType>();
@@ -103,18 +102,23 @@ const SegmentNotes = (props: {
 }) => {
   const { segment, selectedIndices, setSelectedIndices } = props;
   const [editingNote, setEditingNote] = useState<NoteType>();
+  const { setCurrentNotes } = useContext(MediaPlayerProviderContext);
 
   const { notes, findNotes, hasMore } = useNotes({
     targetId: segment?.id,
     targetType: "Segment",
   });
 
+  useEffect(() => {
+    setCurrentNotes(notes || []);
+  }, [notes]);
+
   if (!segment) return null;
 
   return (
     <div className="">
       {!editingNote && (
-        <div className="mb-4">
+        <div className="mb-6">
           <NoteForm
             segment={segment}
             selectedIndices={selectedIndices}
@@ -169,7 +173,7 @@ const NoteCard = (props: {
   };
 
   return (
-    <div className="w-full border rounded-lg p-4">
+    <div id={`note-${note.id}`} className="w-full border rounded-lg p-4">
       <div
         onClick={() => setCollapsed(!collapsed)}
         className="flex justify-between mb-2"
@@ -302,24 +306,28 @@ const NoteForm = (props: {
           onChange={(e) => setContent(e.target.value)}
         />
       </div>
-      {selectedIndices && (
-        <div className="flex space-x-2">
-          <span className="text-sm bg-muted px-1 rounded text-muted-foreground">
-            {selectedIndices
-              .map((index: number) => segment?.caption?.timeline?.[index]?.text)
-              .join(" ")}
-          </span>
-        </div>
-      )}
-      <div className="flex space-x-2 justify-end">
-        {note && (
-          <Button variant="secondary" size="sm" onClick={onCancel}>
-            {t("cancel")}
-          </Button>
+      <div className="flex items-center justify-between">
+        {selectedIndices && (
+          <div className="flex space-x-2">
+            <span className="text-sm bg-muted px-1 rounded text-muted-foreground">
+              {selectedIndices
+                .map(
+                  (index: number) => segment?.caption?.timeline?.[index]?.text
+                )
+                .join(" ")}
+            </span>
+          </div>
         )}
-        <Button size="sm" onClick={handleSubmit}>
-          {t("save")}
-        </Button>
+        <div className="flex space-x-2">
+          {note && (
+            <Button variant="secondary" size="sm" onClick={onCancel}>
+              {t("cancel")}
+            </Button>
+          )}
+          <Button size="sm" onClick={handleSubmit}>
+            {t("save")}
+          </Button>
+        </div>
       </div>
     </div>
   );

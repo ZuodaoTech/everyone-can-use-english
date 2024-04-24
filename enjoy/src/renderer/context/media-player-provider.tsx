@@ -75,6 +75,9 @@ type MediaPlayerContextType = {
   fetchRecordings: (offset: number) => void;
   loadingRecordings: boolean;
   hasMoreRecordings: boolean;
+  // Notes
+  currentNotes: NoteType[];
+  setCurrentNotes: (notes: NoteType[]) => void;
 };
 
 export const MediaPlayerProviderContext =
@@ -148,6 +151,8 @@ export const MediaPlayerProvider = ({
 
   const [transcriptionDraft, setTranscriptionDraft] =
     useState<TranscriptionType["result"]>();
+
+  const [currentNotes, setCurrentNotes] = useState<NoteType[]>([]);
 
   const {
     transcription,
@@ -558,6 +563,8 @@ export const MediaPlayerProvider = ({
           fetchRecordings,
           loadingRecordings,
           hasMoreRecordings,
+          currentNotes,
+          setCurrentNotes,
         }}
       >
         {children}
