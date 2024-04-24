@@ -14,6 +14,7 @@ class NotesHandler {
         targetId: params.targetId,
         targetType: params.targetType,
       },
+      include: [Segment],
       order: [["createdAt", "DESC"]],
     });
 

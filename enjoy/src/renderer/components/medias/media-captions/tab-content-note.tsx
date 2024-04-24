@@ -110,10 +110,7 @@ const SegmentNotes = (props: {
     <div className="">
       {!editingNote && (
         <div className="mb-4">
-          <NoteForm
-            segment={segment}
-            parameters={{ wordIndices: selectedIndices }}
-          />
+          <NoteForm segment={segment} selectedIndices={selectedIndices} />
         </div>
       )}
 
@@ -123,8 +120,9 @@ const SegmentNotes = (props: {
             {editingNote?.id === note.id ? (
               <NoteForm
                 segment={segment}
-                parameters={{ wordIndices: selectedIndices }}
+                selectedIndices={selectedIndices}
                 note={note}
+                onCancel={() => setEditingNote(null)}
                 onSave={() => setEditingNote(null)}
               />
             ) : (
@@ -194,17 +192,31 @@ const NoteCard = (props: {
           {note.content}
         </Markdown>
       )}
+
+      {note.parameters?.wordIndices && (
+        <div className="mt-2 flex">
+          <span className="text-muted-foreground text-sm bg-muted px-1 rounded">
+            {note.parameters.wordIndices
+              .map(
+                (index: number) =>
+                  note.segment?.caption?.timeline?.[index]?.text
+              )
+              .join(" ")}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
 
 const NoteForm = (props: {
   segment: SegmentType;
-  parameters: any;
   note?: NoteType;
+  selectedIndices?: number[];
+  onCancel?: () => void;
   onSave?: (note: NoteType) => void;
 }) => {
-  const { segment, parameters, note, onSave } = props;
+  const { segment, note, selectedIndices, onCancel, onSave } = props;
   const [content, setContent] = useState<string>(note?.content ?? "");
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
@@ -222,7 +234,10 @@ const NoteForm = (props: {
 
     if (note) {
       EnjoyApp.notes
-        .update(note.id, { content, parameters })
+        .update(note.id, {
+          content,
+          parameters: { wordIndices: selectedIndices },
+        })
         .then((note) => {
           onSave && onSave(note);
         })
@@ -234,7 +249,7 @@ const NoteForm = (props: {
         .create({
           targetId: segment.id,
           targetType: "Segment",
-          parameters,
+          parameters: { wordIndices: selectedIndices },
           content,
         })
         .then((note) => {
@@ -251,6 +266,11 @@ const NoteForm = (props: {
     resizeTextarea();
   }, [content]);
 
+  useEffect(() => {
+    if (!note) return;
+    if (note.parameters?.wordIndices === selectedIndices) return;
+  }, [note]);
+
   return (
     <div className="w-full">
       <div className="mb-2">
@@ -262,7 +282,21 @@ const NoteForm = (props: {
           onChange={(e) => setContent(e.target.value)}
         />
       </div>
-      <div className="flex justify-end">
+      {selectedIndices && (
+        <div className="flex space-x-2">
+          <span className="text-sm bg-muted px-1 rounded text-muted-foreground">
+            {selectedIndices
+              .map((index: number) => segment?.caption?.timeline?.[index]?.text)
+              .join(" ")}
+          </span>
+        </div>
+      )}
+      <div className="flex space-x-2 justify-end">
+        {note && (
+          <Button variant="secondary" size="sm" onClick={onCancel}>
+            {t("cancel")}
+          </Button>
+        )}
         <Button size="sm" onClick={handleSubmit}>
           {t("save")}
         </Button>

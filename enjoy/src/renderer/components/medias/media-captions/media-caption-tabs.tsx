@@ -3,7 +3,6 @@ import {
   Tabs,
   TabsList,
   TabsTrigger,
-  TabsContent,
   ScrollArea,
 } from "@renderer/components/ui";
 import { t } from "i18next";

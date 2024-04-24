@@ -3,6 +3,7 @@ type NoteType = {
   targetId: string;
   targetType: string;
   content: string;
+  parameters: any;
   syncedAt: Date;
   uploadedAt: Date;
   updatedAt: Date;
