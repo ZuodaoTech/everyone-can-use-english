@@ -2,21 +2,11 @@ import {
   AppSettingsProviderContext,
   MediaPlayerProviderContext,
 } from "@renderer/context";
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  TabsContent,
-  Textarea,
-  toast,
-} from "@renderer/components/ui";
+import { Button, TabsContent, toast } from "@renderer/components/ui";
 import { t } from "i18next";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNotes } from "@/renderer/hooks";
-import Markdown from "react-markdown";
-import { MoreHorizontalIcon } from "lucide-react";
+import { NoteCard, NoteForm } from "@renderer/components";
 
 /*
  * Note tab content.
@@ -121,8 +111,12 @@ const SegmentNotes = (props: {
         <div className="mb-6">
           <NoteForm
             segment={segment}
-            selectedIndices={selectedIndices}
-            setSelectedIndices={setSelectedIndices}
+            parameters={{ wordIndices: selectedIndices }}
+            onParametersChange={(param) => {
+              if (param.wordIndices) {
+                setSelectedIndices(param.wordIndices);
+              }
+            }}
           />
         </div>
       )}
@@ -133,8 +127,12 @@ const SegmentNotes = (props: {
             {editingNote?.id === note.id ? (
               <NoteForm
                 segment={segment}
-                selectedIndices={selectedIndices}
-                setSelectedIndices={setSelectedIndices}
+                parameters={{ wordIndices: selectedIndices }}
+                onParametersChange={(param) => {
+                  if (param.wordIndices) {
+                    setSelectedIndices(param.wordIndices);
+                  }
+                }}
                 note={note}
                 onCancel={() => setEditingNote(null)}
                 onSave={() => setEditingNote(null)}
@@ -156,179 +154,6 @@ const SegmentNotes = (props: {
           </Button>
         </div>
       )}
-    </div>
-  );
-};
-
-const NoteCard = (props: {
-  note: NoteType;
-  onEdit?: (note: NoteType) => void;
-}) => {
-  const { note, onEdit } = props;
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const [collapsed, setCollapsed] = useState<boolean>(true);
-
-  const handleDelete = () => {
-    EnjoyApp.notes.delete(note.id);
-  };
-
-  return (
-    <div id={`note-${note.id}`} className="w-full border rounded-lg p-4">
-      <div
-        onClick={() => setCollapsed(!collapsed)}
-        className="flex justify-between mb-2"
-      >
-        <span className="text-muted-foreground text-sm">
-          {new Date(note.createdAt).toLocaleString()}
-        </span>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="w-6 h-6">
-              <MoreHorizontalIcon className="w-5 h-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => onEdit && onEdit(note)}>
-              {t("edit")}
-            </DropdownMenuItem>
-
-            <DropdownMenuItem onClick={handleDelete}>
-              {t("delete")}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
-      {collapsed ? (
-        <div className="text-sm line-clamp-1">{note.content}</div>
-      ) : (
-        <Markdown className="prose-sm dark:prose-invert max-w-full">
-          {note.content}
-        </Markdown>
-      )}
-
-      {note.parameters?.wordIndices && (
-        <div className="mt-2 flex">
-          <span className="text-muted-foreground text-sm bg-muted px-1 rounded">
-            {note.parameters.wordIndices
-              .map(
-                (index: number) =>
-                  note.segment?.caption?.timeline?.[index]?.text
-              )
-              .join(" ")}
-          </span>
-        </div>
-      )}
-    </div>
-  );
-};
-
-const NoteForm = (props: {
-  segment: SegmentType;
-  note?: NoteType;
-  selectedIndices?: number[];
-  setSelectedIndices: (indices: number[]) => void;
-  onCancel?: () => void;
-  onSave?: (note: NoteType) => void;
-}) => {
-  const {
-    segment,
-    note,
-    selectedIndices,
-    setSelectedIndices,
-    onCancel,
-    onSave,
-  } = props;
-  const [content, setContent] = useState<string>(note?.content ?? "");
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-
-  const resizeTextarea = () => {
-    if (!inputRef.current) return;
-
-    inputRef.current.style.height = "auto";
-    inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
-  };
-
-  const handleSubmit = () => {
-    if (!content) return;
-
-    if (note) {
-      EnjoyApp.notes
-        .update(note.id, {
-          content,
-          parameters: { wordIndices: selectedIndices },
-        })
-        .then((note) => {
-          onSave && onSave(note);
-        })
-        .catch((err) => {
-          toast.error(err.message);
-        });
-    } else {
-      EnjoyApp.notes
-        .create({
-          targetId: segment.id,
-          targetType: "Segment",
-          parameters: { wordIndices: selectedIndices },
-          content,
-        })
-        .then((note) => {
-          onSave && onSave(note);
-          setContent("");
-        })
-        .catch((err) => {
-          toast.error(err.message);
-        });
-    }
-  };
-
-  useEffect(() => {
-    resizeTextarea();
-  }, [content]);
-
-  useEffect(() => {
-    if (!note) return;
-    if (note.parameters?.wordIndices === selectedIndices) return;
-
-    setSelectedIndices(note.parameters?.wordIndices || []);
-  }, [note]);
-
-  return (
-    <div className="w-full">
-      <div className="mb-2">
-        <Textarea
-          ref={inputRef}
-          className="w-full"
-          value={content}
-          placeholder={t("writeNoteHere")}
-          onChange={(e) => setContent(e.target.value)}
-        />
-      </div>
-      <div className="flex items-center justify-between">
-        {selectedIndices && (
-          <div className="flex space-x-2">
-            <span className="text-sm bg-muted px-1 rounded text-muted-foreground">
-              {selectedIndices
-                .map(
-                  (index: number) => segment?.caption?.timeline?.[index]?.text
-                )
-                .join(" ")}
-            </span>
-          </div>
-        )}
-        <div className="flex space-x-2">
-          {note && (
-            <Button variant="secondary" size="sm" onClick={onCancel}>
-              {t("cancel")}
-            </Button>
-          )}
-          <Button size="sm" onClick={handleSubmit}>
-            {t("save")}
-          </Button>
-        </div>
-      </div>
     </div>
   );
 };

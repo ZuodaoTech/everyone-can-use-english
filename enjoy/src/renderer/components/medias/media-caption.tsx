@@ -403,6 +403,7 @@ const Caption = (props: {
           >
             {word}
           </div>
+
           {displayIpa && (
             <div
               className={`select-text text-sm 2xl:text-base text-muted-foreground font-code mb-1 ${
@@ -416,6 +417,7 @@ const Caption = (props: {
               {ipas[index]}
             </div>
           )}
+
           {displayNotes &&
             notes
               .filter((note) => note.parameters.wordIndices[0] === index)
