@@ -7,7 +7,6 @@ import {
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
-import { TabContentSelected } from "./tab-content-selected";
 import { TabContentTranslation } from "./tab-content-translation";
 import { TabContentAnalysis } from "./tab-content-analysis";
 import { TabContentNote } from "./tab-content-note";

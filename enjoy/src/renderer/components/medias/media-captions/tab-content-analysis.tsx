@@ -64,7 +64,7 @@ export function TabContentAnalysis(props: { text: string; }) {
             {analysisResult}
           </Markdown>
 
-          <div className="flex items-center space-x-2 justify-end">
+          <div className="flex items-center space-x-2">
             <Button
               variant="secondary"
               size="sm"
