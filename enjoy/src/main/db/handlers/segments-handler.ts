@@ -44,10 +44,18 @@ class SegmentsHandler {
     return segment.toJSON();
   }
 
+  private async sync(_event: IpcMainEvent, id: string) {
+    const segment = await Segment.findByPk(id);
+    await segment.sync();
+    await segment.upload();
+    return segment.toJSON();
+  }
+
   register() {
     ipcMain.handle("segments-create", this.create);
     ipcMain.handle("segments-find", this.find);
     ipcMain.handle("segments-find-all", this.findAll);
+    ipcMain.handle("segments-sync", this.sync);
   }
 }
 

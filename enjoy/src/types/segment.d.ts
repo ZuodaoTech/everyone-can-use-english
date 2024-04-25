@@ -2,6 +2,7 @@ type SegmentType = {
   id: string;
   targetId: string;
   targetType: string;
+  caption: TimelineEntry;
   audio?: AudioType;
   video?: VideoType;
   segmentIndex: number;
@@ -9,6 +10,7 @@ type SegmentType = {
   caption: TimeLIne;
   startTime: number;
   endTime: number;
+  url?: string;
   syncedAt?: Date;
   uploadedAt?: Date
   updatedAt: Date

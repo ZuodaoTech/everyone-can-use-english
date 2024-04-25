@@ -275,6 +275,7 @@ type EnjoyAppType = {
       targetType: string;
       segmentIndex: number;
     }) => Promise<SegmentType>;
+    sync: (id: string) => Promise<SegmentType>;
   };
   notes: {
     findAll: (params: any) => Promise<NoteType[]>;
@@ -293,5 +294,6 @@ type EnjoyAppType = {
       content: string;
       parameters?: any;
     }) => Promise<NoteType>;
+    sync: (id: string) => Promise<NoteType>;
   };
 };

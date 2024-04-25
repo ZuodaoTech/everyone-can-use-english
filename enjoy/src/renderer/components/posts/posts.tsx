@@ -18,7 +18,7 @@ export const Posts = (props: { userId?: string }) => {
   const { webApi } = useContext(AppSettingsProviderContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [type, setType] = useState<
-    "all" | "recording" | "medium" | "story" | "prompt" | "gpt"
+    "all" | "recording" | "medium" | "story" | "prompt" | "gpt" | "note"
   >("all");
   const [by, setBy] = useState<"all" | "following">("following");
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -108,6 +108,9 @@ export const Posts = (props: { userId?: string }) => {
             </SelectItem>
             <SelectItem key="recording" value="recording">
               {t("recordingType")}
+            </SelectItem>
+            <SelectItem key="note" value="note">
+              {t("noteType")}
             </SelectItem>
             <SelectItem key="prompt" value="prompt">
               {t("promptType")}

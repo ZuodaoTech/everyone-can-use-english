@@ -86,12 +86,23 @@ class NotesHandler {
     });
   }
 
+  private async sync(_event: IpcMainEvent, id: string) {
+    const note = await Note.findByPk(id);
+    if (!note) {
+      throw new Error("Note not found");
+    }
+
+    await note.sync();
+    return note.toJSON();
+  }
+
   register() {
     ipcMain.handle("notes-find-all", this.findAll);
     ipcMain.handle("notes-find", this.find);
     ipcMain.handle("notes-update", this.update);
     ipcMain.handle("notes-delete", this.delete);
     ipcMain.handle("notes-create", this.create);
+    ipcMain.handle("notes-sync", this.sync);
   }
 }
 

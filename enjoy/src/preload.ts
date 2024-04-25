@@ -2,8 +2,6 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 import { version } from "../package.json";
-import { parameterize } from "@sentry/electron/main";
-import { find, update } from "lodash";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
@@ -490,6 +488,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     create: (params: any) => {
       return ipcRenderer.invoke("segments-create", params);
     },
+    sync: (id: string) => {
+      return ipcRenderer.invoke("segments-sync", id);
+    },
   },
   notes: {
     findAll: (params: {
@@ -508,6 +509,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     create: (params: any) => {
       return ipcRenderer.invoke("notes-create", params);
+    },
+    sync: (id: string) => {
+      return ipcRenderer.invoke("notes-sync", id);
     },
   },
 });

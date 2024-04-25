@@ -166,7 +166,7 @@ export class Client {
     page?: number;
     items?: number;
     userId?: string;
-    type?: "all" | "recording" | "medium" | "story" | "prompt" | "text" | "gpt";
+    type?: "all" | "recording" | "medium" | "story" | "prompt" | "text" | "gpt" | "note";
     by?: "following" | "all";
   }): Promise<
     {

@@ -44,6 +44,8 @@ export const PostAudio = (props: {
         targetMd5: audio.md5,
       })
       .then((response) => {
+        const transcription = response?.transcriptions?.[0];
+        if (transcription.targetMd5 !== audio.md5) return;
         setTranscription(response?.transcriptions?.[0]);
       });
   }, [audio.md5]);
