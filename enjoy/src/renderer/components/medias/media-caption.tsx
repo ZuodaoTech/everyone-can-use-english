@@ -423,7 +423,8 @@ const Caption = (props: {
               .filter((note) => note.parameters.wordIndices[0] === index)
               .map((note) => (
                 <div
-                  className="mb-1 text-xs 2xl:text-sm text-red-500 max-w-64 line-clamp-3 font-code"
+                  key={`note-${currentSegmentIndex}-${note.id}`}
+                  className="mb-1 text-xs 2xl:text-sm text-red-500 max-w-64 line-clamp-3 font-code cursor-pointer"
                   onMouseOver={() =>
                     setNotedWordIndices(note.parameters.wordIndices)
                   }

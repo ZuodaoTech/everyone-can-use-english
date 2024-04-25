@@ -109,6 +109,19 @@ export class Note extends Model<Note> {
   }
 
   @AfterDestroy
+  static destroyRemote(note: Note) {
+    const webApi = new Client({
+      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      accessToken: settings.getSync("user.accessToken") as string,
+      logger,
+    });
+
+    webApi.deleteNote(note.id).catch((err) => {
+      logger.error("delete remote note failed:", err.message);
+    });
+  }
+
+  @AfterDestroy
   static notifyForDestroy(note: Note) {
     this.notify(note, "destroy");
   }

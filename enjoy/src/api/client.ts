@@ -240,6 +240,10 @@ export class Client {
     return this.api.post("/api/notes", decamelizeKeys(note));
   }
 
+  deleteNote(id: string) {
+    return this.api.delete(`/api/notes/${id}`);
+  }
+
   syncRecording(recording: Partial<RecordingType>) {
     if (!recording) return;
 

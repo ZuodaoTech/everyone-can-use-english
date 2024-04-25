@@ -12,7 +12,6 @@ export const useNotes = (props: { targetId: string; targetType: string }) => {
   const [hasMore, setHasMore] = useState<boolean>(true);
 
   const findNotes = (params?: { offset: number }) => {
-    console.log("find notes ->", targetId, targetType);
     if (!targetId || !targetType) {
       setNotes([]);
       return;
@@ -30,7 +29,6 @@ export const useNotes = (props: { targetId: string; targetType: string }) => {
         offset,
       })
       .then((foundNotes) => {
-        console.log("found notes ->", foundNotes);
         if (offset === 0) {
           setNotes(foundNotes);
         } else {
