@@ -554,5 +554,8 @@
   "noFollowersYet": "还没有人关注",
   "notFollowingAnyoneYet": "还没有关注任何人",
   "startToNote": "开始做笔记",
-  "newNote": "新笔记"
+  "newNote": "新笔记",
+  "writeNoteHere": "开始做笔记",
+  "deleteNote": "删除笔记",
+  "areYouSureToDeleteThisNote": "您确定要删除这条笔记吗？"
 }

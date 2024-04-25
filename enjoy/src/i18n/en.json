@@ -555,5 +555,8 @@
   "noFollowersYet": "No followers yet",
   "notFollowingAnyoneYet": "Not following anyone yet",
   "startToNote": "Start to note",
-  "newNote": "New note"
+  "newNote": "New note",
+  "writeNoteHere": "Write your note here",
+  "deleteNote": "Delete note",
+  "areYouSureToDeleteThisNote": "Are you sure to delete this note?"
 }
