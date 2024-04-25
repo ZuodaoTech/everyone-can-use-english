@@ -77,6 +77,16 @@ export const MediaCaption = () => {
       toast.warning(t("currentRegionIsBeingEdited"));
       return;
     }
+    if (params.length === 0) {
+      if (activeRegion.id.startsWith("word-region")) {
+        activeRegion.remove();
+        setActiveRegion(
+          regions.getRegions().find((r) => r.id.startsWith("segment-region"))
+        );
+      }
+      return;
+    }
+
     const startIndex = Math.min(...params);
     const endIndex = Math.max(...params);
 
@@ -228,6 +238,10 @@ export const MediaCaption = () => {
       (transcription?.result?.timeline as Timeline)?.[currentSegmentIndex]
     );
   }, [currentSegmentIndex, transcription]);
+
+  useEffect(() => {
+    return () => setSelectedIndices([]);
+  }, [caption]);
 
   useEffect(() => {
     document.addEventListener("keydown", (event: KeyboardEvent) =>
