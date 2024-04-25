@@ -81,9 +81,9 @@ export const NoteForm = (props: {
         />
       </div>
       <div className="flex items-center justify-between">
-        {parameters.wordIndices && (
+        {parameters.wordIndices?.length > 0 ? (
           <div className="flex space-x-2">
-            <span className="text-sm bg-muted px-1 rounded text-muted-foreground">
+            <span className="text-sm px-1 rounded text-muted-foreground border-b border-red-500 border-dashed">
               {parameters.wordIndices
                 .map(
                   (index: number) => segment?.caption?.timeline?.[index]?.text
@@ -91,6 +91,8 @@ export const NoteForm = (props: {
                 .join(" ")}
             </span>
           </div>
+        ) : (
+          <div></div>
         )}
         <div className="flex space-x-2">
           {note && (

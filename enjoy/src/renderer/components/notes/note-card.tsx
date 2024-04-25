@@ -47,7 +47,7 @@ export const SegmentNoteCard = (props: {
       <div className="flex justify-between space-x-2">
         {note.parameters?.wordIndices?.length ? (
           <div className="flex">
-            <span className="text-muted-foreground text-sm bg-muted px-1 rounded">
+            <span className="text-muted-foreground text-sm px-1 border-b border-red-500 border-dashed">
               {note.parameters.wordIndices
                 .map(
                   (index: number) =>

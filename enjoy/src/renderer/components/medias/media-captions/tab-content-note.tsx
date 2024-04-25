@@ -22,7 +22,9 @@ export function TabContentNote(props: {
     return (
       <TabsContent value="note">
         <div className="py-4 flex justify-center items-center">
-          <Button onClick={createSegment}>{t("startToNote")}</Button>
+          <Button size="sm" onClick={createSegment}>
+            {t("startToNote")}
+          </Button>
         </div>
       </TabsContent>
     );
