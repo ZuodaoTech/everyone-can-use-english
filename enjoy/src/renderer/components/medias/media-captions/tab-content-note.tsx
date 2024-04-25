@@ -46,7 +46,7 @@ export function TabContentNote(props: {
             </div>
           )}
 
-          <div className="space-y-4 mb-4">
+          <div className="space-y-2 mb-4">
             {currentNotes.map((note) => (
               <div key={note.id} className="flex space-x-2">
                 {editingNote?.id === note.id ? (

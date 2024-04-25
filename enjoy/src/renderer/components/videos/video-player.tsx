@@ -27,7 +27,7 @@ export const VideoPlayer = (props: { id?: string; md5?: string }) => {
   return (
     <div data-testid="video-player" className={layout.wrapper}>
       <div className={`${layout.upperWrapper} mb-4`}>
-        <div className="grid grid-cols-5 xl:grid-cols-3 gap-6 px-6 h-full">
+        <div className="grid grid-cols-5 xl:grid-cols-3 gap-3 xl:gap-6 px-6 h-full">
           <div className={`col-span-2 xl:col-span-1 rounded-lg border shadow-lg ${layout.upperWrapper}`}>
             <MediaTabs />
           </div>
@@ -38,11 +38,11 @@ export const VideoPlayer = (props: { id?: string; md5?: string }) => {
       </div>
 
       <div className={`${layout.lowerWrapper} flex flex-col`}>
-        <div className={`${layout.playerWrapper} py-2 px-6`}>
+        <div className={`${layout.playerWrapper} py-2 px-3 xl:px-6`}>
           <MediaCurrentRecording />
         </div>
 
-        <div className={`${layout.playerWrapper} py-2 px-6`}>
+        <div className={`${layout.playerWrapper} py-2 px-3 xl:px-6`}>
           <MediaPlayer />
         </div>
 

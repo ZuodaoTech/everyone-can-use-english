@@ -98,7 +98,7 @@ export const NoteForm = (props: {
               {t("cancel")}
             </Button>
           )}
-          <Button size="sm" onClick={handleSubmit}>
+          <Button disabled={!content} size="sm" onClick={handleSubmit}>
             {t("save")}
           </Button>
         </div>

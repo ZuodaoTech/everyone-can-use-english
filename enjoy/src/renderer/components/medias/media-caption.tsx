@@ -9,7 +9,7 @@ import {
   CopyIcon,
   CheckIcon,
   SpeechIcon,
-  NotebookIcon,
+  NotebookPenIcon,
 } from "lucide-react";
 import {
   Timeline,
@@ -300,7 +300,7 @@ export const MediaCaption = () => {
           data-tooltip-content={t("displayNotes")}
           onClick={() => setDisplayNotes(!displayNotes)}
         >
-          <NotebookIcon className="w-4 h-4" />
+          <NotebookPenIcon className="w-4 h-4" />
         </Button>
 
         <ConversationShortcuts
