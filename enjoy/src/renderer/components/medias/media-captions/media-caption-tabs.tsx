@@ -42,23 +42,18 @@ export const MediaCaptionTabs = (props: {
             selectedIndices={selectedIndices}
             setSelectedIndices={setSelectedIndices}
           />
-          <TabContentSelected
+
+          <TabContentTranslation
             caption={caption}
             selectedIndices={selectedIndices}
-            setSelectedIndices={setSelectedIndices}
           />
-
-          <TabContentTranslation text={caption.text} />
 
           <TabContentAnalysis text={caption.text} />
         </div>
 
-        <TabsList className="grid grid-cols-4 gap-4 rounded-none absolute w-full bottom-0 px-4">
+        <TabsList className="grid grid-cols-3 gap-4 rounded-none absolute w-full bottom-0 px-4">
           <TabsTrigger value="note" className="block truncate px-1">
             {t("captionTabs.note")}
-          </TabsTrigger>
-          <TabsTrigger value="selected" className="block truncate px-1">
-            {t("captionTabs.selected")}
           </TabsTrigger>
           <TabsTrigger value="translation" className="block truncate px-1">
             {t("captionTabs.translation")}
