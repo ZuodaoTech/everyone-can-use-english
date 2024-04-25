@@ -36,11 +36,12 @@ class SegmentsHandler {
       segmentIndex: number;
     }
   ) {
-    return Segment.generate({
+    const segment = await Segment.generate({
       targetId: params.targetId,
       targetType: params.targetType,
       segmentIndex: params.segmentIndex,
     });
+    return segment.toJSON();
   }
 
   register() {
