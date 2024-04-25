@@ -18,8 +18,6 @@ export const TabContentNote = (props: {
   );
   const [editingNote, setEditingNote] = useState<NoteType>();
 
-  console.log("current notes ->", currentNotes);
-
   if (!currentSegment) {
     return (
       <TabsContent value="note">
