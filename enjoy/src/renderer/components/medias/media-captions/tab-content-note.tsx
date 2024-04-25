@@ -31,9 +31,7 @@ export function TabContentNote(props: {
         segmentIndex: currentSegmentIndex,
       })
       .then((segments) => {
-        if (segments.length) {
-          setSegment(segments[0]);
-        }
+        setSegment(segments[0]);
       })
       .catch((err) => {
         toast.error(err.message);
@@ -63,7 +61,7 @@ export function TabContentNote(props: {
     findSegment();
   }, [currentSegmentIndex]);
 
-  if (!segment)
+  if (!segment) {
     return (
       <TabsContent value="note">
         <div className="py-4 flex justify-center items-center">
@@ -71,6 +69,7 @@ export function TabContentNote(props: {
         </div>
       </TabsContent>
     );
+  }
 
   return (
     <TabsContent value="note">

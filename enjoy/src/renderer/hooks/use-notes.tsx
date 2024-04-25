@@ -12,7 +12,11 @@ export const useNotes = (props: { targetId: string; targetType: string }) => {
   const [hasMore, setHasMore] = useState<boolean>(true);
 
   const findNotes = (params?: { offset: number }) => {
-    if (!targetId || !targetType) return;
+    if (!targetId || !targetType) {
+      setNotes([]);
+      return;
+    }
+
     if (!hasMore) return;
 
     const { offset = 0 } = params || {};

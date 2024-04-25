@@ -12,12 +12,15 @@ class SegmentsHandler {
     params: {
       targetId: string;
       targetType: string;
+      segmentIndex: number;
     }
   ) {
+    const { targetId, targetType, segmentIndex } = params;
     const segments = await Segment.findAll({
       where: {
-        targetId: params.targetId,
-        targetType: params.targetType,
+        targetId,
+        targetType,
+        segmentIndex,
       },
       include: [Audio, Video],
     });
