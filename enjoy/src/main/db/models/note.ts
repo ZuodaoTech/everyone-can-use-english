@@ -126,14 +126,20 @@ export class Note extends Model<Note> {
     this.notify(note, "destroy");
   }
 
-  static notify(note: Note, action: "create" | "update" | "destroy") {
+  static async notify(note: Note, action: "create" | "update" | "destroy") {
     if (!mainWindow.win) return;
 
+    const segment = await Segment.findOne({ where: { id: note.targetId } });
+    const record = note.toJSON();
+
+    if (segment) {
+      record.segment = segment.toJSON();
+    }
     mainWindow.win.webContents.send("db-on-transaction", {
       model: "Note",
       id: note.id,
-      action: action,
-      record: note.toJSON(),
+      action,
+      record,
     });
   }
 }

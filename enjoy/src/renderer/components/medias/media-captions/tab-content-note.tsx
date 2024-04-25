@@ -7,16 +7,18 @@ import { NoteCard, NoteForm } from "@renderer/components";
 /*
  * Note tab content.
  */
-export function TabContentNote(props: {
+export const TabContentNote = (props: {
   currentSegmentIndex: number;
   selectedIndices: number[];
   setSelectedIndices: (indices: number[]) => void;
-}) {
+}) => {
   const { selectedIndices, setSelectedIndices } = props;
   const { currentSegment, createSegment, currentNotes } = useContext(
     MediaPlayerProviderContext
   );
   const [editingNote, setEditingNote] = useState<NoteType>();
+
+  console.log("current notes ->", currentNotes);
 
   if (!currentSegment) {
     return (
@@ -74,4 +76,4 @@ export function TabContentNote(props: {
       </div>
     </TabsContent>
   );
-}
+};
