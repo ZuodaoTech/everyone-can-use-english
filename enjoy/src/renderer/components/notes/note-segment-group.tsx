@@ -25,7 +25,11 @@ export const NoteSegmentGroup = (props: {
   });
 
   return (
-    <div className="bg-background p-4 rounded-lg border shadow-lg">
+    <div
+      className={`bg-background p-4 rounded-lg border transition-[shadow] ${
+        collapsed ? "" : "shadow-lg"
+      }`}
+    >
       <div className="flex items-center space-x-4">
         <div className="flex-1">
           <div className="line-clamp-3 text-muted-foreground font-serif pl-3 border-l-4 mb-4">
@@ -53,33 +57,36 @@ export const NoteSegmentGroup = (props: {
           )}
         </div>
       </div>
-      {!collapsed && (
-        <>
-          <Separator className="my-4" />
 
-          <div className="mb-4">
-            <NoteSemgent segment={segment} notes={notes} />
+      <div
+        className={`overflow-hidden transition-[height] ease-in-out duration-500 ${
+          collapsed ? "h-0" : "h-auto"
+        }`}
+      >
+        <Separator className="my-4" />
+
+        <div className="mb-4">
+          <NoteSemgent segment={segment} notes={notes} />
+        </div>
+
+        <div className="grid gap-2">
+          {notes.map((note) => (
+            <NoteCard key={note.id} note={note} />
+          ))}
+        </div>
+
+        {hasMore && (
+          <div className="flex justify-center mt-4">
+            <Button
+              onClick={() => findNotes({ offset: notes.length })}
+              variant="link"
+              size="sm"
+            >
+              {t("loadMore")}
+            </Button>
           </div>
-
-          <div className="grid gap-2">
-            {notes.map((note) => (
-              <NoteCard key={note.id} note={note} />
-            ))}
-          </div>
-
-          {hasMore && (
-            <div className="flex justify-center mt-4">
-              <Button
-                onClick={() => findNotes({ offset: notes.length })}
-                variant="link"
-                size="sm"
-              >
-                {t("loadMore")}
-              </Button>
-            </div>
-          )}
-        </>
-      )}
+        )}
+      </div>
       <div className="flex items-center justify-center">
         <Button
           onClick={() => setCollapsed(!collapsed)}
