@@ -9,6 +9,8 @@ import { t } from "i18next";
 import { toast } from "@renderer/components/ui";
 import { MediaRecordButton } from "@renderer/components";
 
+const ONE_MINUTE = 60;
+
 export const MediaRecorder = () => {
   const {
     layout,
@@ -92,6 +94,7 @@ export const MediaRecorder = () => {
 
     record.on("record-end", async (blob: Blob) => {
       createRecording({ blob, duration: Date.now() - startAt });
+      setIsRecording(false);
     });
     let interval: NodeJS.Timeout;
 
@@ -103,8 +106,8 @@ export const MediaRecorder = () => {
           setDuration(0);
           interval = setInterval(() => {
             setDuration((duration) => {
-              if (duration >= 3000) {
-                setIsRecording(false);
+              if (duration >= ONE_MINUTE) {
+                record.stopRecording();
               }
               return duration + 0.1;
             });
@@ -130,7 +133,7 @@ export const MediaRecorder = () => {
       <div className="flex-1 h-full border rounded-xl shadow-lg relative">
         <span className="absolute bottom-2 right-2 serif">
           {duration.toFixed(1)}
-          <span className="text-xs"> / 300</span>
+          <span className="text-xs"> / {ONE_MINUTE}</span>
         </span>
         <div className="h-full" ref={ref}></div>
       </div>
