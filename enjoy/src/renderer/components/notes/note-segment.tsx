@@ -1,5 +1,6 @@
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
 import { useState } from "react";
+import { WavesurferPlayer } from "@renderer/components/widgets";
 
 export const NoteSemgent = (props: {
   segment: SegmentType;
@@ -72,6 +73,8 @@ export const NoteSemgent = (props: {
           </div>
         ))}
       </div>
+
+      {segment.src && <WavesurferPlayer id={segment.id} src={segment.src} />}
     </>
   );
 };

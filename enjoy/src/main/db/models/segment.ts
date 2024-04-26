@@ -86,6 +86,15 @@ export class Segment extends Model<Segment> {
     return Boolean(this.uploadedAt) && this.uploadedAt >= this.updatedAt;
   }
 
+  @Column(DataType.VIRTUAL)
+  get src(): string {
+    return `enjoy://${path.posix.join(
+      "library",
+      "segments",
+      this.getDataValue("md5") + "." + OUTPUT_FORMAT
+    )}`;
+  }
+
   get filePath(): string {
     return path.join(
       settings.userDataPath(),

@@ -10,7 +10,7 @@ type SegmentType = {
   caption: TimeLIne;
   startTime: number;
   endTime: number;
-  url?: string;
+  src: string;
   syncedAt?: Date;
   uploadedAt?: Date
   updatedAt: Date

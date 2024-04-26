@@ -136,10 +136,10 @@ export const Posts = (props: { userId?: string }) => {
 
       <div className="space-y-6">
         {posts.map((post) => (
-          <>
-            <PostCard key={post.id} post={post} handleDelete={handleDelete} />
+          <div key={post.id}>
+            <PostCard post={post} handleDelete={handleDelete} />
             <Separator />
-          </>
+          </div>
         ))}
       </div>
 

@@ -565,5 +565,6 @@
   "writeNoteHere": "Write your note here",
   "deleteNote": "Delete note",
   "areYouSureToDeleteThisNote": "Are you sure to delete this note?",
-  "notesCount": "{{count}} notes"
+  "notesCount": "{{count}} notes",
+  "source": "source"
 }
