@@ -35,8 +35,8 @@
                 <text id="舌面（Tongue-blade）" font-family="PingFangSC-Regular, PingFang SC" font-size="40" font-weight="normal" fill="#000000">
                     <tspan x="647" y="698">舌面（Tongue blade）</tspan>
                 </text>
-                <text id="舍末（Tongue-back）" font-family="PingFangSC-Regular, PingFang SC" font-size="40" font-weight="normal" fill="#000000">
-                    <tspan x="1107" y="830">舍末（Tongue back）</tspan>
+                <text id="舌末（Tongue-back）" font-family="PingFangSC-Regular, PingFang SC" font-size="40" font-weight="normal" fill="#000000">
+                    <tspan x="1107" y="830">舌末（Tongue back）</tspan>
                 </text>
             </g>
         </g>
