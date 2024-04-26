@@ -26,6 +26,32 @@ class NotesHandler {
     }).then((notes) => notes.map((note) => note.toJSON()));
   }
 
+  private async groupBySegment(
+    _event: IpcMainEvent,
+    targetId: string,
+    targetType: string
+  ) {
+    return Note.findAll({
+      include: [
+        {
+          model: Segment,
+          as: "segment",
+          attributes: ["id", "segmentIndex"],
+        },
+      ],
+      attributes: [
+        "targetId",
+        "targetType",
+        [Sequelize.fn("COUNT", Sequelize.col("note.id")), "count"],
+      ],
+      group: ["targetId", "targetType"],
+      where: {
+        "$segment.target_id$": targetId,
+        "$segment.target_type$": targetType,
+      },
+    }).then((notes) => notes.map((note) => note.toJSON()));
+  }
+
   private async findAll(
     _event: IpcMainEvent,
     params: {
@@ -131,6 +157,7 @@ class NotesHandler {
 
   register() {
     ipcMain.handle("notes-group-by-target", this.groupByTarget);
+    ipcMain.handle("notes-group-by-segment", this.groupBySegment);
     ipcMain.handle("notes-find-all", this.findAll);
     ipcMain.handle("notes-find", this.find);
     ipcMain.handle("notes-update", this.update);
