@@ -120,7 +120,7 @@ export const ProxySettings = () => {
                 </Button>
                 <Button
                   variant="default"
-                  onClick={() => setEditing(!editing)}
+                  onClick={() => onSubmit(form.getValues())}
                   size="sm"
                 >
                   {t("save")}
