@@ -17,6 +17,7 @@ import User from "./pages/user";
 import Home from "./pages/home";
 import Community from "./pages/community";
 import StoryPreview from "./pages/story-preview";
+import Notes from "./pages/notes";
 
 export default createHashRouter([
   {
@@ -80,6 +81,10 @@ export default createHashRouter([
       {
         path: "/stories/preview/:uri",
         element: <StoryPreview />,
+      },
+      {
+        path: "/notes",
+        element: <Notes />,
       },
     ],
   },

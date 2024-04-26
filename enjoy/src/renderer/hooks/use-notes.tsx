@@ -11,14 +11,13 @@ export const useNotes = (props: { targetId: string; targetType: string }) => {
   const [notes, setNotes] = useState<NoteType[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
 
-  const findNotes = (params?: { offset: number }) => {
+  const findNotes = (params?: { offset: number; limit?: number }) => {
     if (!targetId || !targetType) {
       setNotes([]);
       return;
     }
 
-    const { offset = 0 } = params || {};
-    const limit = 100;
+    const { offset = 0, limit = 100 } = params || {};
     if (offset > 0 && !hasMore) return;
 
     EnjoyApp.notes

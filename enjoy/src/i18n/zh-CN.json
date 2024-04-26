@@ -141,7 +141,8 @@
     "translator": "翻译助手",
     "mine": "我的",
     "preferences": "软件设置",
-    "profile": "个人主页"
+    "profile": "个人主页",
+    "notes": "笔记"
   },
   "form": {
     "lengthMustBeAtLeast": "{{field}} 长度不可超过 {{length}} 个字符",
@@ -562,5 +563,6 @@
   "newNote": "新笔记",
   "writeNoteHere": "开始做笔记",
   "deleteNote": "删除笔记",
-  "areYouSureToDeleteThisNote": "您确定要删除这条笔记吗？"
+  "areYouSureToDeleteThisNote": "您确定要删除这条笔记吗？",
+  "notesCount": "{{count}} 条笔记"
 }

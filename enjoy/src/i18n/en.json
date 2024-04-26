@@ -141,7 +141,8 @@
     "translator": "Translator",
     "mine": "Mine",
     "preferences": "Preferences",
-    "profile": "My Profile"
+    "profile": "My Profile",
+    "notes": "Note"
   },
   "form": {
     "lengthMustBeAtLeast": "{{field}} must be at least {{length}} characters",
@@ -563,5 +564,6 @@
   "newNote": "New note",
   "writeNoteHere": "Write your note here",
   "deleteNote": "Delete note",
-  "areYouSureToDeleteThisNote": "Are you sure to delete this note?"
+  "areYouSureToDeleteThisNote": "Are you sure to delete this note?",
+  "notesCount": "{{count}} notes"
 }

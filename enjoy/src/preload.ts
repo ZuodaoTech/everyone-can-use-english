@@ -493,6 +493,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   notes: {
+    groupByTarget: (params?: { limit?: number; offset?: number }) => {
+      return ipcRenderer.invoke("notes-group-by-target", params);
+    },
     findAll: (params: {
       targetId?: string;
       targetType?: string;

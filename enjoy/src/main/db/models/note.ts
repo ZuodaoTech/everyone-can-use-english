@@ -66,6 +66,16 @@ export class Note extends Model<Note> {
       logger,
     });
 
+    // Sync the segment if the note is related to a segment
+    if (this.targetType === "Segment") {
+      const segment = await Segment.findByPk(this.targetId);
+      if (!segment) {
+        throw new Error("Segment not found");
+      }
+
+      await segment.sync();
+    }
+
     return webApi.syncNote(this.toJSON()).then(() => {
       const now = new Date();
       this.update({ syncedAt: now, updatedAt: now });
@@ -76,12 +86,12 @@ export class Note extends Model<Note> {
   static async syncAfterFind(notes: Note[]) {
     if (!notes.length) return;
 
-    const unsyncedNotes = notes.filter((note) => !note.isSynced);
+    const unsyncedNotes = notes.filter((note) => note.id && !note.isSynced);
     if (!unsyncedNotes.length) return;
 
     unsyncedNotes.forEach((note) => {
       note.sync().catch((err) => {
-        logger.error("sync error", err);
+        logger.error("sync note error", note.id, err);
       });
     });
   }

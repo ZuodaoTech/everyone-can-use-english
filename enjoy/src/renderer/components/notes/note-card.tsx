@@ -116,9 +116,11 @@ const NoteActionsDropdownMenu = (props: {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => onEdit && onEdit(note)}>
-            {t("edit")}
-          </DropdownMenuItem>
+          {onEdit && (
+            <DropdownMenuItem onClick={() => onEdit(note)}>
+              {t("edit")}
+            </DropdownMenuItem>
+          )}
 
           <DropdownMenuItem onClick={() => setSharing(true)}>
             {t("share")}

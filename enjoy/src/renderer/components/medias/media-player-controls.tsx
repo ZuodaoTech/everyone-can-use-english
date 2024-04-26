@@ -57,7 +57,9 @@ export const MediaPlayerControls = () => {
     setTranscriptionDraft,
   } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { currentHotkeys, enabled } = useContext(HotKeysSettingsProviderContext)
+  const { currentHotkeys, enabled } = useContext(
+    HotKeysSettingsProviderContext
+  );
   const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("single");
   const [playbackRate, setPlaybackRate] = useState<number>(1);
   const [grouping, setGrouping] = useState(false);
@@ -325,8 +327,7 @@ export const MediaPlayerControls = () => {
     if (!decoded) return;
     if (!wavesurfer) return;
 
-    setCurrentSegmentIndex(0);
-    const segment = transcription.result.timeline[0];
+    const segment = transcription.result.timeline[currentSegmentIndex];
     wavesurfer.seekTo(
       Math.floor((segment.startTime / wavesurfer.getDuration()) * 1e8) / 1e8
     );
@@ -374,7 +375,13 @@ export const MediaPlayerControls = () => {
   }, [wavesurfer, decoded, playMode, activeRegion, currentTime]);
 
   useHotkeys(
-    [currentHotkeys.PlayOrPause, currentHotkeys.PlayPreviousSegment, currentHotkeys.PlayNextSegment, currentHotkeys.StartOrStopRecording, currentHotkeys.Compare],
+    [
+      currentHotkeys.PlayOrPause,
+      currentHotkeys.PlayPreviousSegment,
+      currentHotkeys.PlayNextSegment,
+      currentHotkeys.StartOrStopRecording,
+      currentHotkeys.Compare,
+    ],
     (keyboardEvent, hotkeyEvent) => {
       if (!wavesurfer) return;
       keyboardEvent.preventDefault();
@@ -396,8 +403,9 @@ export const MediaPlayerControls = () => {
           document.getElementById("media-compare-button").click();
           break;
       }
-    },{
-      enabled
+    },
+    {
+      enabled,
     },
     [wavesurfer, currentHotkeys]
   );

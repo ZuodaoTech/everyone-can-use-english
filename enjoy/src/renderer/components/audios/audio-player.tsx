@@ -11,15 +11,26 @@ import {
 } from "@renderer/components";
 import { useAudio } from "@renderer/hooks";
 
-export const AudioPlayer = (props: { id?: string; md5?: string }) => {
-  const { id, md5 } = props;
-  const { setMedia, layout } = useContext(MediaPlayerProviderContext);
+export const AudioPlayer = (props: {
+  id?: string;
+  md5?: string;
+  segmentIndex?: number;
+}) => {
+  const { id, md5, segmentIndex } = props;
+  const { setMedia, layout, setCurrentSegmentIndex } = useContext(
+    MediaPlayerProviderContext
+  );
   const { audio } = useAudio({ id, md5 });
 
   useEffect(() => {
     if (!audio) return;
     setMedia(audio);
   }, [audio]);
+
+  useEffect(() => {
+    if (!segmentIndex) return;
+    setCurrentSegmentIndex(segmentIndex);
+  }, []);
 
   if (!layout) return <LoaderSpin />;
 

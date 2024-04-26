@@ -278,6 +278,7 @@ type EnjoyAppType = {
     sync: (id: string) => Promise<SegmentType>;
   };
   notes: {
+    groupByTarget: (params: any) => Promise<any>;
     findAll: (params: any) => Promise<NoteType[]>;
     find: (id: string) => Promise<NoteType>;
     update: (

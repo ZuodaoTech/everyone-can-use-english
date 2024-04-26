@@ -1,19 +1,52 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { Note, Segment } from "@main/db/models";
+import { Sequelize } from "sequelize";
 
 class NotesHandler {
+  private async groupByTarget(
+    _event: IpcMainEvent,
+    params: {
+      limit?: number;
+      offset?: number;
+    }
+  ) {
+    const { limit, offset } = params;
+
+    return Note.findAll({
+      include: [Segment],
+      attributes: [
+        "targetId",
+        "targetType",
+        [Sequelize.fn("COUNT", Sequelize.col("note.id")), "count"],
+      ],
+      group: ["targetId", "targetType"],
+      order: [["created_at", "DESC"]],
+      limit,
+      offset,
+    }).then((notes) => notes.map((note) => note.toJSON()));
+  }
+
   private async findAll(
     _event: IpcMainEvent,
     params: {
-      targetId: string;
-      targetType: string;
+      targetId?: string;
+      targetType?: string;
+      limit?: number;
+      offset?: number;
     }
   ) {
+    const { targetId, targetType, limit, offset } = params;
+
+    const where: any = {};
+    if (targetId && targetType) {
+      where["targetId"] = targetId;
+      where["targetType"] = targetType;
+    }
+
     const notes = await Note.findAll({
-      where: {
-        targetId: params.targetId,
-        targetType: params.targetType,
-      },
+      where,
+      limit: limit,
+      offset: offset,
       include: [Segment],
       order: [["createdAt", "DESC"]],
     });
@@ -97,6 +130,7 @@ class NotesHandler {
   }
 
   register() {
+    ipcMain.handle("notes-group-by-target", this.groupByTarget);
     ipcMain.handle("notes-find-all", this.findAll);
     ipcMain.handle("notes-find", this.find);
     ipcMain.handle("notes-update", this.update);
