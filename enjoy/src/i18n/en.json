@@ -566,5 +566,6 @@
   "deleteNote": "Delete note",
   "areYouSureToDeleteThisNote": "Are you sure to delete this note?",
   "notesCount": "{{count}} notes",
-  "source": "source"
+  "source": "source",
+  "noNotesYet": "No notes yet"
 }

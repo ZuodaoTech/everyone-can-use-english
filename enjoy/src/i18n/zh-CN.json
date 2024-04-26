@@ -565,5 +565,6 @@
   "deleteNote": "删除笔记",
   "areYouSureToDeleteThisNote": "您确定要删除这条笔记吗？",
   "notesCount": "{{count}} 条笔记",
-  "source": "来源"
+  "source": "来源",
+  "noNotesYet": "还没有笔记"
 }

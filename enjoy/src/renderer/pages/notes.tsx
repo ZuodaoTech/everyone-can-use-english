@@ -56,6 +56,12 @@ export default function Notes() {
           <span>{t("sidebar.notes")}</span>
         </div>
 
+        {groups.length === 0 && (
+          <div className="flex justify-center">
+            <div className="my-4 text-muted-foreground text-sm">{t("noNotesYet")}</div>
+          </div>
+        )}
+
         <div className="flex flex-col space-y-4">
           {groups.map((group) => (
             <NoteSegmentGroup

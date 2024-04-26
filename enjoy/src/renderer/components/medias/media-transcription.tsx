@@ -22,7 +22,6 @@ import {
   LoaderIcon,
   CheckCircleIcon,
   MicIcon,
-  PencilIcon,
   PencilLineIcon,
 } from "lucide-react";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
