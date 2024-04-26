@@ -269,7 +269,7 @@ export class Audio extends Model<Audio> {
     }
 
     // Check if file format is supported
-    const extname = path.extname(filePath);
+    const extname = path.extname(filePath).toLocaleLowerCase();
     if (VideoFormats.includes(extname.split(".").pop() as string)) {
       return Video.buildFromLocalFile(filePath, params);
     } else if (!AudioFormats.includes(extname.split(".").pop() as string)) {
