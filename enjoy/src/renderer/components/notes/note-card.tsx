@@ -40,7 +40,7 @@ export const SegmentNoteCard = (props: {
       id={`note-${note.id}`}
       className="w-full rounded px-4 py-2 bg-muted/50"
     >
-      <Markdown className="prose prose-sm dark:prose-invert max-w-full mb-2">
+      <Markdown className="select-text prose prose-sm dark:prose-invert max-w-full mb-2">
         {note.content}
       </Markdown>
 

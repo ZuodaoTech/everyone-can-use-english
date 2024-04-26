@@ -32,7 +32,7 @@ export const NoteSegmentGroup = (props: {
     >
       <div className="flex items-center space-x-4">
         <div className="flex-1">
-          <div className="line-clamp-3 text-muted-foreground font-serif pl-3 border-l-4 mb-4">
+          <div className="select-text line-clamp-3 text-muted-foreground font-serif pl-3 border-l-4 mb-4">
             {segment.caption.text}
           </div>
           <div className="font-mono text-lg mb-4">
@@ -69,14 +69,14 @@ export const NoteSegmentGroup = (props: {
           <NoteSemgent segment={segment} notes={notes} />
         </div>
 
-        <div className="grid gap-2">
+        <div className="grid gap-2 mb-2">
           {notes.map((note) => (
             <NoteCard key={note.id} note={note} />
           ))}
         </div>
 
         {hasMore && (
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center mb-2">
             <Button
               onClick={() => findNotes({ offset: notes.length })}
               variant="link"

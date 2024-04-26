@@ -37,6 +37,7 @@ contextMenu({
   showInspectElement: false,
   showLookUpSelection: false,
   showLearnSpelling: false,
+  showSelectAll: false,
   labels: {
     copy: t("copy"),
     cut: t("cut"),
@@ -44,7 +45,7 @@ contextMenu({
     selectAll: t("selectAll"),
   },
   shouldShowMenu: (_event, params) => {
-    return params.isEditable;
+    return params.isEditable || !!params.selectionText;
   },
 });
 

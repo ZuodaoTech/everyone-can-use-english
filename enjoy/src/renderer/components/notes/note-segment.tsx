@@ -31,7 +31,7 @@ export const NoteSemgent = (props: {
             id={`note-segment-${segment.id}-${index}`}
           >
             <div
-              className={`font-serif text-lg xl:text-xl 2xl:text-2xl cursor-pointer p-1 ${
+              className={`select-text font-serif text-lg xl:text-xl 2xl:text-2xl p-1 ${
                 notedquoteIndices.includes(index)
                   ? "border-b border-red-500 border-dashed"
                   : ""
