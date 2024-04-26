@@ -285,7 +285,7 @@ export class Video extends Model<Video> {
     }
 
     // Check if file format is supported
-    const extname = path.extname(filePath);
+    const extname = path.extname(filePath).toLocaleLowerCase();
     if (AudioFormats.includes(extname.split(".").pop() as string)) {
       return Audio.buildFromLocalFile(filePath, params);
     } else if (!VideoFormats.includes(extname.split(".").pop() as string)) {
