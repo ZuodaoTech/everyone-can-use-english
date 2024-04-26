@@ -12,7 +12,7 @@ export const PostNote = (props: { note: NoteType }) => {
       {note.segment && (
         <NoteSemgent
           segment={note.segment}
-          wordIndices={note.parameters.wordIndices}
+          quoteIndices={note.parameters.quoteIndices}
         />
       )}
     </div>
@@ -21,9 +21,9 @@ export const PostNote = (props: { note: NoteType }) => {
 
 const NoteSemgent = (props: {
   segment: SegmentType;
-  wordIndices: number[];
+  quoteIndices: number[];
 }) => {
-  const { segment, wordIndices = [] } = props;
+  const { segment, quoteIndices = [] } = props;
   const caption: TimelineEntry = segment.caption;
 
   let words = caption.text.split(" ");
@@ -47,7 +47,7 @@ const NoteSemgent = (props: {
           >
             <div
               className={`font-serif text-lg xl:text-xl 2xl:text-2xl cursor-pointer p-1 ${
-                wordIndices.includes(index)
+                quoteIndices.includes(index)
                   ? "border-b border-red-500 border-dashed"
                   : ""
               }

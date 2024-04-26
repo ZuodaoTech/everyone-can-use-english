@@ -45,15 +45,10 @@ export const SegmentNoteCard = (props: {
       </Markdown>
 
       <div className="flex justify-between space-x-2">
-        {note.parameters?.wordIndices?.length && note.segment ? (
+        {note.parameters?.quote ? (
           <div className="flex">
             <span className="text-muted-foreground text-sm px-1 border-b border-red-500 border-dashed">
-              {note.parameters.wordIndices
-                .map(
-                  (index: number) =>
-                    note.segment?.caption?.timeline?.[index]?.text
-                )
-                .join(" ")}
+              {note.parameters.quote}
             </span>
           </div>
         ) : (

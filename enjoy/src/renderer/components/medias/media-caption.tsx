@@ -382,8 +382,8 @@ const Caption = (props: {
   } = props;
 
   const { currentNotes } = useContext(MediaPlayerProviderContext);
-  const notes = currentNotes.filter((note) => note.parameters?.wordIndices);
-  const [notedWordIndices, setNotedWordIndices] = useState<number[]>([]);
+  const notes = currentNotes.filter((note) => note.parameters?.quoteIndices);
+  const [notedquoteIndices, setNotedquoteIndices] = useState<number[]>([]);
 
   let words = caption.text.split(" ");
   const ipas = caption.timeline.map((w) =>
@@ -409,7 +409,7 @@ const Caption = (props: {
             } ${
               selectedIndices.includes(index) ? "bg-red-500/10 selected" : ""
             } ${
-              notedWordIndices.includes(index)
+              notedquoteIndices.includes(index)
                 ? "border-b border-red-500 border-dashed"
                 : ""
             }`}
@@ -434,20 +434,20 @@ const Caption = (props: {
 
           {displayNotes &&
             notes
-              .filter((note) => note.parameters.wordIndices[0] === index)
+              .filter((note) => note.parameters.quoteIndices[0] === index)
               .map((note) => (
                 <div
                   key={`note-${currentSegmentIndex}-${note.id}`}
                   className="mb-1 text-xs 2xl:text-sm text-red-500 max-w-64 line-clamp-3 font-code cursor-pointer"
                   onMouseOver={() =>
-                    setNotedWordIndices(note.parameters.wordIndices)
+                    setNotedquoteIndices(note.parameters.quoteIndices)
                   }
-                  onMouseLeave={() => setNotedWordIndices([])}
+                  onMouseLeave={() => setNotedquoteIndices([])}
                   onClick={() =>
                     document.getElementById("note-" + note.id)?.scrollIntoView()
                   }
                 >
-                  {note.parameters.wordIndices[0] === index && note.content}
+                  {note.parameters.quoteIndices[0] === index && note.content}
                 </div>
               ))}
         </div>

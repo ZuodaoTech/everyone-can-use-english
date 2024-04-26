@@ -8,7 +8,7 @@ export const NoteSemgent = (props: {
   const { segment, notes } = props;
   const caption: TimelineEntry = segment.caption;
 
-  const [notedWordIndices, setNotedWordIndices] = useState<number[]>([]);
+  const [notedquoteIndices, setNotedquoteIndices] = useState<number[]>([]);
 
   let words = caption.text.split(" ");
   const ipas = caption.timeline.map((w) =>
@@ -31,7 +31,7 @@ export const NoteSemgent = (props: {
           >
             <div
               className={`font-serif text-lg xl:text-xl 2xl:text-2xl cursor-pointer p-1 ${
-                notedWordIndices.includes(index)
+                notedquoteIndices.includes(index)
                   ? "border-b border-red-500 border-dashed"
                   : ""
               }
@@ -53,20 +53,20 @@ export const NoteSemgent = (props: {
             </div>
 
             {notes
-              .filter((note) => note.parameters.wordIndices[0] === index)
+              .filter((note) => note.parameters.quoteIndices?.[0] === index)
               .map((note) => (
                 <div
                   key={`note-${segment.id}-${note.id}`}
                   className="mb-1 text-xs 2xl:text-sm text-red-500 max-w-64 line-clamp-3 font-code cursor-pointer"
                   onMouseOver={() =>
-                    setNotedWordIndices(note.parameters.wordIndices)
+                    setNotedquoteIndices(note.parameters.quoteIndices)
                   }
-                  onMouseLeave={() => setNotedWordIndices([])}
+                  onMouseLeave={() => setNotedquoteIndices([])}
                   onClick={() =>
                     document.getElementById("note-" + note.id)?.scrollIntoView()
                   }
                 >
-                  {note.parameters.wordIndices[0] === index && note.content}
+                  {note.parameters.quoteIndices[0] === index && note.content}
                 </div>
               ))}
           </div>

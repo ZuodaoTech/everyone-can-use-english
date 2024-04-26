@@ -7,8 +7,7 @@ import {
 import { Button, Separator } from "@renderer/components/ui";
 import { t } from "i18next";
 import { Link } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import { AppSettingsProviderContext } from "@renderer/context";
+import { useState } from "react";
 import { useNotes } from "@/renderer/hooks";
 import { NoteCard } from "./note-card";
 import { NoteSemgent } from "./note-segment";
@@ -57,17 +56,28 @@ export const NoteSegmentGroup = (props: {
       {!collapsed && (
         <>
           <Separator className="my-4" />
+
           <div className="mb-4">
-            <NoteSemgent
-              segment={segment}
-              notes={notes}
-            />
+            <NoteSemgent segment={segment} notes={notes} />
           </div>
+
           <div className="grid gap-2">
             {notes.map((note) => (
               <NoteCard key={note.id} note={note} />
             ))}
           </div>
+
+          {hasMore && (
+            <div className="flex justify-center mt-4">
+              <Button
+                onClick={() => findNotes({ offset: notes.length })}
+                variant="link"
+                size="sm"
+              >
+                {t("loadMore")}
+              </Button>
+            </div>
+          )}
         </>
       )}
       <div className="flex items-center justify-center">

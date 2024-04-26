@@ -38,10 +38,18 @@ export const TabContentNote = (props: {
             <div className="mb-6">
               <NoteForm
                 segment={currentSegment}
-                parameters={{ wordIndices: selectedIndices }}
+                parameters={{
+                  quoteIndices: selectedIndices,
+                  quote: selectedIndices
+                    .map(
+                      (index: number) =>
+                        currentSegment?.caption?.timeline?.[index]?.text
+                    )
+                    .join(" "),
+                }}
                 onParametersChange={(param) => {
-                  if (param.wordIndices) {
-                    setSelectedIndices(param.wordIndices);
+                  if (param.quoteIndices) {
+                    setSelectedIndices(param.quoteIndices);
                   }
                 }}
               />
@@ -54,10 +62,18 @@ export const TabContentNote = (props: {
                 {editingNote?.id === note.id ? (
                   <NoteForm
                     segment={currentSegment}
-                    parameters={{ wordIndices: selectedIndices }}
+                    parameters={{
+                      quoteIndices: selectedIndices,
+                      quote: selectedIndices
+                        .map(
+                          (index: number) =>
+                            currentSegment?.caption?.timeline?.[index]?.text
+                        )
+                        .join(" "),
+                    }}
                     onParametersChange={(param) => {
-                      if (param.wordIndices) {
-                        setSelectedIndices(param.wordIndices);
+                      if (param.quoteIndices) {
+                        setSelectedIndices(param.quoteIndices);
                       }
                     }}
                     note={note}

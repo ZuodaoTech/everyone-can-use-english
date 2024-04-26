@@ -6,7 +6,7 @@ import { t } from "i18next";
 export const NoteForm = (props: {
   segment: SegmentType;
   note?: NoteType;
-  parameters: { wordIndices: number[] };
+  parameters: { quoteIndices: number[]; quote: string };
   onParametersChange?: (parameters: any) => void;
   onCancel?: () => void;
   onSave?: (note: NoteType) => void;
@@ -81,10 +81,10 @@ export const NoteForm = (props: {
         />
       </div>
       <div className="flex items-center justify-between">
-        {parameters.wordIndices?.length > 0 ? (
+        {parameters.quoteIndices?.length > 0 ? (
           <div className="flex space-x-2">
             <span className="text-sm px-1 rounded text-muted-foreground border-b border-red-500 border-dashed">
-              {parameters.wordIndices
+              {parameters.quoteIndices
                 .map(
                   (index: number) => segment?.caption?.timeline?.[index]?.text
                 )
