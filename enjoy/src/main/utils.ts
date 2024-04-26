@@ -49,7 +49,7 @@ export function enjoyUrlToPath(enjoyUrl: string): string {
   let filePath = enjoyUrl;
 
   if (
-    enjoyUrl.match(/enjoy:\/\/library\/(audios|videos|recordings|speeches)/g)
+    enjoyUrl.match(/enjoy:\/\/library\/(audios|videos|recordings|speeches|segments)/g)
   ) {
     filePath = path.posix.join(
       settings.userDataPath(),
