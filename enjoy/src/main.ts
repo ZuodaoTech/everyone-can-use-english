@@ -21,15 +21,17 @@ Sentry.init({
 app.commandLine.appendSwitch("enable-features", "SharedArrayBuffer");
 
 // config auto updater
-updateElectronApp({
-  updateSource: {
-    type: UpdateSourceType.StaticStorage,
-    baseUrl: `https://dl.enjoy.bot/app/${process.platform}/${process.arch}`,
-  },
-  updateInterval: "1 hour",
-  logger: logger,
-  notifyUser: true,
-});
+if (!process.env.CI) {
+  updateElectronApp({
+    updateSource: {
+      type: UpdateSourceType.StaticStorage,
+      baseUrl: `https://dl.enjoy.bot/app/${process.platform}/${process.arch}`,
+    },
+    updateInterval: "1 hour",
+    logger: logger,
+    notifyUser: true,
+  });
+}
 
 // Add context menu
 contextMenu({
