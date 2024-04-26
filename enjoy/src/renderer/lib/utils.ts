@@ -138,9 +138,10 @@ export function renderPitchContour(options: {
   });
 }
 
-export function imgErrorToDefalut(e: React.SyntheticEvent<HTMLImageElement, Event>) {
+export function imgErrorToDefalut(
+  e: React.SyntheticEvent<HTMLImageElement, Event>
+) {
   const target = e.target as HTMLImageElement;
-  target.onerror = null; 
+  target.onerror = null;
   target.src = "assets/default-img.jpg";
 }
-

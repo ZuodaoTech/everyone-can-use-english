@@ -37,6 +37,7 @@ contextMenu({
   showInspectElement: false,
   showLookUpSelection: false,
   showLearnSpelling: false,
+  showSelectAll: false,
   labels: {
     copy: t("copy"),
     cut: t("cut"),
@@ -44,7 +45,7 @@ contextMenu({
     selectAll: t("selectAll"),
   },
   shouldShowMenu: (_event, params) => {
-    return params.isEditable;
+    return params.isEditable || !!params.selectionText;
   },
 });
 
@@ -75,7 +76,7 @@ protocol.registerSchemesAsPrivileged([
 app.on("ready", async () => {
   protocol.handle("enjoy", (request) => {
     let url = request.url.replace("enjoy://", "");
-    if (url.match(/library\/(audios|videos|recordings|speeches)/g)) {
+    if (url.match(/library\/(audios|videos|recordings|speeches|segments)/g)) {
       url = url.replace("library/", "");
       url = path.join(settings.userDataPath(), url);
     } else if (url.startsWith("library")) {

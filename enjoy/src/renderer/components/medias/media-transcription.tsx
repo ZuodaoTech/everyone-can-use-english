@@ -18,7 +18,12 @@ import {
   AlertDialogAction,
   PingPoint,
 } from "@renderer/components/ui";
-import { LoaderIcon, CheckCircleIcon, MicIcon } from "lucide-react";
+import {
+  LoaderIcon,
+  CheckCircleIcon,
+  MicIcon,
+  PencilLineIcon,
+} from "lucide-react";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 import { formatDuration } from "@renderer/lib/utils";
 
@@ -40,6 +45,15 @@ export const MediaTranscription = () => {
   const [recordingStats, setRecordingStats] =
     useState<SegementRecordingStatsType>([]);
 
+  const [notesStats, setNotesStats] = useState<
+    {
+      targetId: string;
+      targetType: string;
+      count: number;
+      segment: SegmentType;
+    }[]
+  >([]);
+
   const fetchSegmentStats = async () => {
     if (!media) return;
 
@@ -48,6 +62,10 @@ export const MediaTranscription = () => {
       .then((stats) => {
         setRecordingStats(stats);
       });
+
+    EnjoyApp.notes.groupBySegment(media.id, media.mediaType).then((stats) => {
+      setNotesStats(stats);
+    });
   };
 
   useEffect(() => {
@@ -134,8 +152,9 @@ export const MediaTranscription = () => {
           <div
             key={index}
             id={`segment-${index}`}
-            className={`py-2 px-4 cursor-pointer hover:bg-yellow-400/10 ${currentSegmentIndex === index ? "bg-yellow-400/25" : ""
-              }`}
+            className={`py-2 px-4 cursor-pointer hover:bg-yellow-400/10 ${
+              currentSegmentIndex === index ? "bg-yellow-400/25" : ""
+            }`}
             onClick={() => {
               const duration = wavesurfer.getDuration();
               wavesurfer.seekTo(
@@ -151,6 +170,9 @@ export const MediaTranscription = () => {
                 {(recordingStats || []).findIndex(
                   (s) => s.referenceId === index
                 ) !== -1 && <MicIcon className="w-3 h-3 text-sky-500" />}
+                {(notesStats || []).findIndex(
+                  (s) => s.segment?.segmentIndex === index
+                ) !== -1 && <PencilLineIcon className="w-3 h-3 text-sky-500" />}
                 <span className="text-xs opacity-50">
                   {formatDuration(sentence.startTime, "s")}
                 </span>

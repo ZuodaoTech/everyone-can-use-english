@@ -11,9 +11,15 @@ import {
 } from "@renderer/components";
 import { useAudio } from "@renderer/hooks";
 
-export const AudioPlayer = (props: { id?: string; md5?: string }) => {
-  const { id, md5 } = props;
-  const { setMedia, layout } = useContext(MediaPlayerProviderContext);
+export const AudioPlayer = (props: {
+  id?: string;
+  md5?: string;
+  segmentIndex?: number;
+}) => {
+  const { id, md5, segmentIndex } = props;
+  const { setMedia, layout, setCurrentSegmentIndex } = useContext(
+    MediaPlayerProviderContext
+  );
   const { audio } = useAudio({ id, md5 });
 
   useEffect(() => {
@@ -21,12 +27,17 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
     setMedia(audio);
   }, [audio]);
 
+  useEffect(() => {
+    if (!segmentIndex) return;
+    setCurrentSegmentIndex(segmentIndex);
+  }, []);
+
   if (!layout) return <LoaderSpin />;
 
   return (
     <div data-testid="audio-player" className={layout.wrapper}>
       <div className={`${layout.upperWrapper} mb-4`}>
-        <div className="grid grid-cols-5 xl:grid-cols-3 gap-6 px-6 h-full">
+        <div className="grid grid-cols-5 xl:grid-cols-3 gap-3 xl:gap-6 px-3 xl:px-6 h-full">
           <div
             className={`col-span-2 xl:col-span-1 rounded-lg border shadow-lg ${layout.upperWrapper}`}
           >
@@ -39,11 +50,11 @@ export const AudioPlayer = (props: { id?: string; md5?: string }) => {
       </div>
 
       <div className={`flex flex-col`}>
-        <div className={`${layout.playerWrapper} py-2 px-6`}>
+        <div className={`${layout.playerWrapper} py-2 px-3 xl:px-6`}>
           <MediaCurrentRecording />
         </div>
 
-        <div className={`${layout.playerWrapper} py-2 px-6`}>
+        <div className={`${layout.playerWrapper} py-2 px-3 xl:px-6`}>
           <MediaPlayer />
         </div>
 

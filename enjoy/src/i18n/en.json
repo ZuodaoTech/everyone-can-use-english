@@ -141,7 +141,8 @@
     "translator": "Translator",
     "mine": "Mine",
     "preferences": "Preferences",
-    "profile": "My Profile"
+    "profile": "My Profile",
+    "notes": "Note"
   },
   "form": {
     "lengthMustBeAtLeast": "{{field}} must be at least {{length}} characters",
@@ -166,6 +167,7 @@
   "autoScroll": "auto scroll",
   "translate": "translate",
   "displayIpa": "display IPA",
+  "displayNotes": "display Notes",
   "detail": "detail",
   "remove": "remove",
   "share": "share",
@@ -470,6 +472,9 @@
   "shareGpt": "Share GPT",
   "sharedGpt": "Shared a GPT",
   "areYouSureToShareThisGptToCommunity": "Are you sure to share this GPT to community?",
+  "shareNote": "Share note",
+  "sharedNote": "Shared a note",
+  "areYouSureToShareThisNoteToCommunity": "Are you sure to share this note to community?",
   "saveAiAssistant": "Save this AI assistant",
   "addToLibary": "Add to library",
   "areYouSureToAddThisVideoToYourLibrary": "Are you sure to add this video to library?",
@@ -550,8 +555,17 @@
   "storyType": "Story",
   "promptType": "Prompt",
   "gptType": "GPT",
+  "noteType": "Note",
   "follow": "follow",
   "unfollow": "unfollow",
   "noFollowersYet": "No followers yet",
-  "notFollowingAnyoneYet": "Not following anyone yet"
+  "notFollowingAnyoneYet": "Not following anyone yet",
+  "startToNote": "Start to note",
+  "newNote": "New note",
+  "writeNoteHere": "Write your note here",
+  "deleteNote": "Delete note",
+  "areYouSureToDeleteThisNote": "Are you sure to delete this note?",
+  "notesCount": "{{count}} notes",
+  "source": "source",
+  "noNotesYet": "No notes yet"
 }

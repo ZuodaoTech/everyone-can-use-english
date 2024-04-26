@@ -233,6 +233,44 @@ export default class FfmpegWrapper {
     });
   }
 
+  // Crop video or audio from start to end time to a mp3 file
+  // Save the file to the output path
+  crop(
+    input: string,
+    options: {
+      startTime: number;
+      endTime: number;
+      output: string;
+    }
+  ) {
+    const { startTime, endTime, output } = options;
+    const ffmpeg = Ffmpeg();
+
+    return new Promise((resolve, reject) => {
+      ffmpeg
+        .input(input)
+        .outputOptions(
+          "-ss",
+          startTime.toString(),
+          "-to",
+          endTime.toString()
+        )
+        .on("start", (commandLine) => {
+          logger.info("Spawned FFmpeg with command: " + commandLine);
+          fs.ensureDirSync(path.dirname(output));
+        })
+        .on("end", () => {
+          logger.info(`File ${output} created`);
+          resolve(output);
+        })
+        .on("error", (err) => {
+          logger.error(err);
+          reject(err);
+        })
+        .save(output);
+    });
+  }
+
   registerIpcHandlers() {
     ipcMain.handle("ffmpeg-check-command", async (_event) => {
       return await this.checkCommand();

@@ -17,6 +17,7 @@ import log from "@main/logger";
 import { Client } from "@/api";
 import { WEB_API_URL, PROCESS_TIMEOUT } from "@/constants";
 import settings from "@main/settings";
+import { AlignmentResult } from "echogarden/dist/api/Alignment";
 
 const logger = log.scope("db/models/transcription");
 @Table({
@@ -52,7 +53,7 @@ export class Transcription extends Model<Transcription> {
   model: string;
 
   @Column(DataType.JSON)
-  result: any;
+  result: Partial<AlignmentResult> & { originalText?: string };
 
   @Column(DataType.DATE)
   syncedAt: Date;

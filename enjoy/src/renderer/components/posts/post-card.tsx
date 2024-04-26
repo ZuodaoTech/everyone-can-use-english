@@ -6,6 +6,7 @@ import {
   PostMedium,
   PostStory,
   PostOptions,
+  PostNote,
 } from "@renderer/components";
 import { Avatar, AvatarImage, AvatarFallback } from "@renderer/components/ui";
 import { formatDateTime } from "@renderer/lib/utils";
@@ -94,6 +95,15 @@ export const PostCard = (props: {
             {t("sharedStory")}
           </div>
           <PostStory story={post.target as StoryType} />
+        </>
+      )}
+
+      {post.targetType == "Note" && (
+        <>
+          <div className="text-xs text-muted-foreground">
+            {t("sharedNote")}
+          </div>
+          <PostNote note={post.target as NoteType} />
         </>
       )}
 

@@ -166,7 +166,7 @@ export class Client {
     page?: number;
     items?: number;
     userId?: string;
-    type?: "all" | "recording" | "medium" | "story" | "prompt" | "text" | "gpt";
+    type?: "all" | "recording" | "medium" | "story" | "prompt" | "text" | "gpt" | "note";
     by?: "following" | "all";
   }): Promise<
     {
@@ -230,6 +230,18 @@ export class Client {
 
   syncTranscription(transcription: Partial<TranscriptionType>) {
     return this.api.post("/api/transcriptions", decamelizeKeys(transcription));
+  }
+
+  syncSegment(segment: Partial<Omit<SegmentType, "audio" | "video">>) {
+    return this.api.post("/api/segments", decamelizeKeys(segment));
+  }
+
+  syncNote(note: Partial<Omit<NoteType, "segment">>) {
+    return this.api.post("/api/notes", decamelizeKeys(note));
+  }
+
+  deleteNote(id: string) {
+    return this.api.delete(`/api/notes/${id}`);
   }
 
   syncRecording(recording: Partial<RecordingType>) {

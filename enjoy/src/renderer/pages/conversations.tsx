@@ -230,7 +230,7 @@ export default () => {
         {conversations.map((conversation) => (
           <Link key={conversation.id} to={`/conversations/${conversation.id}`}>
             <div
-              className="bg-muted text-muted-foreground rounded-full w-full mb-2 p-4 hover:bg-primary hover:text-muted cursor-pointer flex items-center"
+              className="bg-background hover:bg-muted hover:text-muted-foreground border rounded-full w-full mb-2 p-4 cursor-pointer flex items-center"
               style={{
                 borderLeftColor: `#${conversation.id
                   .replaceAll("-", "")

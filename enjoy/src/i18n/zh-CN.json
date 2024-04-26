@@ -141,7 +141,8 @@
     "translator": "翻译助手",
     "mine": "我的",
     "preferences": "软件设置",
-    "profile": "个人主页"
+    "profile": "个人主页",
+    "notes": "笔记"
   },
   "form": {
     "lengthMustBeAtLeast": "{{field}} 长度不可超过 {{length}} 个字符",
@@ -166,6 +167,7 @@
   "autoScroll": "自动滚动",
   "translate": "翻译",
   "displayIpa": "标注音标",
+  "displayNotes": "显示笔记",
   "detail": "详情",
   "remove": "删除",
   "share": "分享",
@@ -449,7 +451,7 @@
   "square": "广场",
   "noOneSharedYet": "还没有人分享",
   "sharedSuccessfully": "分享成功",
-  "sharedFailed": "分享失败",
+  "shareFailed": "分享失败",
   "shareAudio": "分享音频",
   "sharedAudio": "分享了一个音频材料",
   "areYouSureToShareThisAudioToCommunity": "您确定要分享此音频到社区吗？",
@@ -469,6 +471,9 @@
   "shareGpt": "分享智能助手",
   "sharedGpt": "分享了一个智能助手",
   "areYouSureToShareThisGptToCommunity": "您确定要将这个智能助手分享到社区吗？",
+  "shareNote": "分享笔记",
+  "sharedNote": "分享了一条笔记",
+  "areYouSureToShareThisNoteToCommunity": "您确定要将这条笔记分享到社区吗？",
   "saveAiAssistant": "保存智能助手",
   "addToLibary": "添加到资源库",
   "areYouSureToAddThisVideoToYourLibrary": "您确定要添加此视频到资料库吗？",
@@ -522,7 +527,7 @@
   "autoGroup": "智能断句",
   "captionTabs": {
     "selected": "选词",
-    "translation": "整句翻译",
+    "translation": "翻译",
     "analysis": "句子分析",
     "note": "笔记"
   },
@@ -549,8 +554,17 @@
   "storyType": "文章",
   "promptType": "提示语",
   "gptType": "智能助手",
+  "noteType": "笔记",
   "follow": "关注",
   "unfollow": "取消关注",
   "noFollowersYet": "还没有人关注",
-  "notFollowingAnyoneYet": "还没有关注任何人"
+  "notFollowingAnyoneYet": "还没有关注任何人",
+  "startToNote": "开始做笔记",
+  "newNote": "新笔记",
+  "writeNoteHere": "开始做笔记",
+  "deleteNote": "删除笔记",
+  "areYouSureToDeleteThisNote": "您确定要删除这条笔记吗？",
+  "notesCount": "{{count}} 条笔记",
+  "source": "来源",
+  "noNotesYet": "还没有笔记"
 }

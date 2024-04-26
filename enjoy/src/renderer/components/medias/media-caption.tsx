@@ -2,19 +2,25 @@ import { useEffect, useState, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import cloneDeep from "lodash/cloneDeep";
 import { Button, toast } from "@renderer/components/ui";
-import { ConversationShortcuts, MediaCaptionTabs } from "@renderer/components";
+import { ConversationShortcuts } from "@renderer/components";
 import { t } from "i18next";
-import { BotIcon, CopyIcon, CheckIcon, SpeechIcon } from "lucide-react";
+import {
+  BotIcon,
+  CopyIcon,
+  CheckIcon,
+  SpeechIcon,
+  NotebookPenIcon,
+} from "lucide-react";
 import {
   Timeline,
   TimelineEntry,
 } from "echogarden/dist/utilities/Timeline.d.js";
 import { convertIpaToNormal } from "@/utils";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
+import { MediaCaptionTabs } from "./media-captions";
 
 export const MediaCaption = () => {
   const {
-    wavesurfer,
     currentSegmentIndex,
     currentTime,
     transcription,
@@ -30,6 +36,7 @@ export const MediaCaption = () => {
   const [multiSelecting, setMultiSelecting] = useState<boolean>(false);
 
   const [displayIpa, setDisplayIpa] = useState<boolean>(true);
+  const [displayNotes, setDisplayNotes] = useState<boolean>(true);
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
 
@@ -39,29 +46,71 @@ export const MediaCaption = () => {
     setMultiSelecting(event.shiftKey && event.type === "keydown");
   };
 
-  const toggleRegion = (index: number) => {
+  const toggleSeletedIndex = (index: number) => {
     if (!activeRegion) return;
     if (editingRegion) {
       toast.warning(t("currentRegionIsBeingEdited"));
       return;
     }
 
-    const word = caption.timeline[index];
-    if (!word) return;
+    const startWord = caption.timeline[index];
+    if (!startWord) return;
 
-    const start = word.startTime;
-    const end = word.endTime;
+    if (multiSelecting) {
+      const min = Math.min(index, ...selectedIndices);
+      const max = Math.max(index, ...selectedIndices);
+
+      // Select all the words between the min and max indices.
+      setSelectedIndices(
+        Array.from({ length: max - min + 1 }, (_, i) => i + min)
+      );
+    } else if (selectedIndices.includes(index)) {
+      setSelectedIndices([]);
+    } else {
+      setSelectedIndices([index]);
+    }
+  };
+
+  const toggleRegion = (params: number[]) => {
+    if (!activeRegion) return;
+    if (editingRegion) {
+      toast.warning(t("currentRegionIsBeingEdited"));
+      return;
+    }
+    if (params.length === 0) {
+      if (activeRegion.id.startsWith("word-region")) {
+        activeRegion.remove();
+        setActiveRegion(
+          regions.getRegions().find((r) => r.id.startsWith("segment-region"))
+        );
+      }
+      return;
+    }
+
+    const startIndex = Math.min(...params);
+    const endIndex = Math.max(...params);
+
+    const startWord = caption.timeline[startIndex];
+    if (!startWord) return;
+
+    const endWord = caption.timeline[endIndex] || startWord;
+
+    const start = startWord.startTime;
+    const end = endWord.endTime;
     const regionStart = activeRegion.start;
     const regionEnd = activeRegion.end;
 
+    // If the active region is a word region, then merge the selected words into a single region.
     if (activeRegion.id.startsWith("word-region")) {
+      activeRegion.remove();
+
       if (start >= regionStart && end <= regionEnd) {
         setActiveRegion(
           regions.getRegions().find((r) => r.id.startsWith("segment-region"))
         );
-      } else if (multiSelecting) {
+      } else {
         const region = regions.addRegion({
-          id: `word-region-${index}`,
+          id: `word-region-${startIndex}`,
           start: Math.min(start, regionStart),
           end: Math.max(end, regionEnd),
           color: "#fb6f9233",
@@ -70,26 +119,16 @@ export const MediaCaption = () => {
         });
 
         setActiveRegion(region);
-      } else {
-        const region = regions.addRegion({
-          id: `word-region-${index}`,
-          start,
-          end,
-          color: "#fb6f9233",
-          drag: false,
-          resize: editingRegion,
-        });
-
-        setActiveRegion(region);
       }
-      activeRegion?.remove();
+      // If the active region is a meaning group region, then active the segment region.
     } else if (activeRegion.id.startsWith("meaning-group-region")) {
       setActiveRegion(
         regions.getRegions().find((r) => r.id.startsWith("segment-region"))
       );
+      // If the active region is a segment region, then create a new word region.
     } else {
       const region = regions.addRegion({
-        id: `word-region-${index}`,
+        id: `word-region-${startIndex}`,
         start,
         end,
         color: "#fb6f9233",
@@ -99,43 +138,6 @@ export const MediaCaption = () => {
 
       setActiveRegion(region);
     }
-  };
-
-  const markPhoneRegions = () => {
-    const phoneRegions = regions
-      .getRegions()
-      .filter((r) => r.id.startsWith("phone-region"));
-    if (phoneRegions.length > 0) {
-      phoneRegions.forEach((r) => {
-        r.remove();
-        r.unAll();
-      });
-      return;
-    }
-
-    if (!activeRegion) return;
-    if (!activeRegion.id.startsWith("word-region")) return;
-    if (!selectedIndices) return;
-
-    selectedIndices.forEach((index) => {
-      const word = caption.timeline[index];
-
-      word.timeline.forEach((token) => {
-        token.timeline.forEach((phone) => {
-          const region = regions.addRegion({
-            id: `phone-region-${index}`,
-            start: phone.startTime,
-            end: phone.endTime,
-            color: "#efefefef",
-            drag: false,
-            resize: editingRegion,
-          });
-          region.on("click", () => {
-            region.play();
-          });
-        });
-      });
-    });
   };
 
   useEffect(() => {
@@ -154,25 +156,8 @@ export const MediaCaption = () => {
     if (!caption?.timeline) return;
     if (!activeRegion) return;
 
-    if (activeRegion.id.startsWith("segment-region")) {
-      setSelectedIndices([]);
-      return;
-    }
-
-    const indices: number[] = [];
-    caption.timeline.forEach((w, index) => {
-      if (
-        w.startTime >= activeRegion.start &&
-        (w.endTime <= activeRegion.end ||
-          // The last word's end time may be a little greater than the duration of the audio in somehow.
-          w.endTime > wavesurfer.getDuration())
-      ) {
-        indices.push(index);
-      }
-    });
-
-    setSelectedIndices(indices);
-  }, [caption, activeRegion]);
+    toggleRegion(selectedIndices);
+  }, [caption, selectedIndices]);
 
   useEffect(() => {
     if (!activeRegion) return;
@@ -255,6 +240,10 @@ export const MediaCaption = () => {
   }, [currentSegmentIndex, transcription]);
 
   useEffect(() => {
+    return () => setSelectedIndices([]);
+  }, [caption]);
+
+  useEffect(() => {
     document.addEventListener("keydown", (event: KeyboardEvent) =>
       toggleMultiSelect(event)
     );
@@ -275,91 +264,19 @@ export const MediaCaption = () => {
       <div className="flex-1 font-serif h-full border shadow-lg rounded-lg">
         <MediaCaptionTabs
           caption={caption}
+          currentSegmentIndex={currentSegmentIndex}
           selectedIndices={selectedIndices}
-          toggleRegion={toggleRegion}
+          setSelectedIndices={setSelectedIndices}
         >
-          <div className="flex flex-wrap px-4 py-2 rounded-t-lg bg-muted/50">
-            {/* use the words splitted by caption text if it is matched with the timeline length, otherwise use the timeline */}
-            {caption.text.split(" ").length !== caption.timeline.length
-              ? (caption.timeline || []).map((w, index) => (
-                  <div
-                    key={index}
-                    id={`word-${currentSegmentIndex}-${index}`}
-                    className={`p-1 pb-2 rounded cursor-pointer hover:bg-red-500/10 ${
-                      index === activeIndex ? "text-red-500" : ""
-                    } ${
-                      selectedIndices.includes(index)
-                        ? "bg-red-500/10 selected"
-                        : ""
-                    }`}
-                    onClick={() => toggleRegion(index)}
-                  >
-                    <div className="">
-                      <div className="font-serif text-lg xl:text-xl 2xl:text-2xl">
-                        {w.text}
-                      </div>
-                      {displayIpa && (
-                        <div
-                          className={`text-sm 2xl:text-base text-muted-foreground font-code ${
-                            index === 0 ? "before:content-['/']" : ""
-                          }
-                        ${
-                          index === caption.timeline.length - 1
-                            ? "after:content-['/']"
-                            : ""
-                        }`}
-                        >
-                          {w.timeline
-                            .map((t) =>
-                              t.timeline
-                                .map((s) => convertIpaToNormal(s.text))
-                                .join("")
-                            )
-                            .join(" · ")}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))
-              : caption.text.split(" ").map((word, index) => (
-                  <div
-                    key={index}
-                    id={`word-${currentSegmentIndex}-${index}`}
-                    className={`p-1 pb-2 rounded cursor-pointer hover:bg-red-500/10 ${
-                      index === activeIndex ? "text-red-500" : ""
-                    } ${
-                      selectedIndices.includes(index) ? "bg-red-500/10" : ""
-                    }`}
-                    onClick={() => toggleRegion(index)}
-                  >
-                    <div className="">
-                      <div className="text-serif text-lg xl:text-xl 2xl:text-2xl">
-                        {word}
-                      </div>
-                      {displayIpa && (
-                        <div
-                          className={`text-sm 2xl:text-base text-muted-foreground font-code ${
-                            index === 0 ? "before:content-['/']" : ""
-                          }
-                        ${
-                          index === caption.text.split(" ").length - 1
-                            ? "after:content-['/']"
-                            : ""
-                        }`}
-                        >
-                          {caption.timeline[index].timeline
-                            .map((t) =>
-                              t.timeline
-                                .map((s) => convertIpaToNormal(s.text))
-                                .join("")
-                            )
-                            .join(" · ")}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-          </div>
+          <Caption
+            caption={caption}
+            selectedIndices={selectedIndices}
+            currentSegmentIndex={currentSegmentIndex}
+            activeIndex={activeIndex}
+            displayIpa={displayIpa}
+            displayNotes={displayNotes}
+            onClick={toggleSeletedIndex}
+          />
         </MediaCaptionTabs>
       </div>
 
@@ -373,6 +290,17 @@ export const MediaCaption = () => {
           onClick={() => setDisplayIpa(!displayIpa)}
         >
           <SpeechIcon className="w-4 h-4" />
+        </Button>
+
+        <Button
+          variant={displayNotes ? "secondary" : "outline"}
+          size="icon"
+          className="rounded-full w-8 h-8 p-0"
+          data-tooltip-id="media-player-tooltip"
+          data-tooltip-content={t("displayNotes")}
+          onClick={() => setDisplayNotes(!displayNotes)}
+        >
+          <NotebookPenIcon className="w-4 h-4" />
         </Button>
 
         <ConversationShortcuts
@@ -430,6 +358,100 @@ export const MediaCaption = () => {
           )}
         </Button>
       </div>
+    </div>
+  );
+};
+
+const Caption = (props: {
+  caption: TimelineEntry;
+  selectedIndices: number[];
+  currentSegmentIndex: number;
+  activeIndex: number;
+  displayIpa: boolean;
+  displayNotes: boolean;
+  onClick: (index: number) => void;
+}) => {
+  const {
+    caption,
+    selectedIndices,
+    currentSegmentIndex,
+    activeIndex,
+    displayIpa,
+    displayNotes,
+    onClick,
+  } = props;
+
+  const { currentNotes } = useContext(MediaPlayerProviderContext);
+  const notes = currentNotes.filter((note) => note.parameters?.quoteIndices);
+  const [notedquoteIndices, setNotedquoteIndices] = useState<number[]>([]);
+
+  let words = caption.text.split(" ");
+  const ipas = caption.timeline.map((w) =>
+    w.timeline.map((t) => t.timeline.map((s) => s.text))
+  );
+
+  if (words.length !== caption.timeline.length) {
+    words = caption.timeline.map((w) => w.text);
+  }
+
+  return (
+    <div className="flex flex-wrap px-4 py-2 rounded-t-lg bg-muted/50">
+      {/* use the words splitted by caption text if it is matched with the timeline length, otherwise use the timeline */}
+      {words.map((word, index) => (
+        <div
+          className=""
+          key={`word-${currentSegmentIndex}-${index}`}
+          id={`word-${currentSegmentIndex}-${index}`}
+        >
+          <div
+            className={`font-serif text-lg xl:text-xl 2xl:text-2xl cursor-pointer p-1 pb-2 rounded hover:bg-red-500/10 ${
+              index === activeIndex ? "text-red-500" : ""
+            } ${
+              selectedIndices.includes(index) ? "bg-red-500/10 selected" : ""
+            } ${
+              notedquoteIndices.includes(index)
+                ? "border-b border-red-500 border-dashed"
+                : ""
+            }`}
+            onClick={() => onClick(index)}
+          >
+            {word}
+          </div>
+
+          {displayIpa && (
+            <div
+              className={`select-text text-sm 2xl:text-base text-muted-foreground font-code mb-1 ${
+                index === 0 ? "before:content-['/']" : ""
+              } ${
+                index === caption.timeline.length - 1
+                  ? "after:content-['/']"
+                  : ""
+              }`}
+            >
+              {ipas[index]}
+            </div>
+          )}
+
+          {displayNotes &&
+            notes
+              .filter((note) => note.parameters.quoteIndices[0] === index)
+              .map((note) => (
+                <div
+                  key={`note-${currentSegmentIndex}-${note.id}`}
+                  className="mb-1 text-xs 2xl:text-sm text-red-500 max-w-64 line-clamp-3 font-code cursor-pointer"
+                  onMouseOver={() =>
+                    setNotedquoteIndices(note.parameters.quoteIndices)
+                  }
+                  onMouseLeave={() => setNotedquoteIndices([])}
+                  onClick={() =>
+                    document.getElementById("note-" + note.id)?.scrollIntoView()
+                  }
+                >
+                  {note.parameters.quoteIndices[0] === index && note.content}
+                </div>
+              ))}
+        </div>
+      ))}
     </div>
   );
 };

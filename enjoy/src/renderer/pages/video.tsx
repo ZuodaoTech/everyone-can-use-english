@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { VideoPlayer } from "@renderer/components";
 import { Button } from "@renderer/components/ui";
 import { ChevronLeftIcon } from "lucide-react";
@@ -8,6 +8,8 @@ import { MediaPlayerProvider } from "@renderer/context";
 export default () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
+  const segmentIndex = searchParams.get("segmentIndex") || "0";
 
   return (
     <>
@@ -20,7 +22,7 @@ export default () => {
         </div>
 
         <MediaPlayerProvider>
-          <VideoPlayer id={id} />
+          <VideoPlayer id={id} segmentIndex={parseInt(segmentIndex)} />
         </MediaPlayerProvider>
       </div>
     </>

@@ -1,7 +1,12 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { extractFrequencies } from "@/utils";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { useTranscriptions, useRecordings } from "@renderer/hooks";
+import {
+  useTranscriptions,
+  useRecordings,
+  useSegments,
+  useNotes,
+} from "@renderer/hooks";
 import WaveSurfer from "wavesurfer.js";
 import Regions, {
   type Region as RegionType,
@@ -75,6 +80,12 @@ type MediaPlayerContextType = {
   fetchRecordings: (offset: number) => void;
   loadingRecordings: boolean;
   hasMoreRecordings: boolean;
+  // Notes
+  currentNotes: NoteType[];
+  createNote: (params: any) => void;
+  // Segments
+  currentSegment: SegmentType;
+  createSegment: () => void;
 };
 
 export const MediaPlayerProviderContext =
@@ -162,6 +173,17 @@ export const MediaPlayerProvider = ({
     loading: loadingRecordings,
     hasMore: hasMoreRecordings,
   } = useRecordings(media, currentSegmentIndex);
+
+  const { segment, createSegment } = useSegments({
+    targetId: media?.id,
+    targetType: media?.mediaType,
+    segmentIndex: currentSegmentIndex,
+  });
+
+  const { notes, createNote } = useNotes({
+    targetId: segment?.id,
+    targetType: "Segment",
+  });
 
   const initializeWavesurfer = async () => {
     if (!layout?.playerHeight) return;
@@ -507,7 +529,7 @@ export const MediaPlayerProvider = ({
   useEffect(() => {
     calculateHeight();
 
-    EnjoyApp.window.onResize((event, bounds) => {
+    EnjoyApp.window.onResize(() => {
       deboundeCalculateHeight();
     });
 
@@ -558,6 +580,10 @@ export const MediaPlayerProvider = ({
           fetchRecordings,
           loadingRecordings,
           hasMoreRecordings,
+          currentNotes: notes,
+          createNote,
+          currentSegment: segment,
+          createSegment,
         }}
       >
         {children}

@@ -8,7 +8,9 @@ import {
   CacheObject,
   Conversation,
   Message,
+  Note,
   PronunciationAssessment,
+  Segment,
   Speech,
   Transcription,
   Video,
@@ -18,7 +20,9 @@ import {
   cacheObjectsHandler,
   conversationsHandler,
   messagesHandler,
+  notesHandler,
   recordingsHandler,
+  segmentsHandler,
   speechesHandler,
   transcriptionsHandler,
   videosHandler,
@@ -47,8 +51,10 @@ db.connect = async () => {
       CacheObject,
       Conversation,
       Message,
+      Note,
       PronunciationAssessment,
       Recording,
+      Segment,
       Speech,
       Transcription,
       Video,
@@ -92,9 +98,11 @@ db.connect = async () => {
   // register handlers
   audiosHandler.register();
   cacheObjectsHandler.register();
-  recordingsHandler.register();
   conversationsHandler.register();
   messagesHandler.register();
+  notesHandler.register();
+  recordingsHandler.register();
+  segmentsHandler.register();
   speechesHandler.register();
   transcriptionsHandler.register();
   videosHandler.register();
