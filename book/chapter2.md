@@ -80,7 +80,7 @@ Meanwhile, everyone is becoming even more distinctive, especially in terms of th
 10. Good afternoon.
 11. Good evening.
 12. Good night.
-13. Good-bye.<img src="/images/speech-tract-$1.svg" class="themed" />
+13. Good-bye.
 14. See you in the evening.
 15. So long.
 
