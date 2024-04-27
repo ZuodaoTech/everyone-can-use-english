@@ -13,7 +13,7 @@ impossible([不可能])-..->possible([可能])-->clumsiness([笨拙])-..->adaptn
 
 这之中最重要且又最难的，当然是从**不可能**到**可能**的跨越，那可是 0 到 1 的突破。
 
-核心的难度首先在于，**我们的观察永远不大可能完整**。举个例子，我的母语之一是朝鲜语，所以我能发出齿龈颤音（[Voiced alveolar trill](https://en.wikipedia.org/wiki/Voiced_dental,_alveolar_and_postalveolar_trills)）。我家有个小朋友小名叫都都（dū dū），平日里我逗他玩的上班，会故意用齿龈颤音喊他名字：
+核心的难度首先在于，**我们的观察永远不大可能完整**。举个例子，我的母语之一是朝鲜语，所以我能发出齿龈颤音（[Voiced alveolar trill](https://en.wikipedia.org/wiki/Voiced_dental,_alveolar_and_postalveolar_trills)）。我家有个小朋友小名叫都都（dū dū），平日里我逗他玩的时候，会故意用齿龈颤音喊他名字：
 
 <audio controls><source src="/audios/dudu.mp3">Your browser does not support the audio element.</source></audio>
 
