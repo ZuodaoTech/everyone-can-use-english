@@ -51,7 +51,7 @@ if (proxyUrl) {
 }
 
 // const modelUrlPrefix =
-//   "https://huggingface.co/ggerganov/whisper.cpp/resolve/main";
+//   "https://hf-mirror.com/ggerganov/whisper.cpp/resolve/main";
 const modelUrlPrefix = "https://enjoy-storage.baizhiheizi.com";
 
 function hashFile(path, options) {

@@ -23,6 +23,7 @@ import {
 import { ChevronLeftIcon } from "lucide-react";
 import intlTelInput from "intl-tel-input";
 import "intl-tel-input/build/css/intlTelInput.css";
+import { WEB_API_URLS } from "@/constants";
 
 export const LoginForm = () => {
   const { EnjoyApp, login, webApi, user } = useContext(
@@ -51,8 +52,11 @@ export const LoginForm = () => {
       return;
     }
 
+    const BASE_URL_REGEX = new RegExp(
+      `^(${[webApi.baseUrl, ...WEB_API_URLS].join("|")})`
+    );
     if (state === "will-navigate" || state === "will-redirect") {
-      if (!url.startsWith(webApi.baseUrl)) {
+      if (!url.match(BASE_URL_REGEX)) {
         return;
       }
 
@@ -117,7 +121,7 @@ export const LoginForm = () => {
     <>
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>{t('login')}</CardTitle>
+          <CardTitle>{t("login")}</CardTitle>
         </CardHeader>
 
         <CardContent>
@@ -126,7 +130,7 @@ export const LoginForm = () => {
           <div className="">
             <Separator className="my-4" />
             <div className="flex items-center justify-center text-xs text-muted-foreground mb-4">
-              {t('youCanAlsoLoginWith')}
+              {t("youCanAlsoLoginWith")}
             </div>
             <div className="flex items-center space-x-2 justify-center">
               <Button
@@ -189,8 +193,9 @@ export const LoginForm = () => {
       </Card>
 
       <div
-        className={`absolute top-0 left-0 w-screen h-screen z-10 flex flex-col overflow-hidden ${webviewUrl ? "" : "hidden"
-          }`}
+        className={`absolute top-0 left-0 w-screen h-screen z-10 flex flex-col overflow-hidden ${
+          webviewUrl ? "" : "hidden"
+        }`}
       >
         <div className="flex items-center py-2 px-6">
           <Button variant="ghost" onClick={() => setWebviewUrl(null)}>
@@ -224,14 +229,14 @@ const EmailLoginForm = () => {
 
     return () => {
       if (timeout) clearTimeout(timeout);
-    }
+    };
   }, [countdown]);
 
   return (
     <div className="w-full">
       <div className="w-full grid gap-4 mb-6">
         <div className="grid gap-2">
-          <Label htmlFor="email">{t('email')}</Label>
+          <Label htmlFor="email">{t("email")}</Label>
           <Input
             id="email"
             className="h-10"
@@ -245,7 +250,7 @@ const EmailLoginForm = () => {
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="code">{t('verificationCode')}</Label>
+          <Label htmlFor="code">{t("verificationCode")}</Label>
           <Input
             id="code"
             className="h-10"
@@ -304,7 +309,7 @@ const EmailLoginForm = () => {
       </div>
     </div>
   );
-}
+};
 
 const PandoLoginForm = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -356,7 +361,7 @@ const PandoLoginForm = () => {
 
     return () => {
       if (timeout) clearTimeout(timeout);
-    }
+    };
   }, [countdown]);
 
   return (
@@ -368,7 +373,7 @@ const PandoLoginForm = () => {
       <div className="grid gap-6">
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="phone">{t('phoneNumber')}</Label>
+            <Label htmlFor="phone">{t("phoneNumber")}</Label>
             <input
               id="phone"
               value={phoneNumber}
@@ -379,7 +384,7 @@ const PandoLoginForm = () => {
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="verrificationCode">{t('verificationCode')}</Label>
+            <Label htmlFor="verrificationCode">{t("verificationCode")}</Label>
             <Input
               id="verrificationCode"
               className="border py-2 h-10 px-4 rounded"
