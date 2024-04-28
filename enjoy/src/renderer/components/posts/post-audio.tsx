@@ -6,7 +6,7 @@ import {
   DefaultAudioLayout,
   defaultLayoutIcons,
 } from "@vidstack/react/player/layouts/default";
-import { STORAGE_WORKER_ENDPOINT } from "@/constants";
+import { STORAGE_WORKER_ENDPOINTS } from "@/constants";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { t } from "i18next";
 import { XCircleIcon } from "lucide-react";
@@ -63,7 +63,9 @@ export const PostAudio = (props: {
 
   return (
     <div className="w-full">
-      {audio.sourceUrl.startsWith(STORAGE_WORKER_ENDPOINT) ? (
+      {audio.sourceUrl.match(
+        new RegExp("^(" + STORAGE_WORKER_ENDPOINTS.join("|") + ")")
+      ) ? (
         <WavesurferPlayer
           currentTime={currentTime}
           setCurrentTime={setCurrentTime}

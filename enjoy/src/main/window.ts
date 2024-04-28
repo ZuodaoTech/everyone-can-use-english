@@ -16,7 +16,7 @@ import whisper from "@main/whisper";
 import fs from "fs-extra";
 import "@main/i18n";
 import log from "@main/logger";
-import { WEB_API_URL, REPO_URL } from "@/constants";
+import { WEB_API_URL, REPO_URL, WEB_API_URLS } from "@/constants";
 import { AudibleProvider, TedProvider, YoutubeProvider } from "@main/providers";
 import Ffmpeg from "@main/ffmpeg";
 import { Waveform } from "./waveform";
@@ -140,6 +140,10 @@ main.init = () => {
       } = bounds;
       const { navigatable = false } = options || {};
 
+      const OAUTH_URL_REGEX = new RegExp(
+        `^("${WEB_API_URLS.map((url) => `${url}/oauth`).join("|")})`
+      );
+
       logger.debug("view-load", url);
       const view = new BrowserView();
       view.setBackgroundColor("#fff");
@@ -193,11 +197,7 @@ main.init = () => {
         });
 
         logger.debug("will-redirect", detail.url);
-        if (
-          detail.url.startsWith(
-            `${process.env.WEB_API_URL || WEB_API_URL}/oauth`
-          )
-        ) {
+        if (detail.url.match(OAUTH_URL_REGEX)) {
           logger.debug("prevent redirect", detail.url);
           detail.preventDefault();
         }
@@ -210,12 +210,7 @@ main.init = () => {
         });
 
         logger.debug("will-navigate", detail.url);
-        if (
-          !navigatable ||
-          detail.url.startsWith(
-            `${process.env.WEB_API_URL || WEB_API_URL}/oauth`
-          )
-        ) {
+        if (!navigatable || detail.url.match(OAUTH_URL_REGEX)) {
           logger.debug("prevent navigation", detail.url);
           detail.preventDefault();
         }
