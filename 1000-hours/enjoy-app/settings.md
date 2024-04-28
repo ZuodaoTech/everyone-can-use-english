@@ -109,7 +109,7 @@ Enjoy 采用 **本地优先** 的设计原则，大部分数据均保存在本�
 Enjoy 软件集成了最小的 whisper 模型 `tiny.en`，如果电脑配置较高，可以选用更大的模型以提高语音转文本的准确度。点击 `模型` 按钮，在弹窗中选择相应的模型即可自动下载并选中。
 
 ::: tip 关于 whisper 模型的选择
-下载的 whisper 模型会保存在 `/EnjoyLibrary/whisper/models/` 文件夹下。如果自动下载失败，也可以到 [这里](https://huggingface.co/ggerganov/whisper.cpp) 手动下载，放置在该文件夹下，在 Enjoy 中即可以选中。
+下载的 whisper 模型会保存在 `/EnjoyLibrary/whisper/models/` 文件夹下。如果自动下载失败，也可以到 [这里](https://hf-mirror.com/ggerganov/whisper.cpp) 手动下载，放置在该文件夹下，在 Enjoy 中即可以选中。
 
 理论上，模型越大，识别的准确度也更高，但是运行得越慢，甚至在一些配置不高的电脑中无法运行。
 
