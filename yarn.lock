@@ -9101,7 +9101,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:^1.11.10, dayjs@npm:^1.11.7":
+"dayjs@npm:^1.11.11":
+  version: 1.11.11
+  resolution: "dayjs@npm:1.11.11"
+  checksum: 10c0/0131d10516b9945f05a57e13f4af49a6814de5573a494824e103131a3bbe4cc470b1aefe8e17e51f9a478a22cd116084be1ee5725cedb66ec4c3f9091202dc4b
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.7":
   version: 1.11.10
   resolution: "dayjs@npm:1.11.10"
   checksum: 10c0/4de9af50639d47df87f2e15fa36bb07e0f9ed1e9c52c6caa1482788ee9a384d668f1dbd00c54f82aaab163db07d61d2899384b8254da3a9184fc6deca080e2fe
@@ -9958,7 +9965,7 @@ __metadata:
     compromise: "npm:^14.13.0"
     compromise-paragraphs: "npm:^0.1.0"
     compromise-stats: "npm:^0.1.0"
-    dayjs: "npm:^1.11.10"
+    dayjs: "npm:^1.11.11"
     decamelize: "npm:^6.0.0"
     decamelize-keys: "npm:^2.0.1"
     echogarden: "npm:^1.1.0"
