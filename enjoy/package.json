@@ -159,7 +159,7 @@
     "react-hotkeys-hook": "^4.5.0",
     "react-i18next": "^14.1.0",
     "react-markdown": "^9.0.1",
-    "react-router-dom": "^6.22.3",
+    "react-router-dom": "^6.23.0",
     "react-tooltip": "^5.26.3",
     "reflect-metadata": "^0.2.2",
     "rimraf": "^5.0.5",
