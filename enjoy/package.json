@@ -56,7 +56,7 @@
     "@types/react-dom": "^18.2.25",
     "@types/validator": "^13.11.9",
     "@types/wavesurfer.js": "^6.0.12",
-    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
     "@typescript-eslint/parser": "^7.7.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
