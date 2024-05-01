@@ -285,7 +285,7 @@ Voice: Nova (US Female)
 
 ::: info
 
-Daniel Jones 去世之后，Alfred C. Gimson 接受了他的工作，于 1977 年发布了 D.J. 音标第 14 版。引入 <span class="pho">ɪ ʊ ɒ ɜː</span> 等符号取代之前使用的 <span class="pho">i u ɔ əː</span>。1997 年，Peter Roach 再次接手，*English Pronouncing Dictionary* (*EPD*) 更名为 *Cambridge English Pronouncing Dictionary* (*CEPD*)，并发布 D.J. 音标第 15 版。除了引入能够标注美式发音的 <span class="pho">ɝ, ɚ, t̬</span> 之外， 还特意修改了词汇末尾的 <span class="pho">ɪ</span>，将其统一改成了 <span class="pho">i</span>。也就是说，*happy* 不再被标注为 <span class="pho">ˈhæpɪ</span>，而是 <span class="pho">ˈhæpi</span><span class="speak-word-inline" data-audio-uk="/audios/happy-uk.mp3" data-audio-us="/audios/happy-us.mp3"></span>。与此同时，大多数词典所配的真人发音示范，都相应第做了修订。
+Daniel Jones 去世之后，Alfred C. Gimson 接受了他的工作，于 1977 年发布了 D.J. 音标第 14 版。引入 <span class="pho">ɪ ʊ ɒ ɜː</span> 等符号取代之前使用的 <span class="pho">i u ɔ əː</span>。1997 年，Peter Roach 再次接手，*English Pronouncing Dictionary* (*EPD*) 更名为 *Cambridge English Pronouncing Dictionary* (*CEPD*)，并发布 D.J. 音标第 15 版。除了引入能够标注美式发音的 <span class="pho">ɝ, ɚ, t̬</span> 之外， 还特意修改了词汇末尾的 <span class="pho">ɪ</span>，将其统一改成了 <span class="pho">i</span>。也就是说，*happy* 不再被标注为 <span class="pho">ˈhæpɪ</span>，而是 <span class="pho">ˈhæpi</span><span class="speak-word-inline" data-audio-uk="/audios/happy-uk.mp3" data-audio-us="/audios/happy-us.mp3"></span>。与此同时，大多数词典所配的真人发音示范，都相应地做了修订。
 
 :::
 # 2.1.6. <span class="pho">ʊ</span>/<span class="pho">uː</span>
@@ -415,7 +415,7 @@ D.J. 音标最初的时候短元音用 <span class="pho">ɔ</span>，长元音�
 
 这不是 <span class="pho">t, d</span> 才有的现象。
 
-上一个音节末尾的辅音和下一个音节开头的辅音相同的时候，叫做**叠音**（*geminates*）。在连贯的自然语音中，着两个辅音就只发声一次 —— 但听起来的时候，有可能感受到前一个辅音存在造成细微停顿。它从机制上来看，其实和**省音**（[2.2.5.1](17-td#_2-2-5-1-省音)）一样。其实哪怕相邻的两个辅音相似的时候，也会发生同样的现象。
+上一个音节末尾的辅音和下一个音节开头的辅音相同的时候，叫做**叠音**（*geminates*）。在连贯的自然语音中，这两个辅音就只发声一次 —— 但听起来的时候，有可能感受到前一个辅音存在造成细微停顿。它从机制上来看，其实和**省音**（[2.2.5.1](17-td#_2-2-5-1-省音)）一样。其实哪怕相邻的两个辅音相似的时候，也会发生同样的现象。
 
 比如，*at that time*, 不是 <span class="pho alt">ət ðæt taɪm</span>，而是 <span class="pho alt">ə·ðætaɪm</span><span class="speak-word-inline" data-audio-uk="/audios/i-was-tired-at-that-time.-uk.mp3" data-audio-us="/audios/i-was-tired-at-that-time.-us.mp3"></span> —— 第一个 <span class="pho">t</span> 由于后面跟着一个辅音，于是产生了**省音**（[2.2.5.1](17-td#_2-2-5-1-省音)），听不到了，但，该有的停顿却依然在，在这里我们用 <span class="pho">·</span> 代表那个停顿 ；而后，第二个 <span class="pho">t</span> 与 第三个 <span class="pho">t</span>  是**叠音**，这两个 <span class="pho">t</span> 只发声一次。再比如，*a bad day*, 不是 <span class="pho alt">ə bæd deɪ</span>，而是 <span class="pho alt">ə bæ deɪ</span><span class="speak-word-inline" data-audio-uk="/audios/this-is-really-a-bad-day.-uk.mp3" data-audio-us="/audios/this-is-really-a-bad-day.-us.mp3"></span>。
 
