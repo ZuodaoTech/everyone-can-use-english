@@ -10,7 +10,11 @@ import url from "url";
 import mainWin from "@main/window";
 
 const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
+//  youtubedr bin file will be in /app.asar.unpacked instead of /app.asar
+const __dirname = path
+  .dirname(__filename)
+  .replace("app.asar", "app.asar.unpacked");
 
 const logger = log.scope("YOUTUBEDR");
 
