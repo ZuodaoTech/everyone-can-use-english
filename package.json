@@ -21,7 +21,7 @@
     "docs:build": "yarn workspace 1000-hours build",
     "docs:preview": "yarn workspace 1000-hours preview"
   },
-  "packageManager": "yarn@4.1.1",
+  "packageManager": "yarn@4.2.1",
   "engines": {
     "node": ">=18.0.0"
   }
