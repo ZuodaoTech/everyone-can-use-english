@@ -7657,13 +7657,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astral-regex@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "astral-regex@npm:2.0.0"
-  checksum: 10c0/f63d439cc383db1b9c5c6080d1e240bd14dae745f15d11ec5da863e182bbeca70df6c8191cffef5deba0b566ef98834610a68be79ac6379c95eeb26e1b310e25
-  languageName: node
-  linkType: hard
-
 "async@npm:>=0.2.9":
   version: 3.2.5
   resolution: "async@npm:3.2.5"
@@ -8467,16 +8460,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-truncate@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "cli-truncate@npm:2.1.0"
-  dependencies:
-    slice-ansi: "npm:^3.0.0"
-    string-width: "npm:^4.2.0"
-  checksum: 10c0/dfaa3df675bcef7a3254773de768712b590250420345a4c7ac151f041a4bacb4c25864b1377bee54a39b5925a030c00eabf014e312e3a4ac130952ed3b3879e9
-  languageName: node
-  linkType: hard
-
 "cli-truncate@npm:^3.1.0":
   version: 3.1.0
   resolution: "cli-truncate@npm:3.1.0"
@@ -8484,6 +8467,16 @@ __metadata:
     slice-ansi: "npm:^5.0.0"
     string-width: "npm:^5.0.0"
   checksum: 10c0/a19088878409ec0e5dc2659a5166929629d93cfba6d68afc9cde2282fd4c751af5b555bf197047e31c87c574396348d011b7aa806fec29c4139ea4f7f00b324c
+  languageName: node
+  linkType: hard
+
+"cli-truncate@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "cli-truncate@npm:4.0.0"
+  dependencies:
+    slice-ansi: "npm:^5.0.0"
+    string-width: "npm:^7.0.0"
+  checksum: 10c0/d7f0b73e3d9b88cb496e6c086df7410b541b56a43d18ade6a573c9c18bd001b1c3fba1ad578f741a4218fdc794d042385f8ac02c25e1c295a2d8b9f3cb86eb4c
   languageName: node
   linkType: hard
 
@@ -9872,25 +9865,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-context-menu@npm:^3.6.1":
-  version: 3.6.1
-  resolution: "electron-context-menu@npm:3.6.1"
+"electron-context-menu@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "electron-context-menu@npm:4.0.0"
   dependencies:
-    cli-truncate: "npm:^2.1.0"
-    electron-dl: "npm:^3.2.1"
-    electron-is-dev: "npm:^2.0.0"
-  checksum: 10c0/f08d60c06e19aa68a4c643275367d3343df636d3595df8982f1d593837cf7f304952e5508e1bff99734b24927a9b98d8beeec15d3eb3ea00df204e706341cd1e
+    cli-truncate: "npm:^4.0.0"
+    electron-dl: "npm:^4.0.0"
+    electron-is-dev: "npm:^3.0.1"
+  checksum: 10c0/ff6e7374f8f69626b4c5f3a6bc0d31c30e4194a8c283c07768bff0864ef7f33a9f2f0283920941e1da75de44beab29da27ce249cbc10d3e3b90849eb91c84e64
   languageName: node
   linkType: hard
 
-"electron-dl@npm:^3.2.1":
-  version: 3.5.2
-  resolution: "electron-dl@npm:3.5.2"
+"electron-dl@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "electron-dl@npm:4.0.0"
   dependencies:
     ext-name: "npm:^5.0.0"
-    pupa: "npm:^2.0.1"
-    unused-filename: "npm:^2.1.0"
-  checksum: 10c0/1141188c66b187917050cca1954d2abc9922b6687efc81d85a4e9c8c14948a64791c338d9713f48133666db71fd464113d4661e886ed92f2f469eda5c6eaafa1
+    pupa: "npm:^3.1.0"
+    unused-filename: "npm:^4.0.1"
+  checksum: 10c0/480034df23c9444fc32c561a0c124d263145b93cba74402870eac64af523109a66ad322e4a49e1155ab0d9b229f2955e3ccf852e483101470f7780c02879cf5d
   languageName: node
   linkType: hard
 
@@ -9966,10 +9959,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-is-dev@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "electron-is-dev@npm:2.0.0"
-  checksum: 10c0/aa540115f144f9c8c788e13fc581be7b0f9f83422eecb940af6367c67d63c3a656e03ad9c1138f17bcfbafc9edca8b83f655feff24dead2cc4866169c6e565f9
+"electron-is-dev@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "electron-is-dev@npm:3.0.1"
+  checksum: 10c0/80d37d61d44b8b7af0af90eab622b09e0f165afbc2560297c760356efa93fcb54dbbd13d4d6522da6474e261d630b76b804c86385564a1f3062d28fc59c340bd
   languageName: node
   linkType: hard
 
@@ -10059,6 +10052,13 @@ __metadata:
   version: 0.13.1
   resolution: "emittery@npm:0.13.1"
   checksum: 10c0/1573d0ae29ab34661b6c63251ff8f5facd24ccf6a823f19417ae8ba8c88ea450325788c67f16c99edec8de4b52ce93a10fe441ece389fd156e88ee7dab9bfa35
+  languageName: node
+  linkType: hard
+
+"emoji-regex@npm:^10.3.0":
+  version: 10.3.0
+  resolution: "emoji-regex@npm:10.3.0"
+  checksum: 10c0/b4838e8dcdceb44cf47f59abe352c25ff4fe7857acaf5fb51097c427f6f75b44d052eb907a7a3b86f86bc4eae3a93f5c2b7460abe79c407307e6212d65c91163
   languageName: node
   linkType: hard
 
@@ -10203,7 +10203,7 @@ __metadata:
     decamelize-keys: "npm:^2.0.1"
     echogarden: "npm:^1.3.0"
     electron: "npm:^30.0.2"
-    electron-context-menu: "npm:^3.6.1"
+    electron-context-menu: "npm:^4.0.0"
     electron-log: "npm:^5.1.2"
     electron-playwright-helpers: "npm:^1.7.1"
     electron-settings: "npm:^4.0.4"
@@ -10500,17 +10500,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"escape-goat@npm:^2.0.0":
-  version: 2.1.1
-  resolution: "escape-goat@npm:2.1.1"
-  checksum: 10c0/fc0ad656f89c05e86a9641a21bdc5ea37b258714c057430b68a834854fa3e5770cda7d41756108863fc68b1e36a0946463017b7553ac39eaaf64815be07816fc
-  languageName: node
-  linkType: hard
-
 "escape-goat@npm:^3.0.0":
   version: 3.0.0
   resolution: "escape-goat@npm:3.0.0"
   checksum: 10c0/a2b470bbdb95ccbcd19390576993a2b75735457b1979275f4f0d6da86d2e932a2a12edd9270208e3090299a26df857da1f80555c37bb1bac6fa9135322253ca4
+  languageName: node
+  linkType: hard
+
+"escape-goat@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "escape-goat@npm:4.0.0"
+  checksum: 10c0/9d2a8314e2370f2dd9436d177f6b3b1773525df8f895c8f3e1acb716f5fd6b10b336cb1cd9862d4709b36eb207dbe33664838deca9c6d55b8371be4eebb972f6
   languageName: node
   linkType: hard
 
@@ -10532,6 +10532,13 @@ __metadata:
   version: 4.0.0
   resolution: "escape-string-regexp@npm:4.0.0"
   checksum: 10c0/9497d4dd307d845bd7f75180d8188bb17ea8c151c1edbf6b6717c100e104d629dc2dfb687686181b0f4b7d732c7dfdc4d5e7a8ff72de1b0ca283a75bbb3a9cd9
+  languageName: node
+  linkType: hard
+
+"escape-string-regexp@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "escape-string-regexp@npm:5.0.0"
+  checksum: 10c0/6366f474c6f37a802800a435232395e04e9885919873e382b157ab7e8f0feb8fed71497f84a6f6a81a49aab41815522f5839112bd38026d203aea0c91622df95
   languageName: node
   linkType: hard
 
@@ -11493,6 +11500,13 @@ __metadata:
   version: 2.0.5
   resolution: "get-caller-file@npm:2.0.5"
   checksum: 10c0/c6c7b60271931fa752aeb92f2b47e355eac1af3a2673f47c9589e8f8a41adc74d45551c1bc57b5e66a80609f10ffb72b6f575e4370d61cc3f7f3aaff01757cde
+  languageName: node
+  linkType: hard
+
+"get-east-asian-width@npm:^1.0.0":
+  version: 1.2.0
+  resolution: "get-east-asian-width@npm:1.2.0"
+  checksum: 10c0/914b1e217cf38436c24b4c60b4c45289e39a45bf9e65ef9fd343c2815a1a02b8a0215aeec8bf9c07c516089004b6e3826332481f40a09529fcadbf6e579f286b
   languageName: node
   linkType: hard
 
@@ -14947,13 +14961,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"modify-filename@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "modify-filename@npm:1.1.0"
-  checksum: 10c0/9f98b69aa1ecdeae81a31917dc32da3259d3ec2f4519491de0b390abc81cd96388ab5778c4e18b83b2a9d9812382314184699693072bb42ead81cc1d94b82502
-  languageName: node
-  linkType: hard
-
 "moment-timezone@npm:^0.5.43":
   version: 0.5.45
   resolution: "moment-timezone@npm:0.5.45"
@@ -16326,12 +16333,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pupa@npm:^2.0.1":
-  version: 2.1.1
-  resolution: "pupa@npm:2.1.1"
+"pupa@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "pupa@npm:3.1.0"
   dependencies:
-    escape-goat: "npm:^2.0.0"
-  checksum: 10c0/d2346324780ebae4be847cad052b830e004d816851dd4750fc73faa6cd360f443e358f6b1c83641fd4c904c6055dcb545807f55259a20a52ad86d9477746c724
+    escape-goat: "npm:^4.0.0"
+  checksum: 10c0/02afa6e4547a733484206aaa8f8eb3fbfb12d3dd17d7ca4fa1ea390a7da2cb8f381e38868bbf68009c4d372f8f6059f553171b6a712d8f2802c7cd43d513f06c
   languageName: node
   linkType: hard
 
@@ -17433,17 +17440,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"slice-ansi@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "slice-ansi@npm:3.0.0"
-  dependencies:
-    ansi-styles: "npm:^4.0.0"
-    astral-regex: "npm:^2.0.0"
-    is-fullwidth-code-point: "npm:^3.0.0"
-  checksum: 10c0/88083c9d0ca67d09f8b4c78f68833d69cabbb7236b74df5d741ad572bbf022deaf243fa54009cd434350622a1174ab267710fcc80a214ecc7689797fe00cb27c
-  languageName: node
-  linkType: hard
-
 "slice-ansi@npm:^5.0.0":
   version: 5.0.0
   resolution: "slice-ansi@npm:5.0.0"
@@ -17743,6 +17739,17 @@ __metadata:
     emoji-regex: "npm:^9.2.2"
     strip-ansi: "npm:^7.0.1"
   checksum: 10c0/ab9c4264443d35b8b923cbdd513a089a60de339216d3b0ed3be3ba57d6880e1a192b70ae17225f764d7adbf5994e9bb8df253a944736c15a0240eff553c678ca
+  languageName: node
+  linkType: hard
+
+"string-width@npm:^7.0.0":
+  version: 7.1.0
+  resolution: "string-width@npm:7.1.0"
+  dependencies:
+    emoji-regex: "npm:^10.3.0"
+    get-east-asian-width: "npm:^1.0.0"
+    strip-ansi: "npm:^7.1.0"
+  checksum: 10c0/68a99fbc3bd3d8eb42886ff38dce819767dee55f606f74dfa4687a07dfd21262745d9683df0aa53bf81a5dd47c13da921a501925b974bec66a7ddd634fef0634
   languageName: node
   linkType: hard
 
@@ -18739,13 +18746,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unused-filename@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "unused-filename@npm:2.1.0"
+"unused-filename@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "unused-filename@npm:4.0.1"
   dependencies:
-    modify-filename: "npm:^1.1.0"
-    path-exists: "npm:^4.0.0"
-  checksum: 10c0/db2eeb8e42e3198203eefb290c4127dc7f10fc18fd6f877e80cbcd3f04123fe03337096b74f457221d2dd772531816cf9d55a664d54798d8da12d6225cfcad70
+    escape-string-regexp: "npm:^5.0.0"
+    path-exists: "npm:^5.0.0"
+  checksum: 10c0/8a670b61800a3887a425543ee800007208db50a9face20508867fcf8cdd50547c1359db65a6d7e66643ffc95f620e04efa4912fa49439069b2c022d1a6c5d349
   languageName: node
   linkType: hard
 
