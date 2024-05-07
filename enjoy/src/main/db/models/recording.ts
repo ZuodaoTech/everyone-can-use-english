@@ -306,22 +306,26 @@ export class Recording extends Model<Recording> {
       throw new Error("Empty recording");
     }
 
-    // denoise audio
-    const { denoisedAudio } = await echogarden.denoise(
-      Buffer.from(blob.arrayBuffer),
-      {}
+    let rawAudio = await echogarden.ensureRawAudio(
+      Buffer.from(blob.arrayBuffer)
     );
+
+    // denoise audio
+    // const { denoisedAudio } = await echogarden.denoise(
+    //   rawAudio,
+    //   {}
+    // );
 
     // trim audio
     let trimmedSamples = echogarden.trimAudioStart(
-      denoisedAudio.audioChannels[0],
+      rawAudio.audioChannels[0],
       0,
       -30
     );
     trimmedSamples = echogarden.trimAudioEnd(trimmedSamples, 0, -30);
-    denoisedAudio.audioChannels[0] = trimmedSamples;
+    rawAudio.audioChannels[0] = trimmedSamples;
 
-    duration = Math.round(echogarden.getRawAudioDuration(denoisedAudio) * 1000);
+    duration = Math.round(echogarden.getRawAudioDuration(rawAudio) * 1000);
 
     if (duration === 0) {
       throw new Error("Failed to get duration of the recording");
@@ -333,7 +337,7 @@ export class Recording extends Model<Recording> {
       "recordings",
       `${Date.now()}.wav`
     );
-    await fs.outputFile(file, echogarden.encodeRawAudioToWave(denoisedAudio));
+    await fs.outputFile(file, echogarden.encodeRawAudioToWave(rawAudio));
 
     // hash file
     const md5 = await hashFile(file, { algo: "md5" });
