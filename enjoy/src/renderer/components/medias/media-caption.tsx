@@ -97,29 +97,21 @@ export const MediaCaption = () => {
 
     const start = startWord.startTime;
     const end = endWord.endTime;
-    const regionStart = activeRegion.start;
-    const regionEnd = activeRegion.end;
 
     // If the active region is a word region, then merge the selected words into a single region.
     if (activeRegion.id.startsWith("word-region")) {
       activeRegion.remove();
 
-      if (start >= regionStart && end <= regionEnd) {
-        setActiveRegion(
-          regions.getRegions().find((r) => r.id.startsWith("segment-region"))
-        );
-      } else {
-        const region = regions.addRegion({
-          id: `word-region-${startIndex}`,
-          start: Math.min(start, regionStart),
-          end: Math.max(end, regionEnd),
-          color: "#fb6f9233",
-          drag: false,
-          resize: editingRegion,
-        });
+      const region = regions.addRegion({
+        id: `word-region-${startIndex}`,
+        start,
+        end,
+        color: "#fb6f9233",
+        drag: false,
+        resize: editingRegion,
+      });
 
-        setActiveRegion(region);
-      }
+      setActiveRegion(region);
       // If the active region is a meaning group region, then active the segment region.
     } else if (activeRegion.id.startsWith("meaning-group-region")) {
       setActiveRegion(
