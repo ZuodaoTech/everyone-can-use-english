@@ -5,6 +5,7 @@ export * from "./media-recordings";
 export * from "./media-current-recording";
 export * from "./media-recorder";
 export * from "./media-transcription";
+export * from "./media-transcription-form";
 export * from "./media-player";
 export * from "./media-provider";
 export * from "./media-tabs";

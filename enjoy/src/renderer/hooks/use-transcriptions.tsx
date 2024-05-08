@@ -52,14 +52,15 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         });
     };
 
-  const generateTranscription = async () => {
-    let originalText: string;
-    if (transcription?.targetId === media.id) {
-      originalText = transcription.result?.originalText;
-    } else {
-      const r = await findOrCreateTranscription();
-      if (r) {
-        originalText = r.result?.originalText;
+  const generateTranscription = async (originalText?: string) => {
+    if (originalText === undefined) {
+      if (transcription?.targetId === media.id) {
+        originalText = transcription.result?.originalText;
+      } else {
+        const r = await findOrCreateTranscription();
+        if (r) {
+          originalText = r.result?.originalText;
+        }
       }
     }
 
@@ -113,14 +114,17 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
             const match = word?.match(/-|%/);
             if (!match) return;
 
-            if (word === '-' && token.text.toLowerCase() === words[j + 1]?.trim()?.toLowerCase()) {
+            if (
+              word === "-" &&
+              token.text.toLowerCase() === words[j + 1]?.trim()?.toLowerCase()
+            ) {
               sentence.timeline.splice(j, 0, {
-                type: 'token',
-                text: '-',
+                type: "token",
+                text: "-",
                 startTime: sentence.timeline[j - 1]?.endTime || 0,
                 endTime: sentence.timeline[j - 1]?.endTime || 0,
                 timeline: [],
-              })
+              });
               return;
             }
 
