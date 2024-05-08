@@ -566,5 +566,8 @@
   "areYouSureToDeleteThisNote": "您确定要删除这条笔记吗？",
   "notesCount": "{{count}} 条笔记",
   "source": "来源",
-  "noNotesYet": "还没有笔记"
+  "noNotesYet": "还没有笔记",
+  "editTranscription": "编辑语音文本",
+  "saveTranscription": "保存语音文本",
+  "areYouSureToSaveTranscription": "即将根据您修改后的语音文本对语音重新进行对齐，确定要继续吗？"
 }

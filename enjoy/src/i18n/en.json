@@ -567,5 +567,8 @@
   "areYouSureToDeleteThisNote": "Are you sure to delete this note?",
   "notesCount": "{{count}} notes",
   "source": "source",
-  "noNotesYet": "No notes yet"
+  "noNotesYet": "No notes yet",
+  "editTranscription": "Edit transcription",
+  "saveTranscription": "Save transcription",
+  "areYouSureToSaveTranscription": "It will perform a force-alignment between the audio and your edited transcription. Are you sure to continue?"
 }

@@ -8,6 +8,7 @@ import {
 import { toast } from "@renderer/components/ui";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@/constants";
+import { ca } from "@vidstack/react/types/vidstack-react";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
   const { whisperConfig } = useContext(AISettingsProviderContext);
@@ -52,14 +53,15 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         });
     };
 
-  const generateTranscription = async () => {
-    let originalText: string;
-    if (transcription?.targetId === media.id) {
-      originalText = transcription.result?.originalText;
-    } else {
-      const r = await findOrCreateTranscription();
-      if (r) {
-        originalText = r.result?.originalText;
+  const generateTranscription = async (originalText?: string) => {
+    if (originalText === undefined) {
+      if (transcription?.targetId === media.id) {
+        originalText = transcription.result?.originalText;
+      } else {
+        const r = await findOrCreateTranscription();
+        if (r) {
+          originalText = r.result?.originalText;
+        }
       }
     }
 
@@ -87,65 +89,72 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
        * Pre-process
        * 1. Some words end with period should not be a single sentence, like Mr./Ms./Dr. etc
        * 2. Some words connected by `-`(like scrach-off) are split into multiple words in words timeline, merge them for display;
-       * 3. Some numbers with `%` are split into `number + percent` in words timeline, merge thme for display;
+       * 3. Some numbers with `%` are split into `number + percent` in words timeline, merge them for display;
        */
-      timeline.forEach((sentence, i) => {
-        const nextSentence = timeline[i + 1];
-        if (
-          !sentence.text
-            .replaceAll(MAGIC_TOKEN_REGEX, "")
-            .match(END_OF_SENTENCE_REGEX) &&
-          nextSentence?.text
-        ) {
-          nextSentence.text = [sentence.text, nextSentence.text].join(" ");
-          nextSentence.timeline = [
-            ...sentence.timeline,
-            ...nextSentence.timeline,
-          ];
-          nextSentence.startTime = sentence.startTime;
-          timeline.splice(i, 1);
-        } else {
-          const words = sentence.text.split(" ");
+      try {
+        timeline.forEach((sentence, i) => {
+          const nextSentence = timeline[i + 1];
+          if (
+            !sentence.text
+              .replaceAll(MAGIC_TOKEN_REGEX, "")
+              .match(END_OF_SENTENCE_REGEX) &&
+            nextSentence?.text
+          ) {
+            nextSentence.text = [sentence.text, nextSentence.text].join(" ");
+            nextSentence.timeline = [
+              ...sentence.timeline,
+              ...nextSentence.timeline,
+            ];
+            nextSentence.startTime = sentence.startTime;
+            timeline.splice(i, 1);
+          } else {
+            const words = sentence.text.split(" ");
 
-          sentence.timeline.forEach((token, j) => {
-            const word = words[j]?.trim()?.toLowerCase();
+            sentence.timeline.forEach((token, j) => {
+              const word = words[j]?.trim()?.toLowerCase();
 
-            const match = word?.match(/-|%/);
-            if (!match) return;
+              const match = word?.match(/-|%/);
+              if (!match) return;
 
-            if (word === '-' && token.text.toLowerCase() === words[j + 1]?.trim()?.toLowerCase()) {
-              sentence.timeline.splice(j, 0, {
-                type: 'token',
-                text: '-',
-                startTime: sentence.timeline[j - 1]?.endTime || 0,
-                endTime: sentence.timeline[j - 1]?.endTime || 0,
-                timeline: [],
-              })
-              return;
-            }
-
-            for (let k = j + 1; k <= sentence.timeline.length - 1; k++) {
-              if (word.includes(sentence.timeline[k].text.toLowerCase())) {
-                let connector = "";
-                if (match[0] === "-") {
-                  connector = "-";
-                }
-                token.text = [token.text, sentence.timeline[k].text].join(
-                  connector
-                );
-                token.timeline = [
-                  ...token.timeline,
-                  ...sentence.timeline[k].timeline,
-                ];
-                token.endTime = sentence.timeline[k].endTime;
-                sentence.timeline.splice(k, 1);
-              } else {
-                break;
+              if (
+                word === "-" &&
+                token.text.toLowerCase() === words[j + 1]?.trim()?.toLowerCase()
+              ) {
+                sentence.timeline.splice(j, 0, {
+                  type: "token",
+                  text: "-",
+                  startTime: sentence.timeline[j - 1]?.endTime || 0,
+                  endTime: sentence.timeline[j - 1]?.endTime || 0,
+                  timeline: [],
+                });
+                return;
               }
-            }
-          });
-        }
-      });
+
+              for (let k = j + 1; k <= sentence.timeline.length - 1; k++) {
+                if (word.includes(sentence.timeline[k].text.toLowerCase())) {
+                  let connector = "";
+                  if (match[0] === "-") {
+                    connector = "-";
+                  }
+                  token.text = [token.text, sentence.timeline[k].text].join(
+                    connector
+                  );
+                  token.timeline = [
+                    ...token.timeline,
+                    ...sentence.timeline[k].timeline,
+                  ];
+                  token.endTime = sentence.timeline[k].endTime;
+                  sentence.timeline.splice(k, 1);
+                } else {
+                  break;
+                }
+              }
+            });
+          }
+        });
+      } catch (err) {
+        console.error(err);
+      }
 
       await EnjoyApp.transcriptions.update(transcription.id, {
         state: "finished",
