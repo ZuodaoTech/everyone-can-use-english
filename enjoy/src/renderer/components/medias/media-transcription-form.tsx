@@ -46,7 +46,7 @@ export const TranscriptionForm = (props: {
   setOpen: (value: boolean) => void;
 }) => {
   const { setOpen } = props;
-  const [saving, setSaving] = useState(false);
+  const [submiting, setSubmiting] = useState(false);
   const { transcription, generateTranscription } = useContext(
     MediaPlayerProviderContext
   );
@@ -55,7 +55,7 @@ export const TranscriptionForm = (props: {
   );
 
   const handleSave = async () => {
-    setSaving(true);
+    setSubmiting(true);
     try {
       await generateTranscription(content);
       setOpen(false);
@@ -63,7 +63,7 @@ export const TranscriptionForm = (props: {
       toast.error(e.message);
     }
 
-    setSaving(false);
+    setSubmiting(false);
   };
 
   return (
@@ -73,6 +73,7 @@ export const TranscriptionForm = (props: {
       </DialogHeader>
       <div>
         <Textarea
+          disabled={submiting}
           className="h-96 text-lg font-serif resize-none"
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -80,27 +81,36 @@ export const TranscriptionForm = (props: {
       </div>
       <DialogFooter>
         <DialogClose asChild>
-          <Button variant="secondary">{t("cancel")}</Button>
+          <Button disabled={submiting} variant="secondary">
+            {t("cancel")}
+          </Button>
         </DialogClose>
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button>{t("save")}</Button>
+            <Button disabled={submiting}>
+              {submiting && <LoaderIcon className="animate-spin w-4 mr-2" />}
+              {t("save")}
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>{t("saveTranscription")}</AlertDialogTitle>
               <AlertDialogDescription>
-                {t("areYouSureToSaveTranscriptionAndMakeAlignment")}
+                {t("areYouSureToSaveTranscription")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel disabled={saving}>
+              <AlertDialogCancel disabled={submiting}>
                 {t("cancel")}
               </AlertDialogCancel>
-              <AlertDialogAction disabled={saving} onClick={handleSave}>
-                {saving && <LoaderIcon className="animate-spin w-4 mr-2" />}
-                {t("save")}
+              <AlertDialogAction asChild>
+                <Button disabled={submiting} onClick={handleSave}>
+                  {submiting && (
+                    <LoaderIcon className="animate-spin w-4 mr-2" />
+                  )}
+                  {t("save")}
+                </Button>
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
