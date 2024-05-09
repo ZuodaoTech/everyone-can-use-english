@@ -9,6 +9,7 @@ import {
   translateCommand,
   analyzeCommand,
   punctuateCommand,
+  summarizeTopicCommand,
 } from "@commands";
 
 export const useAiCommand = () => {
@@ -108,14 +109,23 @@ export const useAiCommand = () => {
       key: currentEngine.key,
       modelName: currentEngine.model,
       baseUrl: currentEngine.baseUrl,
-    })
-  }
+    });
+  };
+
+  const summarizeTopic = async (text: string) => {
+    return summarizeTopicCommand(text, {
+      key: currentEngine.key,
+      modelName: currentEngine.model,
+      baseUrl: currentEngine.baseUrl,
+    });
+  };
 
   return {
     lookupWord,
     extractStory,
     translate,
     analyzeText,
-    punctuateText
+    punctuateText,
+    summarizeTopic,
   };
 };

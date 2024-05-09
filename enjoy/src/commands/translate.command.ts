@@ -10,6 +10,8 @@ export const translateCommand = async (
     baseUrl?: string;
   }
 ): Promise<string> => {
+  if (!text) throw new Error("Text is required");
+
   const prompt = await ChatPromptTemplate.fromMessages([
     ["system", SYSTEM_PROMPT],
     ["human", TRANSLATION_PROMPT],

@@ -570,5 +570,6 @@
   "noNotesYet": "No notes yet",
   "editTranscription": "Edit transcription",
   "saveTranscription": "Save transcription",
-  "areYouSureToSaveTranscription": "It will perform a force-alignment between the audio and your edited transcription. Are you sure to continue?"
+  "areYouSureToSaveTranscription": "It will perform a force-alignment between the audio and your edited transcription. Are you sure to continue?",
+  "summarize": "Summarize"
 }

@@ -10,6 +10,8 @@ export const summarizeTopicCommand = async (
     baseUrl?: string;
   }
 ): Promise<string> => {
+  if (!text) throw new Error("Text is required");
+
   const prompt = await ChatPromptTemplate.fromMessages([
     ["system", SYSTEM_PROMPT],
     ["human", text],

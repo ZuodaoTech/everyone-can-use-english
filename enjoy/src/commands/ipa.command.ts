@@ -11,6 +11,8 @@ export const ipaCommand = async (
     baseUrl?: string;
   }
 ): Promise<{ words?: { word?: string; ipa?: string }[] }> => {
+  if (!text) throw new Error("Text is required");
+
   const schema = z.object({
     words: z.array(
       z.object({
