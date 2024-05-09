@@ -13,7 +13,10 @@ export const translateCommand = async (
   const prompt = await ChatPromptTemplate.fromMessages([
     ["system", SYSTEM_PROMPT],
     ["human", TRANSLATION_PROMPT],
-  ]).format({ text });
+  ]).format({
+    native_language: "Chinese",
+    text,
+  });
 
   return textCommand(prompt, options);
 };

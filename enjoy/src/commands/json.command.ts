@@ -1,5 +1,6 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { RESPONSE_JSON_FORMAT_MODELS } from "@/constants";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 export const jsonCommand = async (
   prompt: string,
@@ -25,15 +26,17 @@ export const jsonCommand = async (
     configuration: {
       baseURL: baseUrl,
     },
-    modelKwargs: {
-      response_format: {
-        type: "json_object",
-      },
-    },
     cache: true,
     verbose: true,
-    maxRetries: 2,
+    maxRetries: 1,
   });
 
-  return chatModel.withStructuredOutput(schema).invoke(prompt);
+  const structuredOutput = chatModel.withStructuredOutput(
+    zodToJsonSchema(schema),
+    {
+      method: "jsonMode",
+    }
+  );
+
+  return structuredOutput.invoke(prompt);
 };

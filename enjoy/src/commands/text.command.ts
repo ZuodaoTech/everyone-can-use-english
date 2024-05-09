@@ -22,7 +22,7 @@ export const textCommand = async (
     },
     cache: false,
     verbose: true,
-    maxRetries: 2,
+    maxRetries: 1,
   });
 
   const response = await chatModel.invoke(prompt);
