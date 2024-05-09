@@ -28,5 +28,10 @@ export const extractStoryCommand = async (
 };
 
 const EXTRACT_STORY_PROMPT = `
-I am an {learning_language} beginner and only have a grasp of 500 high-frequency basic words. You are an {learning_language} learning assistant robot, and your task is to analyze the article I provide and extract all the meaningful words and idioms that I may not be familiar with. Specifically, it should include common words used in uncommon ways. Return in JSON format.
+I am an {learning_language} beginner and only have a grasp of 500 high-frequency basic words. You are an {learning_language} learning assistant robot, and your task is to analyze the article I provide and extract all the meaningful words and idioms that I may not be familiar with. Specifically, it should include common words used in uncommon ways. Return in JSON format like following:
+
+{{
+  words: ["word1", "word2", ...],
+  idiom: ["idiom1", "idiom2", ...]
+}}
 `;

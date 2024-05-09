@@ -23,6 +23,11 @@ export const jsonCommand = async (
     openAIApiKey: key,
     modelName,
     temperature,
+    modelKwargs: {
+      response_format: {
+        type: "json_object",
+      },
+    },
     configuration: {
       baseURL: baseUrl,
     },
@@ -38,5 +43,6 @@ export const jsonCommand = async (
     }
   );
 
-  return structuredOutput.invoke(prompt);
+  const response = await structuredOutput.invoke(prompt);
+  return response;
 };
