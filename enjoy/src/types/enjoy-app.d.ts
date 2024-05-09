@@ -73,6 +73,14 @@ type EnjoyAppType = {
   onNotification: (
     callback: (event, notification: NotificationType) => void
   ) => void;
+  onLookup: (
+    callback: (
+      event,
+      selection: string,
+      coordinate: { x: number; y: number }
+    ) => void
+  ) => void;
+  offLookup: () => void;
   shell: {
     openExternal: (url: string) => Promise<void>;
     openPath: (path: string) => Promise<void>;
