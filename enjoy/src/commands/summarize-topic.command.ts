@@ -1,7 +1,7 @@
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { textCommand } from "./text.command";
 
-export const punctuateCommand = async (
+export const summarizeTopicCommand = async (
   text: string,
   options: {
     key: string;
@@ -18,4 +18,5 @@ export const punctuateCommand = async (
   return textCommand(prompt, options);
 };
 
-const SYSTEM_PROMPT = `Please add proper punctuation to the text I provide you. Return the corrected text only.`;
+const SYSTEM_PROMPT =
+  "Please generate a four to five word title summarizing our conversation without any lead-in, punctuation, quotation marks, periods, symbols, bold text, or additional text. Remove enclosing quotation marks.";

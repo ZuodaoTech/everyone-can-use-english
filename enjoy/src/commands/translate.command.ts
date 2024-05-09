@@ -1,5 +1,5 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { textCommand } from "./text.command";
 
 export const translateCommand = async (
   text: string,
@@ -10,32 +10,12 @@ export const translateCommand = async (
     baseUrl?: string;
   }
 ): Promise<string> => {
-  const { key, temperature = 0, baseUrl } = options;
-  let { modelName = "gpt-4-turbo" } = options;
-
-  const chatModel = new ChatOpenAI({
-    openAIApiKey: key,
-    modelName,
-    temperature,
-    configuration: {
-      baseURL: baseUrl,
-    },
-    cache: false,
-    verbose: true,
-    maxRetries: 2,
-  });
-
-  const prompt = ChatPromptTemplate.fromMessages([
+  const prompt = await ChatPromptTemplate.fromMessages([
     ["system", SYSTEM_PROMPT],
     ["human", TRANSLATION_PROMPT],
-  ]);
+  ]).format({ text });
 
-  const response = await prompt.pipe(chatModel).invoke({
-    native_language: "Chinese",
-    text,
-  });
-
-  return response.text;
+  return textCommand(prompt, options);
 };
 
 const SYSTEM_PROMPT =
