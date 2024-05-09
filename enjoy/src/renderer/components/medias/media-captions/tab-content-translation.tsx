@@ -141,12 +141,13 @@ const SelectedWords = (props: {
   };
 
   const { lookupWord } = useAiCommand();
-  const { result: camdictResult } = useCamdict(
-    selectedIndices
-      .map((index) => caption?.timeline?.[index]?.text || "")
-      .join(" ")
-      .trim()
-  );
+  const { result: camdictResult, renderResult: renderCamdictResult } =
+    useCamdict(
+      selectedIndices
+        .map((index) => caption?.timeline?.[index]?.text || "")
+        .join(" ")
+        .trim()
+    );
 
   /*
    * If the selected indices are changed, then reset the lookup result.
@@ -222,70 +223,8 @@ const SelectedWords = (props: {
         })}
       </div>
 
-      {camdictResult && (
-        <>
-          <Separator className="my-2" />
-          <div className="text-sm italic text-muted-foreground mb-2">
-            {t("cambridgeDictionary")}
-          </div>
-          <div className="select-text">
-            {camdictResult.posItems.map((posItem, index) => (
-              <div key={index} className="mb-4">
-                <div className="flex items-center space-x-4 mb-2 flex-wrap">
-                  <div className="italic text-sm text-muted-foreground">
-                    {posItem.type}
-                  </div>
-
-                  {posItem.pronunciations.map((pron, i) => (
-                    <div
-                      key={`pron-${i}`}
-                      className="flex items-center space-x-2"
-                    >
-                      <span className="uppercase text-xs font-serif text-muted-foreground">
-                        [{pron.region}]
-                      </span>
-                      <span className="text-sm font-code">
-                        /{pron.pronunciation}/
-                      </span>
-                      {pron.audio && (
-                        <div>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="rounded-full p-0 w-6 h-6"
-                            onClick={() => {
-                              const audio = document.getElementById(
-                                `${posItem.type}-${pron.region}`
-                              ) as HTMLAudioElement;
-                              if (audio) {
-                                audio.play();
-                              }
-                            }}
-                          >
-                            <Volume2Icon className="w-4 h-4" />
-                          </Button>
-                          <audio
-                            className="hidden"
-                            id={`${posItem.type}-${pron.region}`}
-                            src={pron.audio}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                <ul className="list-disc pl-4">
-                  {posItem.definitions.map((def, i) => (
-                    <li key={`pos-${i}`} className="">
-                      {def.definition}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
+      <Separator className="my-2" />
+      {renderCamdictResult()}
 
       <Separator className="my-2" />
       <div className="text-sm italic text-muted-foreground mb-2">

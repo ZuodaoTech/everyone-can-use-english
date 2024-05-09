@@ -570,5 +570,6 @@
   "editTranscription": "编辑语音文本",
   "saveTranscription": "保存语音文本",
   "areYouSureToSaveTranscription": "即将根据您修改后的语音文本对语音重新进行对齐，确定要继续吗？",
-  "summarize": "提炼主题"
+  "summarize": "提炼主题",
+  "noResultsFound": "没有找到结果"
 }
