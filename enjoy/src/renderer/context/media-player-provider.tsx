@@ -510,7 +510,7 @@ export const MediaPlayerProvider = ({
     EnjoyApp.waveforms.find(media.md5).then((waveform) => {
       setWaveForm(waveform);
     });
-  }, [media]);
+  }, [media?.md5]);
 
   /*
    * Initialize wavesurfer when container ref is available
@@ -524,7 +524,7 @@ export const MediaPlayerProvider = ({
       setDecoded(false);
       setDecodeError(null);
     };
-  }, [media, ref, mediaProvider, layout?.playerHeight]);
+  }, [media?.src, ref, mediaProvider, layout?.playerHeight]);
 
   useEffect(() => {
     calculateHeight();

@@ -1,11 +1,9 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { zodToJsonSchema } from "zod-to-json-schema";
 import { z } from "zod";
-import { RESPONSE_JSON_FORMAT_MODELS } from "@/constants";
+import { jsonCommand } from "./json.command";
 
 export const extractStoryCommand = async (
-  content: string,
+  text: string,
   options: {
     key: string;
     modelName?: string;
@@ -13,61 +11,27 @@ export const extractStoryCommand = async (
     baseUrl?: string;
   }
 ): Promise<{ words: string[]; idioms: string[] }> => {
-  const { key, temperature = 0, baseUrl } = options;
-  let { modelName = "gpt-4-turbo" } = options;
-
-  if (RESPONSE_JSON_FORMAT_MODELS.indexOf(modelName) === -1) {
-    modelName = "gpt-4-turbo";
-  }
-
-  const saveExtraction = z.object({
+  const schema = z.object({
     words: z.array(z.string().describe("extracted word")),
     idioms: z.array(z.string().describe("extracted idiom")),
   });
 
-  const chatModel = new ChatOpenAI({
-    openAIApiKey: key,
-    modelName,
-    temperature,
-    modelKwargs: {
-      response_format: {
-        type: "json_object",
-      },
-    },
-    configuration: {
-      baseURL: baseUrl,
-    },
-    cache: true,
-    verbose: true,
-    maxRetries: 2,
-  }).bind({
-    tools: [
-      {
-        type: "function",
-        function: {
-          name: "save_extraction",
-          description: "Save the extracted words and idioms from a text",
-          parameters: zodToJsonSchema(saveExtraction),
-        },
-      },
-    ],
-  });
-
-  const prompt = ChatPromptTemplate.fromMessages([
+  const prompt = await ChatPromptTemplate.fromMessages([
     ["system", EXTRACT_STORY_PROMPT],
     ["human", "{text}"],
-  ]);
-
-  const response = await prompt.pipe(chatModel).invoke({
+  ]).format({
     learning_language: "English",
-    text: content,
+    text,
   });
 
-  return JSON.parse(
-    response.additional_kwargs?.tool_calls?.[0]?.function?.arguments || "{}"
-  );
+  return jsonCommand(prompt, { ...options, schema });
 };
 
 const EXTRACT_STORY_PROMPT = `
-I am an {learning_language} beginner and only have a grasp of 500 high-frequency basic words. You are an {learning_language} learning assistant robot, and your task is to analyze the article I provide and extract all the meaningful words and idioms that I may not be familiar with. Specifically, it should include common words used in uncommon ways. Return in JSON format.
+I am an {learning_language} beginner and only have a grasp of 500 high-frequency basic words. You are an {learning_language} learning assistant robot, and your task is to analyze the article I provide and extract all the meaningful words and idioms that I may not be familiar with. Specifically, it should include common words used in uncommon ways. Return in JSON format like following:
+
+{{
+  words: ["word1", "word2", ...],
+  idiom: ["idiom1", "idiom2", ...]
+}}
 `;

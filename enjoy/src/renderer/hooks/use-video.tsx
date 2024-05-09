@@ -5,17 +5,20 @@ import {
 } from "@renderer/context";
 import { toast } from "@renderer/components/ui";
 import { t } from "i18next";
+import { useThrottle } from "@uidotdev/usehooks";
 
 export const useVideo = (options: { id?: string; md5?: string }) => {
   const { id, md5 } = options;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [video, setVideo] = useState<VideoType>(null);
+  const throttledVideo = useThrottle(video, 500);
 
   const onAudioUpdate = (event: CustomEvent) => {
     const { model, action, record } = event.detail || {};
-    if (model !== "Audio") return;
-    if (record?.id != video?.id) return;
+    if (model !== "Video") return;
+    if (id && record.id !== id) return;
+    if (md5 && record.md5 !== md5) return;
     if (action !== "update") return;
 
     setVideo(record);
@@ -38,6 +41,6 @@ export const useVideo = (options: { id?: string; md5?: string }) => {
   }, [id, md5]);
 
   return {
-    video,
+    video: throttledVideo,
   };
 };

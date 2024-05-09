@@ -34,7 +34,7 @@ import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
 import { AppSettingsProviderContext } from "@renderer/context";
 import Markdown from "react-markdown";
-import { useConversation } from "@renderer/hooks";
+import { useConversation, useAiCommand } from "@renderer/hooks";
 
 export const AssistantMessageComponent = (props: {
   message: MessageType;
@@ -52,6 +52,7 @@ export const AssistantMessageComponent = (props: {
   const [shadowing, setShadowing] = useState<boolean>(false);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { tts } = useConversation();
+  const { summarizeTopic } = useAiCommand();
 
   useEffect(() => {
     if (speech) return;
@@ -100,11 +101,19 @@ export const AssistantMessageComponent = (props: {
 
     if (!audio) {
       setResourcing(true);
+      let title =
+        speech.text.length > 20
+          ? speech.text.substring(0, 17).trim() + "..."
+          : speech.text;
+
+      try {
+        title = await summarizeTopic(speech.text);
+      } catch (e) {
+        console.warn(e);
+      }
+
       await EnjoyApp.audios.create(speech.filePath, {
-        name:
-          speech.text.length > 20
-            ? speech.text.substring(0, 17).trim() + "..."
-            : speech.text,
+        name: title,
         originalText: speech.text,
       });
       setResourcing(false);
@@ -169,7 +178,7 @@ export const AssistantMessageComponent = (props: {
                   new URL(props.href ?? "");
                   props.target = "_blank";
                   props.rel = "noopener noreferrer";
-                } catch (e) { }
+                } catch (e) {}
 
                 return <a {...props}>{children}</a>;
               },

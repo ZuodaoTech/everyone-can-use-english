@@ -1,11 +1,6 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { z } from "zod";
-import {
-  StructuredOutputParser,
-  OutputFixingParser,
-} from "langchain/output_parsers";
-import { RESPONSE_JSON_FORMAT_MODELS } from "@/constants";
+import { jsonCommand } from "./json.command";
 
 export const lookupCommand = async (
   params: {
@@ -29,16 +24,9 @@ export const lookupCommand = async (
   translation?: string;
   lemma?: string;
 }> => {
-  const { key, temperature = 0, baseUrl } = options;
-  let { modelName = "gpt-4-turbo" } = options;
-
-  if (RESPONSE_JSON_FORMAT_MODELS.indexOf(modelName) === -1) {
-    modelName = "gpt-4-turbo";
-  }
-
   const { word, context, meaningOptions } = params;
 
-  const responseSchema = z.object({
+  const schema = z.object({
     id: z.string().optional(),
     word: z.string().optional(),
     context_translation: z.string().optional(),
@@ -49,37 +37,10 @@ export const lookupCommand = async (
     lemma: z.string().optional(),
   });
 
-  const parser = StructuredOutputParser.fromZodSchema(responseSchema);
-  const fixParser = OutputFixingParser.fromLLM(
-    new ChatOpenAI({
-      openAIApiKey: key,
-      modelName,
-      temperature: 0,
-      configuration: {
-        baseURL: baseUrl,
-      },
-    }),
-    parser
-  );
-
-  const chatModel = new ChatOpenAI({
-    openAIApiKey: key,
-    modelName,
-    temperature,
-    configuration: {
-      baseURL: baseUrl,
-    },
-    cache: true,
-    verbose: true,
-    maxRetries: 2,
-  });
-
-  const prompt = ChatPromptTemplate.fromMessages([
+  const prompt = await ChatPromptTemplate.fromMessages([
     ["system", DICITIONARY_PROMPT],
     ["human", "{input}"],
-  ]);
-
-  const response = await prompt.pipe(chatModel).invoke({
+  ]).format({
     learning_language: "English",
     native_language: "Chinese",
     input: JSON.stringify({
@@ -89,11 +50,7 @@ export const lookupCommand = async (
     }),
   });
 
-  try {
-    return await parser.parse(response.text);
-  } catch (e) {
-    return await fixParser.parse(response.text);
-  }
+  return jsonCommand(prompt, { ...options, schema });
 };
 
 const DICITIONARY_PROMPT = `You are an {learning_language}-{native_language} dictionary. I will provide "word(it also maybe a phrase)" and "context" as input, you should return the "word", "lemma", "pronunciation", "pos(part of speech, maybe empty for phrase)", "definition", "translation" and "context_translation" as output. If I provide "definitions", you should try to select the appropriate one for the given context, and return the id of selected definition as "id". If none are suitable, generate a new definition for me. If no context is provided, return the most common definition. If you do not know the appropriate definition, return an empty string for "definition" and "translation".
