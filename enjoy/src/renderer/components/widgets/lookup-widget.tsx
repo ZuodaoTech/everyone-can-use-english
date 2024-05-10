@@ -19,6 +19,8 @@ export const LookupWidget = () => {
   const [selected, setSelected] = useState<{
     word: string;
     context?: string;
+    sourceType?: string;
+    sourceId?: string;
     position: {
       x: number;
       y: number;
@@ -41,7 +43,14 @@ export const LookupWidget = () => {
       .closest(".sentence, h2, p, div")
       ?.textContent?.trim();
 
-    setSelected({ word, context, position });
+    const sourceType = selection.anchorNode.parentElement
+      .closest("[data-source-type]")
+      ?.getAttribute("data-source-type");
+    const sourceId = selection.anchorNode.parentElement
+      .closest("[data-source-id]")
+      ?.getAttribute("data-source-id");
+
+    setSelected({ word, context, position, sourceType, sourceId });
     setOpen(true);
   };
 
@@ -52,10 +61,6 @@ export const LookupWidget = () => {
 
     return () => EnjoyApp.offLookup();
   }, []);
-
-  useEffect(() => {
-    console.log(selected);
-  }, [selected]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -81,6 +86,8 @@ export const LookupWidget = () => {
               <AiLookupResult
                 word={selected?.word}
                 context={selected?.context}
+                sourceId={selected?.sourceId}
+                sourceType={selected?.sourceType}
               />
             </div>
           </ScrollArea>
@@ -111,6 +118,8 @@ export const AiLookupResult = (props: {
     lookupWord({
       word,
       context,
+      sourceId,
+      sourceType,
     })
       .then((lookup) => {
         if (lookup?.meaning) {
@@ -165,7 +174,7 @@ export const AiLookupResult = (props: {
             )}
             {result.meaning?.pronunciation && (
               <span className="text-sm font-code mr-2">
-                /{result.meaning.pronunciation}/
+                /{result.meaning.pronunciation.replaceAll("/", "")}/
               </span>
             )}
             {result.meaning?.lemma &&

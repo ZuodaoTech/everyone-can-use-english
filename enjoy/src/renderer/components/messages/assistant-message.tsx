@@ -172,6 +172,8 @@ export const AssistantMessageComponent = (props: {
         {configuration.type === "gpt" && (
           <Markdown
             className="message-content select-text prose dark:prose-invert"
+            data-source-type="Message"
+            data-source-id={message.id}
             components={{
               a({ node, children, ...props }) {
                 try {
