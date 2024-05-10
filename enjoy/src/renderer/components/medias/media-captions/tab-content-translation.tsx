@@ -6,7 +6,7 @@ import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
 import { convertIpaToNormal } from "@/utils";
 import {
   CamdictLookupResult,
-  aiLookupResult,
+  AiLookupResult,
   TranslateResult,
 } from "@renderer/components";
 
@@ -93,7 +93,7 @@ const SelectedWords = (props: {
       <CamdictLookupResult word={word} />
 
       <Separator className="my-2" />
-      <aiLookupResult
+      <AiLookupResult
         word={word}
         context={caption.text}
         sourceId={transcription.targetId}

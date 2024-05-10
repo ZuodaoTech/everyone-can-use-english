@@ -78,7 +78,7 @@ export const LookupWidget = () => {
             <div className="px-4">
               <CamdictLookupResult word={selected?.word} />
               <Separator className="my-2" />
-              <aiLookupResult
+              <AiLookupResult
                 word={selected?.word}
                 context={selected?.context}
               />
@@ -90,7 +90,7 @@ export const LookupWidget = () => {
   );
 };
 
-export const aiLookupResult = (props: {
+export const AiLookupResult = (props: {
   word: string;
   context?: string;
   sourceType?: string;
