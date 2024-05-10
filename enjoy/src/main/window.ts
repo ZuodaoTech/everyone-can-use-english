@@ -1,7 +1,7 @@
 import {
   app,
   BrowserWindow,
-  BrowserView,
+  WebContentsView,
   Menu,
   ipcMain,
   shell,
@@ -145,9 +145,8 @@ main.init = () => {
       );
 
       logger.debug("view-load", url);
-      const view = new BrowserView();
-      view.setBackgroundColor("#fff");
-      mainWindow.setBrowserView(view);
+      const view = new WebContentsView();
+      mainWindow.contentView.addChildView(view);
 
       view.setBounds({
         x: Math.round(x),
@@ -155,12 +154,7 @@ main.init = () => {
         width: Math.round(width),
         height: Math.round(height),
       });
-      view.setAutoResize({
-        width: true,
-        height: true,
-        horizontal: true,
-        vertical: true,
-      });
+
       view.webContents.on("did-navigate", (_event, url) => {
         event.sender.send("view-on-state", {
           state: "did-navigate",
@@ -176,7 +170,7 @@ main.init = () => {
             url: validatedURL,
           });
           (view.webContents as any).destroy();
-          mainWindow.removeBrowserView(view);
+          mainWindow.contentView.removeChildView(view);
         }
       );
       view.webContents.on("did-finish-load", () => {
@@ -221,27 +215,17 @@ main.init = () => {
 
   ipcMain.handle("view-remove", () => {
     logger.debug("view-remove");
-    mainWindow.getBrowserViews().forEach((view) => {
-      (view.webContents as any).destroy();
-      mainWindow.removeBrowserView(view);
+    mainWindow.contentView.children.forEach((view) => {
+      mainWindow.contentView.removeChildView(view);
     });
   });
 
   ipcMain.handle("view-hide", () => {
     logger.debug("view-hide");
-    const view = mainWindow.getBrowserView();
+    const view = mainWindow.contentView.children[0];
     if (!view) return;
 
-    const bounds = view.getBounds();
-    logger.debug("current view bounds", bounds);
-    if (bounds.width === 0 && bounds.height === 0) return;
-
-    view.setBounds({
-      x: -Math.round(bounds.width),
-      y: -Math.round(bounds.height),
-      width: 0,
-      height: 0,
-    });
+    view.setVisible(false);
   });
 
   ipcMain.handle(
@@ -255,25 +239,19 @@ main.init = () => {
         height: number;
       }
     ) => {
-      const view = mainWindow.getBrowserView();
+      const view = mainWindow.contentView.children[0];
       if (!view) return;
-      if (!bounds) return;
 
       logger.debug("view-show", bounds);
-      const { x = 0, y = 0, width = 0, height = 0 } = bounds || {};
-      view.setBounds({
-        x: Math.round(x),
-        y: Math.round(y),
-        width: Math.round(width),
-        height: Math.round(height),
-      });
+      view.setVisible(true);
     }
   );
 
   ipcMain.handle("view-scrape", (event, url) => {
     logger.debug("view-scrape", url);
-    const view = new BrowserView();
-    mainWindow.setBrowserView(view);
+    const view = new WebContentsView();
+    view.setVisible(false);
+    mainWindow.contentView.addChildView(view);
 
     view.webContents.on("did-navigate", (_event, url) => {
       event.sender.send("view-on-state", {
@@ -290,7 +268,7 @@ main.init = () => {
           url: validatedURL,
         });
         (view.webContents as any).destroy();
-        mainWindow.removeBrowserView(view);
+        mainWindow.contentView.removeChildView(view);
       }
     );
     view.webContents.on("did-finish-load", () => {
@@ -302,7 +280,7 @@ main.init = () => {
             html,
           });
           (view.webContents as any).destroy();
-          mainWindow.removeBrowserView(view);
+          mainWindow.contentView.removeChildView(view);
         });
     });
 

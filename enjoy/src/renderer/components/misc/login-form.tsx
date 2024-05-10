@@ -24,12 +24,15 @@ import { ChevronLeftIcon } from "lucide-react";
 import intlTelInput from "intl-tel-input";
 import "intl-tel-input/build/css/intlTelInput.css";
 import { WEB_API_URLS } from "@/constants";
+import { useDebounce } from "@uidotdev/usehooks";
 
 export const LoginForm = () => {
   const { EnjoyApp, login, webApi, user } = useContext(
     AppSettingsProviderContext
   );
   const [webviewUrl, setWebviewUrl] = useState<string>();
+  const [webviewRect, setWebviewRect] = useState<DOMRect | null>(null);
+  const debouncedWebviewRect = useDebounce(webviewRect, 500);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -83,18 +86,18 @@ export const LoginForm = () => {
 
   useEffect(() => {
     if (!webviewUrl) return;
-    if (!containerRef?.current) return;
+    if (!debouncedWebviewRect) return;
 
     EnjoyApp.view.onViewState((_event, state) => onViewState(state));
+    const { x, y, width, height } = debouncedWebviewRect;
 
-    const rect = containerRef.current.getBoundingClientRect();
     EnjoyApp.view.load(
       webviewUrl,
       {
-        x: Math.round(rect.x),
-        y: Math.round(rect.y),
-        width: Math.round(rect.width),
-        height: Math.round(rect.height),
+        x: Math.round(x),
+        y: Math.round(y),
+        width: Math.round(width),
+        height: Math.round(height),
       },
       {
         navigatable: true,
@@ -105,7 +108,20 @@ export const LoginForm = () => {
       EnjoyApp.view.removeViewStateListeners();
       EnjoyApp.view.remove();
     };
-  }, [webApi, webviewUrl]);
+  }, [webApi, webviewUrl, debouncedWebviewRect]);
+
+  useEffect(() => {
+    if (!containerRef?.current) return;
+
+    setWebviewRect(containerRef.current.getBoundingClientRect());
+    EnjoyApp.window.onResize(() => {
+      setWebviewRect(containerRef.current.getBoundingClientRect());
+    });
+
+    return () => {
+      EnjoyApp.window.removeListeners();
+    };
+  }, [containerRef?.current]);
 
   if (user) {
     return (
