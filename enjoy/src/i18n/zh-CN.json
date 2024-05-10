@@ -531,9 +531,9 @@
     "analysis": "句子分析",
     "note": "笔记"
   },
-  "translateSetence": "整句翻译",
+  "translateSentence": "整句翻译",
   "reTranslate": "重新翻译",
-  "analyzeSetence": "分析句子",
+  "analyzeSentence": "分析句子",
   "useAIAssistantToAnalyze": "使用智能助手分析",
   "reAnalyze": "重新分析",
   "AiDictionary": "智能词典",

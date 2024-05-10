@@ -532,9 +532,9 @@
     "analysis": "Analysis",
     "note": "Note"
   },
-  "translateSetence": "translate setenece",
+  "translateSentence": "translate sentenece",
   "reTranslate": "re-translate",
-  "analyzeSetence": "analyze setenece",
+  "analyzeSentence": "analyze sentenece",
   "useAIAssistantToAnalyze": "Use AI assistant to analyze",
   "reAnalyze": "re-analyze",
   "AiDictionary": "AI dictionary",

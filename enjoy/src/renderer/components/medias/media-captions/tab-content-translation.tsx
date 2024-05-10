@@ -1,17 +1,14 @@
-import { useEffect, useState, useContext } from "react";
-import {
-  AppSettingsProviderContext,
-  MediaPlayerProviderContext,
-} from "@renderer/context";
-import { Button, toast, TabsContent, Separator } from "@renderer/components/ui";
+import { useContext } from "react";
+import { MediaPlayerProviderContext } from "@renderer/context";
+import { TabsContent, Separator } from "@renderer/components/ui";
 import { t } from "i18next";
-import { useAiCommand } from "@renderer/hooks";
-import { LoaderIcon } from "lucide-react";
-import { md5 } from "js-md5";
-import Markdown from "react-markdown";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
 import { convertIpaToNormal } from "@/utils";
-import { CamdictLookupResult, AiLookupResult } from "@renderer/components";
+import {
+  CamdictLookupResult,
+  AiLookupResult,
+  TranslateResult,
+} from "@renderer/components";
 
 /*
  * Translation tab content.
@@ -21,82 +18,15 @@ export function TabContentTranslation(props: {
   selectedIndices: number[];
 }) {
   const { caption } = props;
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const [translation, setTranslation] = useState<string>();
-  const [translating, setTranslating] = useState<boolean>(false);
-  const { translate } = useAiCommand();
-
-  const translateSetence = async () => {
-    if (translating) return;
-
-    setTranslating(true);
-    translate(caption.text, `translate-${md5(caption.text)}`)
-      .then((result) => {
-        if (result) {
-          setTranslation(result);
-        }
-      })
-      .catch((err) => toast.error(err.message))
-      .finally(() => {
-        setTranslating(false);
-      });
-  };
-
-  /*
-   * If the caption is changed, then reset the translation.
-   * Also, check if the translation is cached, then use it.
-   */
-  useEffect(() => {
-    EnjoyApp.cacheObjects
-      .get(`translate-${md5(caption.text)}`)
-      .then((cached) => {
-        setTranslation(cached);
-      });
-  }, [caption.text]);
 
   return (
     <TabsContent value="translation">
       <SelectedWords {...props} />
-
-      <Separator />
-
-      {translation ? (
-        <div className="py-4">
-          <div className="text-sm italic text-muted-foreground mb-2">
-            {t("translateSetence")}
-          </div>
-          <Markdown className="select-text prose dark:prose-invert prose-sm prose-h3:text-base max-w-full mb-2">
-            {translation}
-          </Markdown>
-
-          <div className="flex items-center">
-            <Button
-              variant="secondary"
-              size="sm"
-              disabled={translating}
-              onClick={translateSetence}
-            >
-              {translating && (
-                <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
-              )}
-              {t("reTranslate")}
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div className="flex items-center py-4">
-          <Button
-            size="sm"
-            disabled={translating}
-            onClick={() => translateSetence()}
-          >
-            {translating && (
-              <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
-            )}
-            <span>{t("translateSetence")}</span>
-          </Button>
-        </div>
-      )}
+      <Separator className="my-2" />
+      <div className="text-sm italic text-muted-foreground mb-2">
+        {t("translateSentence")}
+      </div>
+      <TranslateResult text={caption.text} />
     </TabsContent>
   );
 }

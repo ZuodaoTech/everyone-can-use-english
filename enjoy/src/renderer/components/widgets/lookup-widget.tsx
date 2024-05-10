@@ -34,6 +34,8 @@ export const LookupWidget = () => {
       .trim()
       .replace(/[.,/#!$%^&*;:{}=\-_`~()]+$/, "");
     if (!word) return;
+    // can only lookup single word
+    if (word.indexOf(" ") > -1) return;
 
     const context = selection.anchorNode.parentElement
       .closest(".sentence, h2, p, div")
