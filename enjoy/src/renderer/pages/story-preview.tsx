@@ -13,6 +13,7 @@ import { ChevronLeftIcon, BookOpenTextIcon } from "lucide-react";
 import { t } from "i18next";
 import nlp from "compromise";
 import paragraphs from "compromise-paragraphs";
+import { useDebounce } from "@uidotdev/usehooks";
 nlp.plugin(paragraphs);
 
 export default () => {
@@ -31,20 +32,20 @@ export default () => {
   const [marked, setMarked] = useState<boolean>(false);
   const [doc, setDoc] = useState<any>(null);
 
-  const loadURL = () => {
-    if (!containerRef?.current) return;
-    if (!url) return;
+  const [webviewRect, setWebviewRect] = useState<DOMRect | null>(null);
+  const debouncedWebviewRect = useDebounce(webviewRect, 500);
 
+  const loadURL = () => {
     setError(null);
     setLoading(true);
     setStory({ url });
 
-    const rect = containerRef.current.getBoundingClientRect();
+    const { x, y, width, height } = debouncedWebviewRect;
     EnjoyApp.view.load(url, {
-      x: rect.x,
-      y: rect.y,
-      width: rect.width,
-      height: rect.height,
+      x,
+      y,
+      width,
+      height,
     });
   };
 
@@ -154,17 +155,31 @@ export default () => {
   };
 
   useEffect(() => {
-    loadURL();
-  }, [url, containerRef]);
+    if (!containerRef?.current) return;
+    if (!url) return;
+    if (!debouncedWebviewRect) return;
 
-  useEffect(() => {
+    loadURL();
     EnjoyApp.view.onViewState((_event, state) => onViewState(state));
 
     return () => {
       EnjoyApp.view.removeViewStateListeners();
       EnjoyApp.view.remove();
     };
-  }, []);
+  }, [url, containerRef, debouncedWebviewRect]);
+
+  useEffect(() => {
+    if (!containerRef?.current) return;
+
+    setWebviewRect(containerRef.current.getBoundingClientRect());
+    EnjoyApp.window.onResize(() => {
+      setWebviewRect(containerRef.current.getBoundingClientRect());
+    });
+
+    return () => {
+      EnjoyApp.window.removeListeners();
+    };
+  }, [containerRef?.current]);
 
   useEffect(() => {
     if (readable) {
