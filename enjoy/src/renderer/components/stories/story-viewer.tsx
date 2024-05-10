@@ -1,16 +1,9 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import { useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { ChevronLeftIcon, ExternalLinkIcon } from "lucide-react";
-import {
-  Button,
-  Popover,
-  PopoverContent,
-  PopoverAnchor,
-} from "@renderer/components/ui";
-import { SelectionMenu } from "@renderer/components";
+import { Button } from "@renderer/components/ui";
 import uniq from "lodash/uniq";
-import debounce from "lodash/debounce";
 import Mark from "mark.js";
 
 export const StoryViewer = (props: {
@@ -22,14 +15,7 @@ export const StoryViewer = (props: {
   doc: any;
 }) => {
   const navigate = useNavigate();
-  const {
-    story,
-    marked,
-    meanings = [],
-    setMeanings,
-    pendingLookups = [],
-    doc,
-  } = props;
+  const { story, marked, meanings = [], pendingLookups = [], doc } = props;
   if (!story || !doc) return null;
 
   const paragraphs: { terms: any[]; text: string }[][] = doc
@@ -38,46 +24,6 @@ export const StoryViewer = (props: {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const ref = useRef<HTMLDivElement>();
-  const [selected, setSelected] = useState<{
-    word: string;
-    context?: string;
-    position?: {
-      top: number;
-      left: number;
-    };
-  }>();
-
-  const handleSelectionChanged = debounce(() => {
-    const selection = document.getSelection();
-    if (!selection?.anchorNode?.parentElement) return;
-    if (!ref.current?.contains(selection.anchorNode.parentElement)) return;
-
-    const word = selection
-      .toString()
-      .trim()
-      .replace(/[.,/#!$%^&*;:{}=\-_`~()]+$/, "");
-    if (!word) return;
-
-    const position = {
-      top:
-        selection.anchorNode.parentElement.offsetTop +
-        selection.anchorNode.parentElement.offsetHeight,
-      left: selection.anchorNode.parentElement.offsetLeft,
-    };
-    const context = selection.anchorNode.parentElement
-      .closest("span.sentence, h2")
-      ?.textContent?.trim();
-
-    setSelected({ word, context, position });
-  }, 500);
-
-  useEffect(() => {
-    document.addEventListener("selectionchange", handleSelectionChanged);
-
-    return () => {
-      document.removeEventListener("selectionchange", handleSelectionChanged);
-    };
-  }, [story, ref]);
 
   useEffect(() => {
     const marker = new Mark(ref.current);
@@ -141,6 +87,8 @@ export const StoryViewer = (props: {
         <article
           ref={ref}
           className="relative select-text prose dark:prose-invert prose-lg xl:prose-xl font-serif text-lg"
+          data-source-type="Story"
+          data-source-id={story.id}
         >
           <h2>
             {story.title.split(" ").map((word, i) => (
@@ -176,39 +124,6 @@ export const StoryViewer = (props: {
               })}
             </p>
           ))}
-
-          <Popover
-            open={Boolean(selected?.word)}
-            onOpenChange={(value) => {
-              if (!value) setSelected(null);
-            }}
-          >
-            <PopoverAnchor
-              className="absolute w-0 h-0"
-              style={{
-                top: selected?.position?.top,
-                left: selected?.position?.left,
-              }}
-            ></PopoverAnchor>
-            <PopoverContent
-              className="w-full max-w-md p-0"
-              updatePositionStrategy="always"
-            >
-              {selected?.word && (
-                <SelectionMenu
-                  word={selected?.word}
-                  context={selected?.context}
-                  sourceId={story.id}
-                  sourceType={"Story"}
-                  onLookup={(meaning) => {
-                    if (setMeanings) {
-                      setMeanings([...meanings, meaning]);
-                    }
-                  }}
-                />
-              )}
-            </PopoverContent>
-          </Popover>
         </article>
       </div>
     </>

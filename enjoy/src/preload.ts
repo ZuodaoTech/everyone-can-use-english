@@ -123,6 +123,23 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   onNotification: (
     callback: (event: IpcRendererEvent, notification: NotificationType) => void
   ) => ipcRenderer.on("on-notification", callback),
+  onLookup: (
+    callback: (
+      event: IpcRendererEvent,
+      selection: string,
+      position: { x: number; y: number }
+    ) => void
+  ) => ipcRenderer.on("on-lookup", callback),
+  offLookup: () => {
+    ipcRenderer.removeAllListeners("on-lookup");
+  },
+  onTranslate: (
+    callback: (
+      event: IpcRendererEvent,
+      selection: string,
+      position: { x: number; y: number }
+    ) => void
+  ) => ipcRenderer.on("on-translate", callback),
   shell: {
     openExternal: (url: string) =>
       ipcRenderer.invoke("shell-open-external", url),

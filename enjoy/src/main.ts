@@ -49,6 +49,33 @@ contextMenu({
   shouldShowMenu: (_event, params) => {
     return params.isEditable || !!params.selectionText;
   },
+  prepend: (
+    _defaultActions,
+    parameters,
+    browserWindow: BrowserWindow,
+    _event
+  ) => [
+    {
+      label: t("lookup"),
+      visible:
+        parameters.selectionText.trim().length > 0 &&
+        !parameters.selectionText.trim().includes(" "),
+      click: () => {
+        const { x, y, selectionText } = parameters;
+        browserWindow.webContents.send("on-lookup", selectionText, { x, y });
+      },
+    },
+    {
+      label: t("aiTranslate"),
+      visible:
+        parameters.selectionText.trim().length > 0 &&
+        parameters.selectionText.trim().includes(" "),
+      click: () => {
+        const { x, y, selectionText } = parameters;
+        browserWindow.webContents.send("on-translate", selectionText, { x, y });
+      },
+    },
+  ],
 });
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.

@@ -423,8 +423,8 @@
   "extracting": "Extracting",
   "extractionFailed": "Extraction failed",
   "extractedSuccessfully": "Extracted successfully",
-  "lookUp": "Look up",
-  "lookUpAll": "Look up all",
+  "lookup": "Look up",
+  "lookupAll": "Look up all",
   "lookingUp": "Looking up",
   "pending": "Pending",
   "thereAreLookupsProcessing": "There are {{count}} lookups processing",
@@ -532,13 +532,14 @@
     "analysis": "Analysis",
     "note": "Note"
   },
-  "translateSetence": "translate setenece",
+  "translateSentence": "translate sentenece",
   "reTranslate": "re-translate",
-  "analyzeSetence": "analyze setenece",
+  "analyzeSentence": "analyze sentenece",
   "useAIAssistantToAnalyze": "Use AI assistant to analyze",
   "reAnalyze": "re-analyze",
-  "AiDictionary": "AI dictionary",
-  "AiTranslate": "AI translate",
+  "aiDictionary": "AI dictionary",
+  "aiLookup": "AI lookup",
+  "aiTranslate": "AI translate",
   "cambridgeDictionary": "Cambridge dictionary",
   "customizeShortcuts": "Customize shortcuts",
   "customizeShortcutsTip": "Click to change",
@@ -571,5 +572,6 @@
   "editTranscription": "Edit transcription",
   "saveTranscription": "Save transcription",
   "areYouSureToSaveTranscription": "It will perform a force-alignment between the audio and your edited transcription. Are you sure to continue?",
-  "summarize": "Summarize"
+  "summarize": "Summarize",
+  "noResultsFound": "No results found"
 }

@@ -422,8 +422,8 @@
   "extracting": "正在提取",
   "extractionFailed": "提取失败",
   "extractedSuccessfully": "提取成功",
-  "lookUp": "查询",
-  "lookUpAll": "全部查询",
+  "lookup": "查询",
+  "lookupAll": "全部查询",
   "lookingUp": "正在查询",
   "pending": "等待中",
   "thereAreLookupsProcessing": "有{{count}}个单词正在查询",
@@ -531,13 +531,14 @@
     "analysis": "句子分析",
     "note": "笔记"
   },
-  "translateSetence": "整句翻译",
+  "translateSentence": "整句翻译",
   "reTranslate": "重新翻译",
-  "analyzeSetence": "分析句子",
+  "analyzeSentence": "分析句子",
   "useAIAssistantToAnalyze": "使用智能助手分析",
   "reAnalyze": "重新分析",
-  "AiDictionary": "智能词典",
-  "AiTranslate": "智能翻译",
+  "aiDictionary": "智能词典",
+  "aiLookup": "查询智能词典",
+  "aiTranslate": "智能翻译",
   "cambridgeDictionary": "剑桥词典",
   "customizeShortcuts": "自定义快捷键",
   "customizeShortcutsTip": "点击重新录制",
@@ -570,5 +571,6 @@
   "editTranscription": "编辑语音文本",
   "saveTranscription": "保存语音文本",
   "areYouSureToSaveTranscription": "即将根据您修改后的语音文本对语音重新进行对齐，确定要继续吗？",
-  "summarize": "提炼主题"
+  "summarize": "提炼主题",
+  "noResultsFound": "没有找到结果"
 }

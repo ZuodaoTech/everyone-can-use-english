@@ -17,7 +17,7 @@ export function TabContentAnalysis(props: { text: string; }) {
 
   const { analyzeText } = useAiCommand();
 
-  const analyzeSetence = async () => {
+  const analyzeSentence = async () => {
     if (analyzing) return;
 
     setAnalyzing(true);
@@ -69,7 +69,7 @@ export function TabContentAnalysis(props: { text: string; }) {
               variant="secondary"
               size="sm"
               disabled={analyzing}
-              onClick={analyzeSetence}
+              onClick={analyzeSentence}
             >
               {analyzing && (
                 <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
@@ -88,9 +88,9 @@ export function TabContentAnalysis(props: { text: string; }) {
         </>
       ) : (
         <div className="flex items-center justify-center space-x-2 py-4">
-          <Button size="sm" disabled={analyzing} onClick={analyzeSetence}>
+          <Button size="sm" disabled={analyzing} onClick={analyzeSentence}>
             {analyzing && <LoaderIcon className="animate-spin w-4 h-4 mr-2" />}
-            <span>{t("analyzeSetence")}</span>
+            <span>{t("analyzeSentence")}</span>
           </Button>
           <AIButton
             prompt={text as string}

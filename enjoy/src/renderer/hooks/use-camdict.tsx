@@ -1,7 +1,5 @@
 import { useEffect, useContext, useState } from "react";
-import {
-  AppSettingsProviderContext,
-} from "@renderer/context";
+import { AppSettingsProviderContext } from "@renderer/context";
 
 export const useCamdict = (word: string) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
