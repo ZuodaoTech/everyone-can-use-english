@@ -10,7 +10,7 @@ import { STORAGE_WORKER_ENDPOINTS } from "@/constants";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { t } from "i18next";
 import { XCircleIcon } from "lucide-react";
-import { WavesurferPlayer } from "../widgets";
+import { WavesurferPlayer } from "../misc";
 
 export const PostAudio = (props: {
   audio: Partial<MediumType>;

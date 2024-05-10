@@ -1,6 +1,6 @@
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
 import { useState } from "react";
-import { WavesurferPlayer } from "@renderer/components/widgets";
+import { WavesurferPlayer } from "@/renderer/components/misc";
 
 export const NoteSemgent = (props: {
   segment: SegmentType;

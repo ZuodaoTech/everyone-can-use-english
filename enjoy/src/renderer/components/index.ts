@@ -3,6 +3,7 @@ export * from "./conversations";
 export * from "./meanings";
 export * from "./messages";
 export * from "./medias";
+export * from "./misc";
 export * from "./notes";
 export * from "./posts";
 export * from "./preferences";
