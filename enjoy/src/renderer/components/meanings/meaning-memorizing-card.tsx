@@ -1,17 +1,35 @@
 import { t } from "i18next";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Button, ScrollArea, Separator } from "@renderer/components/ui";
 import Mark from "mark.js";
+import { useHotkeys } from "react-hotkeys-hook";
+import { HotKeysSettingsProviderContext } from "@renderer/context";
 
 export const MeaningMemorizingCard = (props: { meaning: MeaningType }) => {
   const {
     meaning: { word, lookups },
   } = props;
+  const { currentHotkeys, enabled } = useContext(
+    HotKeysSettingsProviderContext
+  );
   const [side, setSide] = useState<"front" | "back">("front");
 
   useEffect(() => {
     setSide("front");
   }, [word]);
+
+  useHotkeys(
+    [currentHotkeys.PlayOrPause],
+    (keyboardEvent, _hotkeyEvent) => {
+      keyboardEvent.preventDefault();
+
+      document.getElementById("vocabulary-toggle-side-button").click();
+    },
+    {
+      enabled,
+    },
+    [side]
+  );
 
   if (side === "front")
     return (
@@ -64,7 +82,11 @@ const FrontSide = (props: {
         </div>
       </ScrollArea>
       <div className="mt-4 flex items-center justify-center">
-        <Button variant="default" onClick={onFlip}>
+        <Button
+          id="vocabulary-toggle-side-button"
+          variant="default"
+          onClick={onFlip}
+        >
           {t("backSide")}
         </Button>
       </div>
@@ -146,7 +168,11 @@ const BackSide = (props: { meaning: MeaningType; onFlip: () => void }) => {
       </ScrollArea>
 
       <div className="mt-4 flex items-center justify-center">
-        <Button variant="secondary" onClick={onFlip}>
+        <Button
+          id="vocabulary-toggle-side-button"
+          variant="secondary"
+          onClick={onFlip}
+        >
           {t("frontSide")}
         </Button>
       </div>

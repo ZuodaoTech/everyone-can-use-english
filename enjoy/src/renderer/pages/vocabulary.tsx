@@ -2,9 +2,13 @@ import { Button } from "@renderer/components/ui";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  HotKeysSettingsProviderContext,
+} from "@renderer/context";
 import { LoaderSpin, MeaningMemorizingCard } from "@renderer/components";
 import { t } from "i18next";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export default () => {
   const navigate = useNavigate();
@@ -12,6 +16,9 @@ export default () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [meanings, setMeanings] = useState<MeaningType[]>([]);
   const { webApi } = useContext(AppSettingsProviderContext);
+  const { currentHotkeys, enabled } = useContext(
+    HotKeysSettingsProviderContext
+  );
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [nextPage, setNextPage] = useState(1);
 
@@ -32,6 +39,26 @@ export default () => {
   useEffect(() => {
     fetchMeanings(1);
   }, []);
+
+  useHotkeys(
+    [currentHotkeys.PlayPreviousSegment, currentHotkeys.PlayNextSegment],
+    (keyboardEvent, hotkeyEvent) => {
+      keyboardEvent.preventDefault();
+
+      switch (hotkeyEvent.keys.join("")) {
+        case currentHotkeys.PlayPreviousSegment.toLowerCase():
+          document.getElementById("vocabulary-previous-button").click();
+          break;
+        case currentHotkeys.PlayNextSegment.toLowerCase():
+          document.getElementById("vocabulary-next-button").click();
+          break;
+      }
+    },
+    {
+      enabled,
+    },
+    []
+  );
 
   if (loading) {
     return <LoaderSpin />;
@@ -55,6 +82,7 @@ export default () => {
               variant="secondary"
               size="icon"
               className="rounded-full"
+              id="vocabulary-previous-button"
               onClick={() => {
                 if (currentIndex > 0) {
                   setCurrentIndex(currentIndex - 1);
@@ -70,6 +98,7 @@ export default () => {
               variant="secondary"
               size="icon"
               className="rounded-full"
+              id="vocabulary-next-button"
               onClick={() => {
                 if (currentIndex < meanings.length - 1) {
                   setCurrentIndex(currentIndex + 1);
