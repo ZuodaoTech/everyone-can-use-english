@@ -5,7 +5,7 @@ import { Tooltip } from "react-tooltip";
 
 export const FloatingToolbar = (props: {
   className?: string;
-  children: React.ReactNode;
+  children: React.ReactElement[] | React.ReactElement;
 }) => {
   const { className, children } = props;
 
@@ -22,33 +22,39 @@ export const FloatingToolbar = (props: {
   );
 };
 
-export const ToolbarButton = (props: {
-  className?: string;
-  disabled?: boolean;
-  toggled: boolean;
-  onClick: () => void;
-  children: React.ReactChild;
-  tooltip?: string;
-}) => {
-  const { className, disabled = false, toggled, onClick, tooltip } = props;
+export const ToolbarButton = React.forwardRef(
+  (
+    props: {
+      className?: string;
+      disabled?: boolean;
+      toggled: boolean;
+      onClick: () => void;
+      children: React.ReactElement;
+      tooltip?: string;
+    },
+    forwardedRef: React.Ref<HTMLButtonElement>
+  ) => {
+    const { className, disabled = false, toggled, onClick, tooltip } = props;
 
-  return (
-    <Button
-      disabled={disabled}
-      variant="default"
-      data-tooltip-id="floating-toolbar-tooltip"
-      data-tooltip-content={tooltip}
-      className={cn(
-        `rounded-full p-3 h-12 w-12 ${
-          toggled
-            ? "bg-primary dark:bg-background text-background dark:text-foreground"
-            : "bg-background dark:bg-muted text-muted-foreground hover:text-background "
-        }`,
-        className
-      )}
-      onClick={onClick}
-    >
-      {props.children}
-    </Button>
-  );
-};
+    return (
+      <Button
+        ref={forwardedRef}
+        disabled={disabled}
+        variant="default"
+        data-tooltip-id="floating-toolbar-tooltip"
+        data-tooltip-content={tooltip}
+        className={cn(
+          `rounded-full p-3 h-12 w-12 ${
+            toggled
+              ? "bg-primary dark:bg-background text-background dark:text-foreground"
+              : "bg-background dark:bg-muted text-muted-foreground hover:text-background "
+          }`,
+          className
+        )}
+        onClick={onClick}
+      >
+        {props.children}
+      </Button>
+    );
+  }
+);
