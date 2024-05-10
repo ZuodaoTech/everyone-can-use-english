@@ -78,7 +78,7 @@ export const LookupWidget = () => {
             <div className="px-4">
               <CamdictLookupResult word={selected?.word} />
               <Separator className="my-2" />
-              <AiLookupResult
+              <aiLookupResult
                 word={selected?.word}
                 context={selected?.context}
               />
@@ -90,7 +90,7 @@ export const LookupWidget = () => {
   );
 };
 
-export const AiLookupResult = (props: {
+export const aiLookupResult = (props: {
   word: string;
   context?: string;
   sourceType?: string;
@@ -152,7 +152,7 @@ export const AiLookupResult = (props: {
   return (
     <>
       <div className="text-sm italic text-muted-foreground mb-2">
-        {t("AiDictionary")}
+        {t("aiDictionary")}
       </div>
       {result ? (
         <div className="mb-4 select-text">
@@ -188,7 +188,7 @@ export const AiLookupResult = (props: {
               {lookingUp && (
                 <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
               )}
-              <span>{t("AiTranslate")}</span>
+              <span>{t("aiLookup")}</span>
             </a>
           </Button>
         </div>

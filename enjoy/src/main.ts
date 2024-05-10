@@ -66,7 +66,7 @@ contextMenu({
       },
     },
     {
-      label: t("translate"),
+      label: t("aiTranslate"),
       visible:
         parameters.selectionText.trim().length > 0 &&
         parameters.selectionText.trim().includes(" "),

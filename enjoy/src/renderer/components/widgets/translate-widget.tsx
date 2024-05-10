@@ -155,7 +155,7 @@ export const TranslateResult = (props: {
               {translating && (
                 <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
               )}
-              <span>{t("translate")}</span>
+              <span>{t("aiTranslate")}</span>
             </a>
           </Button>
         </div>
