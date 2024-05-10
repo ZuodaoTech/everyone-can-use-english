@@ -5,12 +5,13 @@ import {
 } from "@renderer/context";
 import { Button, toast, TabsContent, Separator } from "@renderer/components/ui";
 import { t } from "i18next";
-import { useAiCommand, useCamdict } from "@renderer/hooks";
-import { LoaderIcon, Volume2Icon } from "lucide-react";
+import { useAiCommand } from "@renderer/hooks";
+import { LoaderIcon } from "lucide-react";
 import { md5 } from "js-md5";
 import Markdown from "react-markdown";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
 import { convertIpaToNormal } from "@/utils";
+import { CamdictLookupResult, AiLookupResult } from "@renderer/components";
 
 /*
  * Translation tab content.
@@ -107,76 +108,11 @@ const SelectedWords = (props: {
   const { selectedIndices, caption } = props;
 
   const { transcription } = useContext(MediaPlayerProviderContext);
-  const { webApi } = useContext(AppSettingsProviderContext);
 
-  const [lookingUp, setLookingUp] = useState<boolean>(false);
-  const [lookupResult, setLookupResult] = useState<LookupType>();
-
-  const lookup = () => {
-    if (selectedIndices.length === 0) return;
-
-    const word = selectedIndices
-      .map((index) => caption.timeline[index]?.text || "")
-      .join(" ");
-    if (!word) return;
-
-    setLookingUp(true);
-    lookupWord({
-      word,
-      context: caption.text,
-      sourceId: transcription.targetId,
-      sourceType: transcription.targetType,
-    })
-      .then((res) => {
-        if (res?.meaning) {
-          setLookupResult(res);
-        }
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      })
-      .finally(() => {
-        setLookingUp(false);
-      });
-  };
-
-  const { lookupWord } = useAiCommand();
-  const { result: camdictResult, renderResult: renderCamdictResult } =
-    useCamdict(
-      selectedIndices
-        .map((index) => caption?.timeline?.[index]?.text || "")
-        .join(" ")
-        .trim()
-    );
-
-  /*
-   * If the selected indices are changed, then reset the lookup result.
-   */
-  useEffect(() => {
-    if (!caption) return;
-    if (!selectedIndices) return;
-
-    const word = selectedIndices
-      .map((index) => caption.timeline[index]?.text || "")
-      .join(" ");
-
-    if (!word) return;
-
-    webApi
-      .lookup({
-        word,
-        context: caption.text,
-        sourceId: transcription.targetId,
-        sourceType: transcription.targetType,
-      })
-      .then((res) => {
-        if (res?.meaning) {
-          setLookupResult(res);
-        } else {
-          setLookupResult(null);
-        }
-      });
-  }, [caption, selectedIndices]);
+  const word = selectedIndices
+    .map((index) => caption.timeline[index]?.text || "")
+    .join(" ")
+    .trim();
 
   if (selectedIndices.length === 0)
     return (
@@ -224,41 +160,15 @@ const SelectedWords = (props: {
       </div>
 
       <Separator className="my-2" />
-      {renderCamdictResult()}
+      <CamdictLookupResult word={word} />
 
       <Separator className="my-2" />
-      <div className="text-sm italic text-muted-foreground mb-2">
-        {t("AiDictionary")}
-      </div>
-      {lookupResult ? (
-        <div className="mb-4 select-text">
-          <div className="mb-2">
-            {lookupResult.meaning?.pos && (
-              <span className="italic text-sm text-muted-foreground mr-2">
-                {lookupResult.meaning.pos}
-              </span>
-            )}
-            {lookupResult.meaning?.pronunciation && (
-              <span className="text-sm font-code mr-2">
-                /{lookupResult.meaning.pronunciation}/
-              </span>
-            )}
-            {lookupResult.meaning?.lemma &&
-              lookupResult.meaning.lemma !== lookupResult.meaning.word && (
-                <span className="text-sm">({lookupResult.meaning.lemma})</span>
-              )}
-          </div>
-          <div className="text-serif">{lookupResult.meaning.translation}</div>
-          <div className="text-serif">{lookupResult.meaning.definition}</div>
-        </div>
-      ) : (
-        <div className="flex items-center space-x-2 py-2">
-          <Button size="sm" disabled={lookingUp} onClick={lookup}>
-            {lookingUp && <LoaderIcon className="animate-spin w-4 h-4 mr-2" />}
-            <span>{t("AiTranslate")}</span>
-          </Button>
-        </div>
-      )}
+      <AiLookupResult
+        word={word}
+        context={caption.text}
+        sourceId={transcription.targetId}
+        sourceType={transcription.targetType}
+      />
     </>
   );
 };
