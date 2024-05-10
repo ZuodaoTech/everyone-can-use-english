@@ -339,7 +339,7 @@ const PandoLoginForm = () => {
   const validatePhone = () => {
     if (
       iti?.isValidNumber() &&
-      iti?.getNumberType() === intlTelInputUtils.numberType.MOBILE
+      iti?.getNumberType() === (intlTelInput.utils.numberType as any)?.MOBILE
     ) {
       setPhoneNumber(iti.getNumber());
     } else {
