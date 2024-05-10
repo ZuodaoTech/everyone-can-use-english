@@ -1,13 +1,13 @@
 import log from "@main/logger";
 import $ from "cheerio";
-import { BrowserView, ipcMain } from "electron";
+import { WebContentsView, ipcMain } from "electron";
 
 const logger = log.scope("providers/youtube-provider");
 
 export class YoutubeProvider {
   scrape = async (url: string) => {
     return new Promise<string>((resolve, reject) => {
-      const view = new BrowserView();
+      const view = new WebContentsView();
       view.webContents.loadURL(url);
       logger.debug("started scraping", url);
 
@@ -17,14 +17,14 @@ export class YoutubeProvider {
           .executeJavaScript(`document.documentElement.innerHTML`)
           .then((html) => resolve(html as string))
           .finally(() => {
-            (view.webContents as any).destroy();
+            view.webContents.close();
           });
       });
       view.webContents.on(
         "did-fail-load",
         (_event, _errorCode, error, validatedURL) => {
-          logger.error("failed scraping", url, error, validatedURL);
-          (view.webContents as any).destroy();
+          logger.warn("failed scraping", url, error, validatedURL);
+          view.webContents.close();
           reject();
         }
       );
