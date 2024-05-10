@@ -97,7 +97,7 @@ export const StoryVocabularySheet = (props: {
                               onClick={() => setLookupInBatch(true)}
                               size="sm"
                             >
-                              {t("lookUpAll")}
+                              {t("lookupAll")}
                             </Button>
                           </div>
                         </AlertDescription>
@@ -125,7 +125,7 @@ export const StoryVocabularySheet = (props: {
                           variant="secondary"
                           size="sm"
                         >
-                          {t("lookUp")}
+                          {t("lookup")}
                         </Button>
                       </div>
                       <div className="text-sm mb-2">

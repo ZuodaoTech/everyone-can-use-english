@@ -18,26 +18,29 @@ export const TranslateWidget = () => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<{
     text: string;
-    position?: {
-      top: number;
-      left: number;
+    position: {
+      x: number;
+      y: number;
     };
   }>();
 
-  const handleSelectionChanged = (position: { top: number; left: number }) => {
+  const handleSelectionChanged = (position: { x: number; y: number }) => {
     const selection = document.getSelection();
     if (!selection?.anchorNode?.parentElement) return;
 
     const text = selection.toString().trim();
     if (!text) return;
 
+    // if text is a single word, then return
+    if (text.indexOf(" ") === -1) return;
+
     setSelected({ text, position });
     setOpen(true);
   };
 
   useEffect(() => {
-    EnjoyApp.onLookup((_event, _selection, coodinate) => {
-      handleSelectionChanged({ top: coodinate.y, left: coodinate.x });
+    EnjoyApp.onTranslate((_event, _selection, position) => {
+      handleSelectionChanged(position);
     });
 
     return () => EnjoyApp.offLookup();
@@ -48,28 +51,32 @@ export const TranslateWidget = () => {
       <PopoverAnchor
         className="absolute w-0 h-0"
         style={{
-          top: selected?.position?.top,
-          left: selected?.position?.left,
+          top: selected?.position?.y,
+          left: selected?.position?.x,
         }}
       ></PopoverAnchor>
       <PopoverContent
-        className="w-full p-0 z-50"
+        className="w-full p-0 z-50 select-text"
         updatePositionStrategy="always"
       >
-        <ScrollArea className="py-2 w-96 h-96 relative">
-          <div className="px-4 pb-2 mb-2 font-bold text-lg sticky top-0 bg-background border-b">
+        <ScrollArea className="py-2 w-96 min-h-36 max-h-96 relative">
+          <div className="px-4 pb-2 mb-2 sticky top-0 bg-background border-b">
             {selected?.text}
           </div>
-          <TranslateResult text={selected?.text} />
-          <div className="px-4"></div>
+          <div className="px-4">
+            <TranslateResult text={selected?.text} autoTranslate={true} />
+          </div>
         </ScrollArea>
       </PopoverContent>
     </Popover>
   );
 };
 
-export const TranslateResult = (props: { text: string }) => {
-  const { text } = props;
+export const TranslateResult = (props: {
+  text: string;
+  autoTranslate?: boolean;
+}) => {
+  const { text, autoTranslate = false } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [translation, setTranslation] = useState<string>();
   const [translating, setTranslating] = useState<boolean>(false);
@@ -99,9 +106,15 @@ export const TranslateResult = (props: { text: string }) => {
     if (!text) return;
 
     EnjoyApp.cacheObjects.get(`translate-${md5(text)}`).then((cached) => {
-      setTranslation(cached);
+      if (cached) {
+        setTranslation(cached);
+      } else if (autoTranslate) {
+        handleTranslate();
+      } else {
+        setTranslation(undefined);
+      }
     });
-  }, [text]);
+  }, [text, autoTranslate]);
 
   if (!text) return null;
 
@@ -113,25 +126,37 @@ export const TranslateResult = (props: { text: string }) => {
 
           <div className="flex items-center">
             <Button
+              className="cursor-pointer"
               variant="secondary"
               size="sm"
               disabled={translating}
               onClick={handleTranslate}
+              asChild
             >
-              {translating && (
-                <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
-              )}
-              {t("reTranslate")}
+              <a>
+                {translating && (
+                  <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
+                )}
+                {t("reTranslate")}
+              </a>
             </Button>
           </div>
         </div>
       ) : (
         <div className="flex items-center py-2">
-          <Button size="sm" disabled={translating} onClick={handleTranslate}>
-            {translating && (
-              <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
-            )}
-            <span>{t("translate")}</span>
+          <Button
+            className="cursor-pointer"
+            size="sm"
+            disabled={translating}
+            onClick={handleTranslate}
+            asChild
+          >
+            <a>
+              {translating && (
+                <LoaderIcon className="animate-spin w-4 h-4 mr-2" />
+              )}
+              <span>{t("translate")}</span>
+            </a>
           </Button>
         </div>
       )}

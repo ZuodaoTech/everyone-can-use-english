@@ -9,7 +9,7 @@ import router from "./router";
 import { RouterProvider } from "react-router-dom";
 import { Toaster, toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
-import { LookupWidget } from "./components";
+import { LookupWidget, TranslateWidget } from "./components";
 
 function App() {
   window.__ENJOY_APP__.onNotification((_event, notification) => {
@@ -41,6 +41,7 @@ function App() {
               <RouterProvider router={router} />
               <Toaster richColors position="top-center" />
               <Tooltip id="global-tooltip" />
+              <TranslateWidget />
               <LookupWidget />
             </DbProvider>
           </AISettingsProvider>

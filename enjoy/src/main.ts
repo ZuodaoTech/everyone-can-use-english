@@ -57,10 +57,22 @@ contextMenu({
   ) => [
     {
       label: t("lookup"),
-      visible: parameters.selectionText.trim().length > 0,
+      visible:
+        parameters.selectionText.trim().length > 0 &&
+        !parameters.selectionText.trim().includes(" "),
       click: () => {
         const { x, y, selectionText } = parameters;
         browserWindow.webContents.send("on-lookup", selectionText, { x, y });
+      },
+    },
+    {
+      label: t("translate"),
+      visible:
+        parameters.selectionText.trim().length > 0 &&
+        parameters.selectionText.trim().includes(" "),
+      click: () => {
+        const { x, y, selectionText } = parameters;
+        browserWindow.webContents.send("on-translate", selectionText, { x, y });
       },
     },
   ],

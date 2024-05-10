@@ -19,13 +19,13 @@ export const LookupWidget = () => {
   const [selected, setSelected] = useState<{
     word: string;
     context?: string;
-    position?: {
-      top: number;
-      left: number;
+    position: {
+      x: number;
+      y: number;
     };
   }>();
 
-  const handleSelectionChanged = (position: { top: number; left: number }) => {
+  const handleSelectionChanged = (position: { x: number; y: number }) => {
     const selection = document.getSelection();
     if (!selection?.anchorNode?.parentElement) return;
 
@@ -46,9 +46,8 @@ export const LookupWidget = () => {
   };
 
   useEffect(() => {
-    EnjoyApp.onLookup((_event, selection, coodinate) => {
-      console.log("onLookup", selection);
-      handleSelectionChanged({ top: coodinate.y, left: coodinate.x });
+    EnjoyApp.onLookup((_event, _selection, position) => {
+      handleSelectionChanged(position);
     });
 
     return () => EnjoyApp.offLookup();
@@ -63,8 +62,8 @@ export const LookupWidget = () => {
       <PopoverAnchor
         className="absolute w-0 h-0"
         style={{
-          top: selected?.position?.top,
-          left: selected?.position?.left,
+          top: selected?.position?.y,
+          left: selected?.position?.x,
         }}
       ></PopoverAnchor>
       <PopoverContent
