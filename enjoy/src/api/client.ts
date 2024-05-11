@@ -71,11 +71,26 @@ export class Client {
 
   auth(params: {
     provider: "mixin" | "github" | "bandu" | "email";
-    code: string;
+    code?: string;
+    deviceCode?: string;
     phoneNumber?: string;
     email?: string;
   }): Promise<UserType> {
     return this.api.post("/api/sessions", decamelizeKeys(params));
+  }
+
+  info(): Promise<any> {
+    return this.api.get("/api/info");
+  }
+
+  deviceCode(provider = "github"): Promise<{
+    deviceCode: string;
+    userCode: string;
+    verificationUri: string;
+    expiresIn: number;
+    interval: number;
+  }> {
+    return this.api.post("/api/sessions/device_code", { provider });
   }
 
   me(): Promise<UserType> {
@@ -166,7 +181,15 @@ export class Client {
     page?: number;
     items?: number;
     userId?: string;
-    type?: "all" | "recording" | "medium" | "story" | "prompt" | "text" | "gpt" | "note";
+    type?:
+      | "all"
+      | "recording"
+      | "medium"
+      | "story"
+      | "prompt"
+      | "text"
+      | "gpt"
+      | "note";
     by?: "following" | "all";
   }): Promise<
     {
