@@ -31,8 +31,11 @@ export const LoginForm = () => {
     AppSettingsProviderContext
   );
   const [webviewUrl, setWebviewUrl] = useState<string>();
-  const [webviewRect, setWebviewRect] = useState<DOMRect | null>(null);
-  const debouncedWebviewRect = useDebounce(webviewRect, 500);
+  const [windowSize, setWindowSize] = useState<{
+    width: number;
+    height: number;
+  }>(null);
+  const debounceWindowSize = useDebounce(windowSize, 500);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -86,10 +89,11 @@ export const LoginForm = () => {
 
   useEffect(() => {
     if (!webviewUrl) return;
-    if (!debouncedWebviewRect) return;
+    if (!debounceWindowSize) return;
 
     EnjoyApp.view.onViewState((_event, state) => onViewState(state));
-    const { x, y, width, height } = debouncedWebviewRect;
+    const rect = containerRef.current.getBoundingClientRect();
+    const { x, y, width, height } = rect;
 
     EnjoyApp.view.load(
       webviewUrl,
@@ -108,20 +112,26 @@ export const LoginForm = () => {
       EnjoyApp.view.removeViewStateListeners();
       EnjoyApp.view.remove();
     };
-  }, [webApi, webviewUrl, debouncedWebviewRect]);
+  }, [webApi, webviewUrl, debounceWindowSize]);
 
   useEffect(() => {
     if (!containerRef?.current) return;
 
-    setWebviewRect(containerRef.current.getBoundingClientRect());
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
     EnjoyApp.window.onResize(() => {
-      setWebviewRect(containerRef.current.getBoundingClientRect());
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
     });
 
     return () => {
       EnjoyApp.window.removeListeners();
     };
-  }, [containerRef?.current]);
+  }, [containerRef]);
 
   if (user) {
     return (
