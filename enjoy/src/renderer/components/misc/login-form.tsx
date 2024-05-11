@@ -2,9 +2,6 @@ import {
   Button,
   toast,
   Separator,
-  Sheet,
-  SheetContent,
-  SheetTrigger,
   Card,
   CardContent,
   CardHeader,
@@ -17,9 +14,8 @@ import {
   UserSettings,
   LanguageSettings,
   LoaderSpin,
-  BanduLoginForm,
-  GithubLoginForm,
   GithubLoginButton,
+  BanduLoginButton,
 } from "@renderer/components";
 import { ChevronLeftIcon } from "lucide-react";
 import { WEB_API_URLS } from "@/constants";
@@ -176,30 +172,7 @@ export const LoginForm = () => {
                 />
               </Button>
 
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    data-tooltip-id="global-tooltip"
-                    data-tooltip-content="学升"
-                    className="w-10 h-10 rounded-full"
-                  >
-                    <img
-                      src="assets/bandu-logo.svg"
-                      className="w-full h-full"
-                      alt="bandu-logo"
-                    />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="bottom" className="h-screen">
-                  <div className="w-full h-full flex">
-                    <div className="m-auto">
-                      <BanduLoginForm />
-                    </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
+              <BanduLoginButton />
             </div>
           </div>
         </CardContent>

@@ -1,9 +1,46 @@
-import { Button, toast, Input, Label } from "@renderer/components/ui";
+import {
+  Button,
+  toast,
+  Input,
+  Label,
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+} from "@renderer/components/ui";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import intlTelInput from "intl-tel-input";
 import "intl-tel-input/build/css/intlTelInput.css";
+
+export const BanduLoginButton = () => {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          data-tooltip-id="global-tooltip"
+          data-tooltip-content="学升"
+          className="w-10 h-10 rounded-full"
+        >
+          <img
+            src="assets/bandu-logo.svg"
+            className="w-full h-full"
+            alt="bandu-logo"
+          />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="bottom" className="h-screen">
+        <div className="w-full h-full flex">
+          <div className="m-auto">
+            <BanduLoginForm />
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+};
 
 export const BanduLoginForm = () => {
   const ref = useRef<HTMLInputElement>(null);
