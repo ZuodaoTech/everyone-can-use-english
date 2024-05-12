@@ -121,7 +121,7 @@ export const MixinLoginForm = () => {
           <Button
             variant="secondary"
             size="lg"
-            className="w-full"
+            className="w-full px-2"
             disabled={!mixinId || countdown > 0 || loading}
             onClick={() => {
               if (!mixinId) return;
@@ -144,7 +144,7 @@ export const MixinLoginForm = () => {
                 });
             }}
           >
-            {loading && <LoaderIcon className="mr-2 animate-spin" />}
+            {loading && <LoaderIcon className="w-5 h-5 mr-2 animate-spin" />}
             {countdown > 0 && <span className="mr-2">{countdown}</span>}
             <span>{codeSent ? t("resend") : t("sendCode")}</span>
           </Button>

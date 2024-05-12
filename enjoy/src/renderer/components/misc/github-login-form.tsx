@@ -85,7 +85,6 @@ export const GithubLoginForm = () => {
     } catch (error) {
       toast.error(error.message);
     }
-    console.log(res);
 
     if (res.id && res.accessToken) {
       login(res);
@@ -106,7 +105,6 @@ export const GithubLoginForm = () => {
   useEffect(() => {
     fetchDeviceCode();
     return () => {
-      console.log("cleanup", timeoutId);
       setOauthInfo(null);
       if (timeoutId) {
         clearTimeout(timeoutId);
