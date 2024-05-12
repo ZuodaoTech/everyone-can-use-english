@@ -96,7 +96,7 @@ export const BanduLoginForm = () => {
   }, [countdown]);
 
   return (
-    <div>
+    <div className="w-80">
       <div className="flex items-center justify-center mb-4">
         <img src="assets/bandu-logo.svg" className="w-20 h-20" alt="bandu" />
       </div>
@@ -110,7 +110,7 @@ export const BanduLoginForm = () => {
               value={phoneNumber}
               onInput={validatePhone}
               onBlur={validatePhone}
-              className="border text-lg py-2 px-4 rounded"
+              className="border text-lg py-2 px-4 rounded w-80"
               ref={ref}
             />
           </div>

@@ -10,6 +10,7 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
+import { LoaderIcon } from "lucide-react";
 
 export const MixinLoginButton = () => {
   const [open, setOpen] = useState(false);
@@ -21,7 +22,7 @@ export const MixinLoginButton = () => {
           variant="outline"
           size="icon"
           data-tooltip-id="global-tooltip"
-          data-tooltip-content="学升"
+          data-tooltip-content="Mixin Messenger"
           className="w-10 h-10 rounded-full"
         >
           <img
@@ -44,9 +45,10 @@ export const MixinLoginForm = () => {
   const [mixinId, setMixinId] = useState<string>("");
   const [input, setInput] = useState<string>("");
   const [code, setCode] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const [codeSent, setCodeSent] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(0);
-  const { login, webApi } = useContext(AppSettingsProviderContext);
+  const { login, webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const validateMixinId = (id: string) => {
     setInput(id);
@@ -73,7 +75,7 @@ export const MixinLoginForm = () => {
   }, [countdown]);
 
   return (
-    <div>
+    <div className="w-80">
       <div className="flex items-center justify-center mb-4">
         <img src="assets/mixin-logo.png" className="w-20 h-20" alt="bandu" />
       </div>
@@ -81,7 +83,7 @@ export const MixinLoginForm = () => {
       <div className="grid gap-6">
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="mixinId">{t("mixinID")}</Label>
+            <Label htmlFor="mixinId">{t("mixinId")}</Label>
             <input
               id="mixinId"
               value={input}
@@ -104,6 +106,15 @@ export const MixinLoginForm = () => {
               onChange={(e) => setCode(e.target.value)}
             />
           </div>
+
+          <div
+            onClick={() =>
+              EnjoyApp.shell.openExternal("https://mixin.one/messenger")
+            }
+            className="text-xs text-muted-foreground cursor-pointer"
+          >
+            {t("dontHaveMixinAccount")}
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -111,8 +122,13 @@ export const MixinLoginForm = () => {
             variant="secondary"
             size="lg"
             className="w-full"
-            disabled={!mixinId || countdown > 0}
+            disabled={!mixinId || countdown > 0 || loading}
             onClick={() => {
+              if (!mixinId) return;
+              if (loading) return;
+              if (countdown > 0) return;
+
+              setLoading(true);
               webApi
                 .loginCode({ mixinId })
                 .then(() => {
@@ -122,9 +138,13 @@ export const MixinLoginForm = () => {
                 })
                 .catch((err) => {
                   toast.error(err.message);
+                })
+                .finally(() => {
+                  setLoading(false);
                 });
             }}
           >
+            {loading && <LoaderIcon className="mr-2 animate-spin" />}
             {countdown > 0 && <span className="mr-2">{countdown}</span>}
             <span>{codeSent ? t("resend") : t("sendCode")}</span>
           </Button>
