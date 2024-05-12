@@ -10,10 +10,8 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
-import intlTelInput from "intl-tel-input";
-import "intl-tel-input/build/css/intlTelInput.css";
 
-export const BanduLoginButton = () => {
+export const MixinLoginButton = () => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -27,59 +25,38 @@ export const BanduLoginButton = () => {
           className="w-10 h-10 rounded-full"
         >
           <img
-            src="assets/bandu-logo.svg"
-            className="w-full h-full"
-            alt="bandu-logo"
+            src="assets/mixin-logo.png"
+            className="w-full h-full p-1"
+            alt="mixin-logo"
           />
         </Button>
       </SheetTrigger>
       <SheetContent side="bottom" className="h-screen">
         <div className="w-full h-full flex">
-          <div className="m-auto">{open && <BanduLoginForm />}</div>
+          <div className="m-auto">{open && <MixinLoginForm />}</div>
         </div>
       </SheetContent>
     </Sheet>
   );
 };
 
-export const BanduLoginForm = () => {
-  const ref = useRef<HTMLInputElement>(null);
-  const [iti, setIti] = useState<any>(null);
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
+export const MixinLoginForm = () => {
+  const [mixinId, setMixinId] = useState<string>("");
+  const [input, setInput] = useState<string>("");
   const [code, setCode] = useState<string>("");
   const [codeSent, setCodeSent] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(0);
   const { login, webApi } = useContext(AppSettingsProviderContext);
 
-  const validatePhone = () => {
-    if (
-      iti?.isValidNumber() &&
-      iti?.getNumberType() === (intlTelInput.utils.numberType as any)?.MOBILE
-    ) {
-      setPhoneNumber(iti.getNumber());
+  const validateMixinId = (id: string) => {
+    setInput(id);
+
+    if (id?.match(/^[1-9]\d{5,10}$/)) {
+      setMixinId(id);
     } else {
-      setPhoneNumber("");
+      setMixinId("");
     }
   };
-
-  useEffect(() => {
-    if (!ref.current) return;
-
-    intlTelInput(ref.current, {
-      initialCountry: "cn",
-      utilsScript:
-        "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.12/build/js/utils.js",
-    });
-    setIti(intlTelInput(ref.current));
-
-    return () => {
-      iti?.destroy();
-    };
-  }, [ref]);
-
-  useEffect(() => {
-    iti?.setCountry("cn");
-  }, [iti]);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -98,26 +75,26 @@ export const BanduLoginForm = () => {
   return (
     <div>
       <div className="flex items-center justify-center mb-4">
-        <img src="assets/bandu-logo.svg" className="w-20 h-20" alt="bandu" />
+        <img src="assets/mixin-logo.png" className="w-20 h-20" alt="bandu" />
       </div>
 
       <div className="grid gap-6">
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="phone">{t("phoneNumber")}</Label>
+            <Label htmlFor="mixinId">{t("mixinID")}</Label>
             <input
-              id="phone"
-              value={phoneNumber}
-              onInput={validatePhone}
-              onBlur={validatePhone}
-              className="border text-lg py-2 px-4 rounded"
-              ref={ref}
+              id="mixinId"
+              value={input}
+              placeholder={t("inputMixinId")}
+              onInput={(event) => validateMixinId(event.currentTarget.value)}
+              onBlur={(event) => validateMixinId(event.currentTarget.value)}
+              className="border py-2 px-4 rounded"
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="verrificationCode">{t("verificationCode")}</Label>
+            <Label htmlFor="verificationCode">{t("verificationCode")}</Label>
             <Input
-              id="verrificationCode"
+              id="verificationCode"
               className="border py-2 h-10 px-4 rounded"
               type="text"
               minLength={5}
@@ -134,10 +111,10 @@ export const BanduLoginForm = () => {
             variant="secondary"
             size="lg"
             className="w-full"
-            disabled={!phoneNumber || countdown > 0}
+            disabled={!mixinId || countdown > 0}
             onClick={() => {
               webApi
-                .loginCode({ phoneNumber })
+                .loginCode({ mixinId })
                 .then(() => {
                   toast.success(t("codeSent"));
                   setCodeSent(true);
@@ -155,10 +132,10 @@ export const BanduLoginForm = () => {
             variant="default"
             size="lg"
             className="w-full"
-            disabled={!code || code.length < 5 || !phoneNumber}
+            disabled={!code || code.length < 5 || !mixinId}
             onClick={() => {
               webApi
-                .auth({ provider: "bandu", code, phoneNumber })
+                .auth({ provider: "mixin", code, mixinId })
                 .then((user) => {
                   if (user?.id && user?.accessToken) login(user);
                 })

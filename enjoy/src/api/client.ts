@@ -75,6 +75,7 @@ export class Client {
     deviceCode?: string;
     phoneNumber?: string;
     email?: string;
+    mixinId?: string;
   }): Promise<UserType> {
     return this.api.post("/api/sessions", decamelizeKeys(params));
   }
@@ -108,7 +109,11 @@ export class Client {
     return this.api.put(`/api/users/${id}`, decamelizeKeys(params));
   }
 
-  loginCode(params: { phoneNumber?: string; email?: string }): Promise<void> {
+  loginCode(params: {
+    phoneNumber?: string;
+    email?: string;
+    mixinId?: string;
+  }): Promise<void> {
     return this.api.post("/api/sessions/login_code", decamelizeKeys(params));
   }
 
