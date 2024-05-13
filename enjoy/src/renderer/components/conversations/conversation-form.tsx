@@ -36,7 +36,11 @@ import {
 } from "@renderer/context";
 import { LoaderIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { GPT_PROVIDERS, TTS_PROVIDERS, GPTShareButton } from "@renderer/components";
+import {
+  GPT_PROVIDERS,
+  TTS_PROVIDERS,
+  GPTShareButton,
+} from "@renderer/components";
 
 const conversationFormSchema = z.object({
   name: z.string().optional(),
@@ -45,7 +49,7 @@ const conversationFormSchema = z.object({
     .default("openai"),
   configuration: z
     .object({
-      type: z.enum(["gpt", "tts"]),
+      type: z.enum(["gpt", "tts", "voice"]),
       model: z.string().optional(),
       baseUrl: z.string().optional(),
       roleDefinition: z.string().optional(),
@@ -247,6 +251,9 @@ export const ConversationForm = (props: {
                       <SelectItem key="tts" value="tts">
                         TTS
                       </SelectItem>
+                      <SelectItem key="voice" value="voice">
+                        {t("voiceChat")}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -254,7 +261,7 @@ export const ConversationForm = (props: {
               )}
             />
 
-            {form.watch("configuration.type") === "gpt" && (
+            {["gpt", "voice"].includes(form.watch("configuration.type")) && (
               <>
                 <FormField
                   control={form.control}

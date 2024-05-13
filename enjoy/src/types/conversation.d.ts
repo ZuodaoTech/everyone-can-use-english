@@ -1,6 +1,6 @@
 type ConversationType = {
   id: string;
-  type: "gpt" | "tts";
+  type: "gpt" | "tts" | "voice";
   engine: "enjoyai" | "openai" | "ollama" | "googleGenerativeAi";
   name: string;
   configuration: { [key: string]: any };

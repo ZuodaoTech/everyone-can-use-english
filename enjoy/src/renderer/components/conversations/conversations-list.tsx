@@ -2,7 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { Button, ScrollArea } from "@renderer/components/ui";
 import { LoaderSpin } from "@renderer/components";
-import { MessageCircleIcon, LoaderIcon, SpeechIcon } from "lucide-react";
+import {
+  MessageCircleIcon,
+  LoaderIcon,
+  SpeechIcon,
+  MicIcon,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
 
@@ -81,7 +86,7 @@ export const ConversationsList = (props: {
               style={{
                 borderLeftColor: `#${conversation.id
                   .replaceAll("-", "")
-                  .substr(0, 6)}`,
+                  .slice(0, 6)}`,
                 borderLeftWidth: 3,
               }}
             >
@@ -91,6 +96,7 @@ export const ConversationsList = (props: {
                 )}
 
                 {conversation.type === "tts" && <SpeechIcon className="mr-2" />}
+                {conversation.type === "voice" && <MicIcon className="mr-2" />}
               </div>
               <div className="flex-1 truncated">{conversation.name}</div>
             </div>

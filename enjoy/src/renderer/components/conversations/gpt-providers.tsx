@@ -31,7 +31,7 @@ export const GPT_PROVIDERS: { [key: string]: any } = {
       "historyBufferSize",
       "tts",
     ],
-    types: ["gpt", "tts"],
+    types: ["gpt", "tts", "voice"],
   },
   openai: {
     name: "OpenAI",
@@ -65,7 +65,7 @@ export const GPT_PROVIDERS: { [key: string]: any } = {
       "historyBufferSize",
       "tts",
     ],
-    types: ["gpt", "tts"],
+    types: ["gpt", "tts", "voice"],
   },
   googleGenerativeAi: {
     name: "Google Generative AI",
@@ -78,7 +78,7 @@ export const GPT_PROVIDERS: { [key: string]: any } = {
       "historyBufferSize",
       "tts",
     ],
-    types: ["gpt"],
+    types: ["gpt", "voice"],
   },
   ollama: {
     name: "Ollama",
@@ -96,6 +96,6 @@ export const GPT_PROVIDERS: { [key: string]: any } = {
       "presencePenalty",
       "tts",
     ],
-    types: ["gpt"],
+    types: ["gpt", "voice"],
   },
 };

@@ -12,7 +12,7 @@ import {
 } from "@renderer/components/ui";
 import { ConversationForm } from "@renderer/components";
 import { useState, useEffect, useContext, useReducer } from "react";
-import { ChevronLeftIcon, MessageCircleIcon, SpeechIcon } from "lucide-react";
+import { ChevronLeftIcon, MessageCircleIcon, MicIcon, SpeechIcon } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   DbProviderContext,
@@ -46,7 +46,7 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    const postId = searchParams.get('postId');
+    const postId = searchParams.get("postId");
     if (!postId) return;
 
     webApi.post(postId).then((post) => {
@@ -57,8 +57,8 @@ export default () => {
 
       setPreset(preset);
       setCreating(true);
-    })
-  }, [searchParams.get('postId')])
+    });
+  }, [searchParams.get("postId")]);
 
   const fetchConversations = async () => {
     const _conversations = await EnjoyApp.conversations.findAll({});
@@ -234,7 +234,7 @@ export default () => {
               style={{
                 borderLeftColor: `#${conversation.id
                   .replaceAll("-", "")
-                  .substr(0, 6)}`,
+                  .slice(0, 6)}`,
                 borderLeftWidth: 3,
               }}
             >
@@ -244,6 +244,7 @@ export default () => {
                 )}
 
                 {conversation.type === "tts" && <SpeechIcon className="mr-2" />}
+                {conversation.type === "voice" && <MicIcon className="mr-2" />}
               </div>
               <div className="flex-1 flex items-center justify-between space-x-4">
                 <span className="line-clamp-1">{conversation.name}</span>

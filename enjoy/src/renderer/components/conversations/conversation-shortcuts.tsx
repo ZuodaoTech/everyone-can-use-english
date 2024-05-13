@@ -83,6 +83,8 @@ export const ConversationShortcuts = (props: {
   };
 
   const ask = (conversation: ConversationType) => {
+    if (conversation.type === "voice") return;
+
     setLoading(true);
 
     chat({ content: prompt }, { conversation })
@@ -154,11 +156,15 @@ export const ConversationShortcuts = (props: {
               <div
                 key={conversation.id}
                 onClick={() => ask(conversation)}
-                className="bg-background text-primary rounded-full w-full mb-2 py-2 px-4 hover:bg-muted hover:text-muted-foreground cursor-pointer flex items-center border"
+                className={`${
+                  conversation.type === "voice"
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer"
+                } bg-background text-primary rounded-full w-full mb-2 py-2 px-4 hover:bg-muted hover:text-muted-foreground flex items-center border`}
                 style={{
                   borderLeftColor: `#${conversation.id
                     .replaceAll("-", "")
-                    .substr(0, 6)}`,
+                    .slice(0, 6)}`,
                   borderLeftWidth: 3,
                 }}
               >

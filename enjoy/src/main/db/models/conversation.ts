@@ -40,14 +40,14 @@ export class Conversation extends Model<Conversation> {
   @Column(DataType.JSON)
   configuration: {
     model: string;
-    type: "gpt" | "tts";
+    type: "gpt" | "tts" | "voice";
     roleDefinition?: string;
     temperature?: number;
     maxTokens?: number;
   } & { [key: string]: any };
 
   @Column(DataType.VIRTUAL)
-  get type(): "gpt" | "tts" {
+  get type(): "gpt" | "tts" | "voice" {
     return this.getDataValue("configuration").type || "gpt";
   }
 
