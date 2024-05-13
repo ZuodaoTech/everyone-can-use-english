@@ -19,6 +19,8 @@ export const MediaRecorder = () => {
     setIsRecording,
     transcription,
     currentSegmentIndex,
+    currentSegment,
+    createSegment,
   } = useContext(MediaPlayerProviderContext);
   const [player, setPlayer] = useState<WaveSurfer>();
   const [access, setAccess] = useState<boolean>(false);
@@ -125,6 +127,9 @@ export const MediaRecorder = () => {
   }, [ref, isRecording, access, layout?.playerHeight]);
 
   useEffect(() => {
+    if (!currentSegment) {
+      createSegment();
+    }
     askForMediaAccess();
   }, []);
 

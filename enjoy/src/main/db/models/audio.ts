@@ -28,6 +28,7 @@ import Ffmpeg from "@main/ffmpeg";
 import { Client } from "@/api";
 import startCase from "lodash/startCase";
 import { v5 as uuidv5 } from "uuid";
+import FfmpegWrapper from "@main/ffmpeg";
 
 const SIZE_LIMIT = 1024 * 1024 * 50; // 50MB
 
@@ -187,6 +188,23 @@ export class Audio extends Model<Audio> {
       const now = new Date();
       this.update({ syncedAt: now, updatedAt: now });
     });
+  }
+
+  async crop(params: { startTime: number; endTime: number }) {
+    const { startTime, endTime } = params;
+
+    const ffmpeg = new FfmpegWrapper();
+    const output = path.join(
+      settings.cachePath(),
+      `${this.name}(${startTime.toFixed(2)}s-${endTime.toFixed(2)}).mp3`
+    );
+    await ffmpeg.crop(this.filePath, {
+      startTime,
+      endTime,
+      output,
+    });
+
+    return output;
   }
 
   @BeforeCreate

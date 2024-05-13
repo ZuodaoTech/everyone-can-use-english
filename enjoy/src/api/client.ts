@@ -440,4 +440,19 @@ export class Client {
   payment(id: string): Promise<PaymentType> {
     return this.api.get(`/api/payments/${id}`);
   }
+
+  mineSegments(params?: {
+    page?: number;
+    segmentIndex?: number;
+    targetId?: string;
+    targetType?: string;
+  }): Promise<
+    {
+      segments: SegmentType[];
+    } & PagyResponseType
+  > {
+    return this.api.get("/api/mine/segments", {
+      params: decamelizeKeys(params),
+    });
+  }
 }

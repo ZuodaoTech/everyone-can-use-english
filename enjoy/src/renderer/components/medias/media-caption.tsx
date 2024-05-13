@@ -1,5 +1,8 @@
 import { useEffect, useState, useContext } from "react";
-import { MediaPlayerProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  MediaPlayerProviderContext,
+} from "@renderer/context";
 import cloneDeep from "lodash/cloneDeep";
 import { Button, toast } from "@renderer/components/ui";
 import { ConversationShortcuts } from "@renderer/components";
@@ -10,6 +13,7 @@ import {
   CheckIcon,
   SpeechIcon,
   NotebookPenIcon,
+  DownloadIcon,
 } from "lucide-react";
 import {
   Timeline,
@@ -21,7 +25,10 @@ import { MediaCaptionTabs } from "./media-captions";
 
 export const MediaCaption = () => {
   const {
+    media,
     currentSegmentIndex,
+    currentSegment,
+    createSegment,
     currentTime,
     transcription,
     regions,
@@ -31,6 +38,7 @@ export const MediaCaption = () => {
     setEditingRegion,
     setTranscriptionDraft,
   } = useContext(MediaPlayerProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [multiSelecting, setMultiSelecting] = useState<boolean>(false);
@@ -130,6 +138,89 @@ export const MediaCaption = () => {
 
       setActiveRegion(region);
     }
+  };
+
+  const handleDownload = async () => {
+    if (activeRegion && !activeRegion.id.startsWith("segment-region")) {
+      handleDownloadActiveRegion();
+    } else {
+      handleDownloadSegment();
+    }
+  };
+
+  const handleDownloadSegment = async () => {
+    const segment = currentSegment || (await createSegment());
+    if (!segment) return;
+
+    EnjoyApp.dialog
+      .showSaveDialog({
+        title: t("download"),
+        defaultPath: `${media.name}(${segment.startTime.toFixed(
+          2
+        )}s-${segment.endTime.toFixed(2)}s).mp3`,
+      })
+      .then((savePath) => {
+        if (!savePath) return;
+
+        toast.promise(
+          EnjoyApp.download.start(segment.src, savePath as string),
+          {
+            loading: t("downloading", { file: media.filename }),
+            success: () => t("downloadedSuccessfully"),
+            error: t("downloadFailed"),
+            position: "bottom-right",
+          }
+        );
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
+  const handleDownloadActiveRegion = async () => {
+    if (!activeRegion) return;
+    let src: string;
+
+    try {
+      if (media.mediaType === "Audio") {
+        src = await EnjoyApp.audios.crop(media.id, {
+          startTime: activeRegion.start,
+          endTime: activeRegion.end,
+        });
+      } else if (media.mediaType === "Video") {
+        src = await EnjoyApp.videos.crop(media.id, {
+          startTime: activeRegion.start,
+          endTime: activeRegion.end,
+        });
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+    if (!src) {
+      toast.error(t("downloadFailed"));
+      return;
+    }
+
+    EnjoyApp.dialog
+      .showSaveDialog({
+        title: t("download"),
+        defaultPath: `${media.name}(${activeRegion.start.toFixed(
+          2
+        )}s-${activeRegion.end.toFixed(2)}s).mp3`,
+      })
+      .then((savePath) => {
+        if (!savePath) return;
+
+        toast.promise(EnjoyApp.download.start(src, savePath as string), {
+          loading: t("downloading", { file: media.filename }),
+          success: () => t("downloadedSuccessfully"),
+          error: t("downloadFailed"),
+          position: "bottom-right",
+        });
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
 
   useEffect(() => {
@@ -348,6 +439,17 @@ export const MediaCaption = () => {
               className="w-4 h-4"
             />
           )}
+        </Button>
+
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-full w-8 h-8 p-0"
+          data-tooltip-id="media-player-tooltip"
+          data-tooltip-content={t("downloadSegment")}
+          onClick={handleDownload}
+        >
+          <DownloadIcon className="w-4 h-4" />
         </Button>
       </div>
     </div>

@@ -145,6 +145,10 @@ type EnjoyAppType = {
     update: (id: string, params: any) => Promise<AudioType | undefined>;
     destroy: (id: string) => Promise<undefined>;
     upload: (id: string) => Promise<void>;
+    crop: (
+      id: string,
+      params: { startTime: number; endTime: number }
+    ) => Promise<string>;
   };
   videos: {
     findAll: (params: any) => Promise<VideoType[]>;
@@ -153,6 +157,10 @@ type EnjoyAppType = {
     update: (id: string, params: any) => Promise<VideoType | undefined>;
     destroy: (id: string) => Promise<undefined>;
     upload: (id: string) => Promise<void>;
+    crop: (
+      id: string,
+      params: { startTime: number; endTime: number }
+    ) => Promise<string>;
   };
   recordings: {
     findAll: (where: any) => Promise<RecordingType[]>;

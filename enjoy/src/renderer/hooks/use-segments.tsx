@@ -29,7 +29,7 @@ export const useSegments = (props: {
   };
 
   const createSegment = () => {
-    EnjoyApp.segments
+    return EnjoyApp.segments
       .create({
         targetId,
         targetType,
@@ -37,6 +37,7 @@ export const useSegments = (props: {
       })
       .then((segment) => {
         setSegment(segment);
+        return segment;
       })
       .catch((err) => {
         toast.error(err.message);

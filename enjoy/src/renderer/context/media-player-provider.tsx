@@ -85,7 +85,7 @@ type MediaPlayerContextType = {
   createNote: (params: any) => void;
   // Segments
   currentSegment: SegmentType;
-  createSegment: () => void;
+  createSegment: () => Promise<SegmentType | void>;
 };
 
 export const MediaPlayerProviderContext =

@@ -244,6 +244,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     upload: (id: string) => {
       return ipcRenderer.invoke("audios-upload", id);
     },
+    crop: (id: string, params: { startTime: number; endTime: number }) => {
+      return ipcRenderer.invoke("audios-crop", id, params);
+    },
   },
   videos: {
     findAll: (params: {
@@ -266,6 +269,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     upload: (id: string) => {
       return ipcRenderer.invoke("videos-upload", id);
+    },
+    crop: (id: string, params: { startTime: number; endTime: number }) => {
+      return ipcRenderer.invoke("videos-crop", id, params);
     },
   },
   recordings: {
