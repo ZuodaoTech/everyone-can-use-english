@@ -599,6 +599,7 @@ export default withMermaid(
               { text: "Enjoy 简介", link: "/enjoy-app/" },
               { text: "下载安装", link: "/enjoy-app/install" },
               { text: "软件设置", link: "/enjoy-app/settings" },
+              { text: "版本更新", link: "/enjoy-app/changelog" },
             ],
           },
           {
