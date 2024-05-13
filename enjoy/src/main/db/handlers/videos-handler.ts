@@ -5,6 +5,7 @@ import downloader from "@main/downloader";
 import log from "@main/logger";
 import { t } from "i18next";
 import youtubedr from "@main/youtubedr";
+import { pathToEnjoyUrl } from "@main/utils";
 
 const logger = log.scope("db/handlers/videos-handler");
 
@@ -173,6 +174,24 @@ class VideosHandler {
       });
   }
 
+  private async crop(
+    _event: IpcMainEvent,
+    id: string,
+    params: { startTime: number; endTime: number }
+  ) {
+    const video = await Video.findOne({
+      where: { id },
+    });
+    if (!video) {
+      throw new Error(t("models.video.notFound"));
+    }
+
+    const { startTime, endTime } = params;
+    const output = await video.crop({ startTime, endTime });
+
+    return pathToEnjoyUrl(output);
+  }
+
   register() {
     ipcMain.handle("videos-find-all", this.findAll);
     ipcMain.handle("videos-find-one", this.findOne);
@@ -180,6 +199,7 @@ class VideosHandler {
     ipcMain.handle("videos-update", this.update);
     ipcMain.handle("videos-destroy", this.destroy);
     ipcMain.handle("videos-upload", this.upload);
+    ipcMain.handle("videos-crop", this.crop);
   }
 }
 
