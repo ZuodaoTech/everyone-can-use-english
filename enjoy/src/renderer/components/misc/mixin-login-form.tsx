@@ -53,7 +53,7 @@ export const MixinLoginForm = () => {
   const validateMixinId = (id: string) => {
     setInput(id);
 
-    if (id?.match(/^[1-9]\d{5,10}$/)) {
+    if (id?.match(/^[1-9]\d{4,9}$/)) {
       setMixinId(id);
     } else {
       setMixinId("");
