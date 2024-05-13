@@ -58,6 +58,8 @@ export const MediaCurrentRecording = () => {
     wavesurfer,
     zoomRatio,
     editingRegion,
+    currentSegment,
+    createSegment,
     currentTime: mediaCurrentTime,
   } = useContext(MediaPlayerProviderContext);
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -193,6 +195,16 @@ export const MediaCurrentRecording = () => {
         toast.error(t("shareFailed"), { description: error.message });
         return;
       }
+    }
+
+    try {
+      const segment = currentSegment || (await createSegment());
+      if (!segment) throw new Error("Failed to create segment");
+
+      await EnjoyApp.segments.sync(segment.id);
+    } catch (error) {
+      toast.error(t("shareFailed"), { description: error.message });
+      return;
     }
 
     webApi

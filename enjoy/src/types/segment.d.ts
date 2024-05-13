@@ -11,6 +11,8 @@ type SegmentType = {
   startTime: number;
   endTime: number;
   src: string;
+  isSynced?: boolean;
+  isUploaded?: boolean;
   syncedAt?: Date;
   uploadedAt?: Date
   updatedAt: Date
