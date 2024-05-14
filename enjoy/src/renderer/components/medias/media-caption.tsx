@@ -481,7 +481,7 @@ const Caption = (props: {
 
   let words = caption.text.split(" ");
   const ipas = caption.timeline.map((w) =>
-    w.timeline.map((t) => t.timeline.map((s) => s.text))
+    w.timeline.map((t) => t.timeline.map((s) => convertIpaToNormal(s.text)))
   );
 
   if (words.length !== caption.timeline.length) {
