@@ -1,12 +1,19 @@
 export const conversationsReducer = (
   state: ConversationType[],
   action: {
-    type: "create" | "update" | "destroy" | "set";
+    type: "append" | "create" | "update" | "destroy" | "set";
     record?: ConversationType;
     records?: ConversationType[];
   }
 ) => {
   switch (action.type) {
+    case "append": {
+      if (action.record) {
+        return [...state, action.record];
+      } else if (action.records) {
+        return [...state, ...action.records];
+      }
+    }
     case "create": {
       return [action.record, ...state];
     }

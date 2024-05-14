@@ -11,13 +11,8 @@ import {
   ScrollArea,
   toast,
 } from "@renderer/components/ui";
-import { LoaderSpin } from "@renderer/components";
-import {
-  MessageCircleIcon,
-  LoaderIcon,
-  SpeechIcon,
-  CheckCircleIcon,
-} from "lucide-react";
+import { ConversationCard, LoaderSpin } from "@renderer/components";
+import { LoaderIcon, CheckCircleIcon } from "lucide-react";
 import { t } from "i18next";
 import { useConversation } from "@renderer/hooks";
 import { useNavigate } from "react-router-dom";
@@ -43,35 +38,34 @@ export const ConversationShortcuts = (props: {
   } = props;
   const [conversations, setConversations] = useState<ConversationType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [offset, setOffset] = useState<number>(0);
+  const [hasMore, setHasMore] = useState<boolean>(false);
   const { chat } = useConversation();
   const [replies, setReplies] = useState<Partial<MessageType>[]>([]);
   const navigate = useNavigate();
 
   const fetchConversations = () => {
-    if (offset === -1) return;
-
     const limit = 5;
+
     setLoading(true);
     EnjoyApp.conversations
       .findAll({
         order: [["updatedAt", "DESC"]],
         limit,
-        offset,
+        offset: conversations.length,
       })
       .then((_conversations) => {
         if (_conversations.length === 0) {
-          setOffset(-1);
+          setHasMore(false);
           return;
         }
 
         if (_conversations.length < limit) {
-          setOffset(-1);
+          setHasMore(false);
         } else {
-          setOffset(offset + _conversations.length);
+          setHasMore(true);
         }
 
-        if (offset === 0) {
+        if (conversations.length === 0) {
           setConversations(_conversations);
         } else {
           setConversations([...conversations, ..._conversations]);
@@ -99,7 +93,7 @@ export const ConversationShortcuts = (props: {
 
   useEffect(() => {
     fetchConversations();
-  }, [excludedIds]);
+  }, []);
 
   const dialogContent = () => {
     if (loading) {
@@ -151,37 +145,18 @@ export const ConversationShortcuts = (props: {
           .filter((c) => !excludedIds.includes(c.id))
           .map((conversation) => {
             return (
-              <div
-                key={conversation.id}
-                onClick={() => ask(conversation)}
-                className="bg-background text-primary rounded-full w-full mb-2 py-2 px-4 hover:bg-muted hover:text-muted-foreground cursor-pointer flex items-center border"
-                style={{
-                  borderLeftColor: `#${conversation.id
-                    .replaceAll("-", "")
-                    .substr(0, 6)}`,
-                  borderLeftWidth: 3,
-                }}
-              >
-                <div className="">
-                  {conversation.type === "gpt" && (
-                    <MessageCircleIcon className="mr-2" />
-                  )}
-
-                  {conversation.type === "tts" && (
-                    <SpeechIcon className="mr-2" />
-                  )}
-                </div>
-                <div className="flex-1 truncated">{conversation.name}</div>
+              <div key={conversation.id} onClick={() => ask(conversation)}>
+                <ConversationCard conversation={conversation} />
               </div>
             );
           })}
 
-        {offset > -1 && (
+        {hasMore && (
           <div className="flex justify-center">
             <Button
               variant="ghost"
               onClick={() => fetchConversations()}
-              disabled={loading || offset === -1}
+              disabled={loading || !hasMore}
               className="px-4 py-2"
             >
               {t("loadMore")}
