@@ -1,5 +1,5 @@
 import Pitchfinder from "pitchfinder";
-import { IPA_MAPPINGS } from "./constants";
+import { IPA_CONSONANTS, IPA_MAPPINGS, IPA_VOWELS } from "./constants";
 
 export const extractFrequencies = (props: {
   peaks: Float32Array;
@@ -61,8 +61,44 @@ export const convertWordIpaToNormal = (
   options?: { mappings?: any }
 ): string[] => {
   const { mappings = IPA_MAPPINGS } = options || {};
+  const consonants = Object.keys(IPA_CONSONANTS)
+    .map((key) => IPA_CONSONANTS[key])
+    .reduce((acc, val) => acc.concat(val), []);
+  const consonantsRegex = new RegExp(`^(\ˈ|ˌ)?` + consonants.join("|"));
+  const vowels = Object.keys(IPA_VOWELS)
+    .map((key) => IPA_VOWELS[key])
+    .reduce((acc, val) => acc.concat(val), []);
+  const vowelsRegex = new RegExp(`^(\ˈ|ˌ)?` + vowels.join("|"));
 
-  return ipas.map((ipa) => convertIpaToNormal(ipa, { mappings, marked: true }));
+  const converted: string[] = [];
+
+  // convert each ipa to normal
+  // if ipa is a vowel and marked, check if the previous ipa is a consonant,
+  // if so, mark the consonant instead
+  for (let i = 0; i < ipas.length; i++) {
+    const ipa = ipas[i];
+    converted.push(convertIpaToNormal(ipa, { mappings, marked: false }));
+
+    const isVowel = vowelsRegex.test(ipa);
+    const mark = ipa.match(/(\ˈ|ˌ)/);
+
+    let j = i - 1;
+    for (; j >= 0; j--) {
+      if (consonantsRegex.test(ipas[j]) && !consonantsRegex.test(ipas[j - 1])) {
+        break;
+      }
+    }
+
+    if (isVowel && mark) {
+      if (ipas[j]) {
+        converted[j] = mark[0] + converted[j];
+      } else {
+        converted[i] = mark[0] + converted[i];
+      }
+    }
+  }
+
+  return converted;
 };
 
 export const convertIpaToNormal = (
