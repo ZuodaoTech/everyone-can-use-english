@@ -1,5 +1,5 @@
 import Pitchfinder from "pitchfinder";
-import { IPA_MAPPING } from "./constants";
+import { IPA_MAPPINGS } from "./constants";
 
 export const extractFrequencies = (props: {
   peaks: Float32Array;
@@ -19,15 +19,18 @@ export const extractFrequencies = (props: {
     quantization: bpm,
   });
 
-  const cleanedFrequencies = removeNoise(frequencies)
+  const cleanedFrequencies = removeNoise(frequencies);
 
   return cleanedFrequencies;
 };
 
-export const removeNoise = (numbers: number[], threshold: number = 0.2): number[] => {
+export const removeNoise = (
+  numbers: number[],
+  threshold: number = 0.2
+): number[] => {
   numbers.forEach((num, i) => {
     if (i === 0) return;
-    if (typeof num !== 'number') return;
+    if (typeof num !== "number") return;
 
     const prevNum = numbers[i - 1] || num;
     const nextNum = numbers[i + 1] || num;
@@ -37,7 +40,7 @@ export const removeNoise = (numbers: number[], threshold: number = 0.2): number[
     if (deviation > threshold * avgNeighbor) {
       numbers[i] = null;
     }
-  })
+  });
 
   return numbers;
 };
@@ -53,12 +56,26 @@ export function milisecondsToTimestamp(ms: number) {
   )}:${seconds.padStart(2, "0")},${milliseconds}`;
 }
 
-export const convertIpaToNormal = (ipa: string) => {
+export const convertWordIpaToNormal = (
+  ipas: string[],
+  options?: { mappings?: any }
+): string[] => {
+  const { mappings = IPA_MAPPINGS } = options || {};
+
+  return ipas.map((ipa) => convertIpaToNormal(ipa, { mappings, marked: true }));
+};
+
+export const convertIpaToNormal = (
+  ipa: string,
+  options?: { mappings?: any; marked?: boolean }
+): string => {
+  const { mappings = IPA_MAPPINGS, marked = false } = options || {};
+
   const mark = ipa.match(/(\ˈ|ˌ)/);
   const cleanIpa = ipa.replace(mark ? mark[0] : "", "");
 
-  const converted = IPA_MAPPING[cleanIpa] || cleanIpa;
-  if (mark) {
+  const converted = mappings[cleanIpa] || cleanIpa;
+  if (mark && marked) {
     return `${mark[0]}${converted}`;
   } else {
     return converted;

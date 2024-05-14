@@ -376,7 +376,7 @@ export const CONVERSATION_PRESETS = [
   },
 ];
 
-export const IPA_MAPPING: { [key: string]: string } = {
+export const IPA_MAPPINGS: { [key: string]: string } = {
   p: "p",
   b: "b",
   t: "t",

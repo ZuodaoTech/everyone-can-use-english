@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, useContext } from "react";
-import { extractFrequencies } from "@/utils";
+import { convertIpaToNormal, extractFrequencies } from "@/utils";
 import { AppSettingsProviderContext } from "@renderer/context";
 import {
   useTranscriptions,
@@ -13,7 +13,6 @@ import Regions, {
 } from "wavesurfer.js/dist/plugins/regions";
 import Chart from "chart.js/auto";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
-import { IPA_MAPPING } from "@/constants";
 import { toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
 import { debounce } from "lodash";
@@ -331,7 +330,7 @@ export const MediaPlayerProvider = ({
           );
           labels[index] = [
             labels[index] || "",
-            (IPA_MAPPING as any)[phone.text.trim()] || phone.text.trim(),
+            convertIpaToNormal(phone.text.trim()),
           ].join("");
         });
       }
