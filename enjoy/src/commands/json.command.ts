@@ -13,10 +13,10 @@ export const jsonCommand = async (
   }
 ): Promise<any> => {
   const { key, temperature = 0, baseUrl, schema } = options;
-  let { modelName = "gpt-4-turbo" } = options;
+  let { modelName = "gpt-4o" } = options;
 
   if (RESPONSE_JSON_FORMAT_MODELS.indexOf(modelName) === -1) {
-    modelName = "gpt-4-turbo";
+    modelName = "gpt-4o";
   }
 
   const chatModel = new ChatOpenAI({
