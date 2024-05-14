@@ -145,7 +145,7 @@ export const ConversationForm = (props: {
   }
 
   if (defaultConfig.configuration.tts?.engine === "openai" && openai) {
-    if (!defaultConfig.configuration.tts.baseUrl) {
+    if (!defaultConfig.configuration.tts?.baseUrl) {
       defaultConfig.configuration.tts.baseUrl = openai.baseUrl;
     }
   }
@@ -194,7 +194,8 @@ export const ConversationForm = (props: {
     }
 
     // use default base url if not set
-    if (!configuration.tts.baseUrl) {
+    if (!configuration?.tts?.baseUrl) {
+      configuration.tts ||= {};
       configuration.tts.baseUrl = GPT_PROVIDERS[engine]?.baseUrl;
     }
 
