@@ -36,7 +36,11 @@ import {
 } from "@renderer/context";
 import { LoaderIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { GPT_PROVIDERS, TTS_PROVIDERS, GPTShareButton } from "@renderer/components";
+import {
+  GPT_PROVIDERS,
+  TTS_PROVIDERS,
+  GPTShareButton,
+} from "@renderer/components";
 
 const conversationFormSchema = z.object({
   name: z.string().optional(),
@@ -73,12 +77,22 @@ export const ConversationForm = (props: {
 }) => {
   const { conversation, onFinish } = props;
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [providers, setProviders] = useState<any>(GPT_PROVIDERS);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const [gptProviders, setGptProviders] = useState<any>(GPT_PROVIDERS);
+  const [ttsProviders, setTtsProviders] = useState<any>(TTS_PROVIDERS);
+  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
   const navigate = useNavigate();
 
-  const refreshProviders = async () => {
+  const refreshGptProviders = async () => {
+    let providers = GPT_PROVIDERS;
+
+    try {
+      const config = await webApi.config("gpt_providers");
+      providers = Object.assign(providers, config);
+    } catch (e) {
+      console.warn(`Failed to fetch remote GPT config: ${e.message}`);
+    }
+
     try {
       const response = await fetch(providers["ollama"]?.baseUrl + "/api/tags");
       providers["ollama"].models = (await response.json()).models.map(
@@ -87,7 +101,8 @@ export const ConversationForm = (props: {
     } catch (e) {
       console.warn(`No ollama server found: ${e.message}`);
     }
-    setProviders({ ...providers });
+
+    setGptProviders({ ...providers });
   };
 
   const destroyConversation = async () => {
@@ -98,8 +113,22 @@ export const ConversationForm = (props: {
     });
   };
 
+  const refreshTtsProviders = async () => {
+    let providers = TTS_PROVIDERS;
+
+    try {
+      const config = await webApi.config("tts_providers");
+      providers = Object.assign(providers, config);
+    } catch (e) {
+      console.warn(`Failed to fetch remote TTS config: ${e.message}`);
+    }
+
+    setTtsProviders({ ...providers });
+  };
+
   useEffect(() => {
-    refreshProviders();
+    refreshGptProviders();
+    refreshTtsProviders();
   }, []);
 
   const defaultConfig = JSON.parse(JSON.stringify(conversation || {}));
@@ -273,21 +302,15 @@ export const ConversationForm = (props: {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {Object.keys(providers)
-                            .filter((key) =>
-                              GPT_PROVIDERS[key].types.includes(
-                                form.watch("configuration.type")
-                              )
-                            )
-                            .map((key) => (
-                              <SelectItem key={key} value={key}>
-                                {providers[key].name}
-                              </SelectItem>
-                            ))}
+                          {Object.keys(gptProviders).map((key) => (
+                            <SelectItem key={key} value={key}>
+                              {gptProviders[key].name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       <FormDescription>
-                        {providers[form.watch("engine")]?.description}
+                        {gptProviders[form.watch("engine")]?.description}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -309,13 +332,13 @@ export const ConversationForm = (props: {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {(providers[form.watch("engine")]?.models || []).map(
-                            (option: string) => (
-                              <SelectItem key={option} value={option}>
-                                {option}
-                              </SelectItem>
-                            )
-                          )}
+                          {(
+                            gptProviders[form.watch("engine")]?.models || []
+                          ).map((option: string) => (
+                            <SelectItem key={option} value={option}>
+                              {option}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -573,9 +596,9 @@ export const ConversationForm = (props: {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {Object.keys(TTS_PROVIDERS).map((key) => (
+                      {Object.keys(ttsProviders).map((key) => (
                         <SelectItem key={key} value={key}>
-                          {TTS_PROVIDERS[key].name}
+                          {ttsProviders[key].name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -585,7 +608,7 @@ export const ConversationForm = (props: {
               )}
             />
 
-            {TTS_PROVIDERS[
+            {ttsProviders[
               form.watch("configuration.tts.engine")
             ]?.configurable.includes("model") && (
               <FormField
@@ -606,7 +629,7 @@ export const ConversationForm = (props: {
                       </FormControl>
                       <SelectContent>
                         {(
-                          TTS_PROVIDERS[form.watch("configuration.tts.engine")]
+                          ttsProviders[form.watch("configuration.tts.engine")]
                             ?.models || []
                         ).map((model: string) => (
                           <SelectItem key={model} value={model}>
@@ -621,7 +644,7 @@ export const ConversationForm = (props: {
               />
             )}
 
-            {TTS_PROVIDERS[
+            {ttsProviders[
               form.watch("configuration.tts.engine")
             ]?.configurable.includes("voice") && (
               <FormField
@@ -642,7 +665,7 @@ export const ConversationForm = (props: {
                       </FormControl>
                       <SelectContent>
                         {(
-                          TTS_PROVIDERS[form.watch("configuration.tts.engine")]
+                          ttsProviders[form.watch("configuration.tts.engine")]
                             ?.voices || []
                         ).map((voice: string) => (
                           <SelectItem key={voice} value={voice}>
@@ -657,7 +680,7 @@ export const ConversationForm = (props: {
               />
             )}
 
-            {TTS_PROVIDERS[
+            {ttsProviders[
               form.watch("configuration.tts.engine")
             ]?.configurable.includes("baseUrl") && (
               <FormField

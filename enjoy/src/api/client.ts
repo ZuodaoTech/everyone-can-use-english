@@ -80,8 +80,8 @@ export class Client {
     return this.api.post("/api/sessions", decamelizeKeys(params));
   }
 
-  info(): Promise<any> {
-    return this.api.get("/api/info");
+  config(key: string): Promise<any> {
+    return this.api.get(`/api/config/${key}`);
   }
 
   deviceCode(provider = "github"): Promise<{
