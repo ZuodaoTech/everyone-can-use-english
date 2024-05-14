@@ -90,7 +90,7 @@ export const MixinLoginForm = () => {
               placeholder={t("inputMixinId")}
               onInput={(event) => validateMixinId(event.currentTarget.value)}
               onBlur={(event) => validateMixinId(event.currentTarget.value)}
-              className="border py-2 px-4 rounded"
+              className="border py-2 px-4 rounded dark:bg-background dark:text-foreground"
             />
           </div>
           <div className="grid gap-2">

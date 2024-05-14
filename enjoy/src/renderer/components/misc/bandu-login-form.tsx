@@ -110,7 +110,7 @@ export const BanduLoginForm = () => {
               value={phoneNumber}
               onInput={validatePhone}
               onBlur={validatePhone}
-              className="border text-lg py-2 px-4 rounded w-80"
+              className="border text-lg py-2 px-4 rounded w-80 dark:bg-background dark:text-foreground"
               ref={ref}
             />
           </div>
