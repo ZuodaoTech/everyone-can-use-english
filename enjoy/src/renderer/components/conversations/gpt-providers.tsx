@@ -4,7 +4,7 @@ export const GPT_PROVIDERS: { [key: string]: any } = {
   enjoyai: {
     name: "EnjoyAI",
     models: [
-      // "gpt-4o",
+      "gpt-4o",
       "gpt-4-turbo",
       "gpt-4-turbo-preview",
       "gpt-4-vision-preview",
