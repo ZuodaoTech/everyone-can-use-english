@@ -37,6 +37,7 @@ export const MediaCaption = () => {
     editingRegion,
     setEditingRegion,
     setTranscriptionDraft,
+    ipaMappings,
   } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -414,9 +415,9 @@ export const MediaCaption = () => {
                   const ipas = word.timeline.map((t) =>
                     t.timeline.map((s) => s.text).join("")
                   );
-                  return `${word.text}(${convertWordIpaToNormal(ipas).join(
-                    ""
-                  )})`;
+                  return `${word.text}(${convertWordIpaToNormal(ipas, {
+                    mappings: ipaMappings,
+                  }).join("")})`;
                 })
                 .join(" ");
 
@@ -475,14 +476,17 @@ const Caption = (props: {
     onClick,
   } = props;
 
-  const { currentNotes } = useContext(MediaPlayerProviderContext);
+  const { currentNotes, ipaMappings } = useContext(MediaPlayerProviderContext);
   const notes = currentNotes.filter((note) => note.parameters?.quoteIndices);
   const [notedquoteIndices, setNotedquoteIndices] = useState<number[]>([]);
 
   let words = caption.text.split(" ");
   const ipas = caption.timeline.map((w) =>
     w.timeline.map((t) =>
-      convertWordIpaToNormal(t.timeline.map((s) => s.text)).join("")
+      convertWordIpaToNormal(
+        t.timeline.map((s) => s.text),
+        { mappings: ipaMappings }
+      ).join("")
     )
   );
 

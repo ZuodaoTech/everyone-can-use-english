@@ -37,7 +37,7 @@ const SelectedWords = (props: {
 }) => {
   const { selectedIndices, caption } = props;
 
-  const { transcription } = useContext(MediaPlayerProviderContext);
+  const { transcription, ipaMappings } = useContext(MediaPlayerProviderContext);
 
   const word = selectedIndices
     .map((index) => caption.timeline[index]?.text || "")
@@ -77,7 +77,10 @@ const SelectedWords = (props: {
                     {word.timeline
                       .map((t) =>
                         convertWordIpaToNormal(
-                          t.timeline.map((s) => s.text)
+                          t.timeline.map((s) => s.text),
+                          {
+                            mappings: ipaMappings,
+                          }
                         ).join("")
                       )
                       .join(" ")}
