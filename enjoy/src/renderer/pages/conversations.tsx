@@ -9,10 +9,11 @@ import {
   Sheet,
   SheetContent,
   ScrollArea,
+  toast,
 } from "@renderer/components/ui";
-import { ConversationForm } from "@renderer/components";
+import { ConversationCard, ConversationForm } from "@renderer/components";
 import { useState, useEffect, useContext, useReducer } from "react";
-import { ChevronLeftIcon, MessageCircleIcon, SpeechIcon } from "lucide-react";
+import { ChevronLeftIcon, LoaderIcon } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   DbProviderContext,
@@ -20,8 +21,8 @@ import {
   AISettingsProviderContext,
 } from "@renderer/context";
 import { conversationsReducer } from "@renderer/reducers";
-import dayjs from "dayjs";
 import { CONVERSATION_PRESETS } from "@/constants";
+import { set } from "lodash";
 
 export default () => {
   const [searchParams] = useSearchParams();
@@ -39,6 +40,8 @@ export default () => {
     conversationsReducer,
     []
   );
+  const [hasMore, setHasMore] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,9 +69,39 @@ export default () => {
   }, [searchParams.get("postId")]);
 
   const fetchConversations = async () => {
-    const _conversations = await EnjoyApp.conversations.findAll({});
+    const limit = 10;
 
-    dispatchConversations({ type: "set", records: _conversations });
+    setLoading(true);
+    EnjoyApp.conversations
+      .findAll({
+        order: [["updatedAt", "DESC"]],
+        limit,
+        offset: conversations.length,
+      })
+      .then((_conversations) => {
+        if (_conversations.length === 0) {
+          setHasMore(false);
+          return;
+        }
+
+        if (_conversations.length < limit) {
+          setHasMore(false);
+        } else {
+          setHasMore(true);
+        }
+
+        if (conversations.length === 0) {
+          dispatchConversations({ type: "set", records: _conversations });
+        } else {
+          dispatchConversations({ type: "append", records: _conversations });
+        }
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const onConversationsUpdate = (event: CustomEvent) => {
@@ -253,31 +286,23 @@ export default () => {
 
         {conversations.map((conversation) => (
           <Link key={conversation.id} to={`/conversations/${conversation.id}`}>
-            <div
-              className="bg-background hover:bg-muted hover:text-muted-foreground border rounded-full w-full mb-2 p-4 cursor-pointer flex items-center"
-              style={{
-                borderLeftColor: `#${conversation.id
-                  .replaceAll("-", "")
-                  .slice(0, 6)}`,
-                borderLeftWidth: 3,
-              }}
-            >
-              <div className="">
-                {conversation.type === "gpt" && (
-                  <MessageCircleIcon className="mr-2" />
-                )}
-
-                {conversation.type === "tts" && <SpeechIcon className="mr-2" />}
-              </div>
-              <div className="flex-1 flex items-center justify-between space-x-4">
-                <span className="line-clamp-1">{conversation.name}</span>
-                <span className="min-w-fit">
-                  {dayjs(conversation.createdAt).format("HH:mm L")}
-                </span>
-              </div>
-            </div>
+            <ConversationCard conversation={conversation} />
           </Link>
         ))}
+
+        {hasMore && (
+          <div className="flex justify-center">
+            <Button
+              variant="ghost"
+              onClick={() => fetchConversations()}
+              disabled={loading || !hasMore}
+              className="px-4 py-2"
+            >
+              {t("loadMore")}
+              {loading && <LoaderIcon className="w-4 h-4 animate-spin ml-2" />}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

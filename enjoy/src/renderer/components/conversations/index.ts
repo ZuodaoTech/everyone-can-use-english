@@ -1,3 +1,4 @@
+export * from "./conversation-card";
 export * from "./conversation-form";
 export * from "./conversation-shortcuts";
 
