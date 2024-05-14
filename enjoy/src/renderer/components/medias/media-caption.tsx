@@ -19,7 +19,7 @@ import {
   Timeline,
   TimelineEntry,
 } from "echogarden/dist/utilities/Timeline.d.js";
-import { convertIpaToNormal } from "@/utils";
+import { convertWordIpaToNormal } from "@/utils";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { MediaCaptionTabs } from "./media-captions";
 
@@ -37,6 +37,7 @@ export const MediaCaption = () => {
     editingRegion,
     setEditingRegion,
     setTranscriptionDraft,
+    ipaMappings,
   } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -411,12 +412,12 @@ export const MediaCaption = () => {
             if (displayIpa) {
               const text = caption.timeline
                 .map((word) => {
-                  const ipa = word.timeline
-                    .map((t) =>
-                      t.timeline.map((s) => convertIpaToNormal(s.text)).join("")
-                    )
-                    .join(" · ");
-                  return `${word.text}(${ipa})`;
+                  const ipas = word.timeline.map((t) =>
+                    t.timeline.map((s) => s.text).join("")
+                  );
+                  return `${word.text}(${convertWordIpaToNormal(ipas, {
+                    mappings: ipaMappings,
+                  }).join("")})`;
                 })
                 .join(" ");
 
@@ -475,13 +476,18 @@ const Caption = (props: {
     onClick,
   } = props;
 
-  const { currentNotes } = useContext(MediaPlayerProviderContext);
+  const { currentNotes, ipaMappings } = useContext(MediaPlayerProviderContext);
   const notes = currentNotes.filter((note) => note.parameters?.quoteIndices);
   const [notedquoteIndices, setNotedquoteIndices] = useState<number[]>([]);
 
   let words = caption.text.split(" ");
   const ipas = caption.timeline.map((w) =>
-    w.timeline.map((t) => t.timeline.map((s) => s.text))
+    w.timeline.map((t) =>
+      convertWordIpaToNormal(
+        t.timeline.map((s) => s.text),
+        { mappings: ipaMappings }
+      ).join("")
+    )
   );
 
   if (words.length !== caption.timeline.length) {

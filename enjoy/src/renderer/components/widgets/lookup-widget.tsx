@@ -238,28 +238,19 @@ export const CamdictLookupResult = (props: { word: string }) => {
                     <span className="text-sm font-code">
                       /{pron.pronunciation}/
                     </span>
-                    {pron.audio && (
+                    {pron.audio && pron.audio.match(/\.mp3/i) && (
                       <div>
                         <Button
                           variant="ghost"
                           size="icon"
                           className="rounded-full p-0 w-6 h-6"
                           onClick={() => {
-                            const audio = document.getElementById(
-                              `${posItem.type}-${pron.region}`
-                            ) as HTMLAudioElement;
-                            if (audio) {
-                              audio.play();
-                            }
+                            const audio = new Audio(pron.audio);
+                            audio.play();
                           }}
                         >
                           <Volume2Icon className="w-4 h-4" />
                         </Button>
-                        <audio
-                          className="hidden"
-                          id={`${posItem.type}-${pron.region}`}
-                          src={pron.audio}
-                        />
                       </div>
                     )}
                   </div>

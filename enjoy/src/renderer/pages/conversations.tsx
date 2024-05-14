@@ -27,6 +27,11 @@ export default () => {
   const [searchParams] = useSearchParams();
   const [creating, setCreating] = useState<boolean>(false);
   const [preset, setPreset] = useState<any>({});
+  const [config, setConfig] = useState<any>({
+    gptPresets: [],
+    customPreset: {},
+    ttsPreset: {},
+  });
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const { currentEngine } = useContext(AISettingsProviderContext);
@@ -46,7 +51,7 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    const postId = searchParams.get('postId');
+    const postId = searchParams.get("postId");
     if (!postId) return;
 
     webApi.post(postId).then((post) => {
@@ -57,8 +62,8 @@ export default () => {
 
       setPreset(preset);
       setCreating(true);
-    })
-  }, [searchParams.get('postId')])
+    });
+  }, [searchParams.get("postId")]);
 
   const fetchConversations = async () => {
     const _conversations = await EnjoyApp.conversations.findAll({});
@@ -78,57 +83,74 @@ export default () => {
     }
   };
 
-  const presets = CONVERSATION_PRESETS.map((preset) =>
-    Object.assign({}, preset, {
-      engine: currentEngine?.name,
+  const preparePresets = async () => {
+    let presets = CONVERSATION_PRESETS;
+    let defaultGptPreset = {
+      key: "custom",
+      engine: "enjoyai",
+      name: t("custom"),
       configuration: {
-        ...preset.configuration,
+        type: "gpt",
+        engine: currentEngine?.name || "enjoyai",
         tts: {
-          ...preset.configuration.tts,
-          engine: currentEngine?.name,
+          engine: currentEngine?.name || "enjoyai",
         },
       },
-    })
-  );
-
-  const customPreset = {
-    key: "custom",
-    name: t("custom"),
-    engine: currentEngine?.name,
-    configuration: {
-      type: "gpt",
-      model: "gpt-4-turbo",
-      baseUrl: "",
-      roleDefinition: "",
-      temperature: 0.2,
-      numberOfChoices: 1,
-      maxTokens: 2048,
-      presencePenalty: 0,
-      frequencyPenalty: 0,
-      historyBufferSize: 0,
-      tts: {
-        baseUrl: "",
-        engine: currentEngine?.name,
-        model: "tts-1",
-        voice: "alloy",
+    };
+    let defaultTtsPreset = {
+      key: "tts",
+      name: "TTS",
+      engine: "enjoyai",
+      configuration: {
+        type: "tts",
+        tts: {
+          engine: currentEngine?.name || "enjoyai",
+        },
       },
-    },
+    };
+
+    try {
+      const gptPresets: any[] = await webApi.config("gpt_presets");
+      const defaultGpt = await webApi.config("default_gpt_preset");
+      const defaultTts = await webApi.config("default_tts_preset");
+
+      presets = gptPresets;
+      defaultGpt.key = "custom";
+      defaultGpt.name = t("custom");
+      defaultGpt.engine = currentEngine?.name || "enjoyai";
+      defaultGpt.configuration.tts.engine = currentEngine?.name || "enjoyai";
+      defaultGptPreset = defaultGpt;
+
+      defaultTts.engine = currentEngine?.name || "enjoyai";
+      defaultTts.configuration.tts.engine = currentEngine?.name || "enjoyai";
+      defaultTtsPreset = defaultTts;
+    } catch (error) {
+      console.error(error);
+    }
+
+    const gptPresets = presets.map((preset) =>
+      Object.assign({}, preset, {
+        engine: currentEngine?.name,
+        configuration: {
+          ...preset.configuration,
+          tts: {
+            ...preset.configuration.tts,
+            engine: currentEngine?.name,
+          },
+        },
+      })
+    );
+
+    setConfig({
+      gptPresets,
+      customPreset: defaultGptPreset,
+      ttsPreset: defaultTtsPreset,
+    });
   };
 
-  const ttsPreset = {
-    key: "tts",
-    name: "TTS",
-    engine: "openai",
-    configuration: {
-      type: "tts",
-      tts: {
-        baseUrl: "",
-        engine: currentEngine?.name,
-        model: "tts-1",
-        voice: "alloy",
-      },
-    },
-  };
+  useEffect(() => {
+    preparePresets();
+  }, []);
 
   return (
     <div className="h-full px-4 py-6 lg:px-8 flex flex-col">
@@ -161,7 +183,7 @@ export default () => {
                   {t("chooseFromPresetGpts")}
                 </div>
                 <ScrollArea className="h-64 pr-4">
-                  {presets.map((preset) => (
+                  {config.gptPresets.map((preset: any) => (
                     <DialogTrigger
                       key={preset.key}
                       data-testid={`conversation-preset-${preset.key}`}
@@ -187,9 +209,9 @@ export default () => {
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <DialogTrigger asChild>
                   <Button
-                    data-testid={`conversation-preset-${customPreset.key}`}
+                    data-testid={`conversation-preset-${config.customPreset.key}`}
                     onClick={() => {
-                      setPreset(customPreset);
+                      setPreset(config.customPreset);
                       setCreating(true);
                     }}
                     variant="secondary"
@@ -198,19 +220,21 @@ export default () => {
                     {t("custom")} GPT
                   </Button>
                 </DialogTrigger>
-                <DialogTrigger asChild>
-                  <Button
-                    data-testid={`conversation-preset-${ttsPreset.key}`}
-                    onClick={() => {
-                      setPreset(ttsPreset);
-                      setCreating(true);
-                    }}
-                    variant="secondary"
-                    className="w-full"
-                  >
-                    TTS
-                  </Button>
-                </DialogTrigger>
+                {config.ttsPreset.key && (
+                  <DialogTrigger asChild>
+                    <Button
+                      data-testid={`conversation-preset-${config.ttsPreset.key}`}
+                      onClick={() => {
+                        setPreset(config.ttsPreset);
+                        setCreating(true);
+                      }}
+                      variant="secondary"
+                      className="w-full"
+                    >
+                      TTS
+                    </Button>
+                  </DialogTrigger>
+                )}
               </div>
             </DialogContent>
           </Dialog>
@@ -234,7 +258,7 @@ export default () => {
               style={{
                 borderLeftColor: `#${conversation.id
                   .replaceAll("-", "")
-                  .substr(0, 6)}`,
+                  .slice(0, 6)}`,
                 borderLeftWidth: 3,
               }}
             >

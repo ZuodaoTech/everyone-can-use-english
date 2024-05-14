@@ -3,7 +3,7 @@ import { MediaPlayerProviderContext } from "@renderer/context";
 import { TabsContent, Separator } from "@renderer/components/ui";
 import { t } from "i18next";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
-import { convertIpaToNormal } from "@/utils";
+import { convertWordIpaToNormal } from "@/utils";
 import {
   CamdictLookupResult,
   AiLookupResult,
@@ -37,7 +37,7 @@ const SelectedWords = (props: {
 }) => {
   const { selectedIndices, caption } = props;
 
-  const { transcription } = useContext(MediaPlayerProviderContext);
+  const { transcription, ipaMappings } = useContext(MediaPlayerProviderContext);
 
   const word = selectedIndices
     .map((index) => caption.timeline[index]?.text || "")
@@ -76,11 +76,14 @@ const SelectedWords = (props: {
                   >
                     {word.timeline
                       .map((t) =>
-                        t.timeline
-                          .map((s) => convertIpaToNormal(s.text))
-                          .join("")
+                        convertWordIpaToNormal(
+                          t.timeline.map((s) => s.text),
+                          {
+                            mappings: ipaMappings,
+                          }
+                        ).join("")
                       )
-                      .join("")}
+                      .join(" ")}
                   </span>
                 </div>
               )}
