@@ -10,9 +10,8 @@ type AISettingsProviderState = {
   setOpenai?: (config: LlmProviderType) => void;
   googleGenerativeAi?: LlmProviderType;
   setGoogleGenerativeAi?: (config: LlmProviderType) => void;
-  defaultEngine?: string;
-  setDefaultEngine?: (engine: string) => void;
-  currentEngine?: LlmProviderType;
+  setGptEngine?: (engine: GptEngineSettingType) => void;
+  currentEngine?: GptEngineSettingType;
 };
 
 const initialState: AISettingsProviderState = {};
@@ -25,12 +24,17 @@ export const AISettingsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [defaultEngine, setDefaultEngine] = useState<string>("openai");
+  const [gptEngine, setGptEngine] = useState<GptEngineSettingType>({
+    name: "enjoyai",
+    models: {
+      default: "gpt-4o",
+    },
+  });
   const [openai, setOpenai] = useState<LlmProviderType>(null);
   const [googleGenerativeAi, setGoogleGenerativeAi] =
     useState<LlmProviderType>(null);
   const [whisperConfig, setWhisperConfig] = useState<WhisperConfigType>(null);
-  const { EnjoyApp, apiUrl, user, libraryPath } = useContext(
+  const { EnjoyApp, libraryPath, user, apiUrl } = useContext(
     AppSettingsProviderContext
   );
 
@@ -79,15 +83,39 @@ export const AISettingsProvider = ({
     }
 
     const _defaultEngine = await EnjoyApp.settings.getDefaultEngine();
-    if (_defaultEngine) {
-      setDefaultEngine(_defaultEngine);
+    const _gptEngine = await EnjoyApp.settings.getGptEngine();
+    if (_gptEngine) {
+      setGptEngine(_gptEngine);
+    } else if (_defaultEngine) {
+      // Migrate default engine to gpt engine
+      const engine = {
+        name: _defaultEngine,
+        models: {
+          default: "gpt-4o",
+        },
+      };
+      EnjoyApp.settings.setGptEngine(engine).then(() => {
+        setGptEngine(engine);
+      });
     } else if (_openai?.key) {
-      EnjoyApp.settings.setDefaultEngine("openai").then(() => {
-        setDefaultEngine("openai");
+      const engine = {
+        name: "openai",
+        models: {
+          default: "gpt-4o",
+        },
+      };
+      EnjoyApp.settings.setGptEngine(engine).then(() => {
+        setGptEngine(engine);
       });
     } else {
-      EnjoyApp.settings.setDefaultEngine("enjoyai").then(() => {
-        setDefaultEngine("enjoyai");
+      const engine = {
+        name: "enjoyai",
+        models: {
+          default: "gpt-4o",
+        },
+      };
+      EnjoyApp.settings.setGptEngine(engine).then(() => {
+        setGptEngine(engine);
       });
     }
   };
@@ -114,20 +142,21 @@ export const AISettingsProvider = ({
   return (
     <AISettingsProviderContext.Provider
       value={{
-        defaultEngine,
-        setDefaultEngine: (engine: "openai" | "enjoyai") => {
-          EnjoyApp.settings.setDefaultEngine(engine).then(() => {
-            setDefaultEngine(engine);
+        setGptEngine: (engine: GptEngineSettingType) => {
+          EnjoyApp.settings.setGptEngine(engine).then(() => {
+            setGptEngine(engine);
           });
         },
-        currentEngine: {
-          openai: openai,
-          enjoyai: {
-            name: "enjoyai" as LlmProviderType["name"],
-            key: user?.accessToken,
-            baseUrl: `${apiUrl}/api/ai`,
-          },
-        }[defaultEngine],
+        currentEngine:
+          gptEngine.name === "openai"
+            ? Object.assign(gptEngine, {
+                key: openai.key,
+                baseUrl: openai.baseUrl,
+              })
+            : Object.assign(gptEngine, {
+                key: user?.accessToken,
+                baseUrl: `${apiUrl}/api/ai`,
+              }),
         openai,
         setOpenai: (config: LlmProviderType) => handleSetLlm("openai", config),
         googleGenerativeAi,

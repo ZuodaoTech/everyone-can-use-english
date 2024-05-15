@@ -22,7 +22,6 @@ import {
 } from "@renderer/context";
 import { conversationsReducer } from "@renderer/reducers";
 import { CONVERSATION_PRESETS } from "@/constants";
-import { set } from "lodash";
 
 export default () => {
   const [searchParams] = useSearchParams();
@@ -124,9 +123,10 @@ export default () => {
       name: t("custom"),
       configuration: {
         type: "gpt",
-        engine: currentEngine?.name || "enjoyai",
+        engine: currentEngine.name,
+        model: currentEngine.models.default,
         tts: {
-          engine: currentEngine?.name || "enjoyai",
+          engine: currentEngine.name,
         },
       },
     };
@@ -137,7 +137,7 @@ export default () => {
       configuration: {
         type: "tts",
         tts: {
-          engine: currentEngine?.name || "enjoyai",
+          engine: currentEngine.name,
         },
       },
     };
@@ -150,12 +150,13 @@ export default () => {
       presets = gptPresets;
       defaultGpt.key = "custom";
       defaultGpt.name = t("custom");
-      defaultGpt.engine = currentEngine?.name || "enjoyai";
-      defaultGpt.configuration.tts.engine = currentEngine?.name || "enjoyai";
+      defaultGpt.engine = currentEngine.name;
+      defaultGpt.configuration.model = currentEngine.models.default;
+      defaultGpt.configuration.tts.engine = currentEngine.name;
       defaultGptPreset = defaultGpt;
 
-      defaultTts.engine = currentEngine?.name || "enjoyai";
-      defaultTts.configuration.tts.engine = currentEngine?.name || "enjoyai";
+      defaultTts.engine = currentEngine.name;
+      defaultTts.configuration.tts.engine = currentEngine.name;
       defaultTtsPreset = defaultTts;
     } catch (error) {
       console.error(error);
@@ -166,9 +167,10 @@ export default () => {
         engine: currentEngine?.name,
         configuration: {
           ...preset.configuration,
+          model: currentEngine.models.default,
           tts: {
             ...preset.configuration.tts,
-            engine: currentEngine?.name,
+            engine: currentEngine.name,
           },
         },
       })

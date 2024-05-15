@@ -29,8 +29,6 @@ export const Preferences = () => {
           <div className="font-semibold mb-4 capitilized">
             {t("basicSettings")}
           </div>
-          <LibrarySettings />
-          <Separator />
           <WhisperSettings />
           <Separator />
           <DefaultEngineSettings />
@@ -68,6 +66,8 @@ export const Preferences = () => {
             {t("accountSettings")}
           </div>
           <UserSettings />
+          <Separator />
+          <LibrarySettings />
           <Separator />
           <EmailSettings />
           <Separator />

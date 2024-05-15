@@ -38,7 +38,7 @@ export const GoogleGenerativeAiSettings = () => {
               ref={ref}
               type="password"
               defaultValue={googleGenerativeAi?.key}
-              placeholder="*********"
+              placeholder=""
               disabled={!editing}
               className="focus-visible:outline-0 focus-visible:ring-0 shadow-none"
             />

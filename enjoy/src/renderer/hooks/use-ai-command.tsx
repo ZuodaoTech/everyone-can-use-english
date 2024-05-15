@@ -38,6 +38,9 @@ export const useAiCommand = () => {
       return lookup;
     }
 
+    const modelName =
+      currentEngine.models.lookup || currentEngine.models.default;
+
     const res = await lookupCommand(
       {
         word,
@@ -46,12 +49,13 @@ export const useAiCommand = () => {
       },
       {
         key: currentEngine.key,
-        modelName: currentEngine.model,
+        modelName,
         baseUrl: currentEngine.baseUrl,
       }
     );
 
-    if (res.context_translation?.trim()) {
+    // Accept result from gpt-3/4 models
+    if (modelName.match(/^gpt-(3|4)\S*/i) && res.context_translation?.trim()) {
       return webApi.updateLookup(lookup.id, {
         meaning: res,
         sourceId,
@@ -61,17 +65,17 @@ export const useAiCommand = () => {
   };
 
   const extractStory = async (story: StoryType) => {
-    return extractStoryCommand(story.content, {
+    const res = await extractStoryCommand(story.content, {
       key: currentEngine.key,
-      modelName: currentEngine.model,
+      modelName:
+        currentEngine.models.extractStory || currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,
-    }).then((res) => {
-      const { words = [], idioms = [] } = res;
+    });
+    const { words = [], idioms = [] } = res;
 
-      return webApi.extractVocabularyFromStory(story.id, {
-        words,
-        idioms,
-      });
+    return webApi.extractVocabularyFromStory(story.id, {
+      words,
+      idioms,
     });
   };
 
@@ -81,7 +85,7 @@ export const useAiCommand = () => {
   ): Promise<string> => {
     return translateCommand(text, {
       key: currentEngine.key,
-      modelName: currentEngine.model,
+      modelName: currentEngine.models.translate || currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,
     }).then((res) => {
       if (cacheKey) {
@@ -92,22 +96,22 @@ export const useAiCommand = () => {
   };
 
   const analyzeText = async (text: string, cacheKey?: string) => {
-    return analyzeCommand(text, {
+    const res = await analyzeCommand(text, {
       key: currentEngine.key,
-      modelName: currentEngine.model,
+      modelName: currentEngine.models.analyze || currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,
-    }).then((res) => {
-      if (cacheKey) {
-        EnjoyApp.cacheObjects.set(cacheKey, res);
-      }
-      return res;
     });
+
+    if (cacheKey) {
+      EnjoyApp.cacheObjects.set(cacheKey, res);
+    }
+    return res;
   };
 
   const punctuateText = async (text: string) => {
     return punctuateCommand(text, {
       key: currentEngine.key,
-      modelName: currentEngine.model,
+      modelName: currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,
     });
   };
@@ -115,7 +119,7 @@ export const useAiCommand = () => {
   const summarizeTopic = async (text: string) => {
     return summarizeTopicCommand(text, {
       key: currentEngine.key,
-      modelName: currentEngine.model,
+      modelName: currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,
     });
   };

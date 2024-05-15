@@ -154,6 +154,14 @@ export default {
       return settings.setSync("defaultEngine", engine);
     });
 
+    ipcMain.handle("settings-get-gpt-engine", (_event) => {
+      return settings.getSync("engine.gpt");
+    });
+
+    ipcMain.handle("settings-set-gpt-engine", (_event, engine) => {
+      return settings.setSync("engine.gpt", engine);
+    });
+
     ipcMain.handle("settings-get-default-hotkeys", (_event) => {
       return settings.getSync("defaultHotkeys");
     });

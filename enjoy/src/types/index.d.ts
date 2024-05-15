@@ -161,3 +161,16 @@ type YoutubeVideoType = {
   videoId: string;
   duration: string;
 };
+
+type GptEngineSettingType = {
+  name: string;
+  models: {
+    default: string;
+    lookup?: string;
+    translate?: string;
+    analyze?: string;
+    extractStory?: string;
+  };
+  baseUrl?: string;
+  key?: string;
+};
