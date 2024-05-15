@@ -65,7 +65,6 @@ export const useAiCommand = () => {
   };
 
   const extractStory = async (story: StoryType) => {
-    console.log(story);
     const res = await extractStoryCommand(story.content, {
       key: currentEngine.key,
       modelName:
