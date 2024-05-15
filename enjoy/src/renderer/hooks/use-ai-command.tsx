@@ -46,7 +46,7 @@ export const useAiCommand = () => {
       },
       {
         key: currentEngine.key,
-        modelName: currentEngine.model,
+        modelName: currentEngine.models.lookup || currentEngine.models.default,
         baseUrl: currentEngine.baseUrl,
       }
     );
@@ -63,7 +63,8 @@ export const useAiCommand = () => {
   const extractStory = async (story: StoryType) => {
     return extractStoryCommand(story.content, {
       key: currentEngine.key,
-      modelName: currentEngine.model,
+      modelName:
+        currentEngine.models.extractStory || currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,
     }).then((res) => {
       const { words = [], idioms = [] } = res;
@@ -81,7 +82,7 @@ export const useAiCommand = () => {
   ): Promise<string> => {
     return translateCommand(text, {
       key: currentEngine.key,
-      modelName: currentEngine.model,
+      modelName: currentEngine.models.translate || currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,
     }).then((res) => {
       if (cacheKey) {
@@ -94,7 +95,7 @@ export const useAiCommand = () => {
   const analyzeText = async (text: string, cacheKey?: string) => {
     return analyzeCommand(text, {
       key: currentEngine.key,
-      modelName: currentEngine.model,
+      modelName: currentEngine.models.analyze || currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,
     }).then((res) => {
       if (cacheKey) {
@@ -107,7 +108,7 @@ export const useAiCommand = () => {
   const punctuateText = async (text: string) => {
     return punctuateCommand(text, {
       key: currentEngine.key,
-      modelName: currentEngine.model,
+      modelName: currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,
     });
   };
@@ -115,7 +116,7 @@ export const useAiCommand = () => {
   const summarizeTopic = async (text: string) => {
     return summarizeTopicCommand(text, {
       key: currentEngine.key,
-      modelName: currentEngine.model,
+      modelName: currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,
     });
   };

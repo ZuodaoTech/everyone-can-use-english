@@ -177,6 +177,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     setDefaultEngine: (engine: "enjoyai" | "openai") => {
       return ipcRenderer.invoke("settings-set-default-engine", engine);
     },
+    getGptEngine: () => {
+      return ipcRenderer.invoke("settings-get-gpt-engine");
+    },
+    setGptEngine: (engine: GptEngineSettingType) => {
+      return ipcRenderer.invoke("settings-set-gpt-engine", engine);
+    },
     getLlm: (provider: string) => {
       return ipcRenderer.invoke("settings-get-llm", provider);
     },

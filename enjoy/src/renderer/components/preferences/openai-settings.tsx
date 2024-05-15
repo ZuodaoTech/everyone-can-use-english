@@ -19,16 +19,21 @@ import {
   SelectContent,
 } from "@renderer/components/ui";
 import { GPT_PROVIDERS } from "@renderer/components";
-import { AISettingsProviderContext } from "@renderer/context";
-import { useContext, useState } from "react";
+import {
+  AISettingsProviderContext,
+  AppSettingsProviderContext,
+} from "@renderer/context";
+import { useContext, useEffect, useState } from "react";
 
 export const OpenaiSettings = () => {
   const { openai, setOpenai } = useContext(AISettingsProviderContext);
+  const { webApi } = useContext(AppSettingsProviderContext);
   const [editing, setEditing] = useState(false);
+  const [models, setModels] = useState<string[]>([]);
 
   const openAiConfigSchema = z.object({
     key: z.string().optional(),
-    model: z.enum(GPT_PROVIDERS.openai.models),
+    model: z.enum(models),
     baseUrl: z.string().optional(),
   });
 
@@ -48,6 +53,18 @@ export const OpenaiSettings = () => {
     setEditing(false);
     toast.success(t("openaiConfigSaved"));
   };
+
+  useEffect(() => {
+    webApi
+      .config("gpt_providers")
+      .then((data) => {
+        setModels(data.openai.models);
+      })
+      .catch((error) => {
+        console.error(error);
+        setModels(GPT_PROVIDERS.openai.models);
+      });
+  }, []);
 
   return (
     <Form {...form}>
@@ -93,13 +110,11 @@ export const OpenaiSettings = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {(GPT_PROVIDERS.openai.models || []).map(
-                            (option: string) => (
-                              <SelectItem key={option} value={option}>
-                                {option}
-                              </SelectItem>
-                            )
-                          )}
+                          {(models || []).map((option: string) => (
+                            <SelectItem key={option} value={option}>
+                              {option}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </div>
@@ -113,7 +128,9 @@ export const OpenaiSettings = () => {
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex items-center space-x-2">
-                      <FormLabel className="min-w-max">{t("baseUrl")}:</FormLabel>
+                      <FormLabel className="min-w-max">
+                        {t("baseUrl")}:
+                      </FormLabel>
                       <Input
                         disabled={!editing}
                         placeholder={t("leaveEmptyToUseDefault")}
