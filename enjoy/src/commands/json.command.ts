@@ -1,5 +1,5 @@
 import { ChatOpenAI } from "@langchain/openai";
-import { NOT_SUPPORTE_JSON_FORMAT_MODELS } from "@/constants";
+import { NOT_SUPPORT_JSON_FORMAT_MODELS } from "@/constants";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
 export const jsonCommand = async (
@@ -15,7 +15,7 @@ export const jsonCommand = async (
   const { key, temperature = 0, baseUrl, schema } = options;
   let { modelName = "gpt-4o" } = options;
 
-  if (NOT_SUPPORTE_JSON_FORMAT_MODELS.indexOf(modelName) > -1) {
+  if (NOT_SUPPORT_JSON_FORMAT_MODELS.indexOf(modelName) > -1) {
     modelName = "gpt-4o";
   }
 

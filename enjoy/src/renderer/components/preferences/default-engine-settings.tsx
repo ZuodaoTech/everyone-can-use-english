@@ -58,7 +58,11 @@ export const DefaultEngineSettings = () => {
     models.default ||= providers[name].models[0];
     Object.keys(models).forEach((key: keyof typeof models) => {
       if (!providers[name].models.includes(models[key])) {
-        delete models[key];
+        if (key === "default") {
+          models[key] = providers[name].models[0];
+        } else {
+          delete models[key];
+        }
       }
     });
 

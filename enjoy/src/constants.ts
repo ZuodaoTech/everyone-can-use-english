@@ -125,7 +125,7 @@ export const PROCESS_TIMEOUT = 1000 * 60 * 15;
 export const AI_GATEWAY_ENDPOINT =
   "https://gateway.ai.cloudflare.com/v1/11d43ab275eb7e1b271ba4089ecc3864/enjoy";
 
-export const NOT_SUPPORTE_JSON_FORMAT_MODELS = [
+export const NOT_SUPPORT_JSON_FORMAT_MODELS = [
   "gpt-4-vision-preview",
   "gpt-4",
   "gpt-4-32k",
