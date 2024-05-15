@@ -53,6 +53,15 @@ export const DefaultEngineSettings = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof gptEngineSchema>) => {
+    const { name, models } = data;
+
+    models.default ||= providers[name].models[0];
+    Object.keys(models).forEach((key: keyof typeof models) => {
+      if (!providers[name].models.includes(models[key])) {
+        delete models[key];
+      }
+    });
+
     setGptEngine(data as GptEngineSettingType);
     setEditing(false);
   };
