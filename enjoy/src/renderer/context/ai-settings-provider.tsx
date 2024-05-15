@@ -34,7 +34,9 @@ export const AISettingsProvider = ({
   const [googleGenerativeAi, setGoogleGenerativeAi] =
     useState<LlmProviderType>(null);
   const [whisperConfig, setWhisperConfig] = useState<WhisperConfigType>(null);
-  const { EnjoyApp, libraryPath } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, libraryPath, user, apiUrl } = useContext(
+    AppSettingsProviderContext
+  );
 
   useEffect(() => {
     fetchSettings();
@@ -151,7 +153,10 @@ export const AISettingsProvider = ({
         currentEngine:
           gptEngine.name === "openai"
             ? Object.assign(gptEngine, openai)
-            : gptEngine,
+            : Object.assign(gptEngine, {
+                key: user?.accessToken,
+                baseUrl: `${apiUrl}/api/ai`,
+              }),
         openai,
         setOpenai: (config: LlmProviderType) => handleSetLlm("openai", config),
         googleGenerativeAi,
