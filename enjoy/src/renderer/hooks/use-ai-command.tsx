@@ -61,6 +61,10 @@ export const useAiCommand = () => {
         sourceId,
         sourceType,
       });
+    } else {
+      return Object.assign(lookup, {
+        meaning: res,
+      });
     }
   };
 
