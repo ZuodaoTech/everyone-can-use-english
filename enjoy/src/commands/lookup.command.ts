@@ -57,9 +57,8 @@ const DICITIONARY_PROMPT = `You are an {learning_language}-{native_language} dic
 I will provide "word(it also maybe a phrase)" and "context" as input, you should return the "word", "lemma", "pronunciation", "pos", "definition", "translation" and "context_translation" as output. 
 If no context is provided, return the most common definition.
 If you do not know the appropriate definition, return an empty string for "definition" and "translation".
-Always return output in JSON format.
+Always return the output in JSON format as following:
       
-The output format:
 {{
   "word": "the original word or phrase",
   "lemma": "lemma",

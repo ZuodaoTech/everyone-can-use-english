@@ -21,8 +21,10 @@ export const useAiCommand = () => {
     context: string;
     sourceId?: string;
     sourceType?: string;
+    cacheKey?: string;
+    force?: boolean;
   }) => {
-    const { context, sourceId, sourceType } = params;
+    const { context, sourceId, sourceType, cacheKey, force = false } = params;
     let { word } = params;
     word = word.trim();
     if (!word) return;
@@ -34,7 +36,7 @@ export const useAiCommand = () => {
       sourceType,
     });
 
-    if (lookup.meaning) {
+    if (lookup.meaning && !force) {
       return lookup;
     }
 
@@ -54,18 +56,21 @@ export const useAiCommand = () => {
       }
     );
 
-    // Accept result from gpt-3/4 models
-    if (modelName.match(/^gpt-(3|4)\S*/i) && res.context_translation?.trim()) {
-      return webApi.updateLookup(lookup.id, {
-        meaning: res,
-        sourceId,
-        sourceType,
-      });
-    } else {
-      return Object.assign(lookup, {
-        meaning: res,
-      });
+    webApi.updateLookup(lookup.id, {
+      meaning: res,
+      sourceId,
+      sourceType,
+    });
+
+    const result = Object.assign(lookup, {
+      meaning: res,
+    });
+
+    if (cacheKey) {
+      EnjoyApp.cacheObjects.set(cacheKey, result);
     }
+
+    return result;
   };
 
   const extractStory = async (story: StoryType) => {

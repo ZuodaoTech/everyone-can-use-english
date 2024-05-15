@@ -437,6 +437,7 @@
   "extractionFailed": "提取失败",
   "extractedSuccessfully": "提取成功",
   "lookup": "查询",
+  "reLookup": "重新查询",
   "lookupAll": "全部查询",
   "lookingUp": "正在查询",
   "pending": "等待中",
