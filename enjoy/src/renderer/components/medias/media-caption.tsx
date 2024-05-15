@@ -174,6 +174,7 @@ export const MediaCaption = () => {
         );
       })
       .catch((err) => {
+        console.error(err);
         toast.error(err.message);
       });
   };
@@ -195,12 +196,11 @@ export const MediaCaption = () => {
         });
       }
     } catch (err) {
-      toast.error(err.message);
+      console.error(err);
+      toast.error(`${t("downloadFailed")}: ${err.message}`);
     }
-    if (!src) {
-      toast.error(t("downloadFailed"));
-      return;
-    }
+
+    if (!src) return;
 
     EnjoyApp.dialog
       .showSaveDialog({
