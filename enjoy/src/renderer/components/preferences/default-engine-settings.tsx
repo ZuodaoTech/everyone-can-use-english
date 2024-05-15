@@ -167,7 +167,9 @@ export const DefaultEngineSettings = () => {
                             onValueChange={field.onChange}
                           >
                             <SelectTrigger className="min-w-fit">
-                              <SelectValue></SelectValue>
+                              <SelectValue
+                                placeholder={t("leaveEmptyToUseDefault")}
+                              ></SelectValue>
                             </SelectTrigger>
                             <SelectContent>
                               {providers[form.watch("name")].models.map(
@@ -198,7 +200,9 @@ export const DefaultEngineSettings = () => {
                             onValueChange={field.onChange}
                           >
                             <SelectTrigger className="min-w-fit">
-                              <SelectValue></SelectValue>
+                              <SelectValue
+                                placeholder={t("leaveEmptyToUseDefault")}
+                              ></SelectValue>
                             </SelectTrigger>
                             <SelectContent>
                               {providers[form.watch("name")].models.map(
@@ -229,7 +233,9 @@ export const DefaultEngineSettings = () => {
                             onValueChange={field.onChange}
                           >
                             <SelectTrigger className="min-w-fit">
-                              <SelectValue></SelectValue>
+                              <SelectValue
+                                placeholder={t("leaveEmptyToUseDefault")}
+                              ></SelectValue>
                             </SelectTrigger>
                             <SelectContent>
                               {providers[form.watch("name")].models.map(
@@ -260,7 +266,9 @@ export const DefaultEngineSettings = () => {
                             onValueChange={field.onChange}
                           >
                             <SelectTrigger className="min-w-fit">
-                              <SelectValue></SelectValue>
+                              <SelectValue
+                                placeholder={t("leaveEmptyToUseDefault")}
+                              ></SelectValue>
                             </SelectTrigger>
                             <SelectContent>
                               {providers[form.watch("name")].models.map(

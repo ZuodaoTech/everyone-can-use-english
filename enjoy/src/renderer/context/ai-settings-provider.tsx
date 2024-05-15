@@ -98,15 +98,12 @@ export const AISettingsProvider = ({
         setGptEngine(engine);
       });
     } else if (_openai?.key) {
-      const engine = Object.assign(
-        {
-          name: "openai",
-          models: {
-            default: "gpt-4o",
-          },
+      const engine = {
+        name: "openai",
+        models: {
+          default: "gpt-4o",
         },
-        _openai
-      );
+      };
       EnjoyApp.settings.setGptEngine(engine).then(() => {
         setGptEngine(engine);
       });
@@ -152,7 +149,10 @@ export const AISettingsProvider = ({
         },
         currentEngine:
           gptEngine.name === "openai"
-            ? Object.assign(gptEngine, openai)
+            ? Object.assign(gptEngine, {
+                key: openai.key,
+                baseUrl: openai.baseUrl,
+              })
             : Object.assign(gptEngine, {
                 key: user?.accessToken,
                 baseUrl: `${apiUrl}/api/ai`,
