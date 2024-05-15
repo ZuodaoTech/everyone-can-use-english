@@ -142,7 +142,8 @@
     "mine": "我的",
     "preferences": "软件设置",
     "profile": "个人主页",
-    "notes": "笔记"
+    "notes": "笔记",
+    "help": "帮助"
   },
   "form": {
     "lengthMustBeAtLeast": "{{field}} 长度不可超过 {{length}} 个字符",

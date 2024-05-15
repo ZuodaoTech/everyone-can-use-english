@@ -142,7 +142,8 @@
     "mine": "Mine",
     "preferences": "Preferences",
     "profile": "My Profile",
-    "notes": "Note"
+    "notes": "Note",
+    "help": "Help"
   },
   "form": {
     "lengthMustBeAtLeast": "{{field}} must be at least {{length}} characters",
@@ -193,7 +194,7 @@
   "retry": "Retry",
   "failedToLogin": "Failed to login",
   "sendCode": "Send code",
-  "codeSent": "Code sent, please check your SMS",
+  "codeSent": "Code has been sent",
   "verificationCode": "Verification code",
   "email": "Email",
   "phoneNumber": "Phone number",

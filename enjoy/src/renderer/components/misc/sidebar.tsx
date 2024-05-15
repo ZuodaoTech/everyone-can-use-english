@@ -170,7 +170,7 @@ export const Sidebar = () => {
                 className="w-full xl:justify-start px-2 xl:px-4"
               >
                 <HelpCircleIcon className="h-5 w-5" />
-                <span className="ml-2 hidden xl:block">{t("help")}</span>
+                <span className="ml-2 hidden xl:block">{t("sidebar.help")}</span>
               </Button>
             </DropdownMenuTrigger>
 

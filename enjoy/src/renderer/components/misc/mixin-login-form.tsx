@@ -7,7 +7,7 @@ import {
   SheetTrigger,
   SheetContent,
 } from "@renderer/components/ui";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import { LoaderIcon } from "lucide-react";
