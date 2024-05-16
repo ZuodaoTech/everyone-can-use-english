@@ -114,7 +114,7 @@ export const AiLookupResult = (props: {
   const handleLookup = async (options?: { force: boolean }) => {
     if (lookingUp) return;
     if (!word) return;
-    const { force = false } = options;
+    const { force = false } = options || {};
 
     setLookingUp(true);
     lookupWord({
