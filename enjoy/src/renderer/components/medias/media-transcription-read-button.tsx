@@ -21,13 +21,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   ScrollArea,
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
   toast,
 } from "@renderer/components/ui";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
 import { t } from "i18next";
 import WaveSurfer from "wavesurfer.js";
 import {
+  ChevronDownIcon,
   DownloadIcon,
+  GaugeCircleIcon,
   LoaderIcon,
   MicIcon,
   MoreHorizontalIcon,
@@ -42,20 +48,22 @@ import {
   DefaultAudioLayout,
   defaultLayoutIcons,
 } from "@vidstack/react/player/layouts/default";
+import { RecordingDetail } from "@renderer/components";
 
 const TEN_MINUTES = 60 * 10;
 let interval: NodeJS.Timeout;
 
 export const MediaTranscriptionReadButton = () => {
   const [open, setOpen] = useState(false);
-  const [selectedRecording, setSelectedRecording] = useState(null);
+  const [deleting, setDeleting] = useState<RecordingType>(null);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { media, transcription } = useContext(MediaPlayerProviderContext);
+  const [assessing, setAssessing] = useState<RecordingType>();
 
   const handleDelete = () => {
-    if (!selectedRecording) return;
+    if (!deleting) return;
 
-    EnjoyApp.recordings.destroy(selectedRecording.id);
+    EnjoyApp.recordings.destroy(deleting.id);
   };
 
   const handleDownload = (recording: RecordingType) => {
@@ -104,7 +112,9 @@ export const MediaTranscriptionReadButton = () => {
               {transcription.result.timeline.map(
                 (sentence: TimelineEntry, index: number) => (
                   <div key={index} className="flex flex-start space-x-2 mb-4">
-                    <span className="text-sm text-muted-foreground min-w-max leading-8">#{index + 1}</span>
+                    <span className="text-sm text-muted-foreground min-w-max leading-8">
+                      #{index + 1}
+                    </span>
                     <div className="text-lg leading-8">{sentence.text}</div>
                   </div>
                 )
@@ -134,8 +144,29 @@ export const MediaTranscriptionReadButton = () => {
                           <span>{t("download")}</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={() => setAssessing(recording)}
+                        >
+                          <GaugeCircleIcon
+                            className={`w-4 h-4 mr-4
+                    ${
+                      recording.pronunciationAssessment
+                        ? recording.pronunciationAssessment
+                            .pronunciationScore >= 80
+                          ? "text-green-500"
+                          : recording.pronunciationAssessment
+                              .pronunciationScore >= 60
+                          ? "text-yellow-600"
+                          : "text-red-500"
+                        : ""
+                    }
+                    `}
+                          />
+                          <span>{t("pronunciationAssessment")}</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
                           className="text-destructive cursor-pointer"
-                          onClick={() => setSelectedRecording(recording)}
+                          onClick={() => setDeleting(recording)}
                         >
                           <Trash2Icon className="w-4 h-4 mr-2" />
                           <span>{t("delete")}</span>
@@ -143,7 +174,11 @@ export const MediaTranscriptionReadButton = () => {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
-                  <MediaPlayer viewType="audio" src={recording.src}>
+                  <MediaPlayer
+                    viewType="audio"
+                    streamType="on-demand"
+                    src={recording.src}
+                  >
                     <MediaProvider />
                     <DefaultAudioLayout icons={defaultLayoutIcons} />
                   </MediaPlayer>
@@ -171,10 +206,10 @@ export const MediaTranscriptionReadButton = () => {
       </Dialog>
 
       <AlertDialog
-        open={selectedRecording}
+        open={!!deleting}
         onOpenChange={(value) => {
           if (value) return;
-          setSelectedRecording(null);
+          setDeleting(null);
         }}
       >
         <AlertDialogContent>
@@ -192,6 +227,27 @@ export const MediaTranscriptionReadButton = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Sheet
+        open={Boolean(assessing)}
+        onOpenChange={(open) => {
+          if (!open) setAssessing(undefined);
+        }}
+      >
+        <SheetContent
+          side="bottom"
+          className="rounded-t-2xl shadow-lg max-h-screen overflow-y-scroll"
+          displayClose={false}
+        >
+          <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
+            <SheetClose>
+              <ChevronDownIcon />
+            </SheetClose>
+          </SheetHeader>
+
+          {assessing && <RecordingDetail recording={assessing} />}
+        </SheetContent>
+      </Sheet>
     </>
   );
 };
