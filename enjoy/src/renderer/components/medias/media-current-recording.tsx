@@ -417,7 +417,7 @@ export const MediaCurrentRecording = () => {
 
   useHotkeys(
     currentHotkeys.PlayOrPauseRecording,
-    (keyboardEvent, hotkeyEvent) => {
+    (keyboardEvent, _hotkeyEvent) => {
       if (!player) return;
       keyboardEvent.preventDefault();
 

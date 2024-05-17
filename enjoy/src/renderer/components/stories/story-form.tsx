@@ -17,6 +17,7 @@ export const StoryForm = () => {
           placeholder={t("inputUrlToStartReading")}
         />
         <Button
+          disabled={!url}
           onClick={() =>
             navigate(`/stories/preview/${encodeURIComponent(url)}`)
           }

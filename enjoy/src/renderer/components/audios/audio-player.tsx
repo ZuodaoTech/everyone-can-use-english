@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import {
   MediaLoadingModal,
