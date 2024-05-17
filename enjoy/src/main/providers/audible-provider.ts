@@ -16,19 +16,17 @@ export class AudibleProvider {
     return new Promise<string>((resolve, _reject) => {
       const view = new WebContentsView();
       view.webContents.loadURL(this.baseURL + path);
-      view.webContents.on("did-finish-load", () => {
-        logger.debug(`Scraped ${this.baseURL + path}`);
+      view.webContents.on("did-stop-loading", () => {
+        logger.debug(`Finish loading ${this.baseURL + path}`);
         view.webContents
           .executeJavaScript(`document.documentElement.innerHTML`)
           .then((html) => {
             resolve(html as string);
           })
+          .catch((err) => {
+            resolve("");
+          })
           .finally(() => view.webContents.close());
-      });
-      view.webContents.on("did-fail-load", () => {
-        logger.warn(`Failed to scrape ${this.baseURL + path}`);
-        view.webContents.close();
-        resolve("");
       });
     });
   };
