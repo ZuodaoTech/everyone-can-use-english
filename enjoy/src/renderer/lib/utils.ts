@@ -51,7 +51,7 @@ export function formatDateTime(date: Date) {
 
   if (now.diff(then, "hour") === 0) {
     return then.fromNow();
-  } else if (now.diff(then, "day") === 0) {
+  } else if (now.isSame(then, "day")) {
     return then.format("HH:mm");
   } else if (now.diff(then, "year") === 0) {
     return then.format("MM/DD HH:mm");
