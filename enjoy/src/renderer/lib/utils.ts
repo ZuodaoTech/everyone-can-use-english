@@ -1,15 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import dayjs from "dayjs";
-import localizedFormat from "dayjs/plugin/localizedFormat";
-import relativeTime from "dayjs/plugin/relativeTime";
-import duration, { type DurationUnitType } from "dayjs/plugin/duration";
-import "dayjs/locale/en";
-import "dayjs/locale/zh-cn";
+import dayjs from "@renderer/lib/dayjs";
+import { type DurationUnitType } from "dayjs/plugin/duration";
 import i18next, { t } from "i18next";
-dayjs.extend(localizedFormat);
-dayjs.extend(duration);
-dayjs.extend(relativeTime);
 import Chart from "chart.js/auto";
 
 export function cn(...inputs: ClassValue[]) {
