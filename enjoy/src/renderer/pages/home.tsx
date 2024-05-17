@@ -18,7 +18,9 @@ export default () => {
         <AudibleBooksSegment />
         <TedTalksSegment />
         <TedIdeasSegment />
-        <YoutubeVideosSegment />
+        <YoutubeVideosSegment channel="@TED" />
+        <YoutubeVideosSegment channel="@CNN" />
+        <YoutubeVideosSegment channel="@nytimes" />
       </div>
     </div>
   );

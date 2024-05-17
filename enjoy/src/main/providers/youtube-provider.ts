@@ -45,12 +45,13 @@ export class YoutubeProvider {
       const videoList = videoContents
         .filter((i: any) => i.richItemRenderer)
         .map((video: any) => {
+          const thumbnails =
+            video.richItemRenderer.content.videoRenderer.thumbnail.thumbnails;
+
           return {
             title:
               video.richItemRenderer.content.videoRenderer.title.runs[0].text,
-            thumbnail:
-              video.richItemRenderer.content.videoRenderer.thumbnail
-                .thumbnails[0].url,
+            thumbnail: thumbnails[thumbnails.length - 1].url,
             videoId: video.richItemRenderer.content.videoRenderer.videoId,
             duration:
               video.richItemRenderer.content.videoRenderer.lengthText
@@ -65,18 +66,21 @@ export class YoutubeProvider {
     }
   };
 
-  videos = async () => {
-    const html = await this.scrape("https://www.youtube.com/@CNN/videos");
+  videos = async (channel: string) => {
+    const html = await this.scrape(`https://www.youtube.com/${channel}/videos`);
     return this.extractVideos(html);
   };
 
   registerIpcHandlers = () => {
-    ipcMain.handle("youtube-provider-videos", async () => {
-      try {
-        return await this.videos();
-      } catch (error) {
-        logger.error(error);
+    ipcMain.handle(
+      "youtube-provider-videos",
+      async (_event, channel: string) => {
+        try {
+          return await this.videos(channel);
+        } catch (error) {
+          logger.error(error);
+        }
       }
-    });
+    );
   };
 }
