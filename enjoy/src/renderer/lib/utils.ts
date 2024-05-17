@@ -1,15 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import dayjs from "dayjs";
-import localizedFormat from "dayjs/plugin/localizedFormat";
-import relativeTime from "dayjs/plugin/relativeTime";
-import duration, { type DurationUnitType } from "dayjs/plugin/duration";
-import "dayjs/locale/en";
-import "dayjs/locale/zh-cn";
+import dayjs from "@renderer/lib/dayjs";
+import { type DurationUnitType } from "dayjs/plugin/duration";
 import i18next, { t } from "i18next";
-dayjs.extend(localizedFormat);
-dayjs.extend(duration);
-dayjs.extend(relativeTime);
 import Chart from "chart.js/auto";
 
 export function cn(...inputs: ClassValue[]) {
@@ -58,7 +51,7 @@ export function formatDateTime(date: Date) {
 
   if (now.diff(then, "hour") === 0) {
     return then.fromNow();
-  } else if (now.diff(then, "day") === 0) {
+  } else if (now.isSame(then, "day")) {
     return then.format("HH:mm");
   } else if (now.diff(then, "year") === 0) {
     return then.format("MM/DD HH:mm");

@@ -8,7 +8,7 @@ import { AppSettingsProviderContext } from "@renderer/context";
 import { Button } from "@renderer/components/ui";
 import { ChevronLeftIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
+import dayjs from "@renderer/lib/dayjs";
 import { t } from "i18next";
 
 export default () => {
