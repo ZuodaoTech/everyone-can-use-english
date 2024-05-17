@@ -19,7 +19,7 @@ import {
   CheckCircleIcon,
   AudioWaveformIcon,
 } from "lucide-react";
-import dayjs from "dayjs";
+import dayjs from "@renderer/lib/dayjs";
 import { secondsToTimestamp } from "@renderer/lib/utils";
 import { Link } from "react-router-dom";
 

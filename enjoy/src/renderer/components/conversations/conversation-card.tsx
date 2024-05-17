@@ -1,5 +1,5 @@
 import { MessageCircleIcon, SpeechIcon } from "lucide-react";
-import dayjs from "dayjs";
+import dayjs from "@renderer/lib/dayjs";
 
 export const ConversationCard = (props: { conversation: ConversationType }) => {
   const { conversation } = props;

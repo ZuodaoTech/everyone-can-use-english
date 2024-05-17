@@ -8,7 +8,7 @@ import {
   CardContent,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import dayjs from "dayjs";
+import dayjs from "@renderer/lib/dayjs";
 
 export const RecordingStats = () => {
   return (
