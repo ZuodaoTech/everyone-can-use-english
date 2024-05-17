@@ -2,9 +2,7 @@ import {
   AudiosSegment,
   AudibleBooksSegment,
   StoriesSegment,
-  TedIdeasSegment,
   VideosSegment,
-  TedTalksSegment,
   YoutubeVideosSegment,
 } from "@renderer/components";
 
@@ -16,8 +14,6 @@ export default () => {
         <VideosSegment />
         <StoriesSegment />
         <AudibleBooksSegment />
-        <TedTalksSegment />
-        <TedIdeasSegment />
         <YoutubeVideosSegment channel="@TED" />
         <YoutubeVideosSegment channel="@CNN" />
         <YoutubeVideosSegment channel="@nytimes" />

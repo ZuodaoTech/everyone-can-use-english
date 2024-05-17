@@ -11,23 +11,19 @@ export class TedProvider {
       view.webContents.loadURL(url);
       logger.debug("started scraping", url);
 
-      view.webContents.on("did-finish-load", () => {
-        logger.debug("finished scraping", url);
+      view.webContents.on("did-stop-loading", () => {
+        logger.debug("finished loading", url);
         view.webContents
           .executeJavaScript(`document.documentElement.innerHTML`)
           .then((html) => resolve(html as string))
+          .catch((error) => {
+            logger.warn("Failed to scrape", url, error);
+            resolve("");
+          })
           .finally(() => {
             view.webContents.close();
           });
       });
-      view.webContents.on(
-        "did-fail-load",
-        (_event, _errorCode, error, validatedURL) => {
-          logger.warn("Failed to scrape", url, error, validatedURL);
-          view.webContents.close();
-          resolve("");
-        }
-      );
     });
   };
 
