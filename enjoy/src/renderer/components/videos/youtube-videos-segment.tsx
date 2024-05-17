@@ -186,11 +186,11 @@ const YoutubeVideoCard = (props: {
 
   return (
     <div onClick={onClick} className="w-64 cursor-pointer">
-      <div className="aspect-[4/2.5] border rounded-lg overflow-hidden relative mb-4">
+      <div className="aspect-[16/9] border rounded-lg overflow-hidden relative mb-4">
         <img
           src={video.thumbnail}
           alt={video.title}
-          className="hover:scale-105 object-cover w-screen"
+          className="hover:scale-105 object-cover w-full h-full"
         />
 
         <div className="absolute bottom-0 left-0 right-0 p-2 bg-black bg-opacity-50">
