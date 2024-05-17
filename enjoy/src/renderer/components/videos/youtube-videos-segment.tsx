@@ -15,7 +15,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { LoaderIcon } from "lucide-react";
 
-export const YoutubeVideosSegment = () => {
+export const YoutubeVideosSegment = (props: { channel: string }) => {
+  const { channel } = props;
   const navigate = useNavigate();
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [videos, setvideos] = useState<YoutubeVideoType[]>([]);
@@ -46,18 +47,20 @@ export const YoutubeVideosSegment = () => {
   };
 
   const fetchYoutubeVideos = async () => {
-    const cachedVideos = await EnjoyApp.cacheObjects.get("youtube-videos");
+    const cachedVideos = await EnjoyApp.cacheObjects.get(
+      `youtube-videos-${channel}`
+    );
     if (cachedVideos) {
       setvideos(cachedVideos);
       return;
     }
 
     EnjoyApp.providers.youtube
-      .videos()
+      .videos(channel)
       .then((videos) => {
         if (!videos) return;
 
-        EnjoyApp.cacheObjects.set("youtube-videos", videos, 60 * 10);
+        EnjoyApp.cacheObjects.set(`youtube-videos-${channel}`, videos, 60 * 10);
         setvideos(videos);
       })
       .catch((err) => {
@@ -90,7 +93,7 @@ export const YoutubeVideosSegment = () => {
       <div className="flex items-start justify-between mb-4">
         <div className="space-y-1">
           <h2 className="text-2xl font-semibold tracking-tight capitalize">
-            {t("from")} Youtube CNN
+            {t("from")} Youtube {channel}
           </h2>
         </div>
         <div className="ml-auto mr-4"></div>
@@ -183,18 +186,18 @@ const YoutubeVideoCard = (props: {
 
   return (
     <div onClick={onClick} className="w-64 cursor-pointer">
-      <div className="aspect-[4/2.5] border rounded-lg overflow-hidden relative">
+      <div className="aspect-[16/9] border rounded-lg overflow-hidden relative mb-4">
         <img
           src={video.thumbnail}
           alt={video.title}
-          className="hover:scale-105 object-cover w-screen"
+          className="hover:scale-105 object-cover w-full h-full"
         />
 
         <div className="absolute bottom-0 left-0 right-0 p-2 bg-black bg-opacity-50">
           <div className="text-xs text-white text-right">{video.duration}</div>
         </div>
       </div>
-      <div className="text-sm font-semibold mt-4 max-w-full h-5 mb-10">
+      <div className="text-sm font-semibold h-10 max-w-full line-clamp-2">
         {video.title}
       </div>
     </div>

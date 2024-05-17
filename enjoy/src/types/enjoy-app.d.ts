@@ -42,7 +42,7 @@ type EnjoyAppType = {
       downloadTalk: (url: string) => Promise<{ audio: string; video: string }>;
     };
     youtube: {
-      videos: () => Promise<YoutubeVideoType[]>;
+      videos: (channel: string) => Promise<YoutubeVideoType[]>;
     };
   };
   view: {

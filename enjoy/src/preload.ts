@@ -85,8 +85,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       },
     },
     youtube: {
-      videos: () => {
-        return ipcRenderer.invoke("youtube-provider-videos");
+      videos: (channel: string) => {
+        return ipcRenderer.invoke("youtube-provider-videos", channel);
       },
     },
   },
