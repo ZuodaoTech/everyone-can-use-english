@@ -25,6 +25,8 @@ export const WavesurferPlayer = (props: {
   const [duration, setDuration] = useState<number>(0);
 
   const onPlayClick = useCallback(() => {
+    if (!wavesurfer) return;
+
     wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
   }, [wavesurfer]);
 

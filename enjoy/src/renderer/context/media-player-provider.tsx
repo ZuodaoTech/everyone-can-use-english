@@ -443,8 +443,8 @@ export const MediaPlayerProvider = ({
         setDecoded(true);
       }),
       wavesurfer.on("error", (err: Error) => {
-        toast.error(err.message);
-        setDecodeError(err.message);
+        toast.error(err?.message || "Error occurred while decoding audio");
+        setDecodeError(err?.message || "Error occurred while decoding audio");
       }),
     ];
 
