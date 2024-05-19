@@ -105,7 +105,10 @@ export const MediaTranscriptionReadButton = () => {
             {t("readThrough")}
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-screen-md xl:max-w-screen-lg h-5/6 flex flex-col p-0">
+        <DialogContent
+          onPointerDownOutside={(event) => event.preventDefault()}
+          className="max-w-screen-md xl:max-w-screen-lg h-5/6 flex flex-col p-0"
+        >
           <ScrollArea className="flex-1 px-6 pt-4">
             <div className="select-text mx-auto w-full max-w-prose">
               <h3 className="font-bold text-xl my-4">{media.name}</h3>
@@ -175,8 +178,7 @@ export const MediaTranscriptionReadButton = () => {
                     </DropdownMenu>
                   </div>
                   <MediaPlayer
-                    viewType="audio"
-                    streamType="on-demand"
+                    duration={recording.duration / 1000}
                     src={recording.src}
                   >
                     <MediaProvider />
