@@ -100,7 +100,7 @@ export const MediaLoadingModal = () => {
                       className="cursor-pointer"
                       onClick={() => generateTranscription("")}
                     >
-                      {t("reTranscribe")}
+                      {t("regenerate")}
                     </a>
                   </Button>
                 )}
