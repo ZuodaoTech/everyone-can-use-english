@@ -126,6 +126,7 @@ export const MediaTranscriptionReadButton = () => {
             <div className="mt-12">
               {recordings.map((recording) => (
                 <div
+                  key={recording.id}
                   className="mx-auto w-full max-w-prose px-4 mb-4"
                   id={recording.id}
                 >

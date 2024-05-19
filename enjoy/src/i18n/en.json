@@ -588,5 +588,6 @@
   "saveTranscription": "Save transcription",
   "areYouSureToSaveTranscription": "It will perform a force-alignment between the audio and your edited transcription. Are you sure to continue?",
   "summarize": "Summarize",
-  "noResultsFound": "No results found"
+  "noResultsFound": "No results found",
+  "readThrough": "Read through"
 }
