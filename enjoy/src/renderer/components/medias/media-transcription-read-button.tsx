@@ -148,7 +148,7 @@ export const MediaTranscriptionReadButton = () => {
                           onClick={() => setAssessing(recording)}
                         >
                           <GaugeCircleIcon
-                            className={`w-4 h-4 mr-4
+                            className={`w-4 h-4 mr-2
                     ${
                       recording.pronunciationAssessment
                         ? recording.pronunciationAssessment
