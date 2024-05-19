@@ -197,7 +197,7 @@ export const useTranscribe = () => {
         resolve({
           engine: "azure",
           model: "whisper",
-          text: results.map((result) => result.DisplayText).join(' '),
+          text: results.map((result) => result.DisplayText).join(" "),
         });
       };
 

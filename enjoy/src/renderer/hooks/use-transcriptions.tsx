@@ -8,7 +8,6 @@ import {
 import { toast } from "@renderer/components/ui";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@/constants";
-import { ca } from "@vidstack/react/types/vidstack-react";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
   const { whisperConfig } = useContext(AISettingsProviderContext);
