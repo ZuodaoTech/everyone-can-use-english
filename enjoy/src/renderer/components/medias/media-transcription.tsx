@@ -27,6 +27,7 @@ import {
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 import { formatDuration } from "@renderer/lib/utils";
 import { MediaTranscriptionForm } from "./media-transcription-form";
+import { MediaTranscriptionReadButton } from "./media-transcription-read-button";
 
 export const MediaTranscription = () => {
   const containerRef = useRef<HTMLDivElement>();
@@ -115,6 +116,7 @@ export const MediaTranscription = () => {
             <span className="capitalize">{t("transcript")}</span>
           </div>
           <div className="flex space-x-2">
+            <MediaTranscriptionReadButton />
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button
@@ -148,6 +150,7 @@ export const MediaTranscription = () => {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+
             <MediaTranscriptionForm />
           </div>
         </div>
