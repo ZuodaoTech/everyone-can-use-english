@@ -75,9 +75,9 @@ export const PronunciationAssessmentWordResult = (props: {
             onClick={() => {
               onSeek && onSeek(result.offset / 1e7);
             }}
-            className="text-center"
+            className="text-center mb-3"
           >
-            <div className="">
+            <div className="mb-1">
               {result.phonemes.map((phoneme, index) => (
                 <span
                   key={index}

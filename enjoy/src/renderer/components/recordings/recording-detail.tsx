@@ -58,10 +58,12 @@ export const RecordingDetail = (props: { recording: RecordingType }) => {
           }}
         />
       ) : (
-        <ScrollArea className="h-72 py-4 px-8">
-          <p className="text-xl font-serif tracking-wide">
-            {recording?.referenceText}
-          </p>
+        <ScrollArea className="h-72 py-4 px-8 select-text">
+          {(recording?.referenceText || "").split("\n").map((line, index) => (
+            <div key={index} className="text-xl font-serif tracking-wide mb-2">
+              {line}
+            </div>
+          ))}
         </ScrollArea>
       )}
 
