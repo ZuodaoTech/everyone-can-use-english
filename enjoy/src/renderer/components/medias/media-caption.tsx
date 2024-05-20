@@ -520,7 +520,7 @@ const Caption = (props: {
 
           {displayIpa && (
             <div
-              className={`select-text text-sm 2xl:text-base text-muted-foreground font-code mb-1 ${
+              className={`select-text text-sm 2xl:text-base text-muted-foreground font-code mb-1 px-1 ${
                 index === 0 ? "before:content-['/']" : ""
               } ${
                 index === caption.timeline.length - 1
