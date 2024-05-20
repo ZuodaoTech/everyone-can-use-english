@@ -7861,10 +7861,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:>=0.2.9":
-  version: 3.2.5
-  resolution: "async@npm:3.2.5"
-  checksum: 10c0/1408287b26c6db67d45cb346e34892cee555b8b59e6c68e6f8c3e495cad5ca13b4f218180e871f3c2ca30df4ab52693b66f2f6ff43644760cab0b2198bda79c1
+"async@npm:^0.2.9":
+  version: 0.2.10
+  resolution: "async@npm:0.2.10"
+  checksum: 10c0/714d284dc6c3ae59f3e8b347083e32c7657ba4ffc4ff945eb152ad4fb08def27e768992fcd4d9fd3b411c6b42f1541862ac917446bf2a1acfa0f302d1001f7d2
   languageName: node
   linkType: hard
 
@@ -10380,7 +10380,7 @@ __metadata:
     eslint-plugin-import: "npm:^2.29.1"
     ffmpeg-static: "npm:^5.2.0"
     flora-colossus: "npm:^2.0.0"
-    fluent-ffmpeg: "npm:^2.1.2"
+    fluent-ffmpeg: "npm:^2.1.3"
     fs-extra: "npm:^11.2.0"
     html-to-text: "npm:^9.0.5"
     https-proxy-agent: "npm:^7.0.4"
@@ -11315,13 +11315,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fluent-ffmpeg@npm:^2.1.2":
-  version: 2.1.2
-  resolution: "fluent-ffmpeg@npm:2.1.2"
+"fluent-ffmpeg@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "fluent-ffmpeg@npm:2.1.3"
   dependencies:
-    async: "npm:>=0.2.9"
+    async: "npm:^0.2.9"
     which: "npm:^1.1.1"
-  checksum: 10c0/6f64cd86ecb8cce2c0f13ff256b35b8282f451e5e9e5bbac8c89201e1fa7f5d5c122e905a677bfd23ea9563c04ec978b95b0c3188ae5c089d0c4376e06661749
+  checksum: 10c0/0397379ec3237c10b2389edeef26fdaf93f36d1b20b0f28f8945fe6d9121dcee9b0c615bf7d44edb7abd37233e0d24f0db39389668d3c86a1a2a0d59e3f4457b
   languageName: node
   linkType: hard
 
