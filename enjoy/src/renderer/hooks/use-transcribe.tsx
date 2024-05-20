@@ -34,6 +34,7 @@ export const useTranscribe = () => {
       targetId?: string;
       targetType?: string;
       originalText?: string;
+      language?: string;
     }
   ): Promise<{
     engine: string;
@@ -42,7 +43,12 @@ export const useTranscribe = () => {
     originalText?: string;
   }> => {
     const url = await transcode(mediaSrc);
-    const { targetId, targetType, originalText } = params || {};
+    const {
+      targetId,
+      targetType,
+      originalText,
+      language = "english",
+    } = params || {};
     const blob = await (await fetch(url)).blob();
 
     let result;
@@ -75,7 +81,10 @@ export const useTranscribe = () => {
 
     const alignmentResult = await EnjoyApp.echogarden.align(
       new Uint8Array(await blob.arrayBuffer()),
-      transcript
+      transcript,
+      {
+        language,
+      }
     );
 
     return {
@@ -197,7 +206,7 @@ export const useTranscribe = () => {
         resolve({
           engine: "azure",
           model: "whisper",
-          text: results.map((result) => result.DisplayText).join(' '),
+          text: results.map((result) => result.DisplayText).join(" "),
         });
       };
 

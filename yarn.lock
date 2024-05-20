@@ -15618,6 +15618,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"openai@npm:^4.47.1":
+  version: 4.47.1
+  resolution: "openai@npm:4.47.1"
+  dependencies:
+    "@types/node": "npm:^18.11.18"
+    "@types/node-fetch": "npm:^2.6.4"
+    abort-controller: "npm:^3.0.0"
+    agentkeepalive: "npm:^4.2.1"
+    form-data-encoder: "npm:1.7.2"
+    formdata-node: "npm:^4.3.2"
+    node-fetch: "npm:^2.6.7"
+    web-streams-polyfill: "npm:^3.2.1"
+  bin:
+    openai: bin/cli
+  checksum: 10c0/10f5c7cd388dca758a31ccfd572d0ff732324842bc41f8cda80db043ad59035dbb9f903d0273bc14d1565f680901b7d65993b5e4c27dcf5deee2235a544ac0e4
+  languageName: node
+  linkType: hard
+
 "openapi-types@npm:^12.1.3":
   version: 12.1.3
   resolution: "openapi-types@npm:12.1.3"
