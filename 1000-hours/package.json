@@ -7,9 +7,9 @@
     "markdown-it-mathjax3": "^4.3.2",
     "markdown-it-sub": "^2.0.0",
     "markdown-it-sup": "^2.0.0",
-    "mermaid": "^10.9.0",
-    "sass": "^1.77.1",
-    "vitepress": "^1.1.4",
+    "mermaid": "^10.9.1",
+    "sass": "^1.77.2",
+    "vitepress": "^1.2.0",
     "vitepress-plugin-mermaid": "^2.0.16",
     "vue": "^3.4.27"
   },

@@ -3,7 +3,7 @@ import {
   AISettingsProviderContext,
 } from "@renderer/context";
 import { useContext } from "react";
-import { ChatMessageHistory, BufferMemory } from "langchain/memory";
+import { ChatMessageHistory, BufferMemory } from "langchain/memory/index";
 import { ConversationChain } from "langchain/chains";
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatOllama } from "@langchain/community/chat_models/ollama";
@@ -13,7 +13,7 @@ import {
   MessagesPlaceholder,
 } from "@langchain/core/prompts";
 import OpenAI from "openai";
-import { type Generation } from "langchain/dist/schema";
+import { type LLMResult } from "@langchain/core/outputs";
 import { v4 } from "uuid";
 
 export const useConversation = () => {
@@ -163,7 +163,7 @@ export const useConversation = () => {
       prompt,
       verbose: true,
     });
-    let response: Generation[] = [];
+    let response: LLMResult["generations"][0] = [];
     await chain.call({ input: message.content }, [
       {
         handleLLMEnd: async (output) => {
