@@ -114,7 +114,7 @@
     "@vidstack/react": "^1.11.21",
     "ahoy.js": "^0.4.4",
     "autosize": "^6.0.1",
-    "axios": "^1.6.8",
+    "axios": "^1.7.0",
     "camelcase": "^8.0.0",
     "camelcase-keys": "^9.1.3",
     "chart.js": "^4.4.3",
