@@ -144,7 +144,13 @@ export const MediaTranscription = () => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => generateTranscription("")}>
+                  <AlertDialogAction
+                    onClick={() =>
+                      generateTranscription({
+                        originalText: "",
+                      })
+                    }
+                  >
                     {t("transcribe")}
                   </AlertDialogAction>
                 </AlertDialogFooter>

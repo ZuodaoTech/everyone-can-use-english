@@ -52,7 +52,11 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         });
     };
 
-  const generateTranscription = async (originalText?: string) => {
+  const generateTranscription = async (params?: {
+    originalText?: string;
+    language?: string;
+  }) => {
+    let { originalText, language } = params || {};
     if (originalText === undefined) {
       if (transcription?.targetId === media.id) {
         originalText = transcription.result?.originalText;
@@ -71,6 +75,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         targetId: media.id,
         targetType: media.mediaType,
         originalText,
+        language,
       });
 
       let timeline: TimelineEntry[] = [];

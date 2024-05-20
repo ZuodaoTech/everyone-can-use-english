@@ -98,7 +98,11 @@ export const MediaLoadingModal = () => {
                   <Button asChild className="ml-4" size="sm">
                     <a
                       className="cursor-pointer"
-                      onClick={() => generateTranscription("")}
+                      onClick={() =>
+                        generateTranscription({
+                          originalText: "",
+                        })
+                      }
                     >
                       {t("regenerate")}
                     </a>
