@@ -57,7 +57,7 @@ export const TranscriptionForm = (props: {
   const handleSave = async () => {
     setSubmiting(true);
     try {
-      await generateTranscription(content);
+      await generateTranscription({ originalText: content });
       setOpen(false);
     } catch (e) {
       toast.error(e.message);

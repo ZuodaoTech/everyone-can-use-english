@@ -34,7 +34,7 @@ export const MediaLoadingModal = () => {
 
   return (
     <AlertDialog open={!decoded || !Boolean(transcription?.result?.timeline)}>
-      <AlertDialogOverlay className="z-[100]" />
+      <AlertDialogOverlay className="" />
       <AlertDialogContent className="z-[100]">
         <AlertDialogHeader>
           <AlertDialogTitle>{t("preparingAudio")}</AlertDialogTitle>
@@ -55,9 +55,7 @@ export const MediaLoadingModal = () => {
                 <XCircleIcon className="w-4 h-4 text-destructive" />
               </div>
               <div className="select-text">
-                <div className="mb-2">
-                  {decodeError}
-                </div>
+                <div className="mb-2">{decodeError}</div>
                 <div className="text-sm text-muted-foreground">
                   {t("failedToDecodeWaveform")}:{" "}
                   <span className="break-all ">{media?.src}</span>
@@ -97,12 +95,17 @@ export const MediaLoadingModal = () => {
               <div className="inline">
                 <span>{t("notTranscribedYet")}</span>
                 {decoded && (
-                  <Button
-                    onClick={generateTranscription}
-                    className="ml-4"
-                    size="sm"
-                  >
-                    {t("transcribe")}
+                  <Button asChild className="ml-4" size="sm">
+                    <a
+                      className="cursor-pointer"
+                      onClick={() =>
+                        generateTranscription({
+                          originalText: "",
+                        })
+                      }
+                    >
+                      {t("regenerate")}
+                    </a>
                   </Button>
                 )}
               </div>

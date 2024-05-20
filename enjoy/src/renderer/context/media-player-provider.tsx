@@ -66,7 +66,10 @@ type MediaPlayerContextType = {
   pitchChart: Chart;
   // Transcription
   transcription: TranscriptionType;
-  generateTranscription: (text?: string) => void;
+  generateTranscription: (params?: {
+    originalText?: string;
+    language?: string;
+  }) => void;
   transcribing: boolean;
   transcribingProgress: number;
   transcriptionDraft: TranscriptionType["result"];

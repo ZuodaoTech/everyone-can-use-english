@@ -284,7 +284,11 @@ export const AssistantMessageComponent = (props: {
         </DropdownMenu>
       </div>
 
-      <Sheet open={shadowing} onOpenChange={(value) => setShadowing(value)}>
+      <Sheet
+        modal={false}
+        open={shadowing}
+        onOpenChange={(value) => setShadowing(value)}
+      >
         <SheetContent
           side="bottom"
           className="h-screen p-0"

@@ -100,6 +100,7 @@ class EchogardenWrapper {
         transcript: string,
         options: AlignmentOptions
       ) => {
+        logger.debug("echogarden-align:", transcript, options);
         try {
           return await this.align(input, transcript, options);
         } catch (err) {
