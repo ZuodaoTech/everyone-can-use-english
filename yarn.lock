@@ -10425,7 +10425,7 @@ __metadata:
     umzug: "npm:^3.8.0"
     update-electron-app: "npm:^3.0.0"
     vite: "npm:^5.2.11"
-    vite-plugin-static-copy: "npm:^1.0.4"
+    vite-plugin-static-copy: "npm:^1.0.5"
     wavesurfer.js: "npm:^7.7.15"
     zod: "npm:^3.23.8"
     zod-to-json-schema: "npm:^3.23.0"
@@ -19061,9 +19061,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-static-copy@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "vite-plugin-static-copy@npm:1.0.4"
+"vite-plugin-static-copy@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "vite-plugin-static-copy@npm:1.0.5"
   dependencies:
     chokidar: "npm:^3.5.3"
     fast-glob: "npm:^3.2.11"
@@ -19071,7 +19071,7 @@ __metadata:
     picocolors: "npm:^1.0.0"
   peerDependencies:
     vite: ^5.0.0
-  checksum: 10c0/d9626e5b21c6bb3fef0e4fa3a5709dafc469fb73e097db524cfad2aa5ad136f8d95ec89a0dfccc666f657edcbc612d3b09a440aab7fbd416d01b0bd4bbbe721d
+  checksum: 10c0/b11c6a0bd31b8592af4099f75122b2073738659d1d06c6aeedd47d15b84758a57c17d56b6e79cefa3b7871c8f51980b423a9d524bbceb4b17363d4363e78a63b
   languageName: node
   linkType: hard
 
