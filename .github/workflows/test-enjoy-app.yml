@@ -49,8 +49,6 @@ jobs:
       - name: Run main tests with xvfb-run on Ubuntu
         if: contains(matrix.os, 'ubuntu')
         run: |
-          sudo apt update
-          sudo apt install libc6
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn enjoy:test:main
 
       - name: Run main tests on macOS or Windows
