@@ -48,7 +48,7 @@ import {
   DefaultAudioLayout,
   defaultLayoutIcons,
 } from "@vidstack/react/player/layouts/default";
-import { RecordingDetail } from "@renderer/components";
+import { Caption, RecordingDetail } from "@renderer/components";
 
 const TEN_MINUTES = 60 * 10;
 let interval: NodeJS.Timeout;
@@ -112,16 +112,22 @@ export const MediaTranscriptionReadButton = () => {
           <ScrollArea className="flex-1 px-6 pt-4">
             <div className="select-text mx-auto w-full max-w-prose">
               <h3 className="font-bold text-xl my-4">{media.name}</h3>
-              {transcription.result.timeline.map(
-                (sentence: TimelineEntry, index: number) => (
-                  <div key={index} className="flex flex-start space-x-2 mb-4">
-                    <span className="text-sm text-muted-foreground min-w-max leading-8">
-                      #{index + 1}
-                    </span>
-                    <div className="text-lg leading-8">{sentence.text}</div>
-                  </div>
-                )
-              )}
+              {open &&
+                transcription.result.timeline.map(
+                  (sentence: TimelineEntry, index: number) => (
+                    <div key={index} className="flex flex-start space-x-2 mb-4">
+                      <span className="text-sm text-muted-foreground min-w-max leading-8">
+                        #{index + 1}
+                      </span>
+                      <Caption
+                        caption={sentence}
+                        currentSegmentIndex={index}
+                        displayIpa={true}
+                        displayNotes={false}
+                      />
+                    </div>
+                  )
+                )}
             </div>
             <div className="mt-12">
               {recordings.map((recording) => (

@@ -457,18 +457,18 @@ export const MediaCaption = () => {
   );
 };
 
-const Caption = (props: {
+export const Caption = (props: {
   caption: TimelineEntry;
-  selectedIndices: number[];
+  selectedIndices?: number[];
   currentSegmentIndex: number;
-  activeIndex: number;
-  displayIpa: boolean;
-  displayNotes: boolean;
-  onClick: (index: number) => void;
+  activeIndex?: number;
+  displayIpa?: boolean;
+  displayNotes?: boolean;
+  onClick?: (index: number) => void;
 }) => {
   const {
     caption,
-    selectedIndices,
+    selectedIndices = [],
     currentSegmentIndex,
     activeIndex,
     displayIpa,
@@ -504,16 +504,16 @@ const Caption = (props: {
           id={`word-${currentSegmentIndex}-${index}`}
         >
           <div
-            className={`font-serif text-lg xl:text-xl 2xl:text-2xl cursor-pointer p-1 pb-2 rounded hover:bg-red-500/10 ${
-              index === activeIndex ? "text-red-500" : ""
-            } ${
+            className={`font-serif text-lg xl:text-xl 2xl:text-2xl cursor-pointer p-1 pb-2 rounded ${
+              onClick && "hover:bg-red-500/10"
+            } ${index === activeIndex ? "text-red-500" : ""} ${
               selectedIndices.includes(index) ? "bg-red-500/10 selected" : ""
             } ${
               notedquoteIndices.includes(index)
                 ? "border-b border-red-500 border-dashed"
                 : ""
             }`}
-            onClick={() => onClick(index)}
+            onClick={() => onClick && onClick(index)}
           >
             {word}
           </div>
