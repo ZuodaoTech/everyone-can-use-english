@@ -11,7 +11,11 @@ import {
   ScrollArea,
   toast,
 } from "@renderer/components/ui";
-import { ConversationCard, ConversationForm } from "@renderer/components";
+import {
+  ConversationCard,
+  ConversationForm,
+  LoaderSpin,
+} from "@renderer/components";
 import { useState, useEffect, useContext, useReducer } from "react";
 import { ChevronLeftIcon, LoaderIcon } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -25,13 +29,6 @@ import { CONVERSATION_PRESETS } from "@/constants";
 
 export default () => {
   const [searchParams] = useSearchParams();
-  const [creating, setCreating] = useState<boolean>(false);
-  const [preset, setPreset] = useState<any>({});
-  const [config, setConfig] = useState<any>({
-    gptPresets: [],
-    customPreset: {},
-    ttsPreset: {},
-  });
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const { currentEngine } = useContext(AISettingsProviderContext);
@@ -39,6 +36,23 @@ export default () => {
     conversationsReducer,
     []
   );
+  const [creating, setCreating] = useState<boolean>(false);
+  const [preset, setPreset] = useState<any>({});
+  const [config, setConfig] = useState<any>({
+    gptPresets: [],
+    customPreset: {},
+    ttsPreset: {
+      key: "tts",
+      name: "TTS",
+      engine: currentEngine.name,
+      configuration: {
+        type: "tts",
+        tts: {
+          engine: currentEngine.name,
+        },
+      },
+    },
+  });
   const [hasMore, setHasMore] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -218,6 +232,8 @@ export default () => {
                   {t("chooseFromPresetGpts")}
                 </div>
                 <ScrollArea className="h-64 pr-4">
+                  {config.gptPresets.length === 0 && <LoaderSpin />}
+
                   {config.gptPresets.map((preset: any) => (
                     <DialogTrigger
                       key={preset.key}

@@ -74,8 +74,8 @@ export const ConversationForm = (props: {
 }) => {
   const { conversation, onFinish } = props;
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [gptProviders, setGptProviders] = useState<any>([]);
-  const [ttsProviders, setTtsProviders] = useState<any>([]);
+  const [gptProviders, setGptProviders] = useState<any>(GPT_PROVIDERS);
+  const [ttsProviders, setTtsProviders] = useState<any>(TTS_PROVIDERS);
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
   const navigate = useNavigate();
@@ -233,15 +233,6 @@ export const ConversationForm = (props: {
         delete configuration.tts[key];
       }
     });
-
-    if (configuration.type === "tts") {
-      if (!configuration.tts?.engine) {
-        throw new Error(t("models.conversation.ttsEngineRequired"));
-      }
-      if (!configuration.tts?.model) {
-        throw new Error(t("models.conversation.ttsModelRequired"));
-      }
-    }
 
     // use default base url if not set
     if (!configuration.baseUrl) {
