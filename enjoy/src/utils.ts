@@ -83,7 +83,7 @@ export const convertWordIpaToNormal = (
     const mark = ipa.match(/(\ˈ|ˌ)/);
 
     let j = i - 1;
-    for (; j >= 0; j--) {
+    for (; j > 0 && j > i - 2; j--) {
       if (consonantsRegex.test(ipas[j]) && !consonantsRegex.test(ipas[j - 1])) {
         break;
       }
