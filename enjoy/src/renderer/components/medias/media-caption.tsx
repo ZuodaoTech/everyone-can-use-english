@@ -504,8 +504,8 @@ export const Caption = (props: {
           id={`word-${currentSegmentIndex}-${index}`}
         >
           <div
-            className={`font-serif text-lg xl:text-xl 2xl:text-2xl cursor-pointer p-1 pb-2 rounded ${
-              onClick && "hover:bg-red-500/10"
+            className={`font-serif text-lg xl:text-xl 2xl:text-2xl p-1 pb-2 rounded ${
+              onClick && "hover:bg-red-500/10 cursor-pointer"
             } ${index === activeIndex ? "text-red-500" : ""} ${
               selectedIndices.includes(index) ? "bg-red-500/10 selected" : ""
             } ${
