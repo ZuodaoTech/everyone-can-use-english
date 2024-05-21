@@ -91,7 +91,11 @@
       "ttsBaseUrlDescription": "留空则使用默认值",
       "notFound": "未找到对话",
       "contentRequired": "对话内容不能为空",
-      "failedToGenerateResponse": "生成失败，请重试"
+      "failedToGenerateResponse": "生成失败，请重试",
+      "modelIsRequired": "AI 模型不能为空",
+      "ttsConfigurationsIsRequired": "TTS 配置不能为空",
+      "ttsModelIsRequired": "TTS 模型不能为空",
+      "ttsEngineIsRequired": "TTS 引擎不能为空"
     },
     "pronunciationAssessment": {
       "pronunciationScore": "发音得分",

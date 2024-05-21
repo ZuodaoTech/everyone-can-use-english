@@ -91,7 +91,11 @@
       "ttsBaseUrlDescription": "leave it blank if you don't have one",
       "notFound": "Conversation not found",
       "contentRequired": "Content required",
-      "failedToGenerateResponse": "Failed to generate response, please retry"
+      "failedToGenerateResponse": "Failed to generate response, please retry",
+      "modelIsRequired": "Model is required",
+      "ttsConfigurationsIsRequired": "TTS configurations is required",
+      "ttsModelIsRequired": "TTS model is required",
+      "ttsEngineIsRequired": "TTS engine is required"
     },
     "pronunciationAssessment": {
       "pronunciationScore": "Pronunciation Score",
