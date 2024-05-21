@@ -49,6 +49,8 @@ export default () => {
         type: "tts",
         tts: {
           engine: currentEngine.name,
+          model: "tts-1",
+          voice: "alloy",
         },
       },
     },
@@ -152,6 +154,8 @@ export default () => {
         type: "tts",
         tts: {
           engine: currentEngine.name,
+          model: "tts-1",
+          voice: "alloy",
         },
       },
     };

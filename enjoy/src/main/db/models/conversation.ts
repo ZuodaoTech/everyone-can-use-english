@@ -68,18 +68,23 @@ export class Conversation extends Model<Conversation> {
 
   @BeforeSave
   static validateConfiguration(conversation: Conversation) {
-    if (!conversation.model) throw new Error(t("models.conversation.modelIsRequired"));
-    if (conversation.type === 'tts') {
+    if (conversation.type === "tts") {
       if (!conversation.configuration.tts) {
-        throw new Error(t("models.conversation.ttsConfigurationIsRequired"))
+        throw new Error(t("models.conversation.ttsConfigurationIsRequired"));
       }
       if (!conversation.configuration.tts.engine) {
-        throw new Error(t("models.conversation.ttsEngineIsRequired"))
+        throw new Error(t("models.conversation.ttsEngineIsRequired"));
       }
       if (!conversation.configuration.tts.model) {
-        throw new Error("models.conversation.ttsModelIsRequired")
+        throw new Error("models.conversation.ttsModelIsRequired");
       }
+
+      conversation.engine = conversation.configuration.tts.engine;
+      conversation.configuration.model = conversation.configuration.tts.engine;
     }
+
+    if (!conversation.configuration.model)
+      throw new Error(t("models.conversation.modelIsRequired"));
   }
 
   @AfterCreate
