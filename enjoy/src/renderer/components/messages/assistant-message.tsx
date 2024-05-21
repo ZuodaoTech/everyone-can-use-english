@@ -293,6 +293,8 @@ export const AssistantMessageComponent = (props: {
           side="bottom"
           className="h-screen p-0"
           displayClose={false}
+          onPointerDownOutside={(event) => event.preventDefault()}
+          onInteractOutside={(event) => event.preventDefault()}
         >
           <SheetHeader className="flex items-center justify-center h-14">
             <SheetClose>

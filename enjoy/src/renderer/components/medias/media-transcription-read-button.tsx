@@ -314,23 +314,21 @@ const RecorderButton = (props: { onRecorded: () => void }) => {
     if (!media) return;
 
     toast.promise(
-      async () => {
-        return EnjoyApp.recordings
-          .create({
-            targetId: media.id,
-            targetType: media.mediaType,
-            blob: {
-              type: blob.type.split(";")[0],
-              arrayBuffer: await blob.arrayBuffer(),
-            },
-            referenceId: -1,
-            referenceText: transcription.result.timeline
-              .map((s: TimelineEntry) => s.text)
-              .join("\n"),
-            duration,
-          })
-          .then(() => onRecorded());
-      },
+      EnjoyApp.recordings
+        .create({
+          targetId: media.id,
+          targetType: media.mediaType,
+          blob: {
+            type: blob.type.split(";")[0],
+            arrayBuffer: await blob.arrayBuffer(),
+          },
+          referenceId: -1,
+          referenceText: transcription.result.timeline
+            .map((s: TimelineEntry) => s.text)
+            .join("\n"),
+          duration,
+        })
+        .then(() => onRecorded()),
       {
         loading: t("savingRecording"),
         success: t("recordingSaved"),
