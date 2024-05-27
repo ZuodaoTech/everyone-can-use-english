@@ -131,7 +131,7 @@
     "decamelize-keys": "^2.0.1",
     "echogarden": "^1.4.4",
     "electron-context-menu": "^4.0.0",
-    "electron-log": "^5.1.4",
+    "electron-log": "^5.1.5",
     "electron-settings": "^4.0.4",
     "electron-squirrel-startup": "^1.0.1",
     "ffmpeg-static": "^5.2.0",
