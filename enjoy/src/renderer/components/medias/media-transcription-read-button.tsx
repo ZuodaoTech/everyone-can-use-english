@@ -354,6 +354,7 @@ const RecorderButton = (props: { onRecorded: () => void }) => {
     setRecorder(record);
 
     record.on("record-end", async (blob: Blob) => {
+      if (interval) clearInterval(interval);
       createRecording(blob);
       setIsRecording(false);
     });
