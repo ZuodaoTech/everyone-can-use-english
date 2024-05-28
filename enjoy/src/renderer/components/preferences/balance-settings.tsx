@@ -187,7 +187,7 @@ export const BalanceSettings = () => {
                             {asset.chain && asset.chain.id !== asset.id && (
                               <img
                                 src={asset.chain.iconUrl}
-                                className="absolute bottom-0 -right-1 w-3 h-3"
+                                className="absolute bottom-0 -left-1 w-3 h-3"
                               />
                             )}
                           </div>
@@ -208,7 +208,7 @@ export const BalanceSettings = () => {
                 {loading && (
                   <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
                 )}
-                <span>{t("payWithMixin")}</span>
+                <span>Mixin {t("pay")}</span>
               </Button>
             </div>
           )}
@@ -228,7 +228,7 @@ export const BalanceSettings = () => {
               onClick={() => createDepositPayment()}
             >
               {loading && <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />}
-              <span>{t("payWithStripe")}</span>
+              <span>Stripe {t("pay")}</span>
             </Button>
           </div>
 
