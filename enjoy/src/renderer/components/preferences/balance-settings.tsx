@@ -38,7 +38,7 @@ export const BalanceSettings = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [paymentCreated, setPaymentCreated] = useState<boolean>(false);
   const [payments, setPayments] = useState<any[]>([]);
-  const [assests, setAssests] = useState<any[]>();
+  const [assests, setAssests] = useState<any[]>([]);
   const [currency, setCurrency] = useState<string>("");
 
   const fetchAssests = () => {
@@ -130,7 +130,7 @@ export const BalanceSettings = () => {
           </Button>
         </DialogTrigger>
 
-        <DialogContent>
+        <DialogContent className="max-h-full overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{t("deposit")}</DialogTitle>
             <DialogDescription>{t("depositDescription")}</DialogDescription>
@@ -164,8 +164,7 @@ export const BalanceSettings = () => {
 
           <Separator />
 
-          <div className="">
-            <div className="mb-2">{t("crypto")}</div>
+          {user.hasMixin && (
             <div className="flex items-center justify-between space-x-4">
               <Select
                 value={currency}
@@ -180,8 +179,19 @@ export const BalanceSettings = () => {
                     {assests.map((asset) => (
                       <SelectItem key={asset.id} value={asset.id}>
                         <div className="flex items-center">
-                          <img src={asset.iconUrl} className="w-6 h-6 mr-2" />
-                          <span>{asset.symbol}</span>
+                          <div className="w-6 h-6 relative mr-2">
+                            <img
+                              src={asset.iconUrl}
+                              className="w-full h-full"
+                            />
+                            {asset.chain && asset.chain.id !== asset.id && (
+                              <img
+                                src={asset.chain.iconUrl}
+                                className="absolute bottom-0 -right-1 w-3 h-3"
+                              />
+                            )}
+                          </div>
+                          <span>{asset.displaySymbol}</span>
                         </div>
                       </SelectItem>
                     ))}
@@ -201,11 +211,15 @@ export const BalanceSettings = () => {
                 <span>{t("payWithMixin")}</span>
               </Button>
             </div>
-          </div>
+          )}
 
           <div className="flex items-center justify-between space-x-4">
-            <div className="mb-2">
-              <img src="assets/mastercard.png" className="w-8 h-8 mr-2" />
+            <div className="flex items-center w-64 justify-around">
+              <img src="assets/mastercard.png" className="w-auto h-8" />
+              <img src="assets/visa.png" className="w-auto h-8" />
+              <img src="assets/unionpay.png" className="w-auto h-8" />
+              <img src="assets/alipay.png" className="w-auto h-8" />
+              <img src="assets/wechatpay.png" className="w-auto h-8" />
             </div>
             <Button
               className="w-32"
