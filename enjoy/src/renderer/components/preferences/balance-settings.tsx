@@ -19,6 +19,13 @@ import {
   TableHeader,
   TableRow,
   toast,
+  Separator,
+  Select,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
 } from "@renderer/components/ui";
 import { LoaderSpin } from "@renderer/components";
 import { LoaderIcon } from "lucide-react";
@@ -31,6 +38,19 @@ export const BalanceSettings = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [paymentCreated, setPaymentCreated] = useState<boolean>(false);
   const [payments, setPayments] = useState<any[]>([]);
+  const [assests, setAssests] = useState<any[]>();
+  const [currency, setCurrency] = useState<string>("");
+
+  const fetchAssests = () => {
+    webApi
+      .config("supported_assets")
+      .then((assests) => {
+        setAssests(assests);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
 
   const refreshPayments = () => {
     webApi
@@ -58,6 +78,7 @@ export const BalanceSettings = () => {
     webApi
       .createPayment({
         amount: depositAmount,
+        reconciledCurrency: processor === "stripe" ? "" : currency,
         paymentType: "deposit",
         processor,
       })
@@ -77,6 +98,7 @@ export const BalanceSettings = () => {
 
   useEffect(() => {
     refreshBalance();
+    fetchAssests();
   }, []);
 
   if (!balance) return null;
@@ -140,39 +162,68 @@ export const BalanceSettings = () => {
             </>
           )}
 
+          <Separator />
+
+          <div className="">
+            <div className="mb-2">{t("crypto")}</div>
+            <div className="flex items-center justify-between space-x-4">
+              <Select
+                value={currency}
+                onValueChange={(value) => setCurrency(value)}
+                disabled={paymentCreated || loading}
+              >
+                <SelectTrigger className="w-64">
+                  <SelectValue placeholder={t("selectCrypto")} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {assests.map((asset) => (
+                      <SelectItem key={asset.id} value={asset.id}>
+                        <div className="flex items-center">
+                          <img src={asset.iconUrl} className="w-6 h-6 mr-2" />
+                          <span>{asset.symbol}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+
+              <Button
+                variant="default"
+                disabled={paymentCreated || loading}
+                className="w-32 bg-blue-500 hover:bg-blue-600 transition-colors duration-200 ease-in-out"
+                onClick={() => createDepositPayment("mixin")}
+              >
+                {loading && (
+                  <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
+                )}
+                <span>{t("payWithMixin")}</span>
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between space-x-4">
+            <div className="mb-2">{t("fiat")}</div>
+            <Button
+              className="w-32"
+              variant="default"
+              disabled={paymentCreated || loading}
+              onClick={() => createDepositPayment()}
+            >
+              {loading && <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />}
+              <span>{t("payWithStripe")}</span>
+            </Button>
+          </div>
+
+          <Separator />
+
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="secondary">
                 {paymentCreated ? t("finish") : t("cancel")}
               </Button>
             </DialogClose>
-            {paymentCreated ? null : (
-              <>
-                {user.hasMixin && (
-                  <Button
-                    variant="default"
-                    disabled={loading}
-                    className="bg-blue-500 hover:bg-blue-600 transition-colors duration-200 ease-in-out"
-                    onClick={() => createDepositPayment("mixin")}
-                  >
-                    {loading && (
-                      <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
-                    )}
-                    <span>Mixin {t('pay')}</span>
-                  </Button>
-                )}
-                <Button
-                  variant="default"
-                  disabled={loading}
-                  onClick={() => createDepositPayment()}
-                >
-                  {loading && (
-                    <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
-                  )}
-                  <span>{t("pay")}</span>
-                </Button>
-              </>
-            )}
           </DialogFooter>
 
           {payments.length > 0 && (

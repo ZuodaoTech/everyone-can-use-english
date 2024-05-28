@@ -419,6 +419,7 @@ export class Client {
 
   createPayment(params: {
     amount: number;
+    reconciledCurrency: string;
     processor: string;
     paymentType: string;
   }): Promise<PaymentType> {
