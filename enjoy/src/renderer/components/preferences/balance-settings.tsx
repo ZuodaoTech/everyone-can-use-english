@@ -204,7 +204,9 @@ export const BalanceSettings = () => {
           </div>
 
           <div className="flex items-center justify-between space-x-4">
-            <div className="mb-2">{t("fiat")}</div>
+            <div className="mb-2">
+              <img src="assets/mastercard.png" className="w-8 h-8 mr-2" />
+            </div>
             <Button
               className="w-32"
               variant="default"
