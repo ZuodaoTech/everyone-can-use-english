@@ -593,5 +593,6 @@
   "areYouSureToSaveTranscription": "即将根据您修改后的语音文本对语音重新进行对齐，确定要继续吗？",
   "summarize": "提炼主题",
   "noResultsFound": "没有找到结果",
-  "readThrough": "朗读全文"
+  "readThrough": "朗读全文",
+  "selectCrypto": "选择加密货币"
 }
