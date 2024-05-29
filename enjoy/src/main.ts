@@ -67,9 +67,7 @@ contextMenu({
     },
     {
       label: t("aiTranslate"),
-      visible:
-        parameters.selectionText.trim().length > 0 &&
-        parameters.selectionText.trim().includes(" "),
+      visible: parameters.selectionText.trim().length > 0,
       click: () => {
         const { x, y, selectionText } = parameters;
         browserWindow.webContents.send("on-translate", selectionText, { x, y });
