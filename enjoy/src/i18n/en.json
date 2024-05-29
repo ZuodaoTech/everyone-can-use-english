@@ -339,6 +339,8 @@
   "advancedSettings": "Advanced settings",
   "advanced": "Advanced",
   "language": "Language",
+  "nativeLanguage": "Native Language",
+  "learningLanguage": "Learning Language",
   "editEmail": "Edit email",
   "editUserName": "Edit user name",
   "userName": "User name",

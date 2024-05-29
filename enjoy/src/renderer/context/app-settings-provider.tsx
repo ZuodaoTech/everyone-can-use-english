@@ -1,9 +1,8 @@
 import { createContext, useEffect, useState } from "react";
-import { WEB_API_URL } from "@/constants";
+import { WEB_API_URL, LANGUAGES } from "@/constants";
 import { Client } from "@/api";
 import i18n from "@renderer/i18n";
 import ahoy from "ahoy.js";
-import LcidTable from "echogarden/data/tables/lcid-table.json";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -19,7 +18,9 @@ type AppSettingsProviderState = {
   language?: "en" | "zh-CN";
   switchLanguage?: (language: "en" | "zh-CN") => void;
   nativeLanguage?: string;
+  switchNativeLanguage?: (lang: string) => void;
   learningLanguage?: string;
+  switchLearningLanguage?: (lang: string) => void;
   proxy?: ProxyConfigType;
   setProxy?: (config: ProxyConfigType) => Promise<void>;
   ahoy?: typeof ahoy;
@@ -89,7 +90,7 @@ export const AppSettingsProvider = ({
 
     const _learningLanguage =
       (await EnjoyApp.settings.get("learningLanguage")) || "en-US";
-    setNativeLanguage(_learningLanguage);
+    setLearningLanguage(_learningLanguage);
   };
 
   const switchLanguage = (language: "en" | "zh-CN") => {
@@ -100,14 +101,16 @@ export const AppSettingsProvider = ({
   };
 
   const switchNativeLanguage = (lang: string) => {
-    if (LcidTable.findIndex((l: any) => l.Name == lang) < 0) return;
+    if (LANGUAGES.findIndex((l) => l.code == lang) < 0) return;
+    if (lang == learningLanguage) return;
 
     setNativeLanguage(lang);
     EnjoyApp.settings.set("nativeLanguage", lang);
   };
 
   const switchLearningLanguage = (lang: string) => {
-    if (LcidTable.findIndex((l: any) => l.Name == lang) < 0) return;
+    if (LANGUAGES.findIndex((l) => l.code == lang) < 0) return;
+    if (lang == nativeLanguage) return;
 
     EnjoyApp.settings.set("learningLanguage", lang);
     setLearningLanguage(lang);
@@ -176,7 +179,9 @@ export const AppSettingsProvider = ({
         language,
         switchLanguage,
         nativeLanguage,
+        switchNativeLanguage,
         learningLanguage,
+        switchLearningLanguage,
         EnjoyApp,
         version,
         webApi,

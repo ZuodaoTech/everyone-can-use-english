@@ -339,6 +339,8 @@
   "advancedSettings": "高级设置",
   "advanced": "高级设置",
   "language": "语言",
+  "nativeLanguage": "母语",
+  "learningLanguage": "学习语言",
   "editEmail": "修改邮箱地址",
   "editUserName": "修改用户名",
   "userName": "用户名",

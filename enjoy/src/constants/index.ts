@@ -5,6 +5,9 @@ export * from './ipa';
 import whisperModels from './whisper-models.json';
 export const WHISPER_MODELS_OPTIONS = whisperModels;
 
+import languages from './languages.json';
+export const LANGUAGES = languages;
+
 export const DATABASE_NAME = "enjoy_database";
 export const LIBRARY_PATH_SUFFIX = "EnjoyLibrary";
 
