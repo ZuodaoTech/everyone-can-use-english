@@ -14,6 +14,8 @@ import {
   GoogleGenerativeAiSettings,
   ResetSettings,
   ResetAllSettings,
+  NativeLanguageSettings,
+  LearningLanguageSettings,
 } from "@renderer/components";
 import { useState } from "react";
 import { Tooltip } from "react-tooltip";
@@ -29,6 +31,10 @@ export const Preferences = () => {
           <div className="font-semibold mb-4 capitilized">
             {t("basicSettings")}
           </div>
+          <NativeLanguageSettings />
+          <Separator />
+          <LearningLanguageSettings />
+          <Separator />
           <WhisperSettings />
           <Separator />
           <DefaultEngineSettings />
@@ -108,8 +114,9 @@ export const Preferences = () => {
               key={tab.value}
               variant={activeTab === tab.value ? "default" : "ghost"}
               size="sm"
-              className={`capitilized w-full justify-start mb-2 ${activeTab === tab.value ? "" : "hover:bg-muted"
-                }`}
+              className={`capitilized w-full justify-start mb-2 ${
+                activeTab === tab.value ? "" : "hover:bg-muted"
+              }`}
               onClick={() => setActiveTab(tab.value)}
             >
               <span className="text-sm">{tab.label}</span>

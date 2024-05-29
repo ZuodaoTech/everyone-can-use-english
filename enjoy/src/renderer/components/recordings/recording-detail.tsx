@@ -21,12 +21,12 @@ export const RecordingDetail = (props: { recording: RecordingType }) => {
   }>();
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const [assessing, setAssessing] = useState(false);
 
   const assess = () => {
     setAssessing(true);
-    EnjoyApp.recordings.assess(recording.id).finally(() => {
+    EnjoyApp.recordings.assess(recording.id, learningLanguage).finally(() => {
       setAssessing(false);
     });
   };

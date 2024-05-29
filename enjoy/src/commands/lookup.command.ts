@@ -1,12 +1,15 @@
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { z } from "zod";
 import { jsonCommand } from "./json.command";
+import { LANGUAGES } from "@/constants";
 
 export const lookupCommand = async (
   params: {
     word: string;
     context: string;
     meaningOptions?: Partial<MeaningType>[];
+    learningLanguage?: string;
+    nativeLanguage?: string;
   },
   options: {
     key: string;
@@ -24,7 +27,13 @@ export const lookupCommand = async (
   translation?: string;
   lemma?: string;
 }> => {
-  const { word, context, meaningOptions } = params;
+  const {
+    word,
+    context,
+    meaningOptions,
+    learningLanguage = "en-US",
+    nativeLanguage = "zh-CN",
+  } = params;
 
   const schema = z.object({
     id: z.string().optional(),
@@ -41,8 +50,8 @@ export const lookupCommand = async (
     ["system", DICITIONARY_PROMPT],
     ["human", "{input}"],
   ]).format({
-    learning_language: "English",
-    native_language: "Chinese",
+    learning_language: LANGUAGES.find((l) => l.code === learningLanguage).name,
+    native_language: LANGUAGES.find((l) => l.code === nativeLanguage).name,
     input: JSON.stringify({
       word,
       context,

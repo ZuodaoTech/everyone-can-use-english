@@ -1,0 +1,38 @@
+[
+  {
+    "code": "en-US",
+    "name": "English (United States)"
+  },
+  {
+    "code": "en-GB",
+    "name": "English (United Kingdom)"
+  },
+  {
+    "code": "zh-CN",
+    "name": "简体中文"
+  },
+  {
+    "code": "jp-JP",
+    "name": "日本語"
+  },
+  {
+    "code": "ko-KR",
+    "name": "한국인"
+  },
+  {
+    "code": "es-ES",
+    "name": "Española"
+  },
+  {
+    "code": "it-IT",
+    "name": "Italiana"
+  },
+  {
+    "code": "de-DE",
+    "name": "Deutsch"
+  },
+  {
+    "code": "fr-FR",
+    "name": "Français"
+  }
+]

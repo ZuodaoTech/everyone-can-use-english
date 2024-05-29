@@ -105,6 +105,8 @@ type EnjoyAppType = {
     showErrorBox: (title: string, content: string) => Promise<void>;
   };
   settings: {
+    get: (key: string) => Promise<any>;
+    set: (key: string, value: any) => Promise<void>;
     getLibrary: () => Promise<string>;
     setLibrary: (library: string) => Promise<void>;
     getUser: () => Promise<UserType>;
@@ -173,7 +175,7 @@ type EnjoyAppType = {
     update: (id: string, params: any) => Promise<RecordingType | undefined>;
     destroy: (id: string) => Promise<void>;
     upload: (id: string) => Promise<void>;
-    assess: (id: string) => Promise<void>;
+    assess: (id: string, language?: string) => Promise<void>;
     stats: (params: { from: string; to: string }) => Promise<{
       count: number;
       duration: number;

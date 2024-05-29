@@ -5,9 +5,12 @@ export * from "./appearance";
 export * from "./hotkeys";
 export * from "./hotkeys-settings";
 
+export * from "./language-settings";
+export * from "./native-language-settings";
+export * from "./learning-language-settings";
+
 export * from "./default-engine-settings";
 export * from "./openai-settings";
-export * from "./language-settings";
 export * from "./library-settings";
 export * from "./whisper-settings";
 export * from "./google-generative-ai-settings";

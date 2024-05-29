@@ -1,9 +1,11 @@
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { z } from "zod";
 import { jsonCommand } from "./json.command";
+import { LANGUAGES } from "@/constants";
 
 export const extractStoryCommand = async (
   text: string,
+  learningLanguage: string,
   options: {
     key: string;
     modelName?: string;
@@ -20,7 +22,7 @@ export const extractStoryCommand = async (
     ["system", EXTRACT_STORY_PROMPT],
     ["human", "{text}"],
   ]).format({
-    learning_language: "English",
+    learning_language: LANGUAGES.find((l) => l.code === learningLanguage).name,
     text,
   });
 

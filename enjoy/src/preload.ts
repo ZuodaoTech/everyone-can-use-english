@@ -156,6 +156,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       ipcRenderer.invoke("dialog-show-error-box", title, content),
   },
   settings: {
+    get: (key: string) => {
+      return ipcRenderer.invoke("settings-get", key);
+    },
+    set: (key: string, value: any) => {
+      return ipcRenderer.invoke("settings-set", key, value);
+    },
     getLibrary: () => {
       return ipcRenderer.invoke("settings-get-library");
     },
@@ -310,8 +316,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     upload: (id: string) => {
       return ipcRenderer.invoke("recordings-upload", id);
     },
-    assess: (id: string) => {
-      return ipcRenderer.invoke("recordings-assess", id);
+    assess: (id: string, language?: string) => {
+      return ipcRenderer.invoke("recordings-assess", id, language);
     },
     stats: (params: { from: string; to: string }) => {
       return ipcRenderer.invoke("recordings-stats", params);

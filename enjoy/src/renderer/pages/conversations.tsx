@@ -25,7 +25,7 @@ import {
   AISettingsProviderContext,
 } from "@renderer/context";
 import { conversationsReducer } from "@renderer/reducers";
-import { CONVERSATION_PRESETS } from "@/constants";
+import { GPT_PRESETS } from "@/constants";
 
 export default () => {
   const [searchParams] = useSearchParams();
@@ -132,7 +132,7 @@ export default () => {
   };
 
   const preparePresets = async () => {
-    let presets = CONVERSATION_PRESETS;
+    let presets = GPT_PRESETS;
     let defaultGptPreset = {
       key: "custom",
       engine: "enjoyai",
