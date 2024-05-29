@@ -79,7 +79,7 @@ export const useAiCommand = () => {
   };
 
   const extractStory = async (story: StoryType) => {
-    const res = await extractStoryCommand(story.content, {
+    const res = await extractStoryCommand(story.content, learningLanguage, {
       key: currentEngine.key,
       modelName:
         currentEngine.models.extractStory || currentEngine.models.default,
