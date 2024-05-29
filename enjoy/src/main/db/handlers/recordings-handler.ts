@@ -178,7 +178,7 @@ class RecordingsHandler {
     return await recording.upload();
   }
 
-  private async assess(event: IpcMainEvent, id: string) {
+  private async assess(event: IpcMainEvent, id: string, language?: string) {
     const recording = await Recording.findOne({
       where: {
         id,
@@ -193,7 +193,7 @@ class RecordingsHandler {
     }
 
     return recording
-      .assess()
+      .assess(language)
       .then((res) => {
         return res;
       })

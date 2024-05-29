@@ -146,7 +146,7 @@ export class Recording extends Model<Recording> {
     });
   }
 
-  async assess() {
+  async assess(language?: string) {
     const assessment = await PronunciationAssessment.findOne({
       where: { targetId: this.id, targetType: "Recording" },
     });
@@ -171,6 +171,7 @@ export class Recording extends Model<Recording> {
     const result = await sdk.pronunciationAssessment({
       filePath: this.filePath,
       reference: this.referenceText,
+      language,
     });
 
     const resultJson = camelcaseKeys(

@@ -316,8 +316,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     upload: (id: string) => {
       return ipcRenderer.invoke("recordings-upload", id);
     },
-    assess: (id: string) => {
-      return ipcRenderer.invoke("recordings-assess", id);
+    assess: (id: string, language?: string) => {
+      return ipcRenderer.invoke("recordings-assess", id, language);
     },
     stats: (params: { from: string; to: string }) => {
       return ipcRenderer.invoke("recordings-stats", params);
