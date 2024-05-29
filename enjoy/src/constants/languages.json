@@ -5,30 +5,30 @@
   },
   {
     "code": "zh-CN",
-    "name": "Chinese (Mandarin, Simplified)"
+    "name": "简体中文"
   },
   {
     "code": "jp-JP",
-    "name": "Japanese"
+    "name": "日本語"
   },
   {
     "code": "ko-KR",
-    "name": "Korean"
+    "name": "한국인"
   },
   {
     "code": "es-ES",
-    "name": "Spanish (Spain)"
+    "name": "Española"
   },
   {
     "code": "it-IT",
-    "name": "Italian (Italy)"
+    "name": "Italiana"
   },
   {
     "code": "de-DE",
-    "name": "German"
+    "name": "Deutsch"
   },
   {
     "code": "fr-FR",
-    "name": "French"
+    "name": "Français"
   }
 ]
