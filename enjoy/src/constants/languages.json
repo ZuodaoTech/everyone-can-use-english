@@ -1,0 +1,34 @@
+[
+  {
+    "code": "en-US",
+    "name": "English (United States)"
+  },
+  {
+    "code": "zh-CN",
+    "name": "Chinese (Mandarin, Simplified)"
+  },
+  {
+    "code": "jp-JP",
+    "name": "Japanese"
+  },
+  {
+    "code": "ko-KR",
+    "name": "Korean"
+  },
+  {
+    "code": "es-ES",
+    "name": "Spanish (Spain)"
+  },
+  {
+    "code": "it-IT",
+    "name": "Italian (Italy)"
+  },
+  {
+    "code": "de-DE",
+    "name": "German"
+  },
+  {
+    "code": "fr-FR",
+    "name": "French"
+  }
+]

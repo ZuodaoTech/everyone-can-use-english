@@ -3,6 +3,7 @@ import { WEB_API_URL } from "@/constants";
 import { Client } from "@/api";
 import i18n from "@renderer/i18n";
 import ahoy from "ahoy.js";
+import LcidTable from "echogarden/data/tables/lcid-table.json";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -17,6 +18,8 @@ type AppSettingsProviderState = {
   EnjoyApp?: EnjoyAppType;
   language?: "en" | "zh-CN";
   switchLanguage?: (language: "en" | "zh-CN") => void;
+  nativeLanguage?: string;
+  learningLanguage?: string;
   proxy?: ProxyConfigType;
   setProxy?: (config: ProxyConfigType) => Promise<void>;
   ahoy?: typeof ahoy;
@@ -42,6 +45,8 @@ export const AppSettingsProvider = ({
   const [user, setUser] = useState<UserType | null>(null);
   const [libraryPath, setLibraryPath] = useState("");
   const [language, setLanguage] = useState<"en" | "zh-CN">();
+  const [nativeLanguage, setNativeLanguage] = useState<string>("zh-CN");
+  const [learningLanguage, setLearningLanguage] = useState<string>("en-US");
   const [proxy, setProxy] = useState<ProxyConfigType>();
   const EnjoyApp = window.__ENJOY_APP__;
 
@@ -49,7 +54,7 @@ export const AppSettingsProvider = ({
     fetchVersion();
     fetchUser();
     fetchLibraryPath();
-    fetchLanguage();
+    fetchLanguages();
     fetchProxyConfig();
   }, []);
 
@@ -73,10 +78,18 @@ export const AppSettingsProvider = ({
     });
   }, [apiUrl]);
 
-  const fetchLanguage = async () => {
+  const fetchLanguages = async () => {
     const language = await EnjoyApp.settings.getLanguage();
     setLanguage(language as "en" | "zh-CN");
     i18n.changeLanguage(language);
+
+    const _nativeLanguage =
+      (await EnjoyApp.settings.get("nativeLanguage")) || "zh-CN";
+    setNativeLanguage(_nativeLanguage);
+
+    const _learningLanguage =
+      (await EnjoyApp.settings.get("learningLanguage")) || "en-US";
+    setNativeLanguage(_learningLanguage);
   };
 
   const switchLanguage = (language: "en" | "zh-CN") => {
@@ -84,6 +97,20 @@ export const AppSettingsProvider = ({
       i18n.changeLanguage(language);
       setLanguage(language);
     });
+  };
+
+  const switchNativeLanguage = (lang: string) => {
+    if (LcidTable.findIndex((l: any) => l.Name == lang) < 0) return;
+
+    setNativeLanguage(lang);
+    EnjoyApp.settings.set("nativeLanguage", lang);
+  };
+
+  const switchLearningLanguage = (lang: string) => {
+    if (LcidTable.findIndex((l: any) => l.Name == lang) < 0) return;
+
+    EnjoyApp.settings.set("learningLanguage", lang);
+    setLearningLanguage(lang);
   };
 
   const fetchVersion = async () => {
@@ -148,6 +175,8 @@ export const AppSettingsProvider = ({
       value={{
         language,
         switchLanguage,
+        nativeLanguage,
+        learningLanguage,
         EnjoyApp,
         version,
         webApi,
