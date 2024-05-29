@@ -1,5 +1,8 @@
 import { useContext } from "react";
-import { MediaPlayerProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  MediaPlayerProviderContext,
+} from "@renderer/context";
 import { TabsContent, Separator } from "@renderer/components/ui";
 import { t } from "i18next";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
@@ -38,6 +41,7 @@ const SelectedWords = (props: {
   const { selectedIndices, caption } = props;
 
   const { transcription, ipaMappings } = useContext(MediaPlayerProviderContext);
+  const { learningLanguage } = useContext(AppSettingsProviderContext);
 
   const word = selectedIndices
     .map((index) => caption.timeline[index]?.text || "")
@@ -92,8 +96,12 @@ const SelectedWords = (props: {
         })}
       </div>
 
-      <Separator className="my-2" />
-      <CamdictLookupResult word={word} />
+      {learningLanguage.startsWith("en") && (
+        <>
+          <Separator className="my-2" />
+          <CamdictLookupResult word={word} />
+        </>
+      )}
 
       <Separator className="my-2" />
       <AiLookupResult

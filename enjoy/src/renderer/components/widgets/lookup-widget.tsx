@@ -15,7 +15,7 @@ import { t } from "i18next";
 import { md5 } from "js-md5";
 
 export const LookupWidget = () => {
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<{
     word: string;
@@ -82,8 +82,12 @@ export const LookupWidget = () => {
               {selected?.word}
             </div>
             <div className="px-4">
-              <CamdictLookupResult word={selected?.word} />
-              <Separator className="my-2" />
+              {learningLanguage.startsWith("en") && (
+                <>
+                  <CamdictLookupResult word={selected?.word} />
+                  <Separator className="my-2" />
+                </>
+              )}
               <AiLookupResult
                 word={selected?.word}
                 context={selected?.context}
