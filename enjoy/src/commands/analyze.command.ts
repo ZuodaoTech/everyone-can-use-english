@@ -1,8 +1,13 @@
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { textCommand } from "./text.command";
+import { LANGUAGES } from "@/constants";
 
 export const analyzeCommand = async (
   text: string,
+  params: {
+    learningLanguage: string;
+    nativeLanguage: string;
+  },
   options: {
     key: string;
     modelName?: string;
@@ -12,21 +17,25 @@ export const analyzeCommand = async (
 ): Promise<string> => {
   if (!text) throw new Error("Text is required");
 
+  const { learningLanguage, nativeLanguage } = params;
   const prompt = await ChatPromptTemplate.fromMessages([
     ["system", SYSTEM_PROMPT],
     ["human", text],
-  ]).format({});
+  ]).format({
+    learning_language: LANGUAGES.find((l) => l.code === learningLanguage).name,
+    native_language: LANGUAGES.find((l) => l.code === nativeLanguage).name,
+  });
 
   return textCommand(prompt, options);
 };
 
-const SYSTEM_PROMPT = `你是我的英语教练，我将提供英语文本，你将帮助我分析文本的句子结构、语法和词汇/短语，并对文本进行详细解释。请用中文回答，并按以下格式返回结果：
+const SYSTEM_PROMPT = `I speak {native_language}. You're my {learning_language} coach, I'll provide {learning_language} text, you'll help me analyze the sentence structure, grammar, and vocabulary/phrases, and provide a detailed explanation of the text. Please return the results in the following format(but in {native_language}):
 
-  ### 句子结构
-  (解释句子的每个元素)
+### Sentence Structure
+(Explain each element of the sentence)
 
-  ### 语法
-  (解释句子的语法)
+### Grammar
+(Explain the grammar of the sentence)
 
-  ### 词汇/短语
-  (解释使用的关键词汇和短语)`;
+### Vocabulary/Phrases
+(Explain the key vocabulary and phrases used)`;

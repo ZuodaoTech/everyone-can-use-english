@@ -309,6 +309,7 @@ export class Client {
     context: string;
     sourceId?: string;
     sourceType?: string;
+    nativeLanguage?: string;
   }): Promise<LookupType> {
     return this.api.post("/api/lookups", decamelizeKeys(params));
   }

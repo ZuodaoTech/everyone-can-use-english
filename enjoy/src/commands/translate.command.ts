@@ -1,8 +1,10 @@
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { textCommand } from "./text.command";
+import { LANGUAGES } from "@/constants";
 
 export const translateCommand = async (
   text: string,
+  nativeLanguage: string,
   options: {
     key: string;
     modelName?: string;
@@ -16,7 +18,7 @@ export const translateCommand = async (
     ["system", SYSTEM_PROMPT],
     ["human", TRANSLATION_PROMPT],
   ]).format({
-    native_language: "Chinese",
+    native_language: LANGUAGES.find((l) => l.code === nativeLanguage).name,
     text,
   });
 

@@ -13,7 +13,9 @@ import {
 } from "@commands";
 
 export const useAiCommand = () => {
-  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, webApi, nativeLanguage, learningLanguage } = useContext(
+    AppSettingsProviderContext
+  );
   const { currentEngine } = useContext(AISettingsProviderContext);
 
   const lookupWord = async (params: {
@@ -34,6 +36,7 @@ export const useAiCommand = () => {
       context,
       sourceId,
       sourceType,
+      nativeLanguage,
     });
 
     if (lookup.meaning && !force) {
@@ -48,6 +51,8 @@ export const useAiCommand = () => {
         word,
         context,
         meaningOptions: lookup.meaningOptions,
+        nativeLanguage,
+        learningLanguage,
       },
       {
         key: currentEngine.key,
@@ -92,7 +97,7 @@ export const useAiCommand = () => {
     text: string,
     cacheKey?: string
   ): Promise<string> => {
-    return translateCommand(text, {
+    return translateCommand(text, nativeLanguage, {
       key: currentEngine.key,
       modelName: currentEngine.models.translate || currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,
@@ -105,11 +110,18 @@ export const useAiCommand = () => {
   };
 
   const analyzeText = async (text: string, cacheKey?: string) => {
-    const res = await analyzeCommand(text, {
-      key: currentEngine.key,
-      modelName: currentEngine.models.analyze || currentEngine.models.default,
-      baseUrl: currentEngine.baseUrl,
-    });
+    const res = await analyzeCommand(
+      text,
+      {
+        learningLanguage,
+        nativeLanguage,
+      },
+      {
+        key: currentEngine.key,
+        modelName: currentEngine.models.analyze || currentEngine.models.default,
+        baseUrl: currentEngine.baseUrl,
+      }
+    );
 
     if (cacheKey) {
       EnjoyApp.cacheObjects.set(cacheKey, res);
@@ -126,7 +138,7 @@ export const useAiCommand = () => {
   };
 
   const summarizeTopic = async (text: string) => {
-    return summarizeTopicCommand(text, {
+    return summarizeTopicCommand(text, nativeLanguage, {
       key: currentEngine.key,
       modelName: currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,
