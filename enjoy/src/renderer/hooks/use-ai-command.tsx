@@ -138,7 +138,7 @@ export const useAiCommand = () => {
   };
 
   const summarizeTopic = async (text: string) => {
-    return summarizeTopicCommand(text, nativeLanguage, {
+    return summarizeTopicCommand(text, learningLanguage, {
       key: currentEngine.key,
       modelName: currentEngine.models.default,
       baseUrl: currentEngine.baseUrl,

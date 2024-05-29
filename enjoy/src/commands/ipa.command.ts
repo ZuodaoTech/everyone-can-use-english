@@ -16,8 +16,8 @@ export const ipaCommand = async (
   const schema = z.object({
     words: z.array(
       z.object({
-        word: z.string().nonempty(),
-        ipa: z.string().nonempty(),
+        word: z.string().min(1),
+        ipa: z.string().min(1),
       })
     ),
   });
