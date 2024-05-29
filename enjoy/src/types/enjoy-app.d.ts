@@ -105,6 +105,8 @@ type EnjoyAppType = {
     showErrorBox: (title: string, content: string) => Promise<void>;
   };
   settings: {
+    get: (key: string) => Promise<any>;
+    set: (key: string, value: any) => Promise<void>;
     getLibrary: () => Promise<string>;
     setLibrary: (library: string) => Promise<void>;
     getUser: () => Promise<UserType>;
