@@ -8,7 +8,7 @@ import mainWindow from "@main/window";
 import ElectronSquirrelStartup from "electron-squirrel-startup";
 import contextMenu from "electron-context-menu";
 import { t } from "i18next";
-import * as Sentry from "@sentry/electron";
+import * as Sentry from "@sentry/electron/main";
 import { SENTRY_DSN } from "@/constants";
 import { updateElectronApp, UpdateSourceType } from "update-electron-app";
 
