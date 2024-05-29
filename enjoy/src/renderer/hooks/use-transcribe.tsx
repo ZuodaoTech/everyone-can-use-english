@@ -12,7 +12,9 @@ import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 import { useAiCommand } from "./use-ai-command";
 
 export const useTranscribe = () => {
-  const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, user, webApi, learningLanguage } = useContext(
+    AppSettingsProviderContext
+  );
   const { whisperConfig, openai } = useContext(AISettingsProviderContext);
   const { punctuateText } = useAiCommand();
 
@@ -47,7 +49,7 @@ export const useTranscribe = () => {
       targetId,
       targetType,
       originalText,
-      language = "english",
+      language = learningLanguage,
     } = params || {};
     const blob = await (await fetch(url)).blob();
 
@@ -169,8 +171,8 @@ export const useTranscribe = () => {
     const audioConfig = sdk.AudioConfig.fromWavFileInput(
       new File([blob], "audio.wav")
     );
-    // setting the recognition language to English.
-    config.speechRecognitionLanguage = "en-US";
+    // setting the recognition language to learning language, such as 'en-US'.
+    config.speechRecognitionLanguage = learningLanguage;
     config.requestWordLevelTimestamps();
     config.outputFormat = sdk.OutputFormat.Detailed;
 
