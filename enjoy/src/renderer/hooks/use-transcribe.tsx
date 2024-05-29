@@ -49,7 +49,7 @@ export const useTranscribe = () => {
       targetId,
       targetType,
       originalText,
-      language = learningLanguage,
+      language = learningLanguage.split("-")[0],
     } = params || {};
     const blob = await (await fetch(url)).blob();
 
