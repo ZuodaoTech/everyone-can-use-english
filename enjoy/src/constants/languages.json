@@ -4,6 +4,10 @@
     "name": "English (United States)"
   },
   {
+    "code": "en-GB",
+    "name": "English (United Kingdom)"
+  },
+  {
     "code": "zh-CN",
     "name": "简体中文"
   },
