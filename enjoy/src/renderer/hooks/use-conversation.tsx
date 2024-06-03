@@ -15,9 +15,12 @@ import {
 import OpenAI from "openai";
 import { type LLMResult } from "@langchain/core/outputs";
 import { v4 } from "uuid";
+import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 
 export const useConversation = () => {
-  const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, webApi, user, apiUrl, learningLanguage } = useContext(
+    AppSettingsProviderContext
+  );
   const { openai, googleGenerativeAi, currentEngine } = useContext(
     AISettingsProviderContext
   );
@@ -227,6 +230,35 @@ export const useConversation = () => {
 
   const tts = async (params: Partial<SpeechType>) => {
     const { configuration } = params;
+    const { engine, model = "tts-1", voice } = configuration || {};
+
+    let buffer;
+    if (model.startsWith("openai") || model === "tts-1" || model === "tts-2") {
+      buffer = await openaiTTS(params);
+    } else if (model.startsWith("azure")) {
+      buffer = await azureTTS(params);
+    }
+
+    return EnjoyApp.speeches.create(
+      {
+        text: params.text,
+        sourceType: params.sourceType,
+        sourceId: params.sourceId,
+        configuration: {
+          engine,
+          model,
+          voice,
+        },
+      },
+      {
+        type: "audio/mp3",
+        arrayBuffer: buffer,
+      }
+    );
+  };
+
+  const openaiTTS = async (params: Partial<SpeechType>) => {
+    const { configuration } = params;
     const {
       engine = currentEngine.name,
       model = "tts-1",
@@ -256,27 +288,47 @@ export const useConversation = () => {
 
     const file = await client.audio.speech.create({
       input: params.text,
-      model,
+      model: model.replace("openai-", ""),
       voice,
     });
-    const buffer = await file.arrayBuffer();
 
-    return EnjoyApp.speeches.create(
-      {
-        text: params.text,
-        sourceType: params.sourceType,
-        sourceId: params.sourceId,
-        configuration: {
-          engine,
-          model,
-          voice,
-        },
-      },
-      {
-        type: "audio/mp3",
-        arrayBuffer: buffer,
-      }
+    return file.arrayBuffer();
+  };
+
+  const azureTTS = async (
+    params: Partial<SpeechType>
+  ): Promise<ArrayBuffer> => {
+    const { configuration, text } = params;
+    const { model, voice } = configuration || {};
+
+    if (model !== "azure/speech") return;
+
+    const { token, region } = await webApi.generateSpeechToken();
+    const speechConfig = sdk.SpeechConfig.fromSubscription(token, region);
+    const audioConfig = sdk.AudioConfig.fromDefaultSpeakerOutput();
+    speechConfig.speechRecognitionLanguage = learningLanguage;
+    speechConfig.speechSynthesisVoiceName = voice;
+
+    const speechSynthesizer = new sdk.SpeechSynthesizer(
+      speechConfig,
+      audioConfig
     );
+
+    return new Promise((resolve, reject) => {
+      speechSynthesizer.speakTextAsync(
+        text,
+        (result) => {
+          if (result) {
+            speechSynthesizer.close();
+            resolve(result.audioData);
+          }
+        },
+        (error) => {
+          speechSynthesizer.close();
+          reject(error);
+        }
+      );
+    });
   };
 
   return {
