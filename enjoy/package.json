@@ -57,7 +57,7 @@
     "@types/validator": "^13.11.10",
     "@types/wavesurfer.js": "^6.0.12",
     "@typescript-eslint/eslint-plugin": "^7.10.0",
-    "@typescript-eslint/parser": "^7.10.0",
+    "@typescript-eslint/parser": "^7.11.0",
     "@vitejs/plugin-react": "^4.3.0",
     "autoprefixer": "^10.4.19",
     "electron": "^30.0.8",
