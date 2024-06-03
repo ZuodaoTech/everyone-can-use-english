@@ -112,16 +112,26 @@ export const ConversationFormTTS = (props: {
                 <SelectContent>
                   {(
                     (form.watch("configuration.tts.engine") === "enjoyai"
-                      ? ttsProviders["enjoyai"]["voices"][
+                      ? ttsProviders.enjoyai.voices[
                           form.watch("configuration.tts.model").split("/")[0]
-                        ]?.[learningLanguage]
+                        ]
                       : ttsProviders[form.watch("configuration.tts.engine")]
                           .voices) || []
-                  ).map((voice: any) => (
-                    <SelectItem key={voice} value={voice}>
-                      <span className="capitalize">{voice}</span>
-                    </SelectItem>
-                  ))}
+                  ).map((voice: any) => {
+                    if (typeof voice === "string") {
+                      return (
+                        <SelectItem key={voice} value={voice}>
+                          <span className="capitalize">{voice}</span>
+                        </SelectItem>
+                      );
+                    } else if (voice.language === learningLanguage) {
+                      return (
+                        <SelectItem key={voice.value} value={voice.value}>
+                          <span className="capitalize">{voice.label}</span>
+                        </SelectItem>
+                      );
+                    }
+                  })}
                 </SelectContent>
               </Select>
               <FormMessage />
