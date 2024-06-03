@@ -135,7 +135,7 @@ export default () => {
     let presets = GPT_PRESETS;
     let defaultGptPreset = {
       key: "custom",
-      engine: "enjoyai",
+      engine: currentEngine.name,
       name: t("custom"),
       configuration: {
         type: "gpt",
@@ -153,8 +153,8 @@ export default () => {
       configuration: {
         type: "tts",
         tts: {
-          engine: currentEngine.name,
-          model: "tts-1",
+          engine: "enjoyai",
+          model: "openai/tts-1",
           voice: "alloy",
         },
       },
@@ -173,8 +173,11 @@ export default () => {
       defaultGpt.configuration.tts.engine = currentEngine.name;
       defaultGptPreset = defaultGpt;
 
-      defaultTts.engine = currentEngine.name;
-      defaultTts.configuration.tts.engine = currentEngine.name;
+      if (currentEngine.name === "openai") {
+        defaultTts.configuration.tts.engine = "openai";
+        defaultTts.configuration.tts.model = "tts-1";
+        defaultTts.configuration.tts.voice = "alloy";
+      }
       defaultTtsPreset = defaultTts;
     } catch (error) {
       console.error(error);

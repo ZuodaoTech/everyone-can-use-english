@@ -304,7 +304,7 @@ export const useConversation = () => {
     if (model !== "azure/speech") return;
 
     const { token, region } = await webApi.generateSpeechToken();
-    const speechConfig = sdk.SpeechConfig.fromSubscription(token, region);
+    const speechConfig = sdk.SpeechConfig.fromAuthorizationToken(token, region);
     const audioConfig = sdk.AudioConfig.fromDefaultSpeakerOutput();
     speechConfig.speechRecognitionLanguage = learningLanguage;
     speechConfig.speechSynthesisVoiceName = voice;
