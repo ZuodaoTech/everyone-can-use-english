@@ -83,7 +83,7 @@
     "@andrkrn/ffprobe-static": "^5.2.0",
     "@electron-forge/publisher-s3": "^7.4.0",
     "@hookform/resolvers": "^3.4.2",
-    "@langchain/community": "^0.2.3",
+    "@langchain/community": "^0.2.5",
     "@langchain/google-genai": "^0.0.16",
     "@mozilla/readability": "^0.5.0",
     "@radix-ui/react-accordion": "^1.1.2",
