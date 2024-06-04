@@ -123,7 +123,9 @@ export const MediaPlayerProvider = ({
   children: React.ReactNode;
 }) => {
   const minPxPerSec = 150;
-  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, webApi, learningLanguage } = useContext(
+    AppSettingsProviderContext
+  );
 
   const [layout, setLayout] = useState<{
     name: string;
@@ -340,7 +342,9 @@ export const MediaPlayerProvider = ({
           );
           labels[index] = [
             labels[index] || "",
-            convertIpaToNormal(phone.text.trim()),
+            learningLanguage.startsWith("en")
+              ? convertIpaToNormal(phone.text.trim())
+              : phone.text.trim(),
           ].join("");
         });
       }
