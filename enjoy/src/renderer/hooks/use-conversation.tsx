@@ -303,7 +303,10 @@ export const useConversation = () => {
 
     if (model !== "azure/speech") return;
 
-    const { token, region } = await webApi.generateSpeechToken();
+    const { id, token, region } = await webApi.generateSpeechToken({
+      purpose: "tts",
+      input: text,
+    });
     const speechConfig = sdk.SpeechConfig.fromAuthorizationToken(token, region);
     const audioConfig = sdk.AudioConfig.fromDefaultSpeakerOutput();
     speechConfig.speechRecognitionLanguage = learningLanguage;
@@ -318,13 +321,19 @@ export const useConversation = () => {
       speechSynthesizer.speakTextAsync(
         text,
         (result) => {
-          if (result) {
-            speechSynthesizer.close();
+          speechSynthesizer.close();
+
+          if (result && result.audioData) {
+            webApi.consumeSpeechToken(id);
             resolve(result.audioData);
+          } else {
+            webApi.revokeSpeechToken(id);
+            reject(result);
           }
         },
         (error) => {
           speechSynthesizer.close();
+          webApi.revokeSpeechToken(id);
           reject(error);
         }
       );
