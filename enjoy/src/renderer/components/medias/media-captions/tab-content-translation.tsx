@@ -80,12 +80,14 @@ const SelectedWords = (props: {
                   >
                     {word.timeline
                       .map((t) =>
-                        convertWordIpaToNormal(
-                          t.timeline.map((s) => s.text),
-                          {
-                            mappings: ipaMappings,
-                          }
-                        ).join("")
+                        learningLanguage.startsWith("en")
+                          ? convertWordIpaToNormal(
+                              t.timeline.map((s) => s.text),
+                              {
+                                mappings: ipaMappings,
+                              }
+                            ).join("")
+                          : t.text
                       )
                       .join(" ")}
                   </span>

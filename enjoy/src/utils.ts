@@ -84,13 +84,23 @@ export const convertWordIpaToNormal = (
 
     let j = i - 1;
     for (; j > 0 && j > i - 2; j--) {
-      if (consonantsRegex.test(ipas[j]) && !consonantsRegex.test(ipas[j - 1])) {
+      if (
+        consonantsRegex.test(converted[j]) &&
+        !IPA_CONSONANTS.trill.includes(converted[j]) &&
+        !IPA_CONSONANTS.approximant.includes(converted[j]) &&
+        !IPA_CONSONANTS.lateralApproximant.includes(converted[j])
+      )
+        break;
+      if (
+        consonantsRegex.test(converted[j]) &&
+        !consonantsRegex.test(converted[j - 1])
+      ) {
         break;
       }
     }
 
     if (isVowel && mark) {
-      if (ipas[j]) {
+      if (converted[j] && consonantsRegex.test(converted[j])) {
         converted[j] = mark[0] + converted[j];
       } else {
         converted[i] = mark[0] + converted[i];

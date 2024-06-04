@@ -39,7 +39,7 @@ export const MediaCaption = () => {
     setTranscriptionDraft,
     ipaMappings,
   } = useContext(MediaPlayerProviderContext);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [multiSelecting, setMultiSelecting] = useState<boolean>(false);
@@ -415,9 +415,13 @@ export const MediaCaption = () => {
                   const ipas = word.timeline.map((t) =>
                     t.timeline.map((s) => s.text).join("")
                   );
-                  return `${word.text}(${convertWordIpaToNormal(ipas, {
-                    mappings: ipaMappings,
-                  }).join("")})`;
+                  return `${word.text}(${
+                    learningLanguage.startsWith("en")
+                      ? convertWordIpaToNormal(ipas, {
+                          mappings: ipaMappings,
+                        }).join("")
+                      : ipas.join("")
+                  })`;
                 })
                 .join(" ");
 
@@ -477,16 +481,19 @@ export const Caption = (props: {
   } = props;
 
   const { currentNotes, ipaMappings } = useContext(MediaPlayerProviderContext);
+  const { learningLanguage } = useContext(AppSettingsProviderContext);
   const notes = currentNotes.filter((note) => note.parameters?.quoteIndices);
   const [notedquoteIndices, setNotedquoteIndices] = useState<number[]>([]);
 
   let words = caption.text.split(" ");
   const ipas = caption.timeline.map((w) =>
     w.timeline.map((t) =>
-      convertWordIpaToNormal(
-        t.timeline.map((s) => s.text),
-        { mappings: ipaMappings }
-      ).join("")
+      learningLanguage.startsWith("en")
+        ? convertWordIpaToNormal(
+            t.timeline.map((s) => s.text),
+            { mappings: ipaMappings }
+          ).join("")
+        : t.text
     )
   );
 
