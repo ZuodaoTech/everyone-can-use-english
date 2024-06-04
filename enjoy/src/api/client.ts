@@ -283,10 +283,24 @@ export class Client {
   }
 
   generateSpeechToken(params?: {
+    purpose?: string;
     targetType?: string;
     targetId?: string;
-  }): Promise<{ token: string; region: string }> {
+    input?: string;
+  }): Promise<{ id: number; token: string; region: string }> {
     return this.api.post("/api/speech/tokens", decamelizeKeys(params || {}));
+  }
+
+  consumeSpeechToken(id: number) {
+    return this.api.put(`/api/speech/tokens/${id}`, {
+      state: "consumed",
+    });
+  }
+
+  revokeSpeechToken(id: number) {
+    return this.api.put(`/api/speech/tokens/${id}`, {
+      state: "revoked",
+    });
   }
 
   syncPronunciationAssessment(
