@@ -51,7 +51,7 @@ export const MediaRecorder = () => {
           transcription?.result?.timeline?.[currentSegmentIndex];
         if (!currentSegment) return;
 
-        return EnjoyApp.recordings.create({
+        await EnjoyApp.recordings.create({
           targetId: media.id,
           targetType: media.mediaType,
           blob: {
