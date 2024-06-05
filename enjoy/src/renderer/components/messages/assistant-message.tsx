@@ -129,6 +129,12 @@ export const AssistantMessageComponent = (props: {
       .showSaveDialog({
         title: t("download"),
         defaultPath: speech.filename,
+        filters: [
+          {
+            name: "Audio",
+            extensions: [speech.filename.split(".").pop()],
+          },
+        ],
       })
       .then((savePath) => {
         if (!savePath) return;

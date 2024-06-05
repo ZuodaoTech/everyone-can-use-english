@@ -100,6 +100,12 @@ export const MediaPlayer = () => {
       .showSaveDialog({
         title: t("download"),
         defaultPath: media.filename,
+        filters: [
+          {
+            name: media.mediaType,
+            extensions: [media.filename.split(".").pop()],
+          },
+        ],
       })
       .then((savePath) => {
         if (!savePath) return;

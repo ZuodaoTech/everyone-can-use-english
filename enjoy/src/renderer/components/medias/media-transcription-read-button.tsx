@@ -71,6 +71,12 @@ export const MediaTranscriptionReadButton = () => {
       .showSaveDialog({
         title: t("download"),
         defaultPath: recording.filename,
+        filters: [
+          {
+            name: "Audio",
+            extensions: [recording.filename.split(".").pop()],
+          },
+        ],
       })
       .then((savePath) => {
         if (!savePath) return;

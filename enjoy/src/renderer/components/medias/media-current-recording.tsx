@@ -229,6 +229,12 @@ export const MediaCurrentRecording = () => {
       .showSaveDialog({
         title: t("download"),
         defaultPath: currentRecording.filename,
+        filters: [
+          {
+            name: "Audio",
+            extensions: [currentRecording.filename.split(".").pop()],
+          },
+        ],
       })
       .then((savePath) => {
         if (!savePath) return;
