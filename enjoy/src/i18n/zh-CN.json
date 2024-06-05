@@ -60,7 +60,8 @@
       "duration": "时长",
       "durationTooShort": "录音时长太短",
       "failedToSave": "保存录音失败",
-      "notFound": "未找到录音"
+      "notFound": "未找到录音",
+      "cannotDetectAnySound": "未检测到任何声音"
     },
     "conversation": {
       "name": "对话标题",

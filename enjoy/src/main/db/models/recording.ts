@@ -27,6 +27,7 @@ import { WEB_API_URL } from "@/constants";
 import { AzureSpeechSdk } from "@main/azure-speech-sdk";
 import echogarden from "@main/echogarden";
 import camelcaseKeys from "camelcase-keys";
+import { t } from "i18next";
 
 const logger = log.scope("db/models/recording");
 
@@ -323,7 +324,7 @@ export class Recording extends Model<Recording> {
     duration = Math.round(echogarden.getRawAudioDuration(rawAudio) * 1000);
 
     if (duration === 0) {
-      throw new Error("Failed to get duration of the recording");
+      throw new Error(t("models.recording.cannotDetectAnySound"));
     }
 
     // save recording to file
