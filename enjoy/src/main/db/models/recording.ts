@@ -311,19 +311,13 @@ export class Recording extends Model<Recording> {
       Buffer.from(blob.arrayBuffer)
     );
 
-    // denoise audio
-    // const { denoisedAudio } = await echogarden.denoise(
-    //   rawAudio,
-    //   {}
-    // );
-
     // trim audio
     let trimmedSamples = echogarden.trimAudioStart(
       rawAudio.audioChannels[0],
       0,
-      -30
+      -35
     );
-    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples, 0, -30);
+    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples, 0, -35);
     rawAudio.audioChannels[0] = trimmedSamples;
 
     duration = Math.round(echogarden.getRawAudioDuration(rawAudio) * 1000);
