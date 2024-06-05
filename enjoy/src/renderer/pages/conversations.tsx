@@ -49,7 +49,7 @@ export default () => {
         type: "tts",
         tts: {
           engine: currentEngine.name,
-          model: "tts-1",
+          model: currentEngine.name === "enjoyai" ? "openai/tts-1" : "tts-1",
           voice: "alloy",
         },
       },
@@ -143,18 +143,19 @@ export default () => {
         model: currentEngine.models.default,
         tts: {
           engine: currentEngine.name,
+          model: currentEngine.name === "enjoyai" ? "openai/tts-1" : "tts-1",
         },
       },
     };
     let defaultTtsPreset = {
       key: "tts",
       name: "TTS",
-      engine: "enjoyai",
+      engine: currentEngine.name,
       configuration: {
         type: "tts",
         tts: {
-          engine: "enjoyai",
-          model: "openai/tts-1",
+          engine: currentEngine.name,
+          model: currentEngine.name === "enjoyai" ? "openai/tts-1" : "tts-1",
           voice: "alloy",
         },
       },
@@ -166,19 +167,18 @@ export default () => {
       const defaultTts = await webApi.config("default_tts_preset");
 
       presets = gptPresets;
-      defaultGpt.key = "custom";
-      defaultGpt.name = t("custom");
-      defaultGpt.engine = currentEngine.name;
-      defaultGpt.configuration.model = currentEngine.models.default;
-      defaultGpt.configuration.tts.engine = currentEngine.name;
-      defaultGptPreset = defaultGpt;
+      if (defaultGpt.engine === currentEngine.name) {
+        defaultGpt.key = "custom";
+        defaultGpt.name = t("custom");
+        defaultGpt.configuration.model = currentEngine.models.default;
+        defaultGpt.configuration.tts.engine = currentEngine.name;
 
-      if (currentEngine.name === "openai") {
-        defaultTts.configuration.tts.engine = "openai";
-        defaultTts.configuration.tts.model = "tts-1";
-        defaultTts.configuration.tts.voice = "alloy";
+        defaultGptPreset = defaultGpt;
       }
-      defaultTtsPreset = defaultTts;
+
+      if (defaultTts.engine === currentEngine.name) {
+        defaultTtsPreset = defaultTts;
+      }
     } catch (error) {
       console.error(error);
     }
@@ -192,6 +192,7 @@ export default () => {
           tts: {
             ...preset.configuration.tts,
             engine: currentEngine.name,
+            model: currentEngine.name === "enjoyai" ? "openai/tts-1" : "tts-1",
           },
         },
       })
