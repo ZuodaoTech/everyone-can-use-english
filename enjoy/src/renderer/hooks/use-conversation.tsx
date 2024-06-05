@@ -16,6 +16,7 @@ import OpenAI from "openai";
 import { type LLMResult } from "@langchain/core/outputs";
 import { v4 } from "uuid";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
+import { t } from "i18next";
 
 export const useConversation = () => {
   const { EnjoyApp, webApi, user, apiUrl, learningLanguage } = useContext(
@@ -233,7 +234,7 @@ export const useConversation = () => {
     const { engine, model = "tts-1", voice } = configuration || {};
 
     let buffer;
-    if (model.startsWith("openai") || model === "tts-1" || model === "tts-2") {
+    if (model.startsWith("openai") || model.startsWith("tts-")) {
       buffer = await openaiTTS(params);
     } else if (model.startsWith("azure")) {
       buffer = await azureTTS(params);
@@ -283,12 +284,12 @@ export const useConversation = () => {
         maxRetries: 1,
       });
     } else {
-      throw new Error("OpenAI API key is required");
+      throw new Error(t("openaiKeyRequired"));
     }
 
     const file = await client.audio.speech.create({
       input: params.text,
-      model: model.replace("openai-", ""),
+      model: model.replace("openai/", ""),
       voice,
     });
 
