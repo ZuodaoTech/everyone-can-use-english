@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   ScrollArea,
+  toast,
 } from "@renderer/components/ui";
 import {
   AppSettingsProviderContext,
@@ -48,7 +49,9 @@ export const MediaRecordings = () => {
   const handleDelete = () => {
     if (!selectedRecording) return;
 
-    EnjoyApp.recordings.destroy(selectedRecording.id);
+    EnjoyApp.recordings.destroy(selectedRecording.id).catch((err) => {
+      toast.error(err.message);
+    });
   };
 
   useEffect(() => {

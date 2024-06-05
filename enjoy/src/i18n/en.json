@@ -60,7 +60,8 @@
       "duration": "Duration",
       "durationTooShort": "Duration too short",
       "failedToSave": "Failed to save recording",
-      "notFound": "Recording not found"
+      "notFound": "Recording not found",
+      "cannotDetectAnySound": "Cannot detect any sound"
     },
     "conversation": {
       "name": "Name",

@@ -27,6 +27,7 @@ import { WEB_API_URL } from "@/constants";
 import { AzureSpeechSdk } from "@main/azure-speech-sdk";
 import echogarden from "@main/echogarden";
 import camelcaseKeys from "camelcase-keys";
+import { t } from "i18next";
 
 const logger = log.scope("db/models/recording");
 
@@ -311,25 +312,19 @@ export class Recording extends Model<Recording> {
       Buffer.from(blob.arrayBuffer)
     );
 
-    // denoise audio
-    // const { denoisedAudio } = await echogarden.denoise(
-    //   rawAudio,
-    //   {}
-    // );
-
     // trim audio
     let trimmedSamples = echogarden.trimAudioStart(
       rawAudio.audioChannels[0],
       0,
-      -30
+      -35
     );
-    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples, 0, -30);
+    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples, 0, -35);
     rawAudio.audioChannels[0] = trimmedSamples;
 
     duration = Math.round(echogarden.getRawAudioDuration(rawAudio) * 1000);
 
     if (duration === 0) {
-      throw new Error("Failed to get duration of the recording");
+      throw new Error(t("models.recording.cannotDetectAnySound"));
     }
 
     // save recording to file
