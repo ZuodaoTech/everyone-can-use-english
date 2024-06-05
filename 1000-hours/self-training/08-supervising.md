@@ -26,19 +26,19 @@
 
 在我们的语音塑造训练中，每个音素都可能有不止一条验收标准，比如，<span class="pho">t</span> 这个**音素**的发音就有很多验收标准：
 
-> * 发声时舌尖的起始位置对不对？（[2.2.4](/sounds-of-english/16-tdsz)）
-> * 它是不是产生了声门停顿？（[2.2.5.1](/sounds-of-english/17-td#_2-2-5-1-省音)、[2.2.5.2](/sounds-of-english/17-td#_2-2-5-2-叠音)）
-> * 它是不是应该被读成 <span class="pho alt">tʃ</span>？（[2.2.5.3](/sounds-of-english/17-td#_2-2-5-3-同化)）
-> * 它是不是应该被读成弹舌音 <span class="pho alt">t̬</span>？（[2.2.5.4](/sounds-of-english/17-td#_2-2-5-4-弹舌音)）
-> * 它是不是应该被读成 <span class="pho alt">d</span>？（[2.2.7](/sounds-of-english/19-sptk)）
+> * 发声时舌尖的起始位置对不对？（[2.2.12](/sounds-of-american-english/2.2.12-tsdz)）
+> * 它是不是产生了声门停顿？（[2.4.3.1](/sounds-of-american-english/2.4.3-cc#_2-4-3-1-省音-elision)、[2.4.3.2](/sounds-of-american-english/2.4.3-cc#_2-4-3-2-叠音-geminates)）
+> * 它是不是应该被读成 <span class="pho alt">tʃ</span>？（[2.4.3.2](/sounds-of-american-english/2.4.3-cc#_2-4-3-3-同化-assimilation)）
+> * 它是不是应该被读成弹舌音 <span class="pho alt">t̬</span>？
+> * 它是不是应该被读成 <span class="pho alt">denglish</span>？（[2.2.3](/sounds-of-american-english/2.2.3-td)）
 
 对整个自然语句，除了每个**音素**都有自己的验收标准之外，还有**韵律**和**节奏**上的判断标准：
 
-> * 停顿：每个停顿是否处理得当？有没有分别做对做好？（[3.2](/sounds-of-english/31-pause)）
-> * 高低：哪些音节音高被拔高了？有没有分别做对做好？（[3.3](/sounds-of-english/32-high-low)）
-> * 起伏：哪些音节带着明显的声调？分别是什么？有没有分别做对做好？（[3.4](/sounds-of-english/33-up-down)）
-> * 轻重：哪些词被弱读了？被弱读成了什么样子？有没有分别做对做好？（[3.5](/sounds-of-english/33-up-down)）
-> * 缓急：哪些词连在一起读得很快？被读成了什么样子？有没有分别做对做好？（[3.6](/sounds-of-english/35-fast-slow)）
+> * 停顿：每个停顿是否处理得当？有没有分别做对做好？（[2.4.1](/sounds-of-american-english/2.4.1-stop)）
+> * 高低：哪些音节音高被拔高了？有没有分别做对做好？（[2.5.1](/sounds-of-american-english/2.5.1-pitch)）
+> * 起伏：哪些音节带着明显的声调？分别是什么？有没有分别做对做好？（[2.5.2](/sounds-of-american-english/2.5.2-tone)）
+> * 轻重：哪些词被弱读了？被弱读成了什么样子？有没有分别做对做好？（[2.5.3](/sounds-of-american-english/2.5.3-emphasis)）
+> * 缓急：哪些词连在一起读得很快？被读成了什么样子？有没有分别做对做好？（[2.5.4](/sounds-of-american-english/2.5.4-pace)）
 
 无论学什么，都一样的，每个重点知识的理解和应用都有相应的**验收标准**。从这个角度望过去，无论是校内的数学、物理、化学，还是地理、生物，抑或历史、文学，课本的核心都一样，都是一个又一个的验收标准…… 校外的计算机编程语言的教材里还是如此 —— 天下所有教材都是如此。
 

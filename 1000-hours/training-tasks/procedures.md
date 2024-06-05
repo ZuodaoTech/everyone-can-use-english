@@ -1,6 +1,6 @@
 # 2. 训练方法
 
-请后续反复认真阅读《[语音塑造](/sounds-of-english/01-basics)》中的每一个章节。
+请后续反复认真阅读《[语音塑造](/sounds-of-american-english/1-basics)》中的每一个章节。
 
 ## 2.1 搞清每个单词的读音
 
