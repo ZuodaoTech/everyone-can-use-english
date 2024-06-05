@@ -234,7 +234,7 @@ export const useConversation = () => {
     const { engine, model = "tts-1", voice } = configuration || {};
 
     let buffer;
-    if (model.startsWith("openai") || model.startsWith("tts-")) {
+    if (model.match(/^(openai|tts-)/)) {
       buffer = await openaiTTS(params);
     } else if (model.startsWith("azure")) {
       buffer = await azureTTS(params);
