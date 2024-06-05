@@ -159,6 +159,12 @@ export const MediaCaption = () => {
         defaultPath: `${media.name}(${segment.startTime.toFixed(
           2
         )}s-${segment.endTime.toFixed(2)}s).mp3`,
+        filters: [
+          {
+            name: "Audio",
+            extensions: ["mp3"],
+          },
+        ],
       })
       .then((savePath) => {
         if (!savePath) return;
@@ -208,6 +214,12 @@ export const MediaCaption = () => {
         defaultPath: `${media.name}(${activeRegion.start.toFixed(
           2
         )}s-${activeRegion.end.toFixed(2)}s).mp3`,
+        filters: [
+          {
+            name: "Audio",
+            extensions: ["mp3"],
+          },
+        ],
       })
       .then((savePath) => {
         if (!savePath) return;
