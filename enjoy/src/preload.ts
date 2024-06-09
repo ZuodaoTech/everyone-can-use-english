@@ -23,6 +23,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     apiUrl: () => {
       return ipcRenderer.invoke("app-api-url");
     },
+    wsUrl: () => {
+      return ipcRenderer.invoke("app-ws-url");
+    },
     quit: () => {
       ipcRenderer.invoke("app-quit");
     },

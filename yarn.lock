@@ -5020,6 +5020,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rails/actioncable@npm:7.1.3-4":
+  version: 7.1.3-4
+  resolution: "@rails/actioncable@npm:7.1.3-4"
+  checksum: 10c0/1675a2dad20fabee553d538682e3ec8baba75b88df6a5c7219419459d54489ebc80f42860380633dced5746db1333ff533b06d22ea481d350313be066bb2097a
+  languageName: node
+  linkType: hard
+
 "@remix-run/router@npm:1.16.1":
   version: 1.16.1
   resolution: "@remix-run/router@npm:1.16.1"
@@ -6621,6 +6628,13 @@ __metadata:
   version: 6.9.15
   resolution: "@types/qs@npm:6.9.15"
   checksum: 10c0/49c5ff75ca3adb18a1939310042d273c9fc55920861bd8e5100c8a923b3cda90d759e1a95e18334092da1c8f7b820084687770c83a1ccef04fb2c6908117c823
+  languageName: node
+  linkType: hard
+
+"@types/rails__actioncable@npm:^6.1.10":
+  version: 6.1.10
+  resolution: "@types/rails__actioncable@npm:6.1.10"
+  checksum: 10c0/7f877b4974a6afd4b08e402f116e828aeb6dc171a36897bb306c3d232b0f9fd29e1954c4493ab82b2e269de27de8d23200fbc1b7a8cedb3f165e9dbb25a34e4b
   languageName: node
   linkType: hard
 
@@ -10144,6 +10158,7 @@ __metadata:
     "@radix-ui/react-toast": "npm:^1.1.5"
     "@radix-ui/react-toggle": "npm:^1.0.3"
     "@radix-ui/react-tooltip": "npm:^1.0.7"
+    "@rails/actioncable": "npm:7.1.3-4"
     "@sentry/electron": "npm:^5.0.0"
     "@tailwindcss/typography": "npm:^0.5.13"
     "@types/ahoy.js": "npm:^0.4.2"
@@ -10156,6 +10171,7 @@ __metadata:
     "@types/lodash": "npm:^4.17.4"
     "@types/mark.js": "npm:^8.11.12"
     "@types/node": "npm:^20.14.2"
+    "@types/rails__actioncable": "npm:^6.1.10"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@types/validator": "npm:^13.11.10"

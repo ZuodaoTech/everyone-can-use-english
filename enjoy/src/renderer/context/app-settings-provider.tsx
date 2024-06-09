@@ -3,6 +3,7 @@ import { WEB_API_URL, LANGUAGES } from "@/constants";
 import { Client } from "@/api";
 import i18n from "@renderer/i18n";
 import ahoy from "ahoy.js";
+import { type Consumer, createConsumer } from "@rails/actioncable";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -23,6 +24,7 @@ type AppSettingsProviderState = {
   switchLearningLanguage?: (lang: string) => void;
   proxy?: ProxyConfigType;
   setProxy?: (config: ProxyConfigType) => Promise<void>;
+  cable?: Consumer;
   ahoy?: typeof ahoy;
 };
 
@@ -43,6 +45,7 @@ export const AppSettingsProvider = ({
   const [version, setVersion] = useState<string>("");
   const [apiUrl, setApiUrl] = useState<string>(WEB_API_URL);
   const [webApi, setWebApi] = useState<Client>(null);
+  const [cable, setCable] = useState<Consumer>();
   const [user, setUser] = useState<UserType | null>(null);
   const [libraryPath, setLibraryPath] = useState("");
   const [language, setLanguage] = useState<"en" | "zh-CN">();
@@ -145,6 +148,7 @@ export const AppSettingsProvider = ({
   const login = (user: UserType) => {
     setUser(user);
     EnjoyApp.settings.setUser(user);
+    createCable(user.accessToken);
   };
 
   const logout = () => {
@@ -173,6 +177,12 @@ export const AppSettingsProvider = ({
     });
   };
 
+  const createCable = async (token: string) => {
+    const wsUrl = await EnjoyApp.app.wsUrl();
+    const consumer = createConsumer(wsUrl + "/cable?token=" + token);
+    setCable(consumer);
+  };
+
   return (
     <AppSettingsProviderContext.Provider
       value={{
@@ -195,6 +205,7 @@ export const AppSettingsProvider = ({
         setProxy: setProxyConfigHandler,
         initialized: Boolean(user && libraryPath),
         ahoy,
+        cable,
       }}
     >
       {children}
