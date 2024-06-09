@@ -29,6 +29,7 @@ import {
   HelpCircleIcon,
   ExternalLinkIcon,
   NotebookPenIcon,
+  SpeechIcon,
 } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import { t } from "i18next";
@@ -105,6 +106,15 @@ export const Sidebar = () => {
               active={activeTab.startsWith("/conversations")}
               Icon={BotIcon}
               testid="sidebar-conversations"
+            />
+
+            <SidebarItem
+              href="/pronunciation_assessments"
+              label={t("sidebar.pronunciationAssessment")}
+              tooltip={t("sidebar.pronunciationAssessment")}
+              active={activeTab.startsWith("/pronunciation_assessments")}
+              Icon={SpeechIcon}
+              testid="sidebar-pronunciation-assessments"
             />
 
             <SidebarItem

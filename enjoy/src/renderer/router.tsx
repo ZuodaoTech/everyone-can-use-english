@@ -18,6 +18,7 @@ import Home from "./pages/home";
 import Community from "./pages/community";
 import StoryPreview from "./pages/story-preview";
 import Notes from "./pages/notes";
+import PronunciationAssessments from "./pages/pronunciation-assessments";
 
 export default createHashRouter([
   {
@@ -45,6 +46,10 @@ export default createHashRouter([
       {
         path: "/conversations/:id",
         element: <Conversation />,
+      },
+      {
+        path: "/pronunciation_assessments",
+        element: <PronunciationAssessments />,
       },
       {
         path: "/vocabulary",
