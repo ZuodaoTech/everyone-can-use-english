@@ -68,7 +68,7 @@ test("validate whisper command", async () => {
   expect(res.success).toBeTruthy();
 
   const settings = fs.readJsonSync(path.join(resultDir, "settings.json"));
-  expect(settings.whisper.service).toBe("local");
+  expect(settings.whisper.service).toBe("azure");
 });
 
 test("valid ffmpeg command", async () => {
@@ -85,7 +85,7 @@ test("validate echogarden align command", async () => {
   expect(res).toBeTruthy();
 
   const settings = fs.readJsonSync(path.join(resultDir, "settings.json"));
-  expect(settings.whisper.service).toBe("local");
+  expect(settings.whisper.service).toBe("azure");
 });
 
 test("should setup default library path", async () => {
