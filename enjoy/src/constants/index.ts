@@ -20,6 +20,7 @@ export const STORAGE_WORKER_ENDPOINTS = [
 export const AI_WORKER_ENDPOINT = "https://ai-worker.enjoy.bot";
 
 export const WEB_API_URL = "https://enjoy.bot";
+export const WS_URL = "wss://enjoy.bot";
 
 export const REPO_URL = "https://github.com/xiaolai/everyone-can-use-english";
 

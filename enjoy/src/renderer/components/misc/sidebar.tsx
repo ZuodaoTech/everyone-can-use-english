@@ -14,6 +14,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuItem,
   Separator,
+  toast,
 } from "@renderer/components/ui";
 import {
   SettingsIcon,
@@ -34,12 +35,19 @@ import { useLocation, Link } from "react-router-dom";
 import { t } from "i18next";
 import { Preferences } from "@renderer/components";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { NoticiationsChannel } from "@/renderer/cables";
 
 export const Sidebar = () => {
   const location = useLocation();
   const activeTab = location.pathname;
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, cable } = useContext(AppSettingsProviderContext);
+
+  useEffect(() => {
+    console.log("Subscrbing ->");
+    const channel = new NoticiationsChannel(cable);
+    channel.subscribe();
+  }, []);
 
   return (
     <div
@@ -170,7 +178,9 @@ export const Sidebar = () => {
                 className="w-full xl:justify-start px-2 xl:px-4"
               >
                 <HelpCircleIcon className="h-5 w-5" />
-                <span className="ml-2 hidden xl:block">{t("sidebar.help")}</span>
+                <span className="ml-2 hidden xl:block">
+                  {t("sidebar.help")}
+                </span>
               </Button>
             </DropdownMenuTrigger>
 
