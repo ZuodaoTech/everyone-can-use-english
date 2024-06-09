@@ -14,7 +14,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuItem,
   Separator,
-  toast,
 } from "@renderer/components/ui";
 import {
   SettingsIcon,
