@@ -50,7 +50,7 @@
     "@types/fluent-ffmpeg": "^2.1.24",
     "@types/html-to-text": "^9.0.4",
     "@types/intl-tel-input": "^18.1.4",
-    "@types/lodash": "^4.17.4",
+    "@types/lodash": "^4.17.5",
     "@types/mark.js": "^8.11.12",
     "@types/node": "^20.14.2",
     "@types/rails__actioncable": "^6.1.10",
