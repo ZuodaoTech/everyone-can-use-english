@@ -60,7 +60,7 @@
     "@types/wavesurfer.js": "^6.0.12",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
     "@typescript-eslint/parser": "^7.12.0",
-    "@vitejs/plugin-react": "^4.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
     "electron": "^30.1.0",
     "electron-playwright-helpers": "^1.7.1",

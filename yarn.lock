@@ -6922,9 +6922,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react@npm:^4.3.0":
-  version: 4.3.0
-  resolution: "@vitejs/plugin-react@npm:4.3.0"
+"@vitejs/plugin-react@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "@vitejs/plugin-react@npm:4.3.1"
   dependencies:
     "@babel/core": "npm:^7.24.5"
     "@babel/plugin-transform-react-jsx-self": "npm:^7.24.5"
@@ -6933,7 +6933,7 @@ __metadata:
     react-refresh: "npm:^0.14.2"
   peerDependencies:
     vite: ^4.2.0 || ^5.0.0
-  checksum: 10c0/38ef4c4b7fd626d3b47b5498bd248967eed970099c97f051f29dbe9f72792a4f511ccb10f664dff865c595526ab7265eda5837852bc82bb56a24030302eb23e3
+  checksum: 10c0/39a027feddfd6b3e307121d79631462ef1aae05714ba7a2f9a73d240d0f89c2bf281132568eb27b55d6ddaf08d86ad1bd8b0066090240e570de8c6320eb9a903
   languageName: node
   linkType: hard
 
@@ -10180,7 +10180,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^7.12.0"
     "@uidotdev/usehooks": "npm:^2.4.1"
     "@vidstack/react": "npm:^1.11.21"
-    "@vitejs/plugin-react": "npm:^4.3.0"
+    "@vitejs/plugin-react": "npm:^4.3.1"
     ahoy.js: "npm:^0.4.4"
     autoprefixer: "npm:^10.4.19"
     autosize: "npm:^6.0.1"
