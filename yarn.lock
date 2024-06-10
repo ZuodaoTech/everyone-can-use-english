@@ -6910,15 +6910,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vidstack/react@npm:^1.11.21":
-  version: 1.11.21
-  resolution: "@vidstack/react@npm:1.11.21"
+"@vidstack/react@npm:^1.11.22":
+  version: 1.11.22
+  resolution: "@vidstack/react@npm:1.11.22"
   dependencies:
     media-captions: "npm:^1.0.1"
   peerDependencies:
     "@types/react": ^18.0.0
     react: ^18.0.0
-  checksum: 10c0/dd596137bf50250f8cb1aaad92b4db07676f97e77d3f10ac46674108b88c4bfb1a43087b394ad436fbebe5b1f0e12cd0a2df2367d2b5e3f21675dc0198abe5fe
+  checksum: 10c0/b967a0912ca7d5702147210bef2473829655cde7f4c5f0666c4f26d5ef0c2863f4c1567dda96129247359b4ee3b1d2cbaeacb3ca600e14b5b900a755fcd678bc
   languageName: node
   linkType: hard
 
@@ -10179,7 +10179,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.12.0"
     "@typescript-eslint/parser": "npm:^7.12.0"
     "@uidotdev/usehooks": "npm:^2.4.1"
-    "@vidstack/react": "npm:^1.11.21"
+    "@vidstack/react": "npm:^1.11.22"
     "@vitejs/plugin-react": "npm:^4.3.0"
     ahoy.js: "npm:^0.4.4"
     autoprefixer: "npm:^10.4.19"
