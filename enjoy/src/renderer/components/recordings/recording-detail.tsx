@@ -8,11 +8,15 @@ import { useState, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { Tooltip } from "react-tooltip";
 
-export const RecordingDetail = (props: { recording: RecordingType }) => {
+export const RecordingDetail = (props: {
+  recording: RecordingType;
+  pronunciationAssessment?: PronunciationAssessmentType;
+}) => {
   const { recording } = props;
   if (!recording) return;
 
-  const { pronunciationAssessment } = recording;
+  const pronunciationAssessment =
+    props.pronunciationAssessment || recording.pronunciationAssessment;
   const { result } = pronunciationAssessment || {};
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [seek, setSeek] = useState<{
