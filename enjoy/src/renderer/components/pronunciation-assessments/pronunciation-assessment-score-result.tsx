@@ -9,11 +9,11 @@ export const PronunciationAssessmentScoreResult = (props: {
   fluencyScore?: number;
   completenessScore?: number;
   prosodyScore?: number;
-  assessing: boolean;
-  onAssess: () => void;
+  assessing?: boolean;
+  onAssess?: () => void;
 }) => {
   const {
-    assessing,
+    assessing = false,
     onAssess,
     pronunciationScore,
     accuracyScore,

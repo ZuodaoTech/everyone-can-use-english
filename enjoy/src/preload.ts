@@ -2,6 +2,7 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 import { version } from "../package.json";
+import pronunciationAssessments from "./renderer/pages/pronunciation-assessments";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
@@ -354,6 +355,23 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     destroy: (id: string) => {
       return ipcRenderer.invoke("conversations-destroy", id);
+    },
+  },
+  pronunciationAssessments: {
+    findAll: (params: { where?: any; offset?: number; limit?: number }) => {
+      return ipcRenderer.invoke("pronunciation-assessments-find-all", params);
+    },
+    findOne: (params: any) => {
+      return ipcRenderer.invoke("pronunciation-assessments-find-one", params);
+    },
+    create: (params: any) => {
+      return ipcRenderer.invoke("pronunciation-assessments-create", params);
+    },
+    update: (id: string, params: any) => {
+      return ipcRenderer.invoke("pronunciation-assessments-update", id, params);
+    },
+    destroy: (id: string) => {
+      return ipcRenderer.invoke("pronunciation-assessments-destroy", id);
     },
   },
   messages: {

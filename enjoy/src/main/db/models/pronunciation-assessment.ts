@@ -11,6 +11,7 @@ import {
   Model,
   DataType,
   AllowNull,
+  AfterFind,
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import { Recording } from "@main/db/models";
@@ -46,6 +47,9 @@ export class PronunciationAssessment extends Model<PronunciationAssessment> {
   @AllowNull(false)
   @Column(DataType.STRING)
   targetType: string;
+
+  @Column(DataType.VIRTUAL)
+  target: Recording;
 
   @BelongsTo(() => Recording, {
     foreignKey: "targetId",
@@ -103,6 +107,22 @@ export class PronunciationAssessment extends Model<PronunciationAssessment> {
     return webApi.syncPronunciationAssessment(this.toJSON()).then(() => {
       this.update({ syncedAt: new Date() });
     });
+  }
+
+  @AfterFind
+  static async findTarget(
+    findResult: PronunciationAssessment | PronunciationAssessment[]
+  ) {
+    if (!Array.isArray(findResult)) findResult = [findResult];
+
+    for (const instance of findResult) {
+      if (instance.targetType === "Recording" && instance.recording) {
+        instance.target = instance.recording.toJSON();
+      }
+      // To prevent mistakes:
+      delete instance.recording;
+      delete instance.dataValues.recording;
+    }
   }
 
   @AfterCreate

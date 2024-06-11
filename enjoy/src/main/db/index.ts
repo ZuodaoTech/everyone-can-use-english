@@ -21,6 +21,7 @@ import {
   conversationsHandler,
   messagesHandler,
   notesHandler,
+  pronunciationAssessmentsHandler,
   recordingsHandler,
   segmentsHandler,
   speechesHandler,
@@ -28,7 +29,7 @@ import {
   videosHandler,
 } from "./handlers";
 import path from "path";
-import url from 'url';
+import url from "url";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -101,6 +102,7 @@ db.connect = async () => {
   conversationsHandler.register();
   messagesHandler.register();
   notesHandler.register();
+  pronunciationAssessmentsHandler.register();
   recordingsHandler.register();
   segmentsHandler.register();
   speechesHandler.register();
