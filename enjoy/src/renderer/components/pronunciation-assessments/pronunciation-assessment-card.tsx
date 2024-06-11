@@ -1,24 +1,14 @@
-import {
-  Button,
-  RadialProgress,
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-} from "@renderer/components/ui";
+import { Button, RadialProgress } from "@renderer/components/ui";
 import { scoreColor } from "./pronunciation-assessment-score-result";
 import { t } from "i18next";
 import { formatDateTime } from "@/renderer/lib/utils";
-import { RecordingDetail } from "../recordings";
-import { useState } from "react";
-import { ChevronDownIcon } from "lucide-react";
 
 export const PronunciationAssessmentCard = (props: {
   pronunciationAssessment: PronunciationAssessmentType;
+  onSelect: (assessment: PronunciationAssessmentType) => void;
 }) => {
-  const { pronunciationAssessment: assessment } = props;
-  const [selecting, setSelecting] =
-    useState<PronunciationAssessmentType | null>(null);
+  const { pronunciationAssessment: assessment, onSelect } = props;
+
   return (
     <div
       key={assessment.id}
@@ -144,7 +134,7 @@ export const PronunciationAssessmentCard = (props: {
           />
           <div className="flex justify-center">
             <Button
-              onClick={() => setSelecting(assessment)}
+              onClick={() => onSelect(assessment)}
               variant="secondary"
               size="sm"
             >
@@ -153,29 +143,6 @@ export const PronunciationAssessmentCard = (props: {
           </div>
         </div>
       </div>
-
-      <Sheet
-        open={Boolean(selecting)}
-        onOpenChange={(value) => {
-          if (!value) setSelecting(null);
-        }}
-      >
-        <SheetContent
-          side="bottom"
-          className="rounded-t-2xl shadow-lg max-h-screen overflow-y-scroll"
-          displayClose={false}
-        >
-          <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
-            <SheetClose>
-              <ChevronDownIcon />
-            </SheetClose>
-          </SheetHeader>
-          <RecordingDetail
-            recording={assessment.target}
-            pronunciationAssessment={assessment}
-          />
-        </SheetContent>
-      </Sheet>
     </div>
   );
 };

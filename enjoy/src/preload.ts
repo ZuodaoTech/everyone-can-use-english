@@ -2,7 +2,6 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 import { version } from "../package.json";
-import pronunciationAssessments from "./renderer/pages/pronunciation-assessments";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {

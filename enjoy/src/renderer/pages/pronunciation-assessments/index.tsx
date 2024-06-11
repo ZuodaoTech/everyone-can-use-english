@@ -1,10 +1,20 @@
 import { useEffect, useState, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { Button, toast } from "@renderer/components/ui";
-import { ChevronLeftIcon } from "lucide-react";
+import {
+  Button,
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  toast,
+} from "@renderer/components/ui";
+import { ChevronDownIcon, ChevronLeftIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
-import { PronunciationAssessmentCard } from "@renderer/components";
+import {
+  PronunciationAssessmentCard,
+  RecordingDetail,
+} from "@renderer/components";
 
 export default () => {
   const navigate = useNavigate();
@@ -13,6 +23,8 @@ export default () => {
     []
   );
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [selecting, setSelecting] =
+    useState<PronunciationAssessmentType | null>(null);
 
   const fetchAssessments = (params?: { offset: number; limit?: number }) => {
     const { offset = 0, limit = 10 } = params || {};
@@ -50,11 +62,18 @@ export default () => {
           <span>{t("sidebar.pronunciationAssessment")}</span>
         </div>
 
+        <div className="flex items-center justify-start mb-4">
+          <Button onClick={() => navigate("/pronunciation_assessments/new")}>
+            {t("newAssessment")}
+          </Button>
+        </div>
+
         <div className="grid grid-cols-1 gap-4 mb-4">
           {assessments.map((assessment) => (
             <PronunciationAssessmentCard
               key={assessment.id}
               pronunciationAssessment={assessment}
+              onSelect={setSelecting}
             />
           ))}
         </div>
@@ -70,6 +89,31 @@ export default () => {
           </div>
         )}
       </div>
+
+      <Sheet
+        open={Boolean(selecting)}
+        onOpenChange={(value) => {
+          if (!value) setSelecting(null);
+        }}
+      >
+        <SheetContent
+          side="bottom"
+          className="rounded-t-2xl shadow-lg max-h-screen overflow-y-scroll"
+          displayClose={false}
+        >
+          <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
+            <SheetClose>
+              <ChevronDownIcon />
+            </SheetClose>
+          </SheetHeader>
+          {selecting && (
+            <RecordingDetail
+              recording={selecting.target}
+              pronunciationAssessment={selecting}
+            />
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
