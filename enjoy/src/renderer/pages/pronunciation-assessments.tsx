@@ -4,7 +4,7 @@ import { Button, toast } from "@renderer/components/ui";
 import { ChevronLeftIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
-import { PronunciationAssessmentScoreResult } from "../components";
+import { PronunciationAssessmentCard } from "@renderer/components";
 
 export default () => {
   const navigate = useNavigate();
@@ -52,19 +52,10 @@ export default () => {
 
         <div className="grid grid-cols-1 gap-4 mb-4">
           {assessments.map((assessment) => (
-            <div
+            <PronunciationAssessmentCard
               key={assessment.id}
-              className="bg-background p-4 rounded-lg border hover:shadow"
-            >
-              <div className="flex items-center space-x-4">
-                <div className="flex-1">
-                  <div className="select-text line-clamp-2 text-muted-foreground font-serif pl-3 border-l-4 mb-4">
-                    {assessment.referenceText || assessment.target.referenceText}
-                  </div>
-                </div>
-                <div className=""></div>
-              </div>
-            </div>
+              pronunciationAssessment={assessment}
+            />
           ))}
         </div>
 
