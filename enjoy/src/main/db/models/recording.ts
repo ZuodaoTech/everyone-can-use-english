@@ -52,11 +52,13 @@ export class Recording extends Model<Recording> {
   @Column(DataType.VIRTUAL)
   target: Audio | Video;
 
+  @IsUUID("all")
+  @Default("00000000-0000-0000-0000-000000000000")
   @Column(DataType.UUID)
   targetId: string;
 
   @Column(DataType.STRING)
-  targetType: "Audio" | "Video";
+  targetType: "Audio" | "Video" | "None";
 
   @HasOne(() => PronunciationAssessment, {
     foreignKey: "targetId",
