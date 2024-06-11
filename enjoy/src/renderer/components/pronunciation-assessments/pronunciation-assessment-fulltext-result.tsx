@@ -55,7 +55,7 @@ export const PronunciationAssessmentFulltextResult = (props: {
   }, []);
 
   return (
-    <ScrollArea className="h-72 py-4 px-8">
+    <ScrollArea className="min-h-72 py-4 px-8">
       <div className="flex items-start justify-between space-x-6">
         <div className="flex-1 py-4">
           {words.map((result, index: number) => (

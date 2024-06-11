@@ -44,7 +44,6 @@ export const Sidebar = () => {
   const { EnjoyApp, cable } = useContext(AppSettingsProviderContext);
 
   useEffect(() => {
-    console.log("Subscrbing ->");
     const channel = new NoticiationsChannel(cable);
     channel.subscribe();
   }, []);
