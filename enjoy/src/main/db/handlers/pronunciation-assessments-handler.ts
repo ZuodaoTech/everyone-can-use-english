@@ -47,10 +47,26 @@ class PronunciationAssessmentsHandler {
 
   private async create(
     _event: IpcMainEvent,
-    data: Attributes<PronunciationAssessment>
+    data: Attributes<PronunciationAssessment> & {
+      recording: {
+        type: string;
+        arrayBuffer: ArrayBuffer;
+      };
+    }
   ) {
-    const assessment = await PronunciationAssessment.create(data);
-    return assessment.toJSON();
+    const recording = await Recording.createFromBlob(data.recording, {
+      targetId: "00000000-0000-0000-0000-000000000000",
+      targetType: "None",
+      referenceText: data.referenceText,
+    });
+
+    try {
+      const assessment = await recording.assess(data.language);
+      return assessment.toJSON();
+    } catch (error) {
+      await recording.destroy();
+      throw error;
+    }
   }
 
   private async update(

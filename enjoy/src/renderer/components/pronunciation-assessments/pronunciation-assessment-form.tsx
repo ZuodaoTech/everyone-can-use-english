@@ -54,6 +54,11 @@ export const PronunciationAssessmentForm = (props: {}) => {
     data: z.infer<typeof pronunciationAssessmentSchema>
   ) => {
     console.log(data);
+    if ((!data.file || data.file.length === 0) && !data.recording) {
+      toast.error(t("noFile"));
+      form.setError("recording", { message: t("noRecording") });
+      return;
+    }
   };
 
   return (
@@ -69,7 +74,7 @@ export const PronunciationAssessmentForm = (props: {}) => {
               <TabsTrigger value="upload">{t("upload")}</TabsTrigger>
             </TabsList>
             <TabsContent value="upload">
-              <div className="grid gap-4 p-4 border rounded-lg">
+              <div className="grid gap-4">
                 <FormField
                   control={form.control}
                   name="file"
@@ -102,7 +107,6 @@ export const PronunciationAssessmentForm = (props: {}) => {
                         accept="audio/*"
                         {...fileField}
                       />
-                      <FormMessage />
                       <RecorderButton
                         onStart={() => {
                           form.resetField("recording");

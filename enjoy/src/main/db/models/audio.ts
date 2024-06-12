@@ -47,6 +47,9 @@ export class Audio extends Model<Audio> {
   id: string;
 
   @Column(DataType.STRING)
+  language: string;
+
+  @Column(DataType.STRING)
   source: string;
 
   @Unique

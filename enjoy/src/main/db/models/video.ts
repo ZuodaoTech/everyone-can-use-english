@@ -47,6 +47,9 @@ export class Video extends Model<Video> {
   id: string;
 
   @Column(DataType.STRING)
+  language: string;
+
+  @Column(DataType.STRING)
   source: string;
 
   @Unique

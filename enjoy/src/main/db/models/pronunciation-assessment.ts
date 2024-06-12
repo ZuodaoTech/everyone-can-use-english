@@ -40,6 +40,9 @@ export class PronunciationAssessment extends Model<PronunciationAssessment> {
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;
 
+  @Column(DataType.STRING)
+  language: string;
+
   @AllowNull(false)
   @Column(DataType.UUID)
   targetId: string;

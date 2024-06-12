@@ -43,6 +43,9 @@ export class Recording extends Model<Recording> {
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;
 
+  @Column(DataType.STRING)
+  language: string;
+
   @BelongsTo(() => Audio, { foreignKey: "targetId", constraints: false })
   audio: Audio;
 
@@ -174,7 +177,7 @@ export class Recording extends Model<Recording> {
     const result = await sdk.pronunciationAssessment({
       filePath: this.filePath,
       reference: this.referenceText,
-      language,
+      language: language || this.language,
     });
 
     const resultJson = camelcaseKeys(
@@ -203,7 +206,7 @@ export class Recording extends Model<Recording> {
         include: Recording,
       }
     );
-    return _pronunciationAssessment.toJSON();
+    return _pronunciationAssessment;
   }
 
   @AfterFind
