@@ -49,7 +49,9 @@ export const PronunciationAssessmentForm = (props: {}) => {
       referenceText: "",
     },
   });
+
   const fileField = form.register("file");
+
   const onSubmit = async (
     data: z.infer<typeof pronunciationAssessmentSchema>
   ) => {
@@ -59,6 +61,35 @@ export const PronunciationAssessmentForm = (props: {}) => {
       form.setError("recording", { message: t("noRecording") });
       return;
     }
+    const { language, referenceText, file, recording } = data;
+
+    setSubmitting(true);
+    toast.promise(
+      EnjoyApp.pronunciationAssessments
+        .create({
+          language,
+          referenceText,
+          blob: {
+            type: recording?.type || file[0].type,
+            arrayBuffer: await (async () => {
+              if (recording) {
+                return recording.arrayBuffer();
+              } else {
+                return new Blob([file[0]]).arrayBuffer();
+              }
+            }),
+          },
+        })
+        .then(() => {
+          navigate("/pronunciation-assessments");
+        })
+        .finally(() => setSubmitting(false)),
+      {
+        loading: t("creating"),
+        success: t("created"),
+        error: (err) => err.message,
+      }
+    );
   };
 
   return (

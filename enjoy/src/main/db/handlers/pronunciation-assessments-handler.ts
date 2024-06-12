@@ -47,17 +47,18 @@ class PronunciationAssessmentsHandler {
 
   private async create(
     _event: IpcMainEvent,
-    data: Attributes<PronunciationAssessment> & {
-      recording: {
+    data: Partial<Attributes<PronunciationAssessment>> & {
+      blob: {
         type: string;
         arrayBuffer: ArrayBuffer;
       };
     }
   ) {
-    const recording = await Recording.createFromBlob(data.recording, {
+    const recording = await Recording.createFromBlob(data.blob, {
       targetId: "00000000-0000-0000-0000-000000000000",
       targetType: "None",
       referenceText: data.referenceText,
+      language: data.language,
     });
 
     try {

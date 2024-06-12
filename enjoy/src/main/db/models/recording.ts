@@ -28,6 +28,7 @@ import { AzureSpeechSdk } from "@main/azure-speech-sdk";
 import echogarden from "@main/echogarden";
 import camelcaseKeys from "camelcase-keys";
 import { t } from "i18next";
+import { Attributes } from "sequelize";
 
 const logger = log.scope("db/models/recording");
 
@@ -201,6 +202,7 @@ export class Recording extends Model<Recording> {
         vocabularyScore: result.contentAssessmentResult?.vocabularyScore,
         topicScore: result.contentAssessmentResult?.topicScore,
         result: resultJson,
+        language: language || this.language,
       },
       {
         include: Recording,
@@ -298,13 +300,7 @@ export class Recording extends Model<Recording> {
       type: string;
       arrayBuffer: ArrayBuffer;
     },
-    params: {
-      targetId: string;
-      targetType: "Audio" | "Video" | "None";
-      duration?: number;
-      referenceId?: number;
-      referenceText?: string;
-    }
+    params: Partial<Attributes<Recording>>
   ) {
     const { targetId, targetType, referenceId, referenceText } = params;
     let { duration } = params;
