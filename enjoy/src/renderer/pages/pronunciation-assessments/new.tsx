@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { Button } from "@renderer/components/ui";
+import { PronunciationAssessmentForm } from "@renderer/components";
 
 export default () => {
   const navigate = useNavigate();
@@ -21,6 +22,9 @@ export default () => {
           </Link>
           <span>/</span>
           <span>{t("new")}</span>
+        </div>
+        <div className="">
+          <PronunciationAssessmentForm />
         </div>
       </div>
     </div>

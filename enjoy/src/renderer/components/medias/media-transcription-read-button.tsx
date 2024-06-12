@@ -41,8 +41,8 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record";
-import { useRecordings } from "@/renderer/hooks";
-import { formatDateTime } from "@/renderer/lib/utils";
+import { useRecordings } from "@renderer/hooks";
+import { formatDateTime } from "@renderer/lib/utils";
 import { MediaPlayer, MediaProvider } from "@vidstack/react";
 import {
   DefaultAudioLayout,

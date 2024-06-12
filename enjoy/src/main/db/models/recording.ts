@@ -297,8 +297,8 @@ export class Recording extends Model<Recording> {
     },
     params: {
       targetId: string;
-      targetType: "Audio" | "Video";
-      duration: number;
+      targetType: "Audio" | "Video" | "None";
+      duration?: number;
       referenceId?: number;
       referenceText?: string;
     }
@@ -330,34 +330,31 @@ export class Recording extends Model<Recording> {
     }
 
     // save recording to file
-    const file = path.join(
-      settings.userDataPath(),
-      "recordings",
-      `${Date.now()}.wav`
-    );
+    const file = path.join(settings.cachePath(), `${Date.now()}.wav`);
     await fs.outputFile(file, echogarden.encodeRawAudioToWave(rawAudio));
 
     // hash file
     const md5 = await hashFile(file, { algo: "md5" });
 
+    const existed = await Recording.findOne({ where: { md5 } });
+    if (existed) {
+      fs.remove(file);
+      return existed;
+    }
+
     // rename file
     const filename = `${md5}.wav`;
-    fs.renameSync(file, path.join(path.dirname(file), filename));
+    fs.moveSync(file, path.join(path.dirname(file), filename));
 
-    return this.create(
-      {
-        targetId,
-        targetType,
-        filename,
-        duration,
-        md5,
-        referenceId,
-        referenceText,
-      },
-      {
-        include: [Audio],
-      }
-    );
+    return this.create({
+      targetId,
+      targetType,
+      filename,
+      duration,
+      md5,
+      referenceId,
+      referenceText,
+    });
   }
 
   static notify(recording: Recording, action: "create" | "update" | "destroy") {
