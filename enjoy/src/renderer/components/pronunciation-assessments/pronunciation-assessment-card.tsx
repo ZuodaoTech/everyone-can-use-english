@@ -10,6 +10,7 @@ import { scoreColor } from "./pronunciation-assessment-score-result";
 import { t } from "i18next";
 import { formatDateTime } from "@/renderer/lib/utils";
 import { MoreHorizontalIcon, Trash2Icon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const PronunciationAssessmentCard = (props: {
   pronunciationAssessment: PronunciationAssessmentType;
@@ -24,7 +25,7 @@ export const PronunciationAssessmentCard = (props: {
       className="bg-background p-4 rounded-lg border hover:shadow"
     >
       <div className="flex items-start space-x-4">
-        <div className="flex-1 flex flex-col h-32">
+        <div className="flex-1 flex flex-col min-h-32">
           <div className="select-text line-clamp-2 text-muted-foreground font-serif pl-3 border-l-4 mb-4">
             {assessment.referenceText || assessment.target.referenceText}
           </div>
@@ -79,12 +80,24 @@ export const PronunciationAssessmentCard = (props: {
               }
             })}
           </div>
+          {["Audio", "Video"].includes(assessment.target?.targetType) && (
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-sm">{t("source")}:</span>
+              <Link
+                to={`/${assessment.target.targetType.toLowerCase()}s/${
+                  assessment.target.targetId
+                }?segmentIndex=${assessment.target.referenceId}`}
+                className="text-sm"
+              >
+                {t(assessment.target?.targetType?.toLowerCase())}
+              </Link>
+            </div>
+          )}
           <div className="mt-auto flex items-center gap-4">
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <MoreHorizontalIcon className="w-4 h-4" />
               </DropdownMenuTrigger>
-
               <DropdownMenuContent>
                 <DropdownMenuItem
                   className="text-destructive cursor-pointer"
