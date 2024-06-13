@@ -9,11 +9,11 @@ export const PronunciationAssessmentScoreResult = (props: {
   fluencyScore?: number;
   completenessScore?: number;
   prosodyScore?: number;
-  assessing: boolean;
-  onAssess: () => void;
+  assessing?: boolean;
+  onAssess?: () => void;
 }) => {
   const {
-    assessing,
+    assessing = false,
     onAssess,
     pronunciationScore,
     accuracyScore,
@@ -142,7 +142,7 @@ const ScoreBarComponent = ({
   );
 };
 
-const scoreColor = (score: number, type: "text" | "bg" = "text") => {
+export const scoreColor = (score: number, type: "text" | "bg" = "text") => {
   if (!score) return "gray";
 
   if (score >= 80) return type == "text" ? "text-green-600" : "bg-green-600";

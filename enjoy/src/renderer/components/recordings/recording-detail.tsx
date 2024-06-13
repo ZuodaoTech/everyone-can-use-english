@@ -8,11 +8,15 @@ import { useState, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { Tooltip } from "react-tooltip";
 
-export const RecordingDetail = (props: { recording: RecordingType }) => {
+export const RecordingDetail = (props: {
+  recording: RecordingType;
+  pronunciationAssessment?: PronunciationAssessmentType;
+}) => {
   const { recording } = props;
   if (!recording) return;
 
-  const { pronunciationAssessment } = recording;
+  const pronunciationAssessment =
+    props.pronunciationAssessment || recording.pronunciationAssessment;
   const { result } = pronunciationAssessment || {};
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [seek, setSeek] = useState<{
@@ -58,7 +62,7 @@ export const RecordingDetail = (props: { recording: RecordingType }) => {
           }}
         />
       ) : (
-        <ScrollArea className="h-72 py-4 px-8 select-text">
+        <ScrollArea className="min-h-72 py-4 px-8 select-text">
           {(recording?.referenceText || "").split("\n").map((line, index) => (
             <div key={index} className="text-xl font-serif tracking-wide mb-2">
               {line}

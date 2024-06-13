@@ -142,8 +142,7 @@
     "practice": "Practice",
     "reading": "Reading",
     "aiAssistant": "AI Assistant",
-    "aiCoaches": "AI Coaches",
-    "translator": "Translator",
+    "pronunciationAssessment": "Assessment",
     "mine": "Mine",
     "preferences": "Preferences",
     "profile": "My Profile",
@@ -597,5 +596,13 @@
   "summarize": "Summarize",
   "noResultsFound": "No results found",
   "readThrough": "Read through",
-  "selectCrypto": "Select crypto"
+  "selectCrypto": "Select crypto",
+  "newAssessment": "New Assessment",
+  "record": "Record",
+  "upload": "Upload",
+  "noFileOrRecording": "No file uploaded or recording",
+  "referenceText": "Reference text",
+  "inputReferenceTextOrLeaveItBlank": "Input the reference text or leave it blank",
+  "assessing": "Assessing",
+  "assessedSuccessfully": "Assessed successfully"
 }

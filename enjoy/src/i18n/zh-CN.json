@@ -142,8 +142,7 @@
     "practice": "练习记录",
     "reading": "阅读",
     "aiAssistant": "智能助手",
-    "aiCoaches": "AI 教练",
-    "translator": "翻译助手",
+    "pronunciationAssessment": "发音评估",
     "mine": "我的",
     "preferences": "软件设置",
     "profile": "个人主页",
@@ -597,5 +596,13 @@
   "summarize": "提炼主题",
   "noResultsFound": "没有找到结果",
   "readThrough": "朗读全文",
-  "selectCrypto": "选择加密货币"
+  "selectCrypto": "选择加密货币",
+  "newAssessment": "新评估",
+  "record": "录音",
+  "upload": "上传",
+  "noFileOrRecording": "没有上传文件或录音",
+  "referenceText": "参考文本",
+  "inputReferenceTextOrLeaveItBlank": "输入参考文本，或者留空",
+  "assessing": "正在评估",
+  "assessedSuccessfully": "评估成功"
 }

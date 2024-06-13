@@ -203,6 +203,13 @@ type EnjoyAppType = {
       targetType
     ) => Promise<SegementRecordingStatsType>;
   };
+  pronunciationAssessments: {
+    findAll: (params: any) => Promise<PronunciationAssessmentType[]>;
+    findOne: (params: any) => Promise<PronunciationAssessmentType>;
+    create: (params: any) => Promise<PronunciationAssessmentType>;
+    update: (id: string, params: any) => Promise<PronunciationAssessmentType>;
+    destroy: (id: string) => Promise<void>;
+  };
   conversations: {
     findAll: (params: any) => Promise<ConversationType[]>;
     findOne: (params: any) => Promise<ConversationType>;

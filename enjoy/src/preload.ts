@@ -356,6 +356,23 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       return ipcRenderer.invoke("conversations-destroy", id);
     },
   },
+  pronunciationAssessments: {
+    findAll: (params: { where?: any; offset?: number; limit?: number }) => {
+      return ipcRenderer.invoke("pronunciation-assessments-find-all", params);
+    },
+    findOne: (params: any) => {
+      return ipcRenderer.invoke("pronunciation-assessments-find-one", params);
+    },
+    create: (params: any) => {
+      return ipcRenderer.invoke("pronunciation-assessments-create", params);
+    },
+    update: (id: string, params: any) => {
+      return ipcRenderer.invoke("pronunciation-assessments-update", id, params);
+    },
+    destroy: (id: string) => {
+      return ipcRenderer.invoke("pronunciation-assessments-destroy", id);
+    },
+  },
   messages: {
     findAll: (params: { where?: any; offset?: number; limit?: number }) => {
       return ipcRenderer.invoke("messages-find-all", params);

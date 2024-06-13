@@ -32,6 +32,9 @@ export class Transcription extends Model<Transcription> {
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;
 
+  @Column(DataType.STRING)
+  language: string;
+
   @Column(DataType.UUID)
   targetId: string;
 

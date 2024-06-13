@@ -1,6 +1,9 @@
 type PronunciationAssessmentType = {
   id: string;
-  recordingId: string;
+  language?: string;
+  targetId: string;
+  targetType: string;
+  referenceText: string;
   accuracyScore: number;
   completenessScore: number;
   fluencyScore: number;
@@ -28,6 +31,7 @@ type PronunciationAssessmentType = {
   updatedAt: Date;
   isSynced: boolean;
   recording?: RecodingType;
+  target?: RecodingType;
 };
 
 type PronunciationAssessmentWordResultType = {

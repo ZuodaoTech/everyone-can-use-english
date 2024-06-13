@@ -163,7 +163,7 @@ class RecordingsHandler {
     return await recording.upload();
   }
 
-  private async assess(event: IpcMainEvent, id: string, language?: string) {
+  private async assess(_event: IpcMainEvent, id: string, language?: string) {
     const recording = await Recording.findOne({
       where: {
         id,
@@ -171,23 +171,11 @@ class RecordingsHandler {
     });
 
     if (!recording) {
-      event.sender.send("on-notification", {
-        type: "error",
-        message: t("models.recording.notFound"),
-      });
+      throw new Error(t("models.recording.notFound"));
     }
 
-    return recording
-      .assess(language)
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    const assessment = await recording.assess(language)
+    return assessment.toJSON();
   }
 
   private async stats(
