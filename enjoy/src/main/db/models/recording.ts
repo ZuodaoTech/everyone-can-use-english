@@ -29,6 +29,7 @@ import echogarden from "@main/echogarden";
 import camelcaseKeys from "camelcase-keys";
 import { t } from "i18next";
 import { Attributes } from "sequelize";
+import { v5 as uuidv5 } from "uuid";
 
 const logger = log.scope("db/models/recording");
 
@@ -142,6 +143,8 @@ export class Recording extends Model<Recording> {
   }
 
   async sync() {
+    if (this.isSynced) return;
+
     const webApi = new Client({
       baseUrl: process.env.WEB_API_URL || WEB_API_URL,
       accessToken: settings.getSync("user.accessToken") as string,
@@ -213,6 +216,8 @@ export class Recording extends Model<Recording> {
 
   @AfterFind
   static async findTarget(findResult: Recording | Recording[]) {
+    if (!findResult) return;
+
     if (!Array.isArray(findResult)) findResult = [findResult];
 
     for (const instance of findResult) {
@@ -238,14 +243,21 @@ export class Recording extends Model<Recording> {
 
   @AfterCreate
   static increaseResourceCache(recording: Recording) {
-    if (recording.targetType !== "Audio") return;
-
-    Audio.findByPk(recording.targetId).then((audio) => {
-      audio.increment("recordingsCount");
-      audio.increment("recordingsDuration", {
-        by: recording.duration,
+    if (recording.targetType === "Audio") {
+      Audio.findByPk(recording.targetId).then((audio) => {
+        audio.increment("recordingsCount");
+        audio.increment("recordingsDuration", {
+          by: recording.duration,
+        });
       });
-    });
+    } else if (recording.targetType === "Video") {
+      Video.findByPk(recording.targetId).then((video) => {
+        video.increment("recordingsCount");
+        video.increment("recordingsDuration", {
+          by: recording.duration,
+        });
+      });
+    }
   }
 
   @AfterCreate
@@ -290,9 +302,7 @@ export class Recording extends Model<Recording> {
       accessToken: settings.getSync("user.accessToken") as string,
       logger: log.scope("recording/cleanupFile"),
     });
-    webApi.deleteRecording(recording.id).catch((err) => {
-      logger.error("deleteRecording failed:", err.message);
-    });
+    webApi.deleteRecording(recording.id);
   }
 
   static async createFromBlob(
@@ -302,7 +312,8 @@ export class Recording extends Model<Recording> {
     },
     params: Partial<Attributes<Recording>>
   ) {
-    const { targetId, targetType, referenceId, referenceText } = params;
+    const { targetId, targetType, referenceId, referenceText, language } =
+      params;
     let { duration } = params;
 
     if (blob.arrayBuffer.byteLength === 0) {
@@ -343,9 +354,19 @@ export class Recording extends Model<Recording> {
 
     // rename file
     const filename = `${md5}.wav`;
-    fs.moveSync(file, path.join(path.dirname(file), filename));
+    fs.moveSync(
+      file,
+      path.join(settings.userDataPath(), "recordings", filename),
+      {
+        overwrite: true,
+      }
+    );
+
+    const userId = settings.getSync("user.id");
+    const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);
 
     return this.create({
+      id,
       targetId,
       targetType,
       filename,
@@ -353,6 +374,7 @@ export class Recording extends Model<Recording> {
       md5,
       referenceId,
       referenceText,
+      language,
     });
   }
 

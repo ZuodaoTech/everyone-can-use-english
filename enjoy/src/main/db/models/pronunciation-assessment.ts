@@ -116,6 +116,7 @@ export class PronunciationAssessment extends Model<PronunciationAssessment> {
   static async findTarget(
     findResult: PronunciationAssessment | PronunciationAssessment[]
   ) {
+    if (!findResult) return;
     if (!Array.isArray(findResult)) findResult = [findResult];
 
     for (const instance of findResult) {

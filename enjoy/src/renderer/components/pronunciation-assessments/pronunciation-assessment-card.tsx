@@ -20,104 +20,55 @@ export const PronunciationAssessmentCard = (props: {
             {assessment.referenceText || assessment.target.referenceText}
           </div>
           <div className="flex items-center gap-2 flex-wrap mb-4">
-            {assessment.accuracyScore && (
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="text-muted-foreground text-sm">
-                  {t("models.pronunciationAssessment.accuracyScore")}:
-                </span>
-                <span
-                  className={`text-sm font-bold ${scoreColor(
-                    assessment.accuracyScore || 0
-                  )}`}
-                >
-                  {assessment.accuracyScore}
-                </span>
-              </div>
-            )}
-            {assessment.fluencyScore && (
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="text-muted-foreground text-sm">
-                  {t("models.pronunciationAssessment.fluencyScore")}:
-                </span>
-                <span
-                  className={`text-sm font-bold ${scoreColor(
-                    assessment.fluencyScore || 0
-                  )}`}
-                >
-                  {assessment.fluencyScore}
-                </span>
-              </div>
-            )}
-            {assessment.completenessScore && (
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="text-muted-foreground text-sm">
-                  {t("models.pronunciationAssessment.completenessScore")}:
-                </span>
-                <span
-                  className={`text-sm font-bold ${scoreColor(
-                    assessment.completenessScore || 0
-                  )}`}
-                >
-                  {assessment.completenessScore}
-                </span>
-              </div>
-            )}
-            {assessment.prosodyScore && (
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="text-muted-foreground text-sm">
-                  {t("models.pronunciationAssessment.prosodyScore")}:
-                </span>
-                <span
-                  className={`text-sm font-bold ${scoreColor(
-                    assessment.prosodyScore || 0
-                  )}`}
-                >
-                  {assessment.prosodyScore}
-                </span>
-              </div>
-            )}
-            {assessment.grammarScore && (
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="text-muted-foreground text-sm">
-                  {t("models.pronunciationAssessment.grammarScore")}:
-                </span>
-                <span
-                  className={`text-sm font-bold ${scoreColor(
-                    assessment.grammarScore || 0
-                  )}`}
-                >
-                  {assessment.grammarScore}
-                </span>
-              </div>
-            )}
-            {assessment.vocabularyScore && (
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="text-muted-foreground text-sm">
-                  {t("models.pronunciationAssessment.vocabularyScore")}:
-                </span>
-                <span
-                  className={`text-sm font-bold ${scoreColor(
-                    assessment.vocabularyScore || 0
-                  )}`}
-                >
-                  {assessment.vocabularyScore}
-                </span>
-              </div>
-            )}
-            {assessment.topicScore && (
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="text-muted-foreground text-sm">
-                  {t("models.pronunciationAssessment.topicScore")}:
-                </span>
-                <span
-                  className={`text-sm font-bold ${scoreColor(
-                    assessment.topicScore || 0
-                  )}`}
-                >
-                  {assessment.topicScore}
-                </span>
-              </div>
-            )}
+            {[
+              {
+                label: t("models.pronunciationAssessment.pronunciationScore"),
+                value: assessment.pronunciationScore,
+              },
+              {
+                label: t("models.pronunciationAssessment.accuracyScore"),
+                value: assessment.accuracyScore,
+              },
+              {
+                label: t("models.pronunciationAssessment.fluencyScore"),
+                value: assessment.fluencyScore,
+              },
+              {
+                label: t("models.pronunciationAssessment.completenessScore"),
+                value: assessment.completenessScore,
+              },
+              {
+                label: t("models.pronunciationAssessment.prosodyScore"),
+                value: assessment.prosodyScore,
+              },
+              {
+                label: t("models.pronunciationAssessment.grammarScore"),
+                value: assessment.grammarScore,
+              },
+              {
+                label: t("models.pronunciationAssessment.vocabularyScore"),
+                value: assessment.vocabularyScore,
+              },
+              {
+                label: t("models.pronunciationAssessment.topicScore"),
+                value: assessment.topicScore,
+              },
+            ].map(({ label, value }) => {
+              if (typeof value === "number") {
+                return (
+                  <div className="flex items-center space-x-2 mb-2">
+                    <span className="text-muted-foreground text-sm">
+                      {label}:
+                    </span>
+                    <span
+                      className={`text-sm font-bold ${scoreColor(value || 0)}`}
+                    >
+                      {value}
+                    </span>
+                  </div>
+                );
+              }
+            })}
           </div>
           <div className="mt-auto">
             <div className="text-xs text-muted-foreground">

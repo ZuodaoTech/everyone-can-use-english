@@ -62,6 +62,12 @@ export const PronunciationAssessmentForm = (props: {}) => {
       return;
     }
     const { language, referenceText, file, recording } = data;
+    let arrayBuffer: ArrayBuffer;
+    if (recording) {
+      arrayBuffer = await recording.arrayBuffer();
+    } else {
+      arrayBuffer = await new Blob([file[0]]).arrayBuffer();
+    }
 
     setSubmitting(true);
     toast.promise(
@@ -71,13 +77,7 @@ export const PronunciationAssessmentForm = (props: {}) => {
           referenceText,
           blob: {
             type: recording?.type || file[0].type,
-            arrayBuffer: await (async () => {
-              if (recording) {
-                return recording.arrayBuffer();
-              } else {
-                return new Blob([file[0]]).arrayBuffer();
-              }
-            }),
+            arrayBuffer,
           },
         })
         .then(() => {
