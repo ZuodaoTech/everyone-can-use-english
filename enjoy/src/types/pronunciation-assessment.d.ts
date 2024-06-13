@@ -1,5 +1,6 @@
 type PronunciationAssessmentType = {
   id: string;
+  language?: string;
   targetId: string;
   targetType: string;
   referenceText: string;

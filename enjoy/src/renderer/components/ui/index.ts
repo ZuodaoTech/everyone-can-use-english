@@ -1,5 +1,6 @@
 export * from "./accordion";
 export * from "./alert";
+export * from "./badage";
 export * from "./button";
 export * from "./menubar";
 export * from "./progress";

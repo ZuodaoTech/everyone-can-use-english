@@ -5,6 +5,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
   RadialProgress,
+  Badge,
 } from "@renderer/components/ui";
 import { scoreColor } from "./pronunciation-assessment-score-result";
 import { t } from "i18next";
@@ -94,6 +95,10 @@ export const PronunciationAssessmentCard = (props: {
             </div>
           )}
           <div className="mt-auto flex items-center gap-4">
+            {assessment.language && <Badge variant="secondary">{assessment.language}</Badge>}
+            <div className="text-xs text-muted-foreground">
+              {formatDateTime(assessment.createdAt)}
+            </div>
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <MoreHorizontalIcon className="w-4 h-4" />
@@ -108,9 +113,6 @@ export const PronunciationAssessmentCard = (props: {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <div className="text-xs text-muted-foreground">
-              {formatDateTime(assessment.createdAt)}
-            </div>
           </div>
         </div>
         <div className="h-32">
