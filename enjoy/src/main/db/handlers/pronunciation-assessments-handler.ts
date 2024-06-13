@@ -86,13 +86,10 @@ class PronunciationAssessmentsHandler {
     await assessment.update(data);
   }
 
-  private async destroy(
-    _event: IpcMainEvent,
-    where: WhereOptions<PronunciationAssessment>
-  ) {
+  private async destroy(_event: IpcMainEvent, id: string) {
     const assessment = await PronunciationAssessment.findOne({
       where: {
-        ...where,
+        id,
       },
     });
 

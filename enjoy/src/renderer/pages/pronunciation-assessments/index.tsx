@@ -1,6 +1,15 @@
 import { useEffect, useState, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import {
+  Alert,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
   Button,
   Sheet,
   SheetClose,
@@ -25,6 +34,19 @@ export default () => {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [selecting, setSelecting] =
     useState<PronunciationAssessmentType | null>(null);
+  const [deleting, setDeleting] = useState<PronunciationAssessmentType | null>(
+    null
+  );
+
+  const handleDelete = async (assessment: PronunciationAssessmentType) => {
+    try {
+      await EnjoyApp.pronunciationAssessments.destroy(assessment.id);
+      setAssessments(assessments.filter((a) => a.id !== assessment.id));
+      setDeleting(null);
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   const fetchAssessments = (params?: { offset: number; limit?: number }) => {
     const { offset = 0, limit = 10 } = params || {};
@@ -74,6 +96,7 @@ export default () => {
               key={assessment.id}
               pronunciationAssessment={assessment}
               onSelect={setSelecting}
+              onDelete={setDeleting}
             />
           ))}
         </div>
@@ -114,6 +137,28 @@ export default () => {
           )}
         </SheetContent>
       </Sheet>
+
+      <AlertDialog
+        open={Boolean(deleting)}
+        onOpenChange={(value) => {
+          if (!value) setDeleting(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("delete")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("areYouSureToDeleteThisAssessment")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={() => handleDelete(deleting)}>
+              {t("confirm")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

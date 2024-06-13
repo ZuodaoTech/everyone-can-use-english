@@ -1,13 +1,22 @@
-import { Button, RadialProgress } from "@renderer/components/ui";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+  RadialProgress,
+} from "@renderer/components/ui";
 import { scoreColor } from "./pronunciation-assessment-score-result";
 import { t } from "i18next";
 import { formatDateTime } from "@/renderer/lib/utils";
+import { MoreHorizontalIcon, Trash2Icon } from "lucide-react";
 
 export const PronunciationAssessmentCard = (props: {
   pronunciationAssessment: PronunciationAssessmentType;
   onSelect: (assessment: PronunciationAssessmentType) => void;
+  onDelete: (assessment: PronunciationAssessmentType) => void;
 }) => {
-  const { pronunciationAssessment: assessment, onSelect } = props;
+  const { pronunciationAssessment: assessment, onSelect, onDelete } = props;
 
   return (
     <div
@@ -70,7 +79,22 @@ export const PronunciationAssessmentCard = (props: {
               }
             })}
           </div>
-          <div className="mt-auto">
+          <div className="mt-auto flex items-center gap-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <MoreHorizontalIcon className="w-4 h-4" />
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  className="text-destructive cursor-pointer"
+                  onClick={() => onDelete(assessment)}
+                >
+                  <Trash2Icon className="w-4 h-4 mr-2" />
+                  <span>{t("delete")}</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <div className="text-xs text-muted-foreground">
               {formatDateTime(assessment.createdAt)}
             </div>

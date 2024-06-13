@@ -37,7 +37,7 @@ const pronunciationAssessmentSchema = z.object({
   referenceText: z.string().optional(),
 });
 
-export const PronunciationAssessmentForm = (props: {}) => {
+export const PronunciationAssessmentForm = () => {
   const navigate = useNavigate();
   const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const [submitting, setSubmitting] = useState(false);
@@ -57,8 +57,8 @@ export const PronunciationAssessmentForm = (props: {}) => {
   ) => {
     console.log(data);
     if ((!data.file || data.file.length === 0) && !data.recording) {
-      toast.error(t("noFile"));
-      form.setError("recording", { message: t("noRecording") });
+      toast.error(t("noFileOrRecording"));
+      form.setError("recording", { message: t("noFileOrRecording") });
       return;
     }
     const { language, referenceText, file, recording } = data;
@@ -81,12 +81,12 @@ export const PronunciationAssessmentForm = (props: {}) => {
           },
         })
         .then(() => {
-          navigate("/pronunciation-assessments");
+          navigate("/pronunciation_assessments");
         })
         .finally(() => setSubmitting(false)),
       {
-        loading: t("creating"),
-        success: t("created"),
+        loading: t("assessing"),
+        success: t("assessedSuccessfully"),
         error: (err) => err.message,
       }
     );
@@ -193,7 +193,7 @@ export const PronunciationAssessmentForm = (props: {}) => {
                 <FormItem className="grid w-full items-center gap-1.5">
                   <FormLabel>{t("referenceText")}</FormLabel>
                   <Textarea
-                    placeholder={t("referenceTextPlaceholder")}
+                    placeholder={t("inputReferenceTextOrLeaveItBlank")}
                     className="h-64"
                     {...field}
                   />
