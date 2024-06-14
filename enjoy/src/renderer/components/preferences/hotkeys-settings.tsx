@@ -33,10 +33,20 @@ export const HotkeysSettings = ({
     isRecording,
   } = useContext(HotKeysSettingsProviderContext);
 
-  const joinedKeys = useMemo(
-    () => [...recordingHotkeys].join("+"),
-    [recordingHotkeys]
-  );
+  const reset = () => {
+    stopRecordingHotkeys();
+    resetRecordingHotkeys();
+  };
+
+  const joinedKeys = useMemo(() => {
+    const keys = [...recordingHotkeys].join("+").split("+");
+    if (keys?.length > 3) {
+      reset();
+      return "";
+    } else {
+      return keys.join("+");
+    }
+  }, [recordingHotkeys]);
 
   const changeKeyMap = async () => {
     const ret = (await changeHotkey(keyName, recordingHotkeys)) as unknown as {
@@ -64,11 +74,6 @@ export const HotkeysSettings = ({
     }
   };
 
-  const reset = () => {
-    stopRecordingHotkeys();
-    resetRecordingHotkeys();
-  };
-
   // ensure recording disabled when dialog close
   useEffect(() => {
     return () => {
@@ -87,7 +92,7 @@ export const HotkeysSettings = ({
             <div className="">
               <div className="flex justify-center mb-4">
                 <Button variant="secondary">
-                  {joinedKeys.length > 0 ? (
+                  {joinedKeys?.length > 0 ? (
                     <span className="text-sm">{joinedKeys}</span>
                   ) : (
                     <span className="font-mono">-</span>

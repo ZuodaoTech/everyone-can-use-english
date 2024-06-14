@@ -1,7 +1,5 @@
 import { t } from "i18next";
-import {
-  Separator,
-} from "@renderer/components/ui";
+import { Separator } from "@renderer/components/ui";
 import { HotKeysSettingsProviderContext, Hotkey } from "@renderer/context";
 import { HotkeysSettings } from "@renderer/components";
 import { useContext, useState } from "react";
@@ -108,6 +106,25 @@ export const Hotkeys = () => {
             className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer capitalize"
           >
             {currentHotkeys.PlayOrPauseRecording}
+          </kbd>
+        </div>
+
+        <Separator />
+
+        <div className="flex items-center justify-between py-4">
+          <div className="flex items-center space-x-2">
+            {t("pronunciationAssessment")}
+          </div>
+          <kbd
+            onClick={() =>
+              handleItemSelected({
+                name: t("pronunciationAssessment"),
+                keyName: "PronunciationAssessment",
+              })
+            }
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer capitalize"
+          >
+            {currentHotkeys.PronunciationAssessment}
           </kbd>
         </div>
 
