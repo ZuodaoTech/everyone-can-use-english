@@ -565,7 +565,7 @@
   "customizeShortcuts": "Customize shortcuts",
   "customizeShortcutsTip": "Click to change",
   "customizeShortcutsRecordingTip": "Recording new shortcut",
-  "customizeShortcutsInvalidToast": "Your shortcut should only have one modifier (Ctrl, Alt, Shift, or Meta) and one key, like 'Ctrl+C'.",
+  "customizeShortcutsInvalidToast": "Your shortcut should have two modifier (Ctrl, Alt, Shift, or Meta) at most and one regular key, like 'Ctrl+C'.",
   "customizeShortcutsConflictToast": "{{input}} conflicts with the existing {{otherHotkeyName}} shortcut.",
   "customizeShortcutsUpdated": "Changes saved",
   "following": "following",

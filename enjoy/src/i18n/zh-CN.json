@@ -565,7 +565,7 @@
   "customizeShortcuts": "自定义快捷键",
   "customizeShortcutsTip": "点击重新录制",
   "customizeShortcutsRecordingTip": "正在录制快捷键",
-  "customizeShortcutsInvalidToast": "快捷键应最多含一个修饰键（Ctrl, Alt, Shift 或 Meta）和一个键，如 'Ctrl+C'",
+  "customizeShortcutsInvalidToast": "快捷键应含最多两个修饰键（Ctrl, Alt, Shift 或 Meta）和一个普通键，如 'Ctrl+C'",
   "customizeShortcutsConflictToast": "{{input}} 和已有 {{otherHotkeyName}} 的键位冲突了",
   "customizeShortcutsUpdated": "设置成功",
   "following": "关注中",

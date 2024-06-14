@@ -422,12 +422,22 @@ export const MediaCurrentRecording = () => {
   }, [currentRecording, isRecording, layout?.width]);
 
   useHotkeys(
-    currentHotkeys.PlayOrPauseRecording,
-    (keyboardEvent, _hotkeyEvent) => {
+    [
+      currentHotkeys.PlayOrPauseRecording,
+      currentHotkeys.PronunciationAssessment,
+    ],
+    (keyboardEvent, hotkeyEvent) => {
       if (!player) return;
       keyboardEvent.preventDefault();
 
-      document.getElementById("recording-play-or-pause-button").click();
+      switch (hotkeyEvent.keys.join("")) {
+        case currentHotkeys.PlayOrPauseRecording.toLowerCase():
+          document.getElementById("recording-play-or-pause-button").click();
+          break;
+        case currentHotkeys.PronunciationAssessment.toLowerCase():
+          setDetailIsOpen(!detailIsOpen);
+          break;
+      }
     },
     { enabled },
     [player]
