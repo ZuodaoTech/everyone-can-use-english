@@ -375,39 +375,49 @@ export const MediaPlayerControls = () => {
   }, [wavesurfer, decoded, playMode, activeRegion, currentTime]);
 
   useHotkeys(
-    [
-      currentHotkeys.PlayOrPause,
-      currentHotkeys.PlayPreviousSegment,
-      currentHotkeys.PlayNextSegment,
-      currentHotkeys.StartOrStopRecording,
-      currentHotkeys.Compare,
-    ],
-    (keyboardEvent, hotkeyEvent) => {
-      if (!wavesurfer) return;
-      keyboardEvent.preventDefault();
-
-      switch (hotkeyEvent.keys.join("")) {
-        case currentHotkeys.PlayOrPause.toLowerCase():
-          document.getElementById("media-play-or-pause-button").click();
-          break;
-        case currentHotkeys.PlayPreviousSegment.toLowerCase():
-          document.getElementById("media-play-previous-button").click();
-          break;
-        case currentHotkeys.PlayNextSegment.toLowerCase():
-          document.getElementById("media-play-next-button").click();
-          break;
-        case currentHotkeys.StartOrStopRecording.toLowerCase():
-          document.getElementById("media-record-button").click();
-          break;
-        case currentHotkeys.Compare.toLowerCase():
-          document.getElementById("media-compare-button").click();
-          break;
-      }
+    currentHotkeys.PlayOrPause,
+    () => {
+      document.getElementById("media-play-or-pause-button").click();
     },
     {
-      enabled,
+      preventDefault: true,
+    }
+  );
+  useHotkeys(
+    currentHotkeys.PlayPreviousSegment,
+    () => {
+      document.getElementById("media-play-previous-button").click();
     },
-    [wavesurfer, currentHotkeys]
+    {
+      preventDefault: true,
+    }
+  );
+  useHotkeys(
+    currentHotkeys.PlayNextSegment,
+    () => {
+      document.getElementById("media-play-next-button").click();
+    },
+    {
+      preventDefault: true,
+    }
+  );
+  useHotkeys(
+    currentHotkeys.StartOrStopRecording,
+    () => {
+      document.getElementById("media-record-button").click();
+    },
+    {
+      preventDefault: true,
+    }
+  );
+  useHotkeys(
+    currentHotkeys.Compare,
+    () => {
+      document.getElementById("media-compare-button").click();
+    },
+    {
+      preventDefault: true,
+    }
   );
 
   /*

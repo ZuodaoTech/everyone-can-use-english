@@ -109,6 +109,7 @@ const HotKeysSettingsSystemSettings = ({
     },
     {
       enabled,
+      preventDefault: true,
     }
   );
 
@@ -119,6 +120,7 @@ const HotKeysSettingsSystemSettings = ({
     },
     {
       enabled,
+      preventDefault: true,
     }
   );
 
@@ -129,6 +131,7 @@ const HotKeysSettingsSystemSettings = ({
     },
     {
       enabled,
+      preventDefault: true,
     }
   );
   return children;

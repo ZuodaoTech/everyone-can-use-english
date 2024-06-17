@@ -421,27 +421,12 @@ export const MediaCurrentRecording = () => {
     calContainerWidth();
   }, [currentRecording, isRecording, layout?.width]);
 
-  useHotkeys(
-    [
-      currentHotkeys.PlayOrPauseRecording,
-      currentHotkeys.PronunciationAssessment,
-    ],
-    (keyboardEvent, hotkeyEvent) => {
-      if (!player) return;
-      keyboardEvent.preventDefault();
-
-      switch (hotkeyEvent.keys.join("")) {
-        case currentHotkeys.PlayOrPauseRecording.toLowerCase():
-          document.getElementById("recording-play-or-pause-button").click();
-          break;
-        case currentHotkeys.PronunciationAssessment.toLowerCase():
-          setDetailIsOpen(!detailIsOpen);
-          break;
-      }
-    },
-    { enabled },
-    [player]
-  );
+  useHotkeys(currentHotkeys.PlayOrPauseRecording, () => {
+    document.getElementById("recording-play-or-pause-button").click();
+  });
+  useHotkeys(currentHotkeys.PronunciationAssessment, () => {
+    setDetailIsOpen(!detailIsOpen);
+  });
 
   if (isRecording) return <MediaRecorder />;
   if (!currentRecording?.src)

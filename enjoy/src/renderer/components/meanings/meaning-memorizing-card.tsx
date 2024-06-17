@@ -20,13 +20,11 @@ export const MeaningMemorizingCard = (props: { meaning: MeaningType }) => {
 
   useHotkeys(
     [currentHotkeys.PlayOrPause],
-    (keyboardEvent, _hotkeyEvent) => {
-      keyboardEvent.preventDefault();
-
+    () => {
       document.getElementById("vocabulary-toggle-side-button").click();
     },
     {
-      enabled,
+      preventDefault: true,
     },
     [side]
   );
