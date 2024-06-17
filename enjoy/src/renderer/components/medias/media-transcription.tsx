@@ -32,6 +32,7 @@ import { MediaTranscriptionReadButton } from "./media-transcription-read-button"
 export const MediaTranscription = () => {
   const containerRef = useRef<HTMLDivElement>();
   const {
+    decoded,
     media,
     currentSegmentIndex,
     wavesurfer,
@@ -83,14 +84,17 @@ export const MediaTranscription = () => {
 
   useEffect(() => {
     if (!containerRef?.current) return;
+    if (!decoded) return;
 
-    containerRef.current
-      ?.querySelector(`#segment-${currentSegmentIndex}`)
-      ?.scrollIntoView({
-        block: "center",
-        inline: "center",
-      } as ScrollIntoViewOptions);
-  }, [currentSegmentIndex, transcription, containerRef]);
+    setTimeout(() => {
+      containerRef.current
+        ?.querySelector(`#segment-${currentSegmentIndex}`)
+        ?.scrollIntoView({
+          block: "center",
+          inline: "center",
+        } as ScrollIntoViewOptions);
+    }, 300);
+  }, [decoded, currentSegmentIndex, transcription, containerRef]);
 
   if (!transcription?.result?.timeline) {
     return null;
