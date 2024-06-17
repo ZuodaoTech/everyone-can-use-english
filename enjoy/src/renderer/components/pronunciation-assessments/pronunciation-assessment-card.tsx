@@ -67,7 +67,7 @@ export const PronunciationAssessmentCard = (props: {
             ].map(({ label, value }) => {
               if (typeof value === "number") {
                 return (
-                  <div className="flex items-center space-x-2 mb-2">
+                  <div key={label} className="flex items-center space-x-2 mb-2">
                     <span className="text-muted-foreground text-sm">
                       {label}:
                     </span>
@@ -95,7 +95,9 @@ export const PronunciationAssessmentCard = (props: {
             </div>
           )}
           <div className="mt-auto flex items-center gap-4">
-            {assessment.language && <Badge variant="secondary">{assessment.language}</Badge>}
+            {assessment.language && (
+              <Badge variant="secondary">{assessment.language}</Badge>
+            )}
             <div className="text-xs text-muted-foreground">
               {formatDateTime(assessment.createdAt)}
             </div>
