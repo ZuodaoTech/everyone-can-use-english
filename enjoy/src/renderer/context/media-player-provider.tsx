@@ -91,6 +91,8 @@ type MediaPlayerContextType = {
   createSegment: () => Promise<SegmentType | void>;
   // remote config
   ipaMappings: { [key: string]: string };
+  getCachedSegmentIndex: () => Promise<number>;
+  setCachedSegmentIndex: (index: number) => void;
 };
 
 export const MediaPlayerProviderContext =
@@ -190,6 +192,25 @@ export const MediaPlayerProvider = ({
     targetType: media?.mediaType,
     segmentIndex: currentSegmentIndex,
   });
+
+  const getCachedSegmentIndex = async () => {
+    if (!media) return;
+
+    const index = await EnjoyApp.cacheObjects.get(
+      `${media.mediaType.toLowerCase()}-${media.id}-last-segment-index`
+    );
+
+    return index || 0;
+  };
+
+  const setCachedSegmentIndex = (index: number) => {
+    if (!media) return;
+
+    return EnjoyApp.cacheObjects.set(
+      `${media.mediaType.toLowerCase()}-${media.id}-last-segment-index`,
+      index
+    );
+  };
 
   const { notes, createNote } = useNotes({
     targetId: segment?.id,
@@ -428,7 +449,6 @@ export const MediaPlayerProvider = ({
     setCurrentTime(0);
 
     const subscriptions = [
-      wavesurfer.on("loading", (percent: number) => console.log(`${percent}%`)),
       wavesurfer.on("timeupdate", (time: number) => setCurrentTime(time)),
       wavesurfer.on("decode", () => {
         const peaks: Float32Array = wavesurfer
@@ -555,6 +575,14 @@ export const MediaPlayerProvider = ({
     };
   }, []);
 
+  /* cache last segment index */
+  useEffect(() => {
+    if (!media) return;
+    if (!currentSegmentIndex) return;
+
+    setCachedSegmentIndex(currentSegmentIndex);
+  }, [currentSegmentIndex]);
+
   return (
     <>
       <MediaPlayerProviderContext.Provider
@@ -602,6 +630,8 @@ export const MediaPlayerProvider = ({
           currentSegment: segment,
           createSegment,
           ipaMappings,
+          getCachedSegmentIndex,
+          setCachedSegmentIndex,
         }}
       >
         {children}
