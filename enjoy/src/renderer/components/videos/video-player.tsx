@@ -40,7 +40,7 @@ export const VideoPlayer = (props: {
   useEffect(() => {
     if (!media) return;
     updateCurrentSegmentIndex();
-  }, []);
+  }, [media]);
 
   if (!layout) return <LoaderSpin />;
 
