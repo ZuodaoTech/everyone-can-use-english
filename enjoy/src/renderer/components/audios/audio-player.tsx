@@ -17,10 +17,19 @@ export const AudioPlayer = (props: {
   segmentIndex?: number;
 }) => {
   const { id, md5, segmentIndex } = props;
-  const { setMedia, layout, setCurrentSegmentIndex } = useContext(
-    MediaPlayerProviderContext
-  );
+  const {
+    media,
+    setMedia,
+    layout,
+    setCurrentSegmentIndex,
+    getCachedSegmentIndex,
+  } = useContext(MediaPlayerProviderContext);
   const { audio } = useAudio({ id, md5 });
+
+  const updateCurrentSegmentIndex = async () => {
+    let index = segmentIndex || (await getCachedSegmentIndex());
+    setCurrentSegmentIndex(index);
+  };
 
   useEffect(() => {
     if (!audio) return;
@@ -28,9 +37,9 @@ export const AudioPlayer = (props: {
   }, [audio]);
 
   useEffect(() => {
-    if (!segmentIndex) return;
-    setCurrentSegmentIndex(segmentIndex);
-  }, []);
+    if (!media) return;
+    updateCurrentSegmentIndex();
+  }, [media]);
 
   if (!layout) return <LoaderSpin />;
 

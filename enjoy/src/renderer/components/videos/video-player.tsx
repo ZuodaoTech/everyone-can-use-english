@@ -17,10 +17,19 @@ export const VideoPlayer = (props: {
   segmentIndex?: number;
 }) => {
   const { id, md5, segmentIndex } = props;
-  const { setMedia, layout, setCurrentSegmentIndex } = useContext(
-    MediaPlayerProviderContext
-  );
+  const {
+    media,
+    setMedia,
+    layout,
+    setCurrentSegmentIndex,
+    getCachedSegmentIndex,
+  } = useContext(MediaPlayerProviderContext);
   const { video } = useVideo({ id, md5 });
+
+  const updateCurrentSegmentIndex = async () => {
+    let index = segmentIndex || (await getCachedSegmentIndex());
+    setCurrentSegmentIndex(index);
+  };
 
   useEffect(() => {
     if (!video) return;
@@ -29,8 +38,8 @@ export const VideoPlayer = (props: {
   }, [video]);
 
   useEffect(() => {
-    if (!segmentIndex) return;
-    setCurrentSegmentIndex(segmentIndex);
+    if (!media) return;
+    updateCurrentSegmentIndex();
   }, []);
 
   if (!layout) return <LoaderSpin />;
