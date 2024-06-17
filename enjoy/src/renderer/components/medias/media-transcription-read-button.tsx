@@ -53,7 +53,9 @@ import { Caption, RecordingDetail } from "@renderer/components";
 const TEN_MINUTES = 60 * 10;
 let interval: NodeJS.Timeout;
 
-export const MediaTranscriptionReadButton = () => {
+export const MediaTranscriptionReadButton = (props: {
+  children: React.ReactNode;
+}) => {
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState<RecordingType>(null);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -107,9 +109,13 @@ export const MediaTranscriptionReadButton = () => {
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" size="sm" className="hidden lg:block">
-            {t("readThrough")}
-          </Button>
+          {props.children ? (
+            props.children
+          ) : (
+            <Button variant="outline" size="sm" className="hidden lg:block">
+              {t("readThrough")}
+            </Button>
+          )}
         </DialogTrigger>
         <DialogContent
           onPointerDownOutside={(event) => event.preventDefault()}

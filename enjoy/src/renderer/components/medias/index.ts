@@ -7,6 +7,7 @@ export * from "./media-recorder";
 export * from "./media-transcription";
 export * from "./media-transcription-read-button";
 export * from "./media-transcription-form";
+export * from "./media-transcription-generate-button";
 export * from "./media-player";
 export * from "./media-provider";
 export * from "./media-tabs";
