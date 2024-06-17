@@ -328,9 +328,9 @@ export class Recording extends Model<Recording> {
     let trimmedSamples = echogarden.trimAudioStart(
       rawAudio.audioChannels[0],
       0,
-      -35
+      -50
     );
-    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples, 0, -35);
+    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples, 0, -50);
     rawAudio.audioChannels[0] = trimmedSamples;
 
     duration = Math.round(echogarden.getRawAudioDuration(rawAudio) * 1000);
