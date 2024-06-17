@@ -10,7 +10,7 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
-import intlTelInput from "intl-tel-input";
+import intlTelInput from "intl-tel-input/intlTelInputWithUtils";
 import "intl-tel-input/build/css/intlTelInput.css";
 
 export const BanduLoginButton = () => {
@@ -67,8 +67,6 @@ export const BanduLoginForm = () => {
 
     intlTelInput(ref.current, {
       initialCountry: "cn",
-      utilsScript:
-        "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.12/build/js/utils.js",
     });
     setIti(intlTelInput(ref.current));
 
