@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@renderer/lib/utils";
 
 const buttonVariants = cva(
-  "capitalize inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 min-w-fit",
+  "capitalize inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus:outline-none disabled:pointer-events-none disabled:opacity-50 min-w-fit",
   {
     variants: {
       variant: {
@@ -46,7 +46,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
-        onFocus={(e) => e.currentTarget.blur()} // Remove focus outline
         ref={ref}
         {...props}
       />
