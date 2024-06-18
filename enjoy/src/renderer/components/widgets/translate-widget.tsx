@@ -59,14 +59,14 @@ export const TranslateWidget = () => {
         className="w-full p-0 z-50 select-text"
         updatePositionStrategy="always"
       >
-        <ScrollArea className="py-2 w-96 min-h-36 max-h-96 overflow-y-auto relative">
+        <div className="py-2 w-96 min-h-36 max-h-96 overflow-y-auto relative">
           <div className="px-4 pb-2 mb-2 sticky top-0 bg-background border-b">
             {selected?.text}
           </div>
           <div className="px-4">
             <TranslateResult text={selected?.text} autoTranslate={true} />
           </div>
-        </ScrollArea>
+        </div>
       </PopoverContent>
     </Popover>
   );
