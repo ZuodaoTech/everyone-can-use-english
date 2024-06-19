@@ -5,8 +5,7 @@ import { STORAGE_WORKER_ENDPOINTS } from "@/constants";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { t } from "i18next";
 import { XCircleIcon } from "lucide-react";
-import { Player, WavesurferPlayer } from "../misc";
-import { v4 as uuidv4 } from "uuid";
+import { UniversalPlayer, WavesurferPlayer } from "@renderer/components";
 
 export const PostAudio = (props: {
   audio: Partial<MediumType>;
@@ -17,7 +16,6 @@ export const PostAudio = (props: {
   const { webApi } = useContext(AppSettingsProviderContext);
   const [transcription, setTranscription] = useState<TranscriptionType>();
   const [error, setError] = useState<string>(null);
-  const [uuid, setUuid] = useState<string>();
 
   const currentTranscription = transcription?.result["transcript"]
     ? (transcription.result?.timeline || []).find(
@@ -40,8 +38,6 @@ export const PostAudio = (props: {
         if (transcription.targetMd5 !== audio.md5) return;
         setTranscription(response?.transcriptions?.[0]);
       });
-
-    setUuid(uuidv4());
   }, [audio.md5]);
 
   if (error) {
@@ -74,7 +70,7 @@ export const PostAudio = (props: {
           onError={(err) => setError(err.message)}
         />
       ) : (
-        <Player
+        <UniversalPlayer
           src={audio.sourceUrl}
           onTimeUpdate={(time) => {
             setCurrentTime(time);

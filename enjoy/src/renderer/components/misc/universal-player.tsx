@@ -10,7 +10,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-export const Player = (props: {
+export const UniversalPlayer = (props: {
   src: string;
   onTimeUpdate?: (time: number) => void;
   onError?: (error: any) => void;
