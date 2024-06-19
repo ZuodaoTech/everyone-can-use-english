@@ -1,7 +1,11 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { Button } from "@renderer/components/ui";
-import { MediaPlayer, MediaProvider } from "@vidstack/react";
+import {
+  MediaPlayer,
+  MediaProvider,
+  type MediaPlayerInstance,
+} from "@vidstack/react";
 import {
   DefaultAudioLayout,
   defaultLayoutIcons,
@@ -11,6 +15,7 @@ import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { t } from "i18next";
 import { XCircleIcon } from "lucide-react";
 import { WavesurferPlayer } from "../misc";
+import { v4 as uuidv4 } from "uuid";
 
 export const PostAudio = (props: {
   audio: Partial<MediumType>;
@@ -21,6 +26,7 @@ export const PostAudio = (props: {
   const { webApi } = useContext(AppSettingsProviderContext);
   const [transcription, setTranscription] = useState<TranscriptionType>();
   const [error, setError] = useState<string>(null);
+  const [uuid, setUuid] = useState<string>();
 
   const currentTranscription = transcription?.result["transcript"]
     ? (transcription.result?.timeline || []).find(
@@ -33,6 +39,7 @@ export const PostAudio = (props: {
           currentTime <= s.offsets.to / 1000.0
       );
 
+  const mediaPlayer = useRef<MediaPlayerInstance>(null);
   useEffect(() => {
     webApi
       .transcriptions({
@@ -43,7 +50,25 @@ export const PostAudio = (props: {
         if (transcription.targetMd5 !== audio.md5) return;
         setTranscription(response?.transcriptions?.[0]);
       });
+
+    setUuid(uuidv4());
   }, [audio.md5]);
+
+  useEffect(() => {
+    if (!mediaPlayer.current) return;
+
+    const onOtherPlayerPlay = (event: CustomEvent) => {
+      if (event.detail.uuid !== uuid) {
+        mediaPlayer.current!.pause();
+      }
+    };
+
+    document.addEventListener("play", onOtherPlayerPlay);
+
+    return () => {
+      document.removeEventListener("play", onOtherPlayerPlay);
+    };
+  }, [uuid, mediaPlayer.current]);
 
   if (error) {
     return (
@@ -76,11 +101,18 @@ export const PostAudio = (props: {
         />
       ) : (
         <MediaPlayer
+          ref={mediaPlayer}
           onTimeUpdate={({ currentTime: _currentTime }) => {
             setCurrentTime(_currentTime);
           }}
           src={audio.sourceUrl}
           onError={(err) => setError(err.message)}
+          onPlay={() => {
+            const event = new CustomEvent("play", {
+              detail: { uuid },
+            });
+            document.dispatchEvent(event);
+          }}
         >
           <MediaProvider />
           <DefaultAudioLayout icons={defaultLayoutIcons} />

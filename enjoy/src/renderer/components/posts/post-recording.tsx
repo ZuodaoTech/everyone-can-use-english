@@ -10,6 +10,7 @@ import { t } from "i18next";
 import { XCircleIcon } from "lucide-react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { WavesurferPlayer } from "@renderer/components";
+import { v4 as uuidv4 } from "uuid";
 
 export const PostRecording = (props: {
   recording: RecordingType;
@@ -82,10 +83,13 @@ export const PostRecording = (props: {
 
   useEffect(() => {
     if (!wavesurfer) return;
+    const uuid = uuidv4();
 
     const subscriptions = [
       wavesurfer.on("play", () => {
         setIsPlaying(true);
+        const customEvent = new CustomEvent("play", { detail: { uuid } });
+        document.dispatchEvent(customEvent);
       }),
       wavesurfer.on("pause", () => {
         setIsPlaying(false);
@@ -119,9 +123,19 @@ export const PostRecording = (props: {
       }),
     ];
 
+    const onOtherPlayerPlay = (event: CustomEvent) => {
+      if (!wavesurfer) return;
+      if (event.detail.uuid === uuid) return;
+
+      wavesurfer.pause();
+    };
+
+    document.addEventListener("play", onOtherPlayerPlay);
+
     return () => {
       subscriptions.forEach((unsub) => unsub());
       wavesurfer?.destroy();
+      document.removeEventListener("play", onOtherPlayerPlay);
     };
   }, [wavesurfer]);
 
