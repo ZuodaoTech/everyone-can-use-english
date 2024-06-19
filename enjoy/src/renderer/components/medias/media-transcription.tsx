@@ -122,7 +122,7 @@ export const MediaTranscription = () => {
               <DropdownMenuTrigger>
                 <SquareMenuIcon className="w-5 h-5 text-muted-foreground" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
+              <DropdownMenuContent className="w-36">
                 <DropdownMenuItem asChild>
                   <MediaTranscriptionReadButton>
                     <Button variant="ghost" className="block w-full">
@@ -134,14 +134,18 @@ export const MediaTranscription = () => {
                   <MediaTranscriptionGenerateButton>
                     <Button
                       variant="ghost"
-                      className="block w-full"
+                      className="w-full"
                       disabled={transcribing}
                     >
-                      {(transcribing ||
+                      {(!transcribing ||
                         transcription.state === "processing") && (
                         <LoaderIcon className="animate-spin w-4 mr-2" />
                       )}
-                      {transcription.result ? t("regenerate") : t("transcribe")}
+                      <span>
+                        {transcription.result
+                          ? t("regenerate")
+                          : t("transcribe")}
+                      </span>
                     </Button>
                   </MediaTranscriptionGenerateButton>
                 </DropdownMenuItem>

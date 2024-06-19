@@ -27,11 +27,17 @@ export const MediaTranscriptionGenerateButton = (props: {
         {props.children ? (
           props.children
         ) : (
-          <Button disabled={transcribing} variant="outline">
+          <Button
+            disabled={transcribing}
+            variant="outline"
+            className="min-w-max"
+          >
             {(transcribing || transcription.state === "processing") && (
               <LoaderIcon className="animate-spin w-4 mr-2" />
             )}
-            {transcription.result ? t("regenerate") : t("transcribe")}
+            <span>
+              {transcription.result ? t("regenerate") : t("transcribe")}
+            </span>
           </Button>
         )}
       </AlertDialogTrigger>
