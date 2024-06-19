@@ -1,20 +1,11 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { Button } from "@renderer/components/ui";
-import {
-  MediaPlayer,
-  MediaProvider,
-  type MediaPlayerInstance,
-} from "@vidstack/react";
-import {
-  DefaultAudioLayout,
-  defaultLayoutIcons,
-} from "@vidstack/react/player/layouts/default";
 import { STORAGE_WORKER_ENDPOINTS } from "@/constants";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { t } from "i18next";
 import { XCircleIcon } from "lucide-react";
-import { WavesurferPlayer } from "../misc";
+import { Player, WavesurferPlayer } from "../misc";
 import { v4 as uuidv4 } from "uuid";
 
 export const PostAudio = (props: {
@@ -39,7 +30,6 @@ export const PostAudio = (props: {
           currentTime <= s.offsets.to / 1000.0
       );
 
-  const mediaPlayer = useRef<MediaPlayerInstance>(null);
   useEffect(() => {
     webApi
       .transcriptions({
@@ -53,22 +43,6 @@ export const PostAudio = (props: {
 
     setUuid(uuidv4());
   }, [audio.md5]);
-
-  useEffect(() => {
-    if (!mediaPlayer.current) return;
-
-    const onOtherPlayerPlay = (event: CustomEvent) => {
-      if (event.detail.uuid !== uuid) {
-        mediaPlayer.current!.pause();
-      }
-    };
-
-    document.addEventListener("play", onOtherPlayerPlay);
-
-    return () => {
-      document.removeEventListener("play", onOtherPlayerPlay);
-    };
-  }, [uuid, mediaPlayer.current]);
 
   if (error) {
     return (
@@ -100,23 +74,13 @@ export const PostAudio = (props: {
           onError={(err) => setError(err.message)}
         />
       ) : (
-        <MediaPlayer
-          ref={mediaPlayer}
-          onTimeUpdate={({ currentTime: _currentTime }) => {
-            setCurrentTime(_currentTime);
-          }}
+        <Player
           src={audio.sourceUrl}
-          onError={(err) => setError(err.message)}
-          onPlay={() => {
-            const event = new CustomEvent("play", {
-              detail: { uuid },
-            });
-            document.dispatchEvent(event);
+          onTimeUpdate={(time) => {
+            setCurrentTime(time);
           }}
-        >
-          <MediaProvider />
-          <DefaultAudioLayout icons={defaultLayoutIcons} />
-        </MediaPlayer>
+          onError={(err) => setError(err.message)}
+        />
       )}
 
       {currentTranscription && (
