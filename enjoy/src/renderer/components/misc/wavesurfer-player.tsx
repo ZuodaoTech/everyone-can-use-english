@@ -1,11 +1,16 @@
-import { renderPitchContour, secondsToTimestamp } from "@renderer/lib/utils";
+import {
+  cn,
+  renderPitchContour,
+  secondsToTimestamp,
+} from "@renderer/lib/utils";
 import { extractFrequencies } from "@/utils";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { useCallback, useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import { Button, Skeleton } from "@renderer/components/ui";
-import { PauseIcon, PlayIcon } from "lucide-react";
+import { PauseIcon, PlayIcon, XCircleIcon } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
+import { t } from "i18next";
 
 export const WavesurferPlayer = (props: {
   id: string;
@@ -14,8 +19,20 @@ export const WavesurferPlayer = (props: {
   currentTime?: number;
   setCurrentTime?: (currentTime: number) => void;
   onError?: (error: Error) => void;
+  wavesurferOptions?: any;
+  pitchContourOptions?: any;
+  className?: string;
 }) => {
-  const { id, src, height = 80, onError, setCurrentTime } = props;
+  const {
+    id,
+    src,
+    height = 80,
+    onError,
+    setCurrentTime,
+    wavesurferOptions,
+    pitchContourOptions,
+    className = "",
+  } = props;
   const [initialized, setInitialized] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [wavesurfer, setWavesurfer] = useState(null);
@@ -24,6 +41,7 @@ export const WavesurferPlayer = (props: {
     threshold: 1,
   });
   const [duration, setDuration] = useState<number>(0);
+  const [error, setError] = useState<string>(null);
 
   const onPlayClick = useCallback(() => {
     if (!wavesurfer) return;
@@ -51,6 +69,7 @@ export const WavesurferPlayer = (props: {
       minPxPerSec: 100,
       waveColor: "#ddd",
       progressColor: "rgba(0, 0, 0, 0.25)",
+      ...wavesurferOptions,
     });
 
     setWavesurfer(ws);
@@ -87,6 +106,7 @@ export const WavesurferPlayer = (props: {
                 data,
                 cubicInterpolationMode: "monotone",
                 pointRadius: 1,
+                ...pitchContourOptions,
               },
             ],
           });
@@ -94,6 +114,7 @@ export const WavesurferPlayer = (props: {
         setInitialized(true);
       }),
       wavesurfer.on("error", (err: Error) => {
+        setError(err.message);
         onError(err);
       }),
     ];
@@ -114,6 +135,24 @@ export const WavesurferPlayer = (props: {
     };
   }, [wavesurfer]);
 
+  if (error) {
+    return (
+      <div
+        className={cn("w-full bg-background rounded-lg p-4 border", className)}
+      >
+        <div className="flex items-center justify-center mb-2">
+          <XCircleIcon className="w-4 h-4 text-destructive" />
+        </div>
+        <div className="select-text break-all text-center text-sm text-muted-foreground mb-4">
+          {error}
+        </div>
+        <div className="flex items-center justify-center">
+          <Button onClick={() => setError(null)}>{t("retry")}</Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex justify-end">
@@ -124,7 +163,10 @@ export const WavesurferPlayer = (props: {
 
       <div
         ref={ref}
-        className="bg-background rounded-lg grid grid-cols-9 items-center relative h-[80px]"
+        className={cn(
+          "bg-background rounded-lg grid grid-cols-9 items-center relative h-[80px]",
+          className
+        )}
       >
         {!initialized && (
           <div className="col-span-9 flex flex-col justify-around h-[80px]">

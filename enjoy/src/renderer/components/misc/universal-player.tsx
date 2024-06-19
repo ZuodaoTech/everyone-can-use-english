@@ -20,7 +20,6 @@ export const UniversalPlayer = (props: {
   const [uuid] = useState<string>(uuidv4());
 
   useEffect(() => {
-    console.log(uuid);
     if (!mediaPlayer.current) return;
 
     const onOtherPlayerPlay = (event: CustomEvent) => {
