@@ -7,27 +7,26 @@ import {
 import { t } from "i18next";
 import {
   Button,
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogCancel,
-  AlertDialogAction,
   PingPoint,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
 } from "@renderer/components/ui";
 import {
   LoaderIcon,
   CheckCircleIcon,
   MicIcon,
   PencilLineIcon,
+  SquareMenuIcon,
 } from "lucide-react";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 import { formatDuration } from "@renderer/lib/utils";
-import { MediaTranscriptionForm } from "./media-transcription-form";
-import { MediaTranscriptionReadButton } from "./media-transcription-read-button";
+import {
+  MediaTranscriptionForm,
+  MediaTranscriptionReadButton,
+  MediaTranscriptionGenerateButton,
+} from "@renderer/components";
 
 export const MediaTranscription = () => {
   const containerRef = useRef<HTMLDivElement>();
@@ -38,7 +37,6 @@ export const MediaTranscription = () => {
     wavesurfer,
     setCurrentSegmentIndex,
     transcription,
-    generateTranscription,
     transcribing,
     transcribingProgress,
   } = useContext(MediaPlayerProviderContext);
@@ -120,48 +118,46 @@ export const MediaTranscription = () => {
             <span className="capitalize">{t("transcript")}</span>
           </div>
           <div className="flex space-x-2">
-            <MediaTranscriptionReadButton />
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={
-                    transcribing || transcription.state === "processing"
-                  }
-                  className="capitalize"
-                >
-                  {(transcribing || transcription.state === "processing") && (
-                    <LoaderIcon className="animate-spin w-4 mr-2" />
-                  )}
-                  {transcription.result ? t("regenerate") : t("transcribe")}
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>{t("transcribe")}</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    {t("transcribeMediaConfirmation", {
-                      name: media.name,
-                    })}
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={() =>
-                      generateTranscription({
-                        originalText: "",
-                      })
-                    }
-                  >
-                    {t("transcribe")}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-
-            <MediaTranscriptionForm />
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <SquareMenuIcon className="w-5 h-5 text-muted-foreground" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-36">
+                <DropdownMenuItem asChild>
+                  <MediaTranscriptionReadButton>
+                    <Button variant="ghost" className="block w-full">
+                      {t("readThrough")}
+                    </Button>
+                  </MediaTranscriptionReadButton>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <MediaTranscriptionGenerateButton>
+                    <Button
+                      variant="ghost"
+                      className="w-full"
+                      disabled={transcribing}
+                    >
+                      {(transcribing ||
+                        transcription.state === "processing") && (
+                        <LoaderIcon className="animate-spin w-4 mr-2" />
+                      )}
+                      <span>
+                        {transcription.result
+                          ? t("regenerate")
+                          : t("transcribe")}
+                      </span>
+                    </Button>
+                  </MediaTranscriptionGenerateButton>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <MediaTranscriptionForm>
+                    <Button variant="ghost" className="block w-full">
+                      {t("edit")}
+                    </Button>
+                  </MediaTranscriptionForm>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>

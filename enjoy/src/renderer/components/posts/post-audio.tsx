@@ -1,16 +1,11 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { Button } from "@renderer/components/ui";
-import { MediaPlayer, MediaProvider } from "@vidstack/react";
-import {
-  DefaultAudioLayout,
-  defaultLayoutIcons,
-} from "@vidstack/react/player/layouts/default";
 import { STORAGE_WORKER_ENDPOINTS } from "@/constants";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { t } from "i18next";
 import { XCircleIcon } from "lucide-react";
-import { WavesurferPlayer } from "../misc";
+import { UniversalPlayer, WavesurferPlayer } from "@renderer/components";
 
 export const PostAudio = (props: {
   audio: Partial<MediumType>;
@@ -75,16 +70,13 @@ export const PostAudio = (props: {
           onError={(err) => setError(err.message)}
         />
       ) : (
-        <MediaPlayer
-          onTimeUpdate={({ currentTime: _currentTime }) => {
-            setCurrentTime(_currentTime);
-          }}
+        <UniversalPlayer
           src={audio.sourceUrl}
+          onTimeUpdate={(time) => {
+            setCurrentTime(time);
+          }}
           onError={(err) => setError(err.message)}
-        >
-          <MediaProvider />
-          <DefaultAudioLayout icons={defaultLayoutIcons} />
-        </MediaPlayer>
+        />
       )}
 
       {currentTranscription && (
