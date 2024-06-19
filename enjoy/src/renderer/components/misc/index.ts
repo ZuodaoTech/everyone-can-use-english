@@ -8,5 +8,6 @@ export * from "./github-login-form";
 export * from "./mixin-login-form";
 export * from "./no-records-found";
 export * from "./page-placeholder";
+export * from "./universal-player";
 export * from "./sidebar";
 export * from "./wavesurfer-player";
