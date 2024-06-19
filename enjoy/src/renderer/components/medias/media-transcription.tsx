@@ -137,7 +137,7 @@ export const MediaTranscription = () => {
                       className="w-full"
                       disabled={transcribing}
                     >
-                      {(!transcribing ||
+                      {(transcribing ||
                         transcription.state === "processing") && (
                         <LoaderIcon className="animate-spin w-4 mr-2" />
                       )}
