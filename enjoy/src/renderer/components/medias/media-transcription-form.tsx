@@ -25,15 +25,21 @@ import { t } from "i18next";
 import { useContext, useState } from "react";
 import { LoaderIcon } from "lucide-react";
 
-export const MediaTranscriptionForm = () => {
+export const MediaTranscriptionForm = (props: {
+  children?: React.ReactNode;
+}) => {
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          <span className="capitalize">{t("edit")}</span>
-        </Button>
+        {props.children ? (
+          props.children
+        ) : (
+          <Button variant="outline" size="sm">
+            <span className="capitalize">{t("edit")}</span>
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="max-w-screen-sm xl:max-w-screen-md">
         <TranscriptionForm setOpen={setOpen} />
