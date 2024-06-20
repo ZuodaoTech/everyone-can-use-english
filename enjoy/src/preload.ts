@@ -463,6 +463,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     onProgress: (
       callback: (event: IpcRendererEvent, progress: number) => void
     ) => ipcRenderer.on("whisper-on-progress", callback),
+    abort: () => {
+      return ipcRenderer.invoke("whisper-abort");
+    },
     removeProgressListeners: () => {
       ipcRenderer.removeAllListeners("whisper-on-progress");
     },

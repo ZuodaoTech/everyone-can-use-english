@@ -254,10 +254,16 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     };
   }, [transcription, media]);
 
+  const abortGenerateTranscription = () => {
+    EnjoyApp.whisper.abort();
+    setTranscribing(false);
+  };
+
   return {
     transcription,
     transcribingProgress,
     transcribing,
     generateTranscription,
+    abortGenerateTranscription,
   };
 };

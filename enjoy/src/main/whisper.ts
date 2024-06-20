@@ -22,6 +22,7 @@ class Whipser {
   private binMain: string;
   private bundledModelsDir: string;
   public config: WhisperConfigType;
+  private abortController: AbortController;
 
   constructor() {
     const customWhisperPath = path.join(
@@ -87,6 +88,9 @@ class Whipser {
   }
 
   async check() {
+    this.abortController?.abort();
+    this.abortController = new AbortController();
+
     const model = this.currentModel();
     logger.debug(`Checking whisper model: ${model.savePath}`);
 
@@ -107,6 +111,7 @@ class Whipser {
         commands.join(" "),
         {
           timeout: PROCESS_TIMEOUT,
+          signal: this.abortController.signal,
         },
         (error, stdout, stderr) => {
           if (error) {
@@ -148,6 +153,9 @@ class Whipser {
     }
   ): Promise<Partial<WhisperOutputType>> {
     logger.debug("transcribing from local");
+
+    this.abortController?.abort();
+    this.abortController = new AbortController();
 
     const { blob } = params;
     let { file } = params;
@@ -199,6 +207,7 @@ class Whipser {
 
     const command = spawn(this.binMain, commandArguments, {
       timeout: PROCESS_TIMEOUT,
+      signal: this.abortController.signal,
     });
 
     return new Promise((resolve, reject) => {
@@ -224,14 +233,18 @@ class Whipser {
         reject(err);
       });
 
-      command.on("close", () => {
-        if (fs.pathExistsSync(outputFile)) {
+      command.on("close", (code) => {
+        if (code === 0 && fs.pathExistsSync(outputFile)) {
           resolve(fs.readJson(outputFile));
         } else {
           reject(new Error("Transcription failed"));
         }
       });
     });
+  }
+
+  abort() {
+    this.abortController?.abort();
   }
 
   registerIpcHandlers() {
@@ -304,6 +317,10 @@ class Whipser {
           message: err.message,
         });
       }
+    });
+
+    ipcMain.handle("whisper-abort", async (_event) => {
+      return await this.abort();
     });
   }
 }

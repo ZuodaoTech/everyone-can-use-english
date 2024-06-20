@@ -178,6 +178,7 @@ export const MediaPlayerProvider = ({
     generateTranscription,
     transcribing,
     transcribingProgress,
+    abortGenerateTranscription,
   } = useTranscriptions(media);
 
   const {
@@ -559,6 +560,18 @@ export const MediaPlayerProvider = ({
     };
   }, [media?.src, ref, mediaProvider, layout?.playerHeight]);
 
+  /* cache last segment index */
+  useEffect(() => {
+    if (!media) return;
+    if (!currentSegmentIndex) return;
+
+    setCachedSegmentIndex(currentSegmentIndex);
+  }, [currentSegmentIndex]);
+
+  /*
+   * Update layout when window is resized
+   * Abort transcription when component is unmounted
+   */
   useEffect(() => {
     calculateHeight();
 
@@ -572,16 +585,9 @@ export const MediaPlayerProvider = ({
 
     return () => {
       EnjoyApp.window.removeListeners();
+      abortGenerateTranscription();
     };
   }, []);
-
-  /* cache last segment index */
-  useEffect(() => {
-    if (!media) return;
-    if (!currentSegmentIndex) return;
-
-    setCachedSegmentIndex(currentSegmentIndex);
-  }, [currentSegmentIndex]);
 
   return (
     <>

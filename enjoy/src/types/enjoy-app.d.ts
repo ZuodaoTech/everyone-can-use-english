@@ -269,6 +269,7 @@ type EnjoyAppType = {
       }
     ) => Promise<Partial<WhisperOutputType>>;
     onProgress: (callback: (event, progress: number) => void) => void;
+    abort: () => Promise<void>;
     removeProgressListeners: () => Promise<void>;
   };
   ffmpeg: {
