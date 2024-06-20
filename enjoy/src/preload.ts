@@ -2,6 +2,7 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 import { version } from "../package.json";
+import { abort } from "process";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
@@ -463,6 +464,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     onProgress: (
       callback: (event: IpcRendererEvent, progress: number) => void
     ) => ipcRenderer.on("whisper-on-progress", callback),
+    abort: () => {
+      return ipcRenderer.invoke("whisper-abort");
+    },
     removeProgressListeners: () => {
       ipcRenderer.removeAllListeners("whisper-on-progress");
     },
