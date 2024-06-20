@@ -82,7 +82,7 @@
 
   @font-face {
     font-family: "CharisSIL";
-    src: url("assets/fonts/CharisSIL-Regular.ttf") format("truetype");
+    src: url("/assets/fonts/CharisSIL-Regular.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
   }
