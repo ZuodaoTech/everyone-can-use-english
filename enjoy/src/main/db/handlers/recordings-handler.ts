@@ -174,7 +174,7 @@ class RecordingsHandler {
       throw new Error(t("models.recording.notFound"));
     }
 
-    const assessment = await recording.assess(language)
+    const assessment = await recording.assess(language);
     return assessment.toJSON();
   }
 
@@ -307,6 +307,20 @@ class RecordingsHandler {
         targetId,
         targetType,
       },
+      include: [
+        {
+          model: PronunciationAssessment,
+          attributes: [
+            [
+              Sequelize.fn(
+                "MAX",
+                Sequelize.col("pronunciation_score")
+              ),
+              "pronunciationScore",
+            ],
+          ],
+        },
+      ],
       attributes: [
         "targetId",
         "targetType",
