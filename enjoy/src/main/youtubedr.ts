@@ -48,9 +48,11 @@ const validPathDomains =
   /^https?:\/\/(youtu\.be\/|(www\.)?youtube\.com\/(embed|v|shorts)\/)/;
 
 const ONE_MINUTE = 1000 * 60; // 1 minute
+const TEN_MINUTES = 1000 * 60 * 10; // 10 minutes
 
 class Youtubedr {
   private binFile: string;
+  private abortController: AbortController | null = null;
 
   constructor() {
     this.binFile = path.join(
@@ -96,6 +98,9 @@ class Youtubedr {
       webContents?: Electron.WebContents;
     } = {}
   ): Promise<string> {
+    this.abortController?.abort();
+    this.abortController = new AbortController();
+
     const {
       quality,
       filename = this.getYtVideoId(url) + ".mp4",
@@ -116,13 +121,20 @@ class Youtubedr {
     let currentSpeed = "";
 
     return new Promise((resolve, reject) => {
-      const proc = spawn(this.binFile, [
-        "download",
-        url,
-        `--quality=${quality || "medium"}`,
-        `--filename=${filename}`,
-        `--directory=${directory}`,
-      ]);
+      const proc = spawn(
+        this.binFile,
+        [
+          "download",
+          url,
+          `--quality=${quality || "medium"}`,
+          `--filename=${filename}`,
+          `--directory=${directory}`,
+        ],
+        {
+          timeout: TEN_MINUTES,
+          signal: this.abortController.signal,
+        }
+      );
 
       proc.stdout.on("data", (data) => {
         const output = data.toString();
@@ -239,6 +251,10 @@ class Youtubedr {
       return false;
     }
   };
+
+  abortDownload() {
+    this.abortController?.abort();
+  }
 }
 
 export default new Youtubedr();

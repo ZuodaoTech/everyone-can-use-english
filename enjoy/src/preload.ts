@@ -2,7 +2,6 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 import { version } from "../package.json";
-import { abort } from "process";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
