@@ -29,7 +29,8 @@ import {
   MediaTranscriptionGenerateButton,
 } from "@renderer/components";
 
-export const MediaTranscription = () => {
+export const MediaTranscription = (props: { display?: boolean }) => {
+  const { display } = props;
   const containerRef = useRef<HTMLDivElement>();
   const {
     decoded,
@@ -70,6 +71,21 @@ export const MediaTranscription = () => {
     });
   };
 
+  const scrollToCurrentSegment = () => {
+    if (!containerRef?.current) return;
+    if (!decoded) return;
+    if (!display) return;
+
+    setTimeout(() => {
+      containerRef.current
+        ?.querySelector(`#segment-${currentSegmentIndex}`)
+        ?.scrollIntoView({
+          block: "center",
+          inline: "center",
+        } as ScrollIntoViewOptions);
+    }, 300);
+  };
+
   useEffect(() => {
     if (!transcription?.result) return;
 
@@ -82,18 +98,8 @@ export const MediaTranscription = () => {
   }, [transcription?.result]);
 
   useEffect(() => {
-    if (!containerRef?.current) return;
-    if (!decoded) return;
-
-    setTimeout(() => {
-      containerRef.current
-        ?.querySelector(`#segment-${currentSegmentIndex}`)
-        ?.scrollIntoView({
-          block: "center",
-          inline: "center",
-        } as ScrollIntoViewOptions);
-    }, 300);
-  }, [decoded, currentSegmentIndex, transcription, containerRef]);
+    scrollToCurrentSegment();
+  }, [display, decoded, currentSegmentIndex, transcription, containerRef]);
 
   if (!transcription?.result?.timeline) {
     return null;
