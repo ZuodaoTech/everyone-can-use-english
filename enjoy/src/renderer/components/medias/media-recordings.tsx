@@ -22,6 +22,7 @@ import {
   MediaPlayerProviderContext,
 } from "@renderer/context";
 import {
+  GaugeCircleIcon,
   LoaderIcon,
   MicIcon,
   MoreHorizontalIcon,
@@ -90,6 +91,28 @@ export const MediaRecordings = () => {
             <span>{formatDuration(recording.duration, "ms")}</span>
           </div>
           <div className="flex items-center space-x-2">
+            {recording.pronunciationAssessment?.result && (
+              <div
+                className={`flex items-center space-x-1
+                    ${
+                      recording.pronunciationAssessment
+                        ? recording.pronunciationAssessment
+                            .pronunciationScore >= 80
+                          ? "text-green-500"
+                          : recording.pronunciationAssessment
+                              .pronunciationScore >= 60
+                          ? "text-yellow-600"
+                          : "text-red-500"
+                        : ""
+                    }
+                    `}
+              >
+                <GaugeCircleIcon className="w-4 h-4" />
+                <span className="text-xs font-mono">
+                  {recording.pronunciationAssessment.pronunciationScore}
+                </span>
+              </div>
+            )}
             <span className="text-sm text-muted-foreground">
               {formatDateTime(recording.createdAt)}
             </span>
