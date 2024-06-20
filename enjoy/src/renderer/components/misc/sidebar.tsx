@@ -14,6 +14,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuItem,
   Separator,
+  DialogTitle,
 } from "@renderer/components/ui";
 import {
   SettingsIcon,
@@ -172,6 +173,9 @@ export const Sidebar = () => {
               </DialogTrigger>
 
               <DialogContent className="max-w-screen-md xl:max-w-screen-lg h-5/6 p-0">
+                <DialogTitle className="hidden">
+                  {t("sidebar.preferences")}
+                </DialogTitle>
                 <Preferences />
               </DialogContent>
             </Dialog>

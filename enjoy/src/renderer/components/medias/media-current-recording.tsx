@@ -28,6 +28,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetClose,
+  SheetTitle,
 } from "@renderer/components/ui";
 import {
   GitCompareIcon,
@@ -640,6 +641,9 @@ export const MediaCurrentRecording = () => {
           displayClose={false}
         >
           <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
+            <SheetTitle className="hidden">
+              {t("pronunciationAssessment")}
+            </SheetTitle>
             <SheetClose>
               <ChevronDownIcon />
             </SheetClose>
