@@ -19,6 +19,7 @@ import {
   MicIcon,
   PencilLineIcon,
   SquareMenuIcon,
+  GaugeCircleIcon,
 } from "lucide-react";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 import { formatDuration } from "@renderer/lib/utils";
@@ -28,7 +29,8 @@ import {
   MediaTranscriptionGenerateButton,
 } from "@renderer/components";
 
-export const MediaTranscription = () => {
+export const MediaTranscription = (props: { display?: boolean }) => {
+  const { display } = props;
   const containerRef = useRef<HTMLDivElement>();
   const {
     decoded,
@@ -69,6 +71,21 @@ export const MediaTranscription = () => {
     });
   };
 
+  const scrollToCurrentSegment = () => {
+    if (!containerRef?.current) return;
+    if (!decoded) return;
+    if (!display) return;
+
+    setTimeout(() => {
+      containerRef.current
+        ?.querySelector(`#segment-${currentSegmentIndex}`)
+        ?.scrollIntoView({
+          block: "center",
+          inline: "center",
+        } as ScrollIntoViewOptions);
+    }, 300);
+  };
+
   useEffect(() => {
     if (!transcription?.result) return;
 
@@ -81,18 +98,8 @@ export const MediaTranscription = () => {
   }, [transcription?.result]);
 
   useEffect(() => {
-    if (!containerRef?.current) return;
-    if (!decoded) return;
-
-    setTimeout(() => {
-      containerRef.current
-        ?.querySelector(`#segment-${currentSegmentIndex}`)
-        ?.scrollIntoView({
-          block: "center",
-          inline: "center",
-        } as ScrollIntoViewOptions);
-    }, 300);
-  }, [decoded, currentSegmentIndex, transcription, containerRef]);
+    scrollToCurrentSegment();
+  }, [display, decoded, currentSegmentIndex, transcription, containerRef]);
 
   if (!transcription?.result?.timeline) {
     return null;
@@ -182,9 +189,10 @@ export const MediaTranscription = () => {
             <div className="flex items-center justify-between">
               <span className="text-xs opacity-50">#{index + 1}</span>
               <div className="flex items-center space-x-2">
-                {(recordingStats || []).findIndex(
-                  (s) => s.referenceId === index
-                ) !== -1 && <MicIcon className="w-3 h-3 text-sky-500" />}
+                <RecordingStatsRemark
+                  stats={recordingStats}
+                  referenceId={index}
+                />
                 {(notesStats || []).findIndex(
                   (s) => s.segment?.segmentIndex === index
                 ) !== -1 && <PencilLineIcon className="w-3 h-3 text-sky-500" />}
@@ -198,5 +206,36 @@ export const MediaTranscription = () => {
         )
       )}
     </div>
+  );
+};
+
+const RecordingStatsRemark = (props: {
+  stats: SegementRecordingStatsType;
+  referenceId: number;
+}) => {
+  const { stats = [], referenceId } = props;
+  const stat = stats.find((s) => s.referenceId === referenceId);
+  if (!stat) return null;
+
+  return (
+    <>
+      {stat.pronunciationAssessment?.pronunciationScore && (
+        <GaugeCircleIcon
+          className={`w-3 h-3
+                    ${
+                      stat.pronunciationAssessment
+                        ? stat.pronunciationAssessment.pronunciationScore >= 80
+                          ? "text-green-500"
+                          : stat.pronunciationAssessment.pronunciationScore >=
+                            60
+                          ? "text-yellow-600"
+                          : "text-red-500"
+                        : ""
+                    }
+                    `}
+        />
+      )}
+      <MicIcon className="w-3 h-3 text-sky-500" />
+    </>
   );
 };
