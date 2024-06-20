@@ -1,7 +1,7 @@
 import { ipcMain } from "electron";
 import settings from "@main/settings";
 import { Sequelize } from "sequelize-typescript";
-import { Umzug, SequelizeStorage } from "umzug";
+import { Umzug, SequelizeStorage, Resolver, RunnableMigration } from "umzug";
 import {
   Audio,
   Recording,
@@ -28,6 +28,7 @@ import {
   transcriptionsHandler,
   videosHandler,
 } from "./handlers";
+import os from "os";
 import path from "path";
 import url from "url";
 
@@ -64,8 +65,45 @@ db.connect = async () => {
 
   db.connection = sequelize;
 
+  const migrationResolver: Resolver<unknown> = ({
+    name,
+    path: filepath,
+    context,
+  }) => {
+    if (!filepath) {
+      throw new Error(
+        `Can't use default resolver for non-filesystem migrations`
+      );
+    }
+
+    const loadModule: () => Promise<RunnableMigration<unknown>> = async () => {
+      if (os.platform() === "win32") {
+        return import(`file://${filepath}`) as Promise<
+          RunnableMigration<unknown>
+        >;
+      } else {
+        return import(filepath) as Promise<RunnableMigration<unknown>>;
+      }
+    };
+
+    const getModule = async () => {
+      return await loadModule();
+    };
+
+    return {
+      name,
+      path: filepath,
+      up: async () => (await getModule()).up({ path: filepath, name, context }),
+      down: async () =>
+        (await getModule()).down?.({ path: filepath, name, context }),
+    };
+  };
+
   const umzug = new Umzug({
-    migrations: { glob: __dirname + "/migrations/*.js" },
+    migrations: {
+      glob: ["migrations/*.js", { cwd: __dirname }],
+      resolve: migrationResolver,
+    },
     context: sequelize.getQueryInterface(),
     storage: new SequelizeStorage({ sequelize }),
     logger: console,
