@@ -4,7 +4,7 @@ import {
   PronunciationAssessmentScoreResult,
 } from "@renderer/components";
 import { Separator, ScrollArea } from "@renderer/components/ui";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { Tooltip } from "react-tooltip";
 
@@ -29,11 +29,18 @@ export const RecordingDetail = (props: {
   const [assessing, setAssessing] = useState(false);
 
   const assess = () => {
+    if (assessing) return;
+    if (result) return;
+
     setAssessing(true);
     EnjoyApp.recordings.assess(recording.id, learningLanguage).finally(() => {
       setAssessing(false);
     });
   };
+
+  useEffect(() => {
+    assess();
+  }, [recording]);
 
   return (
     <div className="">
