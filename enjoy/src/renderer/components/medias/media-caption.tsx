@@ -37,9 +37,10 @@ export const MediaCaption = () => {
     editingRegion,
     setEditingRegion,
     setTranscriptionDraft,
-    ipaMappings,
   } = useContext(MediaPlayerProviderContext);
-  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage, ipaMappings } = useContext(
+    AppSettingsProviderContext
+  );
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [multiSelecting, setMultiSelecting] = useState<boolean>(false);
@@ -486,8 +487,10 @@ export const Caption = (props: {
   displayNotes?: boolean;
   onClick?: (index: number) => void;
 }) => {
-  const { currentNotes, ipaMappings } = useContext(MediaPlayerProviderContext);
-  const { learningLanguage } = useContext(AppSettingsProviderContext);
+  const { currentNotes } = useContext(MediaPlayerProviderContext);
+  const { learningLanguage, ipaMappings } = useContext(
+    AppSettingsProviderContext
+  );
   const notes = currentNotes.filter((note) => note.parameters?.quoteIndices);
   const {
     caption,

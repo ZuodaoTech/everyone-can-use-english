@@ -3,7 +3,6 @@ import { useContext, useState } from "react";
 import { WavesurferPlayer } from "@/renderer/components/misc";
 import { AppSettingsProviderContext } from "@/renderer/context";
 import { convertWordIpaToNormal } from "@/utils";
-import { IPA_MAPPINGS } from "@/constants";
 
 export const NoteSemgent = (props: {
   segment: SegmentType;
@@ -11,7 +10,9 @@ export const NoteSemgent = (props: {
 }) => {
   const { segment, notes } = props;
   const caption: TimelineEntry = segment.caption;
-  const { learningLanguage } = useContext(AppSettingsProviderContext);
+  const { learningLanguage, ipaMappings } = useContext(
+    AppSettingsProviderContext
+  );
 
   const [notedquoteIndices, setNotedquoteIndices] = useState<number[]>([]);
 
@@ -22,7 +23,7 @@ export const NoteSemgent = (props: {
       language.startsWith("en")
         ? convertWordIpaToNormal(
             t.timeline.map((s) => s.text),
-            { mappings: IPA_MAPPINGS }
+            { mappings: ipaMappings }
           ).join("")
         : t.text
     )

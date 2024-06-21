@@ -16,7 +16,6 @@ import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
 import { debounce } from "lodash";
-import { IPA_MAPPINGS } from "@/constants";
 
 type MediaPlayerContextType = {
   layout: {
@@ -90,8 +89,6 @@ type MediaPlayerContextType = {
   // Segments
   currentSegment: SegmentType;
   createSegment: () => Promise<SegmentType | void>;
-  // remote config
-  ipaMappings: { [key: string]: string };
   getCachedSegmentIndex: () => Promise<number>;
   setCachedSegmentIndex: (index: number) => void;
 };
@@ -169,10 +166,6 @@ export const MediaPlayerProvider = ({
 
   const [transcriptionDraft, setTranscriptionDraft] =
     useState<TranscriptionType["result"]>();
-
-  const [ipaMappings, setIpaMappings] = useState<{ [key: string]: string }>(
-    IPA_MAPPINGS
-  );
 
   const {
     transcription,
@@ -576,10 +569,6 @@ export const MediaPlayerProvider = ({
   useEffect(() => {
     calculateHeight();
 
-    webApi.config("ipa_mappings").then((mappings) => {
-      if (mappings) setIpaMappings(mappings);
-    });
-
     EnjoyApp.window.onResize(() => {
       deboundeCalculateHeight();
     });
@@ -636,7 +625,6 @@ export const MediaPlayerProvider = ({
           createNote,
           currentSegment: segment,
           createSegment,
-          ipaMappings,
           getCachedSegmentIndex,
           setCachedSegmentIndex,
         }}
