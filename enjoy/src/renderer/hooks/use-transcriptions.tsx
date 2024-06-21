@@ -249,12 +249,12 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
 
     addDblistener(onTransactionUpdate);
 
-    if (
-      transcription.state == "pending" ||
-      !transcription.result?.["timeline"]
-    ) {
-      findOrGenerateTranscription();
-    }
+    // if (
+    //   transcription.state == "pending" ||
+    //   !transcription.result?.["timeline"]
+    // ) {
+    //   findOrGenerateTranscription();
+    // }
 
     if (whisperConfig.service === "local") {
       EnjoyApp.whisper.onProgress((_, p: number) => {

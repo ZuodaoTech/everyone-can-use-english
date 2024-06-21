@@ -1,5 +1,8 @@
 import { useContext, useRef, useState } from "react";
-import { MediaPlayerProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  MediaPlayerProviderContext,
+} from "@renderer/context";
 import { t } from "i18next";
 import {
   Button,
@@ -12,14 +15,22 @@ import {
   AlertDialogDescription,
   AlertDialogCancel,
   AlertDialogAction,
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectValue,
+  SelectItem,
 } from "@renderer/components/ui";
 import { LoaderIcon } from "lucide-react";
+import { LANGUAGES } from "@/constants";
 
 export const MediaTranscriptionGenerateButton = (props: {
   children: React.ReactNode;
 }) => {
   const { media, generateTranscription, transcribing, transcription } =
     useContext(MediaPlayerProviderContext);
+  const { learningLanguage } = useContext(AppSettingsProviderContext);
+  const [language, setLanguage] = useState(learningLanguage);
 
   return (
     <AlertDialog>
@@ -50,12 +61,27 @@ export const MediaTranscriptionGenerateButton = (props: {
             })}
           </AlertDialogDescription>
         </AlertDialogHeader>
+        <div className="mb-4">
+          <Select value={language} onValueChange={setLanguage}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {LANGUAGES.map((language) => (
+                <SelectItem key={language.code} value={language.code}>
+                  {language.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <AlertDialogFooter>
           <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
           <AlertDialogAction
             onClick={() =>
               generateTranscription({
                 originalText: "",
+                language,
               })
             }
           >
