@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { cn } from "@renderer/lib/utils";
 import { AudioLinesIcon } from "lucide-react";
+import { Badge } from "@renderer/components/ui";
 
 export const AudioCard = (props: {
   audio: Partial<AudioType>;
@@ -12,9 +13,9 @@ export const AudioCard = (props: {
     <div className={cn("w-full", className)}>
       <Link to={`/audios/${audio.id}`}>
         <div
-          className="aspect-square border rounded-lg overflow-hidden flex"
+          className="aspect-square border rounded-lg overflow-hidden flex relative"
           style={{
-            borderBottomColor: `#${audio.md5.substr(0, 6)}`,
+            borderBottomColor: `#${audio.md5.slice(0, 6)}`,
             borderBottomWidth: 3,
           }}
         >
@@ -25,7 +26,11 @@ export const AudioCard = (props: {
               className="hover:scale-105 object-cover w-full h-full"
             />
           ) : (
-              <AudioLinesIcon className="hover:scale-105 object-cover w-1/2 h-1/2 m-auto" />
+            <AudioLinesIcon className="hover:scale-105 object-cover w-1/2 h-1/2 m-auto" />
+          )}
+
+          {audio.language && (
+            <Badge className="absolute left-2 top-2">{audio.language}</Badge>
           )}
         </div>
       </Link>

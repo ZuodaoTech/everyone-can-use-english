@@ -202,11 +202,7 @@ class Whipser {
       path.join(tmpDir, filename),
       "--print-progress",
       "--language",
-      model.name.includes("en")
-        ? "en"
-        : language
-        ? language.split("-")[0]
-        : "auto",
+      model.name.includes("en") ? "en" : language?.split("-")?.[0] || "auto",
       ...extra,
     ];
 

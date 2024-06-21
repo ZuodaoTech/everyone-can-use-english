@@ -173,6 +173,18 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         model,
         language,
       });
+
+      if (media.language !== language) {
+        if (media.mediaType === "Video") {
+          await EnjoyApp.videos.update(media.id, {
+            language,
+          });
+        } else {
+          await EnjoyApp.audios.update(media.id, {
+            language,
+          });
+        }
+      }
     } catch (err) {
       toast.error(err.message);
     }
