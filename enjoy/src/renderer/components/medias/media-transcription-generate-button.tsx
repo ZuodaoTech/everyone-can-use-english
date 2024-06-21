@@ -16,8 +16,13 @@ import { TranscriptionCreateForm } from "../transcriptions";
 export const MediaTranscriptionGenerateButton = (props: {
   children: React.ReactNode;
 }) => {
-  const { media, generateTranscription, transcribing, transcription } =
-    useContext(MediaPlayerProviderContext);
+  const {
+    media,
+    generateTranscription,
+    transcribing,
+    transcription,
+    transcribingProgress,
+  } = useContext(MediaPlayerProviderContext);
   const [open, setOpen] = useState(false);
 
   return (
@@ -58,7 +63,10 @@ export const MediaTranscriptionGenerateButton = (props: {
               language: data.language,
               service: data.service as WhisperConfigType["service"],
             });
+            setOpen(false);
           }}
+          transcribing={transcribing}
+          transcribingProgress={transcribingProgress}
         />
       </AlertDialogContent>
     </AlertDialog>

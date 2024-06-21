@@ -14,6 +14,8 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  PingPoint,
+  Progress,
   Select,
   SelectContent,
   SelectItem,
@@ -22,6 +24,7 @@ import {
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { LANGUAGES } from "@/constants";
+import { LoaderIcon } from "lucide-react";
 
 const transcriptionSchema = z.object({
   language: z.string(),
@@ -31,9 +34,16 @@ const transcriptionSchema = z.object({
 
 export const TranscriptionCreateForm = (props: {
   onSubmit: (data: z.infer<typeof transcriptionSchema>) => void;
-  onCancel: () => void;
+  onCancel?: () => void;
+  transcribing?: boolean;
+  transcribingProgress?: number;
 }) => {
-  const { onSubmit, onCancel } = props;
+  const {
+    transcribing = false,
+    transcribingProgress = 0,
+    onSubmit,
+    onCancel,
+  } = props;
   const { learningLanguage } = useContext(AppSettingsProviderContext);
   const { whisperConfig } = useContext(AISettingsProviderContext);
 
@@ -46,15 +56,10 @@ export const TranscriptionCreateForm = (props: {
     },
   });
 
-  const handleSubmit = async (data: z.infer<typeof transcriptionSchema>) => {
-    console.log(data);
-    onSubmit(data);
-  };
-
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleSubmit)}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="gap-4 grid w-full"
       >
         <FormField
@@ -63,7 +68,11 @@ export const TranscriptionCreateForm = (props: {
           render={({ field }) => (
             <FormItem className="grid w-full items-center gap-1.5">
               <FormLabel>{t("sttAiService")}</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
+              <Select
+                disabled={transcribing}
+                value={field.value}
+                onValueChange={field.onChange}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -85,7 +94,11 @@ export const TranscriptionCreateForm = (props: {
           render={({ field }) => (
             <FormItem className="grid w-full items-center gap-1.5">
               <FormLabel>{t("language")}</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
+              <Select
+                disabled={transcribing}
+                value={field.value}
+                onValueChange={field.onChange}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -110,6 +123,7 @@ export const TranscriptionCreateForm = (props: {
                 {t("transcript")}({t("optinal")})
               </FormLabel>
               <Input
+                disabled={transcribing}
                 className="mb-2"
                 type="file"
                 accept=".txt,.srt,.vtt"
@@ -134,12 +148,26 @@ export const TranscriptionCreateForm = (props: {
             </FormItem>
           )}
         />
+        {transcribing && (
+          <div className="mb-4">
+            <div className="flex items-center space-x-4 mb-2">
+              <PingPoint colorClassName="bg-yellow-500" />
+              <span>{t("transcribing")}</span>
+            </div>
+            {whisperConfig.service === "local" && (
+              <Progress value={transcribingProgress} />
+            )}
+          </div>
+        )}
 
         <div className="flex justify-end space-x-4">
-          <Button type="reset" variant="outline" onClick={onCancel}>
-            {t("cancel")}
-          </Button>
-          <Button type="submit" variant="default">
+          {onCancel && (
+            <Button type="reset" variant="outline" onClick={onCancel}>
+              {t("cancel")}
+            </Button>
+          )}
+          <Button disabled={transcribing} type="submit" variant="default">
+            {transcribing && <LoaderIcon className="animate-spin w-4 mr-2" />}
             {t("transcribe")}
           </Button>
         </div>
