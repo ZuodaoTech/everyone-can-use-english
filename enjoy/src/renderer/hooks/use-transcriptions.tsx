@@ -57,8 +57,13 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const generateTranscription = async (params?: {
     originalText?: string;
     language?: string;
+    service?: WhisperConfigType["service"];
   }) => {
-    let { originalText, language = learningLanguage } = params || {};
+    let {
+      originalText,
+      language = learningLanguage,
+      service = whisperConfig.service,
+    } = params || {};
     if (originalText === undefined) {
       if (transcription?.targetId === media.id) {
         originalText = transcription.result?.originalText;
@@ -78,6 +83,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         targetType: media.mediaType,
         originalText,
         language,
+        service,
       });
 
       let timeline: TimelineEntry[] = [];

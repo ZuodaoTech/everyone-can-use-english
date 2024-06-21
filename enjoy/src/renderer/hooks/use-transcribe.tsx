@@ -12,10 +12,8 @@ import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 import { useAiCommand } from "./use-ai-command";
 
 export const useTranscribe = () => {
-  const { EnjoyApp, user, webApi, learningLanguage } = useContext(
-    AppSettingsProviderContext
-  );
-  const { whisperConfig, openai } = useContext(AISettingsProviderContext);
+  const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
+  const { openai } = useContext(AISettingsProviderContext);
   const { punctuateText } = useAiCommand();
 
   const transcode = async (src: string | Blob): Promise<string> => {
@@ -37,6 +35,7 @@ export const useTranscribe = () => {
       targetType?: string;
       originalText?: string;
       language: string;
+      service: WhisperConfigType["service"];
     }
   ): Promise<{
     engine: string;
@@ -45,7 +44,8 @@ export const useTranscribe = () => {
     originalText?: string;
   }> => {
     const url = await transcode(mediaSrc);
-    const { targetId, targetType, originalText, language } = params || {};
+    const { targetId, targetType, originalText, language, service } =
+      params || {};
     const blob = await (await fetch(url)).blob();
 
     let result;
@@ -54,13 +54,13 @@ export const useTranscribe = () => {
         engine: "original",
         model: "original",
       };
-    } else if ((whisperConfig.service === "local", language)) {
+    } else if (service === "local") {
       result = await transcribeByLocal(url, language);
-    } else if (whisperConfig.service === "cloudflare") {
+    } else if (service === "cloudflare") {
       result = await transcribeByCloudflareAi(blob);
-    } else if (whisperConfig.service === "openai") {
+    } else if (service === "openai") {
       result = await transcribeByOpenAi(blob);
-    } else if (whisperConfig.service === "azure") {
+    } else if (service === "azure") {
       result = await transcribeByAzureAi(blob, language, {
         targetId,
         targetType,

@@ -69,6 +69,7 @@ type MediaPlayerContextType = {
   generateTranscription: (params?: {
     originalText?: string;
     language?: string;
+    service?: WhisperConfigType["service"];
   }) => void;
   transcribing: boolean;
   transcribingProgress: number;
