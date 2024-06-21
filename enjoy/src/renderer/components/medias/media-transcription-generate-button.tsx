@@ -106,8 +106,7 @@ export const MediaTranscriptionGenerateButton = (props: {
           </div>
           <div className="">
             <Label>
-              {t("transcript")}
-              {t("optinal")}
+              {t("transcript")}({t("optinal")})
             </Label>
             <Input
               className="mb-2"
