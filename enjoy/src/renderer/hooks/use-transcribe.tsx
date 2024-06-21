@@ -55,7 +55,7 @@ export const useTranscribe = () => {
         model: "original",
       };
     } else if ((whisperConfig.service === "local", language)) {
-      result = await transcribeByLocal(url);
+      result = await transcribeByLocal(url, language);
     } else if (whisperConfig.service === "cloudflare") {
       result = await transcribeByCloudflareAi(blob);
     } else if (whisperConfig.service === "openai") {
