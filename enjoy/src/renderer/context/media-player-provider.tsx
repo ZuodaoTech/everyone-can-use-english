@@ -365,7 +365,7 @@ export const MediaPlayerProvider = ({
           );
           labels[index] = [
             labels[index] || "",
-            learningLanguage.startsWith("en")
+            (media?.language || learningLanguage).startsWith("en")
               ? convertIpaToNormal(phone.text.trim())
               : phone.text.trim(),
           ].join("");

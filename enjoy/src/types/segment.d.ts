@@ -2,6 +2,7 @@ type SegmentType = {
   id: string;
   targetId: string;
   targetType: string;
+  target: AudioType | VideoType;
   caption: TimelineEntry;
   audio?: AudioType;
   video?: VideoType;
@@ -14,7 +15,7 @@ type SegmentType = {
   isSynced?: boolean;
   isUploaded?: boolean;
   syncedAt?: Date;
-  uploadedAt?: Date
-  updatedAt: Date
-  createdAt: Date
+  uploadedAt?: Date;
+  updatedAt: Date;
+  createdAt: Date;
 };

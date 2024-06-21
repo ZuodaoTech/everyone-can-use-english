@@ -260,7 +260,9 @@ export class Client {
     return this.api.post("/api/transcriptions", decamelizeKeys(transcription));
   }
 
-  syncSegment(segment: Partial<Omit<SegmentType, "audio" | "video">>) {
+  syncSegment(
+    segment: Partial<Omit<SegmentType, "audio" | "video" | "target">>
+  ) {
     return this.api.post("/api/segments", decamelizeKeys(segment));
   }
 
