@@ -11,7 +11,9 @@ import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@/constants";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
   const { whisperConfig } = useContext(AISettingsProviderContext);
-  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, webApi, learningLanguage } = useContext(
+    AppSettingsProviderContext
+  );
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [transcription, setTranscription] = useState<TranscriptionType>(null);
   const { transcribe } = useTranscribe();
@@ -56,7 +58,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     originalText?: string;
     language?: string;
   }) => {
-    let { originalText, language } = params || {};
+    let { originalText, language = learningLanguage } = params || {};
     if (originalText === undefined) {
       if (transcription?.targetId === media.id) {
         originalText = transcription.result?.originalText;
@@ -169,7 +171,20 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         },
         engine,
         model,
+        language,
       });
+
+      if (media.language !== language) {
+        if (media.mediaType === "Video") {
+          await EnjoyApp.videos.update(media.id, {
+            language,
+          });
+        } else {
+          await EnjoyApp.audios.update(media.id, {
+            language,
+          });
+        }
+      }
     } catch (err) {
       toast.error(err.message);
     }

@@ -5,7 +5,7 @@ import log from "@main/logger";
 
 const logger = log.scope("db/handlers/transcriptions-handler");
 class TranscriptionsHandler {
-  private async findOrCreate(event: IpcMainEvent, where: Transcription) {
+  private async findOrCreate(_event: IpcMainEvent, where: Transcription) {
     try {
       const { targetType, targetId } = where;
       let target: Video | Audio = null;
@@ -31,10 +31,8 @@ class TranscriptionsHandler {
 
       return transcription.toJSON();
     } catch (err) {
-      event.sender.send("on-notification", {
-        type: "error",
-        message: err.message,
-      });
+      logger.error(err);
+      throw err;
     }
   }
 
@@ -43,24 +41,19 @@ class TranscriptionsHandler {
     id: string,
     params: Attributes<Transcription>
   ) {
-    const { result, engine, model, state } = params;
+    const { result, engine, model, state, language } = params;
 
-    return Transcription.findOne({
-      where: { id },
-    })
-      .then((transcription) => {
-        if (!transcription) {
-          throw new Error("models.transcription.notFound");
-        }
-        transcription.update({ result, engine, model, state });
-      })
-      .catch((err) => {
-        logger.error(err);
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    const transcription = await Transcription.findByPk(id);
+    if (!transcription) {
+      throw new Error("models.transcription.notFound");
+    }
+    return await transcription.update({
+      result,
+      engine,
+      model,
+      state,
+      language,
+    });
   }
 
   register() {

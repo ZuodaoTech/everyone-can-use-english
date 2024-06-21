@@ -454,6 +454,7 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
         };
       },
       options?: {
+        language?: string;
         force?: boolean;
         extra?: string[];
       }

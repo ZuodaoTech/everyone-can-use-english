@@ -36,7 +36,7 @@ export const useTranscribe = () => {
       targetId?: string;
       targetType?: string;
       originalText?: string;
-      language?: string;
+      language: string;
     }
   ): Promise<{
     engine: string;
@@ -45,12 +45,7 @@ export const useTranscribe = () => {
     originalText?: string;
   }> => {
     const url = await transcode(mediaSrc);
-    const {
-      targetId,
-      targetType,
-      originalText,
-      language = learningLanguage.split("-")[0],
-    } = params || {};
+    const { targetId, targetType, originalText, language } = params || {};
     const blob = await (await fetch(url)).blob();
 
     let result;
@@ -59,14 +54,17 @@ export const useTranscribe = () => {
         engine: "original",
         model: "original",
       };
-    } else if (whisperConfig.service === "local") {
-      result = await transcribeByLocal(url);
+    } else if ((whisperConfig.service === "local", language)) {
+      result = await transcribeByLocal(url, language);
     } else if (whisperConfig.service === "cloudflare") {
       result = await transcribeByCloudflareAi(blob);
     } else if (whisperConfig.service === "openai") {
       result = await transcribeByOpenAi(blob);
     } else if (whisperConfig.service === "azure") {
-      result = await transcribeByAzureAi(blob, { targetId, targetType });
+      result = await transcribeByAzureAi(blob, language, {
+        targetId,
+        targetType,
+      });
     } else {
       throw new Error(t("whisperServiceNotSupported"));
     }
@@ -96,12 +94,13 @@ export const useTranscribe = () => {
     };
   };
 
-  const transcribeByLocal = async (url: string) => {
+  const transcribeByLocal = async (url: string, language?: string) => {
     const res = await EnjoyApp.whisper.transcribe(
       {
         file: url,
       },
       {
+        language,
         force: true,
         extra: ["--prompt", `"Hello! Welcome to listen to this audio."`],
       }
@@ -157,6 +156,7 @@ export const useTranscribe = () => {
 
   const transcribeByAzureAi = async (
     blob: Blob,
+    language: string,
     params?: {
       targetId?: string;
       targetType?: string;
@@ -172,7 +172,7 @@ export const useTranscribe = () => {
       new File([blob], "audio.wav")
     );
     // setting the recognition language to learning language, such as 'en-US'.
-    config.speechRecognitionLanguage = learningLanguage;
+    config.speechRecognitionLanguage = language;
     config.requestWordLevelTimestamps();
     config.outputFormat = sdk.OutputFormat.Detailed;
 
