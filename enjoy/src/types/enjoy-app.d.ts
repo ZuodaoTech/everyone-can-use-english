@@ -264,6 +264,7 @@ type EnjoyAppType = {
         blob?: { type: string; arrayBuffer: ArrayBuffer };
       },
       options?: {
+        language?: string;
         force?: boolean;
         extra?: string[];
       }
