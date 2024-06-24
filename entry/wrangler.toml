@@ -5,7 +5,7 @@ compatibility_date = "2023-03-23"
 
 routes = ["next.1000h.org/*"]
 services = [
-  { binding = "vtp", service = "1000-hours-prod" },
+  { binding = "vtp", service = "1000h-vtp" },
   { binding = "portal", service = "1000h-portal" },
 ]
 
