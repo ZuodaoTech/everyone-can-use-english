@@ -3,9 +3,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/styles/main.css"],
   site: {
-    url: "https://example.com",
-    name: "Enjoy App",
-    description: "Welcome to Enjoy App!",
+    url: "https://1000h.org",
+    name: "Enjoying App",
+    description: "Welcome to Enjoying App!",
     tagline: "",
     defaultLocale: "zh", // not needed if you have @nuxtjs/i18n installed
   },

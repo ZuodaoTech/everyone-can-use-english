@@ -2,7 +2,8 @@
   "private": true,
   "workspaces": [
     "enjoy",
-    "1000-hours"
+    "1000-hours",
+    "1000h-portal"
   ],
   "scripts": {
     "start:enjoy": "echo 'Please use `yarn enjoy:start` instead'",
