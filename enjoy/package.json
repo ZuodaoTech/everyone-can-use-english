@@ -76,7 +76,7 @@
     "tailwindcss-animate": "^1.0.7",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.3",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.2",
     "vite": "^5.3.1",
     "vite-plugin-static-copy": "^1.0.5",
     "zx": "^8.1.3"
