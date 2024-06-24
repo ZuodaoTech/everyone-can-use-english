@@ -1,0 +1,42 @@
+name: Deploy 1000h entry website
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "entry/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "entry/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      # checkout the code
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Setup node env
+        uses: actions/setup-node@master
+        with:
+          node-version: "20"
+
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # deploy entry/index.js to 1000h-entry according to entry/wrangler.toml
+          command: publish --env production
+          workingDirectory: "entry"
+
