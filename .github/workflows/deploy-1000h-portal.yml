@@ -35,7 +35,7 @@ jobs:
         run: yarn install
 
       - name: Build
-        run: yarn generate
+        run: yarn portal:generate
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
