@@ -24,3 +24,9 @@ async function forwardToVtp(request, env) {
 async function forwardToPortal(request, env) {
   return await env.portal.fetch(request)
 }
+
+export default {
+  async fetch(request, env) {
+    return handleRequest(request, env)
+  }
+}
