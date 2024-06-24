@@ -70,6 +70,9 @@ export class Segment extends Model<Segment> {
   @Column(DataType.DATE)
   uploadedAt: Date;
 
+  @Column(DataType.VIRTUAL)
+  target: Audio | Video;
+
   @BelongsTo(() => Audio, { foreignKey: "targetId", constraints: false })
   audio: Audio;
 
@@ -208,6 +211,22 @@ export class Segment extends Model<Segment> {
         logger.error("sync error", err);
       });
     });
+
+    if (!Array.isArray(segments)) segments = [segments];
+
+    for (const instance of segments) {
+      if (instance.targetType === "Audio" && instance.audio) {
+        instance.target = instance.audio.toJSON();
+      }
+      if (instance.targetType === "Video" && instance.video) {
+        instance.target = instance.video.toJSON();
+      }
+      // To prevent mistakes:
+      delete instance.audio;
+      delete instance.dataValues.audio;
+      delete instance.video;
+      delete instance.dataValues.video;
+    }
   }
 
   @AfterCreate

@@ -604,5 +604,8 @@
   "referenceText": "参考文本",
   "inputReferenceTextOrLeaveItBlank": "输入参考文本，或者留空",
   "assessing": "正在评估",
-  "assessedSuccessfully": "评估成功"
+  "assessedSuccessfully": "评估成功",
+  "optinal": "可选",
+  "uploadTranscriptFile": "上传字幕文件(.txt/.srt/.vtt)",
+  "onlyTextFileIsSupported": "仅支持文本文件"
 }

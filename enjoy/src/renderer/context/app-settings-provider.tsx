@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { WEB_API_URL, LANGUAGES } from "@/constants";
+import { WEB_API_URL, LANGUAGES, IPA_MAPPINGS } from "@/constants";
 import { Client } from "@/api";
 import i18n from "@renderer/i18n";
 import ahoy from "ahoy.js";
@@ -26,6 +26,8 @@ type AppSettingsProviderState = {
   setProxy?: (config: ProxyConfigType) => Promise<void>;
   cable?: Consumer;
   ahoy?: typeof ahoy;
+  // remote config
+  ipaMappings?: { [key: string]: string };
 };
 
 const initialState: AppSettingsProviderState = {
@@ -53,6 +55,9 @@ export const AppSettingsProvider = ({
   const [learningLanguage, setLearningLanguage] = useState<string>("en-US");
   const [proxy, setProxy] = useState<ProxyConfigType>();
   const EnjoyApp = window.__ENJOY_APP__;
+  const [ipaMappings, setIpaMappings] = useState<{ [key: string]: string }>(
+    IPA_MAPPINGS
+  );
 
   useEffect(() => {
     fetchVersion();
@@ -81,6 +86,14 @@ export const AppSettingsProvider = ({
       urlPrefix: apiUrl,
     });
   }, [apiUrl]);
+
+  useEffect(() => {
+    if (!webApi) return;
+
+    webApi.config("ipa_mappings").then((mappings) => {
+      if (mappings) setIpaMappings(mappings);
+    });
+  }, [webApi]);
 
   const fetchLanguages = async () => {
     const language = await EnjoyApp.settings.getLanguage();
@@ -206,6 +219,7 @@ export const AppSettingsProvider = ({
         initialized: Boolean(user && libraryPath),
         ahoy,
         cable,
+        ipaMappings,
       }}
     >
       {children}

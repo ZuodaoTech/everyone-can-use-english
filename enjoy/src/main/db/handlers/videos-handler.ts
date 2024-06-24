@@ -11,10 +11,10 @@ const logger = log.scope("db/handlers/videos-handler");
 
 class VideosHandler {
   private async findAll(
-    event: IpcMainEvent,
+    _event: IpcMainEvent,
     options: FindOptions<Attributes<Video>>
   ) {
-    return Video.findAll({
+    const videos = await Video.findAll({
       order: [["updatedAt", "DESC"]],
       include: [
         {
@@ -25,46 +25,29 @@ class VideosHandler {
         },
       ],
       ...options,
-    })
-      .then((videos) => {
-        if (!videos) {
-          return [];
-        }
-        return videos.map((video) => video.toJSON());
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    });
+    if (!videos) {
+      return [];
+    }
+    return videos.map((video) => video.toJSON());
   }
 
   private async findOne(
-    event: IpcMainEvent,
+    _event: IpcMainEvent,
     where: WhereOptions<Attributes<Video>>
   ) {
-    return Video.findOne({
+    const video = await Video.findOne({
       where: {
         ...where,
       },
-    })
-      .then((video) => {
-        if (!video) return;
+    });
+    if (!video) return;
 
-        if (!video.isSynced) {
-          video.sync().catch(() => {});
-        }
+    if (!video.isSynced) {
+      video.sync().catch(() => {});
+    }
 
-        return video.toJSON();
-      })
-      .catch((err) => {
-        logger.error(err);
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    return video.toJSON();
   }
 
   private async create(
@@ -90,10 +73,8 @@ class VideosHandler {
         if (!file) throw new Error("Failed to download file");
         source = uri;
       } catch (err) {
-        return event.sender.send("on-notification", {
-          type: "error",
-          message: t("models.video.failedToDownloadFile", { file: uri }),
-        });
+        logger.error(err);
+        throw new Error(t("models.video.failedToDownloadFile", { file: uri }));
       }
     }
 
@@ -105,72 +86,46 @@ class VideosHandler {
         return video.toJSON();
       })
       .catch((err) => {
-        return event.sender.send("on-notification", {
-          type: "error",
-          message: t("models.video.failedToAdd", { error: err.message }),
-        });
+        logger.error(err);
+        throw new Error(t("models.video.failedToAdd", { error: err.message }));
       });
   }
 
   private async update(
-    event: IpcMainEvent,
+    _event: IpcMainEvent,
     id: string,
     params: Attributes<Video>
   ) {
-    const { name, description, metadata } = params;
+    const { name, description, metadata, language } = params;
 
-    return Video.findOne({
-      where: { id },
-    })
-      .then((video) => {
-        if (!video) {
-          throw new Error(t("models.video.notFound"));
-        }
-        video.update({ name, description, metadata });
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    const video = await Video.findByPk(id);
+    if (!video) {
+      throw new Error(t("models.video.notFound"));
+    }
+    video.update({ name, description, metadata, language });
   }
 
   private async destroy(event: IpcMainEvent, id: string) {
-    return Video.findOne({
-      where: { id },
-    }).then((video) => {
-      if (!video) {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: t("models.video.notFound"),
-        });
-      }
-      video.destroy();
-    });
+    const video = await Video.findByPk(id);
+    if (!video) {
+      throw new Error(t("models.video.notFound"));
+    }
+    return await video.destroy();
   }
 
   private async upload(event: IpcMainEvent, id: string) {
-    const video = await Video.findOne({
-      where: { id },
-    });
+    const video = await Video.findByPk(id);
     if (!video) {
-      event.sender.send("on-notification", {
-        type: "error",
-        message: t("models.video.notFound"),
-      });
+      throw new Error(t("models.video.notFound"));
     }
-
     video
       .upload()
       .then((res) => {
         return res;
       })
       .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
+        logger.error(err);
+        throw err;
       });
   }
 

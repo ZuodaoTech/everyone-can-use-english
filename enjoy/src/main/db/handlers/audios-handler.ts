@@ -11,10 +11,10 @@ const logger = log.scope("db/handlers/audios-handler");
 
 class AudiosHandler {
   private async findAll(
-    event: IpcMainEvent,
+    _event: IpcMainEvent,
     options: FindOptions<Attributes<Audio>>
   ) {
-    return Audio.findAll({
+    const audios = await Audio.findAll({
       order: [["updatedAt", "DESC"]],
       include: [
         {
@@ -25,46 +25,30 @@ class AudiosHandler {
         },
       ],
       ...options,
-    })
-      .then((audios) => {
-        if (!audios) {
-          return [];
-        }
-        return audios.map((audio) => audio.toJSON());
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    });
+
+    if (!audios) {
+      return [];
+    }
+    return audios.map((audio) => audio.toJSON());
   }
 
   private async findOne(
-    event: IpcMainEvent,
+    _event: IpcMainEvent,
     where: WhereOptions<Attributes<Audio>>
   ) {
-    return Audio.findOne({
+    const audio = await Audio.findOne({
       where: {
         ...where,
       },
-    })
-      .then((audio) => {
-        if (!audio) return;
+    });
+    if (!audio) return;
 
-        if (!audio.isSynced) {
-          audio.sync().catch(() => {});
-        }
+    if (!audio.isSynced) {
+      audio.sync().catch(() => {});
+    }
 
-        return audio.toJSON();
-      })
-      .catch((err) => {
-        logger.error(err);
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    return audio.toJSON();
   }
 
   private async create(
@@ -79,22 +63,15 @@ class AudiosHandler {
     let file = uri;
     let source;
     if (uri.startsWith("http")) {
-      try {
-        if (youtubedr.validateYtURL(uri)) {
-          file = await youtubedr.autoDownload(uri);
-        } else {
-          file = await downloader.download(uri, {
-            webContents: event.sender,
-          });
-        }
-        if (!file) throw new Error("Failed to download file");
-        source = uri;
-      } catch (err) {
-        return event.sender.send("on-notification", {
-          type: "error",
-          message: t("models.audio.failedToDownloadFile", { file: uri }),
+      if (youtubedr.validateYtURL(uri)) {
+        file = await youtubedr.autoDownload(uri);
+      } else {
+        file = await downloader.download(uri, {
+          webContents: event.sender,
         });
       }
+      if (!file) throw new Error("Failed to download file");
+      source = uri;
     }
 
     try {
@@ -119,73 +96,42 @@ class AudiosHandler {
 
       return audio.toJSON();
     } catch (err) {
-      return event.sender.send("on-notification", {
-        type: "error",
-        message: t("models.audio.failedToAdd", { error: err.message }),
-      });
+      logger.error(err);
+      throw err;
     }
   }
 
   private async update(
-    event: IpcMainEvent,
+    _event: IpcMainEvent,
     id: string,
     params: Attributes<Audio>
   ) {
-    const { name, description, metadata } = params;
+    const { name, description, metadata, language } = params;
 
-    return Audio.findOne({
-      where: { id },
-    })
-      .then((audio) => {
-        if (!audio) {
-          throw new Error(t("models.audio.notFound"));
-        }
-        audio.update({ name, description, metadata });
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    const audio = await Audio.findByPk(id);
+
+    if (!audio) {
+      throw new Error(t("models.audio.notFound"));
+    }
+    return await audio.update({ name, description, metadata, language });
   }
 
-  private async destroy(event: IpcMainEvent, id: string) {
-    return Audio.findOne({
-      where: { id },
-    }).then((audio) => {
-      if (!audio) {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: t("models.audio.notFound"),
-        });
-      }
-      audio.destroy();
-    });
+  private async destroy(_event: IpcMainEvent, id: string) {
+    const audio = await Audio.findByPk(id);
+
+    if (!audio) {
+      throw new Error(t("models.audio.notFound"));
+    }
+    return await audio.destroy();
   }
 
   private async upload(event: IpcMainEvent, id: string) {
-    const audio = await Audio.findOne({
-      where: { id },
-    });
+    const audio = await Audio.findByPk(id);
     if (!audio) {
-      event.sender.send("on-notification", {
-        type: "error",
-        message: t("models.audio.notFound"),
-      });
+      throw new Error(t("models.audio.notFound"));
     }
 
-    audio
-      .upload()
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    return await audio.upload();
   }
 
   private async crop(
@@ -193,9 +139,7 @@ class AudiosHandler {
     id: string,
     params: { startTime: number; endTime: number }
   ) {
-    const audio = await Audio.findOne({
-      where: { id },
-    });
+    const audio = await Audio.findByPk(id);
     if (!audio) {
       throw new Error(t("models.audio.notFound"));
     }

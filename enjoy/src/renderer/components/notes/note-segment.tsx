@@ -1,6 +1,8 @@
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { WavesurferPlayer } from "@/renderer/components/misc";
+import { AppSettingsProviderContext } from "@/renderer/context";
+import { convertWordIpaToNormal } from "@/utils";
 
 export const NoteSemgent = (props: {
   segment: SegmentType;
@@ -8,12 +10,23 @@ export const NoteSemgent = (props: {
 }) => {
   const { segment, notes } = props;
   const caption: TimelineEntry = segment.caption;
+  const { learningLanguage, ipaMappings } = useContext(
+    AppSettingsProviderContext
+  );
 
   const [notedquoteIndices, setNotedquoteIndices] = useState<number[]>([]);
 
   let words = caption.text.split(" ");
+  const language = segment.target?.language || learningLanguage;
   const ipas = caption.timeline.map((w) =>
-    w.timeline.map((t) => t.timeline.map((s) => s.text))
+    w.timeline.map((t) =>
+      language.startsWith("en")
+        ? convertWordIpaToNormal(
+            t.timeline.map((s) => s.text),
+            { mappings: ipaMappings }
+          ).join("")
+        : t.text
+    )
   );
 
   if (words.length !== caption.timeline.length) {

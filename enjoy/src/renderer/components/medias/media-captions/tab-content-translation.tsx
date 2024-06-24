@@ -40,8 +40,8 @@ const SelectedWords = (props: {
 }) => {
   const { selectedIndices, caption } = props;
 
-  const { transcription, ipaMappings } = useContext(MediaPlayerProviderContext);
-  const { learningLanguage } = useContext(AppSettingsProviderContext);
+  const { transcription } = useContext(MediaPlayerProviderContext);
+  const { learningLanguage, ipaMappings } = useContext(AppSettingsProviderContext);
 
   const word = selectedIndices
     .map((index) => caption.timeline[index]?.text || "")

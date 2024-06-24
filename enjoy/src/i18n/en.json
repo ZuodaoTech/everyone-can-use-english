@@ -604,5 +604,8 @@
   "referenceText": "Reference text",
   "inputReferenceTextOrLeaveItBlank": "Input the reference text or leave it blank",
   "assessing": "Assessing",
-  "assessedSuccessfully": "Assessed successfully"
+  "assessedSuccessfully": "Assessed successfully",
+  "optinal": "Optional",
+  "uploadTranscriptFile": "Upload transcript file(.txt/.srt/.vtt)",
+  "onlyTextFileIsSupported": "Only text file is supported"
 }
