@@ -21,10 +21,13 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Textarea,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { LANGUAGES } from "@/constants";
 import { LoaderIcon } from "lucide-react";
+import { parseText } from "media-captions";
 
 const transcriptionSchema = z.object({
   language: z.string(),
@@ -55,6 +58,58 @@ export const TranscriptionCreateForm = (props: {
       text: "",
     },
   });
+
+  const parseSubtitle = (file: File) => {
+    const fileType = file.name.split(".").pop();
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        let text = e.target.result;
+        if (typeof text !== "string") {
+          reject(new Error("Failed to read file"));
+        }
+
+        const caption = await parseText(text as string, {
+          strict: false,
+          type: fileType as "srt" | "vtt",
+        });
+        if (caption.cues.length === 0) {
+          text = cleanSubtitleText(text as string);
+        } else {
+          text = caption.cues.map((cue) => cue.text).join("\n");
+        }
+
+        if (text.length === 0) {
+          reject(new Error("No text found in the file"));
+        }
+
+        // Remove all content inside `()`
+        text = text.replace(/\(.*?\)/g, "").trim();
+        resolve(text);
+      };
+
+      reader.onerror = (e) => {
+        reject(e);
+      };
+
+      reader.readAsText(file);
+    });
+  };
+
+  const cleanSubtitleText = (text: string) => {
+    // Remove all line starting with `#`
+    // Remove all timestamps like `00:00:00,000` or `00:00:00.000 --> 00:00:00.000`
+    // Remove all empty lines
+    // Remove all lines with only spaces
+    return text
+      .replace(
+        /(\d{2}:\d{2}:\d{2}[,\.]\d{3}(\s+-->\s+\d{2}:\d{2}:\d{2}[,\.]\d{3})?)\s+/g,
+        ""
+      )
+      .replace(/#.*\n/g, "")
+      .replace(/^\s*[\r\n]/gm, "")
+      .replace(/^\s+$/gm, "");
+  };
 
   return (
     <Form {...form}>
@@ -120,30 +175,31 @@ export const TranscriptionCreateForm = (props: {
           render={({ field }) => (
             <FormItem className="grid w-full items-center gap-1.5">
               <FormLabel>
-                {t("transcript")}({t("optinal")})
+                {t("uploadTranscriptFile")}({t("optinal")})
               </FormLabel>
               <Input
                 disabled={transcribing}
-                className="mb-2"
                 type="file"
                 accept=".txt,.srt,.vtt"
-                onChange={(event) => {
+                onChange={async (event) => {
                   const file = event.target.files[0];
 
                   if (file) {
-                    if (file.type !== "text/plain") {
-                      return alert(t("onlyTextFileSupported"));
-                    }
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                      field.onChange(e.target.result as string);
-                    };
-                    reader.readAsText(file);
+                    parseSubtitle(file)
+                      .then((text) => {
+                        field.onChange(text);
+                      })
+                      .catch((error) => {
+                        toast.error(error.message);
+                      });
                   } else {
                     field.onChange("");
                   }
                 }}
               />
+              {field.value && (
+                <Textarea className="h-96" {...field} disabled={transcribing} />
+              )}
               <FormMessage />
             </FormItem>
           )}

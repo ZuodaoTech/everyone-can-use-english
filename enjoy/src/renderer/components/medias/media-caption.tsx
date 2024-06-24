@@ -494,7 +494,6 @@ export const Caption = (props: {
   const notes = currentNotes.filter((note) => note.parameters?.quoteIndices);
   const {
     caption,
-    language = learningLanguage,
     selectedIndices = [],
     currentSegmentIndex,
     activeIndex,
@@ -502,6 +501,7 @@ export const Caption = (props: {
     displayNotes,
     onClick,
   } = props;
+  const language = props.language || learningLanguage;
 
   const [notedquoteIndices, setNotedquoteIndices] = useState<number[]>([]);
 

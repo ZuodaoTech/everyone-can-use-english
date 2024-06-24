@@ -70,6 +70,14 @@ export const useTranscribe = () => {
     }
 
     let transcript = originalText || result.text;
+
+    // Remove all content inside `()`, `[]`, `{}` and trim the text
+    transcript = transcript
+      .replace(/\(.*?\)/g, "")
+      .replace(/\[.*?\]/g, "")
+      .replace(/\{.*?\}/g, "")
+      .trim();
+
     // if the transcript does not contain any punctuation, use AI command to add punctuation
     if (!transcript.match(/\w[.,!?](\s|$)/)) {
       try {
