@@ -37,6 +37,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # deploy entry/index.js to 1000h-entry according to entry/wrangler.toml
-          command: publish --env production
           workingDirectory: "entry"
 
