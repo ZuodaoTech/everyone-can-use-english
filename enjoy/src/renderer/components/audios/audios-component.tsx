@@ -5,6 +5,7 @@ import {
   AudiosTable,
   AudioEditForm,
   LoaderSpin,
+  TranscriptionCreateForm,
 } from "@renderer/components";
 import { t } from "i18next";
 import {
@@ -34,17 +35,12 @@ import {
 import { LayoutGridIcon, LayoutListIcon } from "lucide-react";
 import { audiosReducer } from "@renderer/reducers";
 import { useNavigate } from "react-router-dom";
-import { useTranscribe } from "@renderer/hooks";
 
 export const AudiosComponent = () => {
   const [audios, dispatchAudios] = useReducer(audiosReducer, []);
 
   const [editing, setEditing] = useState<Partial<AudioType> | null>(null);
   const [deleting, setDeleting] = useState<Partial<AudioType> | null>(null);
-  const [transcribing, setTranscribing] = useState<Partial<AudioType> | null>(
-    null
-  );
-  const { transcribe } = useTranscribe();
 
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -159,7 +155,6 @@ export const AudiosComponent = () => {
               audios={audios}
               onEdit={(audio) => setEditing(audio)}
               onDelete={(audio) => setDeleting(audio)}
-              onTranscribe={(audio) => setTranscribing(audio)}
             />
           </TabsContent>
         </Tabs>
@@ -222,45 +217,6 @@ export const AudiosComponent = () => {
               }}
             >
               {t("delete")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      <AlertDialog
-        open={!!transcribing}
-        onOpenChange={(value) => {
-          if (value) return;
-          setTranscribing(null);
-        }}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t("transcribe")}</AlertDialogTitle>
-            <AlertDialogDescription>
-              <p className="break-all">
-                {t("transcribeAudioConfirmation", {
-                  name: transcribing?.name || "",
-                })}
-              </p>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive"
-              onClick={async () => {
-                if (!transcribing) return;
-
-                transcribe(transcribing.src, {
-                  targetId: transcribing.id,
-                  targetType: "Audio",
-                }).finally(() => {
-                  setTranscribing(null);
-                });
-              }}
-            >
-              {t("transcribe")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
