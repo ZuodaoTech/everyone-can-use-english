@@ -4,9 +4,9 @@
       <Logo />
 
       <div class="flex gap-4">
-        <span class="action">Github</span>
+        <a class="action" href="https://github.com/anex-corp/">Github</a>
         <span class="divider"></span>
-        <span class="action">享受 APP</span>
+        <a class="action" href="/enjoy-app">Enjoy App</a>
       </div>
     </div>
   </div>

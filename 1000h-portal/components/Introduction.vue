@@ -52,7 +52,7 @@ const cards = ref([
   {
     label: "Pronunciation Correction",
     title: "AI 纠正发音",
-    subtitle: "Enjoying 的高级 AI 引擎帮您塑造完美英・美音",
+    subtitle: "Enjoy App 的高级 AI 引擎帮您塑造完美英・美音",
     bg: "/portal-static/images/bg-intro-1.png",
     colors: ["#384C6B", "#7B93AF"],
   },
@@ -73,7 +73,7 @@ const cards = ref([
   {
     label: "Memory Enhancement",
     title: "拓展记忆力",
-    subtitle: "使用 Enjoying 提供的记忆系统，让学习过的内容在你脑内回荡",
+    subtitle: "使用 Enjoy App 提供的记忆系统，让学习过的内容在你脑内回荡",
     bg: "/portal-static/images/bg-intro-4.png",
     colors: ["#70584A", "#A4978D"],
   },
