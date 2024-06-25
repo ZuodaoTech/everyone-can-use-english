@@ -1,9 +1,9 @@
 
 async function handleRequest(request, env) {
   const { host, pathname } = new URL(request.url);
-  // for the root path, forward to Portal
+  // for the root path and portal's assets, forward to Portal
   // for other paths, forward to VTP
-  if (pathname === '/') {
+  if (pathname === '/' || pathname.startsWith('/portal-assets') || pathname.startsWith('/portal-static')) {
     return forwardToPortal(request, env);
   } else {
     return forwardToVtp(request, env);
