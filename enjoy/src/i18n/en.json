@@ -295,6 +295,8 @@
   "text": "text",
   "addResource": "add resource",
   "addResourceFromUrlOrLocal": "add resource from url or local",
+  "resourceAdded": "Resource added",
+  "resourcesAdded": "{{fulfilled}} resources added, {{rejected}} failed to add.",
   "editResource": "edit resource",
   "deleteResource": "delete resource",
   "deleteResourceConfirmation": "Are you sure to delete {{name}}?",
@@ -611,6 +613,14 @@
   "sortBy": "Sort by",
   "createdAtDesc": "Created at desc",
   "createdAtAsc": "Created at asc",
+  "updatedAtDesc": "Updated at desc",
+  "updatedAtAsc": "Updated at asc",
   "scoreDesc": "Score desc",
-  "scoreAsc": "Score asc"
+  "scoreAsc": "Score asc",
+  "recordingsDurationDesc": "Recordings duration",
+  "recordingsCountDesc": "Recordings duration",
+  "all": "All",
+  "allLanguages": "All languages",
+  "search": "Search",
+  "noData": "No data"
 }

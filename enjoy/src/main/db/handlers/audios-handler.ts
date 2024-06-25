@@ -1,6 +1,6 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { Audio, Transcription } from "@main/db/models";
-import { FindOptions, WhereOptions, Attributes } from "sequelize";
+import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
 import downloader from "@main/downloader";
 import log from "@main/logger";
 import { t } from "i18next";
@@ -12,8 +12,17 @@ const logger = log.scope("db/handlers/audios-handler");
 class AudiosHandler {
   private async findAll(
     _event: IpcMainEvent,
-    options: FindOptions<Attributes<Audio>>
+    options: FindOptions<Attributes<Audio>> & { query?: string }
   ) {
+    const { query, where = {} } = options || {};
+    delete options.query;
+    delete options.where;
+
+    if (query) {
+      (where as any).name = {
+        [Op.like]: `%${query}%`,
+      };
+    }
     const audios = await Audio.findAll({
       order: [["updatedAt", "DESC"]],
       include: [
@@ -24,6 +33,7 @@ class AudiosHandler {
           required: false,
         },
       ],
+      where,
       ...options,
     });
 
