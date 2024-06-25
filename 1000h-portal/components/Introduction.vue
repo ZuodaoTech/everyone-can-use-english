@@ -3,9 +3,9 @@
     <div class="container m-auto">
       <div class="top flex justify-between">
         <div class="text-greyscale_1">
-          <div class="title text-[20px] md:text-[32px]">产品介绍</div>
+          <div class="title text-[20px] md:text-[32px]">最朴实的学习方法</div>
           <div class="subtitle text-[14px] md:text-[16px]">
-            这是一句简介这是一句简介
+            在 AI 的帮助下，我们提倡直接上手学习，不用理会繁琐的方法论
           </div>
         </div>
 
@@ -50,30 +50,30 @@ export default {
 <script lang="ts" setup>
 const cards = ref([
   {
-    label: "Self Taught.",
-    title: "帮助自主学习",
-    subtitle: "我们提倡直接上手学习，不用理会方法论",
+    label: "Pronunciation Correction",
+    title: "AI 纠正发音",
+    subtitle: "Enjoying 的高级 AI 引擎帮您塑造完美英・美音",
     bg: "/portal-static/images/bg-intro-1.png",
     colors: ["#384C6B", "#7B93AF"],
   },
   {
-    label: "Pronunciation Correction.",
-    title: "纠正口语发音",
-    subtitle: "我们提倡直接上手学习，不用理会方法论",
+    label: "Studying Tracking",
+    title: "跟踪学习记录",
+    subtitle: "提供完整全面的学习记录追踪，进步一目了然",
     bg: "/portal-static/images/bg-intro-2.png",
     colors: ["#4A6760", "#7C978F"],
   },
   {
-    label: "AI Companion.",
-    title: "AI辅助学习",
-    subtitle: "我们提倡直接上手学习，不用理会方法论",
+    label: "Variant Media",
+    title: "丰富的在线素材",
+    subtitle: "导入互联网语音和视频素材，用你最喜欢的内容学语言",
     bg: "/portal-static/images/bg-intro-3.png",
     colors: ["#384C6B", "#7B93AF"],
   },
   {
-    label: "Memory Enhancement.",
+    label: "Memory Enhancement",
     title: "拓展记忆力",
-    subtitle: "我们提倡直接上手学习，不用理会方法论",
+    subtitle: "使用 Enjoying 提供的记忆系统，让学习过的内容在你脑内回荡",
     bg: "/portal-static/images/bg-intro-4.png",
     colors: ["#70584A", "#A4978D"],
   },

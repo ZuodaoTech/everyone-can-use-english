@@ -5,7 +5,7 @@
         <div class="text-greyscale_1">
           <div class="title text-[20px] md:text-[32px]">特色功能</div>
           <div class="subtitle text-[14px] md:text-[16px]">
-            这是一句简介这是一句简介这是一句简介
+            你能想到的，只要是对学习有帮助的功能，我们都实现了。
           </div>
         </div>
 
@@ -43,23 +43,23 @@ export default {
 const features = ref([
   {
     icon: "/portal-static/images/head-phone.png",
-    title: "音频跟读",
-    subtitle: "支持下载/导入各类外语音频，进行解析跟读",
+    title: "音频可视化跟读",
+    subtitle: "导入的音频，我们会进行解析，提供可视化跟读",
   },
   {
     icon: "/portal-static/images/camera.png",
-    title: "视频跟读",
-    subtitle: "支持下载/导入各类外语视频，进行解析跟读",
+    title: "视频可视化跟读",
+    subtitle: "既然音频可以跟读，视频当然也可以",
   },
   {
     icon: "/portal-static/images/lang.png",
-    title: "外语阅读",
-    subtitle: "支持下载/导入各类外语文章，进行解析跟读",
+    title: "文章阅读",
+    subtitle: "导入各类外语文章，进行解析阅读",
   },
   {
     icon: "/portal-static/images/robot.png",
-    title: "AI自然对话",
-    subtitle: "说你想说的，跟AI一起复读学习",
+    title: "AI 自然对话",
+    subtitle: "最称职的人工智能外语陪练",
   },
   {
     icon: "/portal-static/images/note.png",
