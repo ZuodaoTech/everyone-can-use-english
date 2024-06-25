@@ -295,6 +295,8 @@
   "text": "文本",
   "addResource": "添加资源",
   "addResourceFromUrlOrLocal": "添加资源, 可以是 URL 或本地文件",
+  "resourceAdded": "资源添加成功",
+  "resourcesAdded": "成功添加 {{fulfilled}} 个资源, {{rejected}} 个资源添加失败",
   "editResource": "编辑资源",
   "deleteResource": "删除资源",
   "deleteResourceConfirmation": "您确定要删除资源 {{name}} 吗？",

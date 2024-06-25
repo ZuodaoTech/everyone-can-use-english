@@ -27,15 +27,15 @@ export const VideosTable = (props: {
   videos: Partial<VideoType>[];
   onEdit: (video: Partial<VideoType>) => void;
   onDelete: (video: Partial<VideoType>) => void;
-  onTranscribe: (video: Partial<VideoType>) => void;
 }) => {
-  const { videos, onEdit, onDelete, onTranscribe } = props;
+  const { videos, onEdit, onDelete } = props;
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead className="capitalize">{t("models.video.name")}</TableHead>
+          <TableHead className="capitalize">{t("language")}</TableHead>
           <TableHead className="capitalize">
             {t("models.video.duration")}
           </TableHead>
@@ -75,6 +75,7 @@ export const VideosTable = (props: {
                 </Tooltip>
               </TooltipProvider>
             </TableCell>
+            <TableCell>{video.language ? video.language : "-"}</TableCell>
             <TableCell>
               {video.duration ? secondsToTimestamp(video.duration) : "-"}
             </TableCell>
@@ -96,13 +97,6 @@ export const VideosTable = (props: {
             </TableCell>
             <TableCell>
               <div className="flex items-center">
-                <Button
-                  title={t("transcribe")}
-                  variant="ghost"
-                  onClick={() => onTranscribe(Object.assign({}, video))}
-                >
-                  <AudioWaveformIcon className="h-4 w-4" />
-                </Button>
                 <Button
                   title={t("edit")}
                   variant="ghost"

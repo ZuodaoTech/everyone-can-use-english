@@ -33,25 +33,17 @@ import {
 } from "@renderer/context";
 import { LayoutGridIcon, LayoutListIcon } from "lucide-react";
 import { videosReducer } from "@renderer/reducers";
-import { useNavigate } from "react-router-dom";
-import { useTranscribe } from "@renderer/hooks";
 
 export const VideosComponent = () => {
   const [videos, dispatchVideos] = useReducer(videosReducer, []);
 
   const [editing, setEditing] = useState<Partial<VideoType> | null>(null);
   const [deleting, setDeleting] = useState<Partial<VideoType> | null>(null);
-  const [transcribing, setTranscribing] = useState<Partial<VideoType> | null>(
-    null
-  );
-  const { transcribe } = useTranscribe();
 
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [offset, setOffest] = useState(0);
   const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     addDblistener(onVideosUpdate);
@@ -102,12 +94,11 @@ export const VideosComponent = () => {
     if (model === "Video") {
       if (action === "create") {
         dispatchVideos({ type: "create", record });
-        navigate(`/videos/${record.id}`);
+      } else if (action === "update") {
+        dispatchVideos({ type: "update", record });
       } else if (action === "destroy") {
         dispatchVideos({ type: "destroy", record });
       }
-    } else if (model === "Audio" && action === "create") {
-      navigate(`/audios/${record.id}`);
     } else if (model === "Transcription" && action === "update") {
       dispatchVideos({
         type: "update",
@@ -125,7 +116,7 @@ export const VideosComponent = () => {
 
     return (
       <div className="flex items-center justify-center h-48 border border-dashed rounded-lg">
-        <AddMediaButton />
+        <AddMediaButton type="Video" />
       </div>
     );
   }
@@ -145,7 +136,7 @@ export const VideosComponent = () => {
                 </TabsTrigger>
               </TabsList>
             </div>
-            <AddMediaButton />
+            <AddMediaButton type="Video" />
           </div>
           <TabsContent value="grid">
             <div className="grid gap-4 grid-cols-4">
@@ -159,7 +150,6 @@ export const VideosComponent = () => {
               videos={videos}
               onEdit={(video) => setEditing(video)}
               onDelete={(video) => setDeleting(video)}
-              onTranscribe={(video) => setTranscribing(video)}
             />
           </TabsContent>
         </Tabs>
@@ -222,45 +212,6 @@ export const VideosComponent = () => {
               }}
             >
               {t("delete")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      <AlertDialog
-        open={!!transcribing}
-        onOpenChange={(value) => {
-          if (value) return;
-          setTranscribing(null);
-        }}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t("transcribe")}</AlertDialogTitle>
-            <AlertDialogDescription>
-              <p className="break-all">
-                {t("transcribeMediaConfirmation", {
-                  name: transcribing?.name || "",
-                })}
-              </p>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive"
-              onClick={async () => {
-                if (!transcribing) return;
-
-                transcribe(transcribing.src, {
-                  targetId: transcribing.id,
-                  targetType: "Video",
-                }).finally(() => {
-                  setTranscribing(null);
-                });
-              }}
-            >
-              {t("transcribe")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

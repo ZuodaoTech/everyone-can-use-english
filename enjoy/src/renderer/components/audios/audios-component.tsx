@@ -5,7 +5,6 @@ import {
   AudiosTable,
   AudioEditForm,
   LoaderSpin,
-  TranscriptionCreateForm,
 } from "@renderer/components";
 import { t } from "i18next";
 import {
@@ -34,7 +33,6 @@ import {
 } from "@renderer/context";
 import { LayoutGridIcon, LayoutListIcon } from "lucide-react";
 import { audiosReducer } from "@renderer/reducers";
-import { useNavigate } from "react-router-dom";
 
 export const AudiosComponent = () => {
   const [audios, dispatchAudios] = useReducer(audiosReducer, []);
@@ -46,8 +44,6 @@ export const AudiosComponent = () => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [offset, setOffest] = useState(0);
   const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     addDblistener(onAudiosUpdate);
@@ -96,14 +92,13 @@ export const AudiosComponent = () => {
     if (!record) return;
 
     if (model === "Audio") {
-      if (action === "create") {
-        dispatchAudios({ type: "create", record });
-        navigate(`/audios/${record.id}`);
-      } else if (action === "destroy") {
+      if (action === "destroy") {
         dispatchAudios({ type: "destroy", record });
+      } else if (action === "create") {
+        dispatchAudios({ type: "create", record });
+      } else if (action === "update") {
+        dispatchAudios({ type: "update", record });
       }
-    } else if (model === "Video" && action === "create") {
-      navigate(`/videos/${record.id}`);
     } else if (model === "Transcription" && action === "update") {
       dispatchAudios({
         type: "update",
@@ -121,7 +116,7 @@ export const AudiosComponent = () => {
 
     return (
       <div className="flex items-center justify-center h-48 border border-dashed rounded-lg">
-        <AddMediaButton />
+        <AddMediaButton type="Audio" />
       </div>
     );
   }
@@ -141,7 +136,7 @@ export const AudiosComponent = () => {
                 </TabsTrigger>
               </TabsList>
             </div>
-            <AddMediaButton />
+            <AddMediaButton type="Audio" />
           </div>
           <TabsContent value="grid">
             <div className="grid gap-4 grid-cols-5">
