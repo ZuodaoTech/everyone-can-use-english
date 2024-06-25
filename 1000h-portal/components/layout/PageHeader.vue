@@ -6,7 +6,7 @@
       <div class="flex gap-4">
         <a class="action" href="https://github.com/anex-corp/">Github</a>
         <span class="divider"></span>
-        <a class="action" href="/enjoy-app">Enjoy App</a>
+        <a class="action" href="https://1000h.org/enjoy-app">Enjoy App</a>
       </div>
     </div>
   </div>
