@@ -33,7 +33,7 @@
           </div>
 
           <div class="arrow">
-            <img src="/icon/arrow-upright.svg" />
+            <img src="/portal-static/icon/arrow-upright.svg" />
           </div>
         </div>
       </div>
@@ -53,28 +53,28 @@ const cards = ref([
     label: "Self Taught.",
     title: "帮助自主学习",
     subtitle: "我们提倡直接上手学习，不用理会方法论",
-    bg: "/images/bg-intro-1.png",
+    bg: "/portal-static/images/bg-intro-1.png",
     colors: ["#384C6B", "#7B93AF"],
   },
   {
     label: "Pronunciation Correction.",
     title: "纠正口语发音",
     subtitle: "我们提倡直接上手学习，不用理会方法论",
-    bg: "/images/bg-intro-2.png",
+    bg: "/portal-static/images/bg-intro-2.png",
     colors: ["#4A6760", "#7C978F"],
   },
   {
     label: "AI Companion.",
     title: "AI辅助学习",
     subtitle: "我们提倡直接上手学习，不用理会方法论",
-    bg: "/images/bg-intro-3.png",
+    bg: "/portal-static/images/bg-intro-3.png",
     colors: ["#384C6B", "#7B93AF"],
   },
   {
     label: "Memory Enhancement.",
     title: "拓展记忆力",
     subtitle: "我们提倡直接上手学习，不用理会方法论",
-    bg: "/images/bg-intro-4.png",
+    bg: "/portal-static/images/bg-intro-4.png",
     colors: ["#70584A", "#A4978D"],
   },
 ]);

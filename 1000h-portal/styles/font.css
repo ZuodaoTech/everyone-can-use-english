@@ -1,13 +1,13 @@
 @font-face {
   font-family: "Noto Serif SC";
   font-display: swap;
-  src: url("/fonts/NotoSerifSC-Bold.ttf") format("truetype");
+  src: url("/portal-static/fonts/NotoSerifSC-Bold.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "New York";
   font-display: swap;
-  src: url("/fonts/NewYorkItalic.ttf") format("truetype");
+  src: url("/portal-static/fonts/NewYorkItalic.ttf") format("truetype");
 }
 
 

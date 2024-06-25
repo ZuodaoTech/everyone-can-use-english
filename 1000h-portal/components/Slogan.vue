@@ -17,7 +17,12 @@
     >
       与
       <span class="flex text-greyscale_1 mr-1">
-        <img src="/icon/enjoy-app.svg" width="24" height="24" class="mx-1" />
+        <img
+          src="/portal-static/icon/enjoy-app.svg"
+          width="24"
+          height="24"
+          class="mx-1"
+        />
         Enjoy App
       </span>
       一起，享受这1000小时
@@ -29,7 +34,7 @@
       >
         <span class="mr-1">体验 Enjoy App</span>
 
-        <img src="/icon/arrow-right.svg" width="24" />
+        <img src="/portal-static/icon/arrow-right.svg" width="24" />
       </button>
     </div>
   </div>
@@ -40,7 +45,7 @@
     <div class="container m-auto text-center">
       <img
         class="demo-screen inline w-[312px] md:w-[682px] lg:w-[924px] xl:w-[1024px] mt-[-40px] md:mt-[-60px]"
-        src="/images/demo.png"
+        src="/portal-static/images/demo.png"
       />
     </div>
   </div>
@@ -77,7 +82,7 @@ export default {
     top: 0;
     left: 0;
     width: 100%;
-    background-image: url("/images/bg-demo.png");
+    background-image: url("/portal-static/images/bg-demo.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
