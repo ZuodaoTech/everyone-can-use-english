@@ -3,13 +3,15 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/styles/main.css"],
   site: {
-    url: "https://1000h.org",
-    name: "Enjoying App",
-    description: "Welcome to Enjoying App!",
+    url: "https://example.com",
+    name: "Enjoy App",
+    description: "Welcome to Enjoy App!",
     tagline: "",
     defaultLocale: "zh", // not needed if you have @nuxtjs/i18n installed
   },
+
   app: {
+    buildAssetsDir: "portal-assets",
     head: {
       viewport:
         "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no, viewport-fit=cover",
@@ -17,20 +19,19 @@ export default defineNuxtConfig({
         {
           rel: "apple-touch-icon",
           sizes: "180x180",
-          href: "/apple-touch-icon.png",
+          href: "/portal-static/images/apple-touch-icon.png",
         },
-        { rel: "mask-icon", href: "/mask-icon.svg" },
         {
           rel: "icon",
           type: "image/png",
           sizes: "24x24",
-          href: "/favicon-24x24.png",
+          href: "/portal-static/images/favicon-24x24.png",
         },
         {
           rel: "icon",
           type: "image/png",
           sizes: "12x12",
-          href: "favicon-12x12.png",
+          href: "/portal-static/images/favicon-12x12.png",
         },
       ],
       script: [],
@@ -44,5 +45,5 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["nuxt-og-image", "@nuxtjs/seo"],
+  modules: ["@nuxtjs/seo"],
 });

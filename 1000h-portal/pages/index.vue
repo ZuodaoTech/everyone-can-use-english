@@ -19,7 +19,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-defineOgImage({ url: "/images/og-image.png" });
+// defineOgImage({ url: "/images/og-image.png" });
 </script>
 
 <style lang="scss" scoped></style>

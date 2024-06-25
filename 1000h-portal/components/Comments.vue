@@ -12,7 +12,7 @@
     <div class="items-container">
       <div class="items">
         <div v-for="(item, index) in items" :key="index" class="item">
-          <img class="quote" src="/icon/double-quote.svg" />
+          <img class="quote" src="/portal-static/icon/double-quote.svg" />
 
           <div class="top">
             <span>
@@ -40,43 +40,43 @@ export default {
 <script lang="ts" setup>
 const items = ref([
   {
-    avatar: "/images/avatar.png",
+    avatar: "/portal-static/images/avatar.png",
     name: "花开富贵",
     hint: "连续打卡 1,000 天",
     text: "这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App",
   },
   {
-    avatar: "/images/avatar.png",
+    avatar: "/portal-static/images/avatar.png",
     name: "花开富贵",
     hint: "连续打卡 1,000 天",
     text: "这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App",
   },
   {
-    avatar: "/images/avatar.png",
+    avatar: "/portal-static/images/avatar.png",
     name: "花开富贵",
     hint: "连续打卡 1,000 天",
     text: "这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App",
   },
   {
-    avatar: "/images/avatar.png",
+    avatar: "/portal-static/images/avatar.png",
     name: "花开富贵",
     hint: "连续打卡 1,000 天",
     text: "这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App",
   },
   {
-    avatar: "/images/avatar.png",
+    avatar: "/portal-static/images/avatar.png",
     name: "花开富贵",
     hint: "连续打卡 1,000 天",
     text: "这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App",
   },
   {
-    avatar: "/images/avatar.png",
+    avatar: "/portal-static/images/avatar.png",
     name: "花开富贵",
     hint: "连续打卡 1,000 天",
     text: "这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App",
   },
   {
-    avatar: "/images/avatar.png",
+    avatar: "/portal-static/images/avatar.png",
     name: "花开富贵",
     hint: "连续打卡 1,000 天",
     text: "这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App这是一个非常好的App",

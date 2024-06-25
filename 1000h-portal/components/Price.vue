@@ -12,7 +12,7 @@
           <div class="items">
             <div v-for="(item, index) in items" :key="index" class="item">
               <span>
-                <img src="/icon/check.svg" />
+                <img src="/portal-static/icon/check.svg" />
               </span>
               <span class="text-[14px] md:text-[16px]">{{ item }}</span>
             </div>
@@ -22,10 +22,13 @@
         <div class="self-center">
           <img
             class="h-[100%] md:h-[356px] lg:hidden"
-            src="/images/payment.png"
+            src="/portal-static/images/payment.png"
           />
 
-          <img class="hidden lg:block" src="/images/payment-2.png" />
+          <img
+            class="hidden lg:block"
+            src="/portal-static/images/payment-2.png"
+          />
         </div>
       </div>
     </div>

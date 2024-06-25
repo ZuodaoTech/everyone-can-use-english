@@ -42,37 +42,37 @@ export default {
 <script lang="ts" setup>
 const features = ref([
   {
-    icon: "/images/head-phone.png",
+    icon: "/portal-static/images/head-phone.png",
     title: "音频跟读",
     subtitle: "支持下载/导入各类外语音频，进行解析跟读",
   },
   {
-    icon: "/images/camera.png",
+    icon: "/portal-static/images/camera.png",
     title: "视频跟读",
     subtitle: "支持下载/导入各类外语视频，进行解析跟读",
   },
   {
-    icon: "/images/lang.png",
+    icon: "/portal-static/images/lang.png",
     title: "外语阅读",
     subtitle: "支持下载/导入各类外语文章，进行解析跟读",
   },
   {
-    icon: "/images/robot.png",
+    icon: "/portal-static/images/robot.png",
     title: "AI自然对话",
     subtitle: "说你想说的，跟AI一起复读学习",
   },
   {
-    icon: "/images/note.png",
+    icon: "/portal-static/images/note.png",
     title: "重温笔记",
     subtitle: "学习遇到难点？先添加笔记，再巩固复习",
   },
   {
-    icon: "/images/book.png",
+    icon: "/portal-static/images/book.png",
     title: "词典助记",
     subtitle: "学习遇到生词？添加到生词本，再巩固复习",
   },
   {
-    icon: "/images/cham.png",
+    icon: "/portal-static/images/cham.png",
     title: "社区竞赛",
     subtitle: "每日、每周、每月都有人跟你一起学习进步",
   },
@@ -132,7 +132,7 @@ const features = ref([
 
     .compitition {
       color: #fff;
-      background-image: url("/images/bg-features.png");
+      background-image: url("/portal-static/images/bg-features.png");
       background-repeat: no-repeat;
       background-size: cover;
       position: relative;
@@ -145,7 +145,7 @@ const features = ref([
         right: -20px;
         width: 824px;
         height: 448px;
-        background-image: url("/images/rank.png");
+        background-image: url("/portal-static/images/rank.png");
       }
     }
   }
