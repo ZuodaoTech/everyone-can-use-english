@@ -620,6 +620,7 @@
   "recordingsDurationDesc": "录音时长",
   "recordingsCountDesc": "录音次数",
   "all": "全部",
+  "allLanguages": "全部语言",
   "search": "搜索",
   "noData": "没有数据"
 }

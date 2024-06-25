@@ -195,7 +195,7 @@ export const VideosComponent = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="all">{t("all")}</SelectItem>
+                  <SelectItem value="all">{t("allLanguages")}</SelectItem>
                   {LANGUAGES.map((lang) => (
                     <SelectItem key={lang.code} value={lang.code}>
                       {lang.code}
