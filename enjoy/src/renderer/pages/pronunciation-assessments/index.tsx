@@ -10,6 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   Button,
+  Label,
   Select,
   SelectContent,
   SelectGroup,
@@ -109,23 +110,26 @@ export default () => {
 
         <div className="flex items-center justify-between mb-4">
           <div className="">
-            <Select value={orderBy} onValueChange={setOrderBy}>
-              <SelectTrigger>
-                <SelectValue placeholder={t("select_sort_order")} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="createdAtDesc">
-                    {t("createdAtDesc")}
-                  </SelectItem>
-                  <SelectItem value="createdAtAsc">
-                    {t("createdAtAsc")}
-                  </SelectItem>
-                  <SelectItem value="scoreDesc">{t("scoreDesc")}</SelectItem>
-                  <SelectItem value="scoreAsc">{t("scoreAsc")}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <div className="flex items-center gap-2">
+              <Label className="min-w-max">{t("sortBy")}:</Label>
+              <Select value={orderBy} onValueChange={setOrderBy}>
+                <SelectTrigger>
+                  <SelectValue placeholder={t("select_sort_order")} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="createdAtDesc">
+                      {t("createdAtDesc")}
+                    </SelectItem>
+                    <SelectItem value="createdAtAsc">
+                      {t("createdAtAsc")}
+                    </SelectItem>
+                    <SelectItem value="scoreDesc">{t("scoreDesc")}</SelectItem>
+                    <SelectItem value="scoreAsc">{t("scoreAsc")}</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <Button onClick={() => navigate("/pronunciation_assessments/new")}>
             {t("newAssessment")}

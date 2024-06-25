@@ -608,6 +608,7 @@
   "optinal": "可选",
   "uploadTranscriptFile": "上传字幕文件(.txt/.srt/.vtt)",
   "onlyTextFileIsSupported": "仅支持文本文件",
+  "sortBy": "排序",
   "createdAtDesc": "创建时间降序",
   "createdAtAsc": "创建时间升序",
   "scoreDesc": "得分从高到低",

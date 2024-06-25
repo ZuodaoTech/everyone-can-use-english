@@ -608,6 +608,7 @@
   "optinal": "Optional",
   "uploadTranscriptFile": "Upload transcript file(.txt/.srt/.vtt)",
   "onlyTextFileIsSupported": "Only text file is supported",
+  "sortBy": "Sort by",
   "createdAtDesc": "Created at desc",
   "createdAtAsc": "Created at asc",
   "scoreDesc": "Score desc",
