@@ -622,5 +622,6 @@
   "all": "All",
   "allLanguages": "All languages",
   "search": "Search",
-  "noData": "No data"
+  "noData": "No data",
+  "selectedFiles": "Selected files"
 }

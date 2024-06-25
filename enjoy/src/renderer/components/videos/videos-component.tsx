@@ -212,20 +212,28 @@ export const VideosComponent = () => {
             />
             <AddMediaButton type="Video" />
           </div>
-          <TabsContent value="grid">
-            <div className="grid gap-4 grid-cols-4">
-              {videos.map((video) => (
-                <VideoCard video={video} key={video.id} />
-              ))}
+          {videos.length === 0 ? (
+            <div className="flex items-center justify-center h-48 border border-dashed rounded-lg">
+              {t("noData")}
             </div>
-          </TabsContent>
-          <TabsContent value="list">
-            <VideosTable
-              videos={videos}
-              onEdit={(video) => setEditing(video)}
-              onDelete={(video) => setDeleting(video)}
-            />
-          </TabsContent>
+          ) : (
+            <>
+              <TabsContent value="grid">
+                <div className="grid gap-4 grid-cols-4">
+                  {videos.map((video) => (
+                    <VideoCard video={video} key={video.id} />
+                  ))}
+                </div>
+              </TabsContent>
+              <TabsContent value="list">
+                <VideosTable
+                  videos={videos}
+                  onEdit={(video) => setEditing(video)}
+                  onDelete={(video) => setDeleting(video)}
+                />
+              </TabsContent>
+            </>
+          )}
         </Tabs>
       </div>
 
