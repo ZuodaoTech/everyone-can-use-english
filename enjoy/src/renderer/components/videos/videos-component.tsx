@@ -4,7 +4,6 @@ import {
   VideosTable,
   VideoEditForm,
   AddMediaButton,
-  LoaderSpin,
 } from "@renderer/components";
 import { t } from "i18next";
 import {
@@ -25,7 +24,14 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
   toast,
+  Input,
 } from "@renderer/components/ui";
 import {
   DbProviderContext,
@@ -33,51 +39,81 @@ import {
 } from "@renderer/context";
 import { LayoutGridIcon, LayoutListIcon } from "lucide-react";
 import { videosReducer } from "@renderer/reducers";
+import { useDebounce } from "@uidotdev/usehooks";
+import { LANGUAGES } from "@/constants";
 
 export const VideosComponent = () => {
+  const { addDblistener, removeDbListener } = useContext(DbProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+
   const [videos, dispatchVideos] = useReducer(videosReducer, []);
+  const [hasMore, setHasMore] = useState(true);
+
+  const [query, setQuery] = useState("");
+  const [language, setLanguage] = useState<string | null>("all");
+  const [orderBy, setOrderBy] = useState<string | null>("updatedAtDesc");
+  const debouncedQuery = useDebounce(query, 500);
 
   const [editing, setEditing] = useState<Partial<VideoType> | null>(null);
   const [deleting, setDeleting] = useState<Partial<VideoType> | null>(null);
 
-  const { addDblistener, removeDbListener } = useContext(DbProviderContext);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const [offset, setOffest] = useState(0);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     addDblistener(onVideosUpdate);
-    fetchVideos();
 
     return () => {
       removeDbListener(onVideosUpdate);
     };
   }, []);
 
-  const fetchVideos = async () => {
+  const fetchVideos = async (options?: { offset: number }) => {
     if (loading) return;
-    if (offset === -1) return;
+    const { offset = videos.length } = options || {};
 
     setLoading(true);
-    const limit = 10;
+    const limit = 20;
+
+    let order = [];
+    switch (orderBy) {
+      case "updatedAtDesc":
+        order = [["updatedAt", "DESC"]];
+        break;
+      case "createdAtDesc":
+        order = [["createdAt", "DESC"]];
+        break;
+      case "createdAtAsc":
+        order = [["createdAt", "ASC"]];
+        break;
+      case "recordingsDurationDesc":
+        order = [["recordingsDuration", "DESC"]];
+        break;
+      case "recordingsCountDesc":
+        order = [["recordingsCount", "DESC"]];
+        break;
+      default:
+        order = [["updatedAt", "DESC"]];
+    }
+    let where = {};
+    if (language != "all") {
+      where = { language };
+    }
     EnjoyApp.videos
       .findAll({
         offset,
         limit,
+        order,
+        where,
+        query: debouncedQuery,
       })
       .then((_videos) => {
-        if (_videos.length === 0) {
-          setOffest(-1);
-          return;
-        }
+        setHasMore(_videos.length >= limit);
 
-        if (_videos.length < limit) {
-          setOffest(-1);
+        if (offset === 0) {
+          dispatchVideos({ type: "set", records: _videos });
         } else {
-          setOffest(offset + _videos.length);
+          dispatchVideos({ type: "append", records: _videos });
         }
-
-        dispatchVideos({ type: "append", records: _videos });
       })
       .catch((err) => {
         toast.error(err.message);
@@ -111,31 +147,69 @@ export const VideosComponent = () => {
     }
   };
 
-  if (videos.length === 0) {
-    if (loading) return <LoaderSpin />;
-
-    return (
-      <div className="flex items-center justify-center h-48 border border-dashed rounded-lg">
-        <AddMediaButton type="Video" />
-      </div>
-    );
-  }
+  useEffect(() => {
+    fetchVideos({ offset: 0 });
+  }, [debouncedQuery, language, orderBy]);
 
   return (
     <>
       <div className="">
         <Tabs defaultValue="grid">
-          <div className="flex justify-between mb-4">
-            <div className="flex items-center space-x-4">
-              <TabsList>
-                <TabsTrigger value="grid">
-                  <LayoutGridIcon className="h-4 w-4" />
-                </TabsTrigger>
-                <TabsTrigger value="list">
-                  <LayoutListIcon className="h-4 w-4" />
-                </TabsTrigger>
-              </TabsList>
-            </div>
+          <div className="flex flex-wrap items-center gap-4 mb-4">
+            <TabsList>
+              <TabsTrigger value="grid">
+                <LayoutGridIcon className="h-4 w-4" />
+              </TabsTrigger>
+              <TabsTrigger value="list">
+                <LayoutListIcon className="h-4 w-4" />
+              </TabsTrigger>
+            </TabsList>
+            <Select value={orderBy} onValueChange={setOrderBy}>
+              <SelectTrigger className="max-w-36">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="updatedAtDesc">
+                    {t("updatedAtDesc")}
+                  </SelectItem>
+                  <SelectItem value="createdAtDesc">
+                    {t("createdAtDesc")}
+                  </SelectItem>
+                  <SelectItem value="createdAtAsc">
+                    {t("createdAtAsc")}
+                  </SelectItem>
+                  <SelectItem value="recordingsDurationDesc">
+                    {t("recordingsDurationDesc")}
+                  </SelectItem>
+                  <SelectItem value="recordingsCountDesc">
+                    {t("recordingsCountDesc")}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <Select value={language} onValueChange={setLanguage}>
+              <SelectTrigger className="max-w-36">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="all">{t("all")}</SelectItem>
+                  {LANGUAGES.map((lang) => (
+                    <SelectItem key={lang.code} value={lang.code}>
+                      {lang.code}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <Input
+              className="max-w-48"
+              placeholder={t("search")}
+              onChange={(e) => setQuery(e.target.value)}
+            />
             <AddMediaButton type="Video" />
           </div>
           <TabsContent value="grid">
@@ -155,9 +229,9 @@ export const VideosComponent = () => {
         </Tabs>
       </div>
 
-      {offset > -1 && (
+      {hasMore && (
         <div className="flex items-center justify-center my-4">
-          <Button variant="link" onClick={fetchVideos}>
+          <Button variant="link" onClick={() => fetchVideos()}>
             {t("loadMore")}
           </Button>
         </div>

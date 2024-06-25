@@ -613,6 +613,13 @@
   "sortBy": "排序",
   "createdAtDesc": "创建时间降序",
   "createdAtAsc": "创建时间升序",
+  "updatedAtDesc": "更新时间降序",
+  "updatedAtAsc": "更新时间升序",
   "scoreDesc": "得分从高到低",
-  "scoreAsc": "得分从低到高"
+  "scoreAsc": "得分从低到高",
+  "recordingsDurationDesc": "录音时长",
+  "recordingsCountDesc": "录音次数",
+  "all": "全部",
+  "search": "搜索",
+  "noData": "没有数据"
 }

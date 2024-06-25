@@ -613,6 +613,13 @@
   "sortBy": "Sort by",
   "createdAtDesc": "Created at desc",
   "createdAtAsc": "Created at asc",
+  "updatedAtDesc": "Updated at desc",
+  "updatedAtAsc": "Updated at asc",
   "scoreDesc": "Score desc",
-  "scoreAsc": "Score asc"
+  "scoreAsc": "Score asc",
+  "recordingsDurationDesc": "Recordings duration",
+  "recordingsCountDesc": "Recordings duration",
+  "all": "All",
+  "search": "Search",
+  "noData": "No data"
 }
