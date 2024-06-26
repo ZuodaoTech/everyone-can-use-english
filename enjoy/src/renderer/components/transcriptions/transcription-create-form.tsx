@@ -37,6 +37,7 @@ const transcriptionSchema = z.object({
 
 export const TranscriptionCreateForm = (props: {
   onSubmit: (data: z.infer<typeof transcriptionSchema>) => void;
+  originalText?: string;
   onCancel?: () => void;
   transcribing?: boolean;
   transcribingProgress?: number;
@@ -46,6 +47,7 @@ export const TranscriptionCreateForm = (props: {
     transcribingProgress = 0,
     onSubmit,
     onCancel,
+    originalText,
   } = props;
   const { learningLanguage } = useContext(AppSettingsProviderContext);
   const { whisperConfig } = useContext(AISettingsProviderContext);
@@ -55,7 +57,7 @@ export const TranscriptionCreateForm = (props: {
     values: {
       language: learningLanguage,
       service: whisperConfig.service,
-      text: "",
+      text: originalText,
     },
   });
 
@@ -197,8 +199,17 @@ export const TranscriptionCreateForm = (props: {
                   }
                 }}
               />
-              {field.value && (
-                <Textarea className="h-96" {...field} disabled={transcribing} />
+              {field.value != undefined && (
+                <>
+                  <FormLabel>
+                    {t("transcript")}
+                  </FormLabel>
+                  <Textarea
+                    className="h-36"
+                    {...field}
+                    disabled={transcribing}
+                  />
+                </>
               )}
               <FormMessage />
             </FormItem>
