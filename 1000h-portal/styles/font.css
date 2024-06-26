@@ -1,0 +1,17 @@
+@font-face {
+  font-family: "Noto Serif SC";
+  font-display: swap;
+  src: url("/portal-static/fonts/NotoSerifSC-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "New York";
+  font-display: swap;
+  src: url("/portal-static/fonts/NewYorkItalic.ttf") format("truetype");
+}
+
+
+body {
+  font-family: PingFang SC, -apple-system, BlinkMacSystemFont,  sans-serif, Arial, Helvetica;
+  font-weight: 400;
+}

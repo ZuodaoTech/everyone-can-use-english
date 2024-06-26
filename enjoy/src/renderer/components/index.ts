@@ -10,6 +10,7 @@ export * from "./preferences";
 export * from "./pronunciation-assessments";
 export * from "./recordings";
 export * from "./stories";
+export * from "./transcriptions";
 export * from "./users";
 export * from "./videos";
 export * from "./widgets";

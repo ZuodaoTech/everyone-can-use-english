@@ -15,6 +15,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogTitle,
   DialogTrigger,
   DropdownMenu,
   DropdownMenuContent,
@@ -121,6 +122,7 @@ export const MediaTranscriptionReadButton = (props: {
           onPointerDownOutside={(event) => event.preventDefault()}
           className="max-w-screen-md xl:max-w-screen-lg h-5/6 flex flex-col p-0"
         >
+          <DialogTitle className="hidden">{t("readThrough")}</DialogTitle>
           <ScrollArea className="flex-1 px-6 pt-4">
             <div className="select-text mx-auto w-full max-w-prose">
               <h3 className="font-bold text-xl my-4">{media.name}</h3>

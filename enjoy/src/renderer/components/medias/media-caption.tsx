@@ -37,9 +37,10 @@ export const MediaCaption = () => {
     editingRegion,
     setEditingRegion,
     setTranscriptionDraft,
-    ipaMappings,
   } = useContext(MediaPlayerProviderContext);
-  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage, ipaMappings } = useContext(
+    AppSettingsProviderContext
+  );
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [multiSelecting, setMultiSelecting] = useState<boolean>(false);
@@ -366,6 +367,7 @@ export const MediaCaption = () => {
         >
           <Caption
             caption={caption}
+            language={transcription.language}
             selectedIndices={selectedIndices}
             currentSegmentIndex={currentSegmentIndex}
             activeIndex={activeIndex}
@@ -428,7 +430,9 @@ export const MediaCaption = () => {
                     t.timeline.map((s) => s.text).join("")
                   );
                   return `${word.text}(${
-                    learningLanguage.startsWith("en")
+                    (transcription.language || learningLanguage).startsWith(
+                      "en"
+                    )
                       ? convertWordIpaToNormal(ipas, {
                           mappings: ipaMappings,
                         }).join("")
@@ -475,6 +479,7 @@ export const MediaCaption = () => {
 
 export const Caption = (props: {
   caption: TimelineEntry;
+  language?: string;
   selectedIndices?: number[];
   currentSegmentIndex: number;
   activeIndex?: number;
@@ -482,6 +487,11 @@ export const Caption = (props: {
   displayNotes?: boolean;
   onClick?: (index: number) => void;
 }) => {
+  const { currentNotes } = useContext(MediaPlayerProviderContext);
+  const { learningLanguage, ipaMappings } = useContext(
+    AppSettingsProviderContext
+  );
+  const notes = currentNotes.filter((note) => note.parameters?.quoteIndices);
   const {
     caption,
     selectedIndices = [],
@@ -491,16 +501,14 @@ export const Caption = (props: {
     displayNotes,
     onClick,
   } = props;
+  const language = props.language || learningLanguage;
 
-  const { currentNotes, ipaMappings } = useContext(MediaPlayerProviderContext);
-  const { learningLanguage } = useContext(AppSettingsProviderContext);
-  const notes = currentNotes.filter((note) => note.parameters?.quoteIndices);
   const [notedquoteIndices, setNotedquoteIndices] = useState<number[]>([]);
 
   let words = caption.text.split(" ");
   const ipas = caption.timeline.map((w) =>
     w.timeline.map((t) =>
-      learningLanguage.startsWith("en")
+      language.startsWith("en")
         ? convertWordIpaToNormal(
             t.timeline.map((s) => s.text),
             { mappings: ipaMappings }

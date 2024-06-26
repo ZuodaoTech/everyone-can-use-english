@@ -264,11 +264,13 @@ type EnjoyAppType = {
         blob?: { type: string; arrayBuffer: ArrayBuffer };
       },
       options?: {
+        language?: string;
         force?: boolean;
         extra?: string[];
       }
     ) => Promise<Partial<WhisperOutputType>>;
     onProgress: (callback: (event, progress: number) => void) => void;
+    abort: () => Promise<void>;
     removeProgressListeners: () => Promise<void>;
   };
   ffmpeg: {

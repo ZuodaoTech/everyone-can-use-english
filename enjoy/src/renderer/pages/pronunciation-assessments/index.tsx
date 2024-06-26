@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import {
-  Alert,
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -11,6 +10,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   Button,
+  Label,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Sheet,
   SheetClose,
   SheetContent,
@@ -32,6 +38,7 @@ export default () => {
     []
   );
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [orderBy, setOrderBy] = useState<string>("createdAtDesc");
   const [selecting, setSelecting] =
     useState<PronunciationAssessmentType | null>(null);
   const [deleting, setDeleting] = useState<PronunciationAssessmentType | null>(
@@ -52,10 +59,27 @@ export default () => {
     const { offset = 0, limit = 10 } = params || {};
     if (offset > 0 && !hasMore) return;
 
+    let order = ["createdAt", "DESC"];
+    switch (orderBy) {
+      case "createdAtDesc":
+        order = ["createdAt", "DESC"];
+        break;
+      case "createdAtAsc":
+        order = ["createdAt", "ASC"];
+        break;
+      case "scoreDesc":
+        order = ["pronunciationScore", "DESC"];
+        break;
+      case "scoreAsc":
+        order = ["pronunciationScore", "ASC"];
+        break;
+    }
+
     EnjoyApp.pronunciationAssessments
       .findAll({
         limit,
         offset,
+        order: [order],
       })
       .then((fetchedAssessments) => {
         if (offset === 0) {
@@ -72,7 +96,7 @@ export default () => {
 
   useEffect(() => {
     fetchAssessments();
-  }, []);
+  }, [orderBy]);
 
   return (
     <div className="h-full px-4 py-6 lg:px-8">
@@ -84,7 +108,29 @@ export default () => {
           <span>{t("sidebar.pronunciationAssessment")}</span>
         </div>
 
-        <div className="flex items-center justify-start mb-4">
+        <div className="flex items-center justify-between mb-4">
+          <div className="">
+            <div className="flex items-center gap-2">
+              <Label className="min-w-max">{t("sortBy")}:</Label>
+              <Select value={orderBy} onValueChange={setOrderBy}>
+                <SelectTrigger>
+                  <SelectValue placeholder={t("select_sort_order")} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="createdAtDesc">
+                      {t("createdAtDesc")}
+                    </SelectItem>
+                    <SelectItem value="createdAtAsc">
+                      {t("createdAtAsc")}
+                    </SelectItem>
+                    <SelectItem value="scoreDesc">{t("scoreDesc")}</SelectItem>
+                    <SelectItem value="scoreAsc">{t("scoreAsc")}</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
           <Button onClick={() => navigate("/pronunciation_assessments/new")}>
             {t("newAssessment")}
           </Button>

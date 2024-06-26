@@ -6,6 +6,7 @@ type TranscriptionType = {
   state: "pending" | "processing" | "finished";
   engine: string;
   model: string;
+  language?: string;
   result: AlignmentResult & { original?: string };
 };
 

@@ -28,6 +28,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetClose,
+  SheetTitle,
 } from "@renderer/components/ui";
 import {
   GitCompareIcon,
@@ -501,6 +502,34 @@ export const MediaCurrentRecording = () => {
         />
 
         <Button
+          variant={detailIsOpen ? "secondary" : "outline"}
+          size="icon"
+          id="media-pronunciation-assessment-button"
+          data-tooltip-id="media-player-tooltip"
+          data-tooltip-content={t("pronunciationAssessment")}
+          className={
+            layout?.name === "sm" ? "hidden" : "rounded-full w-8 h-8 p-0"
+          }
+          onClick={() => setDetailIsOpen(true)}
+        >
+          <GaugeCircleIcon
+            className={`w-4 h-4
+                    ${
+                      currentRecording.pronunciationAssessment
+                        ? currentRecording.pronunciationAssessment
+                            .pronunciationScore >= 80
+                          ? "text-green-500"
+                          : currentRecording.pronunciationAssessment
+                              .pronunciationScore >= 60
+                          ? "text-yellow-600"
+                          : "text-red-500"
+                        : ""
+                    }
+                    `}
+          />
+        </Button>
+
+        <Button
           variant={isComparing ? "secondary" : "outline"}
           size="icon"
           id="media-compare-button"
@@ -512,19 +541,6 @@ export const MediaCurrentRecording = () => {
           onClick={toggleCompare}
         >
           <GitCompareIcon className="w-4 h-4" />
-        </Button>
-
-        <Button
-          variant={isSelectingRegion ? "secondary" : "outline"}
-          size="icon"
-          data-tooltip-id="media-player-tooltip"
-          data-tooltip-content={t("selectRegion")}
-          className={
-            layout?.name === "sm" ? "hidden" : "rounded-full w-8 h-8 p-0"
-          }
-          onClick={() => setIsSelectingRegion(!isSelectingRegion)}
-        >
-          <TextCursorInputIcon className="w-4 h-4" />
         </Button>
 
         <DropdownMenu>
@@ -545,27 +561,10 @@ export const MediaCurrentRecording = () => {
               <>
                 <DropdownMenuItem
                   className="cursor-pointer"
-                  onClick={toggleCompare}
+                  onClick={() => setDetailIsOpen(true)}
                 >
-                  <GitCompareIcon className="w-4 h-4 mr-4" />
-                  <span>{t("compare")}</span>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => setIsSelectingRegion(!isSelectingRegion)}
-                >
-                  <TextCursorInputIcon className="w-4 h-4 mr-4" />
-                  <span>{t("selectRegion")}</span>
-                </DropdownMenuItem>
-              </>
-            )}
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => setDetailIsOpen(true)}
-            >
-              <GaugeCircleIcon
-                className={`w-4 h-4 mr-4
+                  <GaugeCircleIcon
+                    className={`w-4 h-4 mr-4
                     ${
                       currentRecording.pronunciationAssessment
                         ? currentRecording.pronunciationAssessment
@@ -578,10 +577,27 @@ export const MediaCurrentRecording = () => {
                         : ""
                     }
                     `}
-              />
-              <span>{t("pronunciationAssessment")}</span>
-            </DropdownMenuItem>
+                  />
+                  <span>{t("pronunciationAssessment")}</span>
+                </DropdownMenuItem>
 
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={toggleCompare}
+                >
+                  <GitCompareIcon className="w-4 h-4 mr-4" />
+                  <span>{t("compare")}</span>
+                </DropdownMenuItem>
+              </>
+            )}
+            <DropdownMenuItem
+              className="cursor-pointer"
+              data-tooltip-content={t("selectRegion")}
+              onClick={() => setIsSelectingRegion(!isSelectingRegion)}
+            >
+              <TextCursorInputIcon className="w-4 h-4 mr-4" />
+              <span>{t("selectRegion")}</span>
+            </DropdownMenuItem>
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={() => setIsSharing(true)}
@@ -625,6 +641,9 @@ export const MediaCurrentRecording = () => {
           displayClose={false}
         >
           <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
+            <SheetTitle className="hidden">
+              {t("pronunciationAssessment")}
+            </SheetTitle>
             <SheetClose>
               <ChevronDownIcon />
             </SheetClose>

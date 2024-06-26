@@ -48,6 +48,8 @@ jobs:
 
       - name: Run main tests with xvfb-run on Ubuntu
         if: contains(matrix.os, 'ubuntu')
+        env:
+          DEBUG: pw:browser*
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn enjoy:test:main
 

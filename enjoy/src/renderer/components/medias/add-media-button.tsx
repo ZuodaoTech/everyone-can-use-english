@@ -8,18 +8,27 @@ import {
   DialogFooter,
   Input,
   Button,
+  Progress,
+  toast,
 } from "@renderer/components/ui";
 import { PlusCircleIcon, LoaderIcon } from "lucide-react";
 import { t } from "i18next";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AudioFormats, VideoFormats } from "@/constants";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  DbProviderContext,
+} from "@renderer/context";
 
-export const AddMediaButton = () => {
+export const AddMediaButton = (props: { type?: "Audio" | "Video" }) => {
+  const { type = "Audio" } = props;
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [uri, setUri] = useState("");
+  const [files, setFiles] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const [createdCount, setCreatedCount] = useState(0);
 
   const handleOpen = (value: boolean) => {
     if (submitting) {
@@ -33,11 +42,63 @@ export const AddMediaButton = () => {
     if (!uri) return;
     setSubmitting(true);
 
-    EnjoyApp.audios.create(uri).finally(() => {
+    setTimeout(() => {
       setSubmitting(false);
-      setOpen(false);
-    });
+    }, 3000);
+
+    if (files.length > 0) {
+      Promise.allSettled(files.map((f) => EnjoyApp.audios.create(f)))
+        .then((results) => {
+          const fulfilled = results.filter(
+            (r) => r.status === "fulfilled"
+          ).length;
+          const rejected = results.filter(
+            (r) => r.status === "rejected"
+          ).length;
+
+          toast.success(t("resourcesAdded", { fulfilled, rejected }));
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        })
+        .finally(() => {
+          setSubmitting(false);
+          setOpen(false);
+        });
+    } else {
+      EnjoyApp.audios
+        .create(uri)
+        .then(() => {
+          toast.success(t("resourceAdded"));
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        })
+        .finally(() => {
+          setSubmitting(false);
+          setOpen(false);
+        });
+    }
   };
+
+  const onMediaCreate = (event: CustomEvent) => {
+    const { record, action, model } = event.detail || {};
+    if (!record) return;
+    if (action !== "create") return;
+    if (model !== type) return;
+
+    setCreatedCount((count) => count + 1);
+  };
+
+  useEffect(() => {
+    if (submitting) {
+      addDblistener(onMediaCreate);
+    }
+
+    return () => {
+      removeDbListener(onMediaCreate);
+    };
+  }, [submitting]);
 
   return (
     <Dialog open={open} onOpenChange={handleOpen}>
@@ -55,29 +116,33 @@ export const AddMediaButton = () => {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex space-x-2 mb-6">
+        <div className="flex space-x-2">
           <Input
             placeholder="https://"
             value={uri}
+            disabled={submitting}
             onChange={(element) => {
               setUri(element.target.value);
+              setFiles([]);
             }}
           />
           <Button
             variant="secondary"
             className="capitalize min-w-max"
+            disabled={submitting}
             onClick={async () => {
-              const files = await EnjoyApp.dialog.showOpenDialog({
-                properties: ["openFile"],
+              const selected = await EnjoyApp.dialog.showOpenDialog({
+                properties: ["openFile", "multiSelections"],
                 filters: [
                   {
                     name: "audio,video",
-                    extensions: [...AudioFormats, ...VideoFormats],
+                    extensions: type === "Audio" ? AudioFormats : VideoFormats,
                   },
                 ],
               });
-              if (files) {
-                setUri(files[0]);
+              if (selected) {
+                setFiles(selected);
+                setUri(selected[0]);
               }
             }}
           >
@@ -85,11 +150,26 @@ export const AddMediaButton = () => {
           </Button>
         </div>
 
+        {files.length > 0 && (
+          <div className="">
+            {t("selectedFiles")}: {files.length}
+          </div>
+        )}
+
+        {files.length > 0 && submitting && (
+          <div className="flex items-center gap-2">
+            <Progress value={(createdCount * 100.0) / files.length} max={100} />
+            <span>
+              {createdCount}/{files.length}
+            </span>
+          </div>
+        )}
+
         <DialogFooter>
           <Button
             variant="ghost"
+            disabled={submitting}
             onClick={() => {
-              setSubmitting(false);
               setOpen(false);
             }}
           >
@@ -97,7 +177,7 @@ export const AddMediaButton = () => {
           </Button>
           <Button
             variant="default"
-            disabled={!uri || submitting}
+            disabled={(!uri && files.length === 0) || submitting}
             onClick={handleSubmit}
           >
             {submitting && <LoaderIcon className="animate-spin w-4 mr-2" />}

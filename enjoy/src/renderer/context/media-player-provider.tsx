@@ -16,7 +16,6 @@ import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
 import { debounce } from "lodash";
-import { IPA_MAPPINGS } from "@/constants";
 
 type MediaPlayerContextType = {
   layout: {
@@ -69,6 +68,7 @@ type MediaPlayerContextType = {
   generateTranscription: (params?: {
     originalText?: string;
     language?: string;
+    service?: WhisperConfigType["service"];
   }) => void;
   transcribing: boolean;
   transcribingProgress: number;
@@ -89,8 +89,6 @@ type MediaPlayerContextType = {
   // Segments
   currentSegment: SegmentType;
   createSegment: () => Promise<SegmentType | void>;
-  // remote config
-  ipaMappings: { [key: string]: string };
   getCachedSegmentIndex: () => Promise<number>;
   setCachedSegmentIndex: (index: number) => void;
 };
@@ -169,15 +167,12 @@ export const MediaPlayerProvider = ({
   const [transcriptionDraft, setTranscriptionDraft] =
     useState<TranscriptionType["result"]>();
 
-  const [ipaMappings, setIpaMappings] = useState<{ [key: string]: string }>(
-    IPA_MAPPINGS
-  );
-
   const {
     transcription,
     generateTranscription,
     transcribing,
     transcribingProgress,
+    abortGenerateTranscription,
   } = useTranscriptions(media);
 
   const {
@@ -363,7 +358,7 @@ export const MediaPlayerProvider = ({
           );
           labels[index] = [
             labels[index] || "",
-            learningLanguage.startsWith("en")
+            (media?.language || learningLanguage).startsWith("en")
               ? convertIpaToNormal(phone.text.trim())
               : phone.text.trim(),
           ].join("");
@@ -559,22 +554,6 @@ export const MediaPlayerProvider = ({
     };
   }, [media?.src, ref, mediaProvider, layout?.playerHeight]);
 
-  useEffect(() => {
-    calculateHeight();
-
-    webApi.config("ipa_mappings").then((mappings) => {
-      if (mappings) setIpaMappings(mappings);
-    });
-
-    EnjoyApp.window.onResize(() => {
-      deboundeCalculateHeight();
-    });
-
-    return () => {
-      EnjoyApp.window.removeListeners();
-    };
-  }, []);
-
   /* cache last segment index */
   useEffect(() => {
     if (!media) return;
@@ -582,6 +561,23 @@ export const MediaPlayerProvider = ({
 
     setCachedSegmentIndex(currentSegmentIndex);
   }, [currentSegmentIndex]);
+
+  /*
+   * Update layout when window is resized
+   * Abort transcription when component is unmounted
+   */
+  useEffect(() => {
+    calculateHeight();
+
+    EnjoyApp.window.onResize(() => {
+      deboundeCalculateHeight();
+    });
+
+    return () => {
+      EnjoyApp.window.removeListeners();
+      abortGenerateTranscription();
+    };
+  }, []);
 
   return (
     <>
@@ -629,7 +625,6 @@ export const MediaPlayerProvider = ({
           createNote,
           currentSegment: segment,
           createSegment,
-          ipaMappings,
           getCachedSegmentIndex,
           setCachedSegmentIndex,
         }}

@@ -1,28 +1,32 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import {
   Button,
   AlertDialog,
   AlertDialogTrigger,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogTitle,
   AlertDialogDescription,
-  AlertDialogCancel,
-  AlertDialogAction,
 } from "@renderer/components/ui";
 import { LoaderIcon } from "lucide-react";
+import { TranscriptionCreateForm } from "../transcriptions";
 
 export const MediaTranscriptionGenerateButton = (props: {
   children: React.ReactNode;
 }) => {
-  const { media, generateTranscription, transcribing, transcription } =
-    useContext(MediaPlayerProviderContext);
+  const {
+    media,
+    generateTranscription,
+    transcribing,
+    transcription,
+    transcribingProgress,
+  } = useContext(MediaPlayerProviderContext);
+  const [open, setOpen] = useState(false);
 
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger disabled={transcribing} asChild>
         {props.children ? (
           props.children
@@ -50,18 +54,20 @@ export const MediaTranscriptionGenerateButton = (props: {
             })}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={() =>
-              generateTranscription({
-                originalText: "",
-              })
-            }
-          >
-            {t("transcribe")}
-          </AlertDialogAction>
-        </AlertDialogFooter>
+
+        <TranscriptionCreateForm
+          onCancel={() => setOpen(false)}
+          onSubmit={(data) => {
+            generateTranscription({
+              originalText: data.text,
+              language: data.language,
+              service: data.service as WhisperConfigType["service"],
+            });
+            setOpen(false);
+          }}
+          transcribing={transcribing}
+          transcribingProgress={transcribingProgress}
+        />
       </AlertDialogContent>
     </AlertDialog>
   );

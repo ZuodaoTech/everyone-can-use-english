@@ -22,6 +22,7 @@ class Whipser {
   private binMain: string;
   private bundledModelsDir: string;
   public config: WhisperConfigType;
+  private abortController: AbortController;
 
   constructor() {
     const customWhisperPath = path.join(
@@ -87,6 +88,9 @@ class Whipser {
   }
 
   async check() {
+    this.abortController?.abort();
+    this.abortController = new AbortController();
+
     const model = this.currentModel();
     logger.debug(`Checking whisper model: ${model.savePath}`);
 
@@ -107,6 +111,7 @@ class Whipser {
         commands.join(" "),
         {
           timeout: PROCESS_TIMEOUT,
+          signal: this.abortController.signal,
         },
         (error, stdout, stderr) => {
           if (error) {
@@ -142,12 +147,16 @@ class Whipser {
       };
     },
     options?: {
+      language?: string;
       force?: boolean;
       extra?: string[];
       onProgress?: (progress: number) => void;
     }
   ): Promise<Partial<WhisperOutputType>> {
     logger.debug("transcribing from local");
+
+    this.abortController?.abort();
+    this.abortController = new AbortController();
 
     const { blob } = params;
     let { file } = params;
@@ -166,9 +175,13 @@ class Whipser {
       throw new Error("No file or blob provided");
     }
 
-    const model = this.currentModel();
+    const { force = false, extra = [], language, onProgress } = options || {};
 
-    const { force = false, extra = [], onProgress } = options || {};
+    const model = this.currentModel();
+    if (language && !language.startsWith("en") && model.name.includes("en")) {
+      throw new Error(`Model ${model.name} does not support ${language}`);
+    }
+
     const filename = path.basename(file, path.extname(file));
     const tmpDir = settings.cachePath();
     const outputFile = path.join(tmpDir, filename + ".json");
@@ -189,7 +202,7 @@ class Whipser {
       path.join(tmpDir, filename),
       "--print-progress",
       "--language",
-      model.name.includes("en") ? "en" : "auto",
+      model.name.includes("en") ? "en" : language?.split("-")?.[0] || "auto",
       ...extra,
     ];
 
@@ -199,6 +212,7 @@ class Whipser {
 
     const command = spawn(this.binMain, commandArguments, {
       timeout: PROCESS_TIMEOUT,
+      signal: this.abortController.signal,
     });
 
     return new Promise((resolve, reject) => {
@@ -224,8 +238,8 @@ class Whipser {
         reject(err);
       });
 
-      command.on("close", () => {
-        if (fs.pathExistsSync(outputFile)) {
+      command.on("close", (code) => {
+        if (code === 0 && fs.pathExistsSync(outputFile)) {
           resolve(fs.readJson(outputFile));
         } else {
           reject(new Error("Transcription failed"));
@@ -234,12 +248,16 @@ class Whipser {
     });
   }
 
+  abort() {
+    this.abortController?.abort();
+  }
+
   registerIpcHandlers() {
     ipcMain.handle("whisper-config", async () => {
       return this.config;
     });
 
-    ipcMain.handle("whisper-set-model", async (event, model) => {
+    ipcMain.handle("whisper-set-model", async (_event, model) => {
       const originalModel = settings.getSync("whisper.model");
       settings.setSync("whisper.model", model);
       this.config = settings.whisperConfig();
@@ -254,35 +272,22 @@ class Whipser {
         })
         .catch((err) => {
           settings.setSync("whisper.model", originalModel);
-          event.sender.send("on-notification", {
-            type: "error",
-            message: err.message,
-          });
+          throw err;
         });
     });
 
-    ipcMain.handle("whisper-set-service", async (event, service) => {
+    ipcMain.handle("whisper-set-service", async (_event, service) => {
       if (service === "local") {
-        try {
-          await this.check();
-          settings.setSync("whisper.service", service);
-          this.config.service = service;
-          return this.config;
-        } catch (err) {
-          event.sender.send("on-notification", {
-            type: "error",
-            message: err.message,
-          });
-        }
+        await this.check();
+        settings.setSync("whisper.service", service);
+        this.config.service = service;
+        return this.config;
       } else if (["cloudflare", "azure", "openai"].includes(service)) {
         settings.setSync("whisper.service", service);
         this.config.service = service;
         return this.config;
       } else {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: "Unknown service",
-        });
+        throw new Error("Unknown service");
       }
     });
 
@@ -291,19 +296,16 @@ class Whipser {
     });
 
     ipcMain.handle("whisper-transcribe", async (event, params, options) => {
-      try {
-        return await this.transcribe(params, {
-          ...options,
-          onProgress: (progress) => {
-            event.sender.send("whisper-on-progress", progress);
-          },
-        });
-      } catch (err) {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      }
+      return await this.transcribe(params, {
+        ...options,
+        onProgress: (progress) => {
+          event.sender.send("whisper-on-progress", progress);
+        },
+      });
+    });
+
+    ipcMain.handle("whisper-abort", async (_event) => {
+      return await this.abort();
     });
   }
 }

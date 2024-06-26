@@ -23,4 +23,7 @@ type SegementRecordingStatsType = {
   referenceText?: string;
   count: number;
   duration: number;
+  pronunciationAssessment?: {
+    pronunciationScore: number;
+  };
 }[];

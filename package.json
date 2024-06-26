@@ -2,11 +2,13 @@
   "private": true,
   "workspaces": [
     "enjoy",
-    "1000-hours"
+    "1000-hours",
+    "1000h-portal"
   ],
   "scripts": {
     "start:enjoy": "echo 'Please use `yarn enjoy:start` instead'",
     "enjoy:add": "yarn workspace enjoy add",
+    "enjoy:remove": "yarn workspace enjoy remove",
     "enjoy:dev": "yarn workspace enjoy dev",
     "enjoy:start": "yarn workspace enjoy start",
     "enjoy:test": "yarn workspace enjoy test",
@@ -19,7 +21,8 @@
     "enjoy:create-migration": "yarn workspace enjoy create-migration",
     "docs:dev": "yarn workspace 1000-hours dev",
     "docs:build": "yarn workspace 1000-hours build",
-    "docs:preview": "yarn workspace 1000-hours preview"
+    "docs:preview": "yarn workspace 1000-hours preview",
+    "portal:generate": "yarn workspace 1000h-portal generate"
   },
   "packageManager": "yarn@4.2.1",
   "engines": {

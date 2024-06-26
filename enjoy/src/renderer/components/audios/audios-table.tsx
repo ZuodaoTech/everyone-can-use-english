@@ -12,13 +12,9 @@ import {
   TooltipTrigger,
   Button,
   PingPoint,
+  Badge,
 } from "@renderer/components/ui";
-import {
-  EditIcon,
-  TrashIcon,
-  CheckCircleIcon,
-  AudioWaveformIcon,
-} from "lucide-react";
+import { EditIcon, TrashIcon, CheckCircleIcon } from "lucide-react";
 import dayjs from "@renderer/lib/dayjs";
 import { secondsToTimestamp } from "@renderer/lib/utils";
 import { Link } from "react-router-dom";
@@ -27,15 +23,15 @@ export const AudiosTable = (props: {
   audios: Partial<AudioType>[];
   onEdit: (audio: Partial<AudioType>) => void;
   onDelete: (audio: Partial<AudioType>) => void;
-  onTranscribe: (audio: Partial<AudioType>) => void;
 }) => {
-  const { audios, onEdit, onDelete, onTranscribe } = props;
+  const { audios, onEdit, onDelete } = props;
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead className="capitalize">{t("models.audio.name")}</TableHead>
+          <TableHead className="capitalize">{t("language")}</TableHead>
           <TableHead className="capitalize">
             {t("models.audio.duration")}
           </TableHead>
@@ -75,6 +71,7 @@ export const AudiosTable = (props: {
                 </Tooltip>
               </TooltipProvider>
             </TableCell>
+            <TableCell>{audio.language ? audio.language : "-"}</TableCell>
             <TableCell>
               {audio.duration ? secondsToTimestamp(audio.duration) : "-"}
             </TableCell>
@@ -96,13 +93,6 @@ export const AudiosTable = (props: {
             </TableCell>
             <TableCell>
               <div className="flex items-center">
-                <Button
-                  title={t("transcribe")}
-                  variant="ghost"
-                  onClick={() => onTranscribe(Object.assign({}, audio))}
-                >
-                  <AudioWaveformIcon className="h-4 w-4" />
-                </Button>
                 <Button
                   title={t("edit")}
                   variant="ghost"
