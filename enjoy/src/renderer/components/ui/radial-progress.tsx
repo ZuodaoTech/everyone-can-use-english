@@ -23,7 +23,7 @@ export const RadialProgress = ({
   const length = 2 * Math.PI * (50 - thickness / 2);
   return (
     <div className={cn("relative w-40 h-40", className)} {...props}>
-      <svg className="w-full h-full" viewBox="0 0 100 100">
+      <svg className="w-full h-full" viewBox="0 0 100 100" fill="currentColor">
         <circle
           className={cn("text-gray-500 stroke-current", circleClassName)}
           strokeWidth={thickness}
