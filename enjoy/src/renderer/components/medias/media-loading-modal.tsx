@@ -12,8 +12,6 @@ import {
   AlertDialogFooter,
   AlertDialogOverlay,
   Button,
-  PingPoint,
-  Progress,
 } from "@renderer/components/ui";
 import { CheckCircleIcon, LoaderIcon, XCircleIcon } from "lucide-react";
 import { t } from "i18next";
@@ -22,7 +20,6 @@ import { TranscriptionCreateForm } from "../transcriptions";
 
 export const MediaLoadingModal = () => {
   const navigate = useNavigate();
-  const { whisperConfig } = useContext(AISettingsProviderContext);
   const {
     media,
     decoded,
@@ -52,6 +49,7 @@ export const MediaLoadingModal = () => {
             </div>
           ) : (
             <TranscriptionCreateForm
+              originalText={transcription?.result?.originalText}
               onSubmit={(data) => {
                 generateTranscription({
                   originalText: data.text,
