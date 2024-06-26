@@ -43,10 +43,7 @@
     <div class="bg h-[160px] md:h-[340px] lg:h-[620px]"></div>
 
     <div class="container m-auto text-center">
-      <img
-        class="demo-screen inline w-[312px] md:w-[682px] lg:w-[924px] xl:w-[1024px] mt-[-40px] md:mt-[-60px]"
-        src="/portal-static/images/demo.png"
-      />
+      <DemoScreen />
     </div>
   </div>
 </template>
