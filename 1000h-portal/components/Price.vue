@@ -21,7 +21,7 @@
 
         <div class="self-center">
           <img
-            class="h-[100%] md:h-[356px] lg:hidden"
+            class="md:h-[356px] lg:hidden"
             src="/portal-static/images/payment.png"
           />
 
