@@ -78,13 +78,16 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     setTranscribing(true);
     setTranscribingProgress(0);
     try {
-      const { engine, model, alignmentResult } = await transcribe(media.src, {
-        targetId: media.id,
-        targetType: media.mediaType,
-        originalText,
-        language,
-        service,
-      });
+      const { engine, model, alignmentResult, tokenId } = await transcribe(
+        media.src,
+        {
+          targetId: media.id,
+          targetType: media.mediaType,
+          originalText,
+          language,
+          service,
+        }
+      );
 
       let timeline: TimelineEntry[] = [];
       alignmentResult.timeline.forEach((t) => {
@@ -174,6 +177,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
           timeline: timeline,
           transcript: alignmentResult.transcript,
           originalText,
+          tokenId,
         },
         engine,
         model,

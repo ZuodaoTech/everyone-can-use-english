@@ -172,7 +172,11 @@ export class Recording extends Model<Recording> {
       logger,
     });
 
-    const { token, region } = await webApi.generateSpeechToken({
+    const {
+      id: tokenId,
+      token,
+      region,
+    } = await webApi.generateSpeechToken({
       targetId: this.id,
       targetType: "Recording",
     });
@@ -191,6 +195,7 @@ export class Recording extends Model<Recording> {
       }
     );
     resultJson.duration = this.duration;
+    resultJson.tokenId = tokenId;
 
     const _pronunciationAssessment = await PronunciationAssessment.create(
       {
