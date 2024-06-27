@@ -4,6 +4,7 @@ export * from "./use-camdict";
 export * from "./use-conversation";
 export * from "./use-notes";
 export * from "./use-recordings";
+export * from "./use-pronunciation-assessments";
 export * from "./use-segments";
 export * from "./use-transcribe";
 export * from "./use-transcriptions";
