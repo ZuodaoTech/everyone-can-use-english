@@ -3,11 +3,14 @@ import {
   AppSettingsProviderContext,
 } from "@renderer/context";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
   Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Form,
   FormField,
   FormItem,
@@ -26,7 +29,7 @@ import {
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { LANGUAGES } from "@/constants";
-import { LoaderIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon, LoaderIcon } from "lucide-react";
 import { parseText } from "media-captions";
 
 const transcriptionSchema = z.object({
@@ -51,6 +54,7 @@ export const TranscriptionCreateForm = (props: {
   } = props;
   const { learningLanguage } = useContext(AppSettingsProviderContext);
   const { whisperConfig } = useContext(AISettingsProviderContext);
+  const [collapsibleOpen, setCollapsibleOpen] = useState(false);
 
   const form = useForm<z.infer<typeof transcriptionSchema>>({
     resolver: zodResolver(transcriptionSchema),
@@ -171,51 +175,66 @@ export const TranscriptionCreateForm = (props: {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="text"
-          render={({ field }) => (
-            <FormItem className="grid w-full items-center gap-1.5">
-              <FormLabel>
-                {t("uploadTranscriptFile")}({t("optinal")})
-              </FormLabel>
-              <Input
-                disabled={transcribing}
-                type="file"
-                accept=".txt,.srt,.vtt"
-                onChange={async (event) => {
-                  const file = event.target.files[0];
-
-                  if (file) {
-                    parseSubtitle(file)
-                      .then((text) => {
-                        field.onChange(text);
-                      })
-                      .catch((error) => {
-                        toast.error(error.message);
-                      });
-                  } else {
-                    field.onChange("");
-                  }
-                }}
-              />
-              {field.value != undefined && (
-                <>
+        <Collapsible open={collapsibleOpen} onOpenChange={setCollapsibleOpen}>
+          <CollapsibleContent>
+            <FormField
+              control={form.control}
+              name="text"
+              render={({ field }) => (
+                <FormItem className="grid w-full items-center gap-1.5">
                   <FormLabel>
-                    {t("transcript")}
+                    {t("uploadTranscriptFile")}({t("optinal")})
                   </FormLabel>
-                  <Textarea
-                    className="h-36"
-                    {...field}
+                  <Input
                     disabled={transcribing}
+                    type="file"
+                    accept=".txt,.srt,.vtt"
+                    onChange={async (event) => {
+                      const file = event.target.files[0];
+
+                      if (file) {
+                        parseSubtitle(file)
+                          .then((text) => {
+                            field.onChange(text);
+                          })
+                          .catch((error) => {
+                            toast.error(error.message);
+                          });
+                      } else {
+                        field.onChange("");
+                      }
+                    }}
                   />
-                </>
+                  {field.value != undefined && (
+                    <>
+                      <FormLabel>{t("transcript")}</FormLabel>
+                      <Textarea
+                        className="h-36"
+                        {...field}
+                        disabled={transcribing}
+                      />
+                    </>
+                  )}
+                  <FormMessage />
+                </FormItem>
               )}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {transcribing && (
+            />
+          </CollapsibleContent>
+          <div className="flex justify-center my-4">
+            <CollapsibleTrigger asChild>
+              <Button variant="ghost" size="sm">
+                <span className="">{t("moreOptions")}</span>
+                {collapsibleOpen ? (
+                  <ChevronUpIcon className="h-4 w-4" />
+                ) : (
+                  <ChevronDownIcon className="h-4 w-4" />
+                )}
+              </Button>
+            </CollapsibleTrigger>
+          </div>
+        </Collapsible>
+
+        {transcribing && form.watch("service") === "local" && (
           <div className="mb-4">
             <div className="flex items-center space-x-4 mb-2">
               <PingPoint colorClassName="bg-yellow-500" />

@@ -623,5 +623,6 @@
   "allLanguages": "全部语言",
   "search": "搜索",
   "noData": "没有数据",
-  "selectedFiles": "已选中文件"
+  "selectedFiles": "已选中文件",
+  "moreOptions": "更多选项"
 }
