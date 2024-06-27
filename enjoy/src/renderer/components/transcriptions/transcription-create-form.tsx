@@ -54,7 +54,7 @@ export const TranscriptionCreateForm = (props: {
   } = props;
   const { learningLanguage } = useContext(AppSettingsProviderContext);
   const { whisperConfig } = useContext(AISettingsProviderContext);
-  const [collapsibleOpen, setCollapsibleOpen] = useState(true);
+  const [collapsibleOpen, setCollapsibleOpen] = useState(false);
 
   const form = useForm<z.infer<typeof transcriptionSchema>>({
     resolver: zodResolver(transcriptionSchema),
