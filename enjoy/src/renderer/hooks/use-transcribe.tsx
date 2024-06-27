@@ -42,6 +42,7 @@ export const useTranscribe = () => {
     model: string;
     alignmentResult: AlignmentResult;
     originalText?: string;
+    tokenId?: number;
   }> => {
     const url = await transcode(mediaSrc);
     const { targetId, targetType, originalText, language, service } =
@@ -173,8 +174,9 @@ export const useTranscribe = () => {
     engine: string;
     model: string;
     text: string;
+    tokenId: number;
   }> => {
-    const { token, region } = await webApi.generateSpeechToken(params);
+    const { id, token, region } = await webApi.generateSpeechToken(params);
     const config = sdk.SpeechConfig.fromAuthorizationToken(token, region);
     const audioConfig = sdk.AudioConfig.fromWavFileInput(
       new File([blob], "audio.wav")
@@ -217,6 +219,7 @@ export const useTranscribe = () => {
           engine: "azure",
           model: "whisper",
           text: results.map((result) => result.DisplayText).join(" "),
+          tokenId: id,
         });
       };
 
