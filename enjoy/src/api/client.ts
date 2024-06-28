@@ -473,4 +473,20 @@ export class Client {
       params: decamelizeKeys(params),
     });
   }
+
+  courses(params?: { page?: number; items?: number }): Promise<
+    {
+      courses: CourseType[];
+    } & PagyResponseType
+  > {
+    return this.api.get("/api/courses", { params: decamelizeKeys(params) });
+  }
+
+  course(id: string): Promise<CourseType> {
+    return this.api.get(`/api/courses/${id}`);
+  }
+
+  chapter(courseId: string, id: string): Promise<ChapterType> {
+    return this.api.get(`/api/courses/${courseId}/chapters/${id}`);
+  }
 }
