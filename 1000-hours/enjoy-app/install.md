@@ -4,7 +4,7 @@ Enjoy App 是一个跨平台的桌面应用，可以在 Windows、Mac 和 Linux 
 
 请根据电脑设备的操作系统，下载相应的版本安装使用。
 
-当前最新版本：[v0.2.13](https://github.com/xiaolai/everyone-can-use-english/releases/latest)
+当前最新版本：[v0.2.13](https://github.com/zuodaotech/everyone-can-use-english/releases/latest)
 
 ## Windows
 
@@ -57,4 +57,4 @@ M1 以后的 Mac 电脑型号(M1、M2、M3)，均为 Silicon 芯片。
 
 ## 历史版本
 
-所有历史版本均可在 [这里](https://github.com/xiaolai/everyone-can-use-english/releases) 找到。
+所有历史版本均可在 [这里](https://github.com/zuodaotech/everyone-can-use-english/releases) 找到。

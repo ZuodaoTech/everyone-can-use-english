@@ -59,7 +59,7 @@ export const About = () => {
             variant="secondary"
             onClick={() => {
               EnjoyApp.shell.openExternal(
-                "https://github.com/xiaolai/everyone-can-use-english/discussions"
+                "https://github.com/zuodaotech/everyone-can-use-english/discussions"
               );
             }}
           >
