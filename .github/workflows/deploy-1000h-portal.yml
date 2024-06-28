@@ -41,8 +41,7 @@ jobs:
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CF_BASEONE_API_TOKEN }}
+          accountId: ${{ secrets.CF_BASEONE_ACCOUNT_ID }}
           command: deploy
           workingDirectory: "1000h-portal"
-
