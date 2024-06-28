@@ -20,6 +20,7 @@ import StoryPreview from "./pages/story-preview";
 import Notes from "./pages/notes";
 import PronunciationAssessmentsIndex from "./pages/pronunciation-assessments/index";
 import PronunciationAssessmentsNew from "./pages/pronunciation-assessments/new";
+import Courses from "./pages/courses";
 
 export default createHashRouter([
   {
@@ -28,6 +29,10 @@ export default createHashRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
+      {
+        path: "/courses",
+        element: <Courses />,
+      },
       {
         path: "/community",
         element: <Community />,
