@@ -486,7 +486,20 @@ export class Client {
     return this.api.get(`/api/courses/${id}`);
   }
 
-  chapter(courseId: string, id: string): Promise<ChapterType> {
+  createEnrollment(courseId: string): Promise<EnrollmentType> {
+    return this.api.post(`/api/enrollments`, decamelizeKeys({ courseId }));
+  }
+
+  chapter(courseId: string, id: number | string): Promise<ChapterType> {
     return this.api.get(`/api/courses/${courseId}/chapters/${id}`);
+  }
+
+  updateEnrollment(
+    id: string,
+    params: {
+      currentChapterId?: string;
+    }
+  ): Promise<EnrollmentType> {
+    return this.api.put(`/api/enrollments/${id}`, decamelizeKeys(params));
   }
 }
