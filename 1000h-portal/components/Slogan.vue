@@ -28,14 +28,24 @@
       一起，享受这1000小时
     </div>
 
-    <div class="mt-6">
-      <button
-        class="action hover:bg-primary bg-greyscale_2 text-white px-5 py-4 inline-flex rounded-full items-center text-[14px] md:text-[16px]"
-      >
-        <span class="mr-1">体验 Enjoy App</span>
+    <div class="mt-6 max-sm:inline-flex max-sm:gap-4 max-sm:flex-col">
+      <a href="https://1000h.org/intro.html" target="_blank">
+        <button
+          class="action px-4 py-3 md:px-5 md:py-4 text-[14px] md:text-[16px] max-sm:w-[260px]"
+        >
+          <span class="mr-1">开启我的 1000 小时</span>
 
-        <img src="/portal-static/icon/arrow-right.svg" width="24" />
-      </button>
+          <img src="/portal-static/icon/arrow-right.svg" width="24" />
+        </button>
+      </a>
+
+      <a href="https://1000h.org/enjoy-app/install.html" target="_blank">
+        <button
+          class="action secondary px-4 py-3 md:px-5 md:py-4 text-[14px] md:text-[16px] sm:ml-4 max-sm:w-[260px]"
+        >
+          <span class="mr-1">体验 Enjoy App</span>
+        </button>
+      </a>
     </div>
   </div>
 
@@ -69,6 +79,27 @@ export default {
 
 .action {
   transition: ease-in-out 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #252525;
+  color: white;
+  border-radius: 9999px;
+
+  &:hover {
+    background: #4797f5;
+  }
+}
+
+.action.secondary {
+  border: 2px solid #252525;
+  color: #252525;
+  background: white;
+
+  &:hover {
+    color: #4797f5;
+    border-color: #4797f5;
+  }
 }
 
 .demo {

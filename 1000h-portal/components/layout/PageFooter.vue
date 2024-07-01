@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <div>© {{year}} ANEX Inc.</div>
+    <div>© {{ year }} ANEX Inc.</div>
     <div class="opacity-50 mt-1">All rights reserved.</div>
   </div>
 </template>
@@ -9,13 +9,13 @@
 export default {
   name: "PageFooter",
 };
-
-const year = computed(() => {
-  return (new Date()).getFullYear();
-})
 </script>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const year = computed(() => {
+  return new Date().getFullYear();
+});
+</script>
 
 <style lang="scss" scoped>
 .footer {
