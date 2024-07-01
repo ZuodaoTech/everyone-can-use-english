@@ -40,7 +40,7 @@ export default {
 <script lang="ts" setup>
 const items = ref([
   {
-    avatar: "/portal-static/images/avatar.png",
+    avatar: "/portal-static/images/avatar/avatar31766.jpg",
     name: "阿信",
     hint: "连续打卡 1,000 天",
     text: "发现自己发音错误很有帮助，之前是不知不觉，现在注意到了，开始纠正练习。",
@@ -52,19 +52,19 @@ const items = ref([
     text: "朗读更流利了，表达更地道了。",
   },
   {
-    avatar: "/portal-static/images/avatar.png",
+    avatar: "/portal-static/images/avatar/avatar39503702.jpg",
     name: "二十初仲夏的树",
     hint: "连续打卡 1,000 天",
     text: "五个月，语感和口语熟练度提高了很多，附带着阅读能力也提高了，感觉读多了以后大胆了很多，估计碰到外国人敢开口了，有时候甚至自己都能小小造句了。",
   },
   {
-    avatar: "/portal-static/images/avatar.png",
+    avatar: "/portal-static/images/avatar/avatar37300002.jpg",
     name: "黄明英",
     hint: "连续打卡 1,000 天",
     text: "跟着朗读，慢慢有停顿、升调降调感觉。",
   },
   {
-    avatar: "/portal-static/images/avatar.png",
+    avatar: "/portal-static/images/avatar/avatar39440639.jpg",
     name: "朱国庆",
     hint: "连续打卡 1,000 天",
     text: "App 帮助我解决发音问题，就像一位私人教练，随时纠正发音错误，很多旧的发音习惯得到了纠正，让我的英语发音比之前有了很大的提高。 ",
@@ -107,7 +107,6 @@ const items = ref([
   },
 ]);
 </script>
-
 <style lang="scss" scoped>
 .comments {
   background: linear-gradient(180deg, #e6f0f9 0%, #fff 100%);
