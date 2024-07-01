@@ -1,7 +1,7 @@
 type CourseType = {
   id: string;
-  name: string;
-  introduction: string;
+  title: string;
+  description: string;
   coverUrl?: string;
-  chapters: ChapterType[];
+  chapters?: ChapterType[];
 };

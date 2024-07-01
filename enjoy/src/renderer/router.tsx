@@ -21,6 +21,7 @@ import Notes from "./pages/notes";
 import PronunciationAssessmentsIndex from "./pages/pronunciation-assessments/index";
 import PronunciationAssessmentsNew from "./pages/pronunciation-assessments/new";
 import Courses from "./pages/courses";
+import Course from "./pages/course";
 
 export default createHashRouter([
   {
@@ -32,6 +33,10 @@ export default createHashRouter([
       {
         path: "/courses",
         element: <Courses />,
+      },
+      {
+        path: "/courses/:id",
+        element: <Course />,
       },
       {
         path: "/community",
