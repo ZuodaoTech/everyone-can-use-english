@@ -14417,7 +14417,7 @@ __metadata:
     microsoft-cognitiveservices-speech-sdk: "npm:^1.38.0"
     next-themes: "npm:^0.3.0"
     octokit: "npm:^4.0.2"
-    openai: "npm:^4.52.0"
+    openai: "npm:^4.52.2"
     pitchfinder: "npm:^2.3.2"
     postcss: "npm:^8.4.38"
     progress: "npm:^2.0.3"
@@ -21538,7 +21538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openai@npm:^4.49.1, openai@npm:^4.52.0":
+"openai@npm:^4.49.1":
   version: 4.52.0
   resolution: "openai@npm:4.52.0"
   dependencies:
@@ -21553,6 +21553,24 @@ __metadata:
   bin:
     openai: bin/cli
   checksum: 10c0/74a018dd722f66af535a55c71cc5fdad98c73681c00bde977e9508c0a526a14b82c056ed6ccb12846f5e4238ba273bcc14e7ec5b611be2ad74553a614019fa67
+  languageName: node
+  linkType: hard
+
+"openai@npm:^4.52.2":
+  version: 4.52.2
+  resolution: "openai@npm:4.52.2"
+  dependencies:
+    "@types/node": "npm:^18.11.18"
+    "@types/node-fetch": "npm:^2.6.4"
+    abort-controller: "npm:^3.0.0"
+    agentkeepalive: "npm:^4.2.1"
+    form-data-encoder: "npm:1.7.2"
+    formdata-node: "npm:^4.3.2"
+    node-fetch: "npm:^2.6.7"
+    web-streams-polyfill: "npm:^3.2.1"
+  bin:
+    openai: bin/cli
+  checksum: 10c0/74722111a08557ccf7f7fb5d4661fd317d7c5d24f52174586e54e537b24c30c16846e637b72bf72aed0ecae01bb798932eeb75f699ae2d927a9936a39589dd0e
   languageName: node
   linkType: hard
 
