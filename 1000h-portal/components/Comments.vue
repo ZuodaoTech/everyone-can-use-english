@@ -11,12 +11,17 @@
 
     <div class="items-container">
       <div class="items">
-        <div v-for="(item, index) in items" :key="index" class="item">
+        <div v-for="(item, index) in comments" :key="index" class="item">
           <img class="quote" src="/portal-static/icon/double-quote.svg" />
 
           <div class="top">
             <span>
-              <img width="56" height="56" :src="item.avatar" />
+              <img
+                width="56"
+                height="56"
+                class="rounded-full"
+                :src="item.avatar"
+              />
             </span>
 
             <div class="ml-3">
@@ -38,36 +43,43 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { request } from "@/utils/http";
+
 const items = ref([
   {
-    avatar: "/portal-static/images/avatar/avatar31766.jpg",
+    mixinId: 31766,
+    avatar: "/portal-static/avatars/31766.jpg",
     name: "阿信",
     hint: "连续打卡 1,000 天",
     text: "发现自己发音错误很有帮助，之前是不知不觉，现在注意到了，开始纠正练习。",
   },
   {
-    avatar: "/portal-static/images/avatar.png",
-    name: "东心木",
-    hint: "连续打卡 1,000 天",
-    text: "朗读更流利了，表达更地道了。",
-  },
-  {
-    avatar: "/portal-static/images/avatar/avatar39503702.jpg",
+    mixinId: 39503702,
+    avatar: "/portal-static/avatars/39503702.jpg",
     name: "二十初仲夏的树",
     hint: "连续打卡 1,000 天",
     text: "五个月，语感和口语熟练度提高了很多，附带着阅读能力也提高了，感觉读多了以后大胆了很多，估计碰到外国人敢开口了，有时候甚至自己都能小小造句了。",
   },
   {
-    avatar: "/portal-static/images/avatar/avatar37300002.jpg",
+    mixinId: 37300002,
+    avatar: "/portal-static/avatars/37300002.jpg",
     name: "黄明英",
     hint: "连续打卡 1,000 天",
     text: "跟着朗读，慢慢有停顿、升调降调感觉。",
   },
   {
-    avatar: "/portal-static/images/avatar/avatar39440639.jpg",
+    mixinId: 39440639,
+    avatar: "/portal-static/avatars/39440639.jpg",
     name: "朱国庆",
     hint: "连续打卡 1,000 天",
     text: "App 帮助我解决发音问题，就像一位私人教练，随时纠正发音错误，很多旧的发音习惯得到了纠正，让我的英语发音比之前有了很大的提高。 ",
+  },
+  {
+    mixinId: 40303463,
+    avatar: "/portal-static/images/avatar.png",
+    name: "东心木",
+    hint: "连续打卡 1,000 天",
+    text: "朗读更流利了，表达更地道了。",
   },
   {
     avatar: "/portal-static/images/avatar.png",
@@ -106,6 +118,41 @@ const items = ref([
     text: "听力更清晰，特别是在听背的熟练的说法时。",
   },
 ]);
+
+const infos = ref<any[]>([]);
+
+const comments = computed(() => {
+  return items.value.map((item) => {
+    const info = infos.value.find((info) => info.mixinId === item.mixinId);
+
+    if (!info) return item;
+
+    return {
+      ...item,
+      name: info.mixinId,
+      avatar: info.avatar_url,
+      hint: `连续打卡 ${Number(info.recordings_count).toLocaleString()} 天`,
+    };
+  });
+});
+
+onMounted(async () => {
+  requestUserInfo();
+});
+
+async function requestUserInfo() {
+  infos.value = await Promise.all(
+    items.value
+      .filter((item) => item.mixinId)
+      .map(async (item) => {
+        const resp = await request(
+          `https://enjoy.bot/api/users/${item.mixinId}/stats`
+        );
+
+        return { ...resp, mixinId: item.mixinId };
+      })
+  );
+}
 </script>
 <style lang="scss" scoped>
 .comments {
@@ -138,6 +185,10 @@ const items = ref([
     flex-wrap: nowrap;
     gap: 16px;
     animation: scroll 30s linear infinite;
+
+    &:hover {
+      animation-play-state: paused;
+    }
 
     .item {
       padding: 24px;
