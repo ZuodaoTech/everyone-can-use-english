@@ -12,6 +12,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   Form,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -132,7 +133,7 @@ export const TranscriptionCreateForm = (props: {
           control={form.control}
           name="service"
           render={({ field }) => (
-            <FormItem className="grid w-full items-center gap-1.5">
+            <FormItem className="grid w-full items-center">
               <FormLabel>{t("sttAiService")}</FormLabel>
               <Select
                 disabled={transcribing}
@@ -158,7 +159,7 @@ export const TranscriptionCreateForm = (props: {
           control={form.control}
           name="language"
           render={({ field }) => (
-            <FormItem className="grid w-full items-center gap-1.5">
+            <FormItem className="grid w-full items-center">
               <FormLabel>{t("language")}</FormLabel>
               <Select
                 disabled={transcribing}
@@ -186,7 +187,7 @@ export const TranscriptionCreateForm = (props: {
               control={form.control}
               name="text"
               render={({ field }) => (
-                <FormItem className="grid w-full items-center gap-1.5">
+                <FormItem className="grid w-full items-center">
                   <FormLabel>
                     {t("uploadTranscriptFile")}({t("optinal")})
                   </FormLabel>
@@ -210,6 +211,9 @@ export const TranscriptionCreateForm = (props: {
                       }
                     }}
                   />
+                  <FormDescription>
+                    {t("uploadTranscriptFileDescription")}
+                  </FormDescription>
                   {field.value != undefined && (
                     <>
                       <FormLabel>{t("transcript")}</FormLabel>
@@ -228,13 +232,16 @@ export const TranscriptionCreateForm = (props: {
               control={form.control}
               name="isolate"
               render={({ field }) => (
-                <FormItem className="grid w-full items-center gap-1.5">
-                  <FormLabel>{t("isolateSource")}</FormLabel>
+                <FormItem className="grid w-full items-center">
+                  <FormLabel>{t("isolateVoice")}</FormLabel>
                   <Switch
                     checked={field.value}
                     onCheckedChange={field.onChange}
                     disabled={transcribing}
                   />
+                  <FormDescription>
+                    {t("isolateVoiceDescription")}
+                  </FormDescription>
                 </FormItem>
               )}
             />

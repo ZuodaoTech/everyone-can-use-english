@@ -3,7 +3,7 @@ import {
   AISettingsProviderContext,
 } from "@renderer/context";
 import OpenAI from "openai";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { t } from "i18next";
 import { AI_WORKER_ENDPOINT } from "@/constants";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
