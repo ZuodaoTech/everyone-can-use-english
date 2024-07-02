@@ -8,8 +8,6 @@ import {
 import { toast } from "@renderer/components/ui";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@/constants";
-import whisper from "@/main/whisper";
-import { set } from "lodash";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
   const { whisperConfig } = useContext(AISettingsProviderContext);
@@ -21,7 +19,6 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const { transcribe, output } = useTranscribe();
   const [transcribingProgress, setTranscribingProgress] = useState<number>(0);
   const [transcribing, setTranscribing] = useState<boolean>(false);
-  const [stdout, setstdout] = useState<string>("");
   const [service, setService] = useState<WhisperConfigType["service"]>(
     whisperConfig.service
   );
@@ -303,7 +300,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     transcription,
     transcribingProgress,
     transcribing,
-    transcribingOutput: output || stdout,
+    transcribingOutput: output,
     generateTranscription,
     abortGenerateTranscription,
   };
