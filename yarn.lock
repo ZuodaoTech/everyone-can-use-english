@@ -10044,15 +10044,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vidstack/react@npm:^0.6.15":
-  version: 0.6.15
-  resolution: "@vidstack/react@npm:0.6.15"
+"@vidstack/react@npm:^1.11.24":
+  version: 1.11.24
+  resolution: "@vidstack/react@npm:1.11.24"
+  dependencies:
+    media-captions: "npm:^1.0.1"
   peerDependencies:
     "@types/react": ^18.0.0
-    maverick.js: 0.37.0
     react: ^18.0.0
-    vidstack: 0.6.15
-  checksum: 10c0/30f13e1399270094ec65787d80305b5e64e0dab6a3cac11ac43d2c7f11f9836c3aedd304f3fa030c5fc2ed4483d8d4bfe12a407510d713dae51b8951af56b4d7
+  checksum: 10c0/4ece943e77655db1e42a3ad8c61ff88a0ac74bebc96fb3ac89d772bf7ce955b46a2e550868f356b58e272c9a28630bfc25c6e37d4f7c15272071feb01bcf646d
   languageName: node
   linkType: hard
 
@@ -14400,7 +14400,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.15.0"
     "@typescript-eslint/parser": "npm:^7.15.0"
     "@uidotdev/usehooks": "npm:^2.4.1"
-    "@vidstack/react": "npm:^0.6.15"
+    "@vidstack/react": "npm:^1.11.24"
     "@vitejs/plugin-react": "npm:^4.3.1"
     ahoy.js: "npm:^0.4.4"
     autoprefixer: "npm:^10.4.19"
@@ -19337,6 +19337,13 @@ __metadata:
   version: 2.0.30
   resolution: "mdn-data@npm:2.0.30"
   checksum: 10c0/a2c472ea16cee3911ae742593715aa4c634eb3d4b9f1e6ada0902aa90df13dcbb7285d19435f3ff213ebaa3b2e0c0265c1eb0e3fb278fda7f8919f046a410cd9
+  languageName: node
+  linkType: hard
+
+"media-captions@npm:^1.0.1":
+  version: 1.0.3
+  resolution: "media-captions@npm:1.0.3"
+  checksum: 10c0/0ddbcfad1723abbb0533203e5ad7711802bc066dfa38bcae1f1ace6b39d2bf49d5fd410a5505cdbd0ad4887d04e0b6358fa68d19558b410077b398814a288065
   languageName: node
   linkType: hard
 

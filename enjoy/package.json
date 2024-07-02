@@ -114,7 +114,7 @@
     "@rails/actioncable": "7.1.3",
     "@sentry/electron": "^5.1.0",
     "@uidotdev/usehooks": "^2.4.1",
-    "@vidstack/react": "^0.6.15",
+    "@vidstack/react": "^1.11.24",
     "ahoy.js": "^0.4.4",
     "autosize": "^6.0.1",
     "axios": "^1.7.2",
