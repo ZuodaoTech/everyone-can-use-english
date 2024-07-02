@@ -36,6 +36,7 @@ export const useTranscribe = () => {
       originalText?: string;
       language: string;
       service: WhisperConfigType["service"];
+      isolate?: boolean;
     }
   ): Promise<{
     engine: string;
@@ -45,8 +46,14 @@ export const useTranscribe = () => {
     tokenId?: number;
   }> => {
     const url = await transcode(mediaSrc);
-    const { targetId, targetType, originalText, language, service } =
-      params || {};
+    const {
+      targetId,
+      targetType,
+      originalText,
+      language,
+      service,
+      isolate = false,
+    } = params || {};
     const blob = await (await fetch(url)).blob();
 
     let result;
@@ -93,6 +100,7 @@ export const useTranscribe = () => {
       transcript,
       {
         language,
+        isolate,
       }
     );
 
