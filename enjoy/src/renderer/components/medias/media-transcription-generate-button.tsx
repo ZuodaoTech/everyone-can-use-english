@@ -23,6 +23,7 @@ export const MediaTranscriptionGenerateButton = (props: {
     transcribing,
     transcription,
     transcribingProgress,
+    transcribingOutput,
   } = useContext(MediaPlayerProviderContext);
   const [open, setOpen] = useState(false);
 
@@ -73,6 +74,7 @@ export const MediaTranscriptionGenerateButton = (props: {
           }}
           transcribing={transcribing}
           transcribingProgress={transcribingProgress}
+          transcribingOutput={transcribingOutput}
         />
       </AlertDialogContent>
     </AlertDialog>

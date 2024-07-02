@@ -44,12 +44,14 @@ export const TranscriptionCreateForm = (props: {
   onSubmit: (data: z.infer<typeof transcriptionSchema>) => void;
   originalText?: string;
   onCancel?: () => void;
-  transcribing?: boolean;
-  transcribingProgress?: number;
+  transcribing: boolean;
+  transcribingProgress: number;
+  transcribingOutput: string;
 }) => {
   const {
     transcribing = false,
     transcribingProgress = 0,
+    transcribingOutput,
     onSubmit,
     onCancel,
     originalText,
@@ -256,17 +258,12 @@ export const TranscriptionCreateForm = (props: {
           </div>
         </Collapsible>
 
-        {transcribing && form.watch("service") === "local" && (
-          <div className="mb-4">
-            <div className="flex items-center space-x-4 mb-2">
-              <PingPoint colorClassName="bg-yellow-500" />
-              <span>{t("transcribing")}</span>
-            </div>
-            {whisperConfig.service === "local" && (
-              <Progress value={transcribingProgress} />
-            )}
-          </div>
-        )}
+        <TranscribeProgress
+          service={form.watch("service")}
+          transcribing={transcribing}
+          transcribingProgress={transcribingProgress}
+          transcribingOutput={transcribingOutput}
+        />
 
         <div className="flex justify-end space-x-4">
           {onCancel && (
@@ -276,10 +273,40 @@ export const TranscriptionCreateForm = (props: {
           )}
           <Button disabled={transcribing} type="submit" variant="default">
             {transcribing && <LoaderIcon className="animate-spin w-4 mr-2" />}
-            {t("transcribe")}
+            {t("continue")}
           </Button>
         </div>
       </form>
     </Form>
+  );
+};
+
+const TranscribeProgress = (props: {
+  service: string;
+  transcribing: boolean;
+  transcribingProgress: number;
+  transcribingOutput?: string;
+}) => {
+  const { service, transcribing, transcribingProgress, transcribingOutput } =
+    props;
+  if (!transcribing) return null;
+
+  return (
+    <div className="mb-4">
+      <div className="flex items-center space-x-4 mb-2">
+        <PingPoint colorClassName="bg-yellow-500" />
+        <span>{t("transcribing")}</span>
+      </div>
+      {service === "local" && transcribingProgress > 0 && (
+        <Progress value={transcribingProgress} />
+      )}
+      {transcribingOutput && (
+        <pre className="overflow-x-auto rounded-lg border bg-zinc-950 p-4 dark:bg-zinc-900">
+          <code className="px-[0.3rem] py-[0.2rem] rounded text-muted-foreground font-mono text-sm">
+            {transcribingOutput}
+          </code>
+        </pre>
+      )}
+    </div>
   );
 };

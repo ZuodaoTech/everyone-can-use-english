@@ -72,6 +72,7 @@ type MediaPlayerContextType = {
   }) => Promise<void>;
   transcribing: boolean;
   transcribingProgress: number;
+  transcribingOutput: string;
   transcriptionDraft: TranscriptionType["result"];
   setTranscriptionDraft: (result: TranscriptionType["result"]) => void;
   // Recordings
@@ -172,6 +173,7 @@ export const MediaPlayerProvider = ({
     generateTranscription,
     transcribing,
     transcribingProgress,
+    transcribingOutput,
     abortGenerateTranscription,
   } = useTranscriptions(media);
 
@@ -611,6 +613,7 @@ export const MediaPlayerProvider = ({
           generateTranscription,
           transcribing,
           transcribingProgress,
+          transcribingOutput,
           transcriptionDraft,
           setTranscriptionDraft,
           isRecording,

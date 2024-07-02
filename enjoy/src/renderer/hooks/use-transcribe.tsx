@@ -3,7 +3,7 @@ import {
   AISettingsProviderContext,
 } from "@renderer/context";
 import OpenAI from "openai";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { t } from "i18next";
 import { AI_WORKER_ENDPOINT } from "@/constants";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
@@ -15,6 +15,7 @@ export const useTranscribe = () => {
   const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
   const { punctuateText } = useAiCommand();
+  const [output, setOutput] = useState<string>("");
 
   const transcode = async (src: string | Blob): Promise<string> => {
     if (src instanceof Blob) {
@@ -76,6 +77,8 @@ export const useTranscribe = () => {
     } else {
       throw new Error(t("whisperServiceNotSupported"));
     }
+
+    setOutput(null);
 
     let transcript = originalText || result.text;
 
@@ -201,7 +204,8 @@ export const useTranscribe = () => {
 
     return new Promise((resolve, reject) => {
       reco.recognizing = (_s, e) => {
-        console.log(e.result.text);
+        console.log(e.result);
+        setOutput(e.result.text);
       };
 
       reco.recognized = (_s, e) => {
@@ -238,5 +242,6 @@ export const useTranscribe = () => {
   return {
     transcode,
     transcribe,
+    output,
   };
 };

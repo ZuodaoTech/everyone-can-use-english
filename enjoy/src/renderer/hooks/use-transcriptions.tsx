@@ -8,6 +8,8 @@ import {
 import { toast } from "@renderer/components/ui";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@/constants";
+import whisper from "@/main/whisper";
+import { set } from "lodash";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
   const { whisperConfig } = useContext(AISettingsProviderContext);
@@ -16,11 +18,17 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   );
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [transcription, setTranscription] = useState<TranscriptionType>(null);
-  const { transcribe } = useTranscribe();
+  const { transcribe, output } = useTranscribe();
   const [transcribingProgress, setTranscribingProgress] = useState<number>(0);
   const [transcribing, setTranscribing] = useState<boolean>(false);
+  const [stdout, setstdout] = useState<string>("");
+  const [service, setService] = useState<WhisperConfigType["service"]>(
+    whisperConfig.service
+  );
 
   const onTransactionUpdate = (event: CustomEvent) => {
+    if (!transcription) return;
+
     const { model, action, record } = event.detail || {};
     if (
       model === "Transcription" &&
@@ -64,6 +72,8 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
       language = learningLanguage,
       service = whisperConfig.service,
     } = params || {};
+    setService(service);
+
     if (originalText === undefined) {
       if (transcription?.targetId === media.id) {
         originalText = transcription.result?.originalText;
@@ -255,21 +265,24 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   }, [media]);
 
   /*
-   * auto-generate transcription result
+   * listen to transcription update
    */
   useEffect(() => {
     if (!transcription) return;
 
     addDblistener(onTransactionUpdate);
+    return () => {
+      removeDbListener(onTransactionUpdate);
+    };
+  }, [transcription]);
 
-    // if (
-    //   transcription.state == "pending" ||
-    //   !transcription.result?.["timeline"]
-    // ) {
-    //   findOrGenerateTranscription();
-    // }
+  /*
+   * listen to transcribe progress
+   */
+  useEffect(() => {
+    if (!transcribing) return;
 
-    if (whisperConfig.service === "local") {
+    if (service === "local") {
       EnjoyApp.whisper.onProgress((_, p: number) => {
         if (p > 100) p = 100;
         setTranscribingProgress(p);
@@ -277,10 +290,9 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     }
 
     return () => {
-      removeDbListener(onTransactionUpdate);
       EnjoyApp.whisper.removeProgressListeners();
     };
-  }, [transcription, media]);
+  }, [media, service, transcribing]);
 
   const abortGenerateTranscription = () => {
     EnjoyApp.whisper.abort();
@@ -291,6 +303,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     transcription,
     transcribingProgress,
     transcribing,
+    transcribingOutput: output || stdout,
     generateTranscription,
     abortGenerateTranscription,
   };
