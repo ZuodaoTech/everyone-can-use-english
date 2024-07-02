@@ -63,6 +63,11 @@ export class Conversation extends Model<Conversation> {
     return this.getDataValue("configuration").roleDefinition;
   }
 
+  @Column(DataType.VIRTUAL)
+  get language(): string {
+    return this.getDataValue("configuration").tts?.language;
+  }
+
   @HasMany(() => Message)
   messages: Message[];
 

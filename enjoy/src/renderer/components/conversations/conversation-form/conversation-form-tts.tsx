@@ -15,6 +15,7 @@ import {
 } from "@renderer/components/ui";
 import { useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
+import { LANGUAGES } from "@/constants";
 
 export const ConversationFormTTS = (props: {
   form: ReturnType<typeof useForm>;
@@ -92,6 +93,40 @@ export const ConversationFormTTS = (props: {
 
       {ttsProviders[
         form.watch("configuration.tts.engine")
+      ]?.configurable?.includes("language") && (
+        <FormField
+          control={form.control}
+          name="configuration.tts.language"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("models.conversation.ttsLanguage")}</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                value={field.value}
+                required={true}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={t("selectTtsLanguage")} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {LANGUAGES.map((lang) => (
+                    <SelectItem key={lang.code} value={lang.code}>
+                      {lang.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
+
+      {ttsProviders[
+        form.watch("configuration.tts.engine")
       ]?.configurable?.includes("voice") && (
         <FormField
           control={form.control}
@@ -103,6 +138,7 @@ export const ConversationFormTTS = (props: {
                 onValueChange={field.onChange}
                 defaultValue={field.value}
                 value={field.value}
+                required={true}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -124,7 +160,10 @@ export const ConversationFormTTS = (props: {
                           <span className="capitalize">{voice}</span>
                         </SelectItem>
                       );
-                    } else if (voice.language === learningLanguage) {
+                    } else if (
+                      voice.language ===
+                      form.watch("configuration.tts.language")
+                    ) {
                       return (
                         <SelectItem key={voice.value} value={voice.value}>
                           <span className="capitalize">{voice.label}</span>

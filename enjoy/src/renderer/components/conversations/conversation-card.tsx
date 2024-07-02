@@ -1,8 +1,11 @@
 import { MessageCircleIcon, SpeechIcon } from "lucide-react";
 import dayjs from "@renderer/lib/dayjs";
+import { useContext } from "react";
+import { AppSettingsProviderContext } from "@renderer/context";
 
 export const ConversationCard = (props: { conversation: ConversationType }) => {
   const { conversation } = props;
+  const { learningLanguage } = useContext(AppSettingsProviderContext);
 
   return (
     <div
@@ -21,10 +24,11 @@ export const ConversationCard = (props: { conversation: ConversationType }) => {
         <div className="">
           <div className="line-clamp-1 text-sm">{conversation.name}</div>
           <div className="text-xs text-muted-foreground">
-            {conversation.engine} /{" "}
+            {conversation.engine} |{" "}
             {conversation.type === "tts"
               ? conversation.configuration?.tts?.model
-              : conversation.model}
+              : conversation.model}{" "}
+            | {conversation.language || learningLanguage}
           </div>
         </div>
         <span className="min-w-fit text-sm text-muted-foreground">

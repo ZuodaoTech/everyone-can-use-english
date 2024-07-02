@@ -43,31 +43,6 @@ import {
   ConversationFormTTS,
 } from "@renderer/components";
 
-const conversationFormSchema = z.object({
-  name: z.string().optional(),
-  engine: z
-    .enum(["enjoyai", "openai", "ollama", "googleGenerativeAi"])
-    .default("openai"),
-  configuration: z.object({
-    type: z.enum(["gpt", "tts"]),
-    model: z.string().optional(),
-    baseUrl: z.string().optional(),
-    roleDefinition: z.string().optional(),
-    temperature: z.number().min(0).max(1).default(0.2),
-    numberOfChoices: z.number().min(1).default(1),
-    maxTokens: z.number().min(-1).default(2000),
-    presencePenalty: z.number().min(-2).max(2).default(0),
-    frequencyPenalty: z.number().min(-2).max(2).default(0),
-    historyBufferSize: z.number().min(0).default(10),
-    tts: z.object({
-      engine: z.enum(["openai", "enjoyai"]).default("enjoyai"),
-      model: z.string().default("openai/tts-1"),
-      voice: z.string(),
-      baseUrl: z.string().optional(),
-    }),
-  }),
-});
-
 export const ConversationForm = (props: {
   conversation: Partial<ConversationType>;
   onFinish?: () => void;
@@ -76,9 +51,37 @@ export const ConversationForm = (props: {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [gptProviders, setGptProviders] = useState<any>(GPT_PROVIDERS);
   const [ttsProviders, setTtsProviders] = useState<any>(TTS_PROVIDERS);
-  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, webApi, learningLanguage } = useContext(
+    AppSettingsProviderContext
+  );
   const { openai } = useContext(AISettingsProviderContext);
   const navigate = useNavigate();
+
+  const conversationFormSchema = z.object({
+    name: z.string().optional(),
+    engine: z
+      .enum(["enjoyai", "openai", "ollama", "googleGenerativeAi"])
+      .default("openai"),
+    configuration: z.object({
+      type: z.enum(["gpt", "tts"]),
+      model: z.string().optional(),
+      baseUrl: z.string().optional(),
+      roleDefinition: z.string().optional(),
+      temperature: z.number().min(0).max(1).default(0.2),
+      numberOfChoices: z.number().min(1).default(1),
+      maxTokens: z.number().min(-1).default(2000),
+      presencePenalty: z.number().min(-2).max(2).default(0),
+      frequencyPenalty: z.number().min(-2).max(2).default(0),
+      historyBufferSize: z.number().min(0).default(10),
+      tts: z.object({
+        language: z.string().default(learningLanguage).optional(),
+        engine: z.enum(["openai", "enjoyai"]).default("enjoyai"),
+        model: z.string().default("openai/tts-1"),
+        voice: z.string(),
+        baseUrl: z.string().optional(),
+      }),
+    }),
+  });
 
   const refreshGptProviders = async () => {
     let providers = GPT_PROVIDERS;
@@ -243,6 +246,34 @@ export const ConversationForm = (props: {
     if (!configuration?.tts?.baseUrl) {
       configuration.tts ||= {};
       configuration.tts.baseUrl = gptProviders[engine]?.baseUrl;
+    }
+
+    // validates tts voice
+    const ttsEngine = configuration.tts.engine;
+    const voice = configuration.tts.voice;
+    const language = configuration.tts.language;
+    if (!language) {
+      configuration.tts.language === learningLanguage;
+    }
+    if (ttsEngine === "openai") {
+      const options = ttsProviders["openai"].voices;
+      if (!options.includes(voice)) {
+        throw new Error(t("pleaseSelectTtsVoice"));
+      }
+    }
+    if (ttsEngine === "enjoyai") {
+      const model = configuration.tts.model.split("/")[0];
+      const options = ttsProviders.enjoyai.voices[model];
+      if (model === "openai" && !options.includes(voice)) {
+        throw new Error(t("pleaseSelectTtsVoice"));
+      } else if (
+        model === "azure" &&
+        options.findIndex(
+          (o: any) => o.language === language && o.value === voice
+        ) < 0
+      ) {
+        throw new Error(t("pleaseSelectTtsVoice"));
+      }
     }
 
     return configuration;
