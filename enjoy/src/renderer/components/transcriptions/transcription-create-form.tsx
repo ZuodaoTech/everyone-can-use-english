@@ -24,6 +24,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Switch,
   Textarea,
   toast,
 } from "@renderer/components/ui";
@@ -36,6 +37,7 @@ const transcriptionSchema = z.object({
   language: z.string(),
   service: z.string(),
   text: z.string().optional(),
+  isolate: z.boolean().optional(),
 });
 
 export const TranscriptionCreateForm = (props: {
@@ -62,6 +64,7 @@ export const TranscriptionCreateForm = (props: {
       language: learningLanguage,
       service: whisperConfig.service,
       text: originalText,
+      isolate: false,
     },
   });
 
@@ -176,7 +179,7 @@ export const TranscriptionCreateForm = (props: {
           )}
         />
         <Collapsible open={collapsibleOpen} onOpenChange={setCollapsibleOpen}>
-          <CollapsibleContent>
+          <CollapsibleContent className="space-y-4 mb-4">
             <FormField
               control={form.control}
               name="text"
@@ -219,15 +222,34 @@ export const TranscriptionCreateForm = (props: {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="isolate"
+              render={({ field }) => (
+                <FormItem className="grid w-full items-center gap-1.5">
+                  <FormLabel>{t("isolateSource")}</FormLabel>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={transcribing}
+                  />
+                </FormItem>
+              )}
+            />
           </CollapsibleContent>
-          <div className="flex justify-center my-4">
+          <div className="flex justify-center">
             <CollapsibleTrigger asChild>
               <Button variant="ghost" size="sm">
-                <span className="">{t("moreOptions")}</span>
                 {collapsibleOpen ? (
-                  <ChevronUpIcon className="h-4 w-4" />
+                  <>
+                    <ChevronUpIcon className="h-4 w-4" />
+                    <span className="ml-2">{t("lessOptions")}</span>
+                  </>
                 ) : (
-                  <ChevronDownIcon className="h-4 w-4" />
+                  <>
+                    <ChevronDownIcon className="h-4 w-4" />
+                    <span className="ml-2">{t("moreOptions")}</span>
+                  </>
                 )}
               </Button>
             </CollapsibleTrigger>
