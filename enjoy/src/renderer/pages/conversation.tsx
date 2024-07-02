@@ -7,6 +7,8 @@ import {
   SheetContent,
   SheetTrigger,
   toast,
+  SheetHeader,
+  SheetTitle,
 } from "@renderer/components/ui";
 import { MessageComponent, ConversationForm } from "@renderer/components";
 import { SendIcon, BotIcon, LoaderIcon, SettingsIcon } from "lucide-react";
@@ -248,6 +250,11 @@ export default () => {
             </SheetTrigger>
 
             <SheetContent className="p-0">
+              <SheetHeader>
+                <SheetTitle className="sr-only">
+                  {t("editConversation")}
+                </SheetTitle>
+              </SheetHeader>
               <div className="h-screen">
                 <ConversationForm
                   conversation={conversation}
