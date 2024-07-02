@@ -151,6 +151,14 @@ export const ConversationForm = (props: {
     }
   }
 
+  if (!defaultConfig.configuration.tts) {
+    defaultConfig.configuration.tts = {};
+  }
+
+  if (!defaultConfig.configuration.tts.language) {
+    defaultConfig.configuration.tts.language = learningLanguage;
+  }
+
   const form = useForm<z.infer<typeof conversationFormSchema>>({
     resolver: zodResolver(conversationFormSchema),
     // @ts-ignore

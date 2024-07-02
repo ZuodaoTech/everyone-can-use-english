@@ -88,7 +88,7 @@
       "ttsEngine": "TTS 引擎",
       "ttsModel": "TTS 模型",
       "ttsVoice": "TTS 音色",
-      "ttsLanuage": "TTS 语言",
+      "ttsLanguage": "TTS 语言",
       "ttsBaseUrl": "TTS 接口地址",
       "ttsBaseUrlDescription": "留空则使用默认值",
       "notFound": "未找到对话",

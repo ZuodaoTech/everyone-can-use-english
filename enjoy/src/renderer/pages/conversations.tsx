@@ -307,7 +307,7 @@ export default () => {
                   {t("startConversation")}
                 </SheetTitle>
               </SheetHeader>
-              <div className="h-screen">
+              <div className="h-screen relative">
                 <ConversationForm
                   conversation={preset}
                   onFinish={() => setCreating(false)}

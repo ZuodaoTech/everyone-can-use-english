@@ -104,7 +104,6 @@ export const ConversationFormTTS = (props: {
                 onValueChange={field.onChange}
                 defaultValue={field.value}
                 value={field.value}
-                required={true}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -138,7 +137,6 @@ export const ConversationFormTTS = (props: {
                 onValueChange={field.onChange}
                 defaultValue={field.value}
                 value={field.value}
-                required={true}
               >
                 <FormControl>
                   <SelectTrigger>
