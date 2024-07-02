@@ -88,6 +88,7 @@
       "ttsEngine": "TTS engine",
       "ttsModel": "TTS model",
       "ttsVoice": "TTS voice",
+      "ttsLanguage": "TTS language",
       "ttsBaseUrl": "TTS base URL",
       "ttsBaseUrlDescription": "leave it blank if you don't have one",
       "notFound": "Conversation not found",
