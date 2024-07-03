@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import {
   MediaPlayerProviderContext,
-  AISettingsProviderContext,
 } from "@renderer/context";
 import {
   AlertDialog,
@@ -27,13 +26,14 @@ export const MediaLoadingModal = () => {
     transcription,
     transcribing,
     transcribingProgress,
+    transcribingOutput,
     generateTranscription,
   } = useContext(MediaPlayerProviderContext);
 
   return (
     <AlertDialog open={!decoded || !Boolean(transcription?.result?.timeline)}>
-      <AlertDialogOverlay className="" />
-      <AlertDialogContent className="">
+      <AlertDialogOverlay />
+      <AlertDialogContent className="max-h-[70%] overflow-y-auto">
         <AlertDialogHeader>
           <AlertDialogTitle>{t("preparingAudio")}</AlertDialogTitle>
           <AlertDialogDescription>
@@ -60,6 +60,7 @@ export const MediaLoadingModal = () => {
               onCancel={() => navigate(-1)}
               transcribing={transcribing}
               transcribingProgress={transcribingProgress}
+              transcribingOutput={transcribingOutput}
             />
           )
         ) : (

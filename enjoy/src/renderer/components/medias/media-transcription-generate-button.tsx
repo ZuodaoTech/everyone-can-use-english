@@ -47,7 +47,7 @@ export const MediaTranscriptionGenerateButton = (props: {
           </Button>
         )}
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="max-h-[70%] overflow-y-auto">
         <AlertDialogHeader>
           <AlertDialogTitle>{t("transcribe")}</AlertDialogTitle>
           <AlertDialogDescription>
