@@ -431,6 +431,28 @@ ${log}
     return { action: "allow" };
   });
 
+  // Capture stderr & stdout and send them to renderer
+  const originalStderrWrite = process.stderr.write.bind(process.stderr);
+  process.stderr.write = (chunk, encoding?, callback?) => {
+    // Remove ANSI color codes
+    const output = chunk
+      .toString()
+      .replace(/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]/g, "");
+    mainWindow.webContents.send("app-on-cmd-output", output);
+
+    return originalStderrWrite(chunk, encoding, callback);
+  };
+  const originalStdoutWrite = process.stdout.write.bind(process.stdout);
+  process.stdout.write = (chunk, encoding?, callback?) => {
+    // Remove ANSI color codes
+    const output = chunk
+      .toString()
+      .replace(/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]/g, "");
+    mainWindow.webContents.send("app-on-cmd-output", output);
+
+    return originalStdoutWrite(chunk, encoding, callback);
+  };
+
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);

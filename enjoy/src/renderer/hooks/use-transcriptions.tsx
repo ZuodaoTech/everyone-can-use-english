@@ -19,6 +19,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const { transcribe, output } = useTranscribe();
   const [transcribingProgress, setTranscribingProgress] = useState<number>(0);
   const [transcribing, setTranscribing] = useState<boolean>(false);
+  const [transcribingOutput, setTranscribingOutput] = useState<string>("");
   const [service, setService] = useState<WhisperConfigType["service"]>(
     whisperConfig.service
   );
@@ -63,11 +64,13 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     originalText?: string;
     language?: string;
     service?: WhisperConfigType["service"];
+    isolate?: boolean;
   }) => {
     let {
       originalText,
       language = learningLanguage,
       service = whisperConfig.service,
+      isolate = false,
     } = params || {};
     setService(service);
 
@@ -92,6 +95,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         originalText,
         language,
         service,
+        isolate,
       }
     );
 
@@ -286,8 +290,14 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
       });
     }
 
+    EnjoyApp.app.onCmdOutput((_, output) => {
+      setTranscribingOutput(output);
+    });
+
     return () => {
       EnjoyApp.whisper.removeProgressListeners();
+      EnjoyApp.app.removeCmdOutputListeners();
+      setTranscribingOutput(null);
     };
   }, [media, service, transcribing]);
 
@@ -300,7 +310,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     transcription,
     transcribingProgress,
     transcribing,
-    transcribingOutput: output,
+    transcribingOutput: output || transcribingOutput,
     generateTranscription,
     abortGenerateTranscription,
   };

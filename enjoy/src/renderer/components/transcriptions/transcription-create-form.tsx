@@ -299,7 +299,7 @@ const TranscribeProgress = (props: {
   if (!transcribing) return null;
 
   return (
-    <div className="mb-4">
+    <div className="mb-4 space-y-2">
       <div className="flex items-center space-x-4 mb-2">
         <PingPoint colorClassName="bg-yellow-500" />
         <span>{t("transcribing")}</span>
@@ -308,11 +308,11 @@ const TranscribeProgress = (props: {
         <Progress value={transcribingProgress} />
       )}
       {transcribingOutput && (
-        <pre className="overflow-x-auto rounded-lg border bg-zinc-950 p-4 dark:bg-zinc-900">
-          <code className="px-[0.3rem] py-[0.2rem] rounded text-muted-foreground font-mono text-sm">
+        <div className="max-w-full rounded-lg border bg-zinc-950 p-3 dark:bg-zinc-900 h-20 overflow-y-auto">
+          <code className="px-[0.3rem] py-[0.2rem] rounded text-muted-foreground font-mono text-xs break-words">
             {transcribingOutput}
           </code>
-        </pre>
+        </div>
       )}
     </div>
   );

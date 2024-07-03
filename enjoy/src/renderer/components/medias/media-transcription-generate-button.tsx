@@ -64,6 +64,7 @@ export const MediaTranscriptionGenerateButton = (props: {
               originalText: data.text,
               language: data.language,
               service: data.service as WhisperConfigType["service"],
+              isolate: data.isolate,
             })
               .then(() => {
                 setOpen(false);
