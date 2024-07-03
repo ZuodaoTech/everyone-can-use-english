@@ -615,7 +615,7 @@
   "uploadTranscriptFile": "上传字幕文件",
   "uploadTranscriptFileDescription": "可选。支持字幕文件格式: txt/srt/vtt。",
   "onlyTextFileIsSupported": "仅支持文本文件",
-  "isolateVoice": "提取人声",
+  "isolateVoice": "提取人声(实验性)",
   "isolateVoiceDescription": "将人声从音乐、背景音中隔离，字幕对齐会更准确，但耗时较久。",
   "sortBy": "排序",
   "createdAtDesc": "创建时间降序",

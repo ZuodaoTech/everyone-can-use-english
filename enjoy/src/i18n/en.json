@@ -615,7 +615,7 @@
   "uploadTranscriptFile": "Upload transcript file",
   "uploadTranscriptFileDescription": "Optional. Support formats: txt/srt/vtt.",
   "onlyTextFileIsSupported": "Only text file is supported",
-  "isolateVoice": "Isolate voice",
+  "isolateVoice": "Isolate voice(Experimental)",
   "isolateVoiceDescription": "Isolates voice from any music or background ambience. More accurate but slower",
   "sortBy": "Sort by",
   "createdAtDesc": "Created at desc",
