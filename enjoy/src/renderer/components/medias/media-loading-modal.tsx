@@ -1,7 +1,5 @@
 import { useContext } from "react";
-import {
-  MediaPlayerProviderContext,
-} from "@renderer/context";
+import { MediaPlayerProviderContext } from "@renderer/context";
 import {
   AlertDialog,
   AlertDialogHeader,
@@ -55,6 +53,7 @@ export const MediaLoadingModal = () => {
                   originalText: data.text,
                   language: data.language,
                   service: data.service as WhisperConfigType["service"],
+                  isolate: data.isolate,
                 });
               }}
               onCancel={() => navigate(-1)}
