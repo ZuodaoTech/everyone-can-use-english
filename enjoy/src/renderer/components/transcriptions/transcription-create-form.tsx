@@ -273,7 +273,7 @@ export const TranscriptionCreateForm = (props: {
         />
 
         <div className="flex justify-end space-x-4">
-          {onCancel && (
+          {onCancel && !transcribing && (
             <Button type="reset" variant="outline" onClick={onCancel}>
               {t("cancel")}
             </Button>
