@@ -40,23 +40,42 @@ export const AddMediaButton = (props: { type?: "Audio" | "Video" }) => {
 
   const handleSubmit = async () => {
     if (!uri) return;
+    if (files.length > 50) {
+      toast.error(t("resourcesAddInBatchLimitError", { limit: 50 }));
+      return;
+    }
+
     setSubmitting(true);
 
-    setTimeout(() => {
-      setSubmitting(false);
-    }, 3000);
-
-    if (files.length > 0) {
+    if (files.length > 1) {
       Promise.allSettled(files.map((f) => EnjoyApp.audios.create(f)))
         .then((results) => {
-          const fulfilled = results.filter(
-            (r) => r.status === "fulfilled"
-          ).length;
-          const rejected = results.filter(
-            (r) => r.status === "rejected"
-          ).length;
+          const fulfilled = results.filter((r) => r.status === "fulfilled");
+          const rejected = results.filter((r) => r.status === "rejected");
 
-          toast.success(t("resourcesAdded", { fulfilled, rejected }));
+          if (fulfilled.length === 0) {
+            toast.error(
+              t("resourcesAdded", {
+                fulfilled: fulfilled.length,
+                rejected: rejected.length,
+              })
+            );
+          } else if (rejected.length > 0) {
+            toast.warning(
+              t("resourcesAdded", {
+                fulfilled: fulfilled.length,
+                rejected: rejected.length,
+                reasons: rejected.map((r: any) => r.reason?.message).join("; "),
+              })
+            );
+          } else {
+            toast.success(
+              t("resourcesAdded", {
+                fulfilled: fulfilled.length,
+                rejected: rejected.length,
+              })
+            );
+          }
         })
         .catch((err) => {
           toast.error(err.message);
