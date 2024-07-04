@@ -474,7 +474,7 @@ export class Client {
     });
   }
 
-  courses(params?: { page?: number; items?: number }): Promise<
+  courses(params?: { page?: number; items?: number; query?: string }): Promise<
     {
       courses: CourseType[];
     } & PagyResponseType
@@ -490,7 +490,24 @@ export class Client {
     return this.api.post(`/api/enrollments`, decamelizeKeys({ courseId }));
   }
 
-  chapter(courseId: string, id: number | string): Promise<ChapterType> {
+  courseChapters(
+    courseId: string,
+    params?: {
+      page?: number;
+      items?: number;
+      query?: string;
+    }
+  ): Promise<
+    {
+      chapters: ChapterType[];
+    } & PagyResponseType
+  > {
+    return this.api.get(`/api/courses/${courseId}/chapters`, {
+      params: decamelizeKeys(params),
+    });
+  }
+
+  coursechapter(courseId: string, id: number | string): Promise<ChapterType> {
     return this.api.get(`/api/courses/${courseId}/chapters/${id}`);
   }
 

@@ -17,6 +17,7 @@ export * from "./hover-card";
 export * from "./input";
 export * from "./label";
 export * from "./menubar";
+export * from "./pagination";
 export * from "./ping-point";
 export * from "./popover";
 export * from "./progress";

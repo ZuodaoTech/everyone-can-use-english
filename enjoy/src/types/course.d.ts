@@ -6,5 +6,6 @@ type CourseType = {
   enrollmentsCount: number;
   coverUrl?: string;
   chapters?: ChapterType[];
-  encrolled?: boolean;
+  enrolled?: boolean;
+  enrollment?: EnrollmentType;
 };

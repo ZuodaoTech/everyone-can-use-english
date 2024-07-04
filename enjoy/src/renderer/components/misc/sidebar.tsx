@@ -76,7 +76,7 @@ export const Sidebar = () => {
               href="/courses"
               label={t("sidebar.courses")}
               tooltip={t("sidebar.courses")}
-              active={activeTab === "/courses"}
+              active={activeTab.startsWith("/courses")}
               Icon={GraduationCapIcon}
             />
 
