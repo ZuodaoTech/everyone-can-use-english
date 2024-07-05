@@ -7,12 +7,17 @@ type ChapterType = {
   course?: CourseType;
   translations?: {
     language: string;
-    translation: string;
+    content: string;
   }[];
   examples?: {
+    id: string;
     keywords: string[];
     language: string;
     content: string;
     audioUrl?: string;
+    translations?: {
+      language: string;
+      content: string;
+    }[];
   }[];
 };

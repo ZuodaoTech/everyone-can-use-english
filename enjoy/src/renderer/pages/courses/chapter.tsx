@@ -8,18 +8,19 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
+  Separator,
   ScrollArea,
   toast,
 } from "@renderer/components/ui";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { t, use } from "i18next";
+import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import Markdown from "react-markdown";
+import { MarkdownWrapper, WavesurferPlayer } from "@renderer/components";
 
 export default () => {
   const { id, sequence } = useParams<{ id: string; sequence: string }>();
-  const { webApi } = useContext(AppSettingsProviderContext);
+  const { webApi, nativeLanguage } = useContext(AppSettingsProviderContext);
   const [chapter, setChapter] = useState<ChapterType | null>(null);
 
   const fetchChapter = async (id: string, sequence: string) => {
@@ -50,28 +51,11 @@ export default () => {
           <BreadcrumbPage>{chapter?.title || sequence}</BreadcrumbPage>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="flex-1 border rounded-lg">
+      <div className="flex-1 h-[calc(100vh-5.75rem)] border rounded-lg">
         <ResizablePanelGroup direction="horizontal">
           <ResizablePanel defaultSize={50}>
-            <ScrollArea className="px-4 py-3 h-full">
-              <div className="select-text prose dark:prose-invert">
-                <h2>{chapter?.title}</h2>
-                <Markdown
-                  components={{
-                    a({ node, children, ...props }) {
-                      try {
-                        new URL(props.href ?? "");
-                        props.target = "_blank";
-                        props.rel = "noopener noreferrer";
-                      } catch (e) {}
-
-                      return <a {...props}>{children}</a>;
-                    },
-                  }}
-                >
-                  {chapter?.content}
-                </Markdown>
-              </div>
+            <ScrollArea className="px-4 py-3 h-full relative">
+              <ChapterContent chapter={chapter} />
             </ScrollArea>
           </ResizablePanel>
           <ResizableHandle />
@@ -80,6 +64,60 @@ export default () => {
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
+    </div>
+  );
+};
+
+const ChapterContent = (props: { chapter: ChapterType }) => {
+  const { nativeLanguage } = useContext(AppSettingsProviderContext);
+  const { chapter } = props;
+  const translation = chapter?.translations?.find(
+    (t) => t.language === nativeLanguage
+  );
+
+  if (!chapter) return null;
+
+  return (
+    <div className="select-text prose dark:prose-invert mx-auto">
+      <h2>{chapter?.title}</h2>
+      <MarkdownWrapper>{chapter?.content}</MarkdownWrapper>
+      {translation && (
+        <details>
+          <summary>{t("translation")}</summary>
+          <MarkdownWrapper>{translation.content}</MarkdownWrapper>
+        </details>
+      )}
+
+      {chapter.examples.length > 0 && <h3>{t("examples")}</h3>}
+      {chapter.examples.map((example, index) => (
+        <>
+          <ExampleContent key={index} example={example} />
+          <Separator className="my-4" />
+        </>
+      ))}
+    </div>
+  );
+};
+
+const ExampleContent = (props: { example: ChapterType["examples"][0] }) => {
+  const { nativeLanguage } = useContext(AppSettingsProviderContext);
+  const { example } = props;
+  const translation = example?.translations?.find(
+    (t) => t.language === nativeLanguage
+  );
+
+  if (!example) return null;
+
+  return (
+    <div>
+      <MarkdownWrapper>{example.content}</MarkdownWrapper>
+      {translation && (
+        <details>
+          <summary>{t("translation")}</summary>
+          <MarkdownWrapper>{translation.content}</MarkdownWrapper>
+        </details>
+      )}
+      <WavesurferPlayer id={example.id} src={example.audioUrl} />
     </div>
   );
 };
