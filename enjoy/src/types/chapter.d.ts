@@ -4,6 +4,7 @@ type ChapterType = {
   keywords: string[];
   title: string;
   content: string;
+  course?: CourseType;
   translations?: {
     language: string;
     translation: string;

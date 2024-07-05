@@ -20,8 +20,9 @@ import StoryPreview from "./pages/story-preview";
 import Notes from "./pages/notes";
 import PronunciationAssessmentsIndex from "./pages/pronunciation-assessments/index";
 import PronunciationAssessmentsNew from "./pages/pronunciation-assessments/new";
-import Courses from "./pages/courses";
-import Course from "./pages/course";
+import Courses from "./pages/courses/index";
+import Course from "./pages/courses/show";
+import Chapter from "./pages/courses/chapter";
 
 export default createHashRouter([
   {
@@ -37,6 +38,10 @@ export default createHashRouter([
       {
         path: "/courses/:id",
         element: <Course />,
+      },
+      {
+        path: "/courses/:id/chapters/:sequence",
+        element: <Chapter />,
       },
       {
         path: "/community",

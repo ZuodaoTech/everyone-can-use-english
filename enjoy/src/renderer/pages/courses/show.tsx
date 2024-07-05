@@ -14,6 +14,7 @@ import {
   PaginationNext,
   PaginationPrevious,
   Progress,
+  Separator,
   toast,
 } from "@renderer/components/ui";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -56,6 +57,7 @@ export default () => {
       <div className="mb-6">
         <CourseDetail course={course} onUpdate={() => fetchCourse(course.id)} />
       </div>
+      <Separator className="mb-6" />
       <div className="mb-6">
         <CourseChapters course={course} />
       </div>
@@ -149,7 +151,8 @@ const CourseChapters = (props: { course: CourseType }) => {
     <div className="">
       <div className="grid gap-4 grid-cols-5 mb-4">
         {chapters.map((chapter) => (
-          <div
+          <Link
+            to={`/courses/${course.id}/chapters/${chapter.sequence}`}
             key={chapter.id}
             className="p-4 border hover:border-dashed cursor-pointer rounded-lg relative"
           >
@@ -160,7 +163,7 @@ const CourseChapters = (props: { course: CourseType }) => {
               {chapter.title}
             </div>
             <CheckCircleIcon className="absolute top-2 left-2 w-4 h-4 text-muted-foreground" />
-          </div>
+          </Link>
         ))}
       </div>
 
