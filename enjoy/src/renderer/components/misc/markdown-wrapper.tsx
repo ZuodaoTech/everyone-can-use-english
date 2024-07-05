@@ -1,8 +1,15 @@
 import Markdown from "react-markdown";
 
-export const MarkdownWrapper = ({ children }: { children: string }) => {
+export const MarkdownWrapper = ({
+  children,
+  className,
+}: {
+  children: string;
+  className?: string;
+}) => {
   return (
     <Markdown
+      className={className}
       components={{
         a({ node, children, ...props }) {
           try {

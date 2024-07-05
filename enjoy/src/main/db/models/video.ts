@@ -327,7 +327,7 @@ export class Video extends Model<Video> {
       },
     });
     if (existing) {
-      throw new Error(t("videoAlreadyAddedToLibrary", { file: filePath }));
+      return existing;
     }
 
     // Generate ID

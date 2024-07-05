@@ -105,7 +105,6 @@ export const AudiosComponent = () => {
         order,
         where,
         query: debouncedQuery,
-
       })
       .then((_audios) => {
         setHasMore(_audios.length >= limit);

@@ -311,7 +311,7 @@ export class Audio extends Model<Audio> {
       },
     });
     if (existing) {
-      throw new Error(t("audioAlreadyAddedToLibrary", { file: filePath }));
+      return existing;
     }
 
     // Generate ID
