@@ -159,7 +159,6 @@ const ExampleContent = (props: {
   const translation = example?.translations?.find(
     (t) => t.language === nativeLanguage
   );
-
   const [resourcing, setResourcing] = useState(false);
 
   const startShadow = async () => {
@@ -197,7 +196,19 @@ const ExampleContent = (props: {
         coverUrl: course?.coverUrl,
       })
       .then((audio) => {
-        onShadowing(audio);
+        if (audio.source !== example.audioUrl) {
+          EnjoyApp.audios
+            .update(audio.id, {
+              name,
+              coverUrl: course.coverUrl,
+              source: example.audioUrl,
+            })
+            .finally(() => {
+              onShadowing(audio);
+            });
+        } else {
+          onShadowing(audio);
+        }
       })
       .catch((err) => {
         toast.error(err.message);

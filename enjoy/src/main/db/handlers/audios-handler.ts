@@ -117,7 +117,7 @@ class AudiosHandler {
     id: string,
     params: Attributes<Audio>
   ) {
-    const { name, description, metadata, language, coverUrl } = params;
+    const { name, description, metadata, language, coverUrl, source } = params;
 
     const audio = await Audio.findByPk(id);
 
@@ -130,6 +130,7 @@ class AudiosHandler {
       metadata,
       language,
       coverUrl,
+      source,
     });
   }
 
