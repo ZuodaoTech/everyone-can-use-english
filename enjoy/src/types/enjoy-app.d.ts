@@ -10,6 +10,8 @@ type EnjoyAppType = {
     quit: () => Promise<void>;
     openDevTools: () => Promise<void>;
     createIssue: (title: string, body: string) => Promise<void>;
+    onCmdOutput: (callback: (event, output: string) => void) => void;
+    removeCmdOutputListeners: () => void;
     version: string;
   };
   window: {

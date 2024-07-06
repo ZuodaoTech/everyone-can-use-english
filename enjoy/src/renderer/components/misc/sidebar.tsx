@@ -230,7 +230,7 @@ export const Sidebar = () => {
                       <DropdownMenuItem
                         onClick={() =>
                           EnjoyApp.shell.openExternal(
-                            "https://github.com/xiaolai/everyone-can-use-english/discussions"
+                            "https://github.com/zuodaotech/everyone-can-use-english/discussions"
                           )
                         }
                         className="flex justify-between space-x-2"

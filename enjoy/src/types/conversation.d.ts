@@ -5,6 +5,7 @@ type ConversationType = {
   name: string;
   configuration: { [key: string]: any };
   model: string;
+  language?: string;
   messages?: MessageType[];
   createdAt?: string;
 };

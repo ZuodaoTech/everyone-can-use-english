@@ -10,6 +10,8 @@ import {
   SheetContent,
   ScrollArea,
   toast,
+  SheetHeader,
+  SheetTitle,
 } from "@renderer/components/ui";
 import {
   ConversationCard,
@@ -300,7 +302,12 @@ export default () => {
 
           <Sheet open={creating} onOpenChange={(value) => setCreating(value)}>
             <SheetContent className="p-0">
-              <div className="h-screen">
+              <SheetHeader>
+                <SheetTitle className="sr-only">
+                  {t("startConversation")}
+                </SheetTitle>
+              </SheetHeader>
+              <div className="h-screen relative">
                 <ConversationForm
                   conversation={preset}
                   onFinish={() => setCreating(false)}

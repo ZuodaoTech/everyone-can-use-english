@@ -131,7 +131,7 @@ if (process.env.GITHUB_TOKEN) {
       name: "@electron-forge/publisher-github",
       config: {
         repository: {
-          owner: "xiaolai",
+          owner: "ZuodaoTech",
           name: "everyone-can-use-english",
         },
         generateReleaseNotes: true,

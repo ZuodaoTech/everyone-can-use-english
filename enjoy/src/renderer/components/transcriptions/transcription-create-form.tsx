@@ -3,12 +3,16 @@ import {
   AppSettingsProviderContext,
 } from "@renderer/context";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
   Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Form,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,36 +25,41 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Switch,
   Textarea,
   toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { LANGUAGES } from "@/constants";
-import { LoaderIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon, LoaderIcon } from "lucide-react";
 import { parseText } from "media-captions";
 
 const transcriptionSchema = z.object({
   language: z.string(),
   service: z.string(),
   text: z.string().optional(),
+  isolate: z.boolean().optional(),
 });
 
 export const TranscriptionCreateForm = (props: {
   onSubmit: (data: z.infer<typeof transcriptionSchema>) => void;
   originalText?: string;
   onCancel?: () => void;
-  transcribing?: boolean;
-  transcribingProgress?: number;
+  transcribing: boolean;
+  transcribingProgress: number;
+  transcribingOutput: string;
 }) => {
   const {
     transcribing = false,
     transcribingProgress = 0,
+    transcribingOutput,
     onSubmit,
     onCancel,
     originalText,
   } = props;
   const { learningLanguage } = useContext(AppSettingsProviderContext);
   const { whisperConfig } = useContext(AISettingsProviderContext);
+  const [collapsibleOpen, setCollapsibleOpen] = useState(false);
 
   const form = useForm<z.infer<typeof transcriptionSchema>>({
     resolver: zodResolver(transcriptionSchema),
@@ -58,6 +67,7 @@ export const TranscriptionCreateForm = (props: {
       language: learningLanguage,
       service: whisperConfig.service,
       text: originalText,
+      isolate: false,
     },
   });
 
@@ -123,7 +133,7 @@ export const TranscriptionCreateForm = (props: {
           control={form.control}
           name="service"
           render={({ field }) => (
-            <FormItem className="grid w-full items-center gap-1.5">
+            <FormItem className="grid w-full items-center">
               <FormLabel>{t("sttAiService")}</FormLabel>
               <Select
                 disabled={transcribing}
@@ -149,7 +159,7 @@ export const TranscriptionCreateForm = (props: {
           control={form.control}
           name="language"
           render={({ field }) => (
-            <FormItem className="grid w-full items-center gap-1.5">
+            <FormItem className="grid w-full items-center">
               <FormLabel>{t("language")}</FormLabel>
               <Select
                 disabled={transcribing}
@@ -171,74 +181,139 @@ export const TranscriptionCreateForm = (props: {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="text"
-          render={({ field }) => (
-            <FormItem className="grid w-full items-center gap-1.5">
-              <FormLabel>
-                {t("uploadTranscriptFile")}({t("optinal")})
-              </FormLabel>
-              <Input
-                disabled={transcribing}
-                type="file"
-                accept=".txt,.srt,.vtt"
-                onChange={async (event) => {
-                  const file = event.target.files[0];
-
-                  if (file) {
-                    parseSubtitle(file)
-                      .then((text) => {
-                        field.onChange(text);
-                      })
-                      .catch((error) => {
-                        toast.error(error.message);
-                      });
-                  } else {
-                    field.onChange("");
-                  }
-                }}
-              />
-              {field.value != undefined && (
-                <>
+        <Collapsible open={collapsibleOpen} onOpenChange={setCollapsibleOpen}>
+          <CollapsibleContent className="space-y-4 mb-4">
+            <FormField
+              control={form.control}
+              name="text"
+              render={({ field }) => (
+                <FormItem className="grid w-full items-center">
                   <FormLabel>
-                    {t("transcript")}
+                    {t("uploadTranscriptFile")}({t("optinal")})
                   </FormLabel>
-                  <Textarea
-                    className="h-36"
-                    {...field}
+                  <Input
+                    disabled={transcribing}
+                    type="file"
+                    accept=".txt,.srt,.vtt"
+                    onChange={async (event) => {
+                      const file = event.target.files[0];
+
+                      if (file) {
+                        parseSubtitle(file)
+                          .then((text) => {
+                            field.onChange(text);
+                          })
+                          .catch((error) => {
+                            toast.error(error.message);
+                          });
+                      } else {
+                        field.onChange("");
+                      }
+                    }}
+                  />
+                  <FormDescription>
+                    {t("uploadTranscriptFileDescription")}
+                  </FormDescription>
+                  {field.value != undefined && (
+                    <>
+                      <FormLabel>{t("transcript")}</FormLabel>
+                      <Textarea
+                        className="h-36"
+                        {...field}
+                        disabled={transcribing}
+                      />
+                    </>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isolate"
+              render={({ field }) => (
+                <FormItem className="grid w-full items-center">
+                  <FormLabel>{t("isolateVoice")}</FormLabel>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
                     disabled={transcribing}
                   />
-                </>
+                  <FormDescription>
+                    {t("isolateVoiceDescription")}
+                  </FormDescription>
+                </FormItem>
               )}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {transcribing && (
-          <div className="mb-4">
-            <div className="flex items-center space-x-4 mb-2">
-              <PingPoint colorClassName="bg-yellow-500" />
-              <span>{t("transcribing")}</span>
-            </div>
-            {whisperConfig.service === "local" && (
-              <Progress value={transcribingProgress} />
-            )}
+            />
+          </CollapsibleContent>
+          <div className="flex justify-center">
+            <CollapsibleTrigger asChild>
+              <Button variant="ghost" size="sm">
+                {collapsibleOpen ? (
+                  <>
+                    <ChevronUpIcon className="h-4 w-4" />
+                    <span className="ml-2">{t("lessOptions")}</span>
+                  </>
+                ) : (
+                  <>
+                    <ChevronDownIcon className="h-4 w-4" />
+                    <span className="ml-2">{t("moreOptions")}</span>
+                  </>
+                )}
+              </Button>
+            </CollapsibleTrigger>
           </div>
-        )}
+        </Collapsible>
+
+        <TranscribeProgress
+          service={form.watch("service")}
+          transcribing={transcribing}
+          transcribingProgress={transcribingProgress}
+          transcribingOutput={transcribingOutput}
+        />
 
         <div className="flex justify-end space-x-4">
-          {onCancel && (
+          {onCancel && !transcribing && (
             <Button type="reset" variant="outline" onClick={onCancel}>
               {t("cancel")}
             </Button>
           )}
           <Button disabled={transcribing} type="submit" variant="default">
             {transcribing && <LoaderIcon className="animate-spin w-4 mr-2" />}
-            {t("transcribe")}
+            {t("continue")}
           </Button>
         </div>
       </form>
     </Form>
+  );
+};
+
+const TranscribeProgress = (props: {
+  service: string;
+  transcribing: boolean;
+  transcribingProgress: number;
+  transcribingOutput?: string;
+}) => {
+  const { service, transcribing, transcribingProgress, transcribingOutput } =
+    props;
+  if (!transcribing) return null;
+
+  return (
+    <div className="mb-4 space-y-2">
+      <div className="flex items-center space-x-4 mb-2">
+        <PingPoint colorClassName="bg-yellow-500" />
+        <span>{t("transcribing")}</span>
+      </div>
+      {service === "local" && transcribingProgress > 0 && (
+        <Progress value={transcribingProgress} />
+      )}
+      {transcribingOutput && (
+        <div className="max-w-full rounded-lg border bg-zinc-950 p-3 dark:bg-zinc-900 h-20 overflow-y-auto">
+          <code className="px-[0.3rem] py-[0.2rem] rounded text-muted-foreground font-mono text-xs break-words">
+            {transcribingOutput}
+          </code>
+        </div>
+      )}
+    </div>
   );
 };

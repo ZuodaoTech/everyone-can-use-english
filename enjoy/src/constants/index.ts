@@ -22,7 +22,7 @@ export const AI_WORKER_ENDPOINT = "https://ai-worker.enjoy.bot";
 export const WEB_API_URL = "https://enjoy.bot";
 export const WS_URL = "wss://enjoy.bot";
 
-export const REPO_URL = "https://github.com/xiaolai/everyone-can-use-english";
+export const REPO_URL = "https://github.com/zuodaotech/everyone-can-use-english";
 
 export const SENTRY_DSN =
   "https://d51056d7af7d14eae446c0c15b4f3d31@o1168905.ingest.us.sentry.io/4506969353289728";

@@ -24,18 +24,18 @@ John Ales, Jonathan Brandis, A.J. Buckley,Jewel Kilcher, Jim Caviezel, Simon Bak
 
 在 Paul Meier 的网站上，有一个[页面](http://www.paulmeier.com/booklets.html)，其中有各种各样口音的英语方言示范，包括：
 
-* Cockney
-* Hampshire
-* Irish
-* Liverpool
-* Northern Ireland
-* Scottish
-* Welsh
-* Yorkshire; American Southern (Kentucky/Tennessee)
-* Deep South (Alabama, Georgia, Louisiana, and Mississippi)
-* Down East New England
-* General New York
-* South Boston…
+- Cockney
+- Hampshire
+- Irish
+- Liverpool
+- Northern Ireland
+- Scottish
+- Welsh
+- Yorkshire; American Southern (Kentucky/Tennessee)
+- Deep South (Alabama, Georgia, Louisiana, and Mississippi)
+- Down East New England
+- General New York
+- South Boston…
 
 几乎其中的每一种都不是在中国大陆多年只习惯 “某种发音” 的学生可以听懂的。而在[这个页面](http://alt-usage-english.org/audio_archive.shtml)上也可以找多种方言的语音示范，读者也不妨去仔细听听。然后再仔细想想，有必要一定 “标准” 么？就算真的有必要，又应该使用哪一个 “标准” 呢？
 
@@ -65,12 +65,11 @@ Kuhl 教授的研究中更为有趣的是她进一步调查了多语环境中成
 
 “语言习得关键期” 滥用者最大的谬误在于他们把 “语音” 等同于 “语言” —— 明摆着是两回事儿的东西竟然分不清楚。事实上，尽管关键期真的存在，但它所影响的准确地来说，是 “语音”，而非 “语言”。语音只不过是语言的一个方面。年幼的人更容易习得的其实只有语音而已，而语言的其它方面并非都是如此，比如，词汇的习得，显然是越学越快，青年人强过少年，老年人（那些活到老学到老的人）强过青年人；本质上来看，一个人知识越渊博，对他来说习得新概念和新词汇就越容易。再比如，逻辑能力是文字运用的重要基础，缺乏逻辑训练的人，能够使用的和接触到的语言文字范围就要狭窄许多许多，语音再 “标准” 又如何？学外语不简单，但从另外一个角度来讲，又没有难到不可能学好的地步，说穿了，不就是说话、识字吗？世界的各个角落都有无数没文化的人也能讲一口流利的、语音几近完美的母语，可是，仅仅靠语音能解决什么问题呢？语音学习和语言学习是两回事儿，退一万步讲，仅仅语言本身都是无意义的，因为它最终只不过是记录、传递、交流思想的载体和媒介而已。
 
-在科学家看来，学习一门技能，本质上来看就是大脑中的神经细胞建立连接的过程。美国加利福尼亚大学的退休名誉教授[Michael Merzenich]( http://en.wikipedia.org/wiki/Michael_Merzenich)认为，每一项新技能的习得，都需要在大脑神经细胞之间中建立亿万个新的连接。这样艰巨的任务当然要耗费大量的时间。而在这耗时费力的过程中还存在所谓的 “平台期” —— 即，某一段时间无论如何大量训练都看起来毫无进步。神经可塑性研究的鼻祖，Paul Bach-y-Rita 教授认为，“平台期” 只是一种表象，在此期间大脑并未停止发展，神经细胞之间新建的连接在不停地被巩固；如果中断练习，那么大脑就会遵循 “不用即废” 的原则丢弃那些无用的连接。那么神经细胞之间的连接需要巩固多长时间才能变得 “难以弃用” 呢？Paul Bach-y-Rita 教授的解释是 “六个月” —— 这个时限与人类生育普遍需要十月怀胎一样很难跨越。
+在科学家看来，学习一门技能，本质上来看就是大脑中的神经细胞建立连接的过程。美国加利福尼亚大学的退休名誉教授[Michael Merzenich](http://en.wikipedia.org/wiki/Michael_Merzenich)认为，每一项新技能的习得，都需要在大脑神经细胞之间中建立亿万个新的连接。这样艰巨的任务当然要耗费大量的时间。而在这耗时费力的过程中还存在所谓的 “平台期” —— 即，某一段时间无论如何大量训练都看起来毫无进步。神经可塑性研究的鼻祖，Paul Bach-y-Rita 教授认为，“平台期” 只是一种表象，在此期间大脑并未停止发展，神经细胞之间新建的连接在不停地被巩固；如果中断练习，那么大脑就会遵循 “不用即废” 的原则丢弃那些无用的连接。那么神经细胞之间的连接需要巩固多长时间才能变得 “难以弃用” 呢？Paul Bach-y-Rita 教授的解释是 “六个月” —— 这个时限与人类生育普遍需要十月怀胎一样很难跨越。
 
-“改装” 自己的语音过滤器绝对是有可能的，甚至连 “重建” 自己的过滤器都是有可能的。可是为什么大多数人做不到呢？[Paul Bach-y-Rita]( http://en.wikipedia.org/wiki/Paul_Bach-y-Rita)教授的解释给了我们一个相对清楚的线索，大多数人很少能够坚持六个月以上。更为可惜的是那些坚持了五个月的人，因为他们明明快跨过平台期了，但由于提前那么一点点放弃，于是，“前功尽弃” —— 脑神经细胞的突触可不知道惋惜，它们只有一个原则：“不用即弃”。如若想要重建，对不起，还是需要至少六个月 —— 而且这个时间会随着年龄的增长而越来越长。
+“改装” 自己的语音过滤器绝对是有可能的，甚至连 “重建” 自己的过滤器都是有可能的。可是为什么大多数人做不到呢？[Paul Bach-y-Rita](http://en.wikipedia.org/wiki/Paul_Bach-y-Rita)教授的解释给了我们一个相对清楚的线索，大多数人很少能够坚持六个月以上。更为可惜的是那些坚持了五个月的人，因为他们明明快跨过平台期了，但由于提前那么一点点放弃，于是，“前功尽弃” —— 脑神经细胞的突触可不知道惋惜，它们只有一个原则：“不用即弃”。如若想要重建，对不起，还是需要至少六个月 —— 而且这个时间会随着年龄的增长而越来越长。
 
-[^2]:  因为卢森堡毗邻法国和德国，那里的人从小就熟练使用三种语言：卢森堡语、法语和德语。到了中学，他们开始学习英语。他们所学的第四语言——相当于我们学“二外”。
-
+[^2]: 因为卢森堡毗邻法国和德国，那里的人从小就熟练使用三种语言：卢森堡语、法语和德语。到了中学，他们开始学习英语。他们所学的第四语言——相当于我们学“二外”。
 [^3]: 比如我的老家，吉林省延边朝鲜族自治区。在那里很多人都能够同等熟练地使用中文和韩文——两个完全不同语系的语言。事实上，中国幅原辽阔，很多地方都是多语地区。从语音上来看，上海话、粤语、吴语等等都是不同的语言。
 
 ## 3. 最大的障碍：害怕被嘲弄
@@ -83,7 +82,7 @@ Kuhl 教授的研究中更为有趣的是她进一步调查了多语环境中成
 
 真正文明的人，是不会嘲弄别人的。文明的人可能处于愤怒而说粗话、脏话，但他们不会随便骂人，更不会随意嘲弄他人，因为他们早就学会了建设性批评，也懂得尊重他人尊重自己。只有不文明的人才会嘲弄他人。随意嘲弄他人的人是可耻的，比随地吐痰更不文明。
 
-凡事做得好的人，也很难去嘲弄他人。因为他们都知道做好一件事情究竟有多难 —— 他们自己亲身经历过。有一学生曾经问大提琴大师[Pablo Casals]( http://en.wikipedia.org/wiki/Pablo_Casals)怎么还在天天长时间练琴，大师说：“因为我每天还在进步啊！” 很难想象这样的大师有什么心思和欲望去嘲弄别人。梅兰芳先生晚年教弟子唱戏，从不批评他们。每当他们犯了错的时候，梅兰芳先生总是说，“再练练就好了，练好很难的……”
+凡事做得好的人，也很难去嘲弄他人。因为他们都知道做好一件事情究竟有多难 —— 他们自己亲身经历过。有一学生曾经问大提琴大师[Pablo Casals](http://en.wikipedia.org/wiki/Pablo_Casals)怎么还在天天长时间练琴，大师说：“因为我每天还在进步啊！” 很难想象这样的大师有什么心思和欲望去嘲弄别人。梅兰芳先生晚年教弟子唱戏，从不批评他们。每当他们犯了错的时候，梅兰芳先生总是说，“再练练就好了，练好很难的……”
 
 所以，真的不要意来自他人的嘲弄。如果犯了错，改了就好。如果改不了，只要没有伤害他人就好 —— 其实你根本无法仅仅用带点口音的英语伤人。英语发音差一点，带的口音重了点，根本不是你的错，你也从未、也不大可能因此伤害任何其他人。嘲弄你的人应该被你嘲弄，只不过因为你是文明人，所以没办法跟他一般见识而已。对于来自他人的嘲弄，如果你竟然在意了，那就真的让人家得逞了，因为你受伤了，他幸灾乐祸了。如果你全然不在意，他就没劲了，因为无法因此获得快感了 —— 脆弱的家伙就只能自己生气了，或者生自己的气了。
 
@@ -97,7 +96,7 @@ Kuhl 教授的研究中更为有趣的是她进一步调查了多语环境中成
 
 另外一个很多人没想到的事情是 “循序渐进” 不一定是好策略，至少在 “重建语音过滤器” 时不是好策略。应该从一开始就听正常语速的材料。美国之音(VOA)有个著名的节目，叫做 Special English，是很多中国人学习英语的 “入门” 或者 “中级” 学习资源。曾几何时，无数的人冒着可能被扣上 “偷听敌台” 之罪名的风险去收听这个节目，只为了学好英语。我相信这个节目的设计初衷是好的，它认为人们学英语应该 “循序渐进”，正常语速、正常措辞的英语对初学者太难了；所以，它只使用大约 1500 个左右的 “基础词汇”、只使用最初级的语法结构，并且以刻意降低的语速播音。但我很怀疑它的真正作用。我的观察是很多人一旦开始听 VOA SE，没多久就放不下来了 —— 因为 “能够完全听懂” 的感觉实在是太好了；过一段时间转头去听 CNN 或者其他的正常语速的材料，马上就觉得吃力，而后 “觉得” 自己 “基础还不够好”，于是又退回 VOA SE，转眼许多年过去了，还在听 VOA SE。最重要的理由和上一点一样：这个时候，是否听得懂并不重要；真正重要的是要让自己负责听觉的那部分大脑长期持续接受足够多的英语语音刺激。
 
-还有一个看似不合常理的建议是 “不要只听标准录音”。很多人的学习之所以事倍功半，就是因为他们的做法与 “语言自然习得方式” 相左。婴儿的大脑之所以要发展出 “母语语音过滤器”，除了这么做会更容易理解母语之外，还有另外一个原因：大脑要处理很多同一个语音的许多变体 —— 因为婴儿每天听很多不同的人使用同样的语音，而每个人的音质、音色、音调都可能是有他自己的独特之处。所以，大脑必须要有这样的过滤器，能够将输入的同一语音的不同变体归为一类 —— 只有这样才能不出差错地处理语音输入。所以，在大幅度提高自己的英语听觉输入量之时，要涉猎不同的音质、不同的音色、不同的音调，甚至不同的口音才对。这个意义上来看，广播剧要比课本录音强出不知道多少倍，因为有好多个人在说话，而非从头至尾只有一个 “标准” 声音。进而，我常常建议自己的学生不要把自己的输入材料只限制于 “标准美音” 或者 “标准英音”；其实无所谓的，连颇具特色的 “黑人英语” 都可以听，甚至，越杂越好。我常常推荐的是[CNN的广播]( http://www.cnn.com/audio/radio/radio.html)，里面有各种各样腔调的英语，真的可以大开 “耳” 界。
+还有一个看似不合常理的建议是 “不要只听标准录音”。很多人的学习之所以事倍功半，就是因为他们的做法与 “语言自然习得方式” 相左。婴儿的大脑之所以要发展出 “母语语音过滤器”，除了这么做会更容易理解母语之外，还有另外一个原因：大脑要处理很多同一个语音的许多变体 —— 因为婴儿每天听很多不同的人使用同样的语音，而每个人的音质、音色、音调都可能是有他自己的独特之处。所以，大脑必须要有这样的过滤器，能够将输入的同一语音的不同变体归为一类 —— 只有这样才能不出差错地处理语音输入。所以，在大幅度提高自己的英语听觉输入量之时，要涉猎不同的音质、不同的音色、不同的音调，甚至不同的口音才对。这个意义上来看，广播剧要比课本录音强出不知道多少倍，因为有好多个人在说话，而非从头至尾只有一个 “标准” 声音。进而，我常常建议自己的学生不要把自己的输入材料只限制于 “标准美音” 或者 “标准英音”；其实无所谓的，连颇具特色的 “黑人英语” 都可以听，甚至，越杂越好。我常常推荐的是[CNN 的广播](http://www.cnn.com/audio/radio/radio.html)，里面有各种各样腔调的英语，真的可以大开 “耳” 界。
 
 二十多年前，学英语的设备很落后，全班用一个台式录卡座音机，一学期就那么一盘磁带翻过来掉过去地放。现在的学生可以用很便宜的价格买到可以装载无数材料的 MP3 播放器，甚至，随身携带的手机就可以播放 MP3，实在是方便。我自己近十来年里每天都听 audiobook，设备换过不少，从新加坡创新出品的 32M 播放器开始，到后来的惠普 PDA，到后来的 HTC 智能手机，再到现在的 iPhone。有一个小技巧，听英语音频的时候不要两只耳朵全都戴上耳机 —— 只用一只耳朵戴耳机。因为自然语音输入和耳机输入是不一样的。在自然环境中，我们听到的语言语音从来都不是 “单独” 的 —— 总是伴随着各种各样的背景声音。戴着耳机的时候却基本上就只有 “纯粹的语音” 了，这对我们重建自己的语音过滤器来说并不是好事。只用一只耳朵戴耳机的另外一个好处是可以经常换着耳朵听，不至于损伤耳朵。
 
@@ -118,6 +117,7 @@ AudioEdit Deluxe v4.10 截图
 ### AudioEdit 使用简要说明
 
 如图中所示：
+
 1. 打开声音文件（mp3、wav）文件
 2. 循环播放按钮
 3. 用鼠标左键点击定义起点，用鼠标右键点击定义终点，选中音频中的一段
@@ -205,13 +205,13 @@ AudioEdit Deluxe v4.10 截图
 
 以下是一个总结性的音标学习策略
 
-* 首先确定自己有足够的朗读经验。比如，每日晨读一小时（听录音读课本就好）坚持了至少三个月以上。在这样的过程中，大多数语言都已经把握得足够好（要很久以后才能做到接近 “标准” 呢），于是，学习音标就有了保障。
-* 只完整学习一个体系。如果还在初中，那么可以选择 D.J.音标，或者是 K.K 音标 —— 即，你的课本所使用的那种。如果已经是学英语多年了的人，那么就要选用自己正在使用、最常使用的词典的音标体系。
-* 最好使用计算机上的有声版词典，这样就可以把所有例词都查出来，并录制成 mp3。反复跟读。
-* 对照着音标表，抄写每一个例词的音标，反复若干遍（最好 7 遍以上）。
-* 抄下例词表，而后默写相应音标，而后检查（至少两遍）。
-* 以后每查一个单词，都要把音标标记在原文边上。
-* 有必要花时间学习英文的拼读规则。忽略拼读规则是绝大多数英语学习失败的人犯下的错误。他们宁可去学好像更有短效、或者感觉更加 “高级” 的 “词根词缀”，也不去学最基本的，并且一生都用得到的拼读规则。
+- 首先确定自己有足够的朗读经验。比如，每日晨读一小时（听录音读课本就好）坚持了至少三个月以上。在这样的过程中，大多数语言都已经把握得足够好（要很久以后才能做到接近 “标准” 呢），于是，学习音标就有了保障。
+- 只完整学习一个体系。如果还在初中，那么可以选择 D.J.音标，或者是 K.K 音标 —— 即，你的课本所使用的那种。如果已经是学英语多年了的人，那么就要选用自己正在使用、最常使用的词典的音标体系。
+- 最好使用计算机上的有声版词典，这样就可以把所有例词都查出来，并录制成 mp3。反复跟读。
+- 对照着音标表，抄写每一个例词的音标，反复若干遍（最好 7 遍以上）。
+- 抄下例词表，而后默写相应音标，而后检查（至少两遍）。
+- 以后每查一个单词，都要把音标标记在原文边上。
+- 有必要花时间学习英文的拼读规则。忽略拼读规则是绝大多数英语学习失败的人犯下的错误。他们宁可去学好像更有短效、或者感觉更加 “高级” 的 “词根词缀”，也不去学最基本的，并且一生都用得到的拼读规则。
 
 实际上，很多的人只不过是因为嫌麻烦才不去抄写音标的。尽管他们会不停地遇到 “咦，这个单词我查过，可是怎么读来着？” 的尴尬 —— 然而显然，这些尴尬并不足以使他们下决心从此一丝不苟 —— 于是， “一丝不苟” 的成本越积越多，到最后高到绝大多数人不愿承受的地步。
 
@@ -221,8 +221,8 @@ AudioEdit Deluxe v4.10 截图
 
 今天这世界，好的英语学习资源几乎随处可见，我经常推荐学生以下两个资源：
 
-* 学习英式发音及其音标，可以用牛津大学出版社香港中文站的 Flash 教程《Guide to English Phonetc Symbols》
-* 学习美式发音及其音标，可以使用爱荷华大学的美国音标在线学习程序《 Phonetics: The Sound of American English》
+- 学习英式发音及其音标，可以用牛津大学出版社香港中文站的 Flash 教程《Guide to English Phonetc Symbols》
+- 学习美式发音及其音标，可以使用爱荷华大学的美国音标在线学习程序《 Phonetics: The Sound of American English》
 
 ## 11. 音节的划分
 
@@ -238,15 +238,15 @@ AudioEdit Deluxe v4.10 截图
 
 常见的音节结构有以下几种（以下单词都是单音节单词）：
 
-* 元音：a /eɪ/, eye /aɪ/
-* 辅音+元音：tea /tiː/, bay /beɪ/
-* 辅音+辅音+元音：fly /flaɪ/, sky /skaɪ/
-* 元音+辅音：ebb /eb/, odd /ɔd/
-* 辅音+元音+辅音：beep /biːp/, big /bɪg/
-* 元音+辅音+辅音：east /iːst/，axe /æks/
-* 辅音+辅音+元音+辅音：stop /stɔp/, bleed /bliːd/
-* 辅音+元音+辅音+辅音：last /læst/, lapse /læps/
-* 辅音+辅音+元音+辅音+辅音：blast /blæst/, frost /frɔːst/
+- 元音：a /eɪ/, eye /aɪ/
+- 辅音+元音：tea /tiː/, bay /beɪ/
+- 辅音+辅音+元音：fly /flaɪ/, sky /skaɪ/
+- 元音+辅音：ebb /eb/, odd /ɔd/
+- 辅音+元音+辅音：beep /biːp/, big /bɪg/
+- 元音+辅音+辅音：east /iːst/，axe /æks/
+- 辅音+辅音+元音+辅音：stop /stɔp/, bleed /bliːd/
+- 辅音+元音+辅音+辅音：last /læst/, lapse /læps/
+- 辅音+辅音+元音+辅音+辅音：blast /blæst/, frost /frɔːst/
 
 而多音节单词，就用以上的模式去套，看看能够划分出多少个合乎以上模式的音节出来 —— 辅助原则很简单：多音节的单词，除了最后一个音节之外，基本上是以上 9 种之中的前 5 种居多。
 
@@ -256,8 +256,8 @@ AudioEdit Deluxe v4.10 截图
 
 掌握强读弱读规律，是使自己的语流变得自然的关键。只要掌握了强读弱读的规律，哪怕某些音素的发音不够好，语流依然会显得很自然，也更容易被别人听懂。我们在美国惊悚电影里经常可以听到外国特工，比如俄国特工或者伊朗特工，所讲的英语。他们尽管讲话有着明显的口音，但不仅流利，并且沟通无障碍 —— 而对方讲一口 “地道标准” 的美式英语，却也并不因为这些外国特工有口音而听不懂他们在说什么。这样的情况能够说明的是，单独的音素发音尽管很重要，但显然有比这个更重要的东西需要关注，比如现在正在讲的强读弱读规律。
 
-> * 以下所使用的例子，音频文件位于 `files/TOELFL-PartC-93/audios/` 目录之下……
-> * [使用鼠标右键点击此链接将本节使用的音频文件 '另存为...' 至本地文件夹](https://raw.githubusercontent.com/xiaolai/everyone-can-use-english/master/files/TOELFL-PartC-93/audios/1.mp3)
+> - 以下所使用的例子，音频文件位于 `files/TOELFL-PartC-93/audios/` 目录之下……
+> - [使用鼠标右键点击此链接将本节使用的音频文件 '另存为...' 至本地文件夹](https://raw.githubusercontent.com/zuodaotech/everyone-can-use-english/master/files/TOELFL-PartC-93/audios/1.mp3)
 
 以下是 TOEFL 听力录音中第一篇中的前两个句子，请注意同一个单词 “community” 第一次出现和第二次出现时的具体不同：
 
@@ -273,74 +273,74 @@ Community service is an important component of education here at our university.
 
 如果一个单词被强读，那么这个单词中的：
 
-* 长元音会被读的很清楚，并且足够长，甚至显得更长一些；
-* 双元音会被读的很饱满，并且显得很有弹性；
-* 落在重音上的短元音都会显得更长一些；
-* 重音所在的音节可能带着不同的声调（平调、升调、降调）……
-* 重音所在的音节可能带着不同的音高（往往是 “高”、“中”、“低” 中的 “高”）……
+- 长元音会被读的很清楚，并且足够长，甚至显得更长一些；
+- 双元音会被读的很饱满，并且显得很有弹性；
+- 落在重音上的短元音都会显得更长一些；
+- 重音所在的音节可能带着不同的声调（平调、升调、降调）……
+- 重音所在的音节可能带着不同的音高（往往是 “高”、“中”、“低” 中的 “高”）……
 
 如果一个单词被弱读，那么这个单词中的：
 
-* 长元音会变得短一些（几乎与短元音的长度相当）；
-* 重音音节会变得与非重音音节一样轻；
-* 很多元音都会发生变化，向/ə/靠拢；
-* 轻辅音/s/、/t/、/k/、/f/之后的元音/ə/可能会直接被省略掉；
-* 整个单词所处的音高往往是 “高”、“中”、“低” 之中的 “低”，最多是 “中”……
+- 长元音会变得短一些（几乎与短元音的长度相当）；
+- 重音音节会变得与非重音音节一样轻；
+- 很多元音都会发生变化，向/ə/靠拢；
+- 轻辅音/s/、/t/、/k/、/f/之后的元音/ə/可能会直接被省略掉；
+- 整个单词所处的音高往往是 “高”、“中”、“低” 之中的 “低”，最多是 “中”……
 
 其实，哪怕在单独读某一个单词的时候，其中元音的长短都会受到重音重读的影响。比如，“city” 这个单词，重音在第一个音节上，而两处的元音是一样的：/ˈsi-ti/；但是只要你把第一个音节读得足够重，自然而然就能感觉到第一个/i/要比第二个/i/长。
 
 大多数助动词、系动词、介词、连词、冠词、代词，都有两种发音形式：强读式、弱读式。这些单词往往都是单音节单词。在自然语流中，它们更多的情况下是以弱读式读出的。以下是其中最常见最普及的强读式、弱读式对照列表。注意，以下的列表不能当作规则使用，不是所有的虚词在任何情况下都必须弱读；也不是所有的实词都必须被强读。下面的列表只是在描述现象。
 
-* a: /eɪ/→/ə/
-* am: /æm/→/əm, m/
-* an: /æn/→/ən, n/
-* and: /ænd/→/ənd, nd, ən, n/
-* any: /'eni/→/ni/
-* are: /a:/→/ə/
-* as: /æs/→/əz/
-* at: /æt/→/ət/
-* but: /bʌt/→/bət/
-* can: /kæn/→/kən, kn, kŋ/
-* could: /kud/→/kəd, kd/
-* do: /duː/→/du, də, d/
-* does: /dʌz/→/dəz, z, s/
-* for: /fɔː/→/fə/
-* from: /frɔm/→/frəm, frm/
-* had: /hæd/→/həd, əd, d/
-* has: /hæz/→/həz, əz, z, s/
-* have: /hæv/→/həv, əv, v/
-* he: /hiː/→/hi, iː, i/
-* her: /həː/→/hə, əː, ə/
-* him: /him/→/im/
-* his: /hiz/→/iz/
-* I: /ai/→/aː, ə/
-* is: /iz/→/s, z/
-* many: /'meni/→/mni/
-* me: /miː/→/mi/
-* must: /mʌst/→/məst, məs/
-* my: /mai/→/mi/
-* of: /əv/→/əv, v, ə/
-* our: /ɑʊɚ/→/ar/
-* shall: /ʃæl/→/ʃəl, ʃl/
-* she: /ʃiː/→/ʃi/
-* should: /ʃud/→/ʃəd, ʃd, ʃt/
-* so: /səʊ/→/sə/
-* some: /sʌm/→/səm, sm/
-* such: /sʌʧ/→/səʧ/
-* than: /ðæn/→/ðən, ðn/
-* that: /ðæt/→/ðət/
-* the: /ði:/→/ði, ðə/
-* them: /ðem/→/ðəm, ðm, əm, m/
-* then: /ðen/→/ðən/
-* to: /tuː/→/tu, tə/
-* us: /us/→/əs/
-* was: /wɔz/→/wəz, wə/
-* we: /wiː/→/wi/
-* were: /wəː/→/wə/
-* when: /wen/→/wən/
-* will: /wil/→/əl, l/
-* would: /wud/→/wəd, əd, d/
-* you: /juː/→/ju/
+- a: /eɪ/→/ə/
+- am: /æm/→/əm, m/
+- an: /æn/→/ən, n/
+- and: /ænd/→/ənd, nd, ən, n/
+- any: /'eni/→/ni/
+- are: /a:/→/ə/
+- as: /æs/→/əz/
+- at: /æt/→/ət/
+- but: /bʌt/→/bət/
+- can: /kæn/→/kən, kn, kŋ/
+- could: /kud/→/kəd, kd/
+- do: /duː/→/du, də, d/
+- does: /dʌz/→/dəz, z, s/
+- for: /fɔː/→/fə/
+- from: /frɔm/→/frəm, frm/
+- had: /hæd/→/həd, əd, d/
+- has: /hæz/→/həz, əz, z, s/
+- have: /hæv/→/həv, əv, v/
+- he: /hiː/→/hi, iː, i/
+- her: /həː/→/hə, əː, ə/
+- him: /him/→/im/
+- his: /hiz/→/iz/
+- I: /ai/→/aː, ə/
+- is: /iz/→/s, z/
+- many: /'meni/→/mni/
+- me: /miː/→/mi/
+- must: /mʌst/→/məst, məs/
+- my: /mai/→/mi/
+- of: /əv/→/əv, v, ə/
+- our: /ɑʊɚ/→/ar/
+- shall: /ʃæl/→/ʃəl, ʃl/
+- she: /ʃiː/→/ʃi/
+- should: /ʃud/→/ʃəd, ʃd, ʃt/
+- so: /səʊ/→/sə/
+- some: /sʌm/→/səm, sm/
+- such: /sʌʧ/→/səʧ/
+- than: /ðæn/→/ðən, ðn/
+- that: /ðæt/→/ðət/
+- the: /ði:/→/ði, ðə/
+- them: /ðem/→/ðəm, ðm, əm, m/
+- then: /ðen/→/ðən/
+- to: /tuː/→/tu, tə/
+- us: /us/→/əs/
+- was: /wɔz/→/wəz, wə/
+- we: /wiː/→/wi/
+- were: /wəː/→/wə/
+- when: /wen/→/wən/
+- will: /wil/→/əl, l/
+- would: /wud/→/wəd, əd, d/
+- you: /juː/→/ju/
 
 这些词的弱读形式在托福听力中都特别常见，比如，“our” 这个单词，大多数情况下都被读成/ar/。比如在以下两句话中：
 
@@ -374,7 +374,7 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 练习这几个辅音并不是很难，读者只需要反复练习一个词就够了，这个单词是：“student”。练习这个单词多遍之后，再练习 “students” —— 可想而知，英文中的/ts/，发音起始位置应该与/t/的发音起始位置相同，而/dz/也应该与/d/一样。
 
-> We encourage all **students** to volunteer for at least one community activity before they graduate. A new community program called "One On One" helps elementary **students** who've fallen behind.（第1篇第2~3句）
+> We encourage all **students** to volunteer for at least one community activity before they graduate. A new community program called "One On One" helps elementary **students** who've fallen behind.（第 1 篇第 2~3 句）
 
 这里有两处 “students”，不妨反复模仿，反复体会。如果，已经熟悉这样的舌尖起始位置，那么以后读 “**teacher**”、“**particular**” 这样的单词的时候，都会感到其音色与过往未纠正时有很大的不同。
 
@@ -418,7 +418,7 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 再仔细听听以下这句话：
 
-> Professor Dodge wi**ll_a**ct as a mentor to the tutors...（第1篇第9句）
+> Professor Dodge wi**ll_a**ct as a mentor to the tutors...（第 1 篇第 9 句）
 
 如果说 “连读” 需要注意什么的话，就是相连的两个词汇中，第二个单词的重音音节一定要讲清楚（事实上，如果后面的单词不强读的话，也就自然不会产生连读效果，抑或即便产生了连读效果也没那么明显）。而为了把重音音节讲清楚，重音音节之前还可能要多少有点停顿才可以。
 
@@ -434,7 +434,7 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 而在自然语流中，/t/前后都是元音的情况就更多了，因为很多单词以/t/结尾，而另外还有很多单词以元音开头。请仔细听听下面的录音：
 
-> You education majors might be especially interested in it because **it offers** the opportunity to do some teaching -- **that is**, tutoring in math and English.（第1篇第4句）
+> You education majors might be especially interested in it because **it offers** the opportunity to do some teaching -- **that is**, tutoring in math and English.（第 1 篇第 4 句）
 
 这其中，“it offers” 两个词之间发生了连读现象，于是，/t/被夹在两个元音之间；而 “that is” 中的/t/也是一样的道理；被浊化的/t̬/与/d/非常接近，因为舌尖起始位置是相同的，并且不再像/t/那样只有气流振动没有声带振动——/t̪/不仅有气流振动还有比/d/相对轻微一点的声带振动。只不过，/t̪/相对更加短促一些，感觉上更加具有弹性 —— 而事实上，直接把/t̪/读成/d/也是可以的，因为差别实在不大。
 
@@ -452,7 +452,7 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 请认真听以下录音：
 
-> I hope you’ve all finishe***~~d~~*** reading the assigne***~~d~~*** chapter on insurance — so tha***~~t~~*** you’re prepare***~~d~~*** for our discussion today. （第2篇第1句）
+> I hope you’ve all finishe**_~~d~~_** reading the assigne**_~~d~~_** chapter on insurance — so tha**_~~t~~_** you’re prepare**_~~d~~_** for our discussion today. （第 2 篇第 1 句）
 
 其中，“finished” 这个词末尾的 “ed” 由于跟在清辅音/sh/后面，所以原本应该读成/t/ ，但又由于后面紧跟着的单词是辅音开头的（“reading”），所以/t/就 “失爆” 了，于是听不到了；后面还有总计三处/t/或/d/产生失爆现象而听不到的情况。
 
@@ -462,13 +462,13 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 最为关键的是，这些因失爆而无法听到的/t/、/d/在语流中依然占据它们原本该拥有的长度。于是，“might be” 并不是读成/maibi:/而是/mai(-)bi:/，(-)的位置上，舌尖定在牙龈上，略作停顿，再发出/bi:/的声音。一定不要忘了停顿，那感觉就好像弹吉他的时候扫弦切音一样。仔细听下面的录音，注意 “might be” 和 “interested in it”。
 
->You education majors **migh*~~t~~* be** especially **interested in *~~it~~*** because it offers the opportunity to do some teaching — that is, tutoring in math and English.（第1篇第4句）
+> You education majors **migh*~~t~~* be** especially **interested in _~~it~~_** because it offers the opportunity to do some teaching — that is, tutoring in math and English.（第 1 篇第 4 句）
 
 可能产生失爆的辅音还有/p/、/b/、/k/、/g/。例如，下面的 “helps” 中的/p/，和 “looks” 中的/k/：
 
-> A new community program called “One On One” hel***~~p~~*s** elementary students who’ve fallen behind. （第1篇第3句）
+> A new community program called “One On One” hel***~~p~~*s** elementary students who’ve fallen behind. （第 1 篇第 3 句）
 
-> It loo***~~k~~***s good on your resume, too…（第1篇第倒数第3句）
+> It loo**_~~k~~_**s good on your resume, too…（第 1 篇第倒数第 3 句）
 
 通行的语音教程上还会更进一步讲解 “失去爆破” 与 “不完全爆破”，我个人认为，对大多数人来说，已经没必要再深究了、语言学习就是这样：先把握最基本的，而后通过大量的练习与应用就可自然学会很多自己都不知道怎么学会的东西。
 
@@ -478,23 +478,23 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 /t + j/可能会变成/ʧ/。比如，下面例子中的 “want you...”
 
-> Then tonight I **want you** to go home and read a passage into a tape recorder and evaluate your own voice. （第16篇最后1句）
+> Then tonight I **want you** to go home and read a passage into a tape recorder and evaluate your own voice. （第 16 篇最后 1 句）
 
 但并非总是如此，有些时候，说话者会把/t/后面的/j/当作辅音处理，这样的话，前面的/t/就 “失爆” 了。定义上，/j/是 “半辅音”，或者 “半元音”。我猜是这样，当/j/所在的音节是重音音节的时候，/j/被当作 “半辅音” 处理；而当/j/所在的音节是非重音音节的时候，/j/则被当作 “半元音” 处理。比如，下面这个已经听过的句子中（之前已经听过），that 中的/t/，后面尽管跟着/j/，但是，/t/是失爆了，而不是与/j/结合产生了同化。
 
-> I hope you've all finished reading the assigned chapter on insurance -- **so tha*~~t~~*** you're prepared for our discussion today. （第2篇第1句）
+> I hope you've all finished reading the assigned chapter on insurance -- **so tha*~~t~~*** you're prepared for our discussion today. （第 2 篇第 1 句）
 
 /d + j/也一样。很多的时候，/d/与/j/结合，会变成/ʤ/。但另外一些时候，并不产生音变。比如下面这个句子：
 
-> **What should you do, then**, on those sleepless nights?（第20篇第10句）
+> **What should you do, then**, on those sleepless nights?（第 20 篇第 10 句）
 
 这句话里面，“what” 末尾的/t/与 “should” 前面的/ʃ/结合，变成了/ʧ/，而 “should” 末尾的/d/与后面的/ju:/结合成/djə/（因为 “you” 被弱读，后面的 “do” 被强读）。这句话里的/d + j/组合，并没因产生音变而成为 “ʤ”
 
 /s + j/可能会变成/ʃ/。注意，都是 “可能” 而非 “必须”。实际上，/s + j/的情况并不多，最常见的是这个短语 “this year”。其实，是否产生音变，实在是因人而异 —— 有些人在发/s/音的时候，舌面更靠上一些；而另外一些人在发/s/音的时候，舌面没有那么靠上。舌面更靠上的人（下面第一句话），读出来，感觉是变成/ðɪ-ˈʃɪə/了，而舌面没有那么靠上的人（下面第二句话），读出来就没有什么变化。（其实，即便是同一个人说话，也不一定总是一模一样的，比如，他也可能有时候舌面更靠上一点，而另外一些时候没那么靠上。）
 
-> As the committee in charge of **this year's** tree-planting project, we have several items on our agenda. （第9篇第2句）
+> As the committee in charge of **this year's** tree-planting project, we have several items on our agenda. （第 9 篇第 2 句）
 
-> When you entered as first-year students **this year**, the school assigned you to a dorm and a roommate... （第40篇第2句）
+> When you entered as first-year students **this year**, the school assigned you to a dorm and a roommate... （第 40 篇第 2 句）
 
 能够自然而然地发出这些因 “同化” 而产生的声音的关键在于/t/、/d/、/s/的舌尖起始位置必须是正确的。比较一下/t/和/ʧ/的舌尖起始位置，就知道这两个音的舌尖起始位置是大致相同的。而如果把/t/读成中文的[t]，那么舌尖起始位置就是在牙齿上而非牙龈上，那么，如论如何都发不出自然而然的 “同化” 了。
 
@@ -504,18 +504,18 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 /t/是所有英语音素当中学生最需要时间精力去学习、老师最应该耐心解释说明的一个。
 
-* 英文/t/的舌尖起始位置与中文[t]不同，英文/t/的舌尖起始位置在牙龈上；
-* /t/如果被夹在两个元音之间（且之前的元音所在的音节是重音音节的话），那么要轻微浊化；
-* /t/在后面接着一个辅音的情况下，往往会产生所谓的失爆现象；/d/也是如此；
-* 如果后面接的辅音是/s/，那么便要演化出/ts/的音；而/d/则演化出/dz/的音；
-* /d/在/p/和/sh/之后会被读成/t/；
-* /t + j/可能会变成/ʧ/；而/d + j/可能会变成/ʤ/（这就是所谓的同化现象）。
+- 英文/t/的舌尖起始位置与中文[t]不同，英文/t/的舌尖起始位置在牙龈上；
+- /t/如果被夹在两个元音之间（且之前的元音所在的音节是重音音节的话），那么要轻微浊化；
+- /t/在后面接着一个辅音的情况下，往往会产生所谓的失爆现象；/d/也是如此；
+- 如果后面接的辅音是/s/，那么便要演化出/ts/的音；而/d/则演化出/dz/的音；
+- /d/在/p/和/sh/之后会被读成/t/；
+- /t + j/可能会变成/ʧ/；而/d + j/可能会变成/ʤ/（这就是所谓的同化现象）。
 
 ## 19. 技巧加重点：“声调”
 
 下面这段话，读者应该已经听过很多遍了：
 
-> Community service is an important **component** of education here at our university. We encourage all students to volunteer for at least one community activity before they graduate. A new community **program** called “One On One” helps elementary students who’ve fallen behind.（第1篇第1~3句）
+> Community service is an important **component** of education here at our university. We encourage all students to volunteer for at least one community activity before they graduate. A new community **program** called “One On One” helps elementary students who’ve fallen behind.（第 1 篇第 1~3 句）
 
 请仔细揣摩一下上文中加重的 “component” 和 “program” 两个单词的读法。多听几遍，多尝试几次。
 
@@ -523,8 +523,8 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 先回忆一下中文的 “声调”：轻声、一声、二声、三声，和四声。然后试试看
 
-* “component” 这个词，这样读就像了：com（轻声），po（四声），nent（二声）；
-* 而 “program” 这个单词，这样读就像了：pro（四声），gram（一声）；另，要把/æ/这个元音读得比短元音稍微长一点。注意：/æ/虽然后面没有长元音符号 “:”，但它是 “半长元音”，比短元音长一点，比长元音短一点。
+- “component” 这个词，这样读就像了：com（轻声），po（四声），nent（二声）；
+- 而 “program” 这个单词，这样读就像了：pro（四声），gram（一声）；另，要把/æ/这个元音读得比短元音稍微长一点。注意：/æ/虽然后面没有长元音符号 “:”，但它是 “半长元音”，比短元音长一点，比长元音短一点。
 
 ——因为 “轻声”、“一声”、“二声”、“四声”，都是我们所熟悉的讲中文普通话的时候采用的声调，所以，一定会很容就搞定的。
 
@@ -546,9 +546,9 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 我在教学生的时候，发现只需要让学生记住以下三个规律，就可以大大改善自然语流的质量：
 
-* 长元音，大多是 “一声”（没办法读成 “三声”）；
-* 双元音，大多是 “四声” 或者 “二声”（很难读成 “一声”）；
-* 短元音，几乎不可能是 “一声”（因为发成 “一声” 就成了长元音了）。
+- 长元音，大多是 “一声”（没办法读成 “三声”）；
+- 双元音，大多是 “四声” 或者 “二声”（很难读成 “一声”）；
+- 短元音，几乎不可能是 “一声”（因为发成 “一声” 就成了长元音了）。
 
 以上只是基本规律，而非指导原则。所以，在跟读的时候，只能靠细心揣摩，认真记录，（记录倒也简单，在元音上方标记 “1”、“2”、“4”、“0” 即可，其中 “0” 代表 “轻声”）而后反复练习。其实很容易适应的，我差不多花十几分钟就能把这事儿说明白，而我很多的学生差不多花一下午的时间就能做到彻底熟练，而后就感觉一下子 “脱胎换骨”……
 
@@ -564,56 +564,56 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 不妨接着尝试练习一下以下单词的发音：
 
-* abduct
-* above
-* brunt
-* brush
-* budget
-* bump
-* bunk
-* bus
-* but
-* chuck
-* club
-* come
-* cover
-* crush
-* cut
-* deluxe
-* discuss
-* dump
-* exult
-* glutton
-* hull
-* hunt
-* hush
-* hut
-* love
-* lunch
-* mumble
-* nothing
-* ruffle
-* rummage
-* rush
-* slumber
-* slush
-* some
-* son
-* struggle
-* stubborn
-* stucco
-* study
-* stump
-* such
-* supper
-* trouble
-* under
-* until
-* up
-* upper
-* us
-* usher
-* wonder
+- abduct
+- above
+- brunt
+- brush
+- budget
+- bump
+- bunk
+- bus
+- but
+- chuck
+- club
+- come
+- cover
+- crush
+- cut
+- deluxe
+- discuss
+- dump
+- exult
+- glutton
+- hull
+- hunt
+- hush
+- hut
+- love
+- lunch
+- mumble
+- nothing
+- ruffle
+- rummage
+- rush
+- slumber
+- slush
+- some
+- son
+- struggle
+- stubborn
+- stucco
+- study
+- stump
+- such
+- supper
+- trouble
+- under
+- until
+- up
+- upper
+- us
+- usher
+- wonder
 
 补充技巧：1) 可以使用读/ə/的方式读/ʌ/，只不过，/ʌ/要相对更加短促而已；2) 在读/ʌ/的时候，嘴唇张开的程度要比/ɑ/小很多。
 
@@ -623,63 +623,63 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 请仔细注意以下的 “ask” 和 “after”：
 
-> My recommendation is that we **ask** the administration to keep the center open **after** midnight for studying.（第86篇倒数第3句）
+> My recommendation is that we **ask** the administration to keep the center open **after** midnight for studying.（第 86 篇倒数第 3 句）
 
 不妨接着尝试练习一下以下单词的发音：
 
-* absolute
-* add
-* admiral
-* after
-* alcove
-* ambulance
-* ample
-* annual
-* answer
-* ant
-* anthem
-* apple
-* ask
-* baggage
-* bank
-* bashful
-* basket
-* bass
-* bat
-* bath
-* castle
-* cat
-* command
-* dance
-* disaster
-* fabric
-* frank
-* glass
-* grass
-* halfway
-* hand
-* handsome
-* lad
-* lamp
-* laugh
-* mad
-* man
-* mass
-* master
-* math
-* passage
-* pass
-* path
-* ram
-* rank
-* sad
-* sandwich
-* shatter
-* snack
-* tank
-* track
-* trap
-* wax
+- absolute
+- add
+- admiral
+- after
+- alcove
+- ambulance
+- ample
+- annual
+- answer
+- ant
+- anthem
+- apple
+- ask
+- baggage
+- bank
+- bashful
+- basket
+- bass
+- bat
+- bath
+- castle
+- cat
+- command
+- dance
+- disaster
+- fabric
+- frank
+- glass
+- grass
+- halfway
+- hand
+- handsome
+- lad
+- lamp
+- laugh
+- mad
+- man
+- mass
+- master
+- math
+- passage
+- pass
+- path
+- ram
+- rank
+- sad
+- sandwich
+- shatter
+- snack
+- tank
+- track
+- trap
+- wax
 
 ## 21. 双元音
 
@@ -689,8 +689,8 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 以/aɪ/为例。读者可以这样练习：
 
-* 张开嘴唇（可以夸张一点，把嘴张得更大一些），读三遍/a/的音，每一遍都读得稍微长一点，升调，每一遍之间略微停顿；
-* 读三遍/a/之后，第四遍在嘴唇没有任何运动的情况下（即，依然保持张开的状态），仅靠小舌滑动读出/aɪ/，并且读成降调。感觉上，/a/要长一点，然后降调滑向/ɪ/
+- 张开嘴唇（可以夸张一点，把嘴张得更大一些），读三遍/a/的音，每一遍都读得稍微长一点，升调，每一遍之间略微停顿；
+- 读三遍/a/之后，第四遍在嘴唇没有任何运动的情况下（即，依然保持张开的状态），仅靠小舌滑动读出/aɪ/，并且读成降调。感觉上，/a/要长一点，然后降调滑向/ɪ/
 
 请反复跟读这段录音【这段录音摘自 DAVID ALAN STERN 的语音教程，《[The Sound and Style of American English](http://dii.nju.edu.cn/summer/sas/index.htm)》】，认真体会。
 
@@ -702,7 +702,7 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 请注意一下录音中的双元音，及其这些双元音的声调，当然也要体会一下元音长短构成的节奏节拍（斜体标注的是长元音）：
 
-> Comm*u*nity s*er*vice is an imp*or*tant comp*o*nent of educ*a*tion h*ere* at *our* univ*er*sity.（第1篇第1句）
+> Comm*u*nity s*er*vice is an imp*or*tant comp*o*nent of educ*a*tion h*ere* at _our_ univ*er*sity.（第 1 篇第 1 句）
 
 ## 22. 其它辅音/θ/、/ð/、/v/、/ʒ/
 
@@ -724,9 +724,9 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 只要把 “vision” 这个词读对了，就说明/v/和/ʒ/都过关了 —— 大不了再多练习一个 “revision”。（同时请注意练习以下句子中/ð/的读音 —— 当然，/θ/的读音方法使用的是同样的方式。）
 
-> They have a wide field of **vision** and, like most grazing animals, they are especially good at detecting movement.（第75篇倒数第5句）
+> They have a wide field of **vision** and, like most grazing animals, they are especially good at detecting movement.（第 75 篇倒数第 5 句）
 
-> Then you can make the necessary **revisions** and hand in your final outline, which is due two weeks from today.（第23篇第10句）
+> Then you can make the necessary **revisions** and hand in your final outline, which is due two weeks from today.（第 23 篇第 10 句）
 
 还有个小技巧，就是反过来用中文练（这个技巧之前就用过一次）。把下面这句话中的所有[zh]换成/ʒ/，反复练习。
 
@@ -748,11 +748,11 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 到此为止，已掌握的基本知识，已经可以使学生完整地把握英语的节奏节拍了。
 
-* 每个元音长短都要恰当
-* 语流中的强读弱读词汇要分清
-* 在合适的位置要停顿
-* 声调模式恰当
-* 位于意群之首的重音音节带有相对更高的音调
+- 每个元音长短都要恰当
+- 语流中的强读弱读词汇要分清
+- 在合适的位置要停顿
+- 声调模式恰当
+- 位于意群之首的重音音节带有相对更高的音调
 
 有了这样的把握，再加上对这个系列文章中所详细讲解的各个重点音素（辅音/t/、/d/、/s/、/l/、/θ/、/ð/、/v/，以及/ʒ/；元音/ʌ/、/æ/，以及各个双元音）的深入理解，重塑自己的语音，已经具备足够条件。做自己的明师，也没那么难。
 
@@ -760,14 +760,14 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 终于，我们可以运用刚刚学过的知识全面分析模仿了。分以下几个步骤一边反复听一边处理一下文本：
 
-* 一句话是不是一口气读完的，如果不是，在哪里有着明显或者不明显的停顿？
-* 分辨被强读的词都有那些？
-* 被强读的单词里，每个音节的声调分别是什么？
-* 哪一个被强读的单词带着明显相对更高的音调？
-* 被弱读的单词，其中的那些元音发生了明显的变化，向/ə/靠拢？
-* 那些地方被连读了，前后各个音节的重音在哪儿
-* 有没有/t/、/k/、/p/之类的辅音失爆？另外，还有那些词尾的辅音（比如/d/、/g/、/b/等等）因后面跟着辅音开头的单词而只有停顿听不到声音？
-有没有被浊化的/t/存在？
+- 一句话是不是一口气读完的，如果不是，在哪里有着明显或者不明显的停顿？
+- 分辨被强读的词都有那些？
+- 被强读的单词里，每个音节的声调分别是什么？
+- 哪一个被强读的单词带着明显相对更高的音调？
+- 被弱读的单词，其中的那些元音发生了明显的变化，向/ə/靠拢？
+- 那些地方被连读了，前后各个音节的重音在哪儿
+- 有没有/t/、/k/、/p/之类的辅音失爆？另外，还有那些词尾的辅音（比如/d/、/g/、/b/等等）因后面跟着辅音开头的单词而只有停顿听不到声音？
+  有没有被浊化的/t/存在？
 
 拿来托福听力考试录音文件，借助软件反复听每一句话，尝试着回答以上的各个问题，而后在文本上作出相应的记号 —— 把手中的文本标记成乐谱一样的东西，而后就可以刻意地模仿。
 
@@ -775,126 +775,128 @@ One of our main jobs is to keep detailed records of the migration patterns of ra
 
 > Community service is an important component of education here at our university.
 
-* “Community” 被强读，并且/mju:/这个音节伴随着相对更高的音调；
-* “service is” 被连起来，听起来与 “service” 这个单词的复数 “services” 一样；
-* “an important component of” 中，“important” 与 “component” 都被强读，“important” 中的/pɔ:/读 “一声”，词尾/t/失爆；“component” 中的/pəu/读 “四声”、/nənt/“二声”；“of” 与前面的 “component” 连读，并弱读为/əf/；
-* “here at our university” 中，原本的语流应为/ˈhɪə-æt-auə-juniˈvə:siti/；最终，“here” 被强读了，“四声”；“university” 被强读，其中/və:/为 “一声”；at 被弱读为/ət/；“our” 也被弱读，变得很短，/auə/；而 “at” 中的 /ə/，由于前面被强读的单词 “here” 就是以/ə/结尾的，所以被同化了（或理解为 “被省略了” 也未尝不可），而 “at” 中的/t/，前面是元音（/ə/），后面跟着的也是元音（/auə/），于是这个/t/被浊化了。最终，整个气群听起来是这样的：/ˈhɪə-dauə-juniˈvə:siti/。
+- “Community” 被强读，并且/mju:/这个音节伴随着相对更高的音调；
+- “service is” 被连起来，听起来与 “service” 这个单词的复数 “services” 一样；
+- “an important component of” 中，“important” 与 “component” 都被强读，“important” 中的/pɔ:/读 “一声”，词尾/t/失爆；“component” 中的/pəu/读 “四声”、/nənt/“二声”；“of” 与前面的 “component” 连读，并弱读为/əf/；
+- “here at our university” 中，原本的语流应为/ˈhɪə-æt-auə-juniˈvə:siti/；最终，“here” 被强读了，“四声”；“university” 被强读，其中/və:/为 “一声”；at 被弱读为/ət/；“our” 也被弱读，变得很短，/auə/；而 “at” 中的 /ə/，由于前面被强读的单词 “here” 就是以/ə/结尾的，所以被同化了（或理解为 “被省略了” 也未尝不可），而 “at” 中的/t/，前面是元音（/ə/），后面跟着的也是元音（/auə/），于是这个/t/被浊化了。最终，整个气群听起来是这样的：/ˈhɪə-dauə-juniˈvə:siti/。
 
 > We encourage all students to volunteer for at least one community activity before they graduate.
 
-* “encourage” 读成/inˌkəˌri:ʤ/；其中/ri:ʤ/“一声”；
-* “all” 被强读，“二声”；
-* “to” 被弱读，几乎成了/t/；
-* “volunteer”，词尾的重音/tɪə/被拉得很长；
-* “for at least” 中的两个/t/都失爆了；“for” 被弱读成/fɚ/；
-* “one” 被强读，“四声”；
-* “community activity” 被弱读，所有长元音都变短了，两处词尾的/iti/都读成相当于/ədɪ/（这里的/d/代表浊化了的/t/）
-* “before” 被强读，“四声”；
-* “they” 被弱读成/ðɪ/，甚至都接近于/ð/；
-* “graduate” 被强调，“四声”。
+- “encourage” 读成/inˌkəˌri:ʤ/；其中/ri:ʤ/“一声”；
+- “all” 被强读，“二声”；
+- “to” 被弱读，几乎成了/t/；
+- “volunteer”，词尾的重音/tɪə/被拉得很长；
+- “for at least” 中的两个/t/都失爆了；“for” 被弱读成/fɚ/；
+- “one” 被强读，“四声”；
+- “community activity” 被弱读，所有长元音都变短了，两处词尾的/iti/都读成相当于/ədɪ/（这里的/d/代表浊化了的/t/）
+- “before” 被强读，“四声”；
+- “they” 被弱读成/ðɪ/，甚至都接近于/ð/；
+- “graduate” 被强调，“四声”。
 
 > A new community program called “One On One” helps elementary students who’ve fallen behind.
 
-* “new” 被强读，“二声”，并伴着相对更高的音调；
-* “program” 中，/pəu/为 “四声”，而/græm/为 “一声”，略微拖长；
-* “called” 强读，拉长，“一声”；
-* “One on One”，第二个 “One” 被强读，“四声”；之前的 “One on” 两个词连读；
-* “helps elementary students” 中的 “helps elementary” 连读的非常明显 —— 因为 “elementary” 的重音在第一个音节；“help” 中的 “p” 失爆；读的技巧在于，读到/help /时，读完/hel/之后就把嘴唇闭上，稍微停顿（练习的时候可以夸张地停顿长达两三秒），而后直接张开嘴唇读/ˈselɪ-men-təri/（第一个音节读成 “二声”）；另外，help 这个词有相对更高的声调；
-* “who’ve fallen behind”，“who’ve” 中的/v/，由于后面跟着的是相同唇形的/f/，所以听不到发音，但只是没有气流振动而已，该音的长度依然保持，所以听起来 “who” 之后有点停顿，而后才读出出 “二声” 的 “fallen”；“behind” 强读，“四声”。
+- “new” 被强读，“二声”，并伴着相对更高的音调；
+- “program” 中，/pəu/为 “四声”，而/græm/为 “一声”，略微拖长；
+- “called” 强读，拉长，“一声”；
+- “One on One”，第二个 “One” 被强读，“四声”；之前的 “One on” 两个词连读；
+- “helps elementary students” 中的 “helps elementary” 连读的非常明显 —— 因为 “elementary” 的重音在第一个音节；“help” 中的 “p” 失爆；读的技巧在于，读到/help /时，读完/hel/之后就把嘴唇闭上，稍微停顿（练习的时候可以夸张地停顿长达两三秒），而后直接张开嘴唇读/ˈselɪ-men-təri/（第一个音节读成 “二声”）；另外，help 这个词有相对更高的声调；
+- “who’ve fallen behind”，“who’ve” 中的/v/，由于后面跟着的是相同唇形的/f/，所以听不到发音，但只是没有气流振动而已，该音的长度依然保持，所以听起来 “who” 之后有点停顿，而后才读出出 “二声” 的 “fallen”；“behind” 强读，“四声”。
 
 > You education majors might be especially interested in it because it offers the opportunity to do some teaching — that is, tutoring in math and English.
 
-* “You” 读成 “二声”；
-* “education” 中的重音音节/kei/伴随着更高的音调；
-* “might” 词尾的/t/失爆；
-* “especially” 强读，伴随着更高的音调；
-* “interested in it” 末尾的/t/，口腔动作完整，但没有气流振动，感觉像切音；
-* “it offers” 中的/t/夹在两个原因之间，所以，浊化；“offer”“二声”；
-* “teaching” 被强读，“一声”；
-* “that is” 中的/t/浊化；
-* “tutoring” 强读，“四声”；
-* “and English” 连读，“English” 被强读，“四声”；
+- “You” 读成 “二声”；
+- “education” 中的重音音节/kei/伴随着更高的音调；
+- “might” 词尾的/t/失爆；
+- “especially” 强读，伴随着更高的音调；
+- “interested in it” 末尾的/t/，口腔动作完整，但没有气流振动，感觉像切音；
+- “it offers” 中的/t/夹在两个原因之间，所以，浊化；“offer”“二声”；
+- “teaching” 被强读，“一声”；
+- “that is” 中的/t/浊化；
+- “tutoring” 强读，“四声”；
+- “and English” 连读，“English” 被强读，“四声”；
 
 > You’d have to volunteer two hours a week for one semester.
 
-* “You’d have to” 读成/ju-dæf-tu/
-* “volunteer” 尾音拉长，“一声”；
-* “two” 强读、“四声”；
-* “for” 弱读为/fɚ/
-* “one” 强读，“四声”；
+- “You’d have to” 读成/ju-dæf-tu/
+- “volunteer” 尾音拉长，“一声”；
+- “two” 强读、“四声”；
+- “for” 弱读为/fɚ/
+- “one” 强读，“四声”；
 
 > You can choose to help a child with math, English, or both.
 
-* “can” 被弱读成/kən/
-* “choose”、“help”、“child”、“math”、“English”，全部为 “二声”；
-* “or” 与 “both” 都被强读、“or” 为 “二声”，“both” 为 “四声”；
+- “can” 被弱读成/kən/
+- “choose”、“help”、“child”、“math”、“English”，全部为 “二声”；
+- “or” 与 “both” 都被强读、“or” 为 “二声”，“both” 为 “四声”；
 
 > Half-hour lessons are fine, so you could do a half hour of each subject two days a week.
 
-* “Half”，/hæf/，被强读，“二声”；
-* “fine”，被强读，“四声”
-* “half” 与 “each” 都被强读、“二声”
-* “two” 被强读、“一声”
-* “week” 被强读、“四声”
+- “Half”，/hæf/，被强读，“二声”；
+- “fine”，被强读，“四声”
+- “half” 与 “each” 都被强读、“二声”
+- “two” 被强读、“一声”
+- “week” 被强读、“四声”
 
 > Professor Dodge will act as a mentor to the tutors
 
-* “will act” 连读，“will” 弱读为/wəl/，“act” 强读,“一声”：/wə-ˈlæ(k)t/，其中的/k/失爆；
-* “mentor”，被强读
-* “tutors” 被强读、“四声”
+- “will act” 连读，“will” 弱读为/wəl/，“act” 强读,“一声”：/wə-ˈlæ(k)t/，其中的/k/失爆；
+- “mentor”，被强读
+- “tutors” 被强读、“四声”
 
 > – he’ll be available to help you with lesson plans or to offer suggestions for activities.
 
-* “with lesson plans”，“with” 弱读为/wəð/，由于后面紧跟辅音/l/，所以，/ð/听不到，但停顿依然存在；
-* “or to offer”，“to” 中的/t/浊化，听起来与/d/接近；
+- “with lesson plans”，“with” 弱读为/wəð/，由于后面紧跟辅音/l/，所以，/ð/听不到，但停顿依然存在；
+- “or to offer”，“to” 中的/t/浊化，听起来与/d/接近；
 
 > He has office hours every Tuesday and Thursday afternoon.
 
-* 第一个意群到 “hours” 结束，“hours”，“二声”；
-* “Tuesday and Thursday afternoon”，除了 “and” 之外均被强读。
+- 第一个意群到 “hours” 结束，“hours”，“二声”；
+- “Tuesday and Thursday afternoon”，除了 “and” 之外均被强读。
 
 > You can sign up for the program with him and begin the tutoring next week.
 
-* “can” 被弱读成/kən/；
-* “sign up” 中的/p/，口型做完之后（即，把嘴唇闭上之后）不再张嘴送气，而是停顿一下之后，直接开始说后面的 “for”；
-* “with him”，大概读成/wɪ-zɪm/，“him” 中的/h/不发音。语音教程中说这是 “击穿” 现象；因为我看到学生太容易把握这一点，所以也就没有单独讲解/h/的这个特征。
+- “can” 被弱读成/kən/；
+- “sign up” 中的/p/，口型做完之后（即，把嘴唇闭上之后）不再张嘴送气，而是停顿一下之后，直接开始说后面的 “for”；
+- “with him”，大概读成/wɪ-zɪm/，“him” 中的/h/不发音。语音教程中说这是 “击穿” 现象；因为我看到学生太容易把握这一点，所以也就没有单独讲解/h/的这个特征。
 
 > I’m sure you’ll enjoy this community service and you’ll gain valuable experience at the same time.
 
-* 这句话读得很有弹性，“I’m”、“sure”、“enjoy”、“valuable”、“same”、“time”，均被强读
-* “you’ll enjoy”、“valuable experience”，两处/l + e/的连读。
+- 这句话读得很有弹性，“I’m”、“sure”、“enjoy”、“valuable”、“same”、“time”，均被强读
+- “you’ll enjoy”、“valuable experience”，两处/l + e/的连读。
 
 > It looks good on your resume, too — showing that you’ve had experience with children and that you care about your community.
 
-* “looks good” 中的/k/只有细微停顿没有声音；
-* “resume”，“re” 为 “四声”，/meɪ/为 “二声”；
-* “too”“四声”。
-* “children” 之后有个明显的停顿；这个词与之前曾经讲过的 “program” 一样，是第一个音节 “四声”，第二个音节 “一声”；
-* “and” 被强读，“四声”；
-* “care about” 连读。
+- “looks good” 中的/k/只有细微停顿没有声音；
+- “resume”，“re” 为 “四声”，/meɪ/为 “二声”；
+- “too”“四声”。
+- “children” 之后有个明显的停顿；这个词与之前曾经讲过的 “program” 一样，是第一个音节 “四声”，第二个音节 “一声”；
+- “and” 被强读，“四声”；
+- “care about” 连读。
 
 > If you’d like to sign up, or if you have any questions, stop by Professor Dodge’s office this week.
 
-* “you’d like to” 中的/d/没有声音、甚至连停顿都没有；
-* “sign up”，读完/saɪ-nʌ/之后闭上嘴唇，略作停顿，直接开口读 “or if you have any question”（读得很快）；
-* “Dodge” 加上所属格 “’s” 之后，整体读/dɔ-ʤɜs/
+- “you’d like to” 中的/d/没有声音、甚至连停顿都没有；
+- “sign up”，读完/saɪ-nʌ/之后闭上嘴唇，略作停顿，直接开口读 “or if you have any question”（读得很快）；
+- “Dodge” 加上所属格 “’s” 之后，整体读/dɔ-ʤɜs/
 
 ## 25. 关于口音和外教
 
-在以上 “重塑自己的语音” 这个系列的文章中，我选择用托福听力考试的录音作为讲解材料。有些读者可能希望学的是 “标准的英音”，而非 “美音”，那就可以拿来雅思的官方教材（所谓的 “剑一” 到 “剑七”——*Cambridge IELTS 1-7*，各地新华书店大概都可以买得到，其中有很多带完整文本的录音）用作训练材料。
+在以上 “重塑自己的语音” 这个系列的文章中，我选择用托福听力考试的录音作为讲解材料。有些读者可能希望学的是 “标准的英音”，而非 “美音”，那就可以拿来雅思的官方教材（所谓的 “剑一” 到 “剑七”——_Cambridge IELTS 1-7_，各地新华书店大概都可以买得到，其中有很多带完整文本的录音）用作训练材料。
 
 英音与美音的发声原理大致相同，细节差异实际上并不大 —— 英音和美音的差异多多少少被许多人夸大了，而英音美音之间差异对说话者的影响更是被夸大得过分玄乎。
 
 首先，只要你不是从小就开始说英语的，那么十有八九最终你能说得必然不是标准美音，也不是标准英音，而是国际英音（international accent）。其次，究竟会有谁那么在乎你的口音呢？再说，沟通是否良好，语音的作用只占其中的很小一部分；而语音作用之中，口音作用所占的比例又是很小很小的一部分。于是，最终，仅仅口音本身几乎并不影响良好的沟通 —— 尽管谁也不否认口音越地道越好，起码自我感觉更加良好。
 
 良好的沟通需要
-* 思考能力 —— 你最好有能力从对方的角度考虑问题；
-* 组织能力 —— 先说什么后说什么效果可能全然不同；
-* 观察能力 —— 基本的情商总应该有吧？要看什么人说什么话，或者起码需要调整说话方式；
-* 文字理解能力 —— 不仅要听得清还要听得懂人家说的话究竟是什么意思，有没有什么言外之意；
+
+- 思考能力 —— 你最好有能力从对方的角度考虑问题；
+- 组织能力 —— 先说什么后说什么效果可能全然不同；
+- 观察能力 —— 基本的情商总应该有吧？要看什么人说什么话，或者起码需要调整说话方式；
+- 文字理解能力 —— 不仅要听得清还要听得懂人家说的话究竟是什么意思，有没有什么言外之意；
 
 最好还要有
-* 足够的知识储备 —— 就算你语音地道又怎么样？若是你缺乏基本常识，谁愿意跟你只是打打招呼聊聊天气，而后就不知所云？
+
+- 足够的知识储备 —— 就算你语音地道又怎么样？若是你缺乏基本常识，谁愿意跟你只是打打招呼聊聊天气，而后就不知所云？
 
 英语只是表达媒介，很多人之所以练就一身 “哑巴英语”，其实并不像很多老师或者培训班说的那样缺乏英语训练（或者什么口语训练），而是缺乏刚刚提到的各种能力或者起码其中的一些能力。想想看吧，可怕的并不是 “不会说”，而是 “没什么可说”，发音再好，口音再地道，又怎么样呢？不一样没得说？不会说其实很好解决，查词典就完事儿了么（很奇怪为什么那么多人就是觉得查词典那么没用？——**随后我就会证明查词典究竟有多么不可或缺的有用。**）；说得不好没关系，人家听得懂就好（语法错误怎么可能一下子就消灭掉？但大多数错误总是可以有机会慢慢纠正的）。然而，没得说怎么解决？那可不是交点钱上个什么培训班就可以搞定的。
 

@@ -3,7 +3,7 @@ import {
   AISettingsProviderContext,
 } from "@renderer/context";
 import OpenAI from "openai";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { t } from "i18next";
 import { AI_WORKER_ENDPOINT } from "@/constants";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
@@ -15,6 +15,7 @@ export const useTranscribe = () => {
   const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
   const { punctuateText } = useAiCommand();
+  const [output, setOutput] = useState<string>("");
 
   const transcode = async (src: string | Blob): Promise<string> => {
     if (src instanceof Blob) {
@@ -36,16 +37,24 @@ export const useTranscribe = () => {
       originalText?: string;
       language: string;
       service: WhisperConfigType["service"];
+      isolate?: boolean;
     }
   ): Promise<{
     engine: string;
     model: string;
     alignmentResult: AlignmentResult;
     originalText?: string;
+    tokenId?: number;
   }> => {
     const url = await transcode(mediaSrc);
-    const { targetId, targetType, originalText, language, service } =
-      params || {};
+    const {
+      targetId,
+      targetType,
+      originalText,
+      language,
+      service,
+      isolate = false,
+    } = params || {};
     const blob = await (await fetch(url)).blob();
 
     let result;
@@ -68,6 +77,8 @@ export const useTranscribe = () => {
     } else {
       throw new Error(t("whisperServiceNotSupported"));
     }
+
+    setOutput(null);
 
     let transcript = originalText || result.text;
 
@@ -92,6 +103,7 @@ export const useTranscribe = () => {
       transcript,
       {
         language,
+        isolate,
       }
     );
 
@@ -173,8 +185,9 @@ export const useTranscribe = () => {
     engine: string;
     model: string;
     text: string;
+    tokenId: number;
   }> => {
-    const { token, region } = await webApi.generateSpeechToken(params);
+    const { id, token, region } = await webApi.generateSpeechToken(params);
     const config = sdk.SpeechConfig.fromAuthorizationToken(token, region);
     const audioConfig = sdk.AudioConfig.fromWavFileInput(
       new File([blob], "audio.wav")
@@ -191,7 +204,8 @@ export const useTranscribe = () => {
 
     return new Promise((resolve, reject) => {
       reco.recognizing = (_s, e) => {
-        console.log(e.result.text);
+        console.log(e.result);
+        setOutput(e.result.text);
       };
 
       reco.recognized = (_s, e) => {
@@ -217,6 +231,7 @@ export const useTranscribe = () => {
           engine: "azure",
           model: "whisper",
           text: results.map((result) => result.DisplayText).join(" "),
+          tokenId: id,
         });
       };
 
@@ -227,5 +242,6 @@ export const useTranscribe = () => {
   return {
     transcode,
     transcribe,
+    output,
   };
 };
