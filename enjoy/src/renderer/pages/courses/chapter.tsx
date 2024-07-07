@@ -124,7 +124,7 @@ const ChapterContent = (props: {
   if (!chapter) return null;
 
   return (
-    <div className="select-text prose dark:prose-invert mx-auto">
+    <div className="select-text prose dark:prose-invert prose-em:font-bold prose-em:text-red-700 mx-auto">
       <h2>{chapter?.title}</h2>
       <MarkdownWrapper>{chapter?.content}</MarkdownWrapper>
       {translation && (
