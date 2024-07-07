@@ -120,6 +120,16 @@ const ChapterContent = (props: {
   const translation = chapter?.translations?.find(
     (t) => t.language === nativeLanguage
   );
+  const [audios, setAudios] = useState<AudioType[]>([]);
+
+  useEffect(() => {
+    if (!chapter?.examples) return;
+
+    const finished = audios.filter((a) => a.recordingsCount > 0);
+    if (finished.length >= chapter.examples.length) {
+      // TODO: finish chapter
+    }
+  }, [audios]);
 
   if (!chapter) return null;
 
@@ -142,6 +152,16 @@ const ChapterContent = (props: {
             example={example}
             onShadowing={onShadowing}
             course={chapter.course}
+            onAudio={(audio) => {
+              const index = audios.findIndex((a) => a.id === audio.id);
+              if (index >= 0) {
+                audios[index] = audio;
+              } else {
+                audios.push(audio);
+              }
+
+              setAudios([...audios]);
+            }}
           />
         ))}
       </div>
@@ -153,42 +173,42 @@ const ExampleContent = (props: {
   example: ChapterType["examples"][0];
   onShadowing: (audio: AudioType) => void;
   course?: CourseType;
+  onAudio?: (audio: AudioType) => void;
 }) => {
-  const { example, onShadowing, course } = props;
+  const { example, onShadowing, course, onAudio } = props;
   const { nativeLanguage, EnjoyApp } = useContext(AppSettingsProviderContext);
   const translation = example?.translations?.find(
     (t) => t.language === nativeLanguage
   );
   const [resourcing, setResourcing] = useState(false);
+  const [audio, setAudio] = useState<AudioType | null>(null);
+
+  const fetchAudio = async () => {
+    if (!example) return;
+
+    EnjoyApp.audios
+      .findOne({
+        source: example.audioUrl,
+      })
+      .then((audio) => {
+        if (!audio) return;
+
+        setAudio(audio);
+        onAudio?.(audio);
+      });
+  };
 
   const startShadow = async () => {
     if (resourcing) return;
 
-    const name =
-      example.keywords.join(" ") + "-" + example.audioUrl.split("/").pop();
-
-    const audio = await EnjoyApp.audios.findOne({
-      source: example.audioUrl,
-    });
-
     if (audio) {
-      if (!audio.coverUrl && course?.coverUrl) {
-        EnjoyApp.audios
-          .update(audio.id, {
-            name,
-            coverUrl: course.coverUrl,
-          })
-          .finally(() => {
-            onShadowing(audio);
-          });
-      } else {
-        onShadowing(audio);
-      }
+      onShadowing(audio);
       return;
     }
-
     setResourcing(true);
 
+    const name =
+      example.keywords.join(" ") + "-" + example.audioUrl.split("/").pop();
     EnjoyApp.audios
       .create(example.audioUrl, {
         name,
@@ -196,6 +216,10 @@ const ExampleContent = (props: {
         coverUrl: course?.coverUrl,
       })
       .then((audio) => {
+        if (!audio) return;
+
+        setAudio(audio);
+
         if (audio.source !== example.audioUrl) {
           EnjoyApp.audios
             .update(audio.id, {
@@ -249,6 +273,10 @@ const ExampleContent = (props: {
       });
   };
 
+  useEffect(() => {
+    fetchAudio();
+  }, [example?.audioUrl]);
+
   if (!example) return null;
 
   return (
@@ -274,7 +302,9 @@ const ExampleContent = (props: {
             data-tooltip-content={t("shadowingExercise")}
             data-testid="message-start-shadow"
             onClick={startShadow}
-            className="w-3 h-3 cursor-pointer"
+            className={`w-3 h-3 cursor-pointer ${
+              audio && audio.recordingsCount > 0 ? "text-green-600" : ""
+            }`}
           />
         )}
         <DownloadIcon
