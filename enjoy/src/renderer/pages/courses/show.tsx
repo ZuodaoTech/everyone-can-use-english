@@ -97,7 +97,7 @@ const CourseDetail = (props: { course: CourseType; onUpdate: () => void }) => {
         {course.enrolled ? (
           <>
             <div className="flex items-center space-x-2 mb-4">
-              <span>{course.enrollment.progress * 100}%</span>
+              <span>{(course.enrollment.progress * 100).toFixed(2)}%</span>
               <Progress value={course.enrollment.progress * 100} />
             </div>
             <div>
@@ -162,7 +162,11 @@ const CourseChapters = (props: { course: CourseType }) => {
             <div className="text-center font-mono line-clamp-1">
               {chapter.title}
             </div>
-            <CheckCircleIcon className="absolute top-2 left-2 w-4 h-4 text-muted-foreground" />
+            <CheckCircleIcon
+              className={`absolute top-2 left-2 w-4 h-4 ${
+                chapter.finished ? "text-green-600" : "text-muted-foreground"
+              }`}
+            />
           </Link>
         ))}
       </div>

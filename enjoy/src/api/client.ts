@@ -511,6 +511,10 @@ export class Client {
     return this.api.get(`/api/courses/${courseId}/chapters/${id}`);
   }
 
+  finishCourseChapter(courseId: string, id: number | string): Promise<void> {
+    return this.api.post(`/api/courses/${courseId}/chapters/${id}/finish`);
+  }
+
   updateEnrollment(
     id: string,
     params: {

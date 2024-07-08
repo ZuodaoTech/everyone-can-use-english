@@ -9,6 +9,7 @@ type ChapterType = {
     language: string;
     content: string;
   }[];
+  finished?: boolean;
   examples?: {
     id: string;
     keywords: string[];

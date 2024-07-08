@@ -14,6 +14,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetClose,
+  Button,
 } from "@renderer/components/ui";
 import {
   AppSettingsProviderContext,
@@ -28,6 +29,7 @@ import {
   WavesurferPlayer,
 } from "@renderer/components";
 import {
+  CheckCircleIcon,
   ChevronDownIcon,
   DownloadIcon,
   LoaderIcon,
@@ -73,7 +75,11 @@ export default () => {
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel defaultSize={50}>
               <ScrollArea className="px-4 py-3 h-full relative bg-muted">
-                <ChapterContent chapter={chapter} onShadowing={setShadowing} />
+                <ChapterContent
+                  chapter={chapter}
+                  onShadowing={setShadowing}
+                  onUpdate={() => fetchChapter(id, sequence)}
+                />
               </ScrollArea>
             </ResizablePanel>
             <ResizableHandle />
@@ -114,9 +120,10 @@ export default () => {
 const ChapterContent = (props: {
   chapter: ChapterType;
   onShadowing: (audio: AudioType) => void;
+  onUpdate?: () => void;
 }) => {
-  const { chapter, onShadowing } = props;
-  const { nativeLanguage } = useContext(AppSettingsProviderContext);
+  const { chapter, onShadowing, onUpdate } = props;
+  const { webApi, nativeLanguage } = useContext(AppSettingsProviderContext);
   const translation = chapter?.translations?.find(
     (t) => t.language === nativeLanguage
   );
@@ -126,8 +133,15 @@ const ChapterContent = (props: {
     if (!chapter?.examples) return;
 
     const finished = audios.filter((a) => a.recordingsCount > 0);
+    if (finished.length === 0) return;
+
     if (finished.length >= chapter.examples.length) {
-      // TODO: finish chapter
+      webApi
+        .finishCourseChapter(chapter.course.id, chapter.sequence)
+        .then(() => onUpdate?.())
+        .catch((err) => {
+          toast.error(err.message);
+        });
     }
   }, [audios]);
 
@@ -135,25 +149,36 @@ const ChapterContent = (props: {
 
   return (
     <div className="">
-      <div className="flex items-center justify-end space-x-4 mb-4">
-        {chapter.sequence > 1 && (
-          <Link
-            to={`/courses/${chapter.course.id}/chapters/${
-              chapter.sequence - 1
-            }`}
-          >
-            <button className="btn">{t("previousChapter")}</button>
-          </Link>
-        )}
-        {chapter.course.chaptersCount > chapter.sequence + 1 && (
-          <Link
-            to={`/courses/${chapter.course.id}/chapters/${
-              chapter.sequence + 1
-            }`}
-          >
-            <button className="btn">{t("nextChapter")}</button>
-          </Link>
-        )}
+      <div className="flex items-center justify-between mb-2">
+        <div className="">
+          <CheckCircleIcon
+            className={`w-4 h-4 ${chapter.finished ? "text-green-600" : ""}`}
+          />
+        </div>
+        <div className="flex items-center space-x-2">
+          {chapter.sequence > 1 && (
+            <Link
+              to={`/courses/${chapter.course.id}/chapters/${
+                chapter.sequence - 1
+              }`}
+            >
+              <Button variant="outline" size="sm">
+                {t("previousChapter")}
+              </Button>
+            </Link>
+          )}
+          {chapter.course.chaptersCount > chapter.sequence + 1 && (
+            <Link
+              to={`/courses/${chapter.course.id}/chapters/${
+                chapter.sequence + 1
+              }`}
+            >
+              <Button variant="outline" size="sm">
+                {t("nextChapter")}
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
       <div className="select-text prose dark:prose-invert prose-em:font-bold prose-em:text-red-700 mx-auto">
         <h2>{chapter?.title}</h2>
