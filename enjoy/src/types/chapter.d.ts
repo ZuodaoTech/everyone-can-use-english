@@ -1,5 +1,6 @@
 type ChapterType = {
   id: string;
+  courseId: string;
   sequence: number;
   keywords: string[];
   title: string;

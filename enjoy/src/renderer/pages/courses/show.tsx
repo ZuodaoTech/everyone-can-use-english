@@ -6,13 +6,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
   Button,
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
   Progress,
   Separator,
   toast,
@@ -21,7 +14,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { CheckCircleIcon, LoaderIcon } from "lucide-react";
+import { LoaderIcon } from "lucide-react";
+import { Chapters } from "@renderer/components";
 
 export default () => {
   const navigate = useNavigate();
@@ -59,7 +53,7 @@ export default () => {
       </div>
       <Separator className="mb-6" />
       <div className="mb-6">
-        <CourseChapters course={course} />
+        <Chapters course={course} />
       </div>
     </div>
   );
@@ -120,82 +114,6 @@ const CourseDetail = (props: { course: CourseType; onUpdate: () => void }) => {
             </Button>
           </div>
         )}
-      </div>
-    </div>
-  );
-};
-
-const CourseChapters = (props: { course: CourseType }) => {
-  const { course } = props;
-  const { webApi } = useContext(AppSettingsProviderContext);
-  const [chapters, setChapters] = useState<ChapterType[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [hasMore, setHasMore] = useState<boolean>(true);
-
-  const fetchCourseChapters = async (params?: { page: number }) => {
-    if (!course?.id) return;
-
-    const { page = currentPage } = params || {};
-    webApi
-      .courseChapters(course.id, { page })
-      .then(({ chapters, page, next }) => {
-        setCurrentPage(page);
-        setHasMore(!!next);
-        setChapters(chapters);
-      });
-  };
-
-  useEffect(() => {
-    if (!course) return;
-    fetchCourseChapters({ page: 1 });
-  }, [course]);
-
-  if (!course) return null;
-  if (!chapters) return null;
-
-  return (
-    <div className="">
-      <div className="grid gap-4 grid-cols-5 mb-4">
-        {chapters.map((chapter) => (
-          <Link
-            to={`/courses/${course.id}/chapters/${chapter.sequence}`}
-            key={chapter.id}
-            className="p-4 border hover:border-dashed cursor-pointer rounded-lg relative"
-          >
-            <div className="text-center text-sm font-bold font-mono mb-2">
-              # {chapter.sequence}
-            </div>
-            <div className="text-center font-mono line-clamp-1">
-              {chapter.title}
-            </div>
-            <CheckCircleIcon
-              className={`absolute top-2 left-2 w-4 h-4 ${
-                chapter.finished ? "text-green-600" : "text-muted-foreground"
-              }`}
-            />
-          </Link>
-        ))}
-      </div>
-
-      <div className="flex justify-center">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              {currentPage > 1 && (
-                <PaginationPrevious
-                  onClick={() => fetchCourseChapters({ page: currentPage - 1 })}
-                />
-              )}
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink>1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>{hasMore && <PaginationNext />}</PaginationItem>
-          </PaginationContent>
-        </Pagination>
       </div>
     </div>
   );

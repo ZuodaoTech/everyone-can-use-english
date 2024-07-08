@@ -14,6 +14,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetClose,
+  SheetTitle,
 } from "@renderer/components/ui";
 import {
   AppSettingsProviderContext,
@@ -100,6 +101,7 @@ export default () => {
             onInteractOutside={(event) => event.preventDefault()}
           >
             <SheetHeader className="flex items-center justify-center h-14">
+              <SheetTitle className="sr-only">Shadow</SheetTitle>
               <SheetClose>
                 <ChevronDownIcon />
               </SheetClose>

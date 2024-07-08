@@ -117,6 +117,7 @@ type MeaningType = {
 type PagyResponseType = {
   page: number;
   next: number | null;
+  last: number;
 };
 
 type AudibleBookType = {
