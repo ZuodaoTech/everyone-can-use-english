@@ -1,5 +1,8 @@
 import { toast } from "@renderer/components/ui";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  DbProviderContext,
+} from "@renderer/context";
 import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { MarkdownWrapper, WavesurferPlayer } from "@renderer/components";
@@ -11,13 +14,35 @@ export const ExampleContent = (props: {
   course?: CourseType;
   onAudio?: (audio: AudioType) => void;
 }) => {
-  const { example, onShadowing, course, onAudio } = props;
   const { nativeLanguage, EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { addDblistener, removeDbListener } = useContext(DbProviderContext);
+  const { example, onShadowing, course, onAudio } = props;
   const translation = example?.translations?.find(
     (t) => t.language === nativeLanguage
   );
   const [resourcing, setResourcing] = useState(false);
   const [audio, setAudio] = useState<AudioType | null>(null);
+
+  const onAudioUpdate = (event: CustomEvent) => {
+    const { model, action, record } = event.detail || {};
+    if (
+      model === "Audio" &&
+      action === "create" &&
+      record.source === example.audioUrl
+    ) {
+      console.log("Audio created", record);
+      setAudio(record);
+    } else if (
+      model === "Recording" &&
+      action === "update" &&
+      audio?.id === record.targetId
+    ) {
+      console.log("Recording created", record);
+      EnjoyApp.audios.findOne({ id: audio.id }).then((audio) => {
+        setAudio(audio);
+      });
+    }
+  };
 
   const fetchAudio = async () => {
     if (!example) return;
@@ -110,6 +135,17 @@ export const ExampleContent = (props: {
   useEffect(() => {
     fetchAudio();
   }, [example?.audioUrl]);
+
+  useEffect(() => {
+    if (!audio) return;
+    if (audio.recordingsCount > 0) return;
+
+    addDblistener(onAudioUpdate);
+
+    return () => {
+      removeDbListener(onAudioUpdate);
+    };
+  }, [audio]);
 
   if (!example) return null;
 

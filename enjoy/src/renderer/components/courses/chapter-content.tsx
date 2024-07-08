@@ -1,5 +1,7 @@
 import { toast, Button } from "@renderer/components/ui";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+} from "@renderer/context";
 import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -11,8 +13,8 @@ export const ChapterContent = (props: {
   onShadowing: (audio: AudioType) => void;
   onUpdate?: () => void;
 }) => {
-  const { chapter, onShadowing, onUpdate } = props;
   const { webApi, nativeLanguage } = useContext(AppSettingsProviderContext);
+  const { chapter, onShadowing, onUpdate } = props;
   const translation = chapter?.translations?.find(
     (t) => t.language === nativeLanguage
   );
