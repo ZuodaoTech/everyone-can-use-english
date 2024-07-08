@@ -30,16 +30,15 @@ export const ExampleContent = (props: {
       action === "create" &&
       record.source === example.audioUrl
     ) {
-      console.log("Audio created", record);
       setAudio(record);
+      onAudio?.(record);
     } else if (
       model === "Recording" &&
-      action === "update" &&
       audio?.id === record.targetId
     ) {
-      console.log("Recording created", record);
       EnjoyApp.audios.findOne({ id: audio.id }).then((audio) => {
         setAudio(audio);
+        onAudio?.(audio);
       });
     }
   };
@@ -137,9 +136,6 @@ export const ExampleContent = (props: {
   }, [example?.audioUrl]);
 
   useEffect(() => {
-    if (!audio) return;
-    if (audio.recordingsCount > 0) return;
-
     addDblistener(onAudioUpdate);
 
     return () => {

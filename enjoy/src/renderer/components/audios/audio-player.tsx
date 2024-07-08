@@ -32,7 +32,6 @@ export const AudioPlayer = (props: {
   };
 
   useEffect(() => {
-    if (!audio) return;
     setMedia(audio);
   }, [audio]);
 

@@ -1,7 +1,5 @@
 import { toast, Button } from "@renderer/components/ui";
-import {
-  AppSettingsProviderContext,
-} from "@renderer/context";
+import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -21,10 +19,12 @@ export const ChapterContent = (props: {
   const [audios, setAudios] = useState<AudioType[]>([]);
 
   useEffect(() => {
+    if (audios.length === 0) return;
     if (!chapter?.examples) return;
 
     const finished = audios.filter((a) => a.recordingsCount > 0);
     if (finished.length === 0) return;
+    if (chapter.examples.length === 0) return;
 
     if (finished.length >= chapter.examples.length) {
       webApi
@@ -35,6 +35,10 @@ export const ChapterContent = (props: {
         });
     }
   }, [audios]);
+
+  useEffect(() => {
+    setAudios([]);
+  }, [chapter]);
 
   if (!chapter) return null;
 
@@ -90,15 +94,17 @@ export const ChapterContent = (props: {
               onShadowing={onShadowing}
               course={chapter.course}
               onAudio={(audio) => {
-                if (!audio) return;
-                const index = audios.findIndex((a) => a.id === audio.id);
-                if (index >= 0) {
-                  audios[index] = audio;
-                } else {
-                  audios.push(audio);
-                }
+                setAudios((audios) => {
+                  if (!audio) return [];
 
-                setAudios([...audios]);
+                  const index = audios.findIndex((a) => a.id === audio.id);
+                  if (index >= 0) {
+                    audios[index] = audio;
+                  } else {
+                    audios.push(audio);
+                  }
+                  return [...audios];
+                });
               }}
             />
           ))}

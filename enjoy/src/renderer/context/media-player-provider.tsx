@@ -520,6 +520,7 @@ export const MediaPlayerProvider = ({
    */
   useEffect(() => {
     if (!activeRegion) return;
+    if (!wavesurfer) return;
 
     renderPitchContour(activeRegion);
   }, [wavesurfer, activeRegion]);
