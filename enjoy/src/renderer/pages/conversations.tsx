@@ -46,7 +46,7 @@ export default () => {
     ttsPreset: {
       key: "tts",
       name: "TTS",
-      engine: currentEngine.name,
+      engine: currentEngine?.name,
       configuration: {
         type: "tts",
         tts: {
