@@ -129,7 +129,7 @@ const comments = computed(() => {
 
     return {
       ...item,
-      name: info.mixinId,
+      name: info.name,
       avatar: info.avatar_url,
       hint: `连续打卡 ${Number(info.recordings_count).toLocaleString()} 天`,
     };

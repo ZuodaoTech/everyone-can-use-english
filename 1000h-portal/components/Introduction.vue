@@ -21,6 +21,7 @@
           :key="index"
           class="card"
           :style="{ backgroundImage: `url(${card.bg})` }"
+          @click="handleClick"
         >
           <div class="lable" :style="{ color: card.colors[0] }">
             {{ card.label }}
@@ -78,6 +79,10 @@ const cards = ref([
     colors: ["#70584A", "#A4978D"],
   },
 ]);
+
+function handleClick() {
+  window.location.href = "https://1000h.org/intro.html";
+}
 </script>
 
 <style lang="scss" scoped>
