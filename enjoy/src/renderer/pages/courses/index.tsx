@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { Button, toast } from "@renderer/components/ui";
-import { ChevronLeftIcon, GraduationCapIcon } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { ChevronLeftIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
+import { CourseCard } from "@renderer/components";
 
 export default () => {
   const navigate = useNavigate();
@@ -59,33 +60,8 @@ const CoursesList = () => {
   return (
     <div className="grid gap-4 grid-cols-5">
       {courses.map((course) => (
-        <CourseItem key={course.id} course={course} />
+        <CourseCard key={course.id} course={course} />
       ))}
-    </div>
-  );
-};
-
-const CourseItem = (props: { course: CourseType }) => {
-  const { course } = props;
-
-  return (
-    <div>
-      <Link to={`/courses/${course.id}`}>
-        <div className="aspect-square rounded-lg border overflow-hidden flex relative">
-          {course.coverUrl ? (
-            <img
-              src={course.coverUrl}
-              crossOrigin="anonymous"
-              className="hover:scale-105 object-cover w-full h-full"
-            />
-          ) : (
-            <GraduationCapIcon className="hover:scale-105 object-cover w-1/2 h-1/2 m-auto" />
-          )}
-        </div>
-      </Link>
-      <div className="text-sm font-semibold mt-2 max-w-full line-clamp-2 h-10">
-        {course.title}
-      </div>
     </div>
   );
 };

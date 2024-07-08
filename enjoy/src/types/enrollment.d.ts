@@ -5,6 +5,7 @@ type EnrollmentType = {
   progress: number;
   currentChapterId?: string;
   currentChapterSequence?: number;
+  course?: CourseType;
   createdAt: string;
   updatedAt: string;
 };

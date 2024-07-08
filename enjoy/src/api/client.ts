@@ -515,6 +515,14 @@ export class Client {
     return this.api.post(`/api/courses/${courseId}/chapters/${id}/finish`);
   }
 
+  enrollments(params?: { page?: number; items?: number }): Promise<
+    {
+      enrollments: EnrollmentType[];
+    } & PagyResponseType
+  > {
+    return this.api.get("/api/enrollments", { params: decamelizeKeys(params) });
+  }
+
   updateEnrollment(
     id: string,
     params: {
