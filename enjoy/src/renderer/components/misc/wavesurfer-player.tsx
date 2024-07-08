@@ -74,7 +74,7 @@ export const WavesurferPlayer = (props: {
 
   useEffect(() => {
     if (!entry?.isIntersecting) return;
-    if (wavesurfer?.options?.src === src) return;
+    if (wavesurfer?.options?.url === src) return;
 
     initialize();
   }, [src, entry, containerRef]);
