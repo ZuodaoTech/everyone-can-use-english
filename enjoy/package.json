@@ -52,7 +52,7 @@
     "@types/intl-tel-input": "^18.1.4",
     "@types/lodash": "^4.17.6",
     "@types/mark.js": "^8.11.12",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.10",
     "@types/rails__actioncable": "^6.1.11",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
