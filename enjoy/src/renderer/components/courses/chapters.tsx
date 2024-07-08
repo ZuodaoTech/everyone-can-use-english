@@ -6,11 +6,11 @@ import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@renderer/components/ui";
 
+const ITEMS_PER_PAGE = 30;
 export const Chapters = (props: { course: CourseType }) => {
   const { course } = props;
   const { webApi } = useContext(AppSettingsProviderContext);
@@ -24,12 +24,14 @@ export const Chapters = (props: { course: CourseType }) => {
 
     let { page } = params || {};
     if (!page && course.enrollment?.currentChapterSequence) {
-      page = Math.ceil(course.enrollment.currentChapterSequence / 20);
+      page = Math.ceil(
+        course.enrollment.currentChapterSequence / ITEMS_PER_PAGE
+      );
     }
     page = page || currentPage;
 
     webApi
-      .courseChapters(course.id, { page, items: 30 })
+      .courseChapters(course.id, { page, items: ITEMS_PER_PAGE })
       .then(({ chapters, page, next, last }) => {
         setCurrentPage(page);
         setLastPage(last);

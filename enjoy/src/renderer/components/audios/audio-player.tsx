@@ -38,7 +38,11 @@ export const AudioPlayer = (props: {
 
   useEffect(() => {
     if (!media) return;
+
     updateCurrentSegmentIndex();
+    return () => {
+      setCurrentSegmentIndex(0);
+    };
   }, [media]);
 
   if (!audio) return null;

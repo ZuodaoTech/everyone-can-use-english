@@ -14,7 +14,7 @@ export const useVideo = (options: { id?: string; md5?: string }) => {
   const [video, setVideo] = useState<VideoType>(null);
   const throttledVideo = useThrottle(video, 500);
 
-  const onAudioUpdate = (event: CustomEvent) => {
+  const onVideoUpdate = (event: CustomEvent) => {
     const { model, action, record } = event.detail || {};
     if (model !== "Video") return;
     if (id && record.id !== id) return;
@@ -25,7 +25,9 @@ export const useVideo = (options: { id?: string; md5?: string }) => {
   };
 
   useEffect(() => {
-    const where = id ? { id } : { md5 };
+    const where = id ? { id } : md5 ? { md5 } : null;
+    if (!where) return;
+
     EnjoyApp.videos.findOne(where).then((video) => {
       if (video) {
         setVideo(video);
@@ -34,9 +36,9 @@ export const useVideo = (options: { id?: string; md5?: string }) => {
       }
     });
 
-    addDblistener(onAudioUpdate);
+    addDblistener(onVideoUpdate);
     return () => {
-      removeDbListener(onAudioUpdate);
+      removeDbListener(onVideoUpdate);
     };
   }, [id, md5]);
 

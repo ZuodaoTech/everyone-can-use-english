@@ -38,6 +38,10 @@ export const VideoPlayer = (props: {
   useEffect(() => {
     if (!media) return;
     updateCurrentSegmentIndex();
+
+    return () => {
+      setCurrentSegmentIndex(0);
+    };
   }, [media]);
 
   if (!video) return null;
