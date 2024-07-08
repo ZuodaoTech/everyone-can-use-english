@@ -73,6 +73,7 @@ export const MediaTranscriptionGenerateButton = (props: {
                 toast.error(e.message);
               });
           }}
+          originalText=""
           transcribing={transcribing}
           transcribingProgress={transcribingProgress}
           transcribingOutput={transcribingOutput}
