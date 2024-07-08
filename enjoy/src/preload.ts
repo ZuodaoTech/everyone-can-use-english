@@ -2,8 +2,6 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 import { version } from "../package.json";
-import { callback } from "chart.js/dist/helpers/helpers.core";
-import { remove } from "lodash";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
@@ -37,7 +35,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     createIssue: (title: string, body: string) => {
       return ipcRenderer.invoke("app-create-issue", title, body);
     },
-    onCmdOutput: (callback: (event: IpcRendererEvent, data: string) => void) => {
+    onCmdOutput: (
+      callback: (event: IpcRendererEvent, data: string) => void
+    ) => {
       ipcRenderer.on("app-on-cmd-output", callback);
     },
     removeCmdOutputListeners: () => {

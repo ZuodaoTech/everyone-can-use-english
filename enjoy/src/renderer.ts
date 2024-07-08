@@ -28,12 +28,6 @@
 
 import "./index.css";
 import "./renderer/index";
-import * as Sentry from "@sentry/electron/renderer";
-import { SENTRY_DSN } from "@/constants";
-
-Sentry.init({
-  dsn: SENTRY_DSN,
-});
 
 declare global {
   interface Window {
