@@ -134,36 +134,58 @@ const ChapterContent = (props: {
   if (!chapter) return null;
 
   return (
-    <div className="select-text prose dark:prose-invert prose-em:font-bold prose-em:text-red-700 mx-auto">
-      <h2>{chapter?.title}</h2>
-      <MarkdownWrapper>{chapter?.content}</MarkdownWrapper>
-      {translation && (
-        <details>
-          <summary>{t("translation")}</summary>
-          <MarkdownWrapper>{translation.content}</MarkdownWrapper>
-        </details>
-      )}
+    <div className="">
+      <div className="flex items-center justify-end space-x-4 mb-4">
+        {chapter.sequence > 1 && (
+          <Link
+            to={`/courses/${chapter.course.id}/chapters/${
+              chapter.sequence - 1
+            }`}
+          >
+            <button className="btn">{t("prevousChapter")}</button>
+          </Link>
+        )}
+        {chapter.course.chaptersCount > chapter.sequence + 1 && (
+          <Link
+            to={`/courses/${chapter.course.id}/chapters/${
+              chapter.sequence + 1
+            }`}
+          >
+            <button className="btn">{t("nextChapter")}</button>
+          </Link>
+        )}
+      </div>
+      <div className="select-text prose dark:prose-invert prose-em:font-bold prose-em:text-red-700 mx-auto">
+        <h2>{chapter?.title}</h2>
+        <MarkdownWrapper>{chapter?.content}</MarkdownWrapper>
+        {translation && (
+          <details>
+            <summary>{t("translation")}</summary>
+            <MarkdownWrapper>{translation.content}</MarkdownWrapper>
+          </details>
+        )}
 
-      {chapter.examples.length > 0 && <h3>{t("examples")}</h3>}
-      <div className="grid gap-4">
-        {chapter.examples.map((example, index) => (
-          <ExampleContent
-            key={index}
-            example={example}
-            onShadowing={onShadowing}
-            course={chapter.course}
-            onAudio={(audio) => {
-              const index = audios.findIndex((a) => a.id === audio.id);
-              if (index >= 0) {
-                audios[index] = audio;
-              } else {
-                audios.push(audio);
-              }
+        {chapter.examples.length > 0 && <h3>{t("examples")}</h3>}
+        <div className="grid gap-4">
+          {chapter.examples.map((example, index) => (
+            <ExampleContent
+              key={index}
+              example={example}
+              onShadowing={onShadowing}
+              course={chapter.course}
+              onAudio={(audio) => {
+                const index = audios.findIndex((a) => a.id === audio.id);
+                if (index >= 0) {
+                  audios[index] = audio;
+                } else {
+                  audios.push(audio);
+                }
 
-              setAudios([...audios]);
-            }}
-          />
-        ))}
+                setAudios([...audios]);
+              }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
