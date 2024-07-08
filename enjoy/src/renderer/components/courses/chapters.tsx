@@ -29,7 +29,7 @@ export const Chapters = (props: { course: CourseType }) => {
     page = page || currentPage;
 
     webApi
-      .courseChapters(course.id, { page })
+      .courseChapters(course.id, { page, items: 30 })
       .then(({ chapters, page, next, last }) => {
         setCurrentPage(page);
         setLastPage(last);
@@ -50,7 +50,11 @@ export const Chapters = (props: { course: CourseType }) => {
     <div className="">
       <div className="grid gap-4 grid-cols-5 mb-4">
         {chapters.map((chapter) => (
-          <ChapterCard key={chapter.id} chapter={chapter} />
+          <ChapterCard
+            key={chapter.id}
+            chapter={chapter}
+            active={course.enrollment?.currentChapterId === chapter.id}
+          />
         ))}
       </div>
 

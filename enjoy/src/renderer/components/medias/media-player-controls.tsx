@@ -328,6 +328,10 @@ export const MediaPlayerControls = () => {
     if (!wavesurfer) return;
 
     const segment = transcription.result.timeline[currentSegmentIndex];
+    if (!segment) {
+      setCurrentSegmentIndex(0);
+      return;
+    }
     wavesurfer.seekTo(
       Math.floor((segment.startTime / wavesurfer.getDuration()) * 1e8) / 1e8
     );
