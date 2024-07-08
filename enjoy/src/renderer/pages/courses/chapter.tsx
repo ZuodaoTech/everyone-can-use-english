@@ -98,7 +98,7 @@ export default () => {
               </SheetClose>
             </SheetHeader>
 
-            {Boolean(shadowing) && <AudioPlayer id={shadowing.id} />}
+            <AudioPlayer id={shadowing?.id} />
           </SheetContent>
         </Sheet>
       </div>
