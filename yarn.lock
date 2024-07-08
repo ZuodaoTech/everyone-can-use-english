@@ -3190,6 +3190,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/core@npm:^1.6.0":
+  version: 1.6.4
+  resolution: "@floating-ui/core@npm:1.6.4"
+  dependencies:
+    "@floating-ui/utils": "npm:^0.2.4"
+  checksum: 10c0/545684b6f76cda7579b6049bafb9903542d3f9c177300192fe83db19d99b1df285bc33aba3b8ec2978d021151c4168356876e8181002dd2ff4fb93d9e4b7bf71
+  languageName: node
+  linkType: hard
+
 "@floating-ui/dom@npm:^1.0.0, @floating-ui/dom@npm:^1.6.1":
   version: 1.6.5
   resolution: "@floating-ui/dom@npm:1.6.5"
@@ -3197,6 +3206,16 @@ __metadata:
     "@floating-ui/core": "npm:^1.0.0"
     "@floating-ui/utils": "npm:^0.2.0"
   checksum: 10c0/ebdc14806f786e60df8e7cc2c30bf9cd4d75fe734f06d755588bbdef2f60d0a0f21dffb14abdc58dea96e5577e2e366feca6d66ba962018efd1bc91a3ece4526
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:^1.4.4":
+  version: 1.6.7
+  resolution: "@floating-ui/dom@npm:1.6.7"
+  dependencies:
+    "@floating-ui/core": "npm:^1.6.0"
+    "@floating-ui/utils": "npm:^0.2.4"
+  checksum: 10c0/5255f522534e0022b554c366b969fa26951677a1cf39ddd58614071a909a340c5e1ffe645501037b221808f01bfac4e7edba14728978ee7e2438e8432c1a163f
   languageName: node
   linkType: hard
 
@@ -3225,6 +3244,13 @@ __metadata:
   version: 0.2.2
   resolution: "@floating-ui/utils@npm:0.2.2"
   checksum: 10c0/b2becdcafdf395af1641348da0031ff1eaad2bc60c22e14bd3abad4acfe2c8401e03097173d89a2f646a99b75819a78ef21ebb2572cab0042a56dd654b0065cd
+  languageName: node
+  linkType: hard
+
+"@floating-ui/utils@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "@floating-ui/utils@npm:0.2.4"
+  checksum: 10c0/154924b01157cb45cf305f4835d7f603e931dda8b00bbe52666729bccc5e7b99630e8b951333725e526d4e53d9b342976434ad5750b8b1da58728e3698bdcc2b
   languageName: node
   linkType: hard
 
@@ -10044,15 +10070,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vidstack/react@npm:^1.11.24":
-  version: 1.11.24
-  resolution: "@vidstack/react@npm:1.11.24"
+"@vidstack/react@npm:^1.11.25":
+  version: 1.11.25
+  resolution: "@vidstack/react@npm:1.11.25"
   dependencies:
+    "@floating-ui/dom": "npm:^1.4.4"
     media-captions: "npm:^1.0.1"
   peerDependencies:
     "@types/react": ^18.0.0
     react: ^18.0.0
-  checksum: 10c0/4ece943e77655db1e42a3ad8c61ff88a0ac74bebc96fb3ac89d772bf7ce955b46a2e550868f356b58e272c9a28630bfc25c6e37d4f7c15272071feb01bcf646d
+  checksum: 10c0/f4af92a1212245fa566cbc339fc94afbdb06067072c8701c7ee0d1e4e72323d31148b9d9b0abd680cfeabec3daeb4506ed7dca565f7be0144f40f6e15b8a01e7
   languageName: node
   linkType: hard
 
@@ -14400,7 +14427,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.15.0"
     "@typescript-eslint/parser": "npm:^7.15.0"
     "@uidotdev/usehooks": "npm:^2.4.1"
-    "@vidstack/react": "npm:^1.11.24"
+    "@vidstack/react": "npm:^1.11.25"
     "@vitejs/plugin-react": "npm:^4.3.1"
     ahoy.js: "npm:^0.4.4"
     autoprefixer: "npm:^10.4.19"
