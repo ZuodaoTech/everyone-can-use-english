@@ -21,4 +21,5 @@ type ChapterType = {
       content: string;
     }[];
   }[];
+  enrollment?: EnrollmentType;
 };

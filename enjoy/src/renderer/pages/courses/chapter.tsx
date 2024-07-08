@@ -42,6 +42,13 @@ export default () => {
     fetchChapter(id, sequence);
   }, [id, sequence]);
 
+  useEffect(() => {
+    if (!chapter) return;
+    webApi.updateEnrollment(chapter.enrollment.id, {
+      currentChapterId: chapter.id,
+    });
+  }, [chapter]);
+
   return (
     <MediaPlayerProvider>
       <div className="flex flex-col h-screen px-4 xl:px-6 py-6">

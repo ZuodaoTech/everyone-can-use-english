@@ -635,5 +635,7 @@
   "moreOptions": "More options",
   "lessOptions": "Less options",
   "previousChapter": "Previous",
-  "nextChapter": "Next"
+  "nextChapter": "Next",
+  "continueLearning": "Continue learning",
+  "enrollNow": "Enroll now"
 }

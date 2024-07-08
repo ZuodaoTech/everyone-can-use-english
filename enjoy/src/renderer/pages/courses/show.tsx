@@ -86,14 +86,14 @@ const CourseDetail = (props: { course: CourseType; onUpdate: () => void }) => {
     <div className="flex items-center justify-between mb-4 gap-4">
       <div className="h-48 aspect-square bg-black/10 rounded">
         <img
-          src={course?.coverUrl}
-          alt={course?.title}
+          src={course.coverUrl}
+          alt={course.title}
           className="object-cover w-full h-full rounded-lg"
         />
       </div>
       <div className="flex-1 min-h-48">
-        <div className="text-2xl font-bold mb-4">{course?.title}</div>
-        <div className="mb-4">{course?.description}</div>
+        <div className="text-2xl font-bold mb-4">{course.title}</div>
+        <div className="mb-4">{course.description}</div>
         {course.enrolled ? (
           <>
             <div className="flex items-center space-x-2 mb-4">
@@ -101,7 +101,13 @@ const CourseDetail = (props: { course: CourseType; onUpdate: () => void }) => {
               <Progress value={course.enrollment.progress * 100} />
             </div>
             <div>
-              <Button onClick={handleEnroll}>{t("continueLearning")}</Button>
+              <Link
+                to={`/courses/${course.id}/chapters/${
+                  course.enrollment.currentChapterSequence || 1
+                }`}
+              >
+                <Button onClick={handleEnroll}>{t("continueLearning")}</Button>
+              </Link>
             </div>
           </>
         ) : (

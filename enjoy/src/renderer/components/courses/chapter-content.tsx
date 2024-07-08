@@ -19,6 +19,7 @@ export const ChapterContent = (props: {
   const [audios, setAudios] = useState<AudioType[]>([]);
 
   useEffect(() => {
+    if (chapter?.finished) return;
     if (audios.length === 0) return;
     if (!chapter?.examples) return;
 
