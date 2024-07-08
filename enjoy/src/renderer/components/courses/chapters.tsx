@@ -9,6 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@renderer/components/ui";
+import { t } from "i18next";
 
 const ITEMS_PER_PAGE = 30;
 export const Chapters = (props: { course: CourseType }) => {
@@ -46,7 +47,8 @@ export const Chapters = (props: { course: CourseType }) => {
   }, [course]);
 
   if (!course) return null;
-  if (!chapters) return null;
+  if (!chapters || chapters.length === 0)
+    return <div className="flex justify-center p-4">{t("noData")}</div>;
 
   return (
     <div className="">
