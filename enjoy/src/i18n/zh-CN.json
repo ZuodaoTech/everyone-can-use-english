@@ -633,5 +633,7 @@
   "noData": "没有数据",
   "selectedFiles": "已选中文件",
   "moreOptions": "更多选项",
-  "lessOptions": "更少选项"
+  "lessOptions": "更少选项",
+  "previousChapter": "上一章",
+  "nextChapter": "下一章"
 }

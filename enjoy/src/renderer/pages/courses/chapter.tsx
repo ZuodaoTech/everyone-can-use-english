@@ -142,7 +142,7 @@ const ChapterContent = (props: {
               chapter.sequence - 1
             }`}
           >
-            <button className="btn">{t("prevousChapter")}</button>
+            <button className="btn">{t("previousChapter")}</button>
           </Link>
         )}
         {chapter.course.chaptersCount > chapter.sequence + 1 && (
@@ -174,6 +174,7 @@ const ChapterContent = (props: {
               onShadowing={onShadowing}
               course={chapter.course}
               onAudio={(audio) => {
+                if (!audio) return;
                 const index = audios.findIndex((a) => a.id === audio.id);
                 if (index >= 0) {
                   audios[index] = audio;
@@ -213,8 +214,6 @@ const ExampleContent = (props: {
         source: example.audioUrl,
       })
       .then((audio) => {
-        if (!audio) return;
-
         setAudio(audio);
         onAudio?.(audio);
       });

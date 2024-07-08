@@ -633,5 +633,7 @@
   "noData": "No data",
   "selectedFiles": "Selected files",
   "moreOptions": "More options",
-  "lessOptions": "Less options"
+  "lessOptions": "Less options",
+  "previousChapter": "Previous",
+  "nextChapter": "Next"
 }
