@@ -165,7 +165,7 @@
     "react-router-dom": "^6.24.0",
     "react-tooltip": "^5.27.0",
     "reflect-metadata": "^0.2.2",
-    "rimraf": "^5.0.7",
+    "rimraf": "^5.0.8",
     "sequelize": "^6.37.3",
     "sequelize-typescript": "^2.1.6",
     "sonner": "^1.5.0",
