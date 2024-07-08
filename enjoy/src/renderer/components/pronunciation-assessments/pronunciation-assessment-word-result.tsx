@@ -81,7 +81,7 @@ export const PronunciationAssessmentWordResult = (props: {
               {result.phonemes.map((phoneme, index) => (
                 <span
                   key={index}
-                  className={`italic ${scoreColor(
+                  className={`italic font-code ${scoreColor(
                     phoneme.pronunciationAssessment.accuracyScore
                   )}`}
                 >
