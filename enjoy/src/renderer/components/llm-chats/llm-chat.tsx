@@ -1,16 +1,11 @@
 import { AppSettingsProviderContext } from "@renderer/context";
-import { useContext, useEffect, useRef, useState } from "react";
-import {
-  Button,
-  Input,
-  ScrollArea,
-  Textarea,
-  toast,
-} from "@renderer/components/ui";
+import { useContext, useEffect, useReducer, useRef, useState } from "react";
+import { Button, ScrollArea, Textarea, toast } from "@renderer/components/ui";
 import { LlmMessage, LoaderSpin } from "@renderer/components";
 import { t } from "i18next";
 import { SendIcon } from "lucide-react";
 import autosize from "autosize";
+import { llmMessagesReducer } from "@renderer/reducers";
 
 export const LlmChat = (props: {
   id?: string;
@@ -25,10 +20,25 @@ export const LlmChat = (props: {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [query, setQuery] = useState("");
 
+  const [llmMessages, dispatchLlmMessages] = useReducer(llmMessagesReducer, []);
+
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    if (!llmChat) return;
+    if (!query) return;
+    if (submitting) return;
+
+    setSubmitting(true);
+    webApi
+      .createLlmMessage(llmChat.id, { query })
+      .then((message) => {
+        dispatchLlmMessages({ type: "create", record: message });
+        setQuery("");
+      })
+      .finally(() => setSubmitting(false));
+  };
 
   const resizeTextarea = () => {
     if (!inputRef?.current) return;
@@ -88,6 +98,10 @@ export const LlmChat = (props: {
   }, [id, inputRef.current]);
 
   useEffect(() => {
+    resizeTextarea();
+  }, [query]);
+
+  useEffect(() => {
     findOrCreateChat();
   }, [id, agentType, agentId]);
 
@@ -107,6 +121,9 @@ export const LlmChat = (props: {
           chat: llmChat,
         }}
       />
+      {llmMessages.map((message) => (
+        <LlmMessage key={message.id} llmMessage={message} />
+      ))}
       <div className="bg-muted px-4 absolute w-full bottom-4 left-0 z-50">
         <div className="focus-within:bg-background pr-4 py-2 flex items-end space-x-4 rounded-lg shadow-lg border scrollbar">
           <Textarea

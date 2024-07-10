@@ -4,4 +4,6 @@ type LlmMessageType = {
   response?: string;
   agent: LLmAgentType;
   chat: LLmChatType;
+  createdAt?: string;
+  updatedAt?: string;
 }

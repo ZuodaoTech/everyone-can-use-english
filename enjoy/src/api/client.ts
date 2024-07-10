@@ -550,7 +550,7 @@ export class Client {
       agentId?: string;
       agentType?: string;
     }
-  ): Promise<LLmChatType> {
+  ): Promise<LlmMessageType> {
     return this.api.post(
       `/api/chats/${chatId}/messages`,
       decamelizeKeys(params)
