@@ -10,7 +10,7 @@ import {
   Separator,
   toast,
 } from "@renderer/components/ui";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
@@ -18,7 +18,6 @@ import { LoaderIcon } from "lucide-react";
 import { Chapters } from "@renderer/components";
 
 export default () => {
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { webApi } = useContext(AppSettingsProviderContext);
   const [course, setCourse] = useState<CourseType | null>(null);
