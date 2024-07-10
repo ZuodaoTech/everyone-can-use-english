@@ -17,6 +17,7 @@ import {
   CopyIcon,
   DownloadIcon,
   ForwardIcon,
+  LanguagesIcon,
   LoaderIcon,
   MicIcon,
   SpeechIcon,
@@ -27,6 +28,7 @@ import {
   AppSettingsProviderContext,
   CourseProviderContext,
 } from "@renderer/context";
+import { md5 } from "js-md5";
 
 export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
   const { llmMessage } = props;
@@ -142,6 +144,32 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
       });
   };
 
+  const [translation, setTranslation] = useState<string>();
+  const [translating, setTranslating] = useState<boolean>(false);
+  const { translate } = useAiCommand();
+
+  const handleTranslate = async () => {
+    if (translating) return;
+    if (!llmMessage.response) return;
+
+    const cacheKey = `translate-${md5(llmMessage.response)}`;
+    try {
+      const cached = await EnjoyApp.cacheObjects.get(cacheKey);
+
+      if (cached && !translation) {
+        setTranslation(cached);
+      } else {
+        setTranslating(true);
+        const result = await translate(llmMessage.response, cacheKey);
+        setTranslation(result);
+        setTranslating(false);
+      }
+    } catch (err) {
+      toast.error(err.message);
+      setTranslating(false);
+    }
+  };
+
   useEffect(() => {
     findSpeech();
   }, []);
@@ -184,18 +212,37 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
               {llmMessage.agent.name}
             </div>
           </div>
-          <div className="flex flex-col gap-2 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm max-w-full">
+          <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm max-w-full">
             <MarkdownWrapper className="select-text prose dark:prose-invert">
               {llmMessage.response}
             </MarkdownWrapper>
+            {translation && (
+              <MarkdownWrapper className="select-text prose dark:prose-invert">
+                {translation}
+              </MarkdownWrapper>
+            )}
             {Boolean(speech) && <SpeechPlayer speech={speech} />}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-4">
+              {translating ? (
+                <LoaderIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("creatingSpeech")}
+                  className="w-4 h-4 animate-spin"
+                />
+              ) : (
+                <LanguagesIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("translation")}
+                  className="w-4 h-4 cursor-pointer"
+                  onClick={handleTranslate}
+                />
+              )}
               {!speech &&
                 (speeching ? (
                   <LoaderIcon
                     data-tooltip-id="global-tooltip"
                     data-tooltip-content={t("creatingSpeech")}
-                    className="w-3 h-3 animate-spin"
+                    className="w-4 h-4 animate-spin"
                   />
                 ) : (
                   <SpeechIcon
@@ -203,16 +250,16 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
                     data-tooltip-content={t("textToSpeech")}
                     data-testid="message-create-speech"
                     onClick={createSpeech}
-                    className="w-3 h-3 cursor-pointer"
+                    className="w-4 h-4 cursor-pointer"
                   />
                 ))}
               {copied ? (
-                <CheckIcon className="w-3 h-3 text-green-500" />
+                <CheckIcon className="w-4 h-4 text-green-500" />
               ) : (
                 <CopyIcon
                   data-tooltip-id="global-tooltip"
                   data-tooltip-content={t("copyText")}
-                  className="w-3 h-3 cursor-pointer"
+                  className="w-4 h-4 cursor-pointer"
                   onClick={() => {
                     copyToClipboard(llmMessage.response);
                     setCopied(true);
@@ -229,7 +276,7 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
                   <ForwardIcon
                     data-tooltip-id="global-tooltip"
                     data-tooltip-content={t("forward")}
-                    className="w-3 h-3 cursor-pointer"
+                    className="w-4 h-4 cursor-pointer"
                   />
                 }
               />
@@ -238,7 +285,7 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
                   <LoaderIcon
                     data-tooltip-id="global-tooltip"
                     data-tooltip-content={t("addingResource")}
-                    className="w-3 h-3 animate-spin"
+                    className="w-4 h-4 animate-spin"
                   />
                 ) : (
                   <MicIcon
@@ -246,7 +293,7 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
                     data-tooltip-content={t("shadowingExercise")}
                     data-testid="message-start-shadow"
                     onClick={startShadow}
-                    className="w-3 h-3 cursor-pointer"
+                    className="w-4 h-4 cursor-pointer"
                   />
                 ))}
               {Boolean(speech) && (
@@ -255,7 +302,7 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
                   data-tooltip-content={t("download")}
                   data-testid="llm-message-download-speech"
                   onClick={handleDownload}
-                  className="w-3 h-3 cursor-pointer"
+                  className="w-4 h-4 cursor-pointer"
                 />
               )}
             </div>
