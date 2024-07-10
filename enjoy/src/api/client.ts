@@ -531,4 +531,41 @@ export class Client {
   ): Promise<EnrollmentType> {
     return this.api.put(`/api/enrollments/${id}`, decamelizeKeys(params));
   }
+
+  createLlmChat(params: {
+    agentId: string;
+    agentType: string;
+  }): Promise<LLmChatType> {
+    return this.api.post("/api/chats", decamelizeKeys(params));
+  }
+
+  createLlmMessage(
+    chatId: string,
+    params: {
+      query: string;
+      agentId?: string;
+      agentType?: string;
+    }
+  ): Promise<LLmChatType> {
+    return this.api.post(
+      `/api/chats/${chatId}/messages`,
+      decamelizeKeys(params)
+    );
+  }
+
+  llmMessages(
+    chatId: string,
+    params: {
+      page?: number;
+      items?: number;
+    }
+  ): Promise<
+    {
+      messages: LlmMessageType[];
+    } & PagyResponseType
+  > {
+    return this.api.get(`/api/chats/${chatId}/messages`, {
+      params: decamelizeKeys(params),
+    });
+  }
 }
