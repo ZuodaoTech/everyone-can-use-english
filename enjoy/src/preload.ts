@@ -399,6 +399,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   speeches: {
+    findOne: (where: any) => {
+      return ipcRenderer.invoke("speeches-find-one", where);
+    },
     create: (
       params: {
         sourceId: string;

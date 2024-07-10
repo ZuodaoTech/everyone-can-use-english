@@ -227,6 +227,7 @@ type EnjoyAppType = {
     createSpeech: (id: string, configuration?: any) => Promise<SpeechType>;
   };
   speeches: {
+    findOne: (where: any) => Promise<SpeechType>;
     create: (
       params: {
         sourceId: string;
