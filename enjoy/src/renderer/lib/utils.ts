@@ -44,7 +44,7 @@ export function bytesToSize(bytes: number) {
   return Math.round(bytes / Math.pow(1024, i)) + " " + sizes[i];
 }
 
-export function formatDateTime(date: Date) {
+export function formatDateTime(date: Date | string) {
   dayjs.locale(i18next.resolvedLanguage?.toLowerCase() || "en");
   const now = dayjs();
   const then = dayjs(date);
