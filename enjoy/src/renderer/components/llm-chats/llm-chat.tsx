@@ -37,6 +37,9 @@ export const LlmChat = (props: {
         dispatchLlmMessages({ type: "create", record: message });
         setQuery("");
       })
+      .catch((err) => {
+        toast.error(err.message);
+      })
       .finally(() => setSubmitting(false));
   };
 
