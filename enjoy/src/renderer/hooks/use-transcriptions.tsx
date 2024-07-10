@@ -73,70 +73,74 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
       isolate = false,
     } = params || {};
     setService(service);
-
-    if (originalText === undefined) {
-      if (transcription?.targetId === media.id) {
-        originalText = transcription.result?.originalText;
-      } else {
-        const r = await findOrCreateTranscription();
-        if (r) {
-          originalText = r.result?.originalText;
-        }
-      }
-    }
-
     setTranscribing(true);
     setTranscribingProgress(0);
-    const { engine, model, alignmentResult, tokenId } = await transcribe(
-      media.src,
-      {
-        targetId: media.id,
-        targetType: media.mediaType,
-        originalText,
+
+    try {
+      if (originalText === undefined) {
+        if (transcription?.targetId === media.id) {
+          originalText = transcription.result?.originalText;
+        } else {
+          const r = await findOrCreateTranscription();
+          if (r) {
+            originalText = r.result?.originalText;
+          }
+        }
+      }
+      const { engine, model, alignmentResult, tokenId } = await transcribe(
+        media.src,
+        {
+          targetId: media.id,
+          targetType: media.mediaType,
+          originalText,
+          language,
+          service,
+          isolate,
+        }
+      );
+
+      let timeline: TimelineEntry[] = [];
+      alignmentResult.timeline.forEach((t) => {
+        if (t.type === "sentence") {
+          timeline.push(t);
+        } else {
+          t.timeline.forEach((st) => {
+            timeline.push(st);
+          });
+        }
+      });
+
+      timeline = preProcessTranscription(timeline);
+      if (media.language !== language) {
+        if (media.mediaType === "Video") {
+          await EnjoyApp.videos.update(media.id, {
+            language,
+          });
+        } else {
+          await EnjoyApp.audios.update(media.id, {
+            language,
+          });
+        }
+      }
+
+      await EnjoyApp.transcriptions.update(transcription.id, {
+        state: "finished",
+        result: {
+          timeline: timeline,
+          transcript: alignmentResult.transcript,
+          originalText,
+          tokenId,
+        },
+        engine,
+        model,
         language,
-        service,
-        isolate,
-      }
-    );
+      });
 
-    let timeline: TimelineEntry[] = [];
-    alignmentResult.timeline.forEach((t) => {
-      if (t.type === "sentence") {
-        timeline.push(t);
-      } else {
-        t.timeline.forEach((st) => {
-          timeline.push(st);
-        });
-      }
-    });
-
-    timeline = preProcessTranscription(timeline);
-    if (media.language !== language) {
-      if (media.mediaType === "Video") {
-        await EnjoyApp.videos.update(media.id, {
-          language,
-        });
-      } else {
-        await EnjoyApp.audios.update(media.id, {
-          language,
-        });
-      }
+      setTranscribing(false);
+    } catch (err) {
+      setTranscribing(false);
+      toast.error(err.message);
     }
-
-    await EnjoyApp.transcriptions.update(transcription.id, {
-      state: "finished",
-      result: {
-        timeline: timeline,
-        transcript: alignmentResult.transcript,
-        originalText,
-        tokenId,
-      },
-      engine,
-      model,
-      language,
-    });
-
-    setTranscribing(false);
   };
 
   const preProcessTranscription = (timeline: TimelineEntry[]) => {
