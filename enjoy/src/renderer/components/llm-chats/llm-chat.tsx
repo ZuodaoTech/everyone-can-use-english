@@ -3,7 +3,7 @@ import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import { Button, ScrollArea, Textarea, toast } from "@renderer/components/ui";
 import { LlmMessage, LoaderSpin } from "@renderer/components";
 import { t } from "i18next";
-import { SendIcon } from "lucide-react";
+import { LoaderIcon, SendIcon } from "lucide-react";
 import autosize from "autosize";
 import { llmMessagesReducer } from "@renderer/reducers";
 
@@ -80,6 +80,23 @@ export const LlmChat = (props: {
     }
   };
 
+  const fetchLlmMessages = async () => {
+    if (!llmChat) return;
+
+    setLoading(true);
+    webApi
+      .llmMessages(llmChat.id, { items: 100 })
+      .then(({ messages }) => {
+        dispatchLlmMessages({ type: "set", records: messages });
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   useEffect(() => {
     if (!inputRef.current) return;
 
@@ -108,6 +125,10 @@ export const LlmChat = (props: {
     findOrCreateChat();
   }, [id, agentType, agentId]);
 
+  useEffect(() => {
+    fetchLlmMessages();
+  }, [llmChat]);
+
   if (loading) return <LoaderSpin />;
 
   if (!llmChat)
@@ -133,8 +154,9 @@ export const LlmChat = (props: {
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            disabled={submitting}
             placeholder={t("pressEnterToSend")}
-            data-testid="conversation-page-input"
+            data-testid="llm-chat-input"
             className="text-base px-4 py-0 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none min-h-[1rem] max-h-[70vh] scrollbar-thin !overflow-x-hidden"
           />
           <div className="h-12 py-1">
@@ -148,7 +170,11 @@ export const LlmChat = (props: {
               data-tooltip-content={t("send")}
               className="h-10"
             >
-              <SendIcon className="w-5 h-5" />
+              {submitting ? (
+                <LoaderIcon className="w-5 h-5 animate-spin" />
+              ) : (
+                <SendIcon className="w-5 h-5" />
+              )}
             </Button>
           </div>
         </div>
