@@ -1,7 +1,7 @@
 type LlmMessageType = {
-  id: string;
-  query: string;
-  responst?: string;
+  id?: string;
+  query?: string;
+  response?: string;
   agent: LLmAgentType;
   chat: LLmChatType;
 }

@@ -80,10 +80,8 @@ export default () => {
               </ScrollArea>
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel>
-              <ScrollArea className="px-4 py-3">
-                <LlmChat agentType="Chapter" agentId={chapter?.id} />
-              </ScrollArea>
+            <ResizablePanel className="bg-muted">
+              <LlmChat agentType="Chapter" agentId={chapter?.id} />
             </ResizablePanel>
           </ResizablePanelGroup>
         </div>
