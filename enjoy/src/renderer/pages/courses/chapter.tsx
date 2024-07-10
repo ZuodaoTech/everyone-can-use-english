@@ -10,27 +10,17 @@ import {
   ResizablePanelGroup,
   ScrollArea,
   toast,
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetClose,
-  SheetTitle,
 } from "@renderer/components/ui";
-import {
-  AppSettingsProviderContext,
-  MediaPlayerProvider,
-} from "@renderer/context";
+import { AppSettingsProviderContext, CourseProvider } from "@renderer/context";
 import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { AudioPlayer, ChapterContent, LlmChat } from "@renderer/components";
-import { ChevronDownIcon } from "lucide-react";
+import { ChapterContent, LlmChat } from "@renderer/components";
 
 export default () => {
   const { id, sequence } = useParams<{ id: string; sequence: string }>();
   const { webApi } = useContext(AppSettingsProviderContext);
   const [chapter, setChapter] = useState<ChapterType | null>(null);
-  const [shadowing, setShadowing] = useState<AudioType>(null);
 
   const fetchChapter = async (id: string, sequence: string) => {
     webApi
@@ -51,7 +41,7 @@ export default () => {
   }, [chapter]);
 
   return (
-    <MediaPlayerProvider>
+    <CourseProvider id={id}>
       <div className="flex flex-col h-screen px-4 xl:px-6 py-6">
         <Breadcrumb className="mb-6">
           <BreadcrumbList>
@@ -74,7 +64,6 @@ export default () => {
               <ScrollArea className="px-4 py-3 h-full relative bg-muted">
                 <ChapterContent
                   chapter={chapter}
-                  onShadowing={setShadowing}
                   onUpdate={() => fetchChapter(id, sequence)}
                 />
               </ScrollArea>
@@ -85,32 +74,7 @@ export default () => {
             </ResizablePanel>
           </ResizablePanelGroup>
         </div>
-
-        <Sheet
-          modal={false}
-          open={Boolean(shadowing)}
-          onOpenChange={(value) => {
-            if (!value) setShadowing(null);
-          }}
-        >
-          <SheetContent
-            side="bottom"
-            className="h-screen p-0"
-            displayClose={false}
-            onPointerDownOutside={(event) => event.preventDefault()}
-            onInteractOutside={(event) => event.preventDefault()}
-          >
-            <SheetHeader className="flex items-center justify-center h-14">
-              <SheetTitle className="sr-only">Shadow</SheetTitle>
-              <SheetClose>
-                <ChevronDownIcon />
-              </SheetClose>
-            </SheetHeader>
-
-            <AudioPlayer id={shadowing?.id} />
-          </SheetContent>
-        </Sheet>
       </div>
-    </MediaPlayerProvider>
+    </CourseProvider>
   );
 };

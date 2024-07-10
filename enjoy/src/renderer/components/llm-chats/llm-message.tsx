@@ -15,23 +15,30 @@ import { useCopyToClipboard } from "@uidotdev/usehooks";
 import {
   CheckIcon,
   CopyIcon,
+  DownloadIcon,
   ForwardIcon,
   LoaderIcon,
+  MicIcon,
   SpeechIcon,
 } from "lucide-react";
 import { t } from "i18next";
-import { useConversation } from "@renderer/hooks";
-import { AppSettingsProviderContext } from "@/renderer/context";
+import { useAiCommand, useConversation } from "@renderer/hooks";
+import {
+  AppSettingsProviderContext,
+  CourseProviderContext,
+} from "@renderer/context";
 
 export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
   const { llmMessage } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { setShadowing } = useContext(CourseProviderContext);
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
   const [speech, setSpeech] = useState<Partial<SpeechType>>();
   const [speeching, setSpeeching] = useState<boolean>(false);
   const [resourcing, setResourcing] = useState<boolean>(false);
   const { tts } = useConversation();
+  const { summarizeTopic } = useAiCommand();
 
   const createSpeech = () => {
     if (speeching) return;
@@ -68,6 +75,67 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
       })
       .then((speech) => {
         setSpeech(speech);
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
+  const startShadow = async () => {
+    if (resourcing) return;
+
+    const audio = await EnjoyApp.audios.findOne({
+      md5: speech.md5,
+    });
+
+    if (!audio) {
+      setResourcing(true);
+      let title =
+        speech.text.length > 20
+          ? speech.text.substring(0, 17).trim() + "..."
+          : speech.text;
+
+      try {
+        title = await summarizeTopic(speech.text);
+      } catch (e) {
+        console.warn(e);
+      }
+
+      EnjoyApp.audios
+        .create(speech.filePath, {
+          name: title,
+          originalText: speech.text,
+        })
+        .then((audio) => setShadowing(audio))
+        .catch((err) => toast.error(t(err.message)))
+        .finally(() => {
+          setResourcing(false);
+        });
+    }
+
+    setShadowing(audio);
+  };
+
+  const handleDownload = async () => {
+    EnjoyApp.dialog
+      .showSaveDialog({
+        title: t("download"),
+        defaultPath: speech.filename,
+        filters: [
+          {
+            name: "Audio",
+            extensions: [speech.filename.split(".").pop()],
+          },
+        ],
+      })
+      .then((savePath) => {
+        if (!savePath) return;
+
+        toast.promise(EnjoyApp.download.start(speech.src, savePath as string), {
+          success: () => t("downloadedSuccessfully"),
+          error: t("downloadFailed"),
+          position: "bottom-right",
+        });
       })
       .catch((err) => {
         toast.error(err.message);
@@ -165,6 +233,31 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
                   />
                 }
               />
+              {Boolean(speech) &&
+                (resourcing ? (
+                  <LoaderIcon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("addingResource")}
+                    className="w-3 h-3 animate-spin"
+                  />
+                ) : (
+                  <MicIcon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("shadowingExercise")}
+                    data-testid="message-start-shadow"
+                    onClick={startShadow}
+                    className="w-3 h-3 cursor-pointer"
+                  />
+                ))}
+              {Boolean(speech) && (
+                <DownloadIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("download")}
+                  data-testid="llm-message-download-speech"
+                  onClick={handleDownload}
+                  className="w-3 h-3 cursor-pointer"
+                />
+              )}
             </div>
           </div>
           {llmMessage.createdAt && (

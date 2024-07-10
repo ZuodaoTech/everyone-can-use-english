@@ -1,6 +1,7 @@
 import { toast } from "@renderer/components/ui";
 import {
   AppSettingsProviderContext,
+  CourseProviderContext,
   DbProviderContext,
 } from "@renderer/context";
 import { t } from "i18next";
@@ -10,13 +11,13 @@ import { DownloadIcon, LoaderIcon, MicIcon } from "lucide-react";
 
 export const ExampleContent = (props: {
   example: ChapterType["examples"][0];
-  onShadowing: (audio: AudioType) => void;
   course?: CourseType;
   onAudio?: (audio: AudioType) => void;
 }) => {
   const { nativeLanguage, EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { setShadowing } = useContext(CourseProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
-  const { example, onShadowing, course, onAudio } = props;
+  const { example, course, onAudio } = props;
   const translation = example?.translations?.find(
     (t) => t.language === nativeLanguage
   );
@@ -32,10 +33,7 @@ export const ExampleContent = (props: {
     ) {
       setAudio(record);
       onAudio?.(record);
-    } else if (
-      model === "Recording" &&
-      audio?.id === record.targetId
-    ) {
+    } else if (model === "Recording" && audio?.id === record.targetId) {
       EnjoyApp.audios.findOne({ id: audio.id }).then((audio) => {
         setAudio(audio);
         onAudio?.(audio);
@@ -60,7 +58,7 @@ export const ExampleContent = (props: {
     if (resourcing) return;
 
     if (audio) {
-      onShadowing(audio);
+      setShadowing(audio);
       return;
     }
     setResourcing(true);
@@ -86,10 +84,10 @@ export const ExampleContent = (props: {
               source: example.audioUrl,
             })
             .finally(() => {
-              onShadowing(audio);
+              setShadowing(audio);
             });
         } else {
-          onShadowing(audio);
+          setShadowing(audio);
         }
       })
       .catch((err) => {

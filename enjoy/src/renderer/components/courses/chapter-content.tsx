@@ -8,11 +8,10 @@ import { CheckCircleIcon } from "lucide-react";
 
 export const ChapterContent = (props: {
   chapter: ChapterType;
-  onShadowing: (audio: AudioType) => void;
   onUpdate?: () => void;
 }) => {
   const { webApi, nativeLanguage } = useContext(AppSettingsProviderContext);
-  const { chapter, onShadowing, onUpdate } = props;
+  const { chapter, onUpdate } = props;
   const translation = chapter?.translations?.find(
     (t) => t.language === nativeLanguage
   );
@@ -92,7 +91,6 @@ export const ChapterContent = (props: {
             <ExampleContent
               key={index}
               example={example}
-              onShadowing={onShadowing}
               course={chapter.course}
               onAudio={(audio) => {
                 setAudios((audios) => {

@@ -17,6 +17,7 @@ import { AudioPlayer } from "@renderer/components";
 type CourseProviderState = {
   course?: CourseType;
   currentChapter?: ChapterType;
+  setCurrentChapter?: (chapter: ChapterType) => void;
   shadowing?: AudioType;
   setShadowing?: (audio: AudioType) => void;
 };
@@ -54,6 +55,7 @@ export const CourseProvider = ({
       value={{
         course,
         currentChapter,
+        setCurrentChapter,
         shadowing,
         setShadowing,
       }}

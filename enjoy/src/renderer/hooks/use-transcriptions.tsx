@@ -165,7 +165,6 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         } else {
           const words = sentence.text.split(" ");
 
-          console.log(sentence.timeline);
           sentence.timeline.forEach((token, j) => {
             const word = words[j]?.trim()?.toLowerCase();
 
