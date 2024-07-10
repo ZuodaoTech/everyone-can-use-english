@@ -142,6 +142,7 @@ export const useTranscribe = () => {
       apiKey: openai.key,
       baseURL: openai.baseUrl,
       dangerouslyAllowBrowser: true,
+      maxRetries: 0,
     });
 
     const res: { text: string } = (await client.audio.transcriptions.create({

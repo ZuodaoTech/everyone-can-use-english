@@ -58,12 +58,7 @@ export class Client {
           return Promise.reject(new Error(err.response.data));
         }
 
-        if (err.request) {
-          this.logger.error(err.request);
-        } else {
-          this.logger.error(err.message);
-        }
-
+        this.logger.error(err.message);
         return Promise.reject(err);
       }
     );
