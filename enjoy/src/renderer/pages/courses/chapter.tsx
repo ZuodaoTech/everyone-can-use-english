@@ -23,7 +23,7 @@ import {
 import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { AudioPlayer, ChapterContent } from "@renderer/components";
+import { AudioPlayer, ChapterContent, LlmChat } from "@renderer/components";
 import { ChevronDownIcon } from "lucide-react";
 
 export default () => {
@@ -81,7 +81,9 @@ export default () => {
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel>
-              <ScrollArea className="px-4 py-3">Conversation</ScrollArea>
+              <ScrollArea className="px-4 py-3">
+                <LlmChat agentType="Chapter" agentId={chapter?.id} />
+              </ScrollArea>
             </ResizablePanel>
           </ResizablePanelGroup>
         </div>

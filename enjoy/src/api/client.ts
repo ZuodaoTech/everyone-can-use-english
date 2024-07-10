@@ -539,6 +539,10 @@ export class Client {
     return this.api.post("/api/chats", decamelizeKeys(params));
   }
 
+  llmChat(id: string): Promise<LLmChatType> {
+    return this.api.get(`/api/chats/${id}`);
+  }
+
   createLlmMessage(
     chatId: string,
     params: {
