@@ -8,7 +8,7 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
   return (
     <>
       {llmMessage.query && (
-        <div className="mb-6">
+        <div id={`llm-message-${llmMessage.id}-query`} className="mb-6">
           <div className="flex items-center space-x-2 justify-end mb-2">
             <div className="text-sm text-muted-foreground">
               {llmMessage.user.name}
@@ -26,14 +26,14 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
             </MarkdownWrapper>
           </div>
           {llmMessage.createdAt && (
-            <div className="flex justify-end text-xs text-muted-foreground">
+            <div className="flex justify-end text-xs text-muted-foreground timestamp">
               {formatDateTime(llmMessage.createdAt)}
             </div>
           )}
         </div>
       )}
       {llmMessage.response && (
-        <div className="mb-6">
+        <div id={`llm-message-${llmMessage.id}-response`} className="mb-6">
           <div className="flex items-center space-x-2 mb-2">
             <Avatar className="w-8 h-8 bg-background avatar">
               <AvatarImage src={llmMessage.agent.avatarUrl}></AvatarImage>
@@ -49,7 +49,7 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
             </MarkdownWrapper>
           </div>
           {llmMessage.createdAt && (
-            <div className="flex justify-start text-xs text-muted-foreground">
+            <div className="flex justify-start text-xs text-muted-foreground timestamp">
               {formatDateTime(llmMessage.createdAt)}
             </div>
           )}

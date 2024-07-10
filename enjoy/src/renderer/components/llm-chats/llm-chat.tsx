@@ -24,6 +24,7 @@ export const LlmChat = (props: {
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = () => {
     if (!llmChat) return;
@@ -36,11 +37,29 @@ export const LlmChat = (props: {
       .then((message) => {
         dispatchLlmMessages({ type: "create", record: message });
         setQuery("");
+        scrollToMessage(message);
       })
       .catch((err) => {
         toast.error(err.message);
       })
       .finally(() => setSubmitting(false));
+  };
+
+  const scrollToMessage = (message: LlmMessageType) => {
+    if (!message) return;
+
+    setTimeout(() => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      container
+        .querySelector(`#llm-message-${message.id}-resopnse .timestamp`)
+        ?.scrollIntoView({
+          behavior: "smooth",
+        });
+
+      inputRef.current.focus();
+    }, 1000);
   };
 
   const resizeTextarea = () => {
@@ -88,6 +107,7 @@ export const LlmChat = (props: {
       .llmMessages(llmChat.id, { items: 100 })
       .then(({ messages }) => {
         dispatchLlmMessages({ type: "set", records: messages });
+        scrollToMessage(messages[messages.length - 1]);
       })
       .catch((err) => {
         toast.error(err.message);
@@ -137,7 +157,10 @@ export const LlmChat = (props: {
     );
 
   return (
-    <ScrollArea className="h-full max-w-screen-lg mx-auto p-4 pb-24 relative">
+    <ScrollArea
+      ref={containerRef}
+      className="h-full max-w-screen-lg mx-auto p-4 pb-24 relative"
+    >
       <LlmMessage
         llmMessage={{
           response: "What can I help you with today?",
