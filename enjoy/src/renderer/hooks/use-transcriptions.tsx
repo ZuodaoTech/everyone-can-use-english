@@ -190,7 +190,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
             }
 
             for (let k = j + 1; k <= sentence.timeline.length - 1; k++) {
-              if (word.includes(sentence.timeline[k].text.toLowerCase())) {
+              while (word.includes(sentence.timeline[k]?.text?.toLowerCase())) {
                 let connector = "";
                 if (match[0] === "-") {
                   connector = "-";
@@ -204,9 +204,8 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
                 ];
                 token.endTime = sentence.timeline[k].endTime;
                 sentence.timeline.splice(k, 1);
-              } else {
-                break;
               }
+              break;
             }
           });
         }

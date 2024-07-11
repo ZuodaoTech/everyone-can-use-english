@@ -35,6 +35,7 @@ class AudiosHandler {
       ],
       where,
       ...options,
+      group: ["Audio.id"],
     });
 
     if (!audios) {
@@ -116,14 +117,21 @@ class AudiosHandler {
     id: string,
     params: Attributes<Audio>
   ) {
-    const { name, description, metadata, language } = params;
+    const { name, description, metadata, language, coverUrl, source } = params;
 
     const audio = await Audio.findByPk(id);
 
     if (!audio) {
       throw new Error(t("models.audio.notFound"));
     }
-    return await audio.update({ name, description, metadata, language });
+    return await audio.update({
+      name,
+      description,
+      metadata,
+      language,
+      coverUrl,
+      source,
+    });
   }
 
   private async destroy(_event: IpcMainEvent, id: string) {

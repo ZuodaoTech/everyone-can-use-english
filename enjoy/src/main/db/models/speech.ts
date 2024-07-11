@@ -123,6 +123,7 @@ export class Speech extends Model<Speech> {
     if (!Array.isArray(findResult)) findResult = [findResult];
 
     for (const instance of findResult) {
+      if (!instance) continue;
       if (instance.sourceType === "Message" && instance.message !== undefined) {
         instance.source = instance.message;
       }

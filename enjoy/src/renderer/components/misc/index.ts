@@ -5,6 +5,7 @@ export * from "./layout";
 export * from "./loader-spin";
 export * from "./login-form";
 export * from "./github-login-form";
+export * from "./markdown-wrapper";
 export * from "./mixin-login-form";
 export * from "./no-records-found";
 export * from "./page-placeholder";

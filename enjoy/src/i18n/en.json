@@ -133,6 +133,7 @@
   },
   "sidebar": {
     "home": "Home",
+    "courses": "Courses",
     "community": "Community",
     "audios": "Audios",
     "videos": "Videos",
@@ -632,5 +633,11 @@
   "noData": "No data",
   "selectedFiles": "Selected files",
   "moreOptions": "More options",
-  "lessOptions": "Less options"
+  "lessOptions": "Less options",
+  "previousChapter": "Previous",
+  "nextChapter": "Next",
+  "examples": "Examples",
+  "continueLearning": "Continue learning",
+  "enrollNow": "Enroll now",
+  "enrollments": "Enrollments"
 }

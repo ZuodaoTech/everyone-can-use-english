@@ -4,6 +4,8 @@ import { Client } from "@/api";
 import i18n from "@renderer/i18n";
 import ahoy from "ahoy.js";
 import { type Consumer, createConsumer } from "@rails/actioncable";
+import * as Sentry from "@sentry/electron/renderer";
+import { SENTRY_DSN } from "@/constants";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -59,41 +61,15 @@ export const AppSettingsProvider = ({
     IPA_MAPPINGS
   );
 
-  useEffect(() => {
-    fetchVersion();
-    fetchUser();
-    fetchLibraryPath();
-    fetchLanguages();
-    fetchProxyConfig();
-  }, []);
-
-  useEffect(() => {
-    if (!apiUrl) return;
-
-    setWebApi(
-      new Client({
-        baseUrl: apiUrl,
-        accessToken: user?.accessToken,
-        locale: language,
-      })
-    );
-  }, [user, apiUrl, language]);
-
-  useEffect(() => {
-    if (!apiUrl) return;
-
-    ahoy.configure({
-      urlPrefix: apiUrl,
+  const initSentry = () => {
+    EnjoyApp.app.isPackaged().then((isPackaged) => {
+      if (isPackaged) {
+        Sentry.init({
+          dsn: SENTRY_DSN,
+        });
+      }
     });
-  }, [apiUrl]);
-
-  useEffect(() => {
-    if (!webApi) return;
-
-    webApi.config("ipa_mappings").then((mappings) => {
-      if (mappings) setIpaMappings(mappings);
-    });
-  }, [webApi]);
+  };
 
   const fetchLanguages = async () => {
     const language = await EnjoyApp.settings.getLanguage();
@@ -195,6 +171,43 @@ export const AppSettingsProvider = ({
     const consumer = createConsumer(wsUrl + "/cable?token=" + token);
     setCable(consumer);
   };
+
+  useEffect(() => {
+    fetchVersion();
+    fetchUser();
+    fetchLibraryPath();
+    fetchLanguages();
+    fetchProxyConfig();
+    initSentry();
+  }, []);
+
+  useEffect(() => {
+    if (!apiUrl) return;
+
+    setWebApi(
+      new Client({
+        baseUrl: apiUrl,
+        accessToken: user?.accessToken,
+        locale: language,
+      })
+    );
+  }, [user, apiUrl, language]);
+
+  useEffect(() => {
+    if (!apiUrl) return;
+
+    ahoy.configure({
+      urlPrefix: apiUrl,
+    });
+  }, [apiUrl]);
+
+  useEffect(() => {
+    if (!webApi) return;
+
+    webApi.config("ipa_mappings").then((mappings) => {
+      if (mappings) setIpaMappings(mappings);
+    });
+  }, [webApi]);
 
   return (
     <AppSettingsProviderContext.Provider

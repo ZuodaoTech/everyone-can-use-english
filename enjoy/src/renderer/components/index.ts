@@ -1,5 +1,7 @@
 export * from "./audios";
 export * from "./conversations";
+export * from "./courses";
+export * from "./llm-chats";
 export * from "./meanings";
 export * from "./messages";
 export * from "./medias";

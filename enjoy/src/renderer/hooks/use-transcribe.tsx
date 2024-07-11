@@ -10,6 +10,7 @@ import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import axios from "axios";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 import { useAiCommand } from "./use-ai-command";
+import { toast } from "@renderer/components/ui";
 
 export const useTranscribe = () => {
   const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
@@ -83,10 +84,12 @@ export const useTranscribe = () => {
     let transcript = originalText || result.text;
 
     // Remove all content inside `()`, `[]`, `{}` and trim the text
+    // remove all markdown formatting
     transcript = transcript
       .replace(/\(.*?\)/g, "")
       .replace(/\[.*?\]/g, "")
       .replace(/\{.*?\}/g, "")
+      .replace(/[*_`]/g, "")
       .trim();
 
     // if the transcript does not contain any punctuation, use AI command to add punctuation
@@ -94,6 +97,7 @@ export const useTranscribe = () => {
       try {
         transcript = await punctuateText(transcript);
       } catch (err) {
+        toast.error(err.message);
         console.warn(err.message);
       }
     }

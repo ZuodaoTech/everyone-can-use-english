@@ -133,6 +133,7 @@
   },
   "sidebar": {
     "home": "主页",
+    "courses": "课程",
     "community": "社区",
     "audios": "音频",
     "videos": "视频",
@@ -632,5 +633,11 @@
   "noData": "没有数据",
   "selectedFiles": "已选中文件",
   "moreOptions": "更多选项",
-  "lessOptions": "更少选项"
+  "lessOptions": "更少选项",
+  "previousChapter": "上一章",
+  "nextChapter": "下一章",
+  "examples": "示例",
+  "continueLearning": "继续练习",
+  "enrollNow": "加入练习",
+  "enrollments": "参加的课程"
 }

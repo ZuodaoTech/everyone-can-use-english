@@ -5,7 +5,6 @@ import {
   Popover,
   PopoverAnchor,
   PopoverContent,
-  ScrollArea,
   toast,
 } from "@renderer/components/ui";
 import { useAiCommand } from "@renderer/hooks";

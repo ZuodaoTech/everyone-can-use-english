@@ -25,7 +25,9 @@ export const useAudio = (options: { id?: string; md5?: string }) => {
   };
 
   useEffect(() => {
-    const where = id ? { id } : { md5 };
+    const where = id ? { id } : md5 ? { md5 } : null;
+    if (!where) return;
+
     EnjoyApp.audios.findOne(where).then((audio) => {
       if (audio) {
         setAudio(audio);

@@ -14,9 +14,11 @@ import { updateElectronApp, UpdateSourceType } from "update-electron-app";
 
 const logger = log.scope("main");
 
-Sentry.init({
-  dsn: SENTRY_DSN,
-});
+if (app.isPackaged) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+  });
+}
 
 app.commandLine.appendSwitch("enable-features", "SharedArrayBuffer");
 

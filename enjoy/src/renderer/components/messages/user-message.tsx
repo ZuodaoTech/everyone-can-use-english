@@ -36,6 +36,7 @@ import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
 import Markdown from "react-markdown";
+import { formatDateTime } from "@renderer/lib/utils";
 
 export const UserMessageComponent = (props: {
   message: MessageType;
@@ -81,11 +82,17 @@ export const UserMessageComponent = (props: {
   };
 
   return (
-    <div
-      id={`message-${message.id}`}
-      className="flex items-end justify-end space-x-2 pl-10"
-    >
-      <div className="flex flex-col gap-2 px-4 py-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full">
+    <div id={`message-${message.id}`} className="">
+      <div className="flex items-center justify-end space-x-2 mb-2">
+        <div className="text-sm text-muted-foreground">{user.name}</div>
+        <Avatar className="w-8 h-8 bg-background">
+          <AvatarImage src={user.avatarUrl} />
+          <AvatarFallback className="bg-primary text-white capitalize">
+            {user.name?.[0] ?? "U"}
+          </AvatarFallback>
+        </Avatar>
+      </div>
+      <div className="flex flex-col gap-2 px-4 py-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full mb-2">
         <Markdown
           className="select-text prose dark:prose-invert"
           components={{
@@ -106,33 +113,33 @@ export const UserMessageComponent = (props: {
         {Boolean(speech) && <SpeechPlayer speech={speech} />}
 
         <DropdownMenu>
-          <div className="flex items-center justify-end space-x-2">
+          <div className="flex items-center justify-end space-x-4">
             {message.createdAt ? (
               <CheckCircleIcon
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sent")}
-                className="w-3 h-3"
+                className="w-4 h-4"
               />
             ) : message.status === "pending" ? (
               <LoaderIcon
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sending")}
-                className="w-3 h-3 animate-spin"
+                className="w-4 h-4 animate-spin"
               />
             ) : (
               message.status === "error" && (
                 <DropdownMenuTrigger>
-                  <AlertCircleIcon className="w-3 h-3 text-destructive" />
+                  <AlertCircleIcon className="w-4 h-4 text-destructive" />
                 </DropdownMenuTrigger>
               )
             )}
             {copied ? (
-              <CheckIcon className="w-3 h-3 text-green-500" />
+              <CheckIcon className="w-4 h-4 text-green-500" />
             ) : (
               <CopyIcon
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("copy")}
-                className="w-3 h-3 cursor-pointer"
+                className="w-4 h-4 cursor-pointer"
                 onClick={() => {
                   copyToClipboard(message.content);
                   setCopied(true);
@@ -150,7 +157,7 @@ export const UserMessageComponent = (props: {
                 <ForwardIcon
                   data-tooltip-id="global-tooltip"
                   data-tooltip-content={t("forward")}
-                  className="w-3 h-3 cursor-pointer"
+                  className="w-4 h-4 cursor-pointer"
                 />
               }
             />
@@ -161,7 +168,7 @@ export const UserMessageComponent = (props: {
                   <Share2Icon
                     data-tooltip-id="global-tooltip"
                     data-tooltip-content={t("share")}
-                    className="w-3 h-3 cursor-pointer"
+                    className="w-4 h-4 cursor-pointer"
                   />
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -184,7 +191,7 @@ export const UserMessageComponent = (props: {
             )}
 
             <DropdownMenuTrigger>
-              <MoreVerticalIcon className="w-3 h-3" />
+              <MoreVerticalIcon className="w-4 h-4" />
             </DropdownMenuTrigger>
           </div>
 
@@ -201,13 +208,9 @@ export const UserMessageComponent = (props: {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-
-      <Avatar className="w-8 h-8 bg-background">
-        <AvatarImage src={user.avatarUrl} />
-        <AvatarFallback className="bg-primary text-white capitalize">
-          {user.name[0]}
-        </AvatarFallback>
-      </Avatar>
+      <div className="flex justify-end text-xs text-muted-foreground timestamp">
+        {formatDateTime(message.createdAt)}
+      </div>
     </div>
   );
 };

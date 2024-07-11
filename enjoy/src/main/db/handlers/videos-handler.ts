@@ -35,6 +35,7 @@ class VideosHandler {
       ],
       where,
       ...options,
+      group: ["Video.id"],
     });
     if (!videos) {
       return [];
@@ -106,13 +107,13 @@ class VideosHandler {
     id: string,
     params: Attributes<Video>
   ) {
-    const { name, description, metadata, language } = params;
+    const { name, description, metadata, language, coverUrl, source } = params;
 
     const video = await Video.findByPk(id);
     if (!video) {
       throw new Error(t("models.video.notFound"));
     }
-    video.update({ name, description, metadata, language });
+    video.update({ name, description, metadata, language, coverUrl, source });
   }
 
   private async destroy(event: IpcMainEvent, id: string) {

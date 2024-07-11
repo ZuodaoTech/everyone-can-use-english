@@ -46,12 +46,12 @@ export default () => {
     ttsPreset: {
       key: "tts",
       name: "TTS",
-      engine: currentEngine.name,
+      engine: currentEngine?.name,
       configuration: {
         type: "tts",
         tts: {
-          engine: currentEngine.name,
-          model: currentEngine.name === "enjoyai" ? "openai/tts-1" : "tts-1",
+          engine: currentEngine?.name,
+          model: currentEngine?.name === "enjoyai" ? "openai/tts-1" : "tts-1",
           voice: "alloy",
         },
       },
