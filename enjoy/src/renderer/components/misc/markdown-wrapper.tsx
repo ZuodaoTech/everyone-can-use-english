@@ -3,6 +3,7 @@ import Markdown from "react-markdown";
 export const MarkdownWrapper = ({
   children,
   className,
+  ...props
 }: {
   children: string;
   className?: string;
@@ -21,6 +22,7 @@ export const MarkdownWrapper = ({
           return <a {...props}>{children}</a>;
         },
       }}
+      {...props}
     >
       {children}
     </Markdown>

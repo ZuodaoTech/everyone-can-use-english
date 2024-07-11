@@ -206,7 +206,9 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
           <div className="flex items-center space-x-2 mb-2">
             <Avatar className="w-8 h-8 bg-background avatar">
               <AvatarImage src={llmMessage.agent.avatarUrl}></AvatarImage>
-              <AvatarFallback className="bg-background">AI</AvatarFallback>
+              <AvatarFallback className="bg-background">
+                {llmMessage.agent.name}
+              </AvatarFallback>
             </Avatar>
             <div className="text-sm text-muted-foreground">
               {llmMessage.agent.name}

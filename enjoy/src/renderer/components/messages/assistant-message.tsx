@@ -16,6 +16,7 @@ import {
   SpeechPlayer,
   AudioPlayer,
   ConversationShortcuts,
+  MarkdownWrapper,
 } from "@renderer/components";
 import { useState, useEffect, useContext } from "react";
 import {
@@ -33,8 +34,8 @@ import {
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
 import { AppSettingsProviderContext } from "@renderer/context";
-import Markdown from "react-markdown";
 import { useConversation, useAiCommand } from "@renderer/hooks";
+import { formatDateTime } from "@renderer/lib/utils";
 
 export const AssistantMessageComponent = (props: {
   message: MessageType;
@@ -152,15 +153,19 @@ export const AssistantMessageComponent = (props: {
   };
 
   return (
-    <div
-      id={`message-${message.id}`}
-      className="ai-message flex items-end space-x-2 pr-10"
-    >
-      <Avatar className="w-8 h-8 bg-background avatar">
-        <AvatarImage></AvatarImage>
-        <AvatarFallback className="bg-background">AI</AvatarFallback>
-      </Avatar>
-      <div className="flex flex-col gap-2 px-4 py-2 bg-background border rounded-lg shadow-sm w-full">
+    <div id={`message-${message.id}`} className="ai-message">
+      <div className="flex items-center space-x-2 mb-2">
+        <Avatar className="w-8 h-8 bg-muted avatar">
+          <AvatarImage></AvatarImage>
+          <AvatarFallback className="bg-muted capitalize">
+            {configuration?.model?.[0] || "AI"}
+          </AvatarFallback>
+        </Avatar>
+        <div className="text-sm text-muted-foreground">
+          {configuration?.model}
+        </div>
+      </div>
+      <div className="flex flex-col gap-2 px-4 py-2 bg-background border rounded-lg shadow-sm w-full mb-2">
         {configuration.type === "tts" &&
           (speeching ? (
             <div className="text-muted-foreground text-sm py-2">
@@ -176,24 +181,13 @@ export const AssistantMessageComponent = (props: {
           ))}
 
         {configuration.type === "gpt" && (
-          <Markdown
+          <MarkdownWrapper
             className="message-content select-text prose dark:prose-invert"
             data-source-type="Message"
             data-source-id={message.id}
-            components={{
-              a({ node, children, ...props }) {
-                try {
-                  new URL(props.href ?? "");
-                  props.target = "_blank";
-                  props.rel = "noopener noreferrer";
-                } catch (e) {}
-
-                return <a {...props}>{children}</a>;
-              },
-            }}
           >
             {message.content}
-          </Markdown>
+          </MarkdownWrapper>
         )}
 
         {Boolean(speech) && <SpeechPlayer speech={speech} />}
@@ -288,6 +282,10 @@ export const AssistantMessageComponent = (props: {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+      </div>
+
+      <div className="flex justify-start text-xs text-muted-foreground timestamp">
+        {formatDateTime(message.createdAt)}
       </div>
 
       <Sheet

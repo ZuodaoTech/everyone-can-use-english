@@ -36,6 +36,7 @@ import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
 import Markdown from "react-markdown";
+import { formatDateTime } from "@renderer/lib/utils";
 
 export const UserMessageComponent = (props: {
   message: MessageType;
@@ -81,11 +82,17 @@ export const UserMessageComponent = (props: {
   };
 
   return (
-    <div
-      id={`message-${message.id}`}
-      className="flex items-end justify-end space-x-2 pl-10"
-    >
-      <div className="flex flex-col gap-2 px-4 py-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full">
+    <div id={`message-${message.id}`} className="">
+      <div className="flex items-center justify-end space-x-2 mb-2">
+        <div className="text-sm text-muted-foreground">{user.name}</div>
+        <Avatar className="w-8 h-8 bg-background">
+          <AvatarImage src={user.avatarUrl} />
+          <AvatarFallback className="bg-primary text-white capitalize">
+            {user.name?.[0] ?? "U"}
+          </AvatarFallback>
+        </Avatar>
+      </div>
+      <div className="flex flex-col gap-2 px-4 py-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full mb-2">
         <Markdown
           className="select-text prose dark:prose-invert"
           components={{
@@ -201,13 +208,9 @@ export const UserMessageComponent = (props: {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-
-      <Avatar className="w-8 h-8 bg-background">
-        <AvatarImage src={user.avatarUrl} />
-        <AvatarFallback className="bg-primary text-white capitalize">
-          {user.name[0]}
-        </AvatarFallback>
-      </Avatar>
+      <div className="flex justify-end text-xs text-muted-foreground timestamp">
+        {formatDateTime(message.createdAt)}
+      </div>
     </div>
   );
 };

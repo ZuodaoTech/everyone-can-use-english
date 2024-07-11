@@ -50,8 +50,8 @@ export default () => {
       configuration: {
         type: "tts",
         tts: {
-          engine: currentEngine.name,
-          model: currentEngine.name === "enjoyai" ? "openai/tts-1" : "tts-1",
+          engine: currentEngine?.name,
+          model: currentEngine?.name === "enjoyai" ? "openai/tts-1" : "tts-1",
           voice: "alloy",
         },
       },
