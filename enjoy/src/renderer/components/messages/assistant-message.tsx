@@ -193,13 +193,13 @@ export const AssistantMessageComponent = (props: {
         {Boolean(speech) && <SpeechPlayer speech={speech} />}
 
         <DropdownMenu>
-          <div className="flex items-center justify-start space-x-2">
+          <div className="flex items-center justify-start space-x-4">
             {!speech &&
               (speeching ? (
                 <LoaderIcon
                   data-tooltip-id="global-tooltip"
                   data-tooltip-content={t("creatingSpeech")}
-                  className="w-3 h-3 animate-spin"
+                  className="w-4 h-4 animate-spin"
                 />
               ) : (
                 <SpeechIcon
@@ -207,19 +207,19 @@ export const AssistantMessageComponent = (props: {
                   data-tooltip-content={t("textToSpeech")}
                   data-testid="message-create-speech"
                   onClick={createSpeech}
-                  className="w-3 h-3 cursor-pointer"
+                  className="w-4 h-4 cursor-pointer"
                 />
               ))}
 
             {configuration.type === "gpt" && (
               <>
                 {copied ? (
-                  <CheckIcon className="w-3 h-3 text-green-500" />
+                  <CheckIcon className="w-4 h-4 text-green-500" />
                 ) : (
                   <CopyIcon
                     data-tooltip-id="global-tooltip"
                     data-tooltip-content={t("copyText")}
-                    className="w-3 h-3 cursor-pointer"
+                    className="w-4 h-4 cursor-pointer"
                     onClick={() => {
                       copyToClipboard(message.content);
                       setCopied(true);
@@ -236,7 +236,7 @@ export const AssistantMessageComponent = (props: {
                     <ForwardIcon
                       data-tooltip-id="global-tooltip"
                       data-tooltip-content={t("forward")}
-                      className="w-3 h-3 cursor-pointer"
+                      className="w-4 h-4 cursor-pointer"
                     />
                   }
                 />
@@ -248,7 +248,7 @@ export const AssistantMessageComponent = (props: {
                 <LoaderIcon
                   data-tooltip-id="global-tooltip"
                   data-tooltip-content={t("addingResource")}
-                  className="w-3 h-3 animate-spin"
+                  className="w-4 h-4 animate-spin"
                 />
               ) : (
                 <MicIcon
@@ -256,7 +256,7 @@ export const AssistantMessageComponent = (props: {
                   data-tooltip-content={t("shadowingExercise")}
                   data-testid="message-start-shadow"
                   onClick={startShadow}
-                  className="w-3 h-3 cursor-pointer"
+                  className="w-4 h-4 cursor-pointer"
                 />
               ))}
             {Boolean(speech) && (
@@ -265,12 +265,12 @@ export const AssistantMessageComponent = (props: {
                 data-tooltip-content={t("download")}
                 data-testid="message-download-speech"
                 onClick={handleDownload}
-                className="w-3 h-3 cursor-pointer"
+                className="w-4 h-4 cursor-pointer"
               />
             )}
 
             <DropdownMenuTrigger>
-              <MoreVerticalIcon className="w-3 h-3" />
+              <MoreVerticalIcon className="w-4 h-4" />
             </DropdownMenuTrigger>
           </div>
 

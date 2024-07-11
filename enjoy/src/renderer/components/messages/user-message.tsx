@@ -113,33 +113,33 @@ export const UserMessageComponent = (props: {
         {Boolean(speech) && <SpeechPlayer speech={speech} />}
 
         <DropdownMenu>
-          <div className="flex items-center justify-end space-x-2">
+          <div className="flex items-center justify-end space-x-4">
             {message.createdAt ? (
               <CheckCircleIcon
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sent")}
-                className="w-3 h-3"
+                className="w-4 h-4"
               />
             ) : message.status === "pending" ? (
               <LoaderIcon
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sending")}
-                className="w-3 h-3 animate-spin"
+                className="w-4 h-4 animate-spin"
               />
             ) : (
               message.status === "error" && (
                 <DropdownMenuTrigger>
-                  <AlertCircleIcon className="w-3 h-3 text-destructive" />
+                  <AlertCircleIcon className="w-4 h-4 text-destructive" />
                 </DropdownMenuTrigger>
               )
             )}
             {copied ? (
-              <CheckIcon className="w-3 h-3 text-green-500" />
+              <CheckIcon className="w-4 h-4 text-green-500" />
             ) : (
               <CopyIcon
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("copy")}
-                className="w-3 h-3 cursor-pointer"
+                className="w-4 h-4 cursor-pointer"
                 onClick={() => {
                   copyToClipboard(message.content);
                   setCopied(true);
@@ -157,7 +157,7 @@ export const UserMessageComponent = (props: {
                 <ForwardIcon
                   data-tooltip-id="global-tooltip"
                   data-tooltip-content={t("forward")}
-                  className="w-3 h-3 cursor-pointer"
+                  className="w-4 h-4 cursor-pointer"
                 />
               }
             />
@@ -168,7 +168,7 @@ export const UserMessageComponent = (props: {
                   <Share2Icon
                     data-tooltip-id="global-tooltip"
                     data-tooltip-content={t("share")}
-                    className="w-3 h-3 cursor-pointer"
+                    className="w-4 h-4 cursor-pointer"
                   />
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -191,7 +191,7 @@ export const UserMessageComponent = (props: {
             )}
 
             <DropdownMenuTrigger>
-              <MoreVerticalIcon className="w-3 h-3" />
+              <MoreVerticalIcon className="w-4 h-4" />
             </DropdownMenuTrigger>
           </div>
 
