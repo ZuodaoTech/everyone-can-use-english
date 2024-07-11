@@ -14,7 +14,7 @@ import { Link, useParams } from "react-router-dom";
 import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, UsersIcon } from "lucide-react";
 import { Chapters } from "@renderer/components";
 
 export default () => {
@@ -87,32 +87,36 @@ const CourseDetail = (props: { course: CourseType; onUpdate: () => void }) => {
       <div className="flex-1 min-h-48">
         <div className="text-2xl font-bold mb-4">{course.title}</div>
         <div className="mb-4">{course.description}</div>
-        {course.enrolled ? (
-          <>
-            <div className="flex items-center space-x-2 mb-4">
-              <span>{(course.enrollment.progress * 100).toFixed(2)}%</span>
-              <Progress value={course.enrollment.progress * 100} />
-            </div>
-            <div>
-              <Link
-                to={`/courses/${course.id}/chapters/${
-                  course.enrollment.currentChapterSequence || 1
-                }`}
-              >
-                <Button onClick={handleEnroll}>{t("continueLearning")}</Button>
-              </Link>
-            </div>
-          </>
-        ) : (
-          <div className="flex items-center gap-4">
+        {course.enrolled && (
+          <div className="flex items-center space-x-2 mb-4">
+            <span>{(course.enrollment.progress * 100).toFixed(2)}%</span>
+            <Progress value={course.enrollment.progress * 100} />
+          </div>
+        )}
+        <div className="flex items-center gap-4">
+          {course.enrolled ? (
+            <Link
+              to={`/courses/${course.id}/chapters/${
+                course.enrollment.currentChapterSequence || 1
+              }`}
+            >
+              <Button onClick={handleEnroll}>{t("continueLearning")}</Button>
+            </Link>
+          ) : (
             <Button disabled={course.enrolled} onClick={handleEnroll}>
               {enrolling && (
                 <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
               )}
               {t("enrollNow")}
             </Button>
-          </div>
-        )}
+          )}
+          {course.enrollmentsCount > 0 && (
+            <div className="flex items-center space-x-1">
+              <UsersIcon className="w-4 h-4" />
+              <span className="text-sm text-muted-foreground">{course.enrollmentsCount}</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
