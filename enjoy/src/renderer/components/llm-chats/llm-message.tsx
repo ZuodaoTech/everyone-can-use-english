@@ -237,7 +237,8 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
                   onClick={handleTranslate}
                 />
               )}
-              {!speech &&
+              {llmMessage.id &&
+                !speech &&
                 (speeching ? (
                   <LoaderIcon
                     data-tooltip-id="global-tooltip"

@@ -163,7 +163,7 @@ export const LlmChat = (props: {
     >
       <LlmMessage
         llmMessage={{
-          response: "What can I help you with today?",
+          response: llmChat.agent.introduction,
           agent: llmChat.agent,
           chat: llmChat,
         }}
