@@ -13,14 +13,16 @@ import {
 } from "@renderer/components//ui";
 import { t } from "i18next";
 
-export const Posts = (props: { userId?: string }) => {
+export const Posts = (props: { userId?: string; by?: string }) => {
   const { userId } = props;
   const { webApi } = useContext(AppSettingsProviderContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [type, setType] = useState<
     "all" | "recording" | "medium" | "story" | "prompt" | "gpt" | "note"
   >("all");
-  const [by, setBy] = useState<"all" | "following">("following");
+  const [by, setBy] = useState<"all" | "following">(
+    userId ? "all" : "following"
+  );
   const [posts, setPosts] = useState<PostType[]>([]);
   const [nextPage, setNextPage] = useState(1);
 
