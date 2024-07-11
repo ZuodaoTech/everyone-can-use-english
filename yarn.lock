@@ -3547,9 +3547,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/community@npm:^0.2.17":
-  version: 0.2.17
-  resolution: "@langchain/community@npm:0.2.17"
+"@langchain/community@npm:^0.2.18":
+  version: 0.2.18
+  resolution: "@langchain/community@npm:0.2.18"
   dependencies:
     "@langchain/core": "npm:~0.2.11"
     "@langchain/openai": "npm:~0.1.0"
@@ -3559,7 +3559,7 @@ __metadata:
     js-yaml: "npm:^4.1.0"
     langchain: "npm:0.2.3"
     langsmith: "npm:~0.1.30"
-    uuid: "npm:^9.0.0"
+    uuid: "npm:^10.0.0"
     zod: "npm:^3.22.3"
     zod-to-json-schema: "npm:^3.22.5"
   peerDependencies:
@@ -3589,6 +3589,7 @@ __metadata:
     "@google-cloud/storage": ^6.10.1 || ^7.7.0
     "@gradientai/nodejs-sdk": ^1.2.0
     "@huggingface/inference": ^2.6.4
+    "@langchain/langgraph": ~0.0.26
     "@layerup/layerup-security": ^1.5.12
     "@mendable/firecrawl-js": ^0.0.13
     "@mlc-ai/web-llm": 0.2.46
@@ -3735,6 +3736,8 @@ __metadata:
     "@gradientai/nodejs-sdk":
       optional: true
     "@huggingface/inference":
+      optional: true
+    "@langchain/langgraph":
       optional: true
     "@layerup/layerup-security":
       optional: true
@@ -3924,7 +3927,7 @@ __metadata:
       optional: true
     youtubei.js:
       optional: true
-  checksum: 10c0/e2396782628f29e4ee9c7774485544f93242081bf4cd15c79c0c895279134f46a163540783f6de737c5bb9e178185e817df4e01c8ae89d5a16538a0b07e82b39
+  checksum: 10c0/dc369ac7bc9f6e1408fc2b92ce0affde78913127d43e29a366f19410c6f2b6fda5b0e8569fde11e7dd5092ecc3173cd46e1ecbfd381299fe40762e51d6827ce5
   languageName: node
   linkType: hard
 
@@ -14291,7 +14294,7 @@ __metadata:
     "@electron-forge/publisher-s3": "npm:^7.4.0"
     "@electron/fuses": "npm:^1.8.0"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@langchain/community": "npm:^0.2.17"
+    "@langchain/community": "npm:^0.2.18"
     "@langchain/google-genai": "npm:^0.0.21"
     "@mozilla/readability": "npm:^0.5.0"
     "@playwright/test": "npm:^1.45.1"
