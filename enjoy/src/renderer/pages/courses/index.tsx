@@ -25,7 +25,7 @@ export default () => {
 };
 
 const CoursesList = () => {
-  const { webApi } = useContext(AppSettingsProviderContext);
+  const { webApi, learningLanguage } = useContext(AppSettingsProviderContext);
   const [courses, setCourses] = useState<CourseType[]>([]);
   const [nextPage, setNextPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ const CoursesList = () => {
     if (loading) return;
 
     webApi
-      .courses({ page: nextPage })
+      .courses({ page: nextPage, language: learningLanguage })
       .then(({ courses = [], next }) => {
         setCourses(courses);
         setNextPage(next);

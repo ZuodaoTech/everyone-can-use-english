@@ -474,7 +474,12 @@ export class Client {
     });
   }
 
-  courses(params?: { page?: number; items?: number; query?: string }): Promise<
+  courses(params?: {
+    language?: string;
+    page?: number;
+    items?: number;
+    query?: string;
+  }): Promise<
     {
       courses: CourseType[];
     } & PagyResponseType
