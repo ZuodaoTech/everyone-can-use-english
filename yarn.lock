@@ -3125,10 +3125,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint-community/regexpp@npm:^4.10.0, @eslint-community/regexpp@npm:^4.6.1":
+"@eslint-community/regexpp@npm:^4.10.0":
   version: 4.10.1
   resolution: "@eslint-community/regexpp@npm:4.10.1"
   checksum: 10c0/f59376025d0c91dd9fdf18d33941df499292a3ecba3e9889c360f3f6590197d30755604588786cdca0f9030be315a26b206014af4b65c0ff85b4ec49043de780
+  languageName: node
+  linkType: hard
+
+"@eslint-community/regexpp@npm:^4.11.0":
+  version: 4.11.0
+  resolution: "@eslint-community/regexpp@npm:4.11.0"
+  checksum: 10c0/0f6328869b2741e2794da4ad80beac55cba7de2d3b44f796a60955b0586212ec75e6b0253291fd4aad2100ad471d1480d8895f2b54f1605439ba4c875e05e523
   languageName: node
   linkType: hard
 
@@ -3160,10 +3167,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.6.0":
-  version: 9.6.0
-  resolution: "@eslint/js@npm:9.6.0"
-  checksum: 10c0/83967a7e59f2e958c9bbb3acd0929cad00d59d927ad786ed8e0d30b07f983c6bea3af6f4ad32da32145db40b7a741a816ba339bdd8960fc7fc8231716d943b7f
+"@eslint/js@npm:9.7.0":
+  version: 9.7.0
+  resolution: "@eslint/js@npm:9.7.0"
+  checksum: 10c0/73fc10666f6f4aed6f58e407e09f42ceb0d42fa60c52701c64ea9f59a81a6a8ad5caecdfd423d03088481515fe7ec17eb461acb4ef1ad70b649b6eae465b3164
   languageName: node
   linkType: hard
 
@@ -10038,16 +10045,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vidstack/react@npm:^1.11.27":
-  version: 1.11.27
-  resolution: "@vidstack/react@npm:1.11.27"
+"@vidstack/react@npm:^1.11.29":
+  version: 1.11.29
+  resolution: "@vidstack/react@npm:1.11.29"
   dependencies:
     "@floating-ui/dom": "npm:^1.4.4"
     media-captions: "npm:^1.0.1"
   peerDependencies:
     "@types/react": ^18.0.0
     react: ^18.0.0
-  checksum: 10c0/844545d93972ec85c32b7bd6e43e9aca290b1688ef0507d61eb07227c7eac9842821cf600223a92f9380ec3491c68404729b77b0e2adccc1bc6da11ddae3d4a2
+  checksum: 10c0/c75a9350b88e60fd9402c9a993cb54aff1f28d874fb1214d5080d787ab61debe675e8139c3f6756c65959b5df96cf87ce7bdb980a4cc7027e516478af9e8895a
   languageName: node
   linkType: hard
 
@@ -14319,7 +14326,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.16.0"
     "@typescript-eslint/parser": "npm:^7.16.0"
     "@uidotdev/usehooks": "npm:^2.4.1"
-    "@vidstack/react": "npm:^1.11.27"
+    "@vidstack/react": "npm:^1.11.29"
     "@vitejs/plugin-react": "npm:^4.3.1"
     ahoy.js: "npm:^0.4.4"
     autoprefixer: "npm:^10.4.19"
@@ -14346,7 +14353,7 @@ __metadata:
     electron-playwright-helpers: "npm:^1.7.1"
     electron-settings: "npm:^4.0.4"
     electron-squirrel-startup: "npm:^1.0.1"
-    eslint: "npm:^9.6.0"
+    eslint: "npm:^9.7.0"
     eslint-import-resolver-typescript: "npm:^3.6.1"
     eslint-plugin-import: "npm:^2.29.1"
     ffmpeg-static: "npm:^5.2.0"
@@ -14355,12 +14362,12 @@ __metadata:
     fs-extra: "npm:^11.2.0"
     html-to-text: "npm:^9.0.5"
     https-proxy-agent: "npm:^7.0.5"
-    i18next: "npm:^23.11.5"
-    intl-tel-input: "npm:^23.3.0"
+    i18next: "npm:^23.12.1"
+    intl-tel-input: "npm:^23.3.2"
     js-md5: "npm:^0.8.3"
     langchain: "npm:^0.2.8"
     lodash: "npm:^4.17.21"
-    lucide-react: "npm:^0.407.0"
+    lucide-react: "npm:^0.408.0"
     mark.js: "npm:^8.11.1"
     microsoft-cognitiveservices-speech-sdk: "npm:^1.38.0"
     next-themes: "npm:^0.3.0"
@@ -14398,7 +14405,7 @@ __metadata:
     update-electron-app: "npm:^3.0.0"
     vite: "npm:^5.3.3"
     vite-plugin-static-copy: "npm:^1.0.6"
-    wavesurfer.js: "npm:^7.8.1"
+    wavesurfer.js: "npm:^7.8.2"
     zod: "npm:^3.23.8"
     zod-to-json-schema: "npm:^3.23.1"
     zx: "npm:^8.1.4"
@@ -14861,13 +14868,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-scope@npm:^8.0.1":
-  version: 8.0.1
-  resolution: "eslint-scope@npm:8.0.1"
+"eslint-scope@npm:^8.0.2":
+  version: 8.0.2
+  resolution: "eslint-scope@npm:8.0.2"
   dependencies:
     esrecurse: "npm:^4.3.0"
     estraverse: "npm:^5.2.0"
-  checksum: 10c0/0ec40ab284e58ac7ef064ecd23c127e03d339fa57173c96852336c73afc70ce5631da21dc1c772415a37a421291845538dd69db83c68d611044c0fde1d1fa269
+  checksum: 10c0/477f820647c8755229da913025b4567347fd1f0bf7cbdf3a256efff26a7e2e130433df052bd9e3d014025423dc00489bea47eb341002b15553673379c1a7dc36
   languageName: node
   linkType: hard
 
@@ -14885,15 +14892,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^9.6.0":
-  version: 9.6.0
-  resolution: "eslint@npm:9.6.0"
+"eslint@npm:^9.7.0":
+  version: 9.7.0
+  resolution: "eslint@npm:9.7.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.2.0"
-    "@eslint-community/regexpp": "npm:^4.6.1"
+    "@eslint-community/regexpp": "npm:^4.11.0"
     "@eslint/config-array": "npm:^0.17.0"
     "@eslint/eslintrc": "npm:^3.1.0"
-    "@eslint/js": "npm:9.6.0"
+    "@eslint/js": "npm:9.7.0"
     "@humanwhocodes/module-importer": "npm:^1.0.1"
     "@humanwhocodes/retry": "npm:^0.3.0"
     "@nodelib/fs.walk": "npm:^1.2.8"
@@ -14902,7 +14909,7 @@ __metadata:
     cross-spawn: "npm:^7.0.2"
     debug: "npm:^4.3.2"
     escape-string-regexp: "npm:^4.0.0"
-    eslint-scope: "npm:^8.0.1"
+    eslint-scope: "npm:^8.0.2"
     eslint-visitor-keys: "npm:^4.0.0"
     espree: "npm:^10.1.0"
     esquery: "npm:^1.5.0"
@@ -14925,7 +14932,7 @@ __metadata:
     text-table: "npm:^0.2.0"
   bin:
     eslint: bin/eslint.js
-  checksum: 10c0/82ea5ad3f28aaef89e2a98f4e6df0eae9d4e16ccd6d667c69977042e0b103fa5df98bf16d3df72d1ae77edd8c1dccfdf4afa2a55309aa8081a1bc54af6229826
+  checksum: 10c0/e2369a9534404f62f37ee5560e56fb84e0776a9c8f084550170017992772e7034d73571bdf4060e2fe9b836f136d45b07d50407d4b9361de720ee77794259274
   languageName: node
   linkType: hard
 
@@ -16835,12 +16842,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^23.11.5":
-  version: 23.11.5
-  resolution: "i18next@npm:23.11.5"
+"i18next@npm:^23.12.1":
+  version: 23.12.1
+  resolution: "i18next@npm:23.12.1"
   dependencies:
     "@babel/runtime": "npm:^7.23.2"
-  checksum: 10c0/b0bec64250a3e529d4c51e2fc511406a85c5dde3d005d3aabe919551ca31dfc0a8f5490bf6e44649822e895a1fa91a58092d112367669cd11b2eb89e6ba90d1a
+  checksum: 10c0/dab710559a63da6d9a5ed8b15c9670fa106e6274aada42e2270d7001255e8e855015d2253c857d5e8a41c6e9a49bd5700f3a09546482fd08b3a1e5bf100070a8
   languageName: node
   linkType: hard
 
@@ -17105,10 +17112,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"intl-tel-input@npm:^23.3.0":
-  version: 23.3.0
-  resolution: "intl-tel-input@npm:23.3.0"
-  checksum: 10c0/aa1ee9ada1fcbf269ccf325ac8401652672ad54fe198fa0754637dabdbc3b48e1b9a9bb19776ea441a5952931d38807b5d65ab150e25b5c14e6a267100061816
+"intl-tel-input@npm:^23.3.2":
+  version: 23.3.2
+  resolution: "intl-tel-input@npm:23.3.2"
+  checksum: 10c0/e5b17fed2595fc55978eecb1d3749943dbdc6a1194ffbd3fdacb7dba97a39e029e6fc5494ddc90597b80ecea9008f827ad1b73a8a22a79b436d41c08de975f39
   languageName: node
   linkType: hard
 
@@ -18878,12 +18885,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.407.0":
-  version: 0.407.0
-  resolution: "lucide-react@npm:0.407.0"
+"lucide-react@npm:^0.408.0":
+  version: 0.408.0
+  resolution: "lucide-react@npm:0.408.0"
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/d9305d0558d432fb283e96210877f5054b08ccca700280d6f0ac09a41baafb2e3392e89f4596eceadbcabfcaf67edc9c744cdf6132e74341a2eb11f620b6f48a
+  checksum: 10c0/b79f17a4748c1cd17aa260dc5d226b64c50304b187b922f09ac4d4cb02304b2837f553eb8e75d151cde3957ebe1b3f7b120a324104835c1bcf82e5b401dedd6f
   languageName: node
   linkType: hard
 
@@ -27184,10 +27191,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wavesurfer.js@npm:^7.8.1":
-  version: 7.8.1
-  resolution: "wavesurfer.js@npm:7.8.1"
-  checksum: 10c0/1d5165f66992153d16f73688d428a30a85e819edd52a19ccc7a78370acf348bd3cf062604a2956a9f1385d30a8f204a5c68e78abdfdba1fc2558dcc16f89d463
+"wavesurfer.js@npm:^7.8.2":
+  version: 7.8.2
+  resolution: "wavesurfer.js@npm:7.8.2"
+  checksum: 10c0/7072780041faa71808c21df398ef8b2615fa8fd901684b6d3d86f247553a2e168009566f67c6cb2c728432300954dd3d008d8bacdc6549af8a32eb2cee97e134
   languageName: node
   linkType: hard
 

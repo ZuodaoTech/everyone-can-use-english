@@ -57,7 +57,7 @@ export const MediaRecordings = () => {
 
   useEffect(() => {
     setCurrentRecording(recordings[0]);
-  }, [currentSegmentIndex, recordings?.[0]?.id]);
+  }, [currentSegmentIndex, recordings]);
 
   return (
     <div ref={containerRef} data-testid="media-recordings-result">
