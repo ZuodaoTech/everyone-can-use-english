@@ -216,6 +216,7 @@
   "select": "Select",
   "libraryPath": "Library Path",
   "login": "Login",
+  "reLogin": "Re-login",
   "loginBeforeYouStart": "Login before you start",
   "loginSuccess": "Login Success",
   "whereYourResourcesAreStored": "Where your resources are stored",

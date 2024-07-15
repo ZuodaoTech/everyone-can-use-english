@@ -128,8 +128,6 @@ export const AppSettingsProvider = ({
     client.me().then((user) => {
       if (user?.id) {
         login(Object.assign({}, currentUser, user));
-      } else {
-        logout();
       }
     });
   };

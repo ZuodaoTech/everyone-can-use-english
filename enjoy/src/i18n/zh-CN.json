@@ -216,6 +216,7 @@
   "select": "选择",
   "libraryPath": "资源库保存路径",
   "login": "登录",
+  "reLogin": "重新登录",
   "loginBeforeYouStart": "登录后开始使用",
   "loginSuccess": "登录成功",
   "whereYourResourcesAreStored": "选择资源库保存路径",
