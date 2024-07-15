@@ -51,6 +51,15 @@ type MediaPlayerContextType = {
   regions: Regions | null;
   activeRegion: RegionType;
   setActiveRegion: (region: RegionType) => void;
+  renderPitchContour: (
+    region: RegionType,
+    options?: {
+      repaint?: boolean;
+      canvasId?: string;
+      containerClassNames?: string[];
+      data?: Chart["data"];
+    }
+  ) => void;
   editingRegion: boolean;
   setEditingRegion: (editing: boolean) => void;
   pitchChart: Chart;
@@ -602,6 +611,7 @@ export const MediaPlayerProvider = ({
           pitchChart,
           activeRegion,
           setActiveRegion,
+          renderPitchContour,
           editingRegion,
           setEditingRegion,
           generateTranscription,
