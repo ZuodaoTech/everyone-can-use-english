@@ -4,7 +4,7 @@ import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ExampleContent, MarkdownWrapper } from "@renderer/components";
-import { CheckCircleIcon } from "lucide-react";
+import { CheckCircleIcon, UsersIcon } from "lucide-react";
 
 export const ChapterContent = (props: {
   chapter: ChapterType;
@@ -45,10 +45,18 @@ export const ChapterContent = (props: {
   return (
     <div className="">
       <div className="flex items-center justify-between mb-2">
-        <div className="">
+        <div className="flex items-center space-x-2">
           <CheckCircleIcon
             className={`w-4 h-4 ${chapter.finished ? "text-green-600" : ""}`}
           />
+
+          {typeof chapter.finishesCount === "number" &&
+            chapter.finishesCount > 0 && (
+              <div className="flex items-center space-x-1 text-muted-foreground">
+                <UsersIcon className="w-4 h-4" />
+                <span className="text-sm">{chapter.finishesCount}</span>
+              </div>
+            )}
         </div>
         <div className="flex items-center space-x-2">
           {chapter.sequence > 1 && (
