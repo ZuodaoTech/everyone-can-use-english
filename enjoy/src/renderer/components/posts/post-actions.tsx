@@ -33,8 +33,11 @@ import {
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { Link } from "react-router-dom";
 
-export const PostActions = (props: { post: PostType }) => {
-  const [post, setPost] = useState<PostType>(props.post);
+export const PostActions = (props: {
+  post: PostType;
+  handleUpdate: (post: PostType) => void;
+}) => {
+  const { post, handleUpdate } = props;
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
@@ -91,12 +94,12 @@ export const PostActions = (props: { post: PostType }) => {
     if (post.liked) {
       webApi
         .unlikePost(post.id)
-        .then((p) => setPost(p))
+        .then((p) => handleUpdate(p))
         .catch((err) => toast.error(err.message));
     } else {
       webApi
         .likePost(post.id)
-        .then((p) => setPost(p))
+        .then((p) => handleUpdate(p))
         .catch((err) => toast.error(err.message));
     }
   };
