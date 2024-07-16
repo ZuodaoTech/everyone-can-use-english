@@ -103,6 +103,19 @@ protocol.registerSchemesAsPrivileged([
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", async () => {
+  if (!app.isPackaged) {
+    import("electron-devtools-installer")
+      .then((mymodule: any) => {
+        const installExtension = mymodule.default.default; // Default export
+        installExtension(mymodule.default.REACT_DEVELOPER_TOOLS, {
+          loadExtensionOptions: {
+            allowFileAccess: true,
+          },
+        }); // replace param with the ext ID of your choice
+      })
+      .catch((err) => console.log("An error occurred: ", err));
+  }
+
   protocol.handle("enjoy", (request) => {
     let url = request.url.replace("enjoy://", "");
     if (url.match(/library\/(audios|videos|recordings|speeches|segments)/g)) {

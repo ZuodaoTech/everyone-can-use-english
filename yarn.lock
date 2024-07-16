@@ -14001,6 +14001,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"electron-devtools-installer@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "electron-devtools-installer@npm:3.2.0"
+  dependencies:
+    rimraf: "npm:^3.0.2"
+    semver: "npm:^7.2.1"
+    tslib: "npm:^2.1.0"
+    unzip-crx-3: "npm:^0.2.0"
+  checksum: 10c0/50d56e174e3bbe568d3d4a56a56e8c87faf44aa54a49ecc93ab672905f30ca1bf4e6a1b5a0b297c6ffeec1e89848086a6ff47f0db8197edb16d1bda16d6440c2
+  languageName: node
+  linkType: hard
+
 "electron-dl@npm:^4.0.0":
   version: 4.0.0
   resolution: "electron-dl@npm:4.0.0"
@@ -14349,6 +14361,7 @@ __metadata:
     echogarden: "npm:^1.5.0"
     electron: "npm:^31.2.0"
     electron-context-menu: "npm:^4.0.1"
+    electron-devtools-installer: "npm:^3.2.0"
     electron-log: "npm:^5.1.5"
     electron-playwright-helpers: "npm:^1.7.1"
     electron-settings: "npm:^4.0.4"
@@ -16919,6 +16932,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immediate@npm:~3.0.5":
+  version: 3.0.6
+  resolution: "immediate@npm:3.0.6"
+  checksum: 10c0/f8ba7ede69bee9260241ad078d2d535848745ff5f6995c7c7cb41cfdc9ccc213f66e10fa5afb881f90298b24a3f7344b637b592beb4f54e582770cdce3f1f039
+  languageName: node
+  linkType: hard
+
 "immutable-json-patch@npm:6.0.1":
   version: 6.0.1
   resolution: "immutable-json-patch@npm:6.0.1"
@@ -18026,6 +18046,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jszip@npm:^3.1.0":
+  version: 3.10.1
+  resolution: "jszip@npm:3.10.1"
+  dependencies:
+    lie: "npm:~3.3.0"
+    pako: "npm:~1.0.2"
+    readable-stream: "npm:~2.3.6"
+    setimmediate: "npm:^1.0.5"
+  checksum: 10c0/58e01ec9c4960383fb8b38dd5f67b83ccc1ec215bf74c8a5b32f42b6e5fb79fada5176842a11409c4051b5b94275044851814a31076bf49e1be218d3ef57c863
+  languageName: node
+  linkType: hard
+
 "juice@npm:^8.0.0":
   version: 8.1.0
   resolution: "juice@npm:8.1.0"
@@ -18556,6 +18588,15 @@ __metadata:
     prelude-ls: "npm:^1.2.1"
     type-check: "npm:~0.4.0"
   checksum: 10c0/effb03cad7c89dfa5bd4f6989364bfc79994c2042ec5966cb9b95990e2edee5cd8969ddf42616a0373ac49fac1403437deaf6e9050fbbaa3546093a59b9ac94e
+  languageName: node
+  linkType: hard
+
+"lie@npm:~3.3.0":
+  version: 3.3.0
+  resolution: "lie@npm:3.3.0"
+  dependencies:
+    immediate: "npm:~3.0.5"
+  checksum: 10c0/56dd113091978f82f9dc5081769c6f3b947852ecf9feccaf83e14a123bc630c2301439ce6182521e5fbafbde88e88ac38314327a4e0493a1bea7e0699a7af808
   languageName: node
   linkType: hard
 
@@ -21850,6 +21891,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pako@npm:~1.0.2":
+  version: 1.0.11
+  resolution: "pako@npm:1.0.11"
+  checksum: 10c0/86dd99d8b34c3930345b8bbeb5e1cd8a05f608eeb40967b293f72fe469d0e9c88b783a8777e4cc7dc7c91ce54c5e93d88ff4b4f060e6ff18408fd21030d9ffbe
+  languageName: node
+  linkType: hard
+
 "parent-module@npm:^1.0.0":
   version: 1.0.1
   resolution: "parent-module@npm:1.0.1"
@@ -23476,7 +23524,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^2.0.5":
+"readable-stream@npm:^2.0.5, readable-stream@npm:~2.3.6":
   version: 2.3.8
   resolution: "readable-stream@npm:2.3.8"
   dependencies:
@@ -24353,6 +24401,13 @@ __metadata:
     functions-have-names: "npm:^1.2.3"
     has-property-descriptors: "npm:^1.0.2"
   checksum: 10c0/fce59f90696c450a8523e754abb305e2b8c73586452619c2bad5f7bf38c7b6b4651895c9db895679c5bef9554339cf3ef1c329b66ece3eda7255785fbe299316
+  languageName: node
+  linkType: hard
+
+"setimmediate@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "setimmediate@npm:1.0.5"
+  checksum: 10c0/5bae81bfdbfbd0ce992893286d49c9693c82b1bcc00dcaaf3a09c8f428fdeacf4190c013598b81875dfac2b08a572422db7df779a99332d0fce186d15a3e4d49
   languageName: node
   linkType: hard
 
@@ -26493,6 +26548,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"unzip-crx-3@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "unzip-crx-3@npm:0.2.0"
+  dependencies:
+    jszip: "npm:^3.1.0"
+    mkdirp: "npm:^0.5.1"
+    yaku: "npm:^0.16.6"
+  checksum: 10c0/e551cb3d57d0271da41825e9bd9a7f4ef9ec5c3f15edc37bf909928c8327f21a6938ddc922787ee2b1b31f95ac83232dac79fd5a44e2727f9e800df9017a3b91
+  languageName: node
+  linkType: hard
+
 "update-browserslist-db@npm:^1.0.13, update-browserslist-db@npm:^1.0.16":
   version: 1.0.16
   resolution: "update-browserslist-db@npm:1.0.16"
@@ -27570,6 +27636,13 @@ __metadata:
   version: 5.0.8
   resolution: "y18n@npm:5.0.8"
   checksum: 10c0/4df2842c36e468590c3691c894bc9cdbac41f520566e76e24f59401ba7d8b4811eb1e34524d57e54bc6d864bcb66baab7ffd9ca42bf1eda596618f9162b91249
+  languageName: node
+  linkType: hard
+
+"yaku@npm:^0.16.6":
+  version: 0.16.7
+  resolution: "yaku@npm:0.16.7"
+  checksum: 10c0/de45a2f6c31ab905174c4e5a3aad93972cb3cf2946d206ab9718ad5fb9adf0781c011d8b1d576daf20ebfa02fa120a8e7552a742a88bb3d288eea5a3a693187c
   languageName: node
   linkType: hard
 
