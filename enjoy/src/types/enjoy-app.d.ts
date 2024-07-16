@@ -291,6 +291,7 @@ type EnjoyAppType = {
     cancelAll: () => void;
     dashboard: () => Promise<DownloadStateType[]>;
     removeAllListeners: () => void;
+    printAsPdf: (content: string, savePath?: string) => Promise<void>;
   };
   cacheObjects: {
     get: (key: string) => Promise<any>;

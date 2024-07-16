@@ -1,4 +1,4 @@
-import { ipcMain, app } from "electron";
+import { ipcMain, app, BrowserWindow } from "electron";
 import path from "path";
 import fs from "fs";
 import mainWin from "@main/window";
@@ -77,6 +77,44 @@ class Downloader {
     });
   }
 
+  prinfAsPDF(content: string, savePath: string) {
+    let pdfWin: BrowserWindow | null = null;
+
+    return new Promise((resolve, reject) => {
+      pdfWin = new BrowserWindow({
+        webPreferences: {
+          nodeIntegration: true,
+          webSecurity: false,
+        },
+        show: false,
+        width: 800,
+        height: 600,
+        fullscreenable: false,
+        minimizable: false,
+      });
+
+      pdfWin.loadURL(`data:text/html;charset=utf-8,${encodeURI(content)}`);
+
+      pdfWin.webContents.on("did-finish-load", () => {
+        pdfWin.webContents
+          .printToPDF({ printBackground: true })
+          .then((data) => {
+            fs.writeFile(savePath, data, (error) => {
+              if (error) throw error;
+
+              resolve(savePath);
+
+              pdfWin.close();
+              pdfWin = null;
+            });
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    });
+  }
+
   cancel(filename: string) {
     logger.debug("dashboard", this.dashboard());
     this.tasks
@@ -124,6 +162,9 @@ class Downloader {
     });
     ipcMain.handle("download-dashboard", () => {
       return this.dashboard();
+    });
+    ipcMain.handle("print-as-pdf", (_event, content, savePath) => {
+      return this.prinfAsPDF(content, savePath);
     });
   }
 }
