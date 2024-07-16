@@ -30,56 +30,8 @@ export const PronunciationAssessmentCard = (props: {
           <div className="select-text line-clamp-2 text-muted-foreground font-serif pl-3 border-l-4 mb-4">
             {assessment.referenceText || assessment.target.referenceText}
           </div>
-          <div className="flex items-center gap-2 flex-wrap mb-4">
-            {[
-              {
-                label: t("models.pronunciationAssessment.pronunciationScore"),
-                value: assessment.pronunciationScore,
-              },
-              {
-                label: t("models.pronunciationAssessment.accuracyScore"),
-                value: assessment.accuracyScore,
-              },
-              {
-                label: t("models.pronunciationAssessment.fluencyScore"),
-                value: assessment.fluencyScore,
-              },
-              {
-                label: t("models.pronunciationAssessment.completenessScore"),
-                value: assessment.completenessScore,
-              },
-              {
-                label: t("models.pronunciationAssessment.prosodyScore"),
-                value: assessment.prosodyScore,
-              },
-              {
-                label: t("models.pronunciationAssessment.grammarScore"),
-                value: assessment.grammarScore,
-              },
-              {
-                label: t("models.pronunciationAssessment.vocabularyScore"),
-                value: assessment.vocabularyScore,
-              },
-              {
-                label: t("models.pronunciationAssessment.topicScore"),
-                value: assessment.topicScore,
-              },
-            ].map(({ label, value }) => {
-              if (typeof value === "number") {
-                return (
-                  <div key={label} className="flex items-center space-x-2 mb-2">
-                    <span className="text-muted-foreground text-sm">
-                      {label}:
-                    </span>
-                    <span
-                      className={`text-sm font-bold ${scoreColor(value || 0)}`}
-                    >
-                      {value}
-                    </span>
-                  </div>
-                );
-              }
-            })}
+          <div className="mb-4">
+            <PronunciationAssessmentScoreDetail assessment={assessment} />
           </div>
           {["Audio", "Video"].includes(assessment.target?.targetType) && (
             <div className="flex items-center gap-2 mb-4">
@@ -135,6 +87,62 @@ export const PronunciationAssessmentCard = (props: {
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+export const PronunciationAssessmentScoreDetail = (props: {
+  assessment: PronunciationAssessmentType;
+}) => {
+  const { assessment } = props;
+
+  return (
+    <div className="flex items-center gap-2 flex-wrap">
+      {[
+        {
+          label: t("models.pronunciationAssessment.pronunciationScore"),
+          value: assessment.pronunciationScore,
+        },
+        {
+          label: t("models.pronunciationAssessment.accuracyScore"),
+          value: assessment.accuracyScore,
+        },
+        {
+          label: t("models.pronunciationAssessment.fluencyScore"),
+          value: assessment.fluencyScore,
+        },
+        {
+          label: t("models.pronunciationAssessment.completenessScore"),
+          value: assessment.completenessScore,
+        },
+        {
+          label: t("models.pronunciationAssessment.prosodyScore"),
+          value: assessment.prosodyScore,
+        },
+        {
+          label: t("models.pronunciationAssessment.grammarScore"),
+          value: assessment.grammarScore,
+        },
+        {
+          label: t("models.pronunciationAssessment.vocabularyScore"),
+          value: assessment.vocabularyScore,
+        },
+        {
+          label: t("models.pronunciationAssessment.topicScore"),
+          value: assessment.topicScore,
+        },
+      ].map(({ label, value }) => {
+        if (typeof value === "number") {
+          return (
+            <div key={label} className="flex items-center space-x-2 mb-2">
+              <span className="text-muted-foreground text-sm">{label}:</span>
+              <span className={`text-sm font-bold ${scoreColor(value || 0)}`}>
+                {value}
+              </span>
+            </div>
+          );
+        }
+      })}
     </div>
   );
 };
