@@ -219,6 +219,14 @@ export class Client {
     return this.api.delete(`/api/posts/${id}`);
   }
 
+  likePost(id: string): Promise<PostType> {
+    return this.api.post(`/api/posts/${id}/like`);
+  }
+
+  unlikePost(id: string): Promise<PostType> {
+    return this.api.delete(`/api/posts/${id}/unlike`);
+  }
+
   transcriptions(params?: {
     page?: number;
     items?: number;

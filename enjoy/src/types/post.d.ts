@@ -12,6 +12,8 @@ type PostType = {
   targetType?: string;
   targetId?: string;
   target?: MediumType | StoryType | RecordingType | NoteType;
+  liked?: boolean;
+  likesCount?: number;
   createdAt: Date;
   updatedAt: Date;
 };
