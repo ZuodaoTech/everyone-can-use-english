@@ -13,6 +13,12 @@ import {
   AlertDialogFooter,
   Button,
   toast,
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import Markdown from "react-markdown";
@@ -22,7 +28,6 @@ import {
   CopyPlusIcon,
   PlusCircleIcon,
   ChevronRightIcon,
-  HeartIcon,
   ThumbsUpIcon,
 } from "lucide-react";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
@@ -100,21 +105,50 @@ export const PostActions = (props: { post: PostType }) => {
     <>
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2 justify-end">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="px-1.5 rounded-full"
-            onClick={toggleLike}
-          >
-            <ThumbsUpIcon
-              className={`w-5 h-5 ${
-                post.liked ? "text-red-600" : "text-muted-foreground"
-              }`}
-            />
-            {typeof post.likesCount === "number" && post.likesCount > 0 && (
-              <span className="ml-1 text-sm">{post.likesCount}</span>
-            )}
-          </Button>
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="px-1.5 rounded-full"
+                onClick={toggleLike}
+              >
+                <ThumbsUpIcon
+                  className={`w-5 h-5 ${
+                    post.liked ? "text-red-600" : "text-muted-foreground"
+                  }`}
+                />
+                {typeof post.likesCount === "number" && post.likesCount > 0 && (
+                  <span className="ml-1 text-sm">{post.likesCount}</span>
+                )}
+              </Button>
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <div className="max-h-48 overflow-y-auto">
+                {post.likeByUsers?.length === 0 && (
+                  <div className="text-center text-muted-foreground">
+                    {t("noLikesYet")}
+                  </div>
+                )}
+                <div className="grid grid-cols-6 gap-2">
+                  {post.likeByUsers?.map((user) => (
+                    <Link
+                      key={user.id}
+                      to={`/users/${user.id}`}
+                      className="aspect-square"
+                    >
+                      <Avatar className="w-full h-full">
+                        <AvatarImage src={user.avatarUrl} />
+                        <AvatarFallback className="text-xl">
+                          {user.name[0].toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </HoverCardContent>
+          </HoverCard>
         </div>
         <div className="flex items-center space-x-2 justify-end">
           {post.target && post.targetType === "Medium" && (
