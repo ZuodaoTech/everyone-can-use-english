@@ -18,6 +18,7 @@
       "@main/*": ["./src/main/*"],
       "@commands": ["./src/commands"]
     },
+    "types": ["vite/client"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "useDefineForClassFields": false

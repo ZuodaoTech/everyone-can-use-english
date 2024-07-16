@@ -26,6 +26,7 @@ import { formatDuration } from "@renderer/lib/utils";
 import {
   MediaTranscriptionReadButton,
   MediaTranscriptionGenerateButton,
+  MediaTranscriptionDownload,
   TranscriptionEditButton,
 } from "@renderer/components";
 
@@ -162,6 +163,9 @@ export const MediaTranscription = (props: { display?: boolean }) => {
                       {t("edit")}
                     </Button>
                   </TranscriptionEditButton>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <MediaTranscriptionDownload />
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

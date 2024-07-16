@@ -497,6 +497,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     start: (url: string, savePath?: string) => {
       return ipcRenderer.invoke("download-start", url, savePath);
     },
+    printAsPdf: (content: string, savePath: string) => {
+      return ipcRenderer.invoke("print-as-pdf", content, savePath);
+    },
     cancel: (filename: string) => {
       ipcRenderer.invoke("download-cancel", filename);
     },
