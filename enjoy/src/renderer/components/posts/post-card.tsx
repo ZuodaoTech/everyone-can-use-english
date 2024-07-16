@@ -17,8 +17,9 @@ import { Link } from "react-router-dom";
 export const PostCard = (props: {
   post: PostType;
   handleDelete: (id: string) => void;
+  handleUpdate: (post: PostType) => void;
 }) => {
-  const { post, handleDelete } = props;
+  const { post, handleDelete, handleUpdate } = props;
   const { user } = useContext(AppSettingsProviderContext);
 
   return (
@@ -100,14 +101,12 @@ export const PostCard = (props: {
 
       {post.targetType == "Note" && (
         <>
-          <div className="text-xs text-muted-foreground">
-            {t("sharedNote")}
-          </div>
+          <div className="text-xs text-muted-foreground">{t("sharedNote")}</div>
           <PostNote note={post.target as NoteType} />
         </>
       )}
 
-      <PostActions post={post} />
+      <PostActions post={post} handleUpdate={handleUpdate} />
     </div>
   );
 };

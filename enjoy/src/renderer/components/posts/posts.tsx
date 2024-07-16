@@ -137,7 +137,20 @@ export const Posts = (props: { userId?: string; by?: string }) => {
       <div className="space-y-6">
         {posts.map((post) => (
           <div key={post.id}>
-            <PostCard post={post} handleDelete={handleDelete} />
+            <PostCard
+              post={post}
+              handleDelete={handleDelete}
+              handleUpdate={(post) => {
+                const updatedPosts = posts.map((p) => {
+                  if (p.id === post.id) {
+                    return Object.assign(p, post);
+                  } else {
+                    return p;
+                  }
+                });
+                setPosts(updatedPosts);
+              }}
+            />
             <Separator />
           </div>
         ))}
