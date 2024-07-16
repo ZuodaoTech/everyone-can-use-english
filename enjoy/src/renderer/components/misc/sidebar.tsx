@@ -56,7 +56,7 @@ export const Sidebar = () => {
       data-testid="sidebar"
     >
       <div className="fixed top-0 left-0 h-full w-16 xl:w-40 bg-muted">
-        <ScrollArea className="w-full h-full">
+        <ScrollArea className="w-full h-full pb-12">
           <div className="py-4 mb-4 flex items-center space-x-1 justify-center">
             <img src="./assets/logo-light.svg" className="w-8 h-8" />
             <span className="hidden xl:block text-xl font-semibold text-[#4797F5]">
