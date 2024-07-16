@@ -52,7 +52,7 @@ export const PostRecording = (props: {
       />
 
       {recording.pronunciationAssessment && (
-        <div className="my-2">
+        <div className="my-2 flex justify-end">
           <PronunciationAssessmentScoreDetail
             assessment={recording.pronunciationAssessment}
           />

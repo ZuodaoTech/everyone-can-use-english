@@ -20,9 +20,7 @@ export const Posts = (props: { userId?: string; by?: string }) => {
   const [type, setType] = useState<
     "all" | "recording" | "medium" | "story" | "prompt" | "gpt" | "note"
   >("all");
-  const [by, setBy] = useState<"all" | "following">(
-    userId ? "all" : "following"
-  );
+  const [by, setBy] = useState<"all" | "following">("all");
   const [posts, setPosts] = useState<PostType[]>([]);
   const [nextPage, setNextPage] = useState(1);
 

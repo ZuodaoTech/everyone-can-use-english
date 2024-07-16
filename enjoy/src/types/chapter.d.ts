@@ -6,6 +6,7 @@ type ChapterType = {
   title: string;
   content: string;
   course?: CourseType;
+  finishesCount?: number;
   translations?: {
     language: string;
     content: string;
