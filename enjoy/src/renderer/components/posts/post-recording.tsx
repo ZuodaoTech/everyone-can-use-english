@@ -1,6 +1,9 @@
 import { useEffect, useState, useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { WavesurferPlayer } from "@renderer/components";
+import {
+  PronunciationAssessmentScoreDetail,
+  WavesurferPlayer,
+} from "@renderer/components";
 
 export const PostRecording = (props: {
   recording: RecordingType;
@@ -47,6 +50,14 @@ export const PostRecording = (props: {
           pointBackgroundColor: "#ff8fab",
         }}
       />
+
+      {recording.pronunciationAssessment && (
+        <div className="my-2">
+          <PronunciationAssessmentScoreDetail
+            assessment={recording.pronunciationAssessment}
+          />
+        </div>
+      )}
 
       {recording.referenceText && (
         <div className="my-2 bg-muted px-4 py-2 rounded">
