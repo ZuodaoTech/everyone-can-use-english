@@ -24,9 +24,7 @@ import log from "@main/logger";
 import storage from "@main/storage";
 import { Client } from "@/api";
 import { WEB_API_URL } from "@/constants";
-import { AzureSpeechSdk } from "@main/azure-speech-sdk";
 import echogarden from "@main/echogarden";
-import camelcaseKeys from "camelcase-keys";
 import { t } from "i18next";
 import { Attributes } from "sequelize";
 import { v5 as uuidv5 } from "uuid";
@@ -154,69 +152,6 @@ export class Recording extends Model<Recording> {
     return webApi.syncRecording(this.toJSON()).then(() => {
       this.update({ syncedAt: new Date() });
     });
-  }
-
-  async assess(language?: string) {
-    const assessment = await PronunciationAssessment.findOne({
-      where: { targetId: this.id, targetType: "Recording" },
-    });
-
-    if (assessment) {
-      return assessment;
-    }
-
-    await this.sync();
-    const webApi = new Client({
-      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
-      accessToken: settings.getSync("user.accessToken") as string,
-      logger,
-    });
-
-    const {
-      id: tokenId,
-      token,
-      region,
-    } = await webApi.generateSpeechToken({
-      targetId: this.id,
-      targetType: "Recording",
-    });
-    const sdk = new AzureSpeechSdk(token, region);
-
-    const result = await sdk.pronunciationAssessment({
-      filePath: this.filePath,
-      reference: this.referenceText,
-      language: language || this.language,
-    });
-
-    const resultJson = camelcaseKeys(
-      JSON.parse(JSON.stringify(result.detailResult)),
-      {
-        deep: true,
-      }
-    );
-    resultJson.duration = this.duration;
-    resultJson.tokenId = tokenId;
-
-    const _pronunciationAssessment = await PronunciationAssessment.create(
-      {
-        targetId: this.id,
-        targetType: "Recording",
-        pronunciationScore: result.pronunciationScore,
-        accuracyScore: result.accuracyScore,
-        completenessScore: result.completenessScore,
-        fluencyScore: result.fluencyScore,
-        prosodyScore: result.prosodyScore,
-        grammarScore: result.contentAssessmentResult?.grammarScore,
-        vocabularyScore: result.contentAssessmentResult?.vocabularyScore,
-        topicScore: result.contentAssessmentResult?.topicScore,
-        result: resultJson,
-        language: language || this.language,
-      },
-      {
-        include: Recording,
-      }
-    );
-    return _pronunciationAssessment;
   }
 
   @AfterFind
