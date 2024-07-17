@@ -47,27 +47,22 @@ class PronunciationAssessmentsHandler {
 
   private async create(
     _event: IpcMainEvent,
-    data: Partial<Attributes<PronunciationAssessment>> & {
-      blob: {
-        type: string;
-        arrayBuffer: ArrayBuffer;
-      };
-    }
+    data: Partial<Attributes<PronunciationAssessment>>
   ) {
-    const recording = await Recording.createFromBlob(data.blob, {
-      targetId: "00000000-0000-0000-0000-000000000000",
-      targetType: "None",
-      referenceText: data.referenceText,
-      language: data.language,
+    const { targetId, targetType } = data;
+    const existed = await PronunciationAssessment.findOne({
+      where: {
+        targetId,
+        targetType,
+      },
     });
 
-    try {
-      const assessment = await recording.assess(data.language);
-      return assessment.toJSON();
-    } catch (error) {
-      await recording.destroy();
-      throw error;
+    if (existed) {
+      return existed.toJSON();
     }
+
+    const assessment = await PronunciationAssessment.create(data);
+    return assessment.toJSON();
   }
 
   private async update(

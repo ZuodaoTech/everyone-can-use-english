@@ -1,9 +1,73 @@
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import { useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
+import camelcaseKeys from "camelcase-keys";
 
 export const usePronunciationAssessments = () => {
-  const { webApi } = useContext(AppSettingsProviderContext);
+  const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
+
+  const createAssessment = async (params: {
+    language: string;
+    recording: RecordingType;
+    reference?: string;
+    targetId?: string;
+    targetType?: string;
+  }) => {
+    let { recording, targetId, targetType } = params;
+    if (targetId && targetType && !recording) {
+      recording = await EnjoyApp.recordings.findOne(targetId);
+    }
+
+    await EnjoyApp.recordings.sync(recording.id);
+    const blob = await (await fetch(recording.src)).blob();
+    targetId = recording.id;
+    targetType = "Recording";
+
+    const { language, reference = recording.referenceText } = params;
+
+    const {
+      id: tokenId,
+      token,
+      region,
+    } = await webApi.generateSpeechToken({
+      purpose: "pronunciation_assessment",
+      targetId,
+      targetType,
+    });
+
+    const result = await assess(
+      {
+        blob,
+        language,
+        reference,
+      },
+      { token, region }
+    );
+
+    const resultJson = camelcaseKeys(
+      JSON.parse(JSON.stringify(result.detailResult)),
+      {
+        deep: true,
+      }
+    );
+    resultJson.tokenId = tokenId;
+    resultJson.duration = recording?.duration;
+
+    return EnjoyApp.pronunciationAssessments.create({
+      targetId: recording.id,
+      targetType: "Recording",
+      pronunciationScore: result.pronunciationScore,
+      accuracyScore: result.accuracyScore,
+      completenessScore: result.completenessScore,
+      fluencyScore: result.fluencyScore,
+      prosodyScore: result.prosodyScore,
+      grammarScore: result.contentAssessmentResult?.grammarScore,
+      vocabularyScore: result.contentAssessmentResult?.vocabularyScore,
+      topicScore: result.contentAssessmentResult?.topicScore,
+      result: resultJson,
+      language: params.language || recording.language,
+    });
+  };
 
   const assess = async (
     params: {
@@ -11,13 +75,13 @@ export const usePronunciationAssessments = () => {
       language: string;
       reference?: string;
     },
-    options?: {
-      targetId?: string;
-      targetType?: string;
+    options: {
+      token: string;
+      region: string;
     }
-  ) => {
+  ): Promise<sdk.PronunciationAssessmentResult> => {
     const { blob, language, reference } = params;
-    const { id, token, region } = await webApi.generateSpeechToken(options);
+    const { token, region } = options;
     const config = sdk.SpeechConfig.fromAuthorizationToken(token, region);
     const audioConfig = sdk.AudioConfig.fromWavFileInput(
       new File([blob], "audio.wav")
@@ -74,6 +138,7 @@ export const usePronunciationAssessments = () => {
   };
 
   return {
+    createAssessment,
     assess,
   };
 };

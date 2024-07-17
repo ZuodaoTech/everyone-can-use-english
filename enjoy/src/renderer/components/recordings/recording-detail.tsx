@@ -7,6 +7,7 @@ import { Separator, ScrollArea, toast } from "@renderer/components/ui";
 import { useState, useContext, useEffect } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { Tooltip } from "react-tooltip";
+import { usePronunciationAssessments } from "@renderer/hooks";
 
 export const RecordingDetail = (props: {
   recording: RecordingType;
@@ -25,7 +26,8 @@ export const RecordingDetail = (props: {
   }>();
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
+  const { learningLanguage } = useContext(AppSettingsProviderContext);
+  const { createAssessment } = usePronunciationAssessments();
   const [assessing, setAssessing] = useState(false);
 
   const assess = () => {
@@ -33,8 +35,11 @@ export const RecordingDetail = (props: {
     if (result) return;
 
     setAssessing(true);
-    EnjoyApp.recordings
-      .assess(recording.id, learningLanguage)
+    createAssessment({
+      recording,
+      reference: recording.referenceText,
+      language: recording.language || learningLanguage,
+    })
       .catch((err) => {
         toast.error(err.message);
       })

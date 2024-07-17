@@ -29,10 +29,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderIcon, MicIcon, SquareIcon } from "lucide-react";
 import WaveSurfer from "wavesurfer.js";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record";
+import { usePronunciationAssessments } from "@/renderer/hooks";
 
 const pronunciationAssessmentSchema = z.object({
   file: z.instanceof(FileList).optional(),
-  recording: z.instanceof(Blob).optional(),
+  recordingFile: z.instanceof(Blob).optional(),
   language: z.string().min(2),
   referenceText: z.string().optional(),
 });
@@ -41,6 +42,7 @@ export const PronunciationAssessmentForm = () => {
   const navigate = useNavigate();
   const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const [submitting, setSubmitting] = useState(false);
+  const { createAssessment } = usePronunciationAssessments();
 
   const form = useForm<z.infer<typeof pronunciationAssessmentSchema>>({
     resolver: zodResolver(pronunciationAssessmentSchema),
@@ -55,33 +57,27 @@ export const PronunciationAssessmentForm = () => {
   const onSubmit = async (
     data: z.infer<typeof pronunciationAssessmentSchema>
   ) => {
-    console.log(data);
-    if ((!data.file || data.file.length === 0) && !data.recording) {
+    if ((!data.file || data.file.length === 0) && !data.recordingFile) {
       toast.error(t("noFileOrRecording"));
-      form.setError("recording", { message: t("noFileOrRecording") });
+      form.setError("recordingFile", { message: t("noFileOrRecording") });
       return;
     }
-    const { language, referenceText, file, recording } = data;
-    let arrayBuffer: ArrayBuffer;
-    if (recording) {
-      arrayBuffer = await recording.arrayBuffer();
-    } else {
-      arrayBuffer = await new Blob([file[0]]).arrayBuffer();
-    }
+    const { language, referenceText } = data;
+
+    const recording = await createRecording(data);
 
     setSubmitting(true);
     toast.promise(
-      EnjoyApp.pronunciationAssessments
-        .create({
-          language,
-          referenceText,
-          blob: {
-            type: recording?.type || file[0].type,
-            arrayBuffer,
-          },
-        })
+      createAssessment({
+        language,
+        reference: referenceText,
+        recording,
+      })
         .then(() => {
           navigate("/pronunciation_assessments");
+        })
+        .catch(() => {
+          EnjoyApp.recordings.destroy(recording.id);
         })
         .finally(() => setSubmitting(false)),
       {
@@ -90,6 +86,35 @@ export const PronunciationAssessmentForm = () => {
         error: (err) => err.message,
       }
     );
+  };
+
+  const createRecording = async (
+    data: z.infer<typeof pronunciationAssessmentSchema>
+  ): Promise<RecordingType> => {
+    const { language, referenceText, file, recordingFile } = data;
+    let arrayBuffer: ArrayBuffer;
+    if (recordingFile) {
+      arrayBuffer = await recordingFile.arrayBuffer();
+    } else {
+      arrayBuffer = await new Blob([file[0]]).arrayBuffer();
+    }
+    const recording = await EnjoyApp.recordings.create({
+      language,
+      referenceText,
+      blob: {
+        type: recordingFile?.type || file[0].type,
+        arrayBuffer,
+      },
+    });
+
+    try {
+      await EnjoyApp.recordings.sync(recording.id);
+      return recording;
+    } catch (err) {
+      toast.error(err.message);
+      EnjoyApp.recordings.destroy(recording.id);
+      return;
+    }
   };
 
   return (
@@ -128,7 +153,7 @@ export const PronunciationAssessmentForm = () => {
               <div className="grid gap-4 border p-4 rounded-lg">
                 <FormField
                   control={form.control}
-                  name="recording"
+                  name="recordingFile"
                   render={({ field }) => (
                     <FormItem className="grid w-full items-center gap-1.5">
                       <Input
@@ -140,7 +165,7 @@ export const PronunciationAssessmentForm = () => {
                       />
                       <RecorderButton
                         onStart={() => {
-                          form.resetField("recording");
+                          form.resetField("recordingFile");
                         }}
                         onFinish={(blob) => {
                           field.onChange(blob);
@@ -149,11 +174,11 @@ export const PronunciationAssessmentForm = () => {
                     </FormItem>
                   )}
                 />
-                {form.watch("recording") && (
+                {form.watch("recordingFile") && (
                   <div className="">
                     <audio controls className="w-full">
                       <source
-                        src={URL.createObjectURL(form.watch("recording"))}
+                        src={URL.createObjectURL(form.watch("recordingFile"))}
                       />
                     </audio>
                   </div>
