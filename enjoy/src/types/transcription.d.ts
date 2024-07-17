@@ -8,6 +8,8 @@ type TranscriptionType = {
   model: string;
   language?: string;
   result: AlignmentResult & { original?: string };
+  createdAt: string;
+  updatedAt: string;
 };
 
 type TranscriptionResultSegmentType = {
