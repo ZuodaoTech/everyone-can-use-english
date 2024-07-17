@@ -22,7 +22,7 @@ export const SpeechPlayer = (props: {
   const [initialized, setInitialized] = useState(false);
 
   const onPlayClick = useCallback(() => {
-    wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
+    wavesurfer.playPause();
   }, [wavesurfer]);
 
   useEffect(() => {

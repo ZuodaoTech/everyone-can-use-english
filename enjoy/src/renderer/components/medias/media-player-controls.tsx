@@ -67,11 +67,7 @@ export const MediaPlayerControls = () => {
   const playOrPause = () => {
     if (!wavesurfer) return;
 
-    if (wavesurfer.isPlaying()) {
-      wavesurfer.pause();
-    } else {
-      wavesurfer.play();
-    }
+    wavesurfer.playPause();
   };
   const debouncedPlayOrPause = debounce(playOrPause, 100);
 

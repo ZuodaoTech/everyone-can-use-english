@@ -34,7 +34,7 @@ export const RecordingPlayer = (props: {
   const [initialized, setInitialized] = useState(false);
 
   const onPlayClick = useCallback(() => {
-    wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
+    wavesurfer.playPause();
   }, [wavesurfer]);
 
   useEffect(() => {
@@ -107,11 +107,7 @@ export const RecordingPlayer = (props: {
 
   useEffect(() => {
     if (!wavesurfer) return;
-    if (isPlaying) {
-      wavesurfer.play();
-    } else {
-      wavesurfer.pause();
-    }
+    wavesurfer.playPause();
   }, [isPlaying, wavesurfer]);
 
   return (
