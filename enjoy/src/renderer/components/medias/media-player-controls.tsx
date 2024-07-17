@@ -252,7 +252,6 @@ export const MediaPlayerControls = () => {
       .find((r) => r.id === `segment-region-${currentSegmentIndex}`);
 
     const activeRegionDebouncePlay = debounce(() => {
-      console.log("play loop");
       activeRegion?.play();
     }, 100);
 
