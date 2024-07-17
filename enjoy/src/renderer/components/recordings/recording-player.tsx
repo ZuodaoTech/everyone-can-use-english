@@ -107,7 +107,12 @@ export const RecordingPlayer = (props: {
 
   useEffect(() => {
     if (!wavesurfer) return;
-    wavesurfer.playPause();
+
+    if (isPlaying) {
+      wavesurfer.play();
+    } else {
+      wavesurfer.pause();
+    }
   }, [isPlaying, wavesurfer]);
 
   return (
