@@ -1,8 +1,10 @@
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  MediaPlayerProviderContext,
+} from "@renderer/context";
 import { useContext, useEffect, useState } from "react";
 import { LoaderSpin } from "@renderer/components";
 import {
-  Badge,
   Button,
   Table,
   TableBody,
@@ -10,6 +12,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { formatDateTime } from "@renderer/lib/utils";
@@ -17,43 +20,57 @@ import {
   CheckCircleIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  DownloadCloudIcon,
 } from "lucide-react";
 
-export const TranscriptionsList = (props: {
-  target: AudioType | VideoType;
-  onDownload: (transcription: TranscriptionType) => void;
-  currentTranscription?: TranscriptionType;
-}) => {
-  const { target, onDownload, currentTranscription } = props;
+export const TranscriptionsList = (props: { onFinish?: () => void }) => {
+  const { onFinish } = props;
+  const { media, transcription } = useContext(MediaPlayerProviderContext);
+  const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
   const [transcriptions, setTranscriptions] = useState<TranscriptionType[]>([]);
   const [loading, setLoading] = useState(false);
-  const { webApi } = useContext(AppSettingsProviderContext);
-  const [hasMore, setHasMore] = useState(true);
+  const [nextPage, setNextPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
 
   const fetchTranscriptions = async (params: { page: number }) => {
-    if (!hasMore) return;
-
     const { page = currentPage } = params;
     setLoading(true);
     webApi
       .transcriptions({
-        targetMd5: target.md5,
+        targetMd5: media.md5,
+        items: 10,
         page,
       })
       .then(({ transcriptions, next, page }) => {
         setTranscriptions(transcriptions);
         setCurrentPage(page);
-        setHasMore(!!next);
+        setNextPage(next);
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
+  const handleDownload = (tr: TranscriptionType) => {
+    EnjoyApp.transcriptions
+      .update(transcription.id, {
+        state: "finished",
+        result: tr.result,
+        engine: tr.engine,
+        model: tr.model,
+        language: tr.language || media.language,
+      })
+      .then(() => {
+        onFinish?.();
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
   useEffect(() => {
     fetchTranscriptions({ page: 1 });
-  }, [target]);
+  }, [media]);
 
   if (loading) {
     return <LoaderSpin />;
@@ -80,30 +97,31 @@ export const TranscriptionsList = (props: {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transcriptions.map((transcription) => (
-            <TableRow key={transcription.id}>
+          {transcriptions.map((tr) => (
+            <TableRow key={tr.id}>
               <TableCell className="text-xs font-mono">
-                {transcription.id.split("-")[0]}
-              </TableCell>
-              <TableCell className="text-sm">
-                {transcription.engine}/{transcription.model}
-              </TableCell>
-              <TableCell className="text-sm">
-                <Badge>{transcription.language || "-"}</Badge>
-              </TableCell>
-              <TableCell className="text-sm">
-                {formatDateTime(transcription.createdAt)}
+                {tr.id.split("-")[0]}
               </TableCell>
               <TableCell>
-                {currentTranscription?.id === transcription.id ? (
+                <div className="text-sm">{tr.engine}</div>
+                <div className="text-xs text-muted-foreground">{tr.model}</div>
+              </TableCell>
+              <TableCell>
+                <span className="text-sm">{tr.language || "-"}</span>
+              </TableCell>
+              <TableCell>
+                <span className="text-xs">{formatDateTime(tr.createdAt)}</span>
+              </TableCell>
+              <TableCell>
+                {transcription?.id === tr.id ? (
                   <CheckCircleIcon className="text-green-600 w-4 h-4" />
                 ) : (
                   <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onDownload(transcription)}
+                    variant="secondary"
+                    size="icon"
+                    onClick={() => handleDownload(tr)}
                   >
-                    {t("download")}
+                    <DownloadCloudIcon className="w-4 h-4" />
                   </Button>
                 )}
               </TableCell>
@@ -125,7 +143,7 @@ export const TranscriptionsList = (props: {
         <Button
           variant="ghost"
           size="icon"
-          disabled={!hasMore}
+          disabled={!nextPage}
           onClick={() => fetchTranscriptions({ page: currentPage + 1 })}
         >
           <ChevronRightIcon className="w-5 h-5" />
