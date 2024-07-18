@@ -23,9 +23,12 @@ import {
   DownloadCloudIcon,
 } from "lucide-react";
 
-export const TranscriptionsList = (props: { onFinish?: () => void }) => {
-  const { onFinish } = props;
-  const { media, transcription } = useContext(MediaPlayerProviderContext);
+export const TranscriptionsList = (props: {
+  media: AudioType | VideoType;
+  transcription?: TranscriptionType;
+  onFinish?: () => void;
+}) => {
+  const { media, transcription, onFinish } = props;
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
   const [transcriptions, setTranscriptions] = useState<TranscriptionType[]>([]);
   const [loading, setLoading] = useState(false);

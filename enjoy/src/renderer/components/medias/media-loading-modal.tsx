@@ -13,7 +13,6 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-  toast,
 } from "@renderer/components/ui";
 import { CheckCircleIcon, LoaderIcon, XCircleIcon } from "lucide-react";
 import { t } from "i18next";
@@ -74,7 +73,10 @@ export const MediaLoadingModal = () => {
                 />
               </TabsContent>
               <TabsContent value="download">
-                <TranscriptionsList />
+                <TranscriptionsList
+                  media={media}
+                  transcription={transcription}
+                />
               </TabsContent>
             </Tabs>
           )

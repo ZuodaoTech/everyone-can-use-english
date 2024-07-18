@@ -93,7 +93,11 @@ export const MediaTranscriptionGenerateButton = (props: {
             />
           </TabsContent>
           <TabsContent value="download">
-            <TranscriptionsList onFinish={() => setOpen(false)} />
+            <TranscriptionsList
+              media={media}
+              transcription={transcription}
+              onFinish={() => setOpen(false)}
+            />
           </TabsContent>
         </Tabs>
       </AlertDialogContent>
