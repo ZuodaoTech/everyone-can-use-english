@@ -3,12 +3,12 @@ main = "index.js"
 workers_dev = false
 compatibility_date = "2023-03-23"
 
-routes = ["next.1000h.org/*"]
+routes = ["1000h.org/*"]
 services = [
   { binding = "vtp", service = "1000h-vtp" },
   { binding = "portal", service = "1000h-portal" },
 ]
 
 [vars]
-HOST = "https://next.1000h.org"
+HOST = "https://1000h.org"
 
