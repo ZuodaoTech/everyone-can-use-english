@@ -9,11 +9,15 @@ import {
   AlertDialogFooter,
   AlertDialogOverlay,
   Button,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from "@renderer/components/ui";
 import { CheckCircleIcon, LoaderIcon, XCircleIcon } from "lucide-react";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
-import { TranscriptionCreateForm } from "../transcriptions";
+import { TranscriptionCreateForm, TranscriptionsList } from "../transcriptions";
 
 export const MediaLoadingModal = () => {
   const navigate = useNavigate();
@@ -46,21 +50,35 @@ export const MediaLoadingModal = () => {
               <span>{t("transcribedSuccessfully")}</span>
             </div>
           ) : (
-            <TranscriptionCreateForm
-              originalText={transcription?.result?.originalText}
-              onSubmit={(data) => {
-                generateTranscription({
-                  originalText: data.text,
-                  language: data.language,
-                  service: data.service as WhisperConfigType["service"],
-                  isolate: data.isolate,
-                });
-              }}
-              onCancel={() => navigate(-1)}
-              transcribing={transcribing}
-              transcribingProgress={transcribingProgress}
-              transcribingOutput={transcribingOutput}
-            />
+            <Tabs defaultValue="transcribe">
+              <TabsList className="w-full grid grid-cols-2 mb-4">
+                <TabsTrigger value="transcribe">{t("transcribe")}</TabsTrigger>
+                <TabsTrigger value="download">{t("download")}</TabsTrigger>
+              </TabsList>
+              <TabsContent value="transcribe">
+                <TranscriptionCreateForm
+                  originalText={transcription?.result?.originalText}
+                  onSubmit={(data) => {
+                    generateTranscription({
+                      originalText: data.text,
+                      language: data.language,
+                      service: data.service as WhisperConfigType["service"],
+                      isolate: data.isolate,
+                    });
+                  }}
+                  onCancel={() => navigate(-1)}
+                  transcribing={transcribing}
+                  transcribingProgress={transcribingProgress}
+                  transcribingOutput={transcribingOutput}
+                />
+              </TabsContent>
+              <TabsContent value="download">
+                <TranscriptionsList
+                  media={media}
+                  transcription={transcription}
+                />
+              </TabsContent>
+            </Tabs>
           )
         ) : (
           <>

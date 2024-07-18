@@ -9,10 +9,17 @@ import {
   AlertDialogContent,
   AlertDialogTitle,
   AlertDialogDescription,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   toast,
 } from "@renderer/components/ui";
 import { LoaderIcon } from "lucide-react";
-import { TranscriptionCreateForm } from "../transcriptions";
+import {
+  TranscriptionCreateForm,
+  TranscriptionsList,
+} from "@renderer/components";
 
 export const MediaTranscriptionGenerateButton = (props: {
   children: React.ReactNode;
@@ -57,27 +64,42 @@ export const MediaTranscriptionGenerateButton = (props: {
           </AlertDialogDescription>
         </AlertDialogHeader>
 
-        <TranscriptionCreateForm
-          onCancel={() => setOpen(false)}
-          onSubmit={(data) => {
-            generateTranscription({
-              originalText: data.text,
-              language: data.language,
-              service: data.service as WhisperConfigType["service"],
-              isolate: data.isolate,
-            })
-              .then(() => {
-                setOpen(false);
-              })
-              .catch((e) => {
-                toast.error(e.message);
-              });
-          }}
-          originalText=""
-          transcribing={transcribing}
-          transcribingProgress={transcribingProgress}
-          transcribingOutput={transcribingOutput}
-        />
+        <Tabs defaultValue="transcribe">
+          <TabsList className="w-full grid grid-cols-2 mb-4">
+            <TabsTrigger value="transcribe">{t("transcribe")}</TabsTrigger>
+            <TabsTrigger value="download">{t("download")}</TabsTrigger>
+          </TabsList>
+          <TabsContent value="transcribe">
+            <TranscriptionCreateForm
+              onCancel={() => setOpen(false)}
+              onSubmit={(data) => {
+                generateTranscription({
+                  originalText: data.text,
+                  language: data.language,
+                  service: data.service as WhisperConfigType["service"],
+                  isolate: data.isolate,
+                })
+                  .then(() => {
+                    setOpen(false);
+                  })
+                  .catch((e) => {
+                    toast.error(e.message);
+                  });
+              }}
+              originalText=""
+              transcribing={transcribing}
+              transcribingProgress={transcribingProgress}
+              transcribingOutput={transcribingOutput}
+            />
+          </TabsContent>
+          <TabsContent value="download">
+            <TranscriptionsList
+              media={media}
+              transcription={transcription}
+              onFinish={() => setOpen(false)}
+            />
+          </TabsContent>
+        </Tabs>
       </AlertDialogContent>
     </AlertDialog>
   );
