@@ -326,7 +326,7 @@
   "deleteRecording": "删除录音",
   "deleteRecordingConfirmation": "您确定要删除录音吗？",
   "myRecordings": "我的练习",
-  "noRecordingForThisSegmentYet": "当前句子还没有练习过。按 <kbd>R</kbd> 键开始录音。",
+  "noRecordingForThisSegmentYet": "当前句子还没有练习过。按 <kbd>{{key}}</kbd> 键开始录音。",
   "lastYear": "过去一年",
   "less": "更少",
   "more": "更多",
