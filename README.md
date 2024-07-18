@@ -1,12 +1,10 @@
-<h1 align="center">
+<div align="center">
   <img src="./enjoy/assets/icon.png" alt="Clash" width="128" />
-</h1>
+</div>
 
-<h3 align="center">
+<h2 align="center">
 AI 是当今世界上最好的外语老师，Enjoy 做 AI 最好的助教。
-</h3>
-
-# Enjoy App
+</h2>
 
 [![Deploy 1000h website](https://github.com/ZuodaoTech/everyone-can-use-english/actions/workflows/deploy-1000h.yml/badge.svg)](https://github.com/ZuodaoTech/everyone-can-use-english/actions/workflows/deploy-1000h.yml)
 [![Test Enjoy App](https://github.com/ZuodaoTech/everyone-can-use-english/actions/workflows/test-enjoy-app.yml/badge.svg)](https://github.com/ZuodaoTech/everyone-can-use-english/actions/workflows/test-enjoy-app.yml)
