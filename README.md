@@ -1,36 +1,45 @@
-# 一千小时
+<h1 align="center">
+  <img src="./enjoy/assets/icon.png" alt="Clash" width="128" />
+</h1>
 
-## 在线阅读
+<h3 align="center">
+AI 是当今世界上最好的外语老师，Enjoy 做 AI 最好的助教。
+</h3>
 
-[1000h.org](https://1000h.org)
+## 安装及使用
 
-## 本地阅读
+下载及使用相关说明，请参阅 [文档](https://1000h.org/enjoy-app/)。
 
-```
-yarn install
-yarn docs:dev
-```
+## Enjoy APP 预览
 
-# Enjoy App
+<div align="center" style="display:flex;overflow:auto;">
+  <img src="./enjoy/snapshots/home.png" alt="Home" width="800" />
 
-## 使用说明
+  <img src="./enjoy/snapshots/shadow.png" alt="Home" width="800" />
 
-请参阅 https://1000h.org/enjoy-app/
+  <img src="./enjoy/snapshots/assessment.png" alt="Home" width="800" />
 
-## 本地启动
+  <img src="./enjoy/snapshots/course.png" alt="Home" width="800" />
+</div>
 
-```
+## 开发
+
+```bash
 yarn install
 yarn enjoy:start
 ```
 
-# 语音塑造（新版）（2024）
+## 相关阅读
 
-请参阅 https://1000h.org/sounds-of-american-english/1-basics.html
+### 一千小时（2024）
 
-# 人人都能用英语（2010）
+- [简要说明](https://1000h.org/intro.html)
+- [训练任务](https://1000h.org/training-tasks/kick-off.html)
+- [语音塑造](https://1000h.org/sounds-of-american-english/1-basics.html)
+- [大脑内部](https://1000h.org/in-the-brain/01-inifinite.html)
+- [自我训练](https://1000h.org/self-training/00-intro.html)
 
-## 目录
+### 人人都能用英语（2010）
 
 - [简介](./book/README.md)
 - [第一章：起点](./book/chapter1.md)
