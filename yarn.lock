@@ -16,7 +16,7 @@ __metadata:
     markdown-it-sub: "npm:^2.0.0"
     markdown-it-sup: "npm:^2.0.0"
     mermaid: "npm:^10.9.1"
-    sass: "npm:^1.77.6"
+    sass: "npm:^1.77.8"
     vitepress: "npm:^1.3.0"
     vitepress-plugin-mermaid: "npm:^2.0.16"
     vue: "npm:^3.4.30"
@@ -24107,7 +24107,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.77.4, sass@npm:^1.77.6":
+"sass@npm:^1.77.4":
   version: 1.77.6
   resolution: "sass@npm:1.77.6"
   dependencies:
@@ -24117,6 +24117,19 @@ __metadata:
   bin:
     sass: sass.js
   checksum: 10c0/fe5a393c0aa29eda9f83c06be9b94788b61fe8bad0616ee6e3a25d21ab504f430d40c0064fdca89b02b8e426411ae6dcd906c91f2e48c263575c3d392b6daeb1
+  languageName: node
+  linkType: hard
+
+"sass@npm:^1.77.8":
+  version: 1.77.8
+  resolution: "sass@npm:1.77.8"
+  dependencies:
+    chokidar: "npm:>=3.0.0 <4.0.0"
+    immutable: "npm:^4.0.0"
+    source-map-js: "npm:>=0.6.2 <2.0.0"
+  bin:
+    sass: sass.js
+  checksum: 10c0/2bfd62794070352c804f949e69bd8bb5b4ec846deeb924251b2c3f7b503170fb1ae186f513f0166907749eb34e0277dee747edcb78c886fb471aac01be1e864c
   languageName: node
   linkType: hard
 
