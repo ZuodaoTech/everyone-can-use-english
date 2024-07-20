@@ -16,7 +16,7 @@ import whisper from "@main/whisper";
 import fs from "fs-extra";
 import "@main/i18n";
 import log from "@main/logger";
-import { WEB_API_URL, REPO_URL, WS_URL } from "@/constants";
+import { REPO_URL, WS_URL } from "@/constants";
 import { AudibleProvider, TedProvider, YoutubeProvider } from "@main/providers";
 import Ffmpeg from "@main/ffmpeg";
 import { Waveform } from "./waveform";
@@ -315,8 +315,7 @@ main.init = () => {
   });
 
   ipcMain.handle("app-api-url", () => {
-    const apiUrl = settings.getSync("apiUrl");
-    return process.env.WEB_API_URL || apiUrl || WEB_API_URL;
+    return settings.apiUrl();
   });
 
   ipcMain.handle("app-ws-url", () => {

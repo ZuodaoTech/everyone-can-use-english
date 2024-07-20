@@ -16,7 +16,6 @@ import {
 import mainWindow from "@main/window";
 import { Recording } from "@main/db/models";
 import { Client } from "@/api";
-import { WEB_API_URL } from "@/constants";
 import settings from "@main/settings";
 import log from "@main/logger";
 
@@ -102,7 +101,7 @@ export class PronunciationAssessment extends Model<PronunciationAssessment> {
 
   async sync() {
     const webApi = new Client({
-      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      baseUrl: settings.apiUrl(),
       accessToken: settings.getSync("user.accessToken") as string,
       logger: log.scope("api/client"),
     });

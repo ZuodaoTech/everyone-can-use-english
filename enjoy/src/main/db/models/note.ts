@@ -15,7 +15,6 @@ import {
 import mainWindow from "@main/window";
 import log from "@main/logger";
 import { Client } from "@/api";
-import { WEB_API_URL } from "@/constants";
 import settings from "@main/settings";
 import { Segment } from "@main/db/models";
 
@@ -61,7 +60,7 @@ export class Note extends Model<Note> {
     if (this.isSynced) return;
 
     const webApi = new Client({
-      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      baseUrl: settings.apiUrl(),
       accessToken: settings.getSync("user.accessToken") as string,
       logger,
     });
@@ -121,7 +120,7 @@ export class Note extends Model<Note> {
   @AfterDestroy
   static destroyRemote(note: Note) {
     const webApi = new Client({
-      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      baseUrl: settings.apiUrl(),
       accessToken: settings.getSync("user.accessToken") as string,
       logger,
     });

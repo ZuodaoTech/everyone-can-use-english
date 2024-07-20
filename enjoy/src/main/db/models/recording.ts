@@ -23,7 +23,6 @@ import { hashFile } from "@main/utils";
 import log from "@main/logger";
 import storage from "@main/storage";
 import { Client } from "@/api";
-import { WEB_API_URL } from "@/constants";
 import echogarden from "@main/echogarden";
 import { t } from "i18next";
 import { Attributes } from "sequelize";
@@ -144,7 +143,7 @@ export class Recording extends Model<Recording> {
     if (this.isSynced) return;
 
     const webApi = new Client({
-      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      baseUrl: settings.apiUrl(),
       accessToken: settings.getSync("user.accessToken") as string,
       logger,
     });
@@ -238,7 +237,7 @@ export class Recording extends Model<Recording> {
   static cleanupFile(recording: Recording) {
     fs.remove(recording.filePath);
     const webApi = new Client({
-      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      baseUrl: settings.apiUrl(),
       accessToken: settings.getSync("user.accessToken") as string,
       logger: log.scope("recording/cleanupFile"),
     });

@@ -1,5 +1,5 @@
 import settings from "electron-settings";
-import { LIBRARY_PATH_SUFFIX, DATABASE_NAME } from "@/constants";
+import { LIBRARY_PATH_SUFFIX, DATABASE_NAME, WEB_API_URL } from "@/constants";
 import { ipcMain, app } from "electron";
 import path from "path";
 import fs from "fs-extra";
@@ -90,6 +90,11 @@ const userDataPath = () => {
   fs.ensureDirSync(userData);
 
   return userData;
+};
+
+const apiUrl = () => {
+  const url: string = settings.getSync("apiUrl") as string;
+  return process.env.API_URL || url || WEB_API_URL;
 };
 
 export default {
@@ -192,5 +197,6 @@ export default {
   whisperConfig,
   language,
   switchLanguage,
+  apiUrl,
   ...settings,
 };

@@ -16,7 +16,7 @@ import {
 } from "sequelize-typescript";
 import { Recording, Speech, Transcription, Video } from "@main/db/models";
 import settings from "@main/settings";
-import { AudioFormats, VideoFormats, WEB_API_URL } from "@/constants";
+import { AudioFormats, VideoFormats } from "@/constants";
 import { hashFile } from "@main/utils";
 import path from "path";
 import fs from "fs-extra";
@@ -182,7 +182,7 @@ export class Audio extends Model<Audio> {
     if (this.isSynced) return;
 
     const webApi = new Client({
-      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      baseUrl: settings.apiUrl(),
       accessToken: settings.getSync("user.accessToken") as string,
       logger: log.scope("audio/sync"),
     });
@@ -263,7 +263,7 @@ export class Audio extends Model<Audio> {
     });
 
     const webApi = new Client({
-      baseUrl: process.env.WEB_API_URL || WEB_API_URL,
+      baseUrl: settings.apiUrl(),
       accessToken: settings.getSync("user.accessToken") as string,
       logger: log.scope("audio/cleanupFile"),
     });
