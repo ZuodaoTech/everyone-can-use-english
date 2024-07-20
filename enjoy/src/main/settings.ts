@@ -176,6 +176,14 @@ export default {
     ipcMain.handle("settings-set-default-hotkeys", (_event, records) => {
       return settings.setSync("defaultHotkeys", records);
     });
+
+    ipcMain.handle("settings-get-api-url", (_event, url) => {
+      return settings.getSync("apiUrl");
+    });
+
+    ipcMain.handle("settings-set-api-url", (_event, url) => {
+      return settings.setSync("apiUrl", url);
+    });
   },
   cachePath,
   libraryPath,

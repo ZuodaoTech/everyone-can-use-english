@@ -258,6 +258,7 @@
   "resetSettingsConfirmation": "您确定要重置个人设置选项吗？资料库不会受影响。",
   "proxySettings": "代理设置",
   "proxyConfigUpdated": "代理配置已更新",
+  "apiSettings": "API 设置",
   "logoutAndRemoveAllPersonalData": "退出登录并删除所有个人数据",
   "logoutAndRemoveAllPersonalSettings": "退出登录并删除所有个人设置选项",
   "hotkeys": "快捷键",

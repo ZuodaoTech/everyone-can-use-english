@@ -315,11 +315,13 @@ main.init = () => {
   });
 
   ipcMain.handle("app-api-url", () => {
-    return process.env.WEB_API_URL || WEB_API_URL;
+    const apiUrl = settings.getSync("apiUrl");
+    return process.env.WEB_API_URL || apiUrl || WEB_API_URL;
   });
 
   ipcMain.handle("app-ws-url", () => {
-    return process.env.WS_URL || WS_URL;
+    const wsUrl = settings.getSync("wsUrl");
+    return process.env.WS_URL || wsUrl || WS_URL;
   });
 
   ipcMain.handle("app-quit", () => {

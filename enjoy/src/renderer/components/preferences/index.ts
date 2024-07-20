@@ -1,5 +1,6 @@
 export * from "./preferences";
 export * from "./about";
+export * from "./api-url-settings";
 export * from "./appearance";
 
 export * from "./hotkeys";

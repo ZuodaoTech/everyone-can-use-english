@@ -258,6 +258,7 @@
   "resetSettingsConfirmation": "It will reset all of your settings, are you sure? The library will not be affected.",
   "proxySettings": "Proxy Settings",
   "proxyConfigUpdated": "Proxy config updated",
+  "apiSettings": "API Settings",
   "logoutAndRemoveAllPersonalData": "Logout and remove all personal data",
   "logoutAndRemoveAllPersonalSettings": "Logout and remove all personal settings",
   "hotkeys": "Hotkeys",

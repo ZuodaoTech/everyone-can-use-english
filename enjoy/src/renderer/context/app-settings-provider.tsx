@@ -10,6 +10,7 @@ import { SENTRY_DSN } from "@/constants";
 type AppSettingsProviderState = {
   webApi: Client;
   apiUrl?: string;
+  setApiUrl?: (url: string) => void;
   user: UserType | null;
   initialized: boolean;
   version?: string;
@@ -164,6 +165,12 @@ export const AppSettingsProvider = ({
     });
   };
 
+  const setApiUrlHandler = async (url: string) => {
+    EnjoyApp.settings.setApiUrl(url).then(() => {
+      EnjoyApp.app.reload();
+    });
+  };
+
   const createCable = async (token: string) => {
     const wsUrl = await EnjoyApp.app.wsUrl();
     const consumer = createConsumer(wsUrl + "/cable?token=" + token);
@@ -220,6 +227,7 @@ export const AppSettingsProvider = ({
         version,
         webApi,
         apiUrl,
+        setApiUrl: setApiUrlHandler,
         user,
         login,
         logout,
