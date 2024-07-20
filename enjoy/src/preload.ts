@@ -218,6 +218,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     setDefaultHotkeys: (records: Record<string, string>) => {
       return ipcRenderer.invoke("settings-set-default-hotkeys", records);
     },
+    getApiUrl: () => {
+      return ipcRenderer.invoke("settings-get-api-url");
+    },
+    setApiUrl: (url: string) => {
+      return ipcRenderer.invoke("settings-set-api-url", url);
+    },
   },
   path: {
     join: (...paths: string[]) => {
