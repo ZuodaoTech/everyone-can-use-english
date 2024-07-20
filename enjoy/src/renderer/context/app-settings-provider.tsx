@@ -10,7 +10,7 @@ import { SENTRY_DSN } from "@/constants";
 type AppSettingsProviderState = {
   webApi: Client;
   apiUrl?: string;
-  setApiUrl?: (url: string) => void;
+  setApiUrl?: (url: string) => Promise<void>;
   user: UserType | null;
   initialized: boolean;
   version?: string;

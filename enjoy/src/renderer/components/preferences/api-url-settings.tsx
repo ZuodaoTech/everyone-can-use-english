@@ -13,6 +13,7 @@ import {
 } from "@renderer/components/ui";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { useContext, useState, useEffect } from "react";
+import { InfoIcon } from "lucide-react";
 
 export const ApiUrlSettings = () => {
   const { apiUrl, setApiUrl } = useContext(AppSettingsProviderContext);
@@ -30,7 +31,10 @@ export const ApiUrlSettings = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof apiConfigSchema>) => {
-    setApiUrl(data.url);
+    setApiUrl(data.url).then(() => {
+      toast.success(t("apiUrlUpdated"));
+      setEditing(false);
+    });
   };
 
   useEffect(() => {}, [apiUrl]);
@@ -61,9 +65,29 @@ export const ApiUrlSettings = () => {
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 justify-end">
-            {editing ? (
-              <>
+          <div className="">
+            <div className="flex items-center space-x-2 justify-end mb-2">
+              {editing ? (
+                <>
+                  <Button
+                    variant="secondary"
+                    onClick={(e) => {
+                      setEditing(!editing);
+                      e.preventDefault();
+                    }}
+                    size="sm"
+                  >
+                    {t("cancel")}
+                  </Button>
+                  <Button
+                    variant="default"
+                    onClick={() => onSubmit(form.getValues())}
+                    size="sm"
+                  >
+                    {t("save")}
+                  </Button>
+                </>
+              ) : (
                 <Button
                   variant="secondary"
                   onClick={(e) => {
@@ -72,28 +96,14 @@ export const ApiUrlSettings = () => {
                   }}
                   size="sm"
                 >
-                  {t("cancel")}
+                  {t("edit")}
                 </Button>
-                <Button
-                  variant="default"
-                  onClick={() => onSubmit(form.getValues())}
-                  size="sm"
-                >
-                  {t("save")}
-                </Button>
-              </>
-            ) : (
-              <Button
-                variant="secondary"
-                onClick={(e) => {
-                  setEditing(!editing);
-                  e.preventDefault();
-                }}
-                size="sm"
-              >
-                {t("edit")}
-              </Button>
-            )}
+              )}
+            </div>
+            <div className="text-xs text-muted-foreground">
+              <InfoIcon className="mr-1 w-3 h-3 inline" />
+              <span>{t("reloadIsNeededAfterChanged")}</span>
+            </div>
           </div>
         </div>
       </form>
