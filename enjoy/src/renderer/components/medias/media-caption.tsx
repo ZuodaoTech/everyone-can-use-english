@@ -240,11 +240,13 @@ export const MediaCaption = () => {
   useEffect(() => {
     if (!caption) return;
 
-    const index = caption.timeline.findIndex(
+    let index = caption.timeline.findIndex(
       (w) => currentTime >= w.startTime && currentTime < w.endTime
     );
 
+    if (index < 0) return;
     if (index !== activeIndex) {
+      console.log("setActiveIndex", index);
       setActiveIndex(index);
     }
   }, [currentTime, caption]);
