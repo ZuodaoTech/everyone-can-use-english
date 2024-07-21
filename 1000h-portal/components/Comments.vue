@@ -84,37 +84,37 @@ const items = ref([
   {
     avatar: "/portal-static/images/avatar.png",
     name: "匿名用户",
-    hint: "连续打卡",
+    hint: "-",
     text: "在英语方面，提升了发音质量，同时提高了背诵速度及效果；在学习方面，养成了一定的学习习惯，同时也迫使自己不断的输出。",
   },
   {
     avatar: "/portal-static/images/avatar.png",
     name: "匿名用户",
-    hint: "连续打卡",
+    hint: "-",
     text: "跟着读了这些天，对学英语不再有恐惧感了，仿佛没有读不了的句子了，有这个软件，英语的学习计划也直接提前了。",
   },
   {
     avatar: "/portal-static/images/avatar.png",
     name: "匿名用户",
-    hint: "连续打卡",
+    hint: "-",
     text: "纠正发音、方便跟读、了解读音的轻重缓急。",
   },
   {
     avatar: "/portal-static/images/avatar.png",
     name: "匿名用户",
-    hint: "连续打卡",
+    hint: "-",
     text: "纠正了很多过去读错，混淆的音。翻译超快，有语音可以跟读练习真是太好用了！学到了很多自己没想到过的表达方式，还有很多新词。记录自己的练习，也让自身很有成就感，不再担心学英语有什么用，练起来，这个过程就足够有用了！",
   },
   {
     avatar: "/portal-static/images/avatar.png",
     name: "匿名用户",
-    hint: "连续打卡",
+    hint: "-",
     text: "自动音标生成、逐句跟读功能让练习很方便，快捷键也很好用，口语水平提高了不少。",
   },
   {
     avatar: "/portal-static/images/avatar.png",
     name: "匿名用户",
-    hint: "连续打卡",
+    hint: "-",
     text: "听力更清晰，特别是在听背的熟练的说法时。",
   },
 ]);
@@ -133,7 +133,7 @@ const comments = computed(() => {
       ...item,
       name: info.name,
       avatar: info.avatar_url,
-      hint: `连续打卡 ${sumHours.toFixed(0)} 小时`,
+      hint: `连续打卡 ${sumHours.toFixed(1)} 小时`,
     };
   });
 });
