@@ -27,6 +27,8 @@ type AppSettingsProviderState = {
   switchLearningLanguage?: (lang: string) => void;
   proxy?: ProxyConfigType;
   setProxy?: (config: ProxyConfigType) => Promise<void>;
+  vocabularyConfig?: VocabularyConfigType;
+  setVocabularyConfig?: (config: VocabularyConfigType) => Promise<void>;
   cable?: Consumer;
   ahoy?: typeof ahoy;
   // remote config
@@ -56,6 +58,8 @@ export const AppSettingsProvider = ({
   const [language, setLanguage] = useState<"en" | "zh-CN">();
   const [nativeLanguage, setNativeLanguage] = useState<string>("zh-CN");
   const [learningLanguage, setLearningLanguage] = useState<string>("en-US");
+  const [vocabularyConfig, setVocabularyConfig] =
+    useState<VocabularyConfigType>(null);
   const [proxy, setProxy] = useState<ProxyConfigType>();
   const EnjoyApp = window.__ENJOY_APP__;
   const [ipaMappings, setIpaMappings] = useState<{ [key: string]: string }>(
@@ -177,12 +181,23 @@ export const AppSettingsProvider = ({
     setCable(consumer);
   };
 
+  const fetchVocabularyConfig = async () => {
+    const config = await EnjoyApp.settings.getVocabularyConfig();
+    config && setVocabularyConfig(config);
+  };
+
+  const setVocabularyConfigHandler = async (config: VocabularyConfigType) => {
+    await EnjoyApp.settings.setVocabularyConfig(config);
+    setVocabularyConfig(config);
+  };
+
   useEffect(() => {
     fetchVersion();
     fetchUser();
     fetchLibraryPath();
     fetchLanguages();
     fetchProxyConfig();
+    fetchVocabularyConfig();
     initSentry();
   }, []);
 
@@ -235,6 +250,8 @@ export const AppSettingsProvider = ({
         setLibraryPath: setLibraryPathHandler,
         proxy,
         setProxy: setProxyConfigHandler,
+        vocabularyConfig,
+        setVocabularyConfig: setVocabularyConfigHandler,
         initialized: Boolean(user && libraryPath),
         ahoy,
         cable,

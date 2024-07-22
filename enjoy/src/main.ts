@@ -64,7 +64,10 @@ contextMenu({
         !parameters.selectionText.trim().includes(" "),
       click: () => {
         const { x, y, selectionText } = parameters;
-        browserWindow.webContents.send("on-lookup", selectionText, { x, y });
+        browserWindow.webContents.send("on-lookup", selectionText, "", {
+          x,
+          y,
+        });
       },
     },
     {

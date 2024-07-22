@@ -134,10 +134,16 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   onNotification: (
     callback: (event: IpcRendererEvent, notification: NotificationType) => void
   ) => ipcRenderer.on("on-notification", callback),
+  lookup: (
+    selection: string,
+    context: string,
+    position: { x: number; y: number }
+  ) => ipcRenderer.emit("on-lookup", null, selection, context, position),
   onLookup: (
     callback: (
       event: IpcRendererEvent,
       selection: string,
+      context: string,
       position: { x: number; y: number }
     ) => void
   ) => ipcRenderer.on("on-lookup", callback),
@@ -151,6 +157,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       position: { x: number; y: number }
     ) => void
   ) => ipcRenderer.on("on-translate", callback),
+  offTranslate: () => {
+    ipcRenderer.removeAllListeners("on-translate");
+  },
   shell: {
     openExternal: (url: string) =>
       ipcRenderer.invoke("shell-open-external", url),
@@ -223,6 +232,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     setApiUrl: (url: string) => {
       return ipcRenderer.invoke("settings-set-api-url", url);
+    },
+    getVocabularyConfig: () => {
+      return ipcRenderer.invoke("settings-get-vocabulary-config");
+    },
+    setVocabularyConfig: (records: Record<string, string>) => {
+      return ipcRenderer.invoke("settings-set-vocabulary-config", records);
     },
   },
   path: {

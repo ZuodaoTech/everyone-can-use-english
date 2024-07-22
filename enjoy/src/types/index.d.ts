@@ -156,6 +156,10 @@ type ProxyConfigType = {
   url: string;
 };
 
+type VocabularyConfigType = {
+  lookupOnMouseOver: boolean;
+};
+
 type YoutubeVideoType = {
   title: string;
   thumbnail: string;

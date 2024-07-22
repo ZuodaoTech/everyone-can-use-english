@@ -17,6 +17,7 @@ import {
   ResetAllSettings,
   NativeLanguageSettings,
   LearningLanguageSettings,
+  VocabularySettings,
 } from "@renderer/components";
 import { useState } from "react";
 import { Tooltip } from "react-tooltip";
@@ -35,6 +36,8 @@ export const Preferences = () => {
           <NativeLanguageSettings />
           <Separator />
           <LearningLanguageSettings />
+          <Separator />
+          <VocabularySettings />
           <Separator />
           <WhisperSettings />
           <Separator />

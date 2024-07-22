@@ -28,36 +28,50 @@ export const LookupWidget = () => {
     };
   }>();
 
-  const handleSelectionChanged = (position: { x: number; y: number }) => {
-    const selection = document.getSelection();
-    if (!selection?.anchorNode?.parentElement) return;
+  const handleSelectionChanged = (
+    _word: string,
+    _context: string,
+    position: { x: number; y: number }
+  ) => {
+    let word = _word;
+    let context = _context;
 
-    const word = selection
-      .toString()
-      .trim()
-      .replace(/[.,/#!$%^&*;:{}=\-_`~()]+$/, "");
-    if (!word) return;
-    // can only lookup single word
-    if (word.indexOf(" ") > -1) return;
+    if (word) {
+      if (word.indexOf(" ") > -1) return;
+      setSelected({ word, context, position });
+    } else {
+      const selection = document.getSelection();
+      if (!selection?.anchorNode?.parentElement) return;
 
-    const context = selection.anchorNode.parentElement
-      .closest(".sentence, h2, p, div")
-      ?.textContent?.trim();
+      word = selection
+        .toString()
+        .trim()
+        .replace(/[.,/#!$%^&*;:{}=\-_`~()]+$/, "");
 
-    const sourceType = selection.anchorNode.parentElement
-      .closest("[data-source-type]")
-      ?.getAttribute("data-source-type");
-    const sourceId = selection.anchorNode.parentElement
-      .closest("[data-source-id]")
-      ?.getAttribute("data-source-id");
+      if (!word) return;
+      // can only lookup single word
+      if (word.indexOf(" ") > -1) return;
 
-    setSelected({ word, context, position, sourceType, sourceId });
+      context = selection?.anchorNode.parentElement
+        .closest(".sentence, h2, p, div")
+        ?.textContent?.trim();
+
+      const sourceType = selection?.anchorNode.parentElement
+        .closest("[data-source-type]")
+        ?.getAttribute("data-source-type");
+      const sourceId = selection?.anchorNode.parentElement
+        .closest("[data-source-id]")
+        ?.getAttribute("data-source-id");
+
+      setSelected({ word, context, position, sourceType, sourceId });
+    }
+
     setOpen(true);
   };
 
   useEffect(() => {
-    EnjoyApp.onLookup((_event, _selection, position) => {
-      handleSelectionChanged(position);
+    EnjoyApp.onLookup((_event, selection, context, position) => {
+      handleSelectionChanged(selection, context, position);
     });
 
     return () => EnjoyApp.offLookup();
@@ -169,7 +183,7 @@ export const AiLookupResult = (props: {
    * Fetch cached lookup result.
    */
   useEffect(() => {
-    if (!word) return;
+    if (!word || !context) return;
 
     fetchCachedLookup();
   }, [word, context]);

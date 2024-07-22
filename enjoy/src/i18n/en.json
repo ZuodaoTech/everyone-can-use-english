@@ -644,5 +644,6 @@
   "continueLearning": "Continue learning",
   "enrollNow": "Enroll now",
   "enrollments": "Enrollments",
-  "noLikesYet": "No likes yet"
+  "noLikesYet": "No likes yet",
+  "lookupOnMouseOver": "Lookup Word On MouseOver"
 }

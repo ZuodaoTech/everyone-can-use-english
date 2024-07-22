@@ -5,7 +5,7 @@ import {
 } from "@renderer/context";
 import cloneDeep from "lodash/cloneDeep";
 import { Button, toast } from "@renderer/components/ui";
-import { ConversationShortcuts } from "@renderer/components";
+import { ConversationShortcuts, Vocabulary } from "@renderer/components";
 import { t } from "i18next";
 import {
   BotIcon,
@@ -544,7 +544,7 @@ export const Caption = (props: {
             }`}
             onClick={() => onClick && onClick(index)}
           >
-            {word}
+            <Vocabulary word={word} context={caption.text} />
           </div>
 
           {displayIpa && (

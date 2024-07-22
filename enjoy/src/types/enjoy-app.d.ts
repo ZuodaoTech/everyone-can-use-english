@@ -76,10 +76,16 @@ type EnjoyAppType = {
   onNotification: (
     callback: (event, notification: NotificationType) => void
   ) => void;
+  lookup: (
+    selection: string,
+    context: string,
+    position: { x: number; y: number }
+  ) => void;
   onLookup: (
     callback: (
-      event,
+      event: IpcRendererEvent,
       selection: string,
+      context: string,
       position: { x: number; y: number }
     ) => void
   ) => void;
@@ -130,6 +136,8 @@ type EnjoyAppType = {
     setDefaultHotkeys: (records: Record<string, string>) => Promise<void>;
     getApiUrl: () => Promise<string>;
     setApiUrl: (url: string) => Promise<void>;
+    getVocabularyConfig: () => Promise<VocabularyConfigType | undefined>;
+    setVocabularyConfig: (records: VocabularyConfigType) => Promise<void>;
   };
   fs: {
     ensureDir: (path: string) => Promise<boolean>;
