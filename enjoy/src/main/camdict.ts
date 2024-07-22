@@ -66,6 +66,7 @@ class Camdict {
     const item = await this.db?.findOne({
       where: { word: word.trim().toLowerCase() },
     });
+
     return item?.toJSON();
   }
 

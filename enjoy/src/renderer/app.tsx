@@ -4,6 +4,7 @@ import {
   AppSettingsProvider,
   DbProvider,
   HotKeysSettingsProvider,
+  DictProvider,
 } from "@renderer/context";
 import router from "./router";
 import { RouterProvider } from "react-router-dom";
@@ -37,13 +38,15 @@ function App() {
       <AppSettingsProvider>
         <HotKeysSettingsProvider>
           <AISettingsProvider>
-            <DbProvider>
-              <RouterProvider router={router} />
-              <Toaster richColors closeButton position="top-center" />
-              <Tooltip id="global-tooltip" />
-              <TranslateWidget />
-              <LookupWidget />
-            </DbProvider>
+            <DictProvider>
+              <DbProvider>
+                <RouterProvider router={router} />
+                <Toaster richColors closeButton position="top-center" />
+                <Tooltip id="global-tooltip" />
+                <TranslateWidget />
+                <LookupWidget />
+              </DbProvider>
+            </DictProvider>
           </AISettingsProvider>
         </HotKeysSettingsProvider>
       </AppSettingsProvider>

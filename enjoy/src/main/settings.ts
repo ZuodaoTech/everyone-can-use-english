@@ -182,12 +182,28 @@ export default {
       return settings.setSync("defaultHotkeys", records);
     });
 
+    ipcMain.handle("settings-get-dict", (_event) => {
+      return settings.getSync("dicts");
+    });
+
+    ipcMain.handle("settings-set-dicts", (_event, dict) => {
+      return settings.setSync("dicts", dict);
+    });
+
     ipcMain.handle("settings-get-api-url", (_event) => {
       return settings.getSync("apiUrl");
     });
 
     ipcMain.handle("settings-set-api-url", (_event, url) => {
       return settings.setSync("apiUrl", url);
+    });
+
+    ipcMain.handle("settings-get-vocabulary-config", (_event) => {
+      return settings.getSync("vocabularyConfig");
+    });
+
+    ipcMain.handle("settings-set-vocabulary-config", (_event, records) => {
+      return settings.setSync("vocabularyConfig", records);
     });
   },
   cachePath,
