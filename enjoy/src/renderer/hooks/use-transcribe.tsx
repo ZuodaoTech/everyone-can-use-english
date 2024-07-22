@@ -115,12 +115,13 @@ export const useTranscribe = () => {
       }
     }
 
-    let timeline: Timeline;
+    let timeline: Timeline = [];
     if (result.timeline) {
-      timeline = result.timeline;
+      timeline = Object.assign([], result.timeline);
+      console.log(timeline);
       const wordTimeline = await EnjoyApp.echogarden.alignSegments(
         new Uint8Array(await blob.arrayBuffer()),
-        result.timeline,
+        timeline,
         {
           language,
           isolate,
@@ -128,7 +129,7 @@ export const useTranscribe = () => {
       );
 
       wordTimeline.forEach((word: TimelineEntry) => {
-        const sentence = timeline.find(
+        let sentence = timeline.find(
           (entry) =>
             word.startTime >= entry.startTime && word.endTime <= entry.endTime
         );
@@ -205,8 +206,8 @@ export const useTranscribe = () => {
         sentence = {
           type: "sentence" as TimelineEntryType,
           text: "",
-          startTime: word.offsets.from / 1000.0,
-          endTime: 0,
+          startTime: wordTimeline.startTime,
+          endTime: wordTimeline.endTime,
           timeline: [],
         };
         timeline.push(sentence);
@@ -221,14 +222,13 @@ export const useTranscribe = () => {
         if (lastSentence.endTime !== sentence.endTime) {
           timeline.push(sentence);
         }
-        return;
       } else {
         sentence.text += wordTimeline.text + " ";
         sentence.endTime = wordTimeline.endTime;
-      }
 
-      if (index === res.transcription.length - 1) {
-        timeline.push(sentence);
+        if (index === res.transcription.length - 1) {
+          timeline.push(sentence);
+        }
       }
     });
 
@@ -347,10 +347,59 @@ export const useTranscribe = () => {
       })
     ).data;
 
+    let timeline: TimelineEntry[] = [];
+    res.words.forEach((word) => {
+      const wordTimeline = {
+        type: "word" as TimelineEntryType,
+        text: word.word,
+        startTime: word.start,
+        endTime: word.end,
+      };
+
+      let sentence: TimelineEntry;
+      // get the last sentence in the timeline
+      if (timeline.length > 0) {
+        sentence = timeline[timeline.length - 1];
+      }
+
+      // if there is no sentence in the timeline, create a new sentence
+      // if last sentence is a punctuation, create a new sentence
+      if (!sentence || sentence.text.match(sentenceEndPattern)) {
+        sentence = {
+          type: "sentence" as TimelineEntryType,
+          text: "",
+          startTime: wordTimeline.startTime,
+          endTime: 0,
+          timeline: [],
+        };
+        timeline.push(sentence);
+      }
+
+      // if the word is a punctuation, add it to the sentence and start a new sentence
+      if (wordTimeline.text.match(sentenceEndPattern)) {
+        sentence.text += wordTimeline.text;
+        sentence.endTime = wordTimeline.endTime;
+
+        const lastSentence = timeline[timeline.length - 1];
+        if (lastSentence.endTime !== sentence.endTime) {
+          timeline.push(sentence);
+        }
+        return;
+      } else {
+        sentence.text += wordTimeline.text + " ";
+        sentence.endTime = wordTimeline.endTime;
+      }
+
+      if (word === res.words[res.words.length - 1]) {
+        timeline.push(sentence);
+      }
+    });
+
     return {
       engine: "cloudflare",
       model: "@cf/openai/whisper",
       text: res.text,
+      timeline,
     };
   };
 

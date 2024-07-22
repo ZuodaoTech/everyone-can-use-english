@@ -99,16 +99,6 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         }
       );
 
-      timeline.forEach((t) => {
-        if (t.type === "sentence") {
-          timeline.push(t);
-        } else {
-          t.timeline.forEach((st) => {
-            timeline.push(st);
-          });
-        }
-      });
-
       const processedTimeline = preProcessTranscription(timeline);
       if (media.language !== language) {
         if (media.mediaType === "Video") {
