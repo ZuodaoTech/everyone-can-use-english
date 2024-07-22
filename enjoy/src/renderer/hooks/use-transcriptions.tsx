@@ -87,7 +87,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
           }
         }
       }
-      const { engine, model, alignmentResult, tokenId } = await transcribe(
+      const { engine, model, transcript, timeline, tokenId } = await transcribe(
         media.src,
         {
           targetId: media.id,
@@ -99,8 +99,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         }
       );
 
-      let timeline: TimelineEntry[] = [];
-      alignmentResult.timeline.forEach((t) => {
+      timeline.forEach((t) => {
         if (t.type === "sentence") {
           timeline.push(t);
         } else {
@@ -110,7 +109,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         }
       });
 
-      timeline = preProcessTranscription(timeline);
+      const processedTimeline = preProcessTranscription(timeline);
       if (media.language !== language) {
         if (media.mediaType === "Video") {
           await EnjoyApp.videos.update(media.id, {
@@ -126,8 +125,8 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
       await EnjoyApp.transcriptions.update(transcription.id, {
         state: "finished",
         result: {
-          timeline: timeline,
-          transcript: alignmentResult.transcript,
+          timeline: processedTimeline,
+          transcript,
           originalText,
           tokenId,
         },

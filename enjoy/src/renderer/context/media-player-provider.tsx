@@ -352,7 +352,7 @@ export const MediaPlayerProvider = ({
 
         let phones: TimelineEntry[] = [];
         words.forEach((word: TimelineEntry) => {
-          word.timeline.forEach((token: TimelineEntry) => {
+          word.timeline?.forEach((token: TimelineEntry) => {
             phones = phones.concat(token.timeline);
           });
         });

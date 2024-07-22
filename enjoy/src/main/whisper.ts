@@ -105,6 +105,8 @@ class Whipser {
         `--model "${model.savePath}"`,
         "--output-json",
         `--output-file "${path.join(tmpDir, "jfk")}"`,
+        `--split-on-word true`,
+        `--max-len 1`,
       ];
       logger.debug(`Checking whisper command: ${commands.join(" ")}`);
       exec(
@@ -203,6 +205,9 @@ class Whipser {
       "--print-progress",
       "--language",
       model.name.includes("en") ? "en" : language?.split("-")?.[0] || "auto",
+      `--split-on-word`,
+      `--max-len`,
+      "1",
       ...extra,
     ];
 

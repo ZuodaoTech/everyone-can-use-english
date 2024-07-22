@@ -8,9 +8,19 @@ import { t } from "i18next";
 import { AI_WORKER_ENDPOINT } from "@/constants";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import axios from "axios";
-import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 import { useAiCommand } from "./use-ai-command";
 import { toast } from "@renderer/components/ui";
+import {
+  Timeline,
+  TimelineEntry,
+  type TimelineEntryType,
+} from "echogarden/dist/utilities/Timeline";
+
+// define the regex pattern to match the end of a sentence
+// the end of a sentence is defined as a period, question mark, or exclamation mark
+// also it may be followed by a quotation mark
+// and exclude sepecial cases like "Mr.", "Mrs.", "Dr.", "Ms.", "etc."
+const sentenceEndPattern = /(?<!Mr|Mrs|Dr|Ms|etc)\.|\?|!\"?/;
 
 export const useTranscribe = () => {
   const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
@@ -43,7 +53,8 @@ export const useTranscribe = () => {
   ): Promise<{
     engine: string;
     model: string;
-    alignmentResult: AlignmentResult;
+    transcript: string;
+    timeline: TimelineEntry[];
     originalText?: string;
     tokenId?: number;
   }> => {
@@ -58,7 +69,7 @@ export const useTranscribe = () => {
     } = params || {};
     const blob = await (await fetch(url)).blob();
 
-    let result;
+    let result: any;
     if (originalText) {
       result = {
         engine: "original",
@@ -69,7 +80,9 @@ export const useTranscribe = () => {
     } else if (service === "cloudflare") {
       result = await transcribeByCloudflareAi(blob);
     } else if (service === "openai") {
-      result = await transcribeByOpenAi(blob);
+      result = await transcribeByOpenAi(
+        new File([blob], mediaSrc.split("/").pop())
+      );
     } else if (service === "azure") {
       result = await transcribeByAzureAi(blob, language, {
         targetId,
@@ -102,23 +115,58 @@ export const useTranscribe = () => {
       }
     }
 
-    const alignmentResult = await EnjoyApp.echogarden.align(
-      new Uint8Array(await blob.arrayBuffer()),
-      transcript,
-      {
-        language,
-        isolate,
-      }
-    );
+    let timeline: Timeline;
+    if (result.timeline) {
+      timeline = result.timeline;
+      const wordTimeline = await EnjoyApp.echogarden.alignSegments(
+        new Uint8Array(await blob.arrayBuffer()),
+        result.timeline,
+        {
+          language,
+          isolate,
+        }
+      );
+
+      wordTimeline.forEach((word: TimelineEntry) => {
+        const sentence = timeline.find(
+          (entry) =>
+            word.startTime >= entry.startTime && word.endTime <= entry.endTime
+        );
+
+        if (sentence) {
+          sentence.timeline.push(word);
+        }
+      });
+
+      // transcript = timeline.map((entry) => entry.text).join(" ");
+    } else {
+      const alignmentResult = await EnjoyApp.echogarden.align(
+        new Uint8Array(await blob.arrayBuffer()),
+        transcript,
+        {
+          language,
+          isolate,
+        }
+      );
+      timeline = alignmentResult.timeline;
+    }
 
     return {
       ...result,
       originalText,
-      alignmentResult,
+      timeline,
     };
   };
 
-  const transcribeByLocal = async (url: string, language?: string) => {
+  const transcribeByLocal = async (
+    url: string,
+    language?: string
+  ): Promise<{
+    engine: string;
+    model: string;
+    text: string;
+    timeline: TimelineEntry[];
+  }> => {
     const res = await EnjoyApp.whisper.transcribe(
       {
         file: url,
@@ -130,14 +178,69 @@ export const useTranscribe = () => {
       }
     );
 
+    const timeline: TimelineEntry[] = [];
+    res.transcription.forEach((word, index) => {
+      word.text = word.text.trim();
+      // skip empty words
+      if (!word.text) return;
+      // skip music or sound effects quoted in []
+      if (word.text.match(/^\[.*\]$/)) return;
+
+      const wordTimeline = {
+        type: "word" as TimelineEntryType,
+        text: word.text,
+        startTime: word.offsets.from / 1000.0,
+        endTime: word.offsets.to / 1000.0,
+      };
+
+      let sentence: TimelineEntry;
+      // get the last sentence in the timeline
+      if (timeline.length > 0) {
+        sentence = timeline[timeline.length - 1];
+      }
+
+      // if there is no sentence in the timeline, create a new sentence
+      // if last sentence is a punctuation, create a new sentence
+      if (!sentence || sentence.text.match(sentenceEndPattern)) {
+        sentence = {
+          type: "sentence" as TimelineEntryType,
+          text: "",
+          startTime: word.offsets.from / 1000.0,
+          endTime: 0,
+          timeline: [],
+        };
+        timeline.push(sentence);
+      }
+
+      // if the word is a punctuation, add it to the sentence and start a new sentence
+      if (wordTimeline.text.match(sentenceEndPattern)) {
+        sentence.text += wordTimeline.text;
+        sentence.endTime = wordTimeline.endTime;
+
+        const lastSentence = timeline[timeline.length - 1];
+        if (lastSentence.endTime !== sentence.endTime) {
+          timeline.push(sentence);
+        }
+        return;
+      } else {
+        sentence.text += wordTimeline.text + " ";
+        sentence.endTime = wordTimeline.endTime;
+      }
+
+      if (index === res.transcription.length - 1) {
+        timeline.push(sentence);
+      }
+    });
+
     return {
       engine: "whisper",
       model: res.model.type,
       text: res.transcription.map((segment) => segment.text).join(" "),
+      timeline,
     };
   };
 
-  const transcribeByOpenAi = async (blob: Blob) => {
+  const transcribeByOpenAi = async (file: File) => {
     if (!openai?.key) {
       throw new Error(t("openaiKeyRequired"));
     }
@@ -149,20 +252,92 @@ export const useTranscribe = () => {
       maxRetries: 0,
     });
 
-    const res: { text: string } = (await client.audio.transcriptions.create({
-      file: new File([blob], "audio.wav"),
+    const res: {
+      text: string;
+      words?: { word: string; start: number; end: number }[];
+      segments?: { text: string; start: number; end: number }[];
+    } = (await client.audio.transcriptions.create({
+      file,
       model: "whisper-1",
-      response_format: "json",
+      response_format: "verbose_json",
+      timestamp_granularities: ["word"],
     })) as any;
+
+    const timeline: TimelineEntry[] = [];
+
+    if (res.segments) {
+      res.segments.forEach((segment) => {
+        const segmentTimeline = {
+          type: "sentence" as TimelineEntryType,
+          text: segment.text,
+          startTime: segment.start,
+          endTime: segment.end,
+          timeline: [] as Timeline,
+        };
+
+        timeline.push(segmentTimeline);
+      });
+    } else if (res.words) {
+      res.words.forEach((word) => {
+        const wordTimeline = {
+          type: "word" as TimelineEntryType,
+          text: word.word,
+          startTime: word.start,
+          endTime: word.end,
+        };
+
+        let sentence: TimelineEntry;
+        // get the last sentence in the timeline
+        if (timeline.length > 0) {
+          sentence = timeline[timeline.length - 1];
+        }
+
+        // if there is no sentence in the timeline, create a new sentence
+        // if last sentence is a punctuation, create a new sentence
+        if (!sentence || sentence.text.match(sentenceEndPattern)) {
+          sentence = {
+            type: "sentence" as TimelineEntryType,
+            text: "",
+            startTime: wordTimeline.startTime,
+            endTime: 0,
+            timeline: [],
+          };
+          timeline.push(sentence);
+        }
+
+        // if the word is a punctuation, add it to the sentence and start a new sentence
+        if (wordTimeline.text.match(sentenceEndPattern)) {
+          sentence.text += wordTimeline.text;
+          sentence.endTime = wordTimeline.endTime;
+
+          const lastSentence = timeline[timeline.length - 1];
+          if (lastSentence.endTime !== sentence.endTime) {
+            timeline.push(sentence);
+          }
+          return;
+        } else {
+          sentence.text += wordTimeline.text + " ";
+          sentence.endTime = wordTimeline.endTime;
+        }
+      });
+    }
 
     return {
       engine: "openai",
       model: "whisper-1",
       text: res.text,
+      timeline,
     };
   };
 
-  const transcribeByCloudflareAi = async (blob: Blob) => {
+  const transcribeByCloudflareAi = async (
+    blob: Blob
+  ): Promise<{
+    engine: string;
+    model: string;
+    text: string;
+    timeline?: TimelineEntry[];
+  }> => {
     const res: CfWhipserOutputType = (
       await axios.postForm(`${AI_WORKER_ENDPOINT}/audio/transcriptions`, blob, {
         headers: {
@@ -191,6 +366,7 @@ export const useTranscribe = () => {
     model: string;
     text: string;
     tokenId: number;
+    timeline?: TimelineEntry[];
   }> => {
     const { id, token, region } = await webApi.generateSpeechToken(params);
     const config = sdk.SpeechConfig.fromAuthorizationToken(token, region);
