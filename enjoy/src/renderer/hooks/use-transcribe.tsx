@@ -15,6 +15,8 @@ import {
   TimelineEntry,
   type TimelineEntryType,
 } from "echogarden/dist/utilities/Timeline";
+import take from "lodash/take";
+import sortedUniqBy from "lodash/sortedUniqBy";
 
 // define the regex pattern to match the end of a sentence
 // the end of a sentence is defined as a period, question mark, or exclamation mark
@@ -80,14 +82,16 @@ export const useTranscribe = () => {
     } else if (service === "cloudflare") {
       result = await transcribeByCloudflareAi(blob);
     } else if (service === "openai") {
-      result = await transcribeByOpenAi(
-        new File([blob], mediaSrc.split("/").pop())
-      );
+      result = await transcribeByOpenAi(new File([blob], "audio.wav"));
     } else if (service === "azure") {
-      result = await transcribeByAzureAi(blob, language, {
-        targetId,
-        targetType,
-      });
+      result = await transcribeByAzureAi(
+        new File([blob], "audio.wav"),
+        language,
+        {
+          targetId,
+          targetType,
+        }
+      );
     } else {
       throw new Error(t("whisperServiceNotSupported"));
     }
@@ -118,7 +122,6 @@ export const useTranscribe = () => {
     let timeline: Timeline = [];
     if (result.timeline) {
       timeline = Object.assign([], result.timeline);
-      console.log(timeline);
       const wordTimeline = await EnjoyApp.echogarden.alignSegments(
         new Uint8Array(await blob.arrayBuffer()),
         timeline,
@@ -404,7 +407,7 @@ export const useTranscribe = () => {
   };
 
   const transcribeByAzureAi = async (
-    blob: Blob,
+    file: File,
     language: string,
     params?: {
       targetId?: string;
@@ -419,9 +422,7 @@ export const useTranscribe = () => {
   }> => {
     const { id, token, region } = await webApi.generateSpeechToken(params);
     const config = sdk.SpeechConfig.fromAuthorizationToken(token, region);
-    const audioConfig = sdk.AudioConfig.fromWavFileInput(
-      new File([blob], "audio.wav")
-    );
+    const audioConfig = sdk.AudioConfig.fromWavFileInput(file);
     // setting the recognition language to learning language, such as 'en-US'.
     config.speechRecognitionLanguage = language;
     config.requestWordLevelTimestamps();
@@ -434,7 +435,6 @@ export const useTranscribe = () => {
 
     return new Promise((resolve, reject) => {
       reco.recognizing = (_s, e) => {
-        console.log(e.result);
         setOutput(e.result.text);
       };
 
@@ -457,10 +457,77 @@ export const useTranscribe = () => {
       reco.sessionStopped = (_s, _e) => {
         reco.stopContinuousRecognitionAsync();
 
+        console.log(results);
+        let words: SpeechRecognitionResultType["NBest"][0]["Words"] = [];
+        results.forEach((result) => {
+          const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
+          const splitedWords = best.Display.trim().split(" ");
+
+          best.Words.forEach((word, index) => {
+            const offset = word.Offset;
+            const duration = word.Duration;
+            words.push({
+              Word: splitedWords[index] || word.Word,
+              Offset: offset,
+              Duration: duration,
+            });
+          });
+        });
+
+        let timeline: TimelineEntry[] = [];
+
+        words.forEach((word, index) => {
+          const wordTimeline = {
+            type: "word" as TimelineEntryType,
+            text: word.Word,
+            startTime: word.Offset / 10000000.0,
+            endTime: (word.Offset + word.Duration) / 10000000.0,
+          };
+
+          let sentence: TimelineEntry;
+          // get the last sentence in the timeline
+          if (timeline.length > 0) {
+            sentence = timeline[timeline.length - 1];
+          }
+
+          // if there is no sentence in the timeline, create a new sentence
+          // if last sentence is a punctuation, create a new sentence
+          if (!sentence || sentence.text.match(sentenceEndPattern)) {
+            sentence = {
+              type: "sentence" as TimelineEntryType,
+              text: "",
+              startTime: wordTimeline.startTime,
+              endTime: 0,
+              timeline: [],
+            };
+            timeline.push(sentence);
+          }
+
+          // if the word is a punctuation, add it to the sentence and start a new sentence
+          if (wordTimeline.text.match(sentenceEndPattern)) {
+            sentence.text += wordTimeline.text;
+            sentence.endTime = wordTimeline.endTime;
+
+            const lastSentence = timeline[timeline.length - 1];
+            if (lastSentence.endTime !== sentence.endTime) {
+              timeline.push(sentence);
+            }
+            return;
+          } else {
+            sentence.text += wordTimeline.text + " ";
+            sentence.endTime = wordTimeline.endTime;
+            if (index === words.length - 1) {
+              timeline.push(sentence);
+            }
+          }
+        });
+        console.log('timeline', timeline);
+
         resolve({
           engine: "azure",
           model: "whisper",
           text: results.map((result) => result.DisplayText).join(" "),
+          timeline,
           tokenId: id,
         });
       };
