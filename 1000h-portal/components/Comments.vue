@@ -50,35 +50,35 @@ const items = ref([
     mixinId: 31766,
     avatar: "/portal-static/avatars/31766.jpg",
     name: "阿信",
-    hint: "连续打卡",
+    hint: "专注训练",
     text: "发现自己发音错误很有帮助，之前是不知不觉，现在注意到了，开始纠正练习。",
   },
   {
     mixinId: 39503702,
     avatar: "/portal-static/avatars/39503702.jpg",
     name: "二十初仲夏的树",
-    hint: "连续打卡",
+    hint: "专注训练",
     text: "五个月，语感和口语熟练度提高了很多，附带着阅读能力也提高了，感觉读多了以后大胆了很多，估计碰到外国人敢开口了，有时候甚至自己都能小小造句了。",
   },
   {
     mixinId: 37300002,
     avatar: "/portal-static/avatars/37300002.jpg",
     name: "黄明英",
-    hint: "连续打卡",
+    hint: "专注训练",
     text: "跟着朗读，慢慢有停顿、升调降调感觉。",
   },
   {
     mixinId: 39440639,
     avatar: "/portal-static/avatars/39440639.jpg",
     name: "朱国庆",
-    hint: "连续打卡",
+    hint: "专注训练",
     text: "App 帮助我解决发音问题，就像一位私人教练，随时纠正发音错误，很多旧的发音习惯得到了纠正，让我的英语发音比之前有了很大的提高。 ",
   },
   {
     mixinId: 40303463,
     avatar: "/portal-static/images/avatar.png",
     name: "东心木",
-    hint: "连续打卡",
+    hint: "专注训练",
     text: "朗读更流利了，表达更地道了。",
   },
   {
@@ -133,7 +133,7 @@ const comments = computed(() => {
       ...item,
       name: info.name,
       avatar: info.avatar_url,
-      hint: `连续打卡 ${sumHours.toFixed(1)} 小时`,
+      hint: `专注训练 ${sumHours.toFixed(1)} 小时`,
     };
   });
 });
