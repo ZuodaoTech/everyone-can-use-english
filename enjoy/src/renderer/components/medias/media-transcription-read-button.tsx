@@ -28,7 +28,7 @@ import {
   SheetHeader,
   toast,
 } from "@renderer/components/ui";
-import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { t } from "i18next";
 import WaveSurfer from "wavesurfer.js";
 import {

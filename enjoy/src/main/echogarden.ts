@@ -1,7 +1,6 @@
 import { ipcMain } from "electron";
 import * as Echogarden from "echogarden/dist/api/API.js";
 import { AlignmentOptions } from "echogarden/dist/api/API";
-import { AudioSourceParam } from "echogarden/dist/audio/AudioUtilities";
 import {
   encodeRawAudioToWave,
   decodeWaveToRawAudio,
@@ -9,7 +8,9 @@ import {
   getRawAudioDuration,
   trimAudioStart,
   trimAudioEnd,
+  AudioSourceParam,
 } from "echogarden/dist/audio/AudioUtilities.js";
+import { Timeline } from "echogarden/dist/utilities/Timeline.d.js";
 import path from "path";
 import log from "@main/logger";
 import url from "url";
@@ -34,6 +35,7 @@ const __dirname = path
 const logger = log.scope("echogarden");
 class EchogardenWrapper {
   public align: typeof Echogarden.align;
+  public alignSegments: typeof Echogarden.alignSegments;
   public denoise: typeof Echogarden.denoise;
   public encodeRawAudioToWave: typeof encodeRawAudioToWave;
   public decodeWaveToRawAudio: typeof decodeWaveToRawAudio;
@@ -44,6 +46,7 @@ class EchogardenWrapper {
 
   constructor() {
     this.align = Echogarden.align;
+    this.alignSegments = Echogarden.alignSegments;
     this.denoise = Echogarden.denoise;
     this.encodeRawAudioToWave = encodeRawAudioToWave;
     this.decodeWaveToRawAudio = decodeWaveToRawAudio;
@@ -103,6 +106,25 @@ class EchogardenWrapper {
         logger.debug("echogarden-align:", transcript, options);
         try {
           return await this.align(input, transcript, options);
+        } catch (err) {
+          logger.error(err);
+          throw err;
+        }
+      }
+    );
+
+    ipcMain.handle(
+      "echogarden-align-segments",
+      async (
+        _event,
+        input: AudioSourceParam,
+        timeline: Timeline,
+        options: AlignmentOptions
+      ) => {
+        logger.debug("echogarden-align-segments:", timeline, options);
+        try {
+          const rawAudio = await this.ensureRawAudio(input, 16000);
+          return await this.alignSegments(rawAudio, timeline, options);
         } catch (err) {
           logger.error(err);
           throw err;

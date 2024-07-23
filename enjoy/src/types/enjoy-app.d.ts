@@ -252,6 +252,11 @@ type EnjoyAppType = {
       transcript: string,
       options?: any
     ) => Promise<AlignmentResult>;
+    alignSegments: (
+      input: string | Uint8Array,
+      timeline: Timeline,
+      options?: any
+    ) => Promise<Timeline>;
     transcode: (input: string) => Promise<string>;
     check: () => Promise<boolean>;
   };

@@ -246,7 +246,6 @@ export const MediaCaption = () => {
 
     if (index < 0) return;
     if (index !== activeIndex) {
-      console.log("setActiveIndex", index);
       setActiveIndex(index);
     }
   }, [currentTime, caption]);
@@ -509,8 +508,8 @@ export const Caption = (props: {
 
   let words = caption.text.split(" ");
   const ipas = caption.timeline.map((w) =>
-    w.timeline.map((t) =>
-      language.startsWith("en")
+    w.timeline?.map((t) =>
+      t.timeline && language.startsWith("en")
         ? convertWordIpaToNormal(
             t.timeline.map((s) => s.text),
             { mappings: ipaMappings }

@@ -9,7 +9,7 @@ import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 import { convertWordIpaToNormal } from "@/utils";
 import template from "./transcription.template.html?raw";
 
-export const MediaTranscriptionDownload = () => {
+export const MediaTranscriptionPrint = () => {
   const { media, transcription } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp, learningLanguage, ipaMappings } = useContext(
     AppSettingsProviderContext
@@ -59,7 +59,7 @@ export const MediaTranscriptionDownload = () => {
   async function download() {
     try {
       const savePath = await EnjoyApp.dialog.showSaveDialog({
-        title: t("download"),
+        title: t("print"),
         defaultPath: `${media.name}.pdf`,
       });
 
@@ -75,7 +75,7 @@ export const MediaTranscriptionDownload = () => {
 
   return (
     <Button variant="ghost" className="block w-full" onClick={download}>
-      {t("download")}
+      {t("print")}
     </Button>
   );
 };

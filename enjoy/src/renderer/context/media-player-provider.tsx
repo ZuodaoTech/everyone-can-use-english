@@ -68,7 +68,7 @@ type MediaPlayerContextType = {
   generateTranscription: (params?: {
     originalText?: string;
     language?: string;
-    service?: WhisperConfigType["service"];
+    service?: WhisperConfigType["service"] | "upload";
     isolate?: boolean;
   }) => Promise<void>;
   transcribing: boolean;
@@ -352,7 +352,7 @@ export const MediaPlayerProvider = ({
 
         let phones: TimelineEntry[] = [];
         words.forEach((word: TimelineEntry) => {
-          word.timeline.forEach((token: TimelineEntry) => {
+          word.timeline?.forEach((token: TimelineEntry) => {
             phones = phones.concat(token.timeline);
           });
         });

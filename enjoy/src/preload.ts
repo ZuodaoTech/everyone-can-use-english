@@ -2,6 +2,7 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 import { version } from "../package.json";
+import { Timeline } from "echogarden/dist/utilities/Timeline";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
@@ -438,6 +439,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   echogarden: {
     align: (input: string, transcript: string, options: any) => {
       return ipcRenderer.invoke("echogarden-align", input, transcript, options);
+    },
+    alignSegments: (input: string, timeline: Timeline, options: any) => {
+      return ipcRenderer.invoke("echogarden-align-segments", input, timeline, options);
     },
     transcode: (input: string) => {
       return ipcRenderer.invoke("echogarden-transcode", input);

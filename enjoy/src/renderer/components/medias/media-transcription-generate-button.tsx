@@ -76,7 +76,9 @@ export const MediaTranscriptionGenerateButton = (props: {
                 generateTranscription({
                   originalText: data.text,
                   language: data.language,
-                  service: data.service as WhisperConfigType["service"],
+                  service: data.service as
+                    | WhisperConfigType["service"]
+                    | "upload",
                   isolate: data.isolate,
                 })
                   .then(() => {

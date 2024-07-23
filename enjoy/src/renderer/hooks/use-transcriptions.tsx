@@ -20,9 +20,9 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const [transcribingProgress, setTranscribingProgress] = useState<number>(0);
   const [transcribing, setTranscribing] = useState<boolean>(false);
   const [transcribingOutput, setTranscribingOutput] = useState<string>("");
-  const [service, setService] = useState<WhisperConfigType["service"]>(
-    whisperConfig.service
-  );
+  const [service, setService] = useState<
+    WhisperConfigType["service"] | "upload"
+  >(whisperConfig.service);
 
   const onTransactionUpdate = (event: CustomEvent) => {
     if (!transcription) return;
@@ -63,7 +63,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const generateTranscription = async (params?: {
     originalText?: string;
     language?: string;
-    service?: WhisperConfigType["service"];
+    service?: WhisperConfigType["service"] | "upload";
     isolate?: boolean;
   }) => {
     let {
@@ -87,7 +87,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
           }
         }
       }
-      const { engine, model, alignmentResult, tokenId } = await transcribe(
+      const { engine, model, transcript, timeline, tokenId } = await transcribe(
         media.src,
         {
           targetId: media.id,
@@ -99,18 +99,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         }
       );
 
-      let timeline: TimelineEntry[] = [];
-      alignmentResult.timeline.forEach((t) => {
-        if (t.type === "sentence") {
-          timeline.push(t);
-        } else {
-          t.timeline.forEach((st) => {
-            timeline.push(st);
-          });
-        }
-      });
-
-      timeline = preProcessTranscription(timeline);
+      const processedTimeline = preProcessTranscription(timeline);
       if (media.language !== language) {
         if (media.mediaType === "Video") {
           await EnjoyApp.videos.update(media.id, {
@@ -126,8 +115,8 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
       await EnjoyApp.transcriptions.update(transcription.id, {
         state: "finished",
         result: {
-          timeline: timeline,
-          transcript: alignmentResult.transcript,
+          timeline: processedTimeline,
+          transcript,
           originalText,
           tokenId,
         },

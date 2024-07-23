@@ -20,32 +20,49 @@ import {
   Textarea,
   toast,
 } from "@renderer/components/ui";
-import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { t } from "i18next";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LoaderIcon } from "lucide-react";
+import { milisecondsToTimestamp } from "@/utils";
 
 export const TranscriptionEditButton = (props: {
   children?: React.ReactNode;
 }) => {
-  const [open, setOpen] = useState(false);
-  const [submiting, setSubmiting] = useState(false);
-  const { transcription, generateTranscription } = useContext(
+  const { media, transcription, generateTranscription } = useContext(
     MediaPlayerProviderContext
   );
+  const [open, setOpen] = useState(false);
+  const [submiting, setSubmiting] = useState(false);
   const [content, setContent] = useState<string>(
-    transcription.result.timeline.map((t: TimelineEntry) => t.text).join("\n\n")
+    // generate text in SRT format from timeline entries
+    transcription.result.timeline
+      .map(
+        (t: TimelineEntry) =>
+          `${milisecondsToTimestamp(
+            t.startTime * 1000
+          )} --> ${milisecondsToTimestamp(t.endTime * 1000)}\n${t.text}`
+      )
+      .join("\n\n")
   );
+  const [downloadUrl, setDownloadUrl] = useState<string>();
 
   const handleSave = async () => {
     setSubmiting(true);
-    generateTranscription({ originalText: content })
+    generateTranscription({ originalText: content, service: "upload" })
       .then(() => setOpen(false))
       .catch((e) => {
         toast.error(e.message);
       })
       .finally(() => setSubmiting(false));
   };
+
+  useEffect(() => {
+    if (!content) return;
+
+    const blob = new Blob([content], { type: "text/html" });
+    setDownloadUrl(URL.createObjectURL(blob));
+  }, [content]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -75,6 +92,11 @@ export const TranscriptionEditButton = (props: {
             <Button disabled={submiting} variant="secondary">
               {t("cancel")}
             </Button>
+          </DialogClose>
+          <DialogClose asChild>
+            <a download={`${media.name}.srt`} href={downloadUrl}>
+              <Button variant="secondary">{t("download")}</Button>
+            </a>
           </DialogClose>
 
           <AlertDialog>

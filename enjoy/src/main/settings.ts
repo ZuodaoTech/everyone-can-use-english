@@ -94,7 +94,7 @@ const userDataPath = () => {
 
 const apiUrl = () => {
   const url: string = settings.getSync("apiUrl") as string;
-  return process.env.API_URL || url || WEB_API_URL;
+  return process.env.WEB_API_URL || url || WEB_API_URL;
 };
 
 export default {

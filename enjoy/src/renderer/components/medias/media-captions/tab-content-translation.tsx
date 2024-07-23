@@ -5,7 +5,7 @@ import {
 } from "@renderer/context";
 import { TabsContent, Separator } from "@renderer/components/ui";
 import { t } from "i18next";
-import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { convertWordIpaToNormal } from "@/utils";
 import {
   CamdictLookupResult,
@@ -41,7 +41,9 @@ const SelectedWords = (props: {
   const { selectedIndices, caption } = props;
 
   const { transcription } = useContext(MediaPlayerProviderContext);
-  const { learningLanguage, ipaMappings } = useContext(AppSettingsProviderContext);
+  const { learningLanguage, ipaMappings } = useContext(
+    AppSettingsProviderContext
+  );
 
   const word = selectedIndices
     .map((index) => caption.timeline[index]?.text || "")
