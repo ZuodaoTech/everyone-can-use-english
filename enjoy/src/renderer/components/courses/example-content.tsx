@@ -158,7 +158,7 @@ export const ExampleContent = (props: {
           <LoaderIcon
             data-tooltip-id="global-tooltip"
             data-tooltip-content={t("addingResource")}
-            className="w-3 h-3 animate-spin"
+            className="w-4 h-4 animate-spin"
           />
         ) : (
           <MicIcon
@@ -166,7 +166,7 @@ export const ExampleContent = (props: {
             data-tooltip-content={t("shadowingExercise")}
             data-testid="message-start-shadow"
             onClick={startShadow}
-            className={`w-3 h-3 cursor-pointer ${
+            className={`w-4 h-4 cursor-pointer ${
               audio && audio.recordingsCount > 0 ? "text-green-600" : ""
             }`}
           />
@@ -176,7 +176,7 @@ export const ExampleContent = (props: {
           data-tooltip-content={t("download")}
           data-testid="message-download-speech"
           onClick={handleDownload}
-          className="w-3 h-3 cursor-pointer"
+          className="w-4 h-4 cursor-pointer"
         />
       </div>
     </div>
