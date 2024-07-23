@@ -189,7 +189,6 @@ export const useTranscribe = () => {
     } else {
       throw new Error(t("whisperServiceNotSupported"));
     }
-    setOutput("Aligning the transcript...");
     let transcript = result.text;
 
     /*
@@ -200,6 +199,7 @@ export const useTranscribe = () => {
      */
     if (result.timeline?.length && transcript.match(punctuationsPattern)) {
       timeline = [...result.timeline];
+      setOutput("Aligning the transcript...");
       const wordTimeline = await EnjoyApp.echogarden.alignSegments(
         new Uint8Array(await blob.arrayBuffer()),
         timeline,
@@ -250,6 +250,7 @@ export const useTranscribe = () => {
         }
       }
 
+      setOutput("Aligning the transcript...");
       const alignmentResult = await EnjoyApp.echogarden.align(
         new Uint8Array(await blob.arrayBuffer()),
         transcript,
@@ -273,6 +274,7 @@ export const useTranscribe = () => {
     return {
       ...result,
       originalText,
+      transcript,
       timeline,
     };
   };

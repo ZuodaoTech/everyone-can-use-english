@@ -57,7 +57,7 @@ export const MediaPlayerControls = () => {
     setTranscriptionDraft,
   } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { currentHotkeys, enabled } = useContext(
+  const { currentHotkeys } = useContext(
     HotKeysSettingsProviderContext
   );
   const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("single");

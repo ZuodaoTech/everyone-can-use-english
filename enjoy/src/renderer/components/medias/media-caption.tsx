@@ -246,7 +246,6 @@ export const MediaCaption = () => {
 
     if (index < 0) return;
     if (index !== activeIndex) {
-      console.log("setActiveIndex", index);
       setActiveIndex(index);
     }
   }, [currentTime, caption]);
