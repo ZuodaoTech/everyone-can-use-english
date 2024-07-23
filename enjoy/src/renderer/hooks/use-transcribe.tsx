@@ -169,20 +169,16 @@ export const useTranscribe = () => {
     }
     setOutput(null);
 
+    let timeline: Timeline = [];
     let transcript = originalText || result.text;
 
-    // Remove all content inside `()`, `[]`, `{}` and trim the text
-    // remove all markdown formatting
-    transcript = transcript
-      .replace(/\(.*?\)/g, "")
-      .replace(/\[.*?\]/g, "")
-      .replace(/\{.*?\}/g, "")
-      .replace(/[*_`]/g, "")
-      .trim();
-
-    let timeline: Timeline = [];
-
-    if (transcript.match(punctuationsPattern) && result.timeline?.length) {
+    /*
+     * if timeline is available and the transcript contains punctuations
+     * use `alignSegments` to align each sentence with the timeline
+     * otherwise, use `align` to align the whole transcript
+     * if the transcript does not contain any punctuation, use AI command to add punctuation
+     */
+    if (result.timeline?.length && transcript.match(punctuationsPattern)) {
       timeline = [...result.timeline];
       const wordTimeline = await EnjoyApp.echogarden.alignSegments(
         new Uint8Array(await blob.arrayBuffer()),
@@ -204,6 +200,15 @@ export const useTranscribe = () => {
         }
       });
     } else {
+      // Remove all content inside `()`, `[]`, `{}` and trim the text
+      // remove all markdown formatting
+      transcript = transcript
+        .replace(/\(.*?\)/g, "")
+        .replace(/\[.*?\]/g, "")
+        .replace(/\{.*?\}/g, "")
+        .replace(/[*_`]/g, "")
+        .trim();
+
       // if the transcript does not contain any punctuation, use AI command to add punctuation
       if (!transcript.match(punctuationsPattern)) {
         try {
