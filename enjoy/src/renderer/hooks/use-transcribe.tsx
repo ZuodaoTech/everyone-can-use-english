@@ -219,6 +219,17 @@ export const useTranscribe = () => {
           sentence.timeline.push(word);
         }
       });
+
+      /*
+       * the start time of a sentence should be the start time of the first word in the sentence
+       * the end time of a sentence should the end time of the last word in the sentence
+       */
+      timeline.forEach((t) => {
+        if (t.timeline.length === 0) return;
+
+        t.startTime = t.timeline[0].startTime;
+        t.endTime = t.timeline[t.timeline.length - 1].endTime;
+      });
     } else {
       // Remove all content inside `()`, `[]`, `{}` and trim the text
       // remove all markdown formatting
