@@ -12,4 +12,4 @@ export * from "./media-provider";
 export * from "./media-tabs";
 export * from "./media-loading-modal";
 export * from "./add-media-button";
-export * from "./media-transcription-download";
+export * from "./media-transcription-print";

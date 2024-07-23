@@ -22,18 +22,18 @@ import {
 } from "@renderer/components/ui";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
 import { t } from "i18next";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LoaderIcon } from "lucide-react";
 import { milisecondsToTimestamp } from "@/utils";
 
 export const TranscriptionEditButton = (props: {
   children?: React.ReactNode;
 }) => {
-  const [open, setOpen] = useState(false);
-  const [submiting, setSubmiting] = useState(false);
-  const { transcription, generateTranscription } = useContext(
+  const { media, transcription, generateTranscription } = useContext(
     MediaPlayerProviderContext
   );
+  const [open, setOpen] = useState(false);
+  const [submiting, setSubmiting] = useState(false);
   const [content, setContent] = useState<string>(
     // generate text in SRT format from timeline entries
     transcription.result.timeline
@@ -45,6 +45,7 @@ export const TranscriptionEditButton = (props: {
       )
       .join("\n\n")
   );
+  const [downloadUrl, setDownloadUrl] = useState<string>();
 
   const handleSave = async () => {
     setSubmiting(true);
@@ -55,6 +56,13 @@ export const TranscriptionEditButton = (props: {
       })
       .finally(() => setSubmiting(false));
   };
+
+  useEffect(() => {
+    if (!content) return;
+
+    const blob = new Blob([content], { type: "text/html" });
+    setDownloadUrl(URL.createObjectURL(blob));
+  }, [content]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -84,6 +92,11 @@ export const TranscriptionEditButton = (props: {
             <Button disabled={submiting} variant="secondary">
               {t("cancel")}
             </Button>
+          </DialogClose>
+          <DialogClose asChild>
+            <a download={`${media.name}.srt`} href={downloadUrl}>
+              <Button variant="secondary">{t("download")}</Button>
+            </a>
           </DialogClose>
 
           <AlertDialog>

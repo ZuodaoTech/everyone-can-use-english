@@ -242,6 +242,7 @@
   "downloadFfmpeg": "下载 FFmpeg",
   "youAreReadyToGo": "您已准备就绪",
   "welcomeBack": "欢迎回来, {{name}}",
+  "print": "打印",
   "download": "下载",
   "downloading": "正在下载 {{file}}",
   "downloadedSuccessfully": "下载成功",

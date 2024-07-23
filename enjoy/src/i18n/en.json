@@ -242,6 +242,7 @@
   "downloadFfmpeg": "Download FFmpeg",
   "youAreReadyToGo": "You are ready to go",
   "welcomeBack": "Welcome back! {{name}}",
+  "print": "Print",
   "download": "Download",
   "downloading": "Downloading {{file}}",
   "downloadedSuccessfully": "Downloaded successfully",
