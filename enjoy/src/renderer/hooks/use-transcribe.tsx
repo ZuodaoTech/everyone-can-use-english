@@ -18,11 +18,77 @@ import {
 import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
 
-// define the regex pattern to match the end of a sentence
-// the end of a sentence is defined as a period, question mark, or exclamation mark
-// also it may be followed by a quotation mark
-// and exclude sepecial cases like "Mr.", "Mrs.", "Dr.", "Ms.", "etc."
+/*
+ * define the regex pattern to match the end of a sentence
+ * the end of a sentence is defined as a period, question mark, or exclamation mark
+ * also it may be followed by a quotation mark
+ * and exclude sepecial cases like "Mr.", "Mrs.", "Dr.", "Ms.", "etc."
+ */
 const sentenceEndPattern = /(?<!Mr|Mrs|Dr|Ms|etc)\.|\?|!\"?/;
+
+/*
+ * convert the word timeline to sentence timeline
+ * a sentence is a group of words that ends with a punctuation
+ */
+const wordTimelineToSentenceTimeline = (
+  wordTimeline: TimelineEntry[]
+): TimelineEntry[] => {
+  const timeline: TimelineEntry[] = [];
+
+  wordTimeline.forEach((word, index) => {
+    word.text = word.text.trim();
+    // skip empty words
+    if (!word.text) return;
+    // skip music or sound effects quoted in []
+    if (word.text.match(/^\[.*\]$/)) return;
+
+    const wordEntry = {
+      type: "word" as TimelineEntryType,
+      text: word.text,
+      startTime: word.startTime,
+      endTime: word.endTime,
+    };
+
+    let sentence: TimelineEntry;
+    // get the last sentence in the timeline
+    if (timeline.length > 0) {
+      sentence = timeline[timeline.length - 1];
+    }
+
+    // if there is no sentence in the timeline, create a new sentence
+    // if last sentence is a punctuation, create a new sentence
+    if (!sentence || sentence.text.match(sentenceEndPattern)) {
+      sentence = {
+        type: "sentence" as TimelineEntryType,
+        text: "",
+        startTime: wordEntry.startTime,
+        endTime: wordEntry.endTime,
+        timeline: [],
+      };
+      timeline.push(sentence);
+    }
+
+    // if the word is a punctuation, add it to the sentence and start a new sentence
+    if (wordEntry.text.match(sentenceEndPattern)) {
+      sentence.text += wordEntry.text;
+      sentence.endTime = wordEntry.endTime;
+
+      const lastSentence = timeline[timeline.length - 1];
+      if (lastSentence.endTime !== sentence.endTime) {
+        timeline.push(sentence);
+      }
+    } else {
+      sentence.text += wordEntry.text + " ";
+      sentence.endTime = wordEntry.endTime;
+
+      if (index === wordTimeline.length - 1) {
+        timeline.push(sentence);
+      }
+    }
+  });
+
+  return timeline;
+};
 
 export const useTranscribe = () => {
   const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
@@ -182,58 +248,15 @@ export const useTranscribe = () => {
       }
     );
 
-    const timeline: TimelineEntry[] = [];
-    res.transcription.forEach((word, index) => {
-      word.text = word.text.trim();
-      // skip empty words
-      if (!word.text) return;
-      // skip music or sound effects quoted in []
-      if (word.text.match(/^\[.*\]$/)) return;
-
-      const wordTimeline = {
+    const wordTimeline: TimelineEntry[] = res.transcription.map((word) => {
+      return {
         type: "word" as TimelineEntryType,
         text: word.text,
         startTime: word.offsets.from / 1000.0,
         endTime: word.offsets.to / 1000.0,
       };
-
-      let sentence: TimelineEntry;
-      // get the last sentence in the timeline
-      if (timeline.length > 0) {
-        sentence = timeline[timeline.length - 1];
-      }
-
-      // if there is no sentence in the timeline, create a new sentence
-      // if last sentence is a punctuation, create a new sentence
-      if (!sentence || sentence.text.match(sentenceEndPattern)) {
-        sentence = {
-          type: "sentence" as TimelineEntryType,
-          text: "",
-          startTime: wordTimeline.startTime,
-          endTime: wordTimeline.endTime,
-          timeline: [],
-        };
-        timeline.push(sentence);
-      }
-
-      // if the word is a punctuation, add it to the sentence and start a new sentence
-      if (wordTimeline.text.match(sentenceEndPattern)) {
-        sentence.text += wordTimeline.text;
-        sentence.endTime = wordTimeline.endTime;
-
-        const lastSentence = timeline[timeline.length - 1];
-        if (lastSentence.endTime !== sentence.endTime) {
-          timeline.push(sentence);
-        }
-      } else {
-        sentence.text += wordTimeline.text + " ";
-        sentence.endTime = wordTimeline.endTime;
-
-        if (index === res.transcription.length - 1) {
-          timeline.push(sentence);
-        }
-      }
     });
+    const timeline = wordTimelineToSentenceTimeline(wordTimeline);
 
     return {
       engine: "whisper",
@@ -266,8 +289,7 @@ export const useTranscribe = () => {
       timestamp_granularities: ["word"],
     })) as any;
 
-    const timeline: TimelineEntry[] = [];
-
+    let timeline: TimelineEntry[] = [];
     if (res.segments) {
       res.segments.forEach((segment) => {
         const segmentTimeline = {
@@ -281,48 +303,15 @@ export const useTranscribe = () => {
         timeline.push(segmentTimeline);
       });
     } else if (res.words) {
-      res.words.forEach((word) => {
-        const wordTimeline = {
+      const wordTimeline = res.words.map((word) => {
+        return {
           type: "word" as TimelineEntryType,
           text: word.word,
           startTime: word.start,
           endTime: word.end,
         };
-
-        let sentence: TimelineEntry;
-        // get the last sentence in the timeline
-        if (timeline.length > 0) {
-          sentence = timeline[timeline.length - 1];
-        }
-
-        // if there is no sentence in the timeline, create a new sentence
-        // if last sentence is a punctuation, create a new sentence
-        if (!sentence || sentence.text.match(sentenceEndPattern)) {
-          sentence = {
-            type: "sentence" as TimelineEntryType,
-            text: "",
-            startTime: wordTimeline.startTime,
-            endTime: 0,
-            timeline: [],
-          };
-          timeline.push(sentence);
-        }
-
-        // if the word is a punctuation, add it to the sentence and start a new sentence
-        if (wordTimeline.text.match(sentenceEndPattern)) {
-          sentence.text += wordTimeline.text;
-          sentence.endTime = wordTimeline.endTime;
-
-          const lastSentence = timeline[timeline.length - 1];
-          if (lastSentence.endTime !== sentence.endTime) {
-            timeline.push(sentence);
-          }
-          return;
-        } else {
-          sentence.text += wordTimeline.text + " ";
-          sentence.endTime = wordTimeline.endTime;
-        }
       });
+      timeline = wordTimelineToSentenceTimeline(wordTimeline);
     }
 
     return {
@@ -350,53 +339,15 @@ export const useTranscribe = () => {
       })
     ).data;
 
-    let timeline: TimelineEntry[] = [];
-    res.words.forEach((word) => {
-      const wordTimeline = {
+    const wordTimeline = res.words.map((word) => {
+      return {
         type: "word" as TimelineEntryType,
         text: word.word,
         startTime: word.start,
         endTime: word.end,
       };
-
-      let sentence: TimelineEntry;
-      // get the last sentence in the timeline
-      if (timeline.length > 0) {
-        sentence = timeline[timeline.length - 1];
-      }
-
-      // if there is no sentence in the timeline, create a new sentence
-      // if last sentence is a punctuation, create a new sentence
-      if (!sentence || sentence.text.match(sentenceEndPattern)) {
-        sentence = {
-          type: "sentence" as TimelineEntryType,
-          text: "",
-          startTime: wordTimeline.startTime,
-          endTime: 0,
-          timeline: [],
-        };
-        timeline.push(sentence);
-      }
-
-      // if the word is a punctuation, add it to the sentence and start a new sentence
-      if (wordTimeline.text.match(sentenceEndPattern)) {
-        sentence.text += wordTimeline.text;
-        sentence.endTime = wordTimeline.endTime;
-
-        const lastSentence = timeline[timeline.length - 1];
-        if (lastSentence.endTime !== sentence.endTime) {
-          timeline.push(sentence);
-        }
-        return;
-      } else {
-        sentence.text += wordTimeline.text + " ";
-        sentence.endTime = wordTimeline.endTime;
-      }
-
-      if (word === res.words[res.words.length - 1]) {
-        timeline.push(sentence);
-      }
     });
+    const timeline = wordTimelineToSentenceTimeline(wordTimeline);
 
     return {
       engine: "cloudflare",
@@ -457,71 +408,34 @@ export const useTranscribe = () => {
       reco.sessionStopped = (_s, _e) => {
         reco.stopContinuousRecognitionAsync();
 
-        console.log(results);
-        let words: SpeechRecognitionResultType["NBest"][0]["Words"] = [];
+        const wordTimeline: TimelineEntry[] = [];
         results.forEach((result) => {
           const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
           const splitedWords = best.Display.trim().split(" ");
 
           best.Words.forEach((word, index) => {
-            const offset = word.Offset;
-            const duration = word.Duration;
-            words.push({
-              Word: splitedWords[index] || word.Word,
-              Offset: offset,
-              Duration: duration,
+            let text = word.Word;
+            if (splitedWords.length === best.Words.length) {
+              text = splitedWords[index];
+            }
+
+            if (
+              index === best.Words.length - 1 &&
+              !text.trim().match(sentenceEndPattern)
+            ) {
+              text = text + ".";
+            }
+
+            wordTimeline.push({
+              type: "word" as TimelineEntryType,
+              text,
+              startTime: word.Offset / 10000000.0,
+              endTime: (word.Offset + word.Duration) / 10000000.0,
             });
           });
         });
 
-        let timeline: TimelineEntry[] = [];
-
-        words.forEach((word, index) => {
-          const wordTimeline = {
-            type: "word" as TimelineEntryType,
-            text: word.Word,
-            startTime: word.Offset / 10000000.0,
-            endTime: (word.Offset + word.Duration) / 10000000.0,
-          };
-
-          let sentence: TimelineEntry;
-          // get the last sentence in the timeline
-          if (timeline.length > 0) {
-            sentence = timeline[timeline.length - 1];
-          }
-
-          // if there is no sentence in the timeline, create a new sentence
-          // if last sentence is a punctuation, create a new sentence
-          if (!sentence || sentence.text.match(sentenceEndPattern)) {
-            sentence = {
-              type: "sentence" as TimelineEntryType,
-              text: "",
-              startTime: wordTimeline.startTime,
-              endTime: 0,
-              timeline: [],
-            };
-            timeline.push(sentence);
-          }
-
-          // if the word is a punctuation, add it to the sentence and start a new sentence
-          if (wordTimeline.text.match(sentenceEndPattern)) {
-            sentence.text += wordTimeline.text;
-            sentence.endTime = wordTimeline.endTime;
-
-            const lastSentence = timeline[timeline.length - 1];
-            if (lastSentence.endTime !== sentence.endTime) {
-              timeline.push(sentence);
-            }
-            return;
-          } else {
-            sentence.text += wordTimeline.text + " ";
-            sentence.endTime = wordTimeline.endTime;
-            if (index === words.length - 1) {
-              timeline.push(sentence);
-            }
-          }
-        });
-        console.log('timeline', timeline);
+        const timeline = wordTimelineToSentenceTimeline(wordTimeline);
 
         resolve({
           engine: "azure",
