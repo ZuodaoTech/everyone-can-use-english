@@ -24,6 +24,7 @@ import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
 import { t } from "i18next";
 import { useContext, useState } from "react";
 import { LoaderIcon } from "lucide-react";
+import { milisecondsToTimestamp } from "@/utils";
 
 export const TranscriptionEditButton = (props: {
   children?: React.ReactNode;
@@ -34,12 +35,20 @@ export const TranscriptionEditButton = (props: {
     MediaPlayerProviderContext
   );
   const [content, setContent] = useState<string>(
-    transcription.result.timeline.map((t: TimelineEntry) => t.text).join("\n\n")
+    // generate text in SRT format from timeline entries
+    transcription.result.timeline
+      .map(
+        (t: TimelineEntry) =>
+          `${milisecondsToTimestamp(
+            t.startTime * 1000
+          )} --> ${milisecondsToTimestamp(t.endTime * 1000)}\n${t.text}`
+      )
+      .join("\n\n")
   );
 
   const handleSave = async () => {
     setSubmiting(true);
-    generateTranscription({ originalText: content })
+    generateTranscription({ originalText: content, service: "upload" })
       .then(() => setOpen(false))
       .catch((e) => {
         toast.error(e.message);

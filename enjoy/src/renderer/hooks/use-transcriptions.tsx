@@ -20,9 +20,9 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const [transcribingProgress, setTranscribingProgress] = useState<number>(0);
   const [transcribing, setTranscribing] = useState<boolean>(false);
   const [transcribingOutput, setTranscribingOutput] = useState<string>("");
-  const [service, setService] = useState<WhisperConfigType["service"]>(
-    whisperConfig.service
-  );
+  const [service, setService] = useState<
+    WhisperConfigType["service"] | "upload"
+  >(whisperConfig.service);
 
   const onTransactionUpdate = (event: CustomEvent) => {
     if (!transcription) return;
@@ -63,7 +63,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const generateTranscription = async (params?: {
     originalText?: string;
     language?: string;
-    service?: WhisperConfigType["service"];
+    service?: WhisperConfigType["service"] | "upload";
     isolate?: boolean;
   }) => {
     let {

@@ -17,6 +17,7 @@ import {
 } from "echogarden/dist/utilities/Timeline";
 import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
+import { parseText } from "media-captions";
 
 /*
  * define the regex pattern to match the end of a sentence
@@ -119,7 +120,7 @@ export const useTranscribe = () => {
       targetType?: string;
       originalText?: string;
       language: string;
-      service: WhisperConfigType["service"];
+      service: WhisperConfigType["service"] | "upload";
       isolate?: boolean;
     }
   ): Promise<{
@@ -142,11 +143,32 @@ export const useTranscribe = () => {
     const blob = await (await fetch(url)).blob();
 
     let result: any;
-    if (originalText) {
-      result = {
-        engine: "original",
-        model: "original",
-      };
+    let timeline: Timeline = [];
+    if (service === "upload" && originalText) {
+      const caption = await parseText(originalText, { type: "srt" });
+      if (caption.cues.length > 0) {
+        timeline = caption.cues.map((cue) => {
+          return {
+            type: "sentence",
+            text: cue.text,
+            startTime: cue.startTime,
+            endTime: cue.endTime,
+            timeline: [],
+          };
+        });
+        result = {
+          engine: "upload",
+          model: "-",
+          text: timeline.map((entry) => entry.text).join(" "),
+          timeline,
+        };
+      } else {
+        result = {
+          engine: "upload",
+          model: "-",
+          text: originalText,
+        };
+      }
     } else if (service === "local") {
       result = await transcribeByLocal(url, language);
     } else if (service === "cloudflare") {
@@ -167,10 +189,8 @@ export const useTranscribe = () => {
     } else {
       throw new Error(t("whisperServiceNotSupported"));
     }
-    setOutput(null);
-
-    let timeline: Timeline = [];
-    let transcript = originalText || result.text;
+    setOutput("Aligning the transcript...");
+    let transcript = result.text;
 
     /*
      * if timeline is available and the transcript contains punctuations

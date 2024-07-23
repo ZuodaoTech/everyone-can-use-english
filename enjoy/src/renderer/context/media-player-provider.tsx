@@ -68,7 +68,7 @@ type MediaPlayerContextType = {
   generateTranscription: (params?: {
     originalText?: string;
     language?: string;
-    service?: WhisperConfigType["service"];
+    service?: WhisperConfigType["service"] | "upload";
     isolate?: boolean;
   }) => Promise<void>;
   transcribing: boolean;

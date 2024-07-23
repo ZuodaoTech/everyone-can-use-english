@@ -8,9 +8,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
   Button,
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
   Form,
   FormDescription,
   FormField,
@@ -31,8 +28,9 @@ import {
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { LANGUAGES } from "@/constants";
-import { ChevronDownIcon, ChevronUpIcon, LoaderIcon } from "lucide-react";
+import { LoaderIcon } from "lucide-react";
 import { parseText } from "media-captions";
+import { milisecondsToTimestamp } from "@/utils";
 
 const transcriptionSchema = z.object({
   language: z.string(),
@@ -59,7 +57,6 @@ export const TranscriptionCreateForm = (props: {
   } = props;
   const { learningLanguage } = useContext(AppSettingsProviderContext);
   const { whisperConfig } = useContext(AISettingsProviderContext);
-  const [collapsibleOpen, setCollapsibleOpen] = useState(false);
 
   const form = useForm<z.infer<typeof transcriptionSchema>>({
     resolver: zodResolver(transcriptionSchema),
@@ -88,7 +85,16 @@ export const TranscriptionCreateForm = (props: {
         if (caption.cues.length === 0) {
           text = cleanSubtitleText(text as string);
         } else {
-          text = caption.cues.map((cue) => cue.text).join("\n");
+          // Write cues to text in SRT format
+          text = caption.cues
+            .map((cue, _) => {
+              return `${milisecondsToTimestamp(
+                cue.startTime * 1000
+              )} --> ${milisecondsToTimestamp(cue.endTime * 1000)}\n${
+                cue.text
+              }`;
+            })
+            .join("\n\n");
         }
 
         if (text.length === 0) {
@@ -150,6 +156,7 @@ export const TranscriptionCreateForm = (props: {
                     {t("cloudflareAi")}
                   </SelectItem>
                   <SelectItem value="openai">OpenAI</SelectItem>
+                  <SelectItem value="upload">{t("upload")}</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
@@ -181,8 +188,8 @@ export const TranscriptionCreateForm = (props: {
             </FormItem>
           )}
         />
-        <Collapsible open={collapsibleOpen} onOpenChange={setCollapsibleOpen}>
-          <CollapsibleContent className="space-y-4 mb-4">
+        {form.watch("service") === "upload" && (
+          <>
             <FormField
               control={form.control}
               name="text"
@@ -245,25 +252,8 @@ export const TranscriptionCreateForm = (props: {
                 </FormItem>
               )}
             />
-          </CollapsibleContent>
-          <div className="flex justify-center">
-            <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="sm">
-                {collapsibleOpen ? (
-                  <>
-                    <ChevronUpIcon className="h-4 w-4" />
-                    <span className="ml-2">{t("lessOptions")}</span>
-                  </>
-                ) : (
-                  <>
-                    <ChevronDownIcon className="h-4 w-4" />
-                    <span className="ml-2">{t("moreOptions")}</span>
-                  </>
-                )}
-              </Button>
-            </CollapsibleTrigger>
-          </div>
-        </Collapsible>
+          </>
+        )}
 
         <TranscribeProgress
           service={form.watch("service")}
