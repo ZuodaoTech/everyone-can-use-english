@@ -11,7 +11,11 @@
 
     <div class="items-container">
       <div class="items">
-        <div v-for="(item, index) in comments" :key="index" class="item">
+        <div
+          v-for="(item, index) in [...comments, ...comments]"
+          :key="index"
+          class="item"
+        >
           <img class="quote" src="/portal-static/icon/double-quote.svg" />
 
           <div class="top">
@@ -186,7 +190,7 @@ async function requestUserInfo() {
     display: flex;
     flex-wrap: nowrap;
     gap: 16px;
-    animation: scroll 30s linear infinite;
+    animation: scroll 60s linear infinite;
 
     &:hover {
       animation-play-state: paused;
@@ -196,7 +200,7 @@ async function requestUserInfo() {
       padding: 24px;
       border-radius: 4px;
       background: #fff;
-      min-width: 340px;
+      flex: 0 0 340px;
       position: relative;
 
       .quote {
@@ -234,10 +238,10 @@ async function requestUserInfo() {
 
 @keyframes scroll {
   0% {
-    transform: translateX(20%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-80%);
+    transform: translateX(-3916px);
   }
 }
 </style>
