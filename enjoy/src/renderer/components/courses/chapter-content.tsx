@@ -93,7 +93,14 @@ export const ChapterContent = (props: {
           </details>
         )}
 
-        {chapter.examples.length > 0 && <h3>{t("examples")}</h3>}
+        {chapter.examples.length > 0 && (
+          <>
+            <h3>{t("examples")}</h3>
+            <div className="text-sm mb-4">
+              {t("howToFinishChapter")}
+            </div>
+          </>
+        )}
         <div className="grid gap-4">
           {chapter.examples.map((example, index) => (
             <ExampleContent
