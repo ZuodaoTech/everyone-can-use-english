@@ -38,8 +38,8 @@ export const TranscriptionEditButton = (props: {
     // generate text in SRT format from timeline entries
     transcription.result.timeline
       .map(
-        (t: TimelineEntry) =>
-          `${milisecondsToTimestamp(
+        (t: TimelineEntry, index: number) =>
+          `${index + 1}\n${milisecondsToTimestamp(
             t.startTime * 1000
           )} --> ${milisecondsToTimestamp(t.endTime * 1000)}\n${t.text}`
       )

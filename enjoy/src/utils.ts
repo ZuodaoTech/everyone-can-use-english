@@ -49,7 +49,7 @@ export function milisecondsToTimestamp(ms: number) {
   const hours = Math.floor(ms / 3600000).toString();
   const minutes = Math.floor((ms % 3600000) / 60000).toString();
   const seconds = Math.floor(((ms % 360000) % 60000) / 1000).toString();
-  const milliseconds = Math.round(((ms % 360000) % 60000) % 1000).toString();
+  const milliseconds = Math.floor(ms % 1000).toString();
   return `${hours.padStart(2, "0")}:${minutes.padStart(
     2,
     "0"
