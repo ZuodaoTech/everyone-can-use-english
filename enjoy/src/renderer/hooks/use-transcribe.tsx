@@ -26,6 +26,10 @@ import sortedUniqBy from "lodash/sortedUniqBy";
  */
 const sentenceEndPattern = /(?<!Mr|Mrs|Dr|Ms|etc)\.|\?|!\"?/;
 
+// test a text string has any punctuations or not
+// some transcribed text may not have any punctuations
+const punctuationsPattern = /\w[.,!?](\s|$)/g;
+
 /*
  * convert the word timeline to sentence timeline
  * a sentence is a group of words that ends with a punctuation
@@ -148,10 +152,12 @@ export const useTranscribe = () => {
     } else if (service === "cloudflare") {
       result = await transcribeByCloudflareAi(blob);
     } else if (service === "openai") {
-      result = await transcribeByOpenAi(new File([blob], "audio.wav"));
+      result = await transcribeByOpenAi(
+        new File([blob], "audio.mp3", { type: "audio/mp3" })
+      );
     } else if (service === "azure") {
       result = await transcribeByAzureAi(
-        new File([blob], "audio.wav"),
+        new File([blob], "audio.wav", { type: "audio/wav" }),
         language,
         {
           targetId,
@@ -161,7 +167,6 @@ export const useTranscribe = () => {
     } else {
       throw new Error(t("whisperServiceNotSupported"));
     }
-
     setOutput(null);
 
     let transcript = originalText || result.text;
@@ -175,19 +180,10 @@ export const useTranscribe = () => {
       .replace(/[*_`]/g, "")
       .trim();
 
-    // if the transcript does not contain any punctuation, use AI command to add punctuation
-    if (!transcript.match(/\w[.,!?](\s|$)/)) {
-      try {
-        transcript = await punctuateText(transcript);
-      } catch (err) {
-        toast.error(err.message);
-        console.warn(err.message);
-      }
-    }
-
     let timeline: Timeline = [];
-    if (result.timeline) {
-      timeline = Object.assign([], result.timeline);
+
+    if (transcript.match(punctuationsPattern) && result.timeline?.length) {
+      timeline = [...result.timeline];
       const wordTimeline = await EnjoyApp.echogarden.alignSegments(
         new Uint8Array(await blob.arrayBuffer()),
         timeline,
@@ -207,9 +203,17 @@ export const useTranscribe = () => {
           sentence.timeline.push(word);
         }
       });
-
-      // transcript = timeline.map((entry) => entry.text).join(" ");
     } else {
+      // if the transcript does not contain any punctuation, use AI command to add punctuation
+      if (!transcript.match(punctuationsPattern)) {
+        try {
+          transcript = await punctuateText(transcript);
+        } catch (err) {
+          toast.error(err.message);
+          console.warn(err.message);
+        }
+      }
+
       const alignmentResult = await EnjoyApp.echogarden.align(
         new Uint8Array(await blob.arrayBuffer()),
         transcript,
@@ -218,7 +222,16 @@ export const useTranscribe = () => {
           isolate,
         }
       );
-      timeline = alignmentResult.timeline;
+
+      alignmentResult.timeline.forEach((t: TimelineEntry) => {
+        if (t.type === "sentence") {
+          timeline.push(t);
+        } else {
+          t.timeline.forEach((st) => {
+            timeline.push(st);
+          });
+        }
+      });
     }
 
     return {
