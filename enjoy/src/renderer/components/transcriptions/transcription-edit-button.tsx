@@ -20,7 +20,7 @@ import {
   Textarea,
   toast,
 } from "@renderer/components/ui";
-import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { LoaderIcon } from "lucide-react";

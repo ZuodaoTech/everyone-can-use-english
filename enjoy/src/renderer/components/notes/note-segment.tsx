@@ -1,4 +1,4 @@
-import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { useContext, useState } from "react";
 import { WavesurferPlayer } from "@/renderer/components/misc";
 import { AppSettingsProviderContext } from "@/renderer/context";

@@ -2,17 +2,15 @@ import { ipcMain } from "electron";
 import * as Echogarden from "echogarden/dist/api/API.js";
 import { AlignmentOptions } from "echogarden/dist/api/API";
 import {
-  AudioSourceParam,
-  RawAudio,
-} from "echogarden/dist/audio/AudioUtilities";
-import {
   encodeRawAudioToWave,
   decodeWaveToRawAudio,
   ensureRawAudio,
   getRawAudioDuration,
   trimAudioStart,
   trimAudioEnd,
+  AudioSourceParam,
 } from "echogarden/dist/audio/AudioUtilities.js";
+import { Timeline } from "echogarden/dist/utilities/Timeline.d.js";
 import path from "path";
 import log from "@main/logger";
 import url from "url";
@@ -20,7 +18,6 @@ import settings from "@main/settings";
 import fs from "fs-extra";
 import ffmpegPath from "ffmpeg-static";
 import { enjoyUrlToPath, pathToEnjoyUrl } from "./utils";
-import { Timeline } from "echogarden/dist/utilities/Timeline";
 
 Echogarden.setGlobalOption(
   "ffmpegPath",

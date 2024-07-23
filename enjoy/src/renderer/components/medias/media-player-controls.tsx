@@ -34,7 +34,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
-import { TimelineEntry } from "echogarden/dist/utilities/Timeline";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 
 const PLAYBACK_RATE_OPTIONS = [0.75, 0.8, 0.9, 1.0];
 export const MediaPlayerControls = () => {
