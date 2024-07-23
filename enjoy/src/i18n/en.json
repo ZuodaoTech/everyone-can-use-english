@@ -375,6 +375,7 @@
   "cloudflareAi": "Cloudflare AI",
   "cloudflareSpeechToTextDescription": "Use Cloudflare AI Worker to transcribe. It is in beta and free for now.",
   "openaiSpeechToTextDescription": "Use openAI to transcribe using your own key.",
+  "uploadSpeechToTextDescription": "Upload transcript file or input transcript text to align.",
   "checkingWhisper": "Checking whisper status",
   "pleaseDownloadWhisperModelFirst": "Please download whisper model first",
   "whisperIsWorkingGood": "Whisper is working good",

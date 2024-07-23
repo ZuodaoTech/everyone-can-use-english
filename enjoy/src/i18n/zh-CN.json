@@ -375,6 +375,7 @@
   "cloudflareAi": "Cloudflare AI",
   "cloudflareSpeechToTextDescription": "使用 Cloudflare AI 进行语音转文本，目前免费",
   "openaiSpeechToTextDescription": "使用 OpenAI 进行语音转文本（需要 API 密钥）",
+  "uploadSpeechToTextDescription": "上传字幕文件或者输入文本进行字幕对齐",
   "checkingWhisper": "正在检查 Whisper",
   "pleaseDownloadWhisperModelFirst": "请先下载 Whisper 模型",
   "whisperIsWorkingGood": "Whisper 正常工作",

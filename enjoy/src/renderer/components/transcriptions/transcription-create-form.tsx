@@ -62,7 +62,7 @@ export const TranscriptionCreateForm = (props: {
     resolver: zodResolver(transcriptionSchema),
     values: {
       language: learningLanguage,
-      service: whisperConfig.service,
+      service: originalText ? "upload" : whisperConfig.service,
       text: originalText,
       isolate: false,
     },
@@ -170,6 +170,18 @@ export const TranscriptionCreateForm = (props: {
                   <SelectItem value="upload">{t("upload")}</SelectItem>
                 </SelectContent>
               </Select>
+              <FormDescription>
+                {form.watch("service") === "local" &&
+                  t("localSpeechToTextDescription")}
+                {form.watch("service") === "azure" &&
+                  t("azureSpeechToTextDescription")}
+                {form.watch("service") === "cloudflare" &&
+                  t("cloudflareSpeechToTextDescription")}
+                {form.watch("service") === "openai" &&
+                  t("openaiSpeechToTextDescription")}
+                {form.watch("service") === "upload" &&
+                  t("uploadSpeechToTextDescription")}
+              </FormDescription>
             </FormItem>
           )}
         />
