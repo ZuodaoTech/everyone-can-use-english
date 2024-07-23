@@ -3,7 +3,7 @@ import {
   AppSettingsProviderContext,
 } from "@renderer/context";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -67,6 +67,17 @@ export const TranscriptionCreateForm = (props: {
       isolate: false,
     },
   });
+
+  const handleSubmit = (data: z.infer<typeof transcriptionSchema>) => {
+    const { service, text } = data;
+
+    if (service === "upload" && !text) {
+      toast.error(t("pleaseUploadTranscriptFile"));
+      return;
+    }
+
+    onSubmit(data);
+  };
 
   const parseSubtitle = (file: File) => {
     const fileType = file.name.split(".").pop();
@@ -132,7 +143,7 @@ export const TranscriptionCreateForm = (props: {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="gap-4 grid w-full"
       >
         <FormField
@@ -195,9 +206,7 @@ export const TranscriptionCreateForm = (props: {
               name="text"
               render={({ field }) => (
                 <FormItem className="grid w-full items-center">
-                  <FormLabel>
-                    {t("uploadTranscriptFile")}({t("optinal")})
-                  </FormLabel>
+                  <FormLabel>{t("uploadTranscriptFile")}</FormLabel>
                   <Input
                     disabled={transcribing}
                     type="file"
