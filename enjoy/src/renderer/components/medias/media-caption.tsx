@@ -355,6 +355,7 @@ export const MediaCaption = () => {
     };
   }, []);
 
+  if (!transcription) return null;
   if (!caption) return null;
 
   return (

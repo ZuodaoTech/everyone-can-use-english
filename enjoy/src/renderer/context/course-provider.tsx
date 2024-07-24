@@ -3,6 +3,7 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   toast,
@@ -78,6 +79,7 @@ export const CourseProvider = ({
           >
             <SheetHeader className="flex items-center justify-center h-14">
               <SheetTitle className="sr-only">Shadow</SheetTitle>
+              <SheetDescription className="sr-only"></SheetDescription>
               <SheetClose>
                 <ChevronDownIcon />
               </SheetClose>
