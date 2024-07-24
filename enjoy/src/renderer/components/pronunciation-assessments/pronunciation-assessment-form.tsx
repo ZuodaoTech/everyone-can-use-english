@@ -64,28 +64,32 @@ export const PronunciationAssessmentForm = () => {
     }
     const { language, referenceText } = data;
 
-    const recording = await createRecording(data);
-
-    setSubmitting(true);
-    toast.promise(
-      createAssessment({
-        language,
-        reference: referenceText,
-        recording,
-      })
-        .then(() => {
-          navigate("/pronunciation_assessments");
+    try {
+      setSubmitting(true);
+      const recording = await createRecording(data);
+      toast.promise(
+        createAssessment({
+          language,
+          reference: referenceText,
+          recording,
         })
-        .catch(() => {
-          EnjoyApp.recordings.destroy(recording.id);
-        })
-        .finally(() => setSubmitting(false)),
-      {
-        loading: t("assessing"),
-        success: t("assessedSuccessfully"),
-        error: (err) => err.message,
-      }
-    );
+          .then(() => {
+            navigate("/pronunciation_assessments");
+          })
+          .catch(() => {
+            EnjoyApp.recordings.destroy(recording.id);
+          })
+          .finally(() => setSubmitting(false)),
+        {
+          loading: t("assessing"),
+          success: t("assessedSuccessfully"),
+          error: (err) => err.message,
+        }
+      );
+    } catch (err) {
+      toast.error(err.message);
+      setSubmitting(false);
+    }
   };
 
   const createRecording = async (
@@ -98,7 +102,8 @@ export const PronunciationAssessmentForm = () => {
     } else {
       arrayBuffer = await new Blob([file[0]]).arrayBuffer();
     }
-    return await EnjoyApp.recordings.create({
+
+    return EnjoyApp.recordings.create({
       language,
       referenceText,
       blob: {

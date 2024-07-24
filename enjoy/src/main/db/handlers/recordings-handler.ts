@@ -15,6 +15,7 @@ import {
 import dayjs from "dayjs";
 import { t } from "i18next";
 import log from "@main/logger";
+import { NIL as NIL_UUID } from "uuid";
 
 const logger = log.scope("db/handlers/recordings-handler");
 
@@ -120,8 +121,13 @@ class RecordingsHandler {
       };
     }
   ) {
-    const { targetId, targetType, referenceId, referenceText, duration } =
-      options;
+    const {
+      targetId = NIL_UUID,
+      targetType = "None",
+      referenceId,
+      referenceText,
+      duration,
+    } = options;
     const recording = await Recording.createFromBlob(options.blob, {
       targetId,
       targetType,
