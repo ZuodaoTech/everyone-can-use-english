@@ -234,6 +234,10 @@ export default withMermaid(
                         text: "2.2.15. w, j",
                         link: "/sounds-of-american-english/2.2.15-wj",
                       },
+                      {
+                        text: "2.2.16.拼读",
+                        link: "/sounds-of-american-english/2.2.16-spellings",
+                      },
                     ]
                   },
                   {
