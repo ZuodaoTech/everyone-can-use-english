@@ -44,12 +44,17 @@ export const MediaProvider = () => {
     player.current.textTracks.clear();
     player.current.textTracks.add(
       new TextTrack({
+        label: "Transcription",
         content: srt,
         kind: "subtitles",
         type: "srt",
         language: transcription.result.language,
       })
     );
+
+    return () => {
+      setMediaProvider(null);
+    };
   }, [player, transcription]);
 
   if (!media?.src) return null;

@@ -208,46 +208,6 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     return timeline;
   };
 
-  const findTranscriptionFromWebApi = async () => {
-    if (!transcription) {
-      await findOrCreateTranscription();
-    }
-
-    const res = await webApi.transcriptions({
-      targetMd5: media.md5,
-    });
-
-    const transcript = (res?.transcriptions || []).filter((t) =>
-      ["base", "small", "medium", "large", "whisper-1", "original"].includes(
-        t.model
-      )
-    )?.[0];
-
-    if (!transcript) {
-      return Promise.reject("Transcription not found");
-    }
-
-    if (!transcript.result["timeline"]) {
-      return Promise.reject("Transcription not aligned");
-    }
-
-    return EnjoyApp.transcriptions.update(transcription.id, {
-      state: "finished",
-      result: transcript.result,
-      engine: transcript.engine,
-      model: transcript.model,
-    });
-  };
-
-  const findOrGenerateTranscription = async () => {
-    try {
-      await findTranscriptionFromWebApi();
-    } catch (err) {
-      console.warn(err);
-      await generateTranscription();
-    }
-  };
-
   /*
    * find or create transcription
    */

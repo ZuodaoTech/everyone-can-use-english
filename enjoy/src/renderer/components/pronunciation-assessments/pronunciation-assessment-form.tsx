@@ -98,7 +98,7 @@ export const PronunciationAssessmentForm = () => {
     } else {
       arrayBuffer = await new Blob([file[0]]).arrayBuffer();
     }
-    const recording = await EnjoyApp.recordings.create({
+    return await EnjoyApp.recordings.create({
       language,
       referenceText,
       blob: {
@@ -106,15 +106,6 @@ export const PronunciationAssessmentForm = () => {
         arrayBuffer,
       },
     });
-
-    try {
-      await EnjoyApp.recordings.sync(recording.id);
-      return recording;
-    } catch (err) {
-      toast.error(err.message);
-      EnjoyApp.recordings.destroy(recording.id);
-      return;
-    }
   };
 
   return (

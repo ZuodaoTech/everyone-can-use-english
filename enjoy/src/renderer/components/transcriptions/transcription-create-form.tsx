@@ -3,11 +3,14 @@ import {
   AppSettingsProviderContext,
 } from "@renderer/context";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
   Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Form,
   FormDescription,
   FormField,
@@ -28,7 +31,7 @@ import {
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { LANGUAGES } from "@/constants";
-import { LoaderIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon, LoaderIcon } from "lucide-react";
 import { parseText } from "media-captions";
 import { milisecondsToTimestamp } from "@/utils";
 
@@ -67,6 +70,7 @@ export const TranscriptionCreateForm = (props: {
       isolate: false,
     },
   });
+  const [collapsibleOpen, setCollapsibleOpen] = useState(false);
 
   const handleSubmit = (data: z.infer<typeof transcriptionSchema>) => {
     const { service, text } = data;
@@ -218,30 +222,6 @@ export const TranscriptionCreateForm = (props: {
               name="text"
               render={({ field }) => (
                 <FormItem className="grid w-full items-center">
-                  <FormLabel>{t("uploadTranscriptFile")}</FormLabel>
-                  <Input
-                    disabled={transcribing}
-                    type="file"
-                    accept=".txt,.srt,.vtt"
-                    onChange={async (event) => {
-                      const file = event.target.files[0];
-
-                      if (file) {
-                        parseSubtitle(file)
-                          .then((text) => {
-                            field.onChange(text);
-                          })
-                          .catch((error) => {
-                            toast.error(error.message);
-                          });
-                      } else {
-                        field.onChange("");
-                      }
-                    }}
-                  />
-                  <FormDescription>
-                    {t("uploadTranscriptFileDescription")}
-                  </FormDescription>
                   {field.value != undefined && (
                     <>
                       <FormLabel>{t("transcript")}</FormLabel>
@@ -256,6 +236,44 @@ export const TranscriptionCreateForm = (props: {
                 </FormItem>
               )}
             />
+          </>
+        )}
+        <Collapsible open={collapsibleOpen} onOpenChange={setCollapsibleOpen}>
+          <CollapsibleContent className="mb-4 space-y-4">
+            {form.watch("service") === "upload" && (
+              <FormField
+                control={form.control}
+                name="text"
+                render={({ field }) => (
+                  <FormItem className="grid w-full items-center">
+                    <FormLabel>{t("uploadTranscriptFile")}</FormLabel>
+                    <Input
+                      disabled={transcribing}
+                      type="file"
+                      accept=".txt,.srt,.vtt"
+                      onChange={async (event) => {
+                        const file = event.target.files[0];
+
+                        if (file) {
+                          parseSubtitle(file)
+                            .then((text) => {
+                              field.onChange(text);
+                            })
+                            .catch((error) => {
+                              toast.error(error.message);
+                            });
+                        } else {
+                          field.onChange("");
+                        }
+                      }}
+                    />
+                    <FormDescription>
+                      {t("uploadTranscriptFileDescription")}
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="isolate"
@@ -273,8 +291,25 @@ export const TranscriptionCreateForm = (props: {
                 </FormItem>
               )}
             />
-          </>
-        )}
+          </CollapsibleContent>
+          <div className="flex justify-center">
+            <CollapsibleTrigger asChild>
+              <Button variant="ghost" size="sm">
+                {collapsibleOpen ? (
+                  <>
+                    <ChevronUpIcon className="h-4 w-4" />
+                    <span className="ml-2">{t("lessOptions")}</span>
+                  </>
+                ) : (
+                  <>
+                    <ChevronDownIcon className="h-4 w-4" />
+                    <span className="ml-2">{t("moreOptions")}</span>
+                  </>
+                )}
+              </Button>
+            </CollapsibleTrigger>
+          </div>
+        </Collapsible>
 
         <TranscribeProgress
           service={form.watch("service")}
