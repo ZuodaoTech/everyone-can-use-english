@@ -11,6 +11,7 @@ import {
   FormMessage,
   Input,
   toast,
+  FormDescription,
 } from "@renderer/components/ui";
 import { AISettingsProviderContext } from "@renderer/context";
 import { useContext, useState } from "react";
@@ -22,6 +23,7 @@ export const OpenaiSettings = () => {
   const openAiConfigSchema = z.object({
     key: z.string().optional(),
     baseUrl: z.string().optional(),
+    models: z.string().optional(),
   });
 
   const form = useForm<z.infer<typeof openAiConfigSchema>>({
@@ -29,6 +31,7 @@ export const OpenaiSettings = () => {
     values: {
       key: openai?.key,
       baseUrl: openai?.baseUrl,
+      models: openai?.models,
     },
   });
 
@@ -82,6 +85,32 @@ export const OpenaiSettings = () => {
                         onChange={field.onChange}
                       />
                     </div>
+                    <FormDescription>
+                      {t("openaiBaseUrlDescription")}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="models"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-2">
+                      <FormLabel className="min-w-max">
+                        {t("customModels")}:
+                      </FormLabel>
+                      <Input
+                        disabled={!editing}
+                        placeholder={t("leaveEmptyToUseDefault")}
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </div>
+                    <FormDescription>
+                      {t("customModelsDescription")}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

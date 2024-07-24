@@ -8,8 +8,6 @@ type AISettingsProviderState = {
   refreshWhisperConfig?: () => void;
   openai?: LlmProviderType;
   setOpenai?: (config: LlmProviderType) => void;
-  googleGenerativeAi?: LlmProviderType;
-  setGoogleGenerativeAi?: (config: LlmProviderType) => void;
   setGptEngine?: (engine: GptEngineSettingType) => void;
   currentEngine?: GptEngineSettingType;
 };
@@ -31,8 +29,6 @@ export const AISettingsProvider = ({
     },
   });
   const [openai, setOpenai] = useState<LlmProviderType>(null);
-  const [googleGenerativeAi, setGoogleGenerativeAi] =
-    useState<LlmProviderType>(null);
   const [whisperConfig, setWhisperConfig] = useState<WhisperConfigType>(null);
   const { EnjoyApp, libraryPath, user, apiUrl } = useContext(
     AppSettingsProviderContext
@@ -71,15 +67,6 @@ export const AISettingsProvider = ({
     const _openai = await EnjoyApp.settings.getLlm("openai");
     if (_openai) {
       setOpenai(Object.assign({ name: "openai" }, _openai));
-    }
-
-    const _googleGenerativeAi = await EnjoyApp.settings.getLlm(
-      "googleGenerativeAi"
-    );
-    if (_googleGenerativeAi) {
-      setGoogleGenerativeAi(
-        Object.assign({ name: "googleGenerativeAi" }, _googleGenerativeAi)
-      );
     }
 
     const _defaultEngine = await EnjoyApp.settings.getDefaultEngine();
@@ -131,11 +118,8 @@ export const AISettingsProvider = ({
       case "openai":
         setOpenai(Object.assign({ name: "openai" }, _config));
         break;
-      case "googleGenerativeAi":
-        setGoogleGenerativeAi(
-          Object.assign({ name: "googleGenerativeAi" }, _config)
-        );
-        break;
+      default:
+        throw new Error("Unsupported LLM provider");
     }
   };
 
@@ -152,6 +136,7 @@ export const AISettingsProvider = ({
             ? Object.assign(gptEngine, {
                 key: openai.key,
                 baseUrl: openai.baseUrl,
+                models: openai.models,
               })
             : Object.assign(gptEngine, {
                 key: user?.accessToken,
@@ -159,9 +144,6 @@ export const AISettingsProvider = ({
               }),
         openai,
         setOpenai: (config: LlmProviderType) => handleSetLlm("openai", config),
-        googleGenerativeAi,
-        setGoogleGenerativeAi: (config: LlmProviderType) =>
-          handleSetLlm("googleGenerativeAi", config),
         whisperConfig,
         refreshWhisperConfig,
         setWhisperModel,

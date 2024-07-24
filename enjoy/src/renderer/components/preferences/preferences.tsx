@@ -12,7 +12,6 @@ import {
   WhisperSettings,
   OpenaiSettings,
   ProxySettings,
-  GoogleGenerativeAiSettings,
   ResetSettings,
   ResetAllSettings,
   NativeLanguageSettings,
@@ -41,8 +40,6 @@ export const Preferences = () => {
           <DefaultEngineSettings />
           <Separator />
           <OpenaiSettings />
-          <Separator />
-          <GoogleGenerativeAiSettings />
           <Separator />
         </div>
       ),

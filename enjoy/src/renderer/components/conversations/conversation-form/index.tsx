@@ -59,9 +59,7 @@ export const ConversationForm = (props: {
 
   const conversationFormSchema = z.object({
     name: z.string().optional(),
-    engine: z
-      .enum(["enjoyai", "openai", "ollama", "googleGenerativeAi"])
-      .default("openai"),
+    engine: z.enum(["enjoyai", "openai", "ollama"]).default("openai"),
     configuration: z.object({
       type: z.enum(["gpt", "tts"]),
       model: z.string().optional(),
@@ -69,7 +67,7 @@ export const ConversationForm = (props: {
       roleDefinition: z.string().optional(),
       temperature: z.number().min(0).max(1).default(0.2),
       numberOfChoices: z.number().min(1).default(1),
-      maxTokens: z.number().min(-1).default(2000),
+      maxTokens: z.number().min(-1).default(2048),
       presencePenalty: z.number().min(-2).max(2).default(0),
       frequencyPenalty: z.number().min(-2).max(2).default(0),
       historyBufferSize: z.number().min(0).default(10),
@@ -100,6 +98,10 @@ export const ConversationForm = (props: {
       );
     } catch (e) {
       console.warn(`No ollama server found: ${e.message}`);
+    }
+
+    if (openai.models) {
+      providers["openai"].models = openai.models.split(",");
     }
 
     setGptProviders({ ...providers });
