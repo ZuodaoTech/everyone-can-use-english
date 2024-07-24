@@ -12,7 +12,7 @@ type LlmProviderType = {
   key?: string;
   model?: string;
   baseUrl?: string;
-  models?: string[];
+  models?: string;
 };
 
 type DownloadStateType = {

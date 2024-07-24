@@ -136,6 +136,7 @@ export const AISettingsProvider = ({
             ? Object.assign(gptEngine, {
                 key: openai.key,
                 baseUrl: openai.baseUrl,
+                models: openai.models,
               })
             : Object.assign(gptEngine, {
                 key: user?.accessToken,
