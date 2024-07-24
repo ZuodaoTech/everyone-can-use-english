@@ -64,22 +64,23 @@ export const PronunciationAssessmentForm = () => {
     }
     const { language, referenceText } = data;
 
-    const recording = await createRecording(data);
-
     setSubmitting(true);
     toast.promise(
-      createAssessment({
-        language,
-        reference: referenceText,
-        recording,
-      })
-        .then(() => {
-          navigate("/pronunciation_assessments");
+      async () => {
+        const recording = await createRecording(data);
+        createAssessment({
+          language,
+          reference: referenceText,
+          recording,
         })
-        .catch(() => {
-          EnjoyApp.recordings.destroy(recording.id);
-        })
-        .finally(() => setSubmitting(false)),
+          .then(() => {
+            navigate("/pronunciation_assessments");
+          })
+          .catch(() => {
+            EnjoyApp.recordings.destroy(recording.id);
+          })
+          .finally(() => setSubmitting(false));
+      },
       {
         loading: t("assessing"),
         success: t("assessedSuccessfully"),
