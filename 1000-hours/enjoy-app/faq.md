@@ -8,7 +8,7 @@
 
 可以按照以下步骤解决：
 
-1. [升级 Enjoy App](./index.md) 至 v0.3.2 以上；
+1. [升级 Enjoy App](./install.md) 至 v0.3.2 以上；
 2. 在登录页面，点 `高级设置`（如果已登录，点 `软件设置`/`高级设置`），修改 API 设置，填入 `https://api.getenjoyapp.com`，点保存。
 
 软件自动重载后即可。
