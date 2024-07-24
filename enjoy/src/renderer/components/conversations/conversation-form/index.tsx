@@ -60,7 +60,7 @@ export const ConversationForm = (props: {
   const conversationFormSchema = z.object({
     name: z.string().optional(),
     engine: z
-      .enum(["enjoyai", "openai", "ollama", "googleGenerativeAi"])
+      .enum(["enjoyai", "openai", "ollama"])
       .default("openai"),
     configuration: z.object({
       type: z.enum(["gpt", "tts"]),

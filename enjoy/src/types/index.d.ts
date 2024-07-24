@@ -5,13 +5,14 @@ declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string;
 declare const MAIN_WINDOW_VITE_NAME: string;
 declare module "compromise-paragraphs";
 
-type SupportedLlmProviderType = "enjoyai" | "openai" | "googleGenerativeAi";
+type SupportedLlmProviderType = "enjoyai" | "openai";
 
 type LlmProviderType = {
-  name?: "enjoyai" | "openai" | "googleGenerativeAi";
+  name?: "enjoyai" | "openai";
   key?: string;
   model?: string;
   baseUrl?: string;
+  models?: string[];
 };
 
 type DownloadStateType = {

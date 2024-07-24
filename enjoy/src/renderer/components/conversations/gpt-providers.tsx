@@ -53,18 +53,6 @@ export const GPT_PROVIDERS: { [key: string]: any } = {
       "tts",
     ],
   },
-  googleGenerativeAi: {
-    name: "Google Generative AI",
-    models: ["gemini-pro"],
-    configurable: [
-      "model",
-      "roleDefinition",
-      "temperature",
-      "maxTokens",
-      "historyBufferSize",
-      "tts",
-    ],
-  },
   ollama: {
     name: "Ollama",
     description: t("ensureYouHaveOllamaRunningLocallyAndHasAtLeastOneModel"),
