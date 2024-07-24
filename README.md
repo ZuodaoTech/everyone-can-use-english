@@ -58,3 +58,7 @@ yarn enjoy:start
 - [第七章：精读](./book/chapter7.md)
 - [第八章：叮嘱](./book/chapter8.md)
 - [后记](./book/end.md)
+
+## 常见问题
+
+请查询 [文档 FAQ](https://1000h.org/enjoy-app/faq.html)。
