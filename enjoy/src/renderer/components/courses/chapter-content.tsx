@@ -84,7 +84,9 @@ export const ChapterContent = (props: {
         </div>
       </div>
       <div className="select-text prose dark:prose-invert prose-em:font-bold prose-em:text-red-700 mx-auto">
-        <h2>{chapter?.title}</h2>
+        <h2>
+          {chapter.sequence}. {chapter?.title}
+        </h2>
         <MarkdownWrapper>{chapter?.content}</MarkdownWrapper>
         {translation && (
           <details>
@@ -96,9 +98,7 @@ export const ChapterContent = (props: {
         {chapter.examples.length > 0 && (
           <>
             <h3>{t("examples")}</h3>
-            <div className="text-sm mb-4">
-              {t("howToFinishChapter")}
-            </div>
+            <div className="text-sm mb-4">{t("howToFinishChapter")}</div>
           </>
         )}
         <div className="grid gap-4">
