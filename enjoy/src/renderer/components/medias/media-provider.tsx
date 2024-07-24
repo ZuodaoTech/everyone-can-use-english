@@ -29,7 +29,7 @@ export const MediaProvider = () => {
   const player = useRef<MediaPlayerInstance>(null);
 
   useEffect(() => {
-    if (!transcription?.result) return;
+    if (!transcription?.result?.timeline) return;
     if (!player?.current) return;
 
     const srt = transcription.result.timeline

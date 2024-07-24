@@ -64,9 +64,7 @@ export const MediaCurrentRecording = () => {
     currentTime: mediaCurrentTime,
   } = useContext(MediaPlayerProviderContext);
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { currentHotkeys } = useContext(
-    HotKeysSettingsProviderContext
-  );
+  const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
   const [player, setPlayer] = useState(null);
   const [regions, setRegions] = useState<Regions | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -423,7 +421,7 @@ export const MediaCurrentRecording = () => {
   }, [currentRecording, isRecording, layout?.width]);
 
   useHotkeys(currentHotkeys.PlayOrPauseRecording, () => {
-    document.getElementById("recording-play-or-pause-button").click();
+    document.getElementById("recording-play-or-pause-button")?.click();
   });
   useHotkeys(currentHotkeys.PronunciationAssessment, () => {
     setDetailIsOpen(!detailIsOpen);
