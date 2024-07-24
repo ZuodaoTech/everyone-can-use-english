@@ -194,9 +194,10 @@ export const MediaPlayerProvider = ({
   const getCachedSegmentIndex = async () => {
     if (!media) return;
 
-    const index = await EnjoyApp.cacheObjects.get(
-      `${media.mediaType.toLowerCase()}-${media.id}-last-segment-index`
-    );
+    const cachedId = `${media.mediaType.toLowerCase()}-${
+      media.id
+    }-last-segment-index`;
+    const index = await EnjoyApp.cacheObjects.get(cachedId);
 
     return index || 0;
   };
@@ -204,10 +205,10 @@ export const MediaPlayerProvider = ({
   const setCachedSegmentIndex = (index: number) => {
     if (!media) return;
 
-    return EnjoyApp.cacheObjects.set(
-      `${media.mediaType.toLowerCase()}-${media.id}-last-segment-index`,
-      index
-    );
+    const cachedId = `${media.mediaType.toLowerCase()}-${
+      media.id
+    }-last-segment-index`;
+    return EnjoyApp.cacheObjects.set(cachedId, index);
   };
 
   const { notes, createNote } = useNotes({
@@ -563,7 +564,7 @@ export const MediaPlayerProvider = ({
   /* cache last segment index */
   useEffect(() => {
     if (!media) return;
-    if (!currentSegmentIndex) return;
+    if (typeof currentSegmentIndex !== "number") return;
 
     setCachedSegmentIndex(currentSegmentIndex);
   }, [currentSegmentIndex]);

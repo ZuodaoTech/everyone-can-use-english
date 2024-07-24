@@ -43,7 +43,7 @@ export const AudioPlayer = (props: {
     return () => {
       setCurrentSegmentIndex(0);
     };
-  }, [media]);
+  }, [media?.id]);
 
   if (!audio) return null;
   if (!layout) return <LoaderSpin />;
