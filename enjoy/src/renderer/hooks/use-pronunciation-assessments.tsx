@@ -2,6 +2,7 @@ import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import { useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import camelcaseKeys from "camelcase-keys";
+import { toast } from "@renderer/components/ui";
 
 export const usePronunciationAssessments = () => {
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -18,7 +19,7 @@ export const usePronunciationAssessments = () => {
       recording = await EnjoyApp.recordings.findOne(targetId);
     }
 
-    await EnjoyApp.recordings.sync(recording.id);
+    EnjoyApp.recordings.sync(recording.id).catch((err) => toast.error(err));
     const blob = await (await fetch(recording.src)).blob();
     targetId = recording.id;
     targetType = "Recording";
