@@ -1,7 +1,4 @@
-import {
-  AppSettingsProviderContext,
-  MediaPlayerProviderContext,
-} from "@renderer/context";
+import { AppSettingsProviderContext } from "@renderer/context";
 import { useContext, useEffect, useState } from "react";
 import { LoaderSpin } from "@renderer/components";
 import {
@@ -89,6 +86,9 @@ export const TranscriptionsList = (props: {
 
   return (
     <div className="">
+      <div className="mb-4 text-sm text-muted-foreground">
+        {t("downloadTranscriptFromCloud")}:
+      </div>
       <Table>
         <TableHeader>
           <TableRow>

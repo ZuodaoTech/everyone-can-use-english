@@ -270,7 +270,7 @@ export const MediaCaption = () => {
       resize: editingRegion,
     });
 
-    activeRegion.remove();
+    activeRegion?.remove();
     setActiveRegion(region);
 
     const subscriptions = [

@@ -67,7 +67,7 @@ export const MediaTranscriptionGenerateButton = (props: {
         <Tabs defaultValue="transcribe">
           <TabsList className="w-full grid grid-cols-2 mb-4">
             <TabsTrigger value="transcribe">{t("transcribe")}</TabsTrigger>
-            <TabsTrigger value="download">{t("download")}</TabsTrigger>
+            <TabsTrigger value="download">{t("downloadTranscript")}</TabsTrigger>
           </TabsList>
           <TabsContent value="transcribe">
             <TranscriptionCreateForm

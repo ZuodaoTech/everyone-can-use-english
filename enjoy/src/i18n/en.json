@@ -208,6 +208,8 @@
   "inputMixinId": "Input your Mixin ID",
   "dontHaveMixinAccount": "don't have Mixin account?",
   "youCanAlsoLoginWith": "You can also login with",
+  "downloadTranscript": "Download transcript",
+  "downloadTranscriptFromCloud": "Download transcript from cloud",
   "transcribe": "Transcribe",
   "stillTranscribing": "AI is still working on the transcription. Please wait for a while.",
   "unableToSetLibraryPath": "Unable to set library path to {{path}}",

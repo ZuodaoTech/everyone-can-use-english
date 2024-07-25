@@ -208,6 +208,8 @@
   "inputMixinId": "请输入您的 Mixin ID",
   "dontHaveMixinAccount": "没有 Mixin 账号？",
   "youCanAlsoLoginWith": "您也可以使用以下方式登录",
+  "downloadTranscript": "下载字幕",
+  "downloadTranscriptFromCloud": "从云端下载字幕",
   "transcribe": "语音转文本",
   "stillTranscribing": "语音转文本仍在进行中，请耐心等候。",
   "unableToSetLibraryPath": "无法设置资源库保存路径 {{path}}",
