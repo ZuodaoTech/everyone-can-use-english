@@ -11,7 +11,7 @@ import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@/constants";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
   const { whisperConfig } = useContext(AISettingsProviderContext);
-  const { EnjoyApp, webApi, learningLanguage } = useContext(
+  const { EnjoyApp, learningLanguage } = useContext(
     AppSettingsProviderContext
   );
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
