@@ -211,39 +211,29 @@ export const useTranscribe = () => {
       }
     );
 
-    const wordTimeline: TimelineEntry[] = res.transcription
-      .map((word) => {
-        // ignore the word if it is empty or in the format of [xxx] or (xxx)
-        // And sometimes [xxx xxx] would be recognized as two words, like `[xxx` and `xxx]`. Same as `()`. so we need to ignore them.
+    const timeline: TimelineEntry[] = res.transcription
+      .map((segment) => {
+        // ignore the word if it is empty or in the format of `[xxx]` or `(xxx)`
         if (
-          !word.text.trim() ||
-          word.text.trim().match(/^[\[\(]/) ||
-          word.text.trim().match(/[\]\)]$/)
+          !segment.text.trim() ||
+          segment.text.trim().match(/^[\[\(].+[\]\)]$/)
         ) {
           return null;
         }
 
         return {
-          type: "word" as TimelineEntryType,
-          text: word.text.trim(),
-          startTime: word.offsets.from / 1000.0,
-          endTime: word.offsets.to / 1000.0,
+          type: "segment" as TimelineEntryType,
+          text: segment.text.trim(),
+          startTime: segment.offsets.from / 1000.0,
+          endTime: segment.offsets.to / 1000.0,
         };
       })
-      .filter((w) => Boolean(w?.text));
+      .filter((s) => Boolean(s?.text));
 
-    const transcript = wordTimeline
-      .map((word) => word.text)
+    const transcript = timeline
+      .map((segment) => segment.text)
       .join(" ")
       .trim();
-    const timeline: Timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
-      wordTimeline,
-      transcript,
-      language.split("-")[0]
-    );
-    timeline.forEach((t) => {
-      t.timeline = [];
-    });
 
     return {
       engine: "whisper",
@@ -273,14 +263,14 @@ export const useTranscribe = () => {
       file,
       model: "whisper-1",
       response_format: "verbose_json",
-      timestamp_granularities: ["word"],
+      timestamp_granularities: ["segment"],
     })) as any;
 
     let timeline: TimelineEntry[] = [];
     if (res.segments) {
       res.segments.forEach((segment) => {
         const segmentTimeline = {
-          type: "sentence" as TimelineEntryType,
+          type: "segment" as TimelineEntryType,
           text: segment.text,
           startTime: segment.start,
           endTime: segment.end,
@@ -288,36 +278,6 @@ export const useTranscribe = () => {
         };
 
         timeline.push(segmentTimeline);
-      });
-    } else if (res.words) {
-      const wordTimeline = res.words
-        .map((word) => {
-          if (
-            !word.word.trim() ||
-            word.word.trim().match(/^[\[\(]/) ||
-            word.word.trim().match(/[\]\)]$/)
-          ) {
-            return null;
-          }
-          return {
-            type: "word" as TimelineEntryType,
-            text: word.word,
-            startTime: word.start,
-            endTime: word.end,
-          };
-        })
-        .filter((w) => Boolean(w?.text));
-      const transcript = wordTimeline
-        .map((word) => word.text)
-        .join(" ")
-        .trim();
-      timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
-        wordTimeline,
-        transcript,
-        language.split("-")[0]
-      );
-      timeline.forEach((t) => {
-        t.timeline = [];
       });
     }
 
