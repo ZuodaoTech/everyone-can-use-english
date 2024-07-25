@@ -19,14 +19,6 @@ import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
 import { parseText } from "media-captions";
 
-/*
- * define the regex pattern to match the end of a sentence
- * the end of a sentence is defined as a period, question mark, or exclamation mark
- * also it may be followed by a quotation mark
- * and exclude sepecial cases like "Mr.", "Mrs.", "Dr.", "Ms.", "etc."
- */
-const sentenceEndPattern = /(?<!Mr|Mrs|Dr|Ms|etc)\.|\?|!\"?/;
-
 // test a text string has any punctuations or not
 // some transcribed text may not have any punctuations
 const punctuationsPattern = /\w[.,!?](\s|$)/g;
@@ -145,17 +137,11 @@ export const useTranscribe = () => {
           isolate,
         }
       );
-
-      wordTimeline.forEach((word: TimelineEntry) => {
-        let sentence = timeline.find(
-          (entry) =>
-            word.startTime >= entry.startTime && word.endTime <= entry.endTime
-        );
-
-        if (sentence) {
-          sentence.timeline.push(word);
-        }
-      });
+      timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
+        wordTimeline,
+        transcript,
+        language.split("-")[0]
+      );
     } else {
       // Remove all content inside `()`, `[]`, `{}` and trim the text
       // remove all markdown formatting
@@ -426,7 +412,13 @@ export const useTranscribe = () => {
 
     let results: SpeechRecognitionResultType[] = [];
 
-    return new Promise((resolve, reject) => {
+    const res: {
+      engine: string;
+      model: string;
+      text: string;
+      tokenId: number;
+      timeline?: TimelineEntry[];
+    } = await new Promise((resolve, reject) => {
       reco.recognizing = (_s, e) => {
         setOutput(e.result.text);
       };
@@ -445,64 +437,41 @@ export const useTranscribe = () => {
         }
 
         reco.stopContinuousRecognitionAsync();
+        console.log("CANCELED: Reason=" + e.reason);
       };
 
-      reco.sessionStopped = async (_s, _e) => {
+      reco.sessionStopped = async (_s, e) => {
+        console.log(
+          "Session stopped. Stop continuous recognition.",
+          e.sessionId,
+          results
+        );
         reco.stopContinuousRecognitionAsync();
 
-        const wordTimeline: TimelineEntry[] = [];
-        results.forEach((result) => {
-          const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
-          const splitedWords = best.Display.trim().split(" ");
-
-          best.Words.forEach((word, index) => {
-            let text = word.Word;
-            if (splitedWords.length === best.Words.length) {
-              text = splitedWords[index];
-            }
-
-            if (
-              index === best.Words.length - 1 &&
-              !text.trim().match(sentenceEndPattern)
-            ) {
-              text = text + ".";
-            }
-
-            if (
-              !text.trim() ||
-              text.trim().match(/^[\[\(]/) ||
-              text.trim().match(/[\]\)]$/)
-            ) {
-              return;
-            }
-
-            wordTimeline.push({
-              type: "word" as TimelineEntryType,
-              text,
-              startTime: word.Offset / 10000000.0,
-              endTime: (word.Offset + word.Duration) / 10000000.0,
-            });
-          });
-        });
-
-        const transcript = wordTimeline
-          .map((word) => word.text)
+        const transcript = results
+          .map((result) => result.DisplayText)
           .join(" ")
           .trim();
-        const timeline: Timeline =
-          await EnjoyApp.echogarden.wordToSentenceTimeline(
-            wordTimeline,
-            transcript,
-            language.split("-")[0]
-          );
-        timeline.forEach((t) => {
-          t.timeline = [];
+
+        const timeline: Timeline = [];
+        results.forEach((result) => {
+          const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
+          const firstWord = best.Words[0];
+          const lastWord = best.Words[best.Words.length - 1];
+
+          timeline.push({
+            type: "sentence",
+            text: best.Display,
+            startTime: firstWord.Offset / 10000000.0,
+            endTime: (lastWord.Offset + lastWord.Duration) / 10000000.0,
+            timeline: [],
+          });
         });
 
         resolve({
           engine: "azure",
           model: "whisper",
-          text: results.map((result) => result.DisplayText).join(" "),
+          text: transcript,
           timeline,
           tokenId: id,
         });
@@ -510,6 +479,8 @@ export const useTranscribe = () => {
 
       reco.startContinuousRecognitionAsync();
     });
+
+    return res;
   };
 
   return {
