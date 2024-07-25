@@ -51,11 +51,13 @@ export const MediaProvider = () => {
         language: transcription.result.language,
       })
     );
+  }, [player, transcription]);
 
+  useEffect(() => {
     return () => {
       setMediaProvider(null);
     };
-  }, [player, transcription]);
+  }, [media?.src]);
 
   if (!media?.src) return null;
 

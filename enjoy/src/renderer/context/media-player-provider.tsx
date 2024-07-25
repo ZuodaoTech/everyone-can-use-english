@@ -559,7 +559,7 @@ export const MediaPlayerProvider = ({
       setDecoded(false);
       setDecodeError(null);
     };
-  }, [media?.src, ref, mediaProvider, layout?.playerHeight]);
+  }, [media?.src, ref?.current, mediaProvider, layout?.playerHeight]);
 
   /* cache last segment index */
   useEffect(() => {

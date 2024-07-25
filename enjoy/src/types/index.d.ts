@@ -77,6 +77,7 @@ type WhisperOutputType = {
 
 type CfWhipserOutputType = {
   text: string;
+  vtt: string;
   words_count: number;
   words: {
     word: string;

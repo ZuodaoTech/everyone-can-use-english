@@ -19,81 +19,9 @@ import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
 import { parseText } from "media-captions";
 
-/*
- * define the regex pattern to match the end of a sentence
- * the end of a sentence is defined as a period, question mark, or exclamation mark
- * also it may be followed by a quotation mark
- * and exclude sepecial cases like "Mr.", "Mrs.", "Dr.", "Ms.", "etc."
- */
-const sentenceEndPattern = /(?<!Mr|Mrs|Dr|Ms|etc)\.|\?|!\"?/;
-
 // test a text string has any punctuations or not
 // some transcribed text may not have any punctuations
 const punctuationsPattern = /\w[.,!?](\s|$)/g;
-
-/*
- * convert the word timeline to sentence timeline
- * a sentence is a group of words that ends with a punctuation
- */
-const wordTimelineToSentenceTimeline = (
-  wordTimeline: TimelineEntry[]
-): TimelineEntry[] => {
-  const timeline: TimelineEntry[] = [];
-
-  wordTimeline.forEach((word, index) => {
-    word.text = word.text.trim();
-    // skip empty words
-    if (!word.text) return;
-    // skip music or sound effects quoted in []
-    if (word.text.match(/^\[.*\]$/)) return;
-
-    const wordEntry = {
-      type: "word" as TimelineEntryType,
-      text: word.text,
-      startTime: word.startTime,
-      endTime: word.endTime,
-    };
-
-    let sentence: TimelineEntry;
-    // get the last sentence in the timeline
-    if (timeline.length > 0) {
-      sentence = timeline[timeline.length - 1];
-    }
-
-    // if there is no sentence in the timeline, create a new sentence
-    // if last sentence is a punctuation, create a new sentence
-    if (!sentence || sentence.text.match(sentenceEndPattern)) {
-      sentence = {
-        type: "sentence" as TimelineEntryType,
-        text: "",
-        startTime: wordEntry.startTime,
-        endTime: wordEntry.endTime,
-        timeline: [],
-      };
-      timeline.push(sentence);
-    }
-
-    // if the word is a punctuation, add it to the sentence and start a new sentence
-    if (wordEntry.text.match(sentenceEndPattern)) {
-      sentence.text += wordEntry.text;
-      sentence.endTime = wordEntry.endTime;
-
-      const lastSentence = timeline[timeline.length - 1];
-      if (lastSentence.endTime !== sentence.endTime) {
-        timeline.push(sentence);
-      }
-    } else {
-      sentence.text += wordEntry.text + " ";
-      sentence.endTime = wordEntry.endTime;
-
-      if (index === wordTimeline.length - 1) {
-        timeline.push(sentence);
-      }
-    }
-  });
-
-  return timeline;
-};
 
 export const useTranscribe = () => {
   const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
@@ -208,28 +136,11 @@ export const useTranscribe = () => {
           isolate,
         }
       );
-
-      wordTimeline.forEach((word: TimelineEntry) => {
-        let sentence = timeline.find(
-          (entry) =>
-            word.startTime >= entry.startTime && word.endTime <= entry.endTime
-        );
-
-        if (sentence) {
-          sentence.timeline.push(word);
-        }
-      });
-
-      /*
-       * the start time of a sentence should be the start time of the first word in the sentence
-       * the end time of a sentence should the end time of the last word in the sentence
-       */
-      // timeline.forEach((t) => {
-      //   if (t.timeline.length === 0) return;
-
-      //   t.startTime = t.timeline[0].startTime;
-      //   t.endTime = t.timeline[t.timeline.length - 1].endTime;
-      // });
+      timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
+        wordTimeline,
+        transcript,
+        language.split("-")[0]
+      );
     } else {
       // Remove all content inside `()`, `[]`, `{}` and trim the text
       // remove all markdown formatting
@@ -299,20 +210,34 @@ export const useTranscribe = () => {
       }
     );
 
-    const wordTimeline: TimelineEntry[] = res.transcription.map((word) => {
-      return {
-        type: "word" as TimelineEntryType,
-        text: word.text,
-        startTime: word.offsets.from / 1000.0,
-        endTime: word.offsets.to / 1000.0,
-      };
-    });
-    const timeline = wordTimelineToSentenceTimeline(wordTimeline);
+    const timeline: TimelineEntry[] = res.transcription
+      .map((segment) => {
+        // ignore the word if it is empty or in the format of `[xxx]` or `(xxx)`
+        if (
+          !segment.text.trim() ||
+          segment.text.trim().match(/^[\[\(].+[\]\)]$/)
+        ) {
+          return null;
+        }
+
+        return {
+          type: "segment" as TimelineEntryType,
+          text: segment.text.trim(),
+          startTime: segment.offsets.from / 1000.0,
+          endTime: segment.offsets.to / 1000.0,
+        };
+      })
+      .filter((s) => Boolean(s?.text));
+
+    const transcript = timeline
+      .map((segment) => segment.text)
+      .join(" ")
+      .trim();
 
     return {
       engine: "whisper",
       model: res.model.type,
-      text: res.transcription.map((segment) => segment.text).join(" "),
+      text: transcript,
       timeline,
     };
   };
@@ -337,14 +262,14 @@ export const useTranscribe = () => {
       file,
       model: "whisper-1",
       response_format: "verbose_json",
-      timestamp_granularities: ["word"],
+      timestamp_granularities: ["segment"],
     })) as any;
 
     let timeline: TimelineEntry[] = [];
     if (res.segments) {
       res.segments.forEach((segment) => {
         const segmentTimeline = {
-          type: "sentence" as TimelineEntryType,
+          type: "segment" as TimelineEntryType,
           text: segment.text,
           startTime: segment.start,
           endTime: segment.end,
@@ -353,16 +278,6 @@ export const useTranscribe = () => {
 
         timeline.push(segmentTimeline);
       });
-    } else if (res.words) {
-      const wordTimeline = res.words.map((word) => {
-        return {
-          type: "word" as TimelineEntryType,
-          text: word.word,
-          startTime: word.start,
-          endTime: word.end,
-        };
-      });
-      timeline = wordTimelineToSentenceTimeline(wordTimeline);
     }
 
     return {
@@ -390,15 +305,16 @@ export const useTranscribe = () => {
       })
     ).data;
 
-    const wordTimeline = res.words.map((word) => {
+    const caption = await parseText(res.vtt, { type: "vtt" });
+    const timeline: Timeline = caption.cues.map((cue) => {
       return {
-        type: "word" as TimelineEntryType,
-        text: word.word,
-        startTime: word.start,
-        endTime: word.end,
+        type: "segment",
+        text: cue.text,
+        startTime: cue.startTime,
+        endTime: cue.endTime,
+        timeline: [],
       };
     });
-    const timeline = wordTimelineToSentenceTimeline(wordTimeline);
 
     return {
       engine: "cloudflare",
@@ -435,7 +351,13 @@ export const useTranscribe = () => {
 
     let results: SpeechRecognitionResultType[] = [];
 
-    return new Promise((resolve, reject) => {
+    const res: {
+      engine: string;
+      model: string;
+      text: string;
+      tokenId: number;
+      timeline?: TimelineEntry[];
+    } = await new Promise((resolve, reject) => {
       reco.recognizing = (_s, e) => {
         setOutput(e.result.text);
       };
@@ -454,44 +376,41 @@ export const useTranscribe = () => {
         }
 
         reco.stopContinuousRecognitionAsync();
+        console.log("CANCELED: Reason=" + e.reason);
       };
 
-      reco.sessionStopped = (_s, _e) => {
+      reco.sessionStopped = async (_s, e) => {
+        console.log(
+          "Session stopped. Stop continuous recognition.",
+          e.sessionId,
+          results
+        );
         reco.stopContinuousRecognitionAsync();
 
-        const wordTimeline: TimelineEntry[] = [];
+        const transcript = results
+          .map((result) => result.DisplayText)
+          .join(" ")
+          .trim();
+
+        const timeline: Timeline = [];
         results.forEach((result) => {
           const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
-          const splitedWords = best.Display.trim().split(" ");
+          const firstWord = best.Words[0];
+          const lastWord = best.Words[best.Words.length - 1];
 
-          best.Words.forEach((word, index) => {
-            let text = word.Word;
-            if (splitedWords.length === best.Words.length) {
-              text = splitedWords[index];
-            }
-
-            if (
-              index === best.Words.length - 1 &&
-              !text.trim().match(sentenceEndPattern)
-            ) {
-              text = text + ".";
-            }
-
-            wordTimeline.push({
-              type: "word" as TimelineEntryType,
-              text,
-              startTime: word.Offset / 10000000.0,
-              endTime: (word.Offset + word.Duration) / 10000000.0,
-            });
+          timeline.push({
+            type: "sentence",
+            text: best.Display,
+            startTime: firstWord.Offset / 10000000.0,
+            endTime: (lastWord.Offset + lastWord.Duration) / 10000000.0,
+            timeline: [],
           });
         });
-
-        const timeline = wordTimelineToSentenceTimeline(wordTimeline);
 
         resolve({
           engine: "azure",
           model: "whisper",
-          text: results.map((result) => result.DisplayText).join(" "),
+          text: transcript,
           timeline,
           tokenId: id,
         });
@@ -499,6 +418,8 @@ export const useTranscribe = () => {
 
       reco.startContinuousRecognitionAsync();
     });
+
+    return res;
   };
 
   return {
