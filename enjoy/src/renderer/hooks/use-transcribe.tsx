@@ -100,11 +100,10 @@ export const useTranscribe = () => {
     } else if (service === "local") {
       result = await transcribeByLocal(url, language);
     } else if (service === "cloudflare") {
-      result = await transcribeByCloudflareAi(blob, language);
+      result = await transcribeByCloudflareAi(blob);
     } else if (service === "openai") {
       result = await transcribeByOpenAi(
-        new File([blob], "audio.mp3", { type: "audio/mp3" }),
-        language
+        new File([blob], "audio.mp3", { type: "audio/mp3" })
       );
     } else if (service === "azure") {
       result = await transcribeByAzureAi(
@@ -243,7 +242,7 @@ export const useTranscribe = () => {
     };
   };
 
-  const transcribeByOpenAi = async (file: File, language: string) => {
+  const transcribeByOpenAi = async (file: File) => {
     if (!openai?.key) {
       throw new Error(t("openaiKeyRequired"));
     }
@@ -290,8 +289,7 @@ export const useTranscribe = () => {
   };
 
   const transcribeByCloudflareAi = async (
-    blob: Blob,
-    language: string
+    blob: Blob
   ): Promise<{
     engine: string;
     model: string;
@@ -307,34 +305,15 @@ export const useTranscribe = () => {
       })
     ).data;
 
-    const wordTimeline = res.words
-      .map((word) => {
-        if (
-          !word.word.trim() ||
-          word.word.trim().match(/^[\[\(]/) ||
-          word.word.trim().match(/[\]\)]$/)
-        ) {
-          return null;
-        }
-        return {
-          type: "word" as TimelineEntryType,
-          text: word.word,
-          startTime: word.start,
-          endTime: word.end,
-        };
-      })
-      .filter((w) => Boolean(w?.text));
-    const transcript = wordTimeline
-      .map((word) => word.text)
-      .join(" ")
-      .trim();
-    const timeline: Timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
-      wordTimeline,
-      transcript,
-      language.split("-")[0]
-    );
-    timeline.forEach((t) => {
-      t.timeline = [];
+    const caption = await parseText(res.vtt, { type: "vtt" });
+    const timeline: Timeline = caption.cues.map((cue) => {
+      return {
+        type: "segment",
+        text: cue.text,
+        startTime: cue.startTime,
+        endTime: cue.endTime,
+        timeline: [],
+      };
     });
 
     return {
