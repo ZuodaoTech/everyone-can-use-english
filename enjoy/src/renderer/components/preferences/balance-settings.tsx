@@ -32,7 +32,7 @@ import { LoaderIcon } from "lucide-react";
 import { formatDateTime } from "@/renderer/lib/utils";
 
 export const BalanceSettings = () => {
-  const { webApi, user } = useContext(AppSettingsProviderContext);
+  const { webApi, user, EnjoyApp } = useContext(AppSettingsProviderContext);
   const [balance, setBalance] = useState<number>(0);
   const [depositAmount, setDepositAmount] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -85,7 +85,7 @@ export const BalanceSettings = () => {
       .then((payment) => {
         if (payment?.payUrl) {
           setPaymentCreated(true);
-          window.open(payment.payUrl, "model");
+          EnjoyApp.shell.openExternal(payment.payUrl);
         }
       })
       .catch((error) => {
