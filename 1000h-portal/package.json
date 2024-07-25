@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@nuxtjs/seo": "^2.0.0-rc.11",
-    "nuxt": "^3.12.2",
+    "nuxt": "^3.12.4",
     "nuxt-og-image": "^2.2.6",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"
