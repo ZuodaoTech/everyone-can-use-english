@@ -556,7 +556,6 @@ export const MediaPlayerProvider = ({
 
     return () => {
       if (wavesurfer) wavesurfer.destroy();
-      console.log('setDecoded(false)');
       setDecoded(false);
       setDecodeError(null);
     };
