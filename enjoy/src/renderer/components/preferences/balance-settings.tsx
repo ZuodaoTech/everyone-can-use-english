@@ -20,37 +20,18 @@ import {
   TableRow,
   toast,
   Separator,
-  Select,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
 } from "@renderer/components/ui";
 import { LoaderSpin } from "@renderer/components";
 import { LoaderIcon } from "lucide-react";
 import { formatDateTime } from "@/renderer/lib/utils";
 
 export const BalanceSettings = () => {
-  const { webApi, user, EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
   const [balance, setBalance] = useState<number>(0);
   const [depositAmount, setDepositAmount] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [paymentCreated, setPaymentCreated] = useState<boolean>(false);
   const [payments, setPayments] = useState<any[]>([]);
-  const [assests, setAssests] = useState<any[]>([]);
-  const [currency, setCurrency] = useState<string>("");
-
-  const fetchAssests = () => {
-    webApi
-      .config("supported_assets")
-      .then((assests) => {
-        setAssests(assests);
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  };
 
   const refreshPayments = () => {
     webApi
@@ -78,7 +59,6 @@ export const BalanceSettings = () => {
     webApi
       .createPayment({
         amount: depositAmount,
-        reconciledCurrency: processor === "stripe" ? "" : currency,
         paymentType: "deposit",
         processor,
       })
@@ -98,7 +78,6 @@ export const BalanceSettings = () => {
 
   useEffect(() => {
     refreshBalance();
-    fetchAssests();
   }, []);
 
   if (!balance) return null;
@@ -164,54 +143,26 @@ export const BalanceSettings = () => {
 
           <Separator />
 
-          {user.hasMixin && (
-            <div className="flex items-center justify-between space-x-4">
-              <Select
-                value={currency}
-                onValueChange={(value) => setCurrency(value)}
-                disabled={paymentCreated || loading}
-              >
-                <SelectTrigger className="w-64">
-                  <SelectValue placeholder={t("selectCrypto")} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {assests.map((asset) => (
-                      <SelectItem key={asset.id} value={asset.id}>
-                        <div className="flex items-center">
-                          <div className="w-6 h-6 relative mr-2">
-                            <img
-                              src={asset.iconUrl}
-                              className="w-full h-full"
-                            />
-                            {asset.chain && asset.chain.id !== asset.id && (
-                              <img
-                                src={asset.chain.iconUrl}
-                                className="absolute bottom-0 -left-1 w-3 h-3"
-                              />
-                            )}
-                          </div>
-                          <span>{asset.displaySymbol}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-
-              <Button
-                variant="default"
-                disabled={paymentCreated || loading}
-                className="w-32 bg-blue-500 hover:bg-blue-600 transition-colors duration-200 ease-in-out"
-                onClick={() => createDepositPayment("mixin")}
-              >
-                {loading && (
-                  <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />
-                )}
-                <span>Mixin {t("pay")}</span>
-              </Button>
+          <div className="flex items-center justify-between space-x-4">
+            <div className="flex items-center w-64 justify-around">
+              <img src="assets/usdt.png" className="w-auto h-8 rounded-full" />
+              <img src="assets/usdc.png" className="w-auto h-8" />
+              <img src="assets/eth.png" className="w-auto h-8" />
+              <img src="assets/trx.png" className="w-auto h-8" />
+              <img src="assets/doge.png" className="w-auto h-8" />
+              <img src="assets/bnb.png" className="w-auto h-8" />
             </div>
-          )}
+
+            <Button
+              variant="default"
+              disabled={paymentCreated || loading}
+              className="w-32 bg-blue-500 hover:bg-blue-600 transition-colors duration-200 ease-in-out"
+              onClick={() => createDepositPayment("mixin")}
+            >
+              {loading && <LoaderIcon className="w-4 h-4 mr-2 animate-spin" />}
+              <span>Crypto {t("pay")}</span>
+            </Button>
+          </div>
 
           <div className="flex items-center justify-between space-x-4">
             <div className="flex items-center w-64 justify-around">
