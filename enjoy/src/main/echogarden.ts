@@ -10,7 +10,11 @@ import {
   trimAudioEnd,
   AudioSourceParam,
 } from "echogarden/dist/audio/AudioUtilities.js";
-import { Timeline } from "echogarden/dist/utilities/Timeline.d.js";
+import { wordTimelineToSegmentSentenceTimeline } from "echogarden/dist/utilities/Timeline.js";
+import {
+  type Timeline,
+  type TimelineEntry,
+} from "echogarden/dist/utilities/Timeline.d.js";
 import path from "path";
 import log from "@main/logger";
 import url from "url";
@@ -43,6 +47,7 @@ class EchogardenWrapper {
   public getRawAudioDuration: typeof getRawAudioDuration;
   public trimAudioStart: typeof trimAudioStart;
   public trimAudioEnd: typeof trimAudioEnd;
+  public wordTimelineToSegmentSentenceTimeline: typeof wordTimelineToSegmentSentenceTimeline;
 
   constructor() {
     this.align = Echogarden.align;
@@ -54,6 +59,8 @@ class EchogardenWrapper {
     this.getRawAudioDuration = getRawAudioDuration;
     this.trimAudioStart = trimAudioStart;
     this.trimAudioEnd = trimAudioEnd;
+    this.wordTimelineToSegmentSentenceTimeline =
+      wordTimelineToSegmentSentenceTimeline;
   }
 
   async check() {
@@ -129,6 +136,37 @@ class EchogardenWrapper {
           logger.error(err);
           throw err;
         }
+      }
+    );
+
+    ipcMain.handle(
+      "echogarden-word-to-sentence-timeline",
+      async (
+        _event,
+        wordTimeline: Timeline,
+        transcript: string,
+        language: string
+      ) => {
+        logger.debug("echogarden-word-to-sentence-timeline:", transcript);
+
+        const { segmentTimeline } =
+          await this.wordTimelineToSegmentSentenceTimeline(
+            wordTimeline,
+            transcript,
+            language.split("-")[0]
+          );
+        const timeline: Timeline = [];
+        segmentTimeline.forEach((t: TimelineEntry) => {
+          if (t.type === "sentence") {
+            timeline.push(t);
+          } else {
+            t.timeline.forEach((st) => {
+              timeline.push(st);
+            });
+          }
+        });
+
+        return timeline;
       }
     );
 

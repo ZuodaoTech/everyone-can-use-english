@@ -31,70 +31,6 @@ const sentenceEndPattern = /(?<!Mr|Mrs|Dr|Ms|etc)\.|\?|!\"?/;
 // some transcribed text may not have any punctuations
 const punctuationsPattern = /\w[.,!?](\s|$)/g;
 
-/*
- * convert the word timeline to sentence timeline
- * a sentence is a group of words that ends with a punctuation
- */
-const wordTimelineToSentenceTimeline = (
-  wordTimeline: TimelineEntry[]
-): TimelineEntry[] => {
-  const timeline: TimelineEntry[] = [];
-
-  wordTimeline.forEach((word, index) => {
-    word.text = word.text.trim();
-    // skip empty words
-    if (!word.text) return;
-    // skip music or sound effects quoted in []
-    if (word.text.match(/^\[.*\]$/)) return;
-
-    const wordEntry = {
-      type: "word" as TimelineEntryType,
-      text: word.text,
-      startTime: word.startTime,
-      endTime: word.endTime,
-    };
-
-    let sentence: TimelineEntry;
-    // get the last sentence in the timeline
-    if (timeline.length > 0) {
-      sentence = timeline[timeline.length - 1];
-    }
-
-    // if there is no sentence in the timeline, create a new sentence
-    // if last sentence is a punctuation, create a new sentence
-    if (!sentence || sentence.text.match(sentenceEndPattern)) {
-      sentence = {
-        type: "sentence" as TimelineEntryType,
-        text: "",
-        startTime: wordEntry.startTime,
-        endTime: wordEntry.endTime,
-        timeline: [],
-      };
-      timeline.push(sentence);
-    }
-
-    // if the word is a punctuation, add it to the sentence and start a new sentence
-    if (wordEntry.text.match(sentenceEndPattern)) {
-      sentence.text += wordEntry.text;
-      sentence.endTime = wordEntry.endTime;
-
-      const lastSentence = timeline[timeline.length - 1];
-      if (lastSentence.endTime !== sentence.endTime) {
-        timeline.push(sentence);
-      }
-    } else {
-      sentence.text += wordEntry.text + " ";
-      sentence.endTime = wordEntry.endTime;
-
-      if (index === wordTimeline.length - 1) {
-        timeline.push(sentence);
-      }
-    }
-  });
-
-  return timeline;
-};
-
 export const useTranscribe = () => {
   const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
@@ -172,10 +108,11 @@ export const useTranscribe = () => {
     } else if (service === "local") {
       result = await transcribeByLocal(url, language);
     } else if (service === "cloudflare") {
-      result = await transcribeByCloudflareAi(blob);
+      result = await transcribeByCloudflareAi(blob, language);
     } else if (service === "openai") {
       result = await transcribeByOpenAi(
-        new File([blob], "audio.mp3", { type: "audio/mp3" })
+        new File([blob], "audio.mp3", { type: "audio/mp3" }),
+        language
       );
     } else if (service === "azure") {
       result = await transcribeByAzureAi(
@@ -219,17 +156,6 @@ export const useTranscribe = () => {
           sentence.timeline.push(word);
         }
       });
-
-      /*
-       * the start time of a sentence should be the start time of the first word in the sentence
-       * the end time of a sentence should the end time of the last word in the sentence
-       */
-      // timeline.forEach((t) => {
-      //   if (t.timeline.length === 0) return;
-
-      //   t.startTime = t.timeline[0].startTime;
-      //   t.endTime = t.timeline[t.timeline.length - 1].endTime;
-      // });
     } else {
       // Remove all content inside `()`, `[]`, `{}` and trim the text
       // remove all markdown formatting
@@ -299,25 +225,49 @@ export const useTranscribe = () => {
       }
     );
 
-    const wordTimeline: TimelineEntry[] = res.transcription.map((word) => {
-      return {
-        type: "word" as TimelineEntryType,
-        text: word.text,
-        startTime: word.offsets.from / 1000.0,
-        endTime: word.offsets.to / 1000.0,
-      };
+    const wordTimeline: TimelineEntry[] = res.transcription
+      .map((word) => {
+        // ignore the word if it is empty or in the format of [xxx] or (xxx)
+        // And sometimes [xxx xxx] would be recognized as two words, like `[xxx` and `xxx]`. Same as `()`. so we need to ignore them.
+        if (
+          !word.text.trim() ||
+          word.text.trim().match(/^[\[\(]/) ||
+          word.text.trim().match(/[\]\)]$/)
+        ) {
+          return null;
+        }
+
+        return {
+          type: "word" as TimelineEntryType,
+          text: word.text.trim(),
+          startTime: word.offsets.from / 1000.0,
+          endTime: word.offsets.to / 1000.0,
+        };
+      })
+      .filter((w) => Boolean(w?.text));
+
+    const transcript = wordTimeline
+      .map((word) => word.text)
+      .join(" ")
+      .trim();
+    const timeline: Timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
+      wordTimeline,
+      transcript,
+      language.split("-")[0]
+    );
+    timeline.forEach((t) => {
+      t.timeline = [];
     });
-    const timeline = wordTimelineToSentenceTimeline(wordTimeline);
 
     return {
       engine: "whisper",
       model: res.model.type,
-      text: res.transcription.map((segment) => segment.text).join(" "),
+      text: transcript,
       timeline,
     };
   };
 
-  const transcribeByOpenAi = async (file: File) => {
+  const transcribeByOpenAi = async (file: File, language: string) => {
     if (!openai?.key) {
       throw new Error(t("openaiKeyRequired"));
     }
@@ -354,15 +304,35 @@ export const useTranscribe = () => {
         timeline.push(segmentTimeline);
       });
     } else if (res.words) {
-      const wordTimeline = res.words.map((word) => {
-        return {
-          type: "word" as TimelineEntryType,
-          text: word.word,
-          startTime: word.start,
-          endTime: word.end,
-        };
+      const wordTimeline = res.words
+        .map((word) => {
+          if (
+            !word.word.trim() ||
+            word.word.trim().match(/^[\[\(]/) ||
+            word.word.trim().match(/[\]\)]$/)
+          ) {
+            return null;
+          }
+          return {
+            type: "word" as TimelineEntryType,
+            text: word.word,
+            startTime: word.start,
+            endTime: word.end,
+          };
+        })
+        .filter((w) => Boolean(w?.text));
+      const transcript = wordTimeline
+        .map((word) => word.text)
+        .join(" ")
+        .trim();
+      timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
+        wordTimeline,
+        transcript,
+        language.split("-")[0]
+      );
+      timeline.forEach((t) => {
+        t.timeline = [];
       });
-      timeline = wordTimelineToSentenceTimeline(wordTimeline);
     }
 
     return {
@@ -374,7 +344,8 @@ export const useTranscribe = () => {
   };
 
   const transcribeByCloudflareAi = async (
-    blob: Blob
+    blob: Blob,
+    language: string
   ): Promise<{
     engine: string;
     model: string;
@@ -390,15 +361,35 @@ export const useTranscribe = () => {
       })
     ).data;
 
-    const wordTimeline = res.words.map((word) => {
-      return {
-        type: "word" as TimelineEntryType,
-        text: word.word,
-        startTime: word.start,
-        endTime: word.end,
-      };
+    const wordTimeline = res.words
+      .map((word) => {
+        if (
+          !word.word.trim() ||
+          word.word.trim().match(/^[\[\(]/) ||
+          word.word.trim().match(/[\]\)]$/)
+        ) {
+          return null;
+        }
+        return {
+          type: "word" as TimelineEntryType,
+          text: word.word,
+          startTime: word.start,
+          endTime: word.end,
+        };
+      })
+      .filter((w) => Boolean(w?.text));
+    const transcript = wordTimeline
+      .map((word) => word.text)
+      .join(" ")
+      .trim();
+    const timeline: Timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
+      wordTimeline,
+      transcript,
+      language.split("-")[0]
+    );
+    timeline.forEach((t) => {
+      t.timeline = [];
     });
-    const timeline = wordTimelineToSentenceTimeline(wordTimeline);
 
     return {
       engine: "cloudflare",
@@ -456,7 +447,7 @@ export const useTranscribe = () => {
         reco.stopContinuousRecognitionAsync();
       };
 
-      reco.sessionStopped = (_s, _e) => {
+      reco.sessionStopped = async (_s, _e) => {
         reco.stopContinuousRecognitionAsync();
 
         const wordTimeline: TimelineEntry[] = [];
@@ -477,6 +468,14 @@ export const useTranscribe = () => {
               text = text + ".";
             }
 
+            if (
+              !text.trim() ||
+              text.trim().match(/^[\[\(]/) ||
+              text.trim().match(/[\]\)]$/)
+            ) {
+              return;
+            }
+
             wordTimeline.push({
               type: "word" as TimelineEntryType,
               text,
@@ -486,7 +485,19 @@ export const useTranscribe = () => {
           });
         });
 
-        const timeline = wordTimelineToSentenceTimeline(wordTimeline);
+        const transcript = wordTimeline
+          .map((word) => word.text)
+          .join(" ")
+          .trim();
+        const timeline: Timeline =
+          await EnjoyApp.echogarden.wordToSentenceTimeline(
+            wordTimeline,
+            transcript,
+            language.split("-")[0]
+          );
+        timeline.forEach((t) => {
+          t.timeline = [];
+        });
 
         resolve({
           engine: "azure",

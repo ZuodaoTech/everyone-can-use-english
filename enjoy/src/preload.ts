@@ -441,7 +441,24 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       return ipcRenderer.invoke("echogarden-align", input, transcript, options);
     },
     alignSegments: (input: string, timeline: Timeline, options: any) => {
-      return ipcRenderer.invoke("echogarden-align-segments", input, timeline, options);
+      return ipcRenderer.invoke(
+        "echogarden-align-segments",
+        input,
+        timeline,
+        options
+      );
+    },
+    wordToSentenceTimeline: (
+      wordTimeline: Timeline,
+      transcript: string,
+      language: string
+    ) => {
+      return ipcRenderer.invoke(
+        "echogarden-word-to-sentence-timeline",
+        wordTimeline,
+        transcript,
+        language
+      );
     },
     transcode: (input: string) => {
       return ipcRenderer.invoke("echogarden-transcode", input);

@@ -52,9 +52,6 @@ export const MediaProvider = () => {
       })
     );
 
-    return () => {
-      setMediaProvider(null);
-    };
   }, [player, transcription]);
 
   if (!media?.src) return null;

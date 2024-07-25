@@ -257,6 +257,11 @@ type EnjoyAppType = {
       timeline: Timeline,
       options?: any
     ) => Promise<Timeline>;
+    wordToSentenceTimeline: (
+      wordTimeline: Timeline,
+      transcript: string,
+      language: string
+    ) => Promise<Timeline>;
     transcode: (input: string) => Promise<string>;
     check: () => Promise<boolean>;
   };
