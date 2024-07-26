@@ -21,9 +21,7 @@ export const useConversation = () => {
   const { EnjoyApp, webApi, user, apiUrl, learningLanguage } = useContext(
     AppSettingsProviderContext
   );
-  const { openai, currentEngine } = useContext(
-    AISettingsProviderContext
-  );
+  const { openai, currentEngine } = useContext(AISettingsProviderContext);
 
   const pickLlm = (conversation: ConversationType) => {
     const {
@@ -152,7 +150,7 @@ export const useConversation = () => {
     const chain = new ConversationChain({
       llm: llm as any,
       memory,
-      prompt,
+      prompt: prompt as any,
       verbose: true,
     });
     let response: LLMResult["generations"][0] = [];
