@@ -17,9 +17,9 @@ The most basic element of writing is vocabulary. English words are fundamentally
 
 ```mermaid
 flowchart LR
-spellings(spellings)-..-phonetic-parts(phonetic parts)-..-meaning&sound(meaning & sound)
-spellings(spellings)<---->meaning&sound(meaning & sound)
-spellings(spellings)-..-*semantic*-parts(semantic parts)-..-meaning&sound(meaning & sound)
+spellings(spellings)-..-phonetic-parts(phonetic parts)-..-meanings&sounds(meanings & sounds)
+spellings(spellings)<---->meanings&sounds(meanings & sounds)
+spellings(spellings)-..-*semantic*-parts(semantic parts)-..-meanings&sounds(meanings & sounds)
 ```
 
 比如，*apple* <span class="pho alt">ˈæp.əl</span> <span class="speak-word-inline" data-audio-us-male="/audios/us/apple-us-male.mp3" data-audio-us-female="/audios/us/apple-us-female.mp3"></span> 就是一个表音构成的词汇，总计两个音节，*app* 对应着第一个音节 <span class="pho alt">ˈæp</span>，*le* 对应着第二个音节 <span class="pho alt">əl</span>。所以，记忆它的时候，不是一个字母一个字母地背，说，“a、p、p、l、e…… *apple!*”。而是：<span class="pho alt">æ</span> 对应着 *a*；*app*，<span class="pho alt">p</span> 的拼写是两个叠加的 *pp*，而后是 <span class="pho alt">le</span> 对应着 <span class="pho alt">əl</span> —— 这样的拼写很常见，比如，*double* <span class="pho alt">ˈdʌb.əl</span> <span class="speak-word-inline" data-audio-us-male="/audios/us/double-us-male.mp3" data-audio-us-female="/audios/us/double-us-female.mp3"></span>, *impossible* <span class="pho alt">ɪmˈpɑː.sə.bəl</span> <span class="speak-word-inline" data-audio-us-male="/audios/us/impossible-us-male.mp3" data-audio-us-female="/audios/us/impossible-us-female.mp3"></span>……
