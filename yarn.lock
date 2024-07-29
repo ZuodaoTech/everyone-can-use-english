@@ -14417,7 +14417,7 @@ __metadata:
     vite-plugin-static-copy: "npm:^1.0.6"
     wavesurfer.js: "npm:^7.8.2"
     zod: "npm:^3.23.8"
-    zod-to-json-schema: "npm:^3.23.1"
+    zod-to-json-schema: "npm:^3.23.2"
     zx: "npm:^8.1.4"
   languageName: unknown
   linkType: soft
@@ -27851,12 +27851,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod-to-json-schema@npm:^3.23.1":
-  version: 3.23.1
-  resolution: "zod-to-json-schema@npm:3.23.1"
+"zod-to-json-schema@npm:^3.23.2":
+  version: 3.23.2
+  resolution: "zod-to-json-schema@npm:3.23.2"
   peerDependencies:
     zod: ^3.23.3
-  checksum: 10c0/d48d733f7cba9fdc631ebe3dada3f48b820a16e49f7ded9f363cccafa42461ff95cc7afcf974c27af7cd6d5fa5191212bb7ec15ec203bcb61f829a6d0d3e192f
+  checksum: 10c0/7c9a4756a5eba231d2c354528eb8338a96489a2f804d1a8619e1baa10dde4178fc9f1b4f369e965d858b19a226dcb3375e5b38b5e822c52e2d7ad529d2a6912d
   languageName: node
   linkType: hard
 
