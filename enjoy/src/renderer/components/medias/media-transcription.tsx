@@ -182,10 +182,7 @@ export const MediaTranscription = (props: { display?: boolean }) => {
               currentSegmentIndex === index ? "bg-yellow-400/25" : ""
             }`}
             onClick={() => {
-              const duration = wavesurfer.getDuration();
-              wavesurfer.seekTo(
-                Math.floor((sentence.startTime / duration) * 1e8) / 1e8
-              );
+              wavesurfer.setTime(parseFloat(sentence.startTime.toFixed(6)));
               wavesurfer.setScrollTime(sentence.startTime);
               setCurrentSegmentIndex(index);
             }}

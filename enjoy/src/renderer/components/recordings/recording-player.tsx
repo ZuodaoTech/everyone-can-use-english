@@ -102,7 +102,7 @@ export const RecordingPlayer = (props: {
     if (!wavesurfer) return;
     if (!seek?.seekTo) return;
 
-    wavesurfer.seekTo(seek.seekTo / wavesurfer.getDuration());
+    wavesurfer.setTime(parseFloat(seek.seekTo.toFixed(6)));
   }, [seek, wavesurfer]);
 
   useEffect(() => {

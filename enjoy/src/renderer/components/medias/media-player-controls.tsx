@@ -57,9 +57,7 @@ export const MediaPlayerControls = () => {
     setTranscriptionDraft,
   } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { currentHotkeys } = useContext(
-    HotKeysSettingsProviderContext
-  );
+  const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
   const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("single");
   const [playbackRate, setPlaybackRate] = useState<number>(1);
   const [grouping, setGrouping] = useState(false);
@@ -332,9 +330,8 @@ export const MediaPlayerControls = () => {
       setCurrentSegmentIndex(0);
       return;
     }
-    wavesurfer.seekTo(
-      Math.ceil((segment.startTime / wavesurfer.getDuration()) * 1e8) / 1e8
-    );
+    wavesurfer.setScrollTime(segment.startTime);
+    wavesurfer.setTime(parseFloat(segment.startTime.toFixed(6)));
   }, [decoded, transcription?.id, wavesurfer]);
 
   useEffect(() => {
@@ -372,9 +369,7 @@ export const MediaPlayerControls = () => {
 
     if (currentTime < activeRegion.start || currentTime > activeRegion.end) {
       wavesurfer.setScrollTime(activeRegion.start);
-      wavesurfer.seekTo(
-        Math.ceil((activeRegion.start / wavesurfer.getDuration()) * 1e8) / 1e8
-      );
+      wavesurfer.setTime(parseFloat(activeRegion.start.toFixed(6)));
     }
   }, [wavesurfer, decoded, playMode, activeRegion, currentTime]);
 
