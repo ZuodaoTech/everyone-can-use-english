@@ -32,6 +32,7 @@ __metadata:
     nuxt: "npm:^3.12.4"
     nuxt-og-image: "npm:^3.0.0-rc.64"
     postcss: "npm:^8.4.40"
+    sass: "npm:^1.77.8"
     tailwindcss: "npm:^3.4.7"
     vue: "npm:^3.4.35"
     vue-router: "npm:^4.4.1"
