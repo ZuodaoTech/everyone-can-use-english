@@ -1,5 +1,5 @@
 <template>
-  <div class="default-layout bg-white">
+  <div class="default-layout">
     <PageHeader />
     <slot />
     <PageFooter />
