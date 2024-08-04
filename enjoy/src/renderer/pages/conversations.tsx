@@ -41,7 +41,7 @@ export default () => {
   const [creating, setCreating] = useState<boolean>(false);
   const [preset, setPreset] = useState<any>({});
   const [config, setConfig] = useState<any>({
-    gptPresets: [],
+    gptPresets: GPT_PRESETS,
     customPreset: {},
     ttsPreset: {
       key: "tts",
@@ -168,7 +168,10 @@ export default () => {
       const defaultGpt = await webApi.config("default_gpt_preset");
       const defaultTts = await webApi.config("default_tts_preset");
 
-      presets = gptPresets;
+      if (gptPresets.length > 0) {
+        presets = [...gptPresets];
+      }
+
       if (defaultGpt.engine === currentEngine.name) {
         defaultGpt.key = "custom";
         defaultGpt.name = t("custom");
@@ -242,8 +245,6 @@ export default () => {
                   {t("chooseFromPresetGpts")}
                 </div>
                 <ScrollArea className="h-64 pr-4">
-                  {config.gptPresets.length === 0 && <LoaderSpin />}
-
                   {config.gptPresets.map((preset: any) => (
                     <DialogTrigger
                       key={preset.key}
