@@ -12,16 +12,20 @@ export async function request(url: string) {
     // ignore
   }
 
-  const resp = await fetch(url, { method: "Get" });
-  const data = await resp.json();
+  try {
+    const resp = await fetch(url, { method: "Get" });
+    const data = await resp.json();
 
-  localStorage.setItem(
-    key,
-    JSON.stringify({
-      expire_time: new Date().getTime() + 1000 * 60 * 60 * 24,
-      data,
-    })
-  );
+    localStorage.setItem(
+      key,
+      JSON.stringify({
+        expire_time: new Date().getTime() + 1000 * 60 * 60 * 24,
+        data,
+      })
+    );
 
-  return data;
+    return data;
+  } catch (error) {
+    console.log("request error", error);
+  }
 }

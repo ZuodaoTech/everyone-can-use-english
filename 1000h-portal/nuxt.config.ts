@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     head: {
       viewport:
         "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no, viewport-fit=cover",
+      meta: [{ name: "theme-color", content: "#ffffff" }],
       link: [
         {
           rel: "apple-touch-icon",
