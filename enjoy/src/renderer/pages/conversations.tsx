@@ -245,8 +245,6 @@ export default () => {
                   {t("chooseFromPresetGpts")}
                 </div>
                 <ScrollArea className="h-64 pr-4">
-                  {config.gptPresets.length === 0 && <LoaderSpin />}
-
                   {config.gptPresets.map((preset: any) => (
                     <DialogTrigger
                       key={preset.key}
