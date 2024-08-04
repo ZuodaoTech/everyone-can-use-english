@@ -28,7 +28,9 @@ export const PronunciationAssessmentCard = (props: {
       <div className="flex items-start space-x-4">
         <div className="flex-1 flex flex-col min-h-32">
           <div className="select-text line-clamp-2 text-muted-foreground font-serif pl-3 border-l-4 mb-4">
-            {assessment.referenceText || assessment.target.referenceText}
+            {assessment.referenceText ||
+              assessment.target?.referenceText ||
+              "-"}
           </div>
           <div className="mb-4">
             <PronunciationAssessmentScoreDetail assessment={assessment} />
