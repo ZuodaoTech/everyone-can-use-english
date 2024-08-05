@@ -156,7 +156,7 @@
     "postcss": "^8.4.40",
     "proxy-agent": "^6.4.0",
     "react": "^18.3.1",
-    "react-activity-calendar": "^2.2.11",
+    "react-activity-calendar": "^2.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.1",
     "react-hotkeys-hook": "^4.5.0",

@@ -12439,7 +12439,7 @@ __metadata:
     progress: "npm:^2.0.3"
     proxy-agent: "npm:^6.4.0"
     react: "npm:^18.3.1"
-    react-activity-calendar: "npm:^2.2.11"
+    react-activity-calendar: "npm:^2.3.1"
     react-dom: "npm:^18.3.1"
     react-hook-form: "npm:^7.52.1"
     react-hotkeys-hook: "npm:^4.5.0"
@@ -20614,9 +20614,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-activity-calendar@npm:^2.2.11":
-  version: 2.2.11
-  resolution: "react-activity-calendar@npm:2.2.11"
+"react-activity-calendar@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "react-activity-calendar@npm:2.3.1"
   dependencies:
     "@types/chroma-js": "npm:^2.4.3"
     chroma-js: "npm:^2.4.2"
@@ -20625,7 +20625,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 10c0/e93f4e94e1a1782d0fc0b3f7eb900f71cdfd481047f8e8e3400a93882fd4f7393f05d28af2ad5c4b66713ffcf0f81b8bb2df6a7d76050f214bf17043915d378e
+  checksum: 10c0/befc576a0bd364eaf46f3ff5bb6aec2cd95c1464ce0df49ddbd3461159dcb5718c43a8714587c629ea96a81a67967c3b84589d696848e29b752b1b8c111c739a
   languageName: node
   linkType: hard
 
