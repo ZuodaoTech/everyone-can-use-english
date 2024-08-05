@@ -387,38 +387,42 @@ export const useTranscribe = () => {
         );
         reco.stopContinuousRecognitionAsync();
 
-        const timeline: Timeline = [];
-        results.forEach((result) => {
-          if (!result.DisplayText) return;
+        try {
+          const timeline: Timeline = [];
+          results.forEach((result) => {
+            if (!result.DisplayText) return;
 
-          const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
-          if (!best.Words) return;
-          if (!best.Confidence || best.Confidence < 0.5) return;
+            const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
+            if (!best.Words) return;
+            if (!best.Confidence || best.Confidence < 0.5) return;
 
-          const firstWord = best.Words[0];
-          const lastWord = best.Words[best.Words.length - 1];
+            const firstWord = best.Words[0];
+            const lastWord = best.Words[best.Words.length - 1];
 
-          timeline.push({
-            type: "sentence",
-            text: best.Display,
-            startTime: firstWord.Offset / 10000000.0,
-            endTime: (lastWord.Offset + lastWord.Duration) / 10000000.0,
-            timeline: [],
+            timeline.push({
+              type: "sentence",
+              text: best.Display,
+              startTime: firstWord.Offset / 10000000.0,
+              endTime: (lastWord.Offset + lastWord.Duration) / 10000000.0,
+              timeline: [],
+            });
           });
-        });
 
-        const transcript = timeline
-          .map((result) => result.text)
-          .join(" ")
-          .trim();
+          const transcript = timeline
+            .map((result) => result.text)
+            .join(" ")
+            .trim();
 
-        resolve({
-          engine: "azure",
-          model: "whisper",
-          text: transcript,
-          timeline,
-          tokenId: id,
-        });
+          resolve({
+            engine: "azure",
+            model: "whisper",
+            text: transcript,
+            timeline,
+            tokenId: id,
+          });
+        } catch (err) {
+          reject(err);
+        }
       };
 
       reco.startContinuousRecognitionAsync();
