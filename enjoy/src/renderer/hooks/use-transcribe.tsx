@@ -387,14 +387,14 @@ export const useTranscribe = () => {
         );
         reco.stopContinuousRecognitionAsync();
 
-        const transcript = results
-          .map((result) => result.DisplayText)
-          .join(" ")
-          .trim();
-
         const timeline: Timeline = [];
         results.forEach((result) => {
+          if (!result.DisplayText) return;
+
           const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
+          if (!best.Words) return;
+          if (!best.Confidence || best.Confidence < 0.5) return;
+
           const firstWord = best.Words[0];
           const lastWord = best.Words[best.Words.length - 1];
 
@@ -406,6 +406,11 @@ export const useTranscribe = () => {
             timeline: [],
           });
         });
+
+        const transcript = timeline
+          .map((result) => result.text)
+          .join(" ")
+          .trim();
 
         resolve({
           engine: "azure",
