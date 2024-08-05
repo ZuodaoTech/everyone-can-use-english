@@ -158,7 +158,7 @@
     "react": "^18.3.1",
     "react-activity-calendar": "^2.2.11",
     "react-dom": "^18.3.1",
-    "react-hook-form": "^7.52.1",
+    "react-hook-form": "^7.52.2",
     "react-hotkeys-hook": "^4.5.0",
     "react-i18next": "^15.0.0",
     "react-markdown": "^9.0.1",
