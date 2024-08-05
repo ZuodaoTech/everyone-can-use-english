@@ -6135,10 +6135,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.18.0":
-  version: 1.18.0
-  resolution: "@remix-run/router@npm:1.18.0"
-  checksum: 10c0/3ec7e441a0e54932a3d3bf932432094420f2c117715d80a5454bc7e55d13b91250749942aab032cd07aee191f1c1de33fede8682025bfd3a453dd207c016e140
+"@remix-run/router@npm:1.19.0":
+  version: 1.19.0
+  resolution: "@remix-run/router@npm:1.19.0"
+  checksum: 10c0/8c1503a535035f43747fea063b027aa841690c19a6bd8b6251c53d3aab4d4cae89b0bd4809dc7ab69fdbe61897f43c2683b82fc4cdc5785f9166cf2ea60e5932
   languageName: node
   linkType: hard
 
@@ -12446,7 +12446,7 @@ __metadata:
     react-i18next: "npm:^15.0.0"
     react-markdown: "npm:^9.0.1"
     react-resizable-panels: "npm:^2.0.22"
-    react-router-dom: "npm:^6.25.1"
+    react-router-dom: "npm:^6.26.0"
     react-tooltip: "npm:^5.27.1"
     reflect-metadata: "npm:^0.2.2"
     rimraf: "npm:^6.0.1"
@@ -20770,27 +20770,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.25.1":
-  version: 6.25.1
-  resolution: "react-router-dom@npm:6.25.1"
+"react-router-dom@npm:^6.26.0":
+  version: 6.26.0
+  resolution: "react-router-dom@npm:6.26.0"
   dependencies:
-    "@remix-run/router": "npm:1.18.0"
-    react-router: "npm:6.25.1"
+    "@remix-run/router": "npm:1.19.0"
+    react-router: "npm:6.26.0"
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 10c0/15e2b5bf89a26db9a108d19a4e0e2054180bfb1f5f62662dd93ad697ee1bdc91a8041efd762d552c95e65fc06ca0cb0c1e88acdeeaf03aba37f7a29e470c7cc4
+  checksum: 10c0/f59a5b72b1dab6480f97f20fa49b601cb1366e6e1c8def7fd727ccbc4e8cf527f64f7aedd2889534de222dc86634a23e2ed108b99e5443e7b5401a4db104e611
   languageName: node
   linkType: hard
 
-"react-router@npm:6.25.1":
-  version: 6.25.1
-  resolution: "react-router@npm:6.25.1"
+"react-router@npm:6.26.0":
+  version: 6.26.0
+  resolution: "react-router@npm:6.26.0"
   dependencies:
-    "@remix-run/router": "npm:1.18.0"
+    "@remix-run/router": "npm:1.19.0"
   peerDependencies:
     react: ">=16.8"
-  checksum: 10c0/a7e824c1f6d9641beabc23111865ddd2525b3794403e07b297fc2bdd4cddec93e166aacdb9d2602768864d70f3bf490f59eeab8474a04ae1f13a832f305eeec3
+  checksum: 10c0/498b97cac077170096715609e65e0039b64e497612ed585b8d3b88733310d23e7ca76ce189b09b6fbc65ca8df1595ca20ccac05a84006803843dfa05107d9540
   languageName: node
   linkType: hard
 
