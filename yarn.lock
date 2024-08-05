@@ -27,15 +27,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "1000h-portal@workspace:1000h-portal"
   dependencies:
-    "@nuxtjs/seo": "npm:^2.0.0-rc.11"
-    autoprefixer: "npm:^10.4.19"
+    "@nuxtjs/seo": "npm:^2.0.0-rc.16"
+    autoprefixer: "npm:^10.4.20"
     nuxt: "npm:^3.12.4"
     nuxt-og-image: "npm:^3.0.0-rc.64"
     postcss: "npm:^8.4.40"
     sass: "npm:^1.77.8"
     tailwindcss: "npm:^3.4.7"
     vue: "npm:^3.4.35"
-    vue-router: "npm:^4.4.1"
+    vue-router: "npm:^4.4.2"
   languageName: unknown
   linkType: soft
 
@@ -3833,7 +3833,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxtjs/seo@npm:^2.0.0-rc.11":
+"@nuxtjs/seo@npm:^2.0.0-rc.16":
   version: 2.0.0-rc.16
   resolution: "@nuxtjs/seo@npm:2.0.0-rc.16"
   dependencies:
@@ -6135,10 +6135,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.18.0":
-  version: 1.18.0
-  resolution: "@remix-run/router@npm:1.18.0"
-  checksum: 10c0/3ec7e441a0e54932a3d3bf932432094420f2c117715d80a5454bc7e55d13b91250749942aab032cd07aee191f1c1de33fede8682025bfd3a453dd207c016e140
+"@remix-run/router@npm:1.19.0":
+  version: 1.19.0
+  resolution: "@remix-run/router@npm:1.19.0"
+  checksum: 10c0/8c1503a535035f43747fea063b027aa841690c19a6bd8b6251c53d3aab4d4cae89b0bd4809dc7ab69fdbe61897f43c2683b82fc4cdc5785f9166cf2ea60e5932
   languageName: node
   linkType: hard
 
@@ -7862,7 +7862,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=20, @types/node@npm:^22.0.2":
+"@types/node@npm:*, @types/node@npm:>=20":
   version: 22.0.2
   resolution: "@types/node@npm:22.0.2"
   dependencies:
@@ -7893,6 +7893,15 @@ __metadata:
   dependencies:
     undici-types: "npm:~5.26.4"
   checksum: 10c0/10bb3ece675308742301c652ab8c6cb88b1ebddebed22316103c58f94fe7eff131edd5f679e487c19077fadb6b5e6b1ad9a60a2cee2869aa1f20452b9761d570
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.1.0":
+  version: 22.1.0
+  resolution: "@types/node@npm:22.1.0"
+  dependencies:
+    undici-types: "npm:~6.13.0"
+  checksum: 10c0/553dafcb842b889c036d43b390d464e8ffcf3ca455ddd5b1a1ef98396381eafbeb0c112a15cc6bf9662b72bc25fc45efc4b6f604760e1e84c410f1b7936c488b
   languageName: node
   linkType: hard
 
@@ -9408,6 +9417,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"autoprefixer@npm:^10.4.20":
+  version: 10.4.20
+  resolution: "autoprefixer@npm:10.4.20"
+  dependencies:
+    browserslist: "npm:^4.23.3"
+    caniuse-lite: "npm:^1.0.30001646"
+    fraction.js: "npm:^4.3.7"
+    normalize-range: "npm:^0.1.2"
+    picocolors: "npm:^1.0.1"
+    postcss-value-parser: "npm:^4.2.0"
+  peerDependencies:
+    postcss: ^8.1.0
+  bin:
+    autoprefixer: bin/autoprefixer
+  checksum: 10c0/e1f00978a26e7c5b54ab12036d8c13833fad7222828fc90914771b1263f51b28c7ddb5803049de4e77696cbd02bb25cfc3634e80533025bb26c26aacdf938940
+  languageName: node
+  linkType: hard
+
 "autosize@npm:^6.0.1":
   version: 6.0.1
   resolution: "autosize@npm:6.0.1"
@@ -9424,14 +9451,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.7.2":
-  version: 1.7.2
-  resolution: "axios@npm:1.7.2"
+"axios@npm:^1.7.3":
+  version: 1.7.3
+  resolution: "axios@npm:1.7.3"
   dependencies:
     follow-redirects: "npm:^1.15.6"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 10c0/cbd47ce380fe045313364e740bb03b936420b8b5558c7ea36a4563db1258c658f05e40feb5ddd41f6633fdd96d37ac2a76f884dad599c5b0224b4c451b3fa7ae
+  checksum: 10c0/a18cbe559203efa05fb1fec2d1898e23bf6329bd2575784ee32aa11b5bbe1d54b9f472c49a261294125519cf62aa4fe5ef6e647bb7482eafc15bffe15ab314ce
   languageName: node
   linkType: hard
 
@@ -9662,6 +9689,20 @@ __metadata:
   bin:
     browserslist: cli.js
   checksum: 10c0/0217d23c69ed61cdd2530c7019bf7c822cd74c51f8baab18dd62457fed3129f52499f8d3a6f809ae1fb7bb3050aa70caa9a529cc36c7478427966dbf429723a5
+  languageName: node
+  linkType: hard
+
+"browserslist@npm:^4.23.3":
+  version: 4.23.3
+  resolution: "browserslist@npm:4.23.3"
+  dependencies:
+    caniuse-lite: "npm:^1.0.30001646"
+    electron-to-chromium: "npm:^1.5.4"
+    node-releases: "npm:^2.0.18"
+    update-browserslist-db: "npm:^1.1.0"
+  bin:
+    browserslist: cli.js
+  checksum: 10c0/3063bfdf812815346447f4796c8f04601bf5d62003374305fd323c2a463e42776475bcc5309264e39bcf9a8605851e53560695991a623be988138b3ff8c66642
   languageName: node
   linkType: hard
 
@@ -9976,6 +10017,13 @@ __metadata:
   version: 1.0.30001645
   resolution: "caniuse-lite@npm:1.0.30001645"
   checksum: 10c0/973133d930a1a75b30a77350a795934610a5d9dee9876dbb45351a2b954ddc09ac36b51cfd819b00868f9d2d337ab7ed68b6a9ce6bf9edeacdbc46cc62236295
+  languageName: node
+  linkType: hard
+
+"caniuse-lite@npm:^1.0.30001646":
+  version: 1.0.30001649
+  resolution: "caniuse-lite@npm:1.0.30001649"
+  checksum: 10c0/0ca2f3776324acfc36d72a575e72ffd1408b91f0ac462a6f0aa08ea24d0d16e83f85f652e19d40e6d6d82ab0fb588740f948e7c88d2818fe6bcd68f70ca33acf
   languageName: node
   linkType: hard
 
@@ -12207,7 +12255,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.4.820":
+"electron-to-chromium@npm:^1.4.820, electron-to-chromium@npm:^1.5.4":
   version: 1.5.4
   resolution: "electron-to-chromium@npm:1.5.4"
   checksum: 10c0/139abf1b7281c2f3288819fb9b114f09d541ac38c9f0373f194ce2d483d82d118b8751f1b2a59b04ed0d8f414071b58508a40050fc0f23b5aa7e38d11d0cf30c
@@ -12377,7 +12425,7 @@ __metadata:
     "@types/intl-tel-input": "npm:^18.1.4"
     "@types/lodash": "npm:^4.17.7"
     "@types/mark.js": "npm:^8.11.12"
-    "@types/node": "npm:^22.0.2"
+    "@types/node": "npm:^22.1.0"
     "@types/rails__actioncable": "npm:^6.1.11"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
@@ -12389,9 +12437,9 @@ __metadata:
     "@vidstack/react": "npm:^1.11.30"
     "@vitejs/plugin-react": "npm:^4.3.1"
     ahoy.js: "npm:^0.4.4"
-    autoprefixer: "npm:^10.4.19"
+    autoprefixer: "npm:^10.4.20"
     autosize: "npm:^6.0.1"
-    axios: "npm:^1.7.2"
+    axios: "npm:^1.7.3"
     camelcase: "npm:^8.0.0"
     camelcase-keys: "npm:^9.1.3"
     chart.js: "npm:^4.4.3"
@@ -12428,7 +12476,7 @@ __metadata:
     js-md5: "npm:^0.8.3"
     langchain: "npm:^0.2.8"
     lodash: "npm:^4.17.21"
-    lucide-react: "npm:^0.418.0"
+    lucide-react: "npm:^0.424.0"
     mark.js: "npm:^8.11.1"
     microsoft-cognitiveservices-speech-sdk: "npm:^1.38.0"
     next-themes: "npm:^0.3.0"
@@ -12439,15 +12487,15 @@ __metadata:
     progress: "npm:^2.0.3"
     proxy-agent: "npm:^6.4.0"
     react: "npm:^18.3.1"
-    react-activity-calendar: "npm:^2.2.11"
+    react-activity-calendar: "npm:^2.3.1"
     react-dom: "npm:^18.3.1"
-    react-hook-form: "npm:^7.52.1"
+    react-hook-form: "npm:^7.52.2"
     react-hotkeys-hook: "npm:^4.5.0"
     react-i18next: "npm:^15.0.0"
     react-markdown: "npm:^9.0.1"
     react-resizable-panels: "npm:^2.0.22"
-    react-router-dom: "npm:^6.25.1"
-    react-tooltip: "npm:^5.27.1"
+    react-router-dom: "npm:^6.26.0"
+    react-tooltip: "npm:^5.28.0"
     reflect-metadata: "npm:^0.2.2"
     rimraf: "npm:^6.0.1"
     sequelize: "npm:^6.37.3"
@@ -16654,12 +16702,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.418.0":
-  version: 0.418.0
-  resolution: "lucide-react@npm:0.418.0"
+"lucide-react@npm:^0.424.0":
+  version: 0.424.0
+  resolution: "lucide-react@npm:0.424.0"
   peerDependencies:
-    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/0fd3ec93546dc9d82315b121cef3de91131ed7bd4e0b93173923cef48719d534d63a471c9ee043bbaaef5a2b3557809dbeb518f8039db802d98ed10738d715cf
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
+  checksum: 10c0/b38683c149a6af50ee3dfe1d2203fd1349704ccec221dc835816d4de9bfb08ee7734b074db68aae2fbc400aded8435bab98a8ba5b616a0f512e11f9353d3ca9a
   languageName: node
   linkType: hard
 
@@ -18472,7 +18520,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-releases@npm:^2.0.14":
+"node-releases@npm:^2.0.14, node-releases@npm:^2.0.18":
   version: 2.0.18
   resolution: "node-releases@npm:2.0.18"
   checksum: 10c0/786ac9db9d7226339e1dc84bbb42007cb054a346bd9257e6aa154d294f01bc6a6cddb1348fa099f079be6580acbb470e3c048effd5f719325abd0179e566fd27
@@ -20614,9 +20662,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-activity-calendar@npm:^2.2.11":
-  version: 2.2.11
-  resolution: "react-activity-calendar@npm:2.2.11"
+"react-activity-calendar@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "react-activity-calendar@npm:2.3.1"
   dependencies:
     "@types/chroma-js": "npm:^2.4.3"
     chroma-js: "npm:^2.4.2"
@@ -20625,7 +20673,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 10c0/e93f4e94e1a1782d0fc0b3f7eb900f71cdfd481047f8e8e3400a93882fd4f7393f05d28af2ad5c4b66713ffcf0f81b8bb2df6a7d76050f214bf17043915d378e
+  checksum: 10c0/befc576a0bd364eaf46f3ff5bb6aec2cd95c1464ce0df49ddbd3461159dcb5718c43a8714587c629ea96a81a67967c3b84589d696848e29b752b1b8c111c739a
   languageName: node
   linkType: hard
 
@@ -20641,12 +20689,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.52.1":
-  version: 7.52.1
-  resolution: "react-hook-form@npm:7.52.1"
+"react-hook-form@npm:^7.52.2":
+  version: 7.52.2
+  resolution: "react-hook-form@npm:7.52.2"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10c0/68f21daa66f3c2b87c83f2f9b1dbd160a856b24e9315263af24fee8737b62336dc7cc43e09c581ff957ed032a3ac2355f69b1c1d32d89893a6e1f601112eacfd
+  checksum: 10c0/2b8d37239d40f4326a24609c1bf5b4ba2cf66bc4a988213ccd7eb92a254dd5bf9c4b94caa353bce4b1d6d8a9ecd2ea3103e25c6d2d72d53f7be26f09053a8b2f
   languageName: node
   linkType: hard
 
@@ -20770,27 +20818,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.25.1":
-  version: 6.25.1
-  resolution: "react-router-dom@npm:6.25.1"
+"react-router-dom@npm:^6.26.0":
+  version: 6.26.0
+  resolution: "react-router-dom@npm:6.26.0"
   dependencies:
-    "@remix-run/router": "npm:1.18.0"
-    react-router: "npm:6.25.1"
+    "@remix-run/router": "npm:1.19.0"
+    react-router: "npm:6.26.0"
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 10c0/15e2b5bf89a26db9a108d19a4e0e2054180bfb1f5f62662dd93ad697ee1bdc91a8041efd762d552c95e65fc06ca0cb0c1e88acdeeaf03aba37f7a29e470c7cc4
+  checksum: 10c0/f59a5b72b1dab6480f97f20fa49b601cb1366e6e1c8def7fd727ccbc4e8cf527f64f7aedd2889534de222dc86634a23e2ed108b99e5443e7b5401a4db104e611
   languageName: node
   linkType: hard
 
-"react-router@npm:6.25.1":
-  version: 6.25.1
-  resolution: "react-router@npm:6.25.1"
+"react-router@npm:6.26.0":
+  version: 6.26.0
+  resolution: "react-router@npm:6.26.0"
   dependencies:
-    "@remix-run/router": "npm:1.18.0"
+    "@remix-run/router": "npm:1.19.0"
   peerDependencies:
     react: ">=16.8"
-  checksum: 10c0/a7e824c1f6d9641beabc23111865ddd2525b3794403e07b297fc2bdd4cddec93e166aacdb9d2602768864d70f3bf490f59eeab8474a04ae1f13a832f305eeec3
+  checksum: 10c0/498b97cac077170096715609e65e0039b64e497612ed585b8d3b88733310d23e7ca76ce189b09b6fbc65ca8df1595ca20ccac05a84006803843dfa05107d9540
   languageName: node
   linkType: hard
 
@@ -20811,16 +20859,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-tooltip@npm:^5.27.1":
-  version: 5.27.1
-  resolution: "react-tooltip@npm:5.27.1"
+"react-tooltip@npm:^5.28.0":
+  version: 5.28.0
+  resolution: "react-tooltip@npm:5.28.0"
   dependencies:
     "@floating-ui/dom": "npm:^1.6.1"
     classnames: "npm:^2.3.0"
   peerDependencies:
     react: ">=16.14.0"
     react-dom: ">=16.14.0"
-  checksum: 10c0/5ffba1bb0e9cf4f0b1576657a4500c911a1a18efc452f0d73e5696ac761968df712ea504d4ac9520159c9f32516305c48830b9767eb93528edd400d64f48c5c4
+  checksum: 10c0/817909584adf4d84d70768e41c7fdf66bf9affd980499742a2da54378e5c8be53a0867bf72bdfb441fa4aa35c79847585990b6e31c91e6647e789ba68e9b08a2
   languageName: node
   linkType: hard
 
@@ -23273,6 +23321,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici-types@npm:~6.13.0":
+  version: 6.13.0
+  resolution: "undici-types@npm:6.13.0"
+  checksum: 10c0/2de55181f569c77a4f08063f8bf2722fcbb6ea312a26a9e927bd1f5ea5cf3a281c5ddf23155061db083e0a25838f54813543ff13b0ac34d230d5c1205ead66c1
+  languageName: node
+  linkType: hard
+
 "undici@npm:^5.28.4":
   version: 5.28.4
   resolution: "undici@npm:5.28.4"
@@ -24260,7 +24315,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-router@npm:^4.4.0, vue-router@npm:^4.4.1":
+"vue-router@npm:^4.4.0":
   version: 4.4.1
   resolution: "vue-router@npm:4.4.1"
   dependencies:
@@ -24268,6 +24323,17 @@ __metadata:
   peerDependencies:
     vue: ^3.2.0
   checksum: 10c0/da45022ae4435b7e4b011cc4951e01f6f80ea6d3d0a69653712a932230c7f1e37db5ab010fb28c7caf6dfe881406da548d053abf5c66e6f2b0dda3a84a107af9
+  languageName: node
+  linkType: hard
+
+"vue-router@npm:^4.4.2":
+  version: 4.4.2
+  resolution: "vue-router@npm:4.4.2"
+  dependencies:
+    "@vue/devtools-api": "npm:^6.6.3"
+  peerDependencies:
+    vue: ^3.2.0
+  checksum: 10c0/dbb95005481ed94e70aa6d14d1ce78b578fcedeb2aaf4fe85cff69a63e0218f1f8cd1d13f883fb45dbab6e31f82053a4a62627401deb2b5b15a98afbe4689b37
   languageName: node
   linkType: hard
 
