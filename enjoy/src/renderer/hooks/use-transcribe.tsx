@@ -393,7 +393,7 @@ export const useTranscribe = () => {
 
           const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
           if (!best.Words) return;
-          if (best.Confidence < 0.5) return;
+          if (!best.Confidence || best.Confidence < 0.5) return;
 
           const firstWord = best.Words[0];
           const lastWord = best.Words[best.Words.length - 1];
