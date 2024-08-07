@@ -52,6 +52,16 @@ export const DefaultEngineSettings = () => {
     },
   });
 
+  const modelOptions = () => {
+    if (form.watch("name") === "openai") {
+      const customModels = openai?.models?.split(",")?.filter(Boolean);
+
+      return customModels.length ? customModels : providers.openai.models;
+    } else {
+      return providers.enjoyai.models;
+    }
+  };
+
   const onSubmit = async (data: z.infer<typeof gptEngineSchema>) => {
     const { name, models } = data;
 
@@ -155,11 +165,7 @@ export const DefaultEngineSettings = () => {
                           ></SelectValue>
                         </SelectTrigger>
                         <SelectContent>
-                          {(form.watch("name") === "openai"
-                            ? openai?.models?.split(",") ||
-                              providers.openai.models
-                            : providers.enjoyai.models
-                          ).map((model: string) => (
+                          {modelOptions().map((model: string) => (
                             <SelectItem key={model} value={model}>
                               {model}
                             </SelectItem>
@@ -192,11 +198,7 @@ export const DefaultEngineSettings = () => {
                               ></SelectValue>
                             </SelectTrigger>
                             <SelectContent>
-                              {(form.watch("name") === "openai"
-                                ? openai?.models?.split(",") ||
-                                  providers.openai.models
-                                : providers.enjoyai.models
-                              ).map((model: string) => (
+                              {modelOptions().map((model: string) => (
                                 <SelectItem key={model} value={model}>
                                   {model}
                                 </SelectItem>
@@ -227,11 +229,7 @@ export const DefaultEngineSettings = () => {
                               ></SelectValue>
                             </SelectTrigger>
                             <SelectContent>
-                              {(form.watch("name") === "openai"
-                                ? openai?.models?.split(",") ||
-                                  providers.openai.models
-                                : providers.enjoyai.models
-                              ).map((model: string) => (
+                              {modelOptions().map((model: string) => (
                                 <SelectItem key={model} value={model}>
                                   {model}
                                 </SelectItem>
@@ -262,11 +260,7 @@ export const DefaultEngineSettings = () => {
                               ></SelectValue>
                             </SelectTrigger>
                             <SelectContent>
-                              {(form.watch("name") === "openai"
-                                ? openai?.models?.split(",") ||
-                                  providers.openai.models
-                                : providers.enjoyai.models
-                              ).map((model: string) => (
+                              {modelOptions().map((model: string) => (
                                 <SelectItem key={model} value={model}>
                                   {model}
                                 </SelectItem>
@@ -297,11 +291,7 @@ export const DefaultEngineSettings = () => {
                               ></SelectValue>
                             </SelectTrigger>
                             <SelectContent>
-                              {(form.watch("name") === "openai"
-                                ? openai?.models?.split(",") ||
-                                  providers.openai.models
-                                : providers.enjoyai.models
-                              ).map((model: string) => (
+                              {modelOptions().map((model: string) => (
                                 <SelectItem key={model} value={model}>
                                   {model}
                                 </SelectItem>
