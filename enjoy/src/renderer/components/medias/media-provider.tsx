@@ -19,6 +19,7 @@ import {
 } from "@vidstack/react/player/layouts/default";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { milisecondsToTimestamp } from "@/utils";
+import { toast } from "@renderer/components/ui";
 
 export const MediaProvider = () => {
   const { theme } = useContext(ThemeProviderContext);
@@ -76,7 +77,10 @@ export const MediaProvider = () => {
             setMediaProvider(provider.video);
           }
         }}
-        onError={(err) => setDecodeError(err.message)}
+        onError={(err) => {
+          toast.error(err.message);
+          setDecodeError(err.message);
+        }}
       >
         <VidstackMediaProvider />
         <DefaultAudioLayout icons={defaultLayoutIcons} colorScheme={theme} />

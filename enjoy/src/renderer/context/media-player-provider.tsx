@@ -473,6 +473,10 @@ export const MediaPlayerProvider = ({
       wavesurfer.on("error", (err: Error) => {
         toast.error(err?.message || "Error occurred while decoding audio");
         setDecodeError(err?.message || "Error occurred while decoding audio");
+        // Reload page when error occurred after decoding
+        if (decoded) {
+          window.location.reload();
+        }
       }),
     ];
 
