@@ -30,7 +30,7 @@ export const MediaInfoPanel = () => {
         });
       }
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
 
     setSummarizing(false);
