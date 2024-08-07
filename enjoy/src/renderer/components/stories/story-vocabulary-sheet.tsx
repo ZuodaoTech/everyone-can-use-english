@@ -43,7 +43,11 @@ export const StoryVocabularySheet = (props: {
         if (!value) setVocabularyVisible(null);
       }}
     >
-      <SheetContent side="bottom" className="rounded-t-2xl shadow-lg h-5/6">
+      <SheetContent
+        side="bottom"
+        className="rounded-t-2xl shadow-lg h-5/6"
+        aria-describedby={undefined}
+      >
         <SheetHeader className="flex items-center justify-center mb-2">
           <div className="text-center">
             <span className="font-semibold text-xl capitalize">

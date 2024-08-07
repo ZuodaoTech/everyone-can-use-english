@@ -616,7 +616,7 @@ export const MediaCurrentRecording = () => {
       </div>
 
       <AlertDialog open={isSharing} onOpenChange={setIsSharing}>
-        <AlertDialogContent>
+        <AlertDialogContent aria-describedby={undefined}>
           <AlertDialogHeader>
             <AlertDialogTitle>{t("shareRecording")}</AlertDialogTitle>
             <AlertDialogDescription>
@@ -634,6 +634,7 @@ export const MediaCurrentRecording = () => {
 
       <Sheet open={detailIsOpen} onOpenChange={(open) => setDetailIsOpen(open)}>
         <SheetContent
+          aria-describedby={undefined}
           side="bottom"
           className="rounded-t-2xl shadow-lg max-h-screen overflow-y-scroll"
           displayClose={false}

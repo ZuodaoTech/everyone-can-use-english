@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  SheetTitle,
 } from "@renderer/components/ui";
 import {
   SpeechPlayer,
@@ -294,6 +295,7 @@ export const AssistantMessageComponent = (props: {
         onOpenChange={(value) => setShadowing(value)}
       >
         <SheetContent
+          aria-describedby={undefined}
           side="bottom"
           className="h-screen p-0"
           displayClose={false}
@@ -301,6 +303,7 @@ export const AssistantMessageComponent = (props: {
           onInteractOutside={(event) => event.preventDefault()}
         >
           <SheetHeader className="flex items-center justify-center h-14">
+            <SheetTitle className="sr-only">{t("shadow")}</SheetTitle>
             <SheetClose>
               <ChevronDownIcon />
             </SheetClose>

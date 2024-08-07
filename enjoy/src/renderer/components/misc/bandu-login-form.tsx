@@ -33,7 +33,11 @@ export const BanduLoginButton = () => {
           />
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="h-screen">
+      <SheetContent
+        side="bottom"
+        className="h-screen"
+        aria-describedby={undefined}
+      >
         <div className="w-full h-full flex">
           <div className="m-auto">{open && <BanduLoginForm />}</div>
         </div>

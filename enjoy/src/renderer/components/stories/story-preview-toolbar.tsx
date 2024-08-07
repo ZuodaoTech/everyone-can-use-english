@@ -35,7 +35,7 @@ export const StoryPreviewToolbar = (props: {
             <ScanTextIcon className="w-6 h-6" />
           </ToolbarButton>
         </AlertDialogTrigger>
-        <AlertDialogContent>
+        <AlertDialogContent aria-describedby={undefined}>
           <AlertDialogHeader>
             <AlertDialogTitle>{t("aiExtractVocabulary")}</AlertDialogTitle>
 
