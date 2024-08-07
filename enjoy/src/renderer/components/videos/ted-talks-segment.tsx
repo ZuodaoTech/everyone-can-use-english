@@ -177,7 +177,7 @@ export const TedTalksSegment = () => {
           if (!value) setSelectedTalk(null);
         }}
       >
-        <DialogContent>
+        <DialogContent aria-describedby={undefined}>
           <DialogHeader>
             <DialogTitle>{selectedTalk?.title}</DialogTitle>
           </DialogHeader>

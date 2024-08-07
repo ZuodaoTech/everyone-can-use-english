@@ -252,7 +252,7 @@ export const VideosComponent = () => {
           setEditing(null);
         }}
       >
-        <DialogContent>
+        <DialogContent aria-describedby={undefined}>
           <DialogHeader>
             <DialogTitle>{t("editResource")}</DialogTitle>
           </DialogHeader>
@@ -272,7 +272,7 @@ export const VideosComponent = () => {
           setDeleting(null);
         }}
       >
-        <AlertDialogContent>
+        <AlertDialogContent aria-describedby={undefined}>
           <AlertDialogHeader>
             <AlertDialogTitle>{t("deleteResource")}</AlertDialogTitle>
             <AlertDialogDescription>

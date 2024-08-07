@@ -59,7 +59,7 @@ export class YoutubeProvider {
             videoId: video.richItemRenderer.content.videoRenderer.videoId,
             duration:
               video.richItemRenderer.content.videoRenderer.lengthText
-                .simpleText,
+                ?.simpleText,
           };
         });
 

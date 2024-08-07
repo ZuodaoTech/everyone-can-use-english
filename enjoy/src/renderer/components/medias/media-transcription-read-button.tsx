@@ -258,6 +258,7 @@ export const MediaTranscriptionReadButton = (props: {
         }}
       >
         <SheetContent
+          aria-describedby={undefined}
           side="bottom"
           className="rounded-t-2xl shadow-lg max-h-screen overflow-y-scroll"
           displayClose={false}

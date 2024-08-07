@@ -75,7 +75,10 @@ export const TranscriptionEditButton = (props: {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-screen-sm xl:max-w-screen-md">
+      <DialogContent
+        className="max-w-screen-sm xl:max-w-screen-md"
+        aria-describedby={undefined}
+      >
         <DialogHeader>
           <DialogTitle>{t("editTranscription")}</DialogTitle>
         </DialogHeader>

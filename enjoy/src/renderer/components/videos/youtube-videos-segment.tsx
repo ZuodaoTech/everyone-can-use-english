@@ -119,7 +119,7 @@ export const YoutubeVideosSegment = (props: { channel: string }) => {
           if (!value) setSelectedVideo(null);
         }}
       >
-        <DialogContent>
+        <DialogContent aria-describedby={undefined}>
           <DialogHeader>
             <DialogTitle>{t("downloadVideo")}</DialogTitle>
           </DialogHeader>

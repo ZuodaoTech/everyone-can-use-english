@@ -235,7 +235,7 @@ export default () => {
               </Button>
             </DialogTrigger>
 
-            <DialogContent>
+            <DialogContent aria-describedby={undefined}>
               <DialogHeader>
                 <DialogTitle>{t("selectAiRole")}</DialogTitle>
               </DialogHeader>
@@ -302,7 +302,7 @@ export default () => {
           </Dialog>
 
           <Sheet open={creating} onOpenChange={(value) => setCreating(value)}>
-            <SheetContent className="p-0">
+            <SheetContent className="p-0" aria-describedby={undefined}>
               <SheetHeader>
                 <SheetTitle className="sr-only">
                   {t("startConversation")}

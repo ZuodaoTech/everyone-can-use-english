@@ -249,7 +249,7 @@ export default () => {
               </div>
             </SheetTrigger>
 
-            <SheetContent className="p-0">
+            <SheetContent className="p-0" aria-describedby={undefined}>
               <SheetHeader>
                 <SheetTitle className="sr-only">
                   {t("editConversation")}
