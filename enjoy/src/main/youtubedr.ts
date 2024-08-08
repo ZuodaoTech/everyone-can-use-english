@@ -133,6 +133,7 @@ class Youtubedr {
         {
           timeout: TEN_MINUTES,
           signal: this.abortController.signal,
+          env: this.proxyEnv()
         }
       );
 
@@ -188,6 +189,7 @@ class Youtubedr {
         command,
         {
           timeout: ONE_MINUTE,
+          env: this.proxyEnv()
         },
         (error, stdout, stderr) => {
           if (error) {
@@ -254,6 +256,22 @@ class Youtubedr {
 
   abortDownload() {
     this.abortController?.abort();
+  }
+
+  /**
+   * 代理环境变量配置
+   * @returns env object
+   */
+  proxyEnv = () => {
+    // 保留当前环境变量
+    let env = {...process.env}
+    const proxyConfig = settings.getSync("proxy") as ProxyConfigType;
+    if (proxyConfig.enabled && proxyConfig.url) {
+      // 设置 enjoy 的代理 url
+      env["HTTP_PROXY"] = proxyConfig.url;
+      env["HTTPS_PROXY"] = proxyConfig.url;
+    }
+    return env
   }
 }
 
