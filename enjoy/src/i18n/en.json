@@ -653,5 +653,10 @@
   "continueLearning": "Continue learning",
   "enrollNow": "Enroll now",
   "enrollments": "Enrollments",
-  "noLikesYet": "No likes yet"
+  "noLikesYet": "No likes yet",
+  "apiConnectTime": "API Connect Time ({{apiUrl}})",
+  "ipInfo": "IP Information",
+  "platformInfo": "Platform Information",
+  "networkState": "Network State",
+  "connectError": "Connect Error"
 }

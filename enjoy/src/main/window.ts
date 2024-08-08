@@ -280,6 +280,14 @@ main.init = () => {
   });
 
   // App options
+  ipcMain.handle("app-platform-info", () => {
+    return {
+      platform: process.platform,
+      arch: process.arch,
+      version: process.getSystemVersion(),
+    };
+  });
+
   ipcMain.handle("app-reset", () => {
     fs.removeSync(settings.userDataPath());
     fs.removeSync(settings.file());
