@@ -64,6 +64,10 @@ export class Client {
     );
   }
 
+  up() {
+    return this.api.get("/up");
+  }
+
   auth(params: {
     provider: "mixin" | "github" | "bandu" | "email";
     code?: string;

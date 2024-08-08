@@ -16,6 +16,7 @@ import {
   ResetAllSettings,
   NativeLanguageSettings,
   LearningLanguageSettings,
+  NetworkState,
 } from "@renderer/components";
 import { useState } from "react";
 import { Tooltip } from "react-tooltip";
@@ -55,6 +56,8 @@ export const Preferences = () => {
           <ApiUrlSettings />
           <Separator />
           <ProxySettings />
+          <Separator />
+          <NetworkState />
           <Separator />
           <ResetSettings />
           <Separator />

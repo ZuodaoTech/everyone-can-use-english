@@ -12,13 +12,11 @@ import {
   Input,
   toast,
 } from "@renderer/components/ui";
-import { InfoIcon } from "lucide-react";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 
 export const ProxySettings = () => {
   const { proxy, setProxy } = useContext(AppSettingsProviderContext);
-  const [ipData, setIpData] = useState(null);
   const [editing, setEditing] = useState(false);
 
   const proxyConfigSchema = z.object({
@@ -51,22 +49,6 @@ export const ProxySettings = () => {
       });
   };
 
-  const checkIp = async () => {
-    fetch("https://ipapi.co/json")
-      .then((response) => response.json())
-      .then((data) => {
-        setIpData(data);
-      })
-      .catch((error) => {
-        toast.error(error.message);
-        setIpData(null);
-      });
-  };
-
-  useEffect(() => {
-    checkIp();
-  }, [proxy]);
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -91,18 +73,6 @@ export const ProxySettings = () => {
                 )}
               />
             </div>
-            {form.getValues("enabled") && ipData && (
-              <div className="text-sm text-muted-foreground mb-2 ml-1">
-                <div className="flex items-center space-x-2">
-                  <div>
-                    IP: {ipData.ip} ({ipData.city}, {ipData.country_name})
-                  </div>
-                  <div>
-                    <InfoIcon size={16} className="cursor-pointer" />
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
 
           <div className="flex items-center space-x-2 justify-end">

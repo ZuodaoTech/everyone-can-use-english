@@ -25,6 +25,7 @@ import {
   MixinLoginButton,
   ProxySettings,
   ApiUrlSettings,
+  NetworkState,
 } from "@renderer/components";
 import { EmailLoginForm } from "./email-login-form";
 import { Client } from "@/api";
@@ -128,6 +129,8 @@ export const LoginForm = () => {
               <ApiUrlSettings />
               <Separator />
               <ProxySettings />
+              <Separator />
+              <NetworkState />
             </CardContent>
           </Card>
         </TabsContent>
@@ -166,6 +169,8 @@ export const LoginForm = () => {
             <ApiUrlSettings />
             <Separator />
             <ProxySettings />
+            <Separator />
+            <NetworkState />
           </CardContent>
         </Card>
       </TabsContent>

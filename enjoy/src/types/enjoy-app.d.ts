@@ -1,5 +1,6 @@
 type EnjoyAppType = {
   app: {
+    getPlatformInfo: () => Promise<PlatformInfo>;
     reset: () => Promise<void>;
     resetSettings: () => Promise<void>;
     relaunch: () => Promise<void>;

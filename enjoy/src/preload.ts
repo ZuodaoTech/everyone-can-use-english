@@ -6,6 +6,9 @@ import { Timeline } from "echogarden/dist/utilities/Timeline";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
+    getPlatformInfo: () => {
+      return ipcRenderer.invoke("app-platform-info");
+    },
     reset: () => {
       ipcRenderer.invoke("app-reset");
     },

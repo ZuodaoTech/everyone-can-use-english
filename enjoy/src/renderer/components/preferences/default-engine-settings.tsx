@@ -56,7 +56,7 @@ export const DefaultEngineSettings = () => {
     if (form.watch("name") === "openai") {
       const customModels = openai?.models?.split(",")?.filter(Boolean);
 
-      return customModels.length ? customModels : providers.openai.models;
+      return customModels?.length ? customModels : providers.openai.models;
     } else {
       return providers.enjoyai.models;
     }

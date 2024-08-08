@@ -177,3 +177,9 @@ type GptEngineSettingType = {
   baseUrl?: string;
   key?: string;
 };
+
+type PlatformInfo = {
+  platform: string;
+  arch: string;
+  version: string;
+};
