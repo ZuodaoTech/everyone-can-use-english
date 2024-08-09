@@ -655,8 +655,10 @@
   "enrollments": "Enrollments",
   "noLikesYet": "No likes yet",
   "apiConnectTime": "API Connect Time ({{apiUrl}})",
+  "storageConnectTime": "Storage Connect Time",
   "ipInfo": "IP Information",
   "platformInfo": "Platform Information",
   "networkState": "Network State",
-  "connectError": "Connect Error"
+  "connectError": "Connect Error",
+  "refresh": "refresh"
 }
