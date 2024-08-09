@@ -654,9 +654,11 @@
   "enrollNow": "加入练习",
   "enrollments": "参加的课程",
   "noLikesYet": "还没有点赞",
-  "apiConnectTime": "API 延时 ({{apiUrl}})",
+  "apiConnectTime": "接口服务器延时 ({{apiUrl}})",
+  "storageConnectTime": "资源服务器延时",
   "ipInfo": "IP 信息",
   "platformInfo": "设备信息",
   "networkState": "网络状态",
-  "connectError": "连接错误"
+  "connectError": "连接错误",
+  "refresh": "刷新"
 }
