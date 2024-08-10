@@ -9,10 +9,13 @@ export const chatSessionsReducer = (
       | "set"
       | "addMessage"
       | "removeMessage"
-      | "updateMessage";
+      | "updateMessage"
+      | "updateRecording"
+      | "removeRecording";
     record?: ChatSessionType;
     records?: ChatSessionType[];
     message?: ChatMessageType;
+    recording?: RecordingType;
   }
 ) => {
   switch (action.type) {
@@ -89,6 +92,44 @@ export const chatSessionsReducer = (
         return chatSessions.map((session) =>
           session.id === chatSession.id ? chatSession : session
         );
+      } else {
+        return chatSessions;
+      }
+    }
+    case "updateRecording": {
+      const message = chatSessions
+        .map((session) => session.messages)
+        .flat()
+        .find((m) => m.id === action.recording?.targetId);
+
+      if (message) {
+        message.recording = action.recording;
+        return chatSessions.map((session) => {
+          session.messages = session.messages.map((m) =>
+            m.id === message.id ? message : m
+          );
+          return session;
+        });
+      } else {
+        return chatSessions;
+      }
+    }
+    case "removeRecording": {
+      const message = chatSessions
+        .map((session) => session.messages)
+        .flat()
+        .find((m) => m.id === action.recording?.targetId);
+
+      if (message) {
+        message.recording = undefined;
+        return chatSessions.map((session) => {
+          session.messages = session.messages.map((m) =>
+            m.id === message.id ? message : m
+          );
+          return session;
+        });
+      } else {
+        return chatSessions;
       }
     }
     default: {

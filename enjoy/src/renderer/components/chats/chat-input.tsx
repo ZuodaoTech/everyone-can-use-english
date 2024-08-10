@@ -23,7 +23,10 @@ export const ChatInput = () => {
     mediaRecorder,
     recordingTime,
     isPaused,
+    askAgent,
   } = useContext(ChatSessionProviderContext);
+
+  console.log("currentSession", currentSession);
 
   if (submitting) {
     return (
@@ -76,16 +79,18 @@ export const ChatInput = () => {
   }
 
   if (currentSession?.state === "pending") {
-    <div className="w-full flex justify-center">
-      <Button
-        onClick={startRecording}
-        className="rounded-full shadow w-auto h-10"
-        size="icon"
-      >
-        <StepForwardIcon className="w-6 h-6 mr-2" />
-        {t("continue")}
-      </Button>
-    </div>;
+    return (
+      <div className="w-full flex justify-center">
+        <Button
+          onClick={askAgent}
+          className="rounded-full shadow w-auto h-10"
+          size="sm"
+        >
+          <StepForwardIcon className="w-6 h-6 mr-2" />
+          {t("continue")}
+        </Button>
+      </div>
+    );
   }
 
   if (!currentSession || currentSession?.state === "completed") {

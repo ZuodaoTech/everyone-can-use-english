@@ -664,8 +664,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     create: (params: any) => {
       return ipcRenderer.invoke("chat-sessions-create", params);
     },
-    invoke: (id: string, params: any) => {
-      return ipcRenderer.invoke("chat-sessions-invoke", id, params);
+    update: (id: string, params: any) => {
+      return ipcRenderer.invoke("chat-sessions-update", id, params);
     },
     destroy: (id: string) => {
       return ipcRenderer.invoke("chat-sessions-destroy", id);

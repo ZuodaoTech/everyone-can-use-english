@@ -127,13 +127,10 @@ class ChatSessionsHandler {
     await session.update(data);
   }
 
-  private async reply() {}
-
   register() {
     ipcMain.handle("chat-sessions-find-all", this.findAll);
     ipcMain.handle("chat-sessions-create", this.create);
     ipcMain.handle("chat-sessions-update", this.update);
-    ipcMain.handle("chat-sessions-reply", this.reply);
   }
 }
 

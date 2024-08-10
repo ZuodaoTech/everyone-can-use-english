@@ -7,6 +7,7 @@ import {
 import { chatSessionsReducer } from "@renderer/reducers";
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { toast } from "@renderer/components/ui";
 
 export const useChatSession = (chat: ChatType) => {
   const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
@@ -52,6 +53,11 @@ export const useChatSession = (chat: ChatType) => {
       .finally(() => setSubmitting(false));
   };
 
+  const updateChatSession = async (id: string, data: { state: string }) => {
+    setSubmitting(true);
+    return EnjoyApp.chatSessions.update(id, data).finally(() => setSubmitting);
+  };
+
   const updateChatMessage = async (
     id: string,
     data: { state?: string; content?: string; recordingUrl?: string }
@@ -88,6 +94,15 @@ export const useChatSession = (chat: ChatType) => {
           dispatchChatSessions({ type: "removeMessage", message: record });
           break;
       }
+    } else if (model === "Recording") {
+      switch (action) {
+        case "create":
+          dispatchChatSessions({ type: "updateRecording", recording: record });
+          break;
+        case "destroy":
+          dispatchChatSessions({ type: "removeRecording", recording: record });
+          break;
+      }
     }
   };
 
@@ -102,9 +117,12 @@ export const useChatSession = (chat: ChatType) => {
       (member) =>
         member.userType === "Agent" &&
         currentSession.messages.findIndex(
-          (m) => m.member.agent.id === member.id
+          (m) => m.member.userId === member.userId
         ) === -1
     );
+    if (!member) {
+      return updateChatSession(currentSession.id, { state: "completed" });
+    }
 
     const llm = buildLlm(member.agent);
     const systemPrompt = buildAgentPrompt(member);
@@ -113,11 +131,28 @@ export const useChatSession = (chat: ChatType) => {
       ["user", "{input}"],
     ]);
     const chain = prompt.pipe(llm);
-    return chain.invoke({ input: "What would you say?" });
+    try {
+      setSubmitting(true);
+      const reply = await chain.invoke({
+        input: "What would you say? Turn the content only.",
+      });
+
+      return EnjoyApp.chatMessages
+        .create({
+          sessionId: currentSession.id,
+          memberId: member.id,
+          content: reply.content,
+          state: "completed",
+        })
+        .finally(() => setSubmitting(false));
+    } catch (err) {
+      setSubmitting(false);
+      toast.error(err.message);
+    }
   };
 
   const buildAgentPrompt = (member: ChatMemberType) => {
-    return `${member.agent.config.prompt}
+    return `You are @${member.agent.name}. ${member.agent.config.prompt}
 You are chatting in a chat room. You always reply in ${chat.language}.
 ${member.config.prompt || ""}
 
@@ -198,5 +233,6 @@ ${buildChatHistory()}
     createChatSession,
     updateChatMessage,
     submitting,
+    askAgent,
   };
 };

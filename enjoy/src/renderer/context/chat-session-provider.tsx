@@ -18,6 +18,7 @@ type ChatSessionProviderState = {
   isPaused: boolean;
   recordingTime: number;
   mediaRecorder: MediaRecorder;
+  askAgent: () => Promise<any>;
 };
 
 const initialState: ChatSessionProviderState = {
@@ -33,6 +34,7 @@ const initialState: ChatSessionProviderState = {
   isPaused: false,
   recordingTime: 0,
   mediaRecorder: null,
+  askAgent: () => null,
 };
 
 export const ChatSessionProviderContext =
@@ -53,6 +55,7 @@ export const ChatSessionProvider = ({
     createChatSession,
     updateChatMessage,
     submitting: sessionSubmitting,
+    askAgent,
   } = useChatSession(chat);
 
   const {
@@ -132,6 +135,7 @@ export const ChatSessionProvider = ({
         isPaused,
         recordingTime,
         mediaRecorder,
+        askAgent,
       }}
     >
       {children}

@@ -50,7 +50,7 @@ type ChatMemberType = {
 type ChatSessionType = {
   id: string;
   chatId: string;
-  state:  "draft" | "pending" | "completed";
+  state: "draft" | "pending" | "completed";
   createdAt: string;
   updatedAt: string;
   chat: ChatType;
@@ -63,8 +63,8 @@ type ChatMessageType = {
   sessionId: string;
   content: string;
   state: "pending" | "completed";
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   member?: ChatMemberType;
   recording?: RecordingType;
 };

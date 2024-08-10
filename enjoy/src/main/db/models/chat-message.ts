@@ -40,6 +40,7 @@ const logger = log.scope("db/models/chat-message");
         association: ChatMessage.associations.recording,
       },
     ],
+    order: [["createdAt", "ASC"]],
   },
 }))
 export class ChatMessage extends Model<ChatMessage> {

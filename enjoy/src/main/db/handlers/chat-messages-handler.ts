@@ -45,10 +45,10 @@ class ChatMessagesHandler {
   private async update(
     _event: IpcMainEvent,
     id: string,
-    data: { state?: string; content?: string; url?: string }
+    data: { state?: string; content?: string; recordingUrl?: string }
   ) {
-    const { url } = data;
-    delete data.url;
+    const { recordingUrl } = data;
+    delete data.recordingUrl;
 
     const message = await ChatMessage.findByPk(id);
     if (!message) return;
@@ -58,14 +58,14 @@ class ChatMessagesHandler {
     // update content
     await message.update({ ...data }, { transaction });
 
-    if (url) {
+    if (recordingUrl) {
       // destroy existing recording
       await message.recording?.destroy({ transaction });
 
       // create new recording
-      const filePath = enjoyUrlToPath(url);
+      const filePath = enjoyUrlToPath(recordingUrl);
       const blob = fs.readFileSync(filePath);
-      await Recording.createFromBlob(
+      const recording = await Recording.createFromBlob(
         {
           type: "audio/wav",
           arrayBuffer: blob,
@@ -76,6 +76,7 @@ class ChatMessagesHandler {
         },
         transaction
       );
+      message.recording = recording;
     }
 
     await transaction.commit();

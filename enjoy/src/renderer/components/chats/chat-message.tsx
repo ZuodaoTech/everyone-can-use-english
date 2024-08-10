@@ -7,7 +7,9 @@ import {
 import { MarkdownWrapper, WavesurferPlayer } from "@renderer/components";
 import { formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
-import { MicIcon } from "lucide-react";
+import { MicIcon, SquareIcon } from "lucide-react";
+import { useContext } from "react";
+import { ChatSessionProviderContext } from "@renderer/context";
 
 export const ChatMessage = (props: { chatMessage: ChatMessageType }) => {
   if (props.chatMessage.member.userType === "User") {
@@ -21,7 +23,7 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
   const { chatMessage } = props;
 
   return (
-    <div className="flex items-center">
+    <div className="mb-6">
       <div className="flex items-center space-x-2 mb-2">
         <Avatar className="w-8 h-8 bg-background avatar">
           <AvatarImage src={chatMessage.member.agent.avatarUrl}></AvatarImage>
@@ -33,10 +35,13 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
           {chatMessage.member.agent.name}
         </div>
       </div>
-      <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm max-w-full">
+      <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm w-full max-w-lg">
         <MarkdownWrapper className="select-text prose dark:prose-invert">
           {chatMessage.content}
         </MarkdownWrapper>
+      </div>
+      <div className="flex justify-start text-xs text-muted-foreground timestamp">
+        {formatDateTime(chatMessage.createdAt)}
       </div>
     </div>
   );
@@ -44,6 +49,8 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
 
 export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
   const { chatMessage } = props;
+  const { askAgent, startRecording, stopRecording, isRecording, isPaused } =
+    useContext(ChatSessionProviderContext);
 
   return (
     <div className="mb-6">
@@ -75,11 +82,25 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                 <Button size="sm" variant="secondary">
                   {t("refine")}
                 </Button>
-                <Button size="sm" variant="secondary">
-                  <MicIcon className="w-4 h-4 mr-2" />
-                  {t("reRecord")}
-                </Button>
-                <Button size="sm" variant="default">
+                {isPaused || isRecording ? (
+                  <Button onClick={stopRecording} size="sm" variant="default">
+                    <SquareIcon
+                      fill="white"
+                      className="w-4 h-4 text-white mr-2"
+                    />
+                    {t("stop")}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={startRecording}
+                    size="sm"
+                    variant="secondary"
+                  >
+                    <MicIcon className="w-4 h-4 mr-2" />
+                    {t("reRecord")}
+                  </Button>
+                )}
+                <Button onClick={askAgent} size="sm" variant="default">
                   {t("confirm")}
                 </Button>
               </>

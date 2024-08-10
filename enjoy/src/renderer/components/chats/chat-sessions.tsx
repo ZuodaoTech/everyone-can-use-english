@@ -19,9 +19,11 @@ const ChatSession = (props: { chatSession: ChatSessionType }) => {
 
   return (
     <>
-      {messages.map((message) => (
-        <ChatMessage key={message.id} chatMessage={message} />
-      ))}
+      {messages
+        .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+        .map((message) => (
+          <ChatMessage key={message.id} chatMessage={message} />
+        ))}
     </>
   );
 };
