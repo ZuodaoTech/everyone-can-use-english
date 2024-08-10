@@ -26,8 +26,6 @@ export const ChatInput = () => {
     askAgent,
   } = useContext(ChatSessionProviderContext);
 
-  console.log("currentSession", currentSession);
-
   if (submitting) {
     return (
       <div className="w-full flex justify-center">

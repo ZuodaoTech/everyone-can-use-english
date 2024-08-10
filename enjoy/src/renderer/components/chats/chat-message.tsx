@@ -21,19 +21,20 @@ export const ChatMessage = (props: { chatMessage: ChatMessageType }) => {
 
 export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
   const { chatMessage } = props;
+  const { agent } = chatMessage.member || {};
+
+  if (!agent) return;
 
   return (
     <div className="mb-6">
       <div className="flex items-center space-x-2 mb-2">
         <Avatar className="w-8 h-8 bg-background avatar">
-          <AvatarImage src={chatMessage.member.agent.avatarUrl}></AvatarImage>
+          <AvatarImage src={agent.avatarUrl}></AvatarImage>
           <AvatarFallback className="bg-background">
-            {chatMessage.member.agent.name}
+            {agent.name}
           </AvatarFallback>
         </Avatar>
-        <div className="text-sm text-muted-foreground">
-          {chatMessage.member.agent.name}
-        </div>
+        <div className="text-sm text-muted-foreground">{agent.name}</div>
       </div>
       <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm w-full max-w-lg">
         <MarkdownWrapper className="select-text prose dark:prose-invert">
@@ -49,8 +50,21 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
 
 export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
   const { chatMessage } = props;
-  const { askAgent, startRecording, stopRecording, isRecording, isPaused } =
-    useContext(ChatSessionProviderContext);
+  const {
+    askAgent,
+    startRecording,
+    stopRecording,
+    isRecording,
+    isPaused,
+    updateChatMessage,
+  } = useContext(ChatSessionProviderContext);
+  const { recording } = chatMessage;
+
+  const confirmRecording = async () => {
+    updateChatMessage(chatMessage.id, {
+      state: "completed",
+    }).then(() => askAgent());
+  };
 
   return (
     <div className="mb-6">
@@ -67,11 +81,8 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
       </div>
       <div className="flex justify-end">
         <div className="flex flex-col gap-2 px-4 py-2 mb-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full max-w-lg">
-          {chatMessage.recording && (
-            <WavesurferPlayer
-              id={chatMessage.recording.id}
-              src={chatMessage.recording.src}
-            />
+          {recording && (
+            <WavesurferPlayer id={recording.id} src={recording.src} />
           )}
           <MarkdownWrapper className="select-text prose dark:prose-invert">
             {chatMessage.content}
@@ -100,7 +111,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                     {t("reRecord")}
                   </Button>
                 )}
-                <Button onClick={askAgent} size="sm" variant="default">
+                <Button onClick={confirmRecording} size="sm" variant="default">
                   {t("confirm")}
                 </Button>
               </>

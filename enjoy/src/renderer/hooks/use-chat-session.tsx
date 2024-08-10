@@ -82,27 +82,6 @@ export const useChatSession = (chat: ChatType) => {
           dispatchChatSessions({ type: "remove", record });
           break;
       }
-    } else if (model === "ChatMessage") {
-      switch (action) {
-        case "create":
-          dispatchChatSessions({ type: "addMessage", message: record });
-          break;
-        case "update":
-          dispatchChatSessions({ type: "updateMessage", message: record });
-          break;
-        case "destroy":
-          dispatchChatSessions({ type: "removeMessage", message: record });
-          break;
-      }
-    } else if (model === "Recording") {
-      switch (action) {
-        case "create":
-          dispatchChatSessions({ type: "updateRecording", recording: record });
-          break;
-        case "destroy":
-          dispatchChatSessions({ type: "removeRecording", recording: record });
-          break;
-      }
     }
   };
 

@@ -10,13 +10,11 @@ import {
   DataType,
   AfterCreate,
   AllowNull,
-  AfterFind,
   HasMany,
-  Scopes,
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
-import { Chat, ChatMember, ChatMessage } from "@main/db/models";
+import { Chat, ChatMessage } from "@main/db/models";
 
 const logger = log.scope("db/models/chat-session");
 @Table({
@@ -25,25 +23,6 @@ const logger = log.scope("db/models/chat-session");
   underscored: true,
   timestamps: true,
 })
-@Scopes(() => ({
-  defaultScope: {
-    include: [
-      {
-        association: ChatSession.associations.messages,
-        include: [
-          {
-            association: ChatMessage.associations.member,
-            include: [
-              {
-                association: ChatMember.associations.agent,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-}))
 export class ChatSession extends Model<ChatSession> {
   @IsUUID("all")
   @Default(DataType.UUIDV4)

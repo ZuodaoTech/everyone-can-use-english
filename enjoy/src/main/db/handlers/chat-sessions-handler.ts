@@ -10,7 +10,7 @@ import log from "@main/logger";
 import { enjoyUrlToPath } from "@/main/utils";
 import fs from "fs-extra";
 
-const logger = log.scope("db/handlers/chats-handler");
+const logger = log.scope("db/handlers/chat-sessions-handler");
 
 class ChatSessionsHandler {
   private async findAll(
@@ -35,6 +35,17 @@ class ChatSessionsHandler {
       return [];
     }
     return chatSessions.map((chatSession) => chatSession.toJSON());
+  }
+
+  private async findOne(
+    _event: IpcMainEvent,
+    options: FindOptions<Attributes<ChatSession>>
+  ) {
+    const chatSession = await ChatSession.findOne(options);
+    if (!chatSession) {
+      return null;
+    }
+    return chatSession.toJSON();
   }
 
   private async create(
@@ -129,6 +140,7 @@ class ChatSessionsHandler {
 
   register() {
     ipcMain.handle("chat-sessions-find-all", this.findAll);
+    ipcMain.handle("chat-sessions-find-one", this.findOne);
     ipcMain.handle("chat-sessions-create", this.create);
     ipcMain.handle("chat-sessions-update", this.update);
   }

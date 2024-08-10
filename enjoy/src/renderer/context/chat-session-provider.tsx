@@ -18,6 +18,7 @@ type ChatSessionProviderState = {
   isPaused: boolean;
   recordingTime: number;
   mediaRecorder: MediaRecorder;
+  recordingBlob: Blob;
   askAgent: () => Promise<any>;
 };
 
@@ -34,6 +35,7 @@ const initialState: ChatSessionProviderState = {
   isPaused: false,
   recordingTime: 0,
   mediaRecorder: null,
+  recordingBlob: null,
   askAgent: () => null,
 };
 
@@ -48,7 +50,6 @@ export const ChatSessionProvider = ({
   chat: ChatType;
 }) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { transcribe } = useTranscribe();
   const {
     chatSessions,
     currentSession,
@@ -77,40 +78,9 @@ export const ChatSessionProvider = ({
     });
   };
 
-  const onRecorded = async (blob: Blob) => {
-    try {
-      const { transcript, url } = await transcribe(blob, {
-        language: chat.language,
-        service: chat.config.sttEngine,
-        align: false,
-      });
-
-      if (currentSession && currentSession.state === "pending") {
-        const message = currentSession.messages[0];
-        await updateChatMessage(message.id, {
-          content: transcript,
-          recordingUrl: url,
-        });
-      } else {
-        await createChatSession({
-          transcript,
-          recordingUrl: url,
-        });
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
   useEffect(() => {
     askForMediaAccess();
   }, []);
-
-  useEffect(() => {
-    if (!recordingBlob) return;
-
-    onRecorded(recordingBlob);
-  }, [recordingBlob]);
 
   useEffect(() => {
     if (!isRecording) return;
@@ -135,6 +105,7 @@ export const ChatSessionProvider = ({
         isPaused,
         recordingTime,
         mediaRecorder,
+        recordingBlob,
         askAgent,
       }}
     >

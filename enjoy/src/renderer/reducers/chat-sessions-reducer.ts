@@ -1,17 +1,7 @@
 export const chatSessionsReducer = (
   chatSessions: ChatSessionType[],
   action: {
-    type:
-      | "append"
-      | "prepend"
-      | "update"
-      | "remove"
-      | "set"
-      | "addMessage"
-      | "removeMessage"
-      | "updateMessage"
-      | "updateRecording"
-      | "removeRecording";
+    type: "append" | "prepend" | "update" | "remove" | "set";
     record?: ChatSessionType;
     records?: ChatSessionType[];
     message?: ChatMessageType;
@@ -47,90 +37,6 @@ export const chatSessionsReducer = (
     }
     case "set": {
       return action.records || [];
-    }
-    case "addMessage": {
-      const chatSession = chatSessions.find(
-        (chatSession) => chatSession.id === action.message.sessionId
-      );
-      if (chatSession) {
-        if (!chatSession.messages) {
-          chatSession.messages = [];
-        }
-        chatSession.messages.push(action.message);
-        return chatSessions.map((session) =>
-          session.id === chatSession.id ? chatSession : session
-        );
-      } else {
-        return chatSessions;
-      }
-    }
-    case "removeMessage": {
-      const chatSession = chatSessions.find(
-        (chatSession) => chatSession.id === action.message.sessionId
-      );
-      if (chatSession) {
-        chatSession.messages = chatSession.messages.filter(
-          (message) => message.id !== action.message.id
-        );
-        return chatSessions.map((session) =>
-          session.id === chatSession.id ? chatSession : session
-        );
-      }
-    }
-    case "updateMessage": {
-      const chatSession = chatSessions.find(
-        (chatSession) => chatSession.id === action.message.sessionId
-      );
-      if (chatSession) {
-        chatSession.messages = chatSession.messages.map((message) => {
-          if (message.id === action.message.id) {
-            return Object.assign(message, action.message);
-          } else {
-            return message;
-          }
-        });
-        return chatSessions.map((session) =>
-          session.id === chatSession.id ? chatSession : session
-        );
-      } else {
-        return chatSessions;
-      }
-    }
-    case "updateRecording": {
-      const message = chatSessions
-        .map((session) => session.messages)
-        .flat()
-        .find((m) => m.id === action.recording?.targetId);
-
-      if (message) {
-        message.recording = action.recording;
-        return chatSessions.map((session) => {
-          session.messages = session.messages.map((m) =>
-            m.id === message.id ? message : m
-          );
-          return session;
-        });
-      } else {
-        return chatSessions;
-      }
-    }
-    case "removeRecording": {
-      const message = chatSessions
-        .map((session) => session.messages)
-        .flat()
-        .find((m) => m.id === action.recording?.targetId);
-
-      if (message) {
-        message.recording = undefined;
-        return chatSessions.map((session) => {
-          session.messages = session.messages.map((m) =>
-            m.id === message.id ? message : m
-          );
-          return session;
-        });
-      } else {
-        return chatSessions;
-      }
     }
     default: {
       throw Error(`Unknown action: ${action.type}`);
