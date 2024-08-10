@@ -87,6 +87,7 @@
     "@electron-forge/publisher-s3": "^7.4.0",
     "@hookform/resolvers": "^3.9.0",
     "@langchain/community": "^0.2.17",
+    "@langchain/ollama": "^0.0.4",
     "@mozilla/readability": "^0.5.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",

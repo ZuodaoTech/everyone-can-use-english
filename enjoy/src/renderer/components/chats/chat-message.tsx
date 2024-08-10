@@ -69,20 +69,22 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
           <MarkdownWrapper className="select-text prose dark:prose-invert">
             {chatMessage.content}
           </MarkdownWrapper>
-          {chatMessage.state === "pending" && (
-            <div className="w-full flex items-center justify-end space-x-2">
-              <Button size="sm" variant="secondary">
-                {t("refine")}
-              </Button>
-              <Button size="sm" variant="secondary">
-                <MicIcon className="w-4 h-4 mr-2" />
-                {t("reRecord")}
-              </Button>
-              <Button size="sm" variant="default">
-                {t("confirm")}
-              </Button>
-            </div>
-          )}
+          <div className="w-full flex items-center justify-end space-x-2">
+            {chatMessage.state === "pending" && (
+              <>
+                <Button size="sm" variant="secondary">
+                  {t("refine")}
+                </Button>
+                <Button size="sm" variant="secondary">
+                  <MicIcon className="w-4 h-4 mr-2" />
+                  {t("reRecord")}
+                </Button>
+                <Button size="sm" variant="default">
+                  {t("confirm")}
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
       <div className="flex justify-end text-xs text-muted-foreground timestamp">

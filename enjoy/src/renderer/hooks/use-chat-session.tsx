@@ -2,12 +2,15 @@ import { useEffect, useContext, useReducer, useState } from "react";
 import {
   DbProviderContext,
   AppSettingsProviderContext,
+  AISettingsProviderContext,
 } from "@renderer/context";
-import { t } from "i18next";
 import { chatSessionsReducer } from "@renderer/reducers";
+import { ChatOpenAI } from "@langchain/openai";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 
 export const useChatSession = (chat: ChatType) => {
-  const { EnjoyApp, user } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
+  const { openai } = useContext(AISettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [chatSessions, dispatchChatSessions] = useReducer(
     chatSessionsReducer,
@@ -51,14 +54,11 @@ export const useChatSession = (chat: ChatType) => {
 
   const updateChatMessage = async (
     id: string,
-    data: { content: string; recordingUrl: string }
+    data: { state?: string; content?: string; recordingUrl?: string }
   ) => {
-    const { content, recordingUrl } = data;
-    if (!content || !recordingUrl) return;
-
     setSubmitting(true);
     return EnjoyApp.chatMessages
-      .update(id, { content, url: recordingUrl })
+      .update(id, data)
       .finally(() => setSubmitting(false));
   };
 
@@ -88,6 +88,96 @@ export const useChatSession = (chat: ChatType) => {
           dispatchChatSessions({ type: "removeMessage", message: record });
           break;
       }
+    }
+  };
+
+  const askAgent = async () => {
+    const userMessage = currentSession.messages.find((m) => m.member.user);
+    if (userMessage && userMessage.state !== "completed") {
+      updateChatMessage(userMessage.id, {
+        state: "completed",
+      });
+    }
+    const member = chat.members.find(
+      (member) =>
+        member.userType === "Agent" &&
+        currentSession.messages.findIndex(
+          (m) => m.member.agent.id === member.id
+        ) === -1
+    );
+
+    const llm = buildLlm(member.agent);
+    const systemPrompt = buildAgentPrompt(member);
+    const prompt = ChatPromptTemplate.fromMessages([
+      ["system", systemPrompt],
+      ["user", "{input}"],
+    ]);
+    const chain = prompt.pipe(llm);
+    return chain.invoke({ input: "What would you say?" });
+  };
+
+  const buildAgentPrompt = (member: ChatMemberType) => {
+    return `${member.agent.config.prompt}
+You are chatting in a chat room. You always reply in ${chat.language}.
+${member.config.prompt || ""}
+
+<Chat Topic>
+${chat.topic}
+
+<Chat Members>
+${chat.members
+  .map((m) => {
+    if (m.user) {
+      return `- ${m.user.name} (${m.config.introduction})`;
+    } else if (m.agent) {
+      return `- ${m.agent.name} (${m.agent.introduction})`;
+    }
+  })
+  .join("\n")}
+
+<Chat History>
+${buildChatHistory()}
+`;
+  };
+
+  const buildChatHistory = () => {
+    return chatSessions
+      .map((session) => {
+        return session.messages
+          .map(
+            (message) =>
+              `@${(message.member.user || message.member.agent).name}: ${
+                message.content
+              }`
+          )
+          .join("\n");
+      })
+      .join("\n");
+  };
+
+  const buildLlm = (agent: ChatAgentType) => {
+    const { engine, model, temperature } = agent.config;
+
+    if (engine === "enjoyai") {
+      return new ChatOpenAI({
+        openAIApiKey: user.accessToken,
+        configuration: {
+          baseURL: `${apiUrl}/api/ai`,
+        },
+        maxRetries: 0,
+        modelName: model,
+        temperature,
+      });
+    } else if (engine === "openai") {
+      return new ChatOpenAI({
+        openAIApiKey: openai.key,
+        configuration: {
+          baseURL: openai.baseUrl,
+        },
+        maxRetries: 0,
+        modelName: model,
+        temperature,
+      });
     }
   };
 

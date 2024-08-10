@@ -22,7 +22,7 @@ type ChatAgentType = {
   introduction: string;
   language: string;
   config: {
-    engine: "enjoyai" | "openai" | "ollama";
+    engine: "enjoyai" | "openai";
     model: string;
     prompt: string;
     temperature?: number;
@@ -50,7 +50,7 @@ type ChatMemberType = {
 type ChatSessionType = {
   id: string;
   chatId: string;
-  state: "pending" | "completed";
+  state:  "draft" | "pending" | "completed";
   createdAt: string;
   updatedAt: string;
   chat: ChatType;

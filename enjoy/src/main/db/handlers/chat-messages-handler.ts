@@ -45,10 +45,10 @@ class ChatMessagesHandler {
   private async update(
     _event: IpcMainEvent,
     id: string,
-    data: { content: string; url?: string }
+    data: { state?: string; content?: string; url?: string }
   ) {
-    const { content, url } = data;
-    if (!content || !url) return;
+    const { url } = data;
+    delete data.url;
 
     const message = await ChatMessage.findByPk(id);
     if (!message) return;
@@ -56,27 +56,31 @@ class ChatMessagesHandler {
     const transaction = await ChatMessage.sequelize.transaction();
 
     // update content
-    await message.update({ content }, { transaction });
+    await message.update({ ...data }, { transaction });
 
-    // destroy existing recording
-    await message.recording?.destroy({ transaction });
+    if (url) {
+      // destroy existing recording
+      await message.recording?.destroy({ transaction });
 
-    // create new recording
-    const filePath = enjoyUrlToPath(url);
-    const blob = fs.readFileSync(filePath);
-    await Recording.createFromBlob(
-      {
-        type: "audio/wav",
-        arrayBuffer: blob,
-      },
-      {
-        targetType: "ChatMessage",
-        targetId: message.id,
-      },
-      transaction
-    );
+      // create new recording
+      const filePath = enjoyUrlToPath(url);
+      const blob = fs.readFileSync(filePath);
+      await Recording.createFromBlob(
+        {
+          type: "audio/wav",
+          arrayBuffer: blob,
+        },
+        {
+          targetType: "ChatMessage",
+          targetId: message.id,
+        },
+        transaction
+      );
+    }
 
     await transaction.commit();
+
+    return message.toJSON();
   }
 
   private async destroy(_event: IpcMainEvent, id: string) {

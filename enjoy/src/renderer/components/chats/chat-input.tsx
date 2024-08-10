@@ -4,11 +4,13 @@ import {
   PauseIcon,
   PlayIcon,
   SquareIcon,
+  StepForwardIcon,
 } from "lucide-react";
 import { Button } from "@renderer/components/ui";
 import { useContext } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import { ChatSessionProviderContext } from "@renderer/context";
+import { t } from "i18next";
 
 export const ChatInput = () => {
   const {
@@ -23,13 +25,17 @@ export const ChatInput = () => {
     isPaused,
   } = useContext(ChatSessionProviderContext);
 
-  return (
-    <div className="w-full flex justify-center">
-      {submitting ? (
-        <div>
-          <LoaderIcon className="w-6 h-6 animate-spin" />
-        </div>
-      ) : isRecording ? (
+  if (submitting) {
+    return (
+      <div className="w-full flex justify-center">
+        <LoaderIcon className="w-6 h-6 animate-spin" />
+      </div>
+    );
+  }
+
+  if (isRecording) {
+    return (
+      <div className="w-full flex justify-center">
         <div className="flex items-center space-x-2">
           <LiveAudioVisualizer
             mediaRecorder={mediaRecorder}
@@ -65,16 +71,34 @@ export const ChatInput = () => {
             <SquareIcon fill="white" className="w-4 h-4 text-white" />
           </Button>
         </div>
-      ) : (
+      </div>
+    );
+  }
+
+  if (currentSession?.state === "pending") {
+    <div className="w-full flex justify-center">
+      <Button
+        onClick={startRecording}
+        className="rounded-full shadow w-auto h-10"
+        size="icon"
+      >
+        <StepForwardIcon className="w-6 h-6 mr-2" />
+        {t("continue")}
+      </Button>
+    </div>;
+  }
+
+  if (!currentSession || currentSession?.state === "completed") {
+    return (
+      <div className="w-full flex justify-center">
         <Button
           onClick={startRecording}
           className="rounded-full shadow w-10 h-10"
-          disabled={currentSession?.state === "pending"}
           size="icon"
         >
           <MicIcon className="w-6 h-6" />
         </Button>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
 };
