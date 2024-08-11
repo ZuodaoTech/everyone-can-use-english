@@ -4,8 +4,6 @@ export const chatSessionsReducer = (
     type: "append" | "prepend" | "update" | "remove" | "set";
     record?: ChatSessionType;
     records?: ChatSessionType[];
-    message?: ChatMessageType;
-    recording?: RecordingType;
   }
 ) => {
   switch (action.type) {
@@ -23,7 +21,7 @@ export const chatSessionsReducer = (
     }
     case "update": {
       return chatSessions.map((chatSession) => {
-        if (chatSession.id === action.record.id) {
+        if (chatSession.id === action.record?.id) {
           return Object.assign(chatSession, action.record);
         } else {
           return chatSession;
