@@ -91,12 +91,12 @@ export const ChatSessionProvider = ({
         align: false,
       });
 
-      if (currentSession.state === "pending") {
-        const message = currentSession.messages.find(
-          (m) => m.member.userType === "User"
-        );
-        if (!message) return;
+      const message = currentSession.messages.find(
+        (m) => m.member.userType === "User"
+      );
+      if (!message) return;
 
+      if (message.state === "pending") {
         await updateChatMessage(message.id, {
           content: transcript,
           recordingUrl: url,

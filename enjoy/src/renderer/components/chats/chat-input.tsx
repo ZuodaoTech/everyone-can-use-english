@@ -76,9 +76,16 @@ export const ChatInput = () => {
     );
   }
 
-  if (currentSession?.state === "pending") {
-    return (
-      <div className="w-full flex justify-center">
+  return (
+    <div className="w-full flex gap-4 justify-center">
+      <Button
+        onClick={startRecording}
+        className="rounded-full shadow w-10 h-10"
+        size="icon"
+      >
+        <MicIcon className="w-6 h-6" />
+      </Button>
+      {currentSession?.state === "pending" && (
         <Button
           onClick={askAgent}
           className="rounded-full shadow w-auto h-10"
@@ -87,21 +94,7 @@ export const ChatInput = () => {
           <StepForwardIcon className="w-6 h-6 mr-2" />
           {t("continue")}
         </Button>
-      </div>
-    );
-  }
-
-  if (!currentSession || currentSession?.state === "completed") {
-    return (
-      <div className="w-full flex justify-center">
-        <Button
-          onClick={startRecording}
-          className="rounded-full shadow w-10 h-10"
-          size="icon"
-        >
-          <MicIcon className="w-6 h-6" />
-        </Button>
-      </div>
-    );
-  }
+      )}
+    </div>
+  );
 };

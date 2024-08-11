@@ -20,9 +20,7 @@ export const ChatSessions = () => {
 
 const ChatSession = (props: { chatSession: ChatSessionType }) => {
   const { chatSession } = props;
-  const { dispatchChatSessions } = useContext(
-    ChatSessionProviderContext
-  );
+  const { dispatchChatSessions } = useContext(ChatSessionProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
 
@@ -69,7 +67,7 @@ const ChatSession = (props: { chatSession: ChatSessionType }) => {
       switch (action) {
         case "create":
           const messages = chatSession.messages.map((message) => {
-            if (message.id === record.messageId) {
+            if (message.id === record.targetId) {
               return Object.assign(message, { recording: record });
             } else {
               return message;

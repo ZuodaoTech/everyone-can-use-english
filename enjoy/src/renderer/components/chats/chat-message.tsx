@@ -8,7 +8,7 @@ import { MarkdownWrapper, WavesurferPlayer } from "@renderer/components";
 import { formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
 import { MicIcon, SquareIcon } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { ChatSessionProviderContext } from "@renderer/context";
 
 export const ChatMessage = (props: { chatMessage: ChatMessageType }) => {
@@ -22,11 +22,18 @@ export const ChatMessage = (props: { chatMessage: ChatMessageType }) => {
 export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
   const { chatMessage } = props;
   const { agent } = chatMessage.member || {};
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [ref]);
 
   if (!agent) return;
 
   return (
-    <div className="mb-6">
+    <div ref={ref} className="mb-6">
       <div className="flex items-center space-x-2 mb-2">
         <Avatar className="w-8 h-8 bg-background avatar">
           <AvatarImage src={agent.avatarUrl}></AvatarImage>
@@ -59,6 +66,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
     updateChatMessage,
   } = useContext(ChatSessionProviderContext);
   const { recording } = chatMessage;
+  const ref = useRef<HTMLDivElement>(null);
 
   const confirmRecording = async () => {
     updateChatMessage(chatMessage.id, {
@@ -66,8 +74,14 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
     }).then(() => askAgent());
   };
 
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [ref]);
+
   return (
-    <div className="mb-6">
+    <div ref={ref} className="mb-6">
       <div className="flex items-center space-x-2 justify-end mb-2">
         <div className="text-sm text-muted-foreground">
           {chatMessage.member.user.name}
