@@ -104,7 +104,7 @@ export const useChatSession = (chat: ChatType) => {
     try {
       setSubmitting(true);
       const reply = await chain.invoke({
-        input: "What would you say? Turn the content only.",
+        input: "It's your turn.",
       });
 
       return EnjoyApp.chatMessages
