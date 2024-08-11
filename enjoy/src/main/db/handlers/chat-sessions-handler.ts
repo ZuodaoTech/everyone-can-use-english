@@ -26,6 +26,24 @@ class ChatSessionsHandler {
       };
     }
     const chatSessions = await ChatSession.findAll({
+      include: [
+        {
+          association: ChatSession.associations.messages,
+          include: [
+            {
+              association: ChatMessage.associations.member,
+              include: [
+                {
+                  association: ChatMember.associations.agent,
+                },
+              ],
+            },
+            {
+              association: ChatMessage.associations.recording,
+            },
+          ],
+        },
+      ],
       order: [["createdAt", "ASC"]],
       where,
       ...options,

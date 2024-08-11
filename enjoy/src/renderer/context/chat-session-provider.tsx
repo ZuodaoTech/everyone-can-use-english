@@ -7,8 +7,9 @@ import { t } from "i18next";
 
 type ChatSessionProviderState = {
   chatSessions: ChatSessionType[];
+  dispatchChatSessions: React.Dispatch<any>;
   currentSession: ChatSessionType;
-  createChatSession: (params: any) => Promise<ChatSessionType>;
+  createChatSession: (params: any) => Promise<void>;
   updateChatMessage: (id: string, data: any) => Promise<ChatMessageType>;
   sessionSubmitting: boolean;
   startRecording: () => void;
@@ -24,6 +25,7 @@ type ChatSessionProviderState = {
 
 const initialState: ChatSessionProviderState = {
   chatSessions: [],
+  dispatchChatSessions: () => null,
   currentSession: null,
   createChatSession: () => null,
   updateChatMessage: () => null,
@@ -52,6 +54,7 @@ export const ChatSessionProvider = ({
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const {
     chatSessions,
+    dispatchChatSessions,
     currentSession,
     createChatSession,
     updateChatMessage,
@@ -70,6 +73,8 @@ export const ChatSessionProvider = ({
     mediaRecorder,
   } = useAudioRecorder();
 
+  const { transcribe } = useTranscribe();
+
   const askForMediaAccess = () => {
     EnjoyApp.system.preferences.mediaAccess("microphone").then((access) => {
       if (!access) {
@@ -78,9 +83,41 @@ export const ChatSessionProvider = ({
     });
   };
 
+  const onRecorded = async (blob: Blob) => {
+    try {
+      const { transcript, url } = await transcribe(blob, {
+        language: chat.language,
+        service: chat.config.sttEngine,
+        align: false,
+      });
+
+      if (currentSession.state === "pending") {
+        const message = currentSession.messages.find(
+          (m) => m.member.userType === "User"
+        );
+        if (!message) return;
+
+        await updateChatMessage(message.id, {
+          content: transcript,
+          recordingUrl: url,
+        });
+      } else {
+        createChatSession({ transcript, recordingUrl: url });
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     askForMediaAccess();
   }, []);
+
+  useEffect(() => {
+    if (recordingBlob) {
+      onRecorded(recordingBlob);
+    }
+  }, [recordingBlob]);
 
   useEffect(() => {
     if (!isRecording) return;
@@ -94,6 +131,7 @@ export const ChatSessionProvider = ({
     <ChatSessionProviderContext.Provider
       value={{
         chatSessions,
+        dispatchChatSessions,
         currentSession,
         createChatSession,
         updateChatMessage,

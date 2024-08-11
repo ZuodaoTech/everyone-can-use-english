@@ -1,6 +1,5 @@
 import { useEffect, useContext, useReducer, useState } from "react";
 import {
-  DbProviderContext,
   AppSettingsProviderContext,
   AISettingsProviderContext,
 } from "@renderer/context";
@@ -12,7 +11,6 @@ import { toast } from "@renderer/components/ui";
 export const useChatSession = (chat: ChatType) => {
   const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
-  const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [chatSessions, dispatchChatSessions] = useReducer(
     chatSessionsReducer,
     []
@@ -36,11 +34,12 @@ export const useChatSession = (chat: ChatType) => {
     const { transcript, recordingUrl } = params;
     if (!transcript || !recordingUrl) return;
 
-    setSubmitting(true);
     const member = chat.members.find(
       (member) => member.userId === user.id.toString()
     );
+    if (!member) return;
 
+    setSubmitting(true);
     return EnjoyApp.chatSessions
       .create({
         chatId: chat.id,
@@ -50,12 +49,21 @@ export const useChatSession = (chat: ChatType) => {
         },
         url: recordingUrl,
       })
+      .then((session) =>
+        dispatchChatSessions({ type: "append", record: session })
+      )
       .finally(() => setSubmitting(false));
   };
 
   const updateChatSession = async (id: string, data: { state: string }) => {
     setSubmitting(true);
-    return EnjoyApp.chatSessions.update(id, data).finally(() => setSubmitting);
+    return EnjoyApp.chatSessions
+      .update(id, data)
+      .finally(() => setSubmitting)
+      .then((session) =>
+        dispatchChatSessions({ type: "update", record: session })
+      )
+      .finally(() => setSubmitting(false));
   };
 
   const updateChatMessage = async (
@@ -66,23 +74,6 @@ export const useChatSession = (chat: ChatType) => {
     return EnjoyApp.chatMessages
       .update(id, data)
       .finally(() => setSubmitting(false));
-  };
-
-  const onChatSessionUpdate = (event: CustomEvent) => {
-    const { model, action, record } = event.detail;
-    if (model === "ChatSession") {
-      switch (action) {
-        case "create":
-          dispatchChatSessions({ type: "append", record });
-          break;
-        case "update":
-          dispatchChatSessions({ type: "update", record });
-          break;
-        case "destroy":
-          dispatchChatSessions({ type: "remove", record });
-          break;
-      }
-    }
   };
 
   const askAgent = async () => {
@@ -199,15 +190,11 @@ ${buildChatHistory()}
     if (!chat) return;
 
     fetchChatSessions(chat.id);
-    addDblistener(onChatSessionUpdate);
-
-    return () => {
-      removeDbListener(onChatSessionUpdate);
-    };
   }, [chat?.id]);
 
   return {
     chatSessions,
+    dispatchChatSessions,
     currentSession,
     createChatSession,
     updateChatMessage,
