@@ -654,23 +654,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       return ipcRenderer.invoke("chat-agents-destroy", id);
     },
   },
-  chatSessions: {
-    findAll: (params: { chatId: string; offset?: number; limit?: number }) => {
-      return ipcRenderer.invoke("chat-sessions-find-all", params);
-    },
-    findOne: (params: any) => {
-      return ipcRenderer.invoke("chat-sessions-find-one", params);
-    },
-    create: (params: any) => {
-      return ipcRenderer.invoke("chat-sessions-create", params);
-    },
-    update: (id: string, params: any) => {
-      return ipcRenderer.invoke("chat-sessions-update", id, params);
-    },
-    destroy: (id: string) => {
-      return ipcRenderer.invoke("chat-sessions-destroy", id);
-    },
-  },
   chatMessages: {
     findAll: (params: { chatSessionId: string; offset?: number; limit?: number }) => {
       return ipcRenderer.invoke("chat-messages-find-all", params);

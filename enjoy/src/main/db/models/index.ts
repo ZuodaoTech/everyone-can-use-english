@@ -4,7 +4,6 @@ export * from "./chat";
 export * from "./chat-agent";
 export * from "./chat-member";
 export * from "./chat-message";
-export * from "./chat-session";
 export * from "./conversation";
 export * from "./message";
 export * from "./note";

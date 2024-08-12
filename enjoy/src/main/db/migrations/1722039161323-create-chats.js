@@ -116,41 +116,6 @@ async function up({ context: queryInterface }) {
   );
 
   queryInterface.createTable(
-    "chat_sessions",
-    {
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
-        allowNull: false,
-      },
-      chat_id: {
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
-      state: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      created_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      updated_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-    },
-    {
-      indexes: [
-        {
-          fields: ["chat_id"],
-        },
-      ],
-    }
-  );
-
-  queryInterface.createTable(
     "chat_messages",
     {
       id: {
@@ -163,7 +128,7 @@ async function up({ context: queryInterface }) {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      session_id: {
+      chat_id: {
         type: DataTypes.UUID,
         allowNull: false,
       },
@@ -187,7 +152,7 @@ async function up({ context: queryInterface }) {
     {
       indexes: [
         {
-          fields: ["session_id", "member_id"],
+          fields: ["chat_id", "member_id"],
         },
       ],
     }
@@ -198,7 +163,6 @@ async function down({ context: queryInterface }) {
   queryInterface.dropTable("chats");
   queryInterface.dropTable("chat_agents");
   queryInterface.dropTable("chat_members");
-  queryInterface.dropTable("chat_sessions");
   queryInterface.dropTable("chat_messages");
 }
 

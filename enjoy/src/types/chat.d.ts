@@ -47,24 +47,15 @@ type ChatMemberType = {
   user?: UserType;
 };
 
-type ChatSessionType = {
-  id: string;
-  chatId: string;
-  state: "draft" | "pending" | "completed";
-  createdAt: string;
-  updatedAt: string;
-  chat: ChatType;
-  messages: ChatMessageType[];
-};
-
 type ChatMessageType = {
   id: string;
   memberId: string;
-  sessionId: string;
+  chatId: string;
   content: string;
   state: "pending" | "completed";
   createdAt: Date;
   updatedAt: Date;
   member?: ChatMemberType;
   recording?: RecordingType;
+  speech?: SpeechType;
 };

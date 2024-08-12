@@ -1,17 +1,25 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useChatSession, useTranscribe } from "@renderer/hooks";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
+import { useTranscribe } from "@renderer/hooks";
 import { useAudioRecorder } from "react-audio-voice-recorder";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AISettingsProviderContext,
+  AppSettingsProviderContext,
+} from "@renderer/context";
 import { toast } from "@renderer/components/ui";
 import { t } from "i18next";
+import { chatMessagesReducer } from "@renderer/reducers";
+import { ChatOpenAI } from "@langchain/openai";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 
 type ChatSessionProviderState = {
-  chatSessions: ChatSessionType[];
-  dispatchChatSessions: React.Dispatch<any>;
-  currentSession: ChatSessionType;
-  createChatSession: (params: any) => Promise<void>;
-  updateChatMessage: (id: string, data: any) => Promise<ChatMessageType>;
-  sessionSubmitting: boolean;
+  chatMessages: ChatMessageType[];
+  submitting: boolean;
   startRecording: () => void;
   stopRecording: () => void;
   togglePauseResume: () => void;
@@ -24,12 +32,8 @@ type ChatSessionProviderState = {
 };
 
 const initialState: ChatSessionProviderState = {
-  chatSessions: [],
-  dispatchChatSessions: () => null,
-  currentSession: null,
-  createChatSession: () => null,
-  updateChatMessage: () => null,
-  sessionSubmitting: false,
+  chatMessages: [],
+  submitting: false,
   startRecording: () => null,
   stopRecording: () => null,
   togglePauseResume: () => null,
@@ -51,16 +55,13 @@ export const ChatSessionProvider = ({
   children: React.ReactNode;
   chat: ChatType;
 }) => {
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const {
-    chatSessions,
-    dispatchChatSessions,
-    currentSession,
-    createChatSession,
-    updateChatMessage,
-    submitting: sessionSubmitting,
-    askAgent,
-  } = useChatSession(chat);
+  const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
+  const { openai } = useContext(AISettingsProviderContext);
+  const [chatMessages, dispatchChatMessages] = useReducer(
+    chatMessagesReducer,
+    []
+  );
+  const [submitting, setSubmitting] = useState(false);
 
   const {
     startRecording,
@@ -91,21 +92,108 @@ export const ChatSessionProvider = ({
         align: false,
       });
 
-      const message = currentSession.messages.find(
-        (m) => m.member.userType === "User"
+      const message = chatMessages.find(
+        (m) => m.member.userType === "User" && m.state === "pending"
       );
-      if (!message) return;
-
-      if (message.state === "pending") {
-        await updateChatMessage(message.id, {
-          content: transcript,
-          recordingUrl: url,
-        });
+      if (message) {
       } else {
-        createChatSession({ transcript, recordingUrl: url });
       }
     } catch (error) {
       toast.error(error.message);
+    }
+  };
+
+  const askAgent = async () => {
+    const userMessage = chatMessages.find((m) => m.member.user);
+    if (userMessage && userMessage.state !== "completed") {
+    }
+    const member = chat.members.find(
+      (member) =>
+        member.userType === "Agent" &&
+        chatMessages.findIndex((m) => m.member.userId === member.userId) === -1
+    );
+
+    const llm = buildLlm(member.agent);
+    const systemPrompt = buildAgentPrompt(member);
+    const prompt = ChatPromptTemplate.fromMessages([
+      ["system", systemPrompt],
+      ["user", "{input}"],
+    ]);
+    const chain = prompt.pipe(llm);
+    try {
+      setSubmitting(true);
+      const reply = await chain.invoke({
+        input: "What would you say? Turn the content only.",
+      });
+
+      return EnjoyApp.chatMessages
+        .create({
+          memberId: member.id,
+          content: reply.content,
+          state: "completed",
+        })
+        .finally(() => setSubmitting(false));
+    } catch (err) {
+      setSubmitting(false);
+      toast.error(err.message);
+    }
+  };
+
+  const buildAgentPrompt = (member: ChatMemberType) => {
+    return `You are @${member.agent.name}. ${member.agent.config.prompt}
+You are chatting in a chat room. You always reply in ${chat.language}.
+${member.config.prompt || ""}
+<Chat Topic>
+${chat.topic}
+<Chat Members>
+${chat.members
+  .map((m) => {
+    if (m.user) {
+      return `- ${m.user.name} (${m.config.introduction})`;
+    } else if (m.agent) {
+      return `- ${m.agent.name} (${m.agent.introduction})`;
+    }
+  })
+  .join("\n")}
+<Chat History>
+${buildChatHistory()}
+`;
+  };
+
+  const buildChatHistory = () => {
+    return chatMessages
+      .map(
+        (message) =>
+          `@${(message.member.user || message.member.agent).name}: ${
+            message.content
+          }`
+      )
+      .join("\n");
+  };
+
+  const buildLlm = (agent: ChatAgentType) => {
+    const { engine, model, temperature } = agent.config;
+
+    if (engine === "enjoyai") {
+      return new ChatOpenAI({
+        openAIApiKey: user.accessToken,
+        configuration: {
+          baseURL: `${apiUrl}/api/ai`,
+        },
+        maxRetries: 0,
+        modelName: model,
+        temperature,
+      });
+    } else if (engine === "openai") {
+      return new ChatOpenAI({
+        openAIApiKey: openai.key,
+        configuration: {
+          baseURL: openai.baseUrl,
+        },
+        maxRetries: 0,
+        modelName: model,
+        temperature,
+      });
     }
   };
 
@@ -130,12 +218,8 @@ export const ChatSessionProvider = ({
   return (
     <ChatSessionProviderContext.Provider
       value={{
-        chatSessions,
-        dispatchChatSessions,
-        currentSession,
-        createChatSession,
-        updateChatMessage,
-        sessionSubmitting,
+        chatMessages,
+        submitting,
         startRecording,
         stopRecording,
         togglePauseResume,

@@ -14,8 +14,7 @@ import { t } from "i18next";
 
 export const ChatInput = () => {
   const {
-    currentSession,
-    sessionSubmitting: submitting,
+    submitting,
     startRecording,
     stopRecording,
     togglePauseResume,
@@ -85,16 +84,14 @@ export const ChatInput = () => {
       >
         <MicIcon className="w-6 h-6" />
       </Button>
-      {currentSession?.state === "pending" && (
-        <Button
-          onClick={askAgent}
-          className="rounded-full shadow w-auto h-10"
-          size="sm"
-        >
-          <StepForwardIcon className="w-6 h-6 mr-2" />
-          {t("continue")}
-        </Button>
-      )}
+      <Button
+        onClick={askAgent}
+        className="rounded-full shadow w-auto h-10"
+        size="sm"
+      >
+        <StepForwardIcon className="w-6 h-6 mr-2" />
+        {t("continue")}
+      </Button>
     </div>
   );
 };

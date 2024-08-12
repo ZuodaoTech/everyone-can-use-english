@@ -10,13 +10,12 @@ import {
   DataType,
   AfterCreate,
   AllowNull,
-  AfterFind,
   Scopes,
   HasOne,
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
-import { ChatMember, ChatSession, Recording } from "@main/db/models";
+import { Chat, ChatMember, Recording } from "@main/db/models";
 
 const logger = log.scope("db/models/chat-message");
 @Table({
@@ -65,11 +64,11 @@ export class ChatMessage extends Model<ChatMessage> {
   @Column(DataType.STRING)
   state: string;
 
-  @BelongsTo(() => ChatSession, {
-    foreignKey: "sessionId",
+  @BelongsTo(() => Chat, {
+    foreignKey: "chatId",
     constraints: false,
   })
-  session: ChatSession;
+  session: Chat;
 
   @BelongsTo(() => ChatMember, {
     foreignKey: "memberId",

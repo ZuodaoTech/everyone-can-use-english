@@ -10,15 +10,13 @@ import {
   DataType,
   AfterCreate,
   AllowNull,
-  AfterFind,
   Scopes,
 } from "sequelize-typescript";
-import mainWindow from "@main/window";
 import log from "@main/logger";
 import settings from "@main/settings";
 import { Chat, ChatAgent } from "@main/db/models";
 
-const logger = log.scope("db/models/note");
+const logger = log.scope("db/models/chat-member");
 @Table({
   modelName: "ChatMember",
   tableName: "chat_members",

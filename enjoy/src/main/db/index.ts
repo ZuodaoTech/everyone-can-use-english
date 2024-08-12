@@ -18,7 +18,6 @@ import {
   ChatAgent,
   ChatMember,
   ChatMessage,
-  ChatSession,
 } from "./models";
 import {
   audiosHandler,
@@ -35,7 +34,6 @@ import {
   chatAgentsHandler,
   chatMembersHandler,
   chatMessagesHandler,
-  chatSessionsHandler,
   chatsHandler,
 } from "./handlers";
 import os from "os";
@@ -74,7 +72,6 @@ db.connect = async () => {
       ChatAgent,
       ChatMember,
       ChatMessage,
-      ChatSession,
     ],
   });
 
@@ -164,7 +161,6 @@ db.connect = async () => {
   chatAgentsHandler.register();
   chatMembersHandler.register();
   chatMessagesHandler.register();
-  chatSessionsHandler.register();
   chatsHandler.register();
 };
 

@@ -57,22 +57,12 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
 
 export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
   const { chatMessage } = props;
-  const {
-    askAgent,
-    startRecording,
-    stopRecording,
-    isRecording,
-    isPaused,
-    updateChatMessage,
-  } = useContext(ChatSessionProviderContext);
+  const { askAgent, startRecording, stopRecording, isRecording, isPaused } =
+    useContext(ChatSessionProviderContext);
   const { recording } = chatMessage;
   const ref = useRef<HTMLDivElement>(null);
 
-  const confirmRecording = async () => {
-    updateChatMessage(chatMessage.id, {
-      state: "completed",
-    }).then(() => askAgent());
-  };
+  const confirmRecording = async () => {};
 
   useEffect(() => {
     if (ref.current) {

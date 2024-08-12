@@ -13,7 +13,7 @@ import {
   Scopes,
 } from "sequelize-typescript";
 import log from "@main/logger";
-import { ChatAgent, ChatMember, ChatSession } from "@main/db/models";
+import { ChatAgent, ChatMember, ChatMessage } from "@main/db/models";
 import mainWindow from "@main/window";
 
 const logger = log.scope("db/models/chat");
@@ -64,13 +64,13 @@ export class Chat extends Model<Chat> {
   @Column(DataType.JSON)
   config: any;
 
-  @HasMany(() => ChatSession, {
+  @HasMany(() => ChatMessage, {
     foreignKey: "chatId",
     constraints: false,
     onDelete: "CASCADE",
     hooks: true,
   })
-  sessions: ChatSession[];
+  messages: ChatMessage[];
 
   @HasMany(() => ChatMember, {
     foreignKey: "chatId",

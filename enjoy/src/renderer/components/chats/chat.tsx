@@ -10,7 +10,8 @@ import {
 import { t } from "i18next";
 import { ChatProviderContext, ChatSessionProvider } from "@renderer/context";
 import { useContext, useState } from "react";
-import { ChatSessions, ChatForm, ChatInput } from "@renderer/components";
+import { ChatForm, ChatInput } from "@renderer/components";
+import { ChatMessages } from "./chat-messages";
 
 export const Chat = () => {
   const { currentChat, chatAgents, updateChat, destroyChat } =
@@ -59,7 +60,7 @@ export const Chat = () => {
         </Dialog>
       </div>
       <ChatSessionProvider chat={currentChat}>
-        <ChatSessions />
+        <ChatMessages />
         <div className="absolute bottom-0 w-full h-16 border-t z-10 bg-background flex items-center">
           <ChatInput />
         </div>
