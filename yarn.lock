@@ -3772,36 +3772,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/core@npm:>=0.2.21 <0.3.0":
-  version: 0.2.22
-  resolution: "@langchain/core@npm:0.2.22"
-  dependencies:
-    ansi-styles: "npm:^5.0.0"
-    camelcase: "npm:6"
-    decamelize: "npm:1.2.0"
-    js-tiktoken: "npm:^1.0.12"
-    langsmith: "npm:~0.1.39"
-    mustache: "npm:^4.2.0"
-    p-queue: "npm:^6.6.2"
-    p-retry: "npm:4"
-    uuid: "npm:^10.0.0"
-    zod: "npm:^3.22.4"
-    zod-to-json-schema: "npm:^3.22.3"
-  checksum: 10c0/40f4eaec0a2809f9f1a9777a9a4a2fca2508105dbd42833d5c649cc28823c0c1573c30f73550307bb44060706b44d78f6b39f2957c9dd90388313f583ad336de
-  languageName: node
-  linkType: hard
-
-"@langchain/ollama@npm:^0.0.4":
-  version: 0.0.4
-  resolution: "@langchain/ollama@npm:0.0.4"
-  dependencies:
-    "@langchain/core": "npm:>=0.2.21 <0.3.0"
-    ollama: "npm:^0.5.6"
-    uuid: "npm:^10.0.0"
-  checksum: 10c0/cb6fefd7a7e42989c8de930f7f3fc2758635813eb3664bfb383f2310e2fd8735fa89325fcd6e0c570cb0dbb34be44a497f835c01ba0719bd1483f4a641f0ae10
-  languageName: node
-  linkType: hard
-
 "@langchain/openai@npm:>=0.1.0 <0.3.0":
   version: 0.2.5
   resolution: "@langchain/openai@npm:0.2.5"
@@ -13012,7 +12982,6 @@ __metadata:
     "@electron/fuses": "npm:^1.8.0"
     "@hookform/resolvers": "npm:^3.9.0"
     "@langchain/community": "npm:^0.2.17"
-    "@langchain/ollama": "npm:^0.0.4"
     "@mozilla/readability": "npm:^0.5.0"
     "@playwright/test": "npm:^1.45.3"
     "@radix-ui/react-accordion": "npm:^1.2.0"
@@ -19735,15 +19704,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ollama@npm:^0.5.6":
-  version: 0.5.6
-  resolution: "ollama@npm:0.5.6"
-  dependencies:
-    whatwg-fetch: "npm:^3.6.20"
-  checksum: 10c0/779510025333289206e80682d67bdbfc15958c34cbfd49a01e2e9eab206a64e015d76d173f1d2468770551a1ba9f324c12c44a110f793d580238c1df9b5841bb
-  languageName: node
-  linkType: hard
-
 "on-finished@npm:2.4.1":
   version: 2.4.1
   resolution: "on-finished@npm:2.4.1"
@@ -25401,13 +25361,6 @@ __metadata:
   dependencies:
     iconv-lite: "npm:0.6.3"
   checksum: 10c0/273b5f441c2f7fda3368a496c3009edbaa5e43b71b09728f90425e7f487e5cef9eb2b846a31bd760dd8077739c26faf6b5ca43a5f24033172b003b72cf61a93e
-  languageName: node
-  linkType: hard
-
-"whatwg-fetch@npm:^3.6.20":
-  version: 3.6.20
-  resolution: "whatwg-fetch@npm:3.6.20"
-  checksum: 10c0/fa972dd14091321d38f36a4d062298df58c2248393ef9e8b154493c347c62e2756e25be29c16277396046d6eaa4b11bd174f34e6403fff6aaca9fb30fa1ff46d
   languageName: node
   linkType: hard
 
