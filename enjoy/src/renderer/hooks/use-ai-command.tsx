@@ -10,6 +10,7 @@ import {
   analyzeCommand,
   punctuateCommand,
   summarizeTopicCommand,
+  refineCommand,
 } from "@commands";
 
 export const useAiCommand = () => {
@@ -145,6 +146,22 @@ export const useAiCommand = () => {
     });
   };
 
+  const refine = async (text: string, context: string) => {
+    return refineCommand(
+      text,
+      {
+        learningLanguage,
+        nativeLanguage,
+        context,
+      },
+      {
+        key: currentEngine.key,
+        modelName: currentEngine.models.default,
+        baseUrl: currentEngine.baseUrl,
+      }
+    );
+  };
+
   return {
     lookupWord,
     extractStory,
@@ -152,5 +169,6 @@ export const useAiCommand = () => {
     analyzeText,
     punctuateText,
     summarizeTopic,
+    refine,
   };
 };

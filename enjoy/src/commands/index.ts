@@ -7,3 +7,4 @@ export * from "./analyze.command";
 export * from "./punctuate.command";
 export * from "./summarize-topic.command";
 export * from "./text.command";
+export * from "./refine.command";

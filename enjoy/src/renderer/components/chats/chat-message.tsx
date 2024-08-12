@@ -2,6 +2,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
+  Separator,
   toast,
 } from "@renderer/components/ui";
 import {
@@ -333,10 +334,60 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
 
 export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
   const { chatMessage } = props;
-  const { askAgent, startRecording, isRecording, isPaused, setAssessing } =
-    useContext(ChatSessionProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const {
+    chatMessages,
+    askAgent,
+    startRecording,
+    isRecording,
+    isPaused,
+    setAssessing,
+  } = useContext(ChatSessionProviderContext);
   const { recording } = chatMessage;
   const ref = useRef<HTMLDivElement>(null);
+  const [suggestion, setSuggestion] = useState<string>();
+  const [suggesting, setSuggesting] = useState<boolean>(false);
+  const { refine } = useAiCommand();
+
+  const handleSuggest = async (params?: { reload?: boolean }) => {
+    if (suggesting) return;
+    if (!chatMessage.content) return;
+
+    const { reload = false } = params || {};
+    const cacheKey = `chat-message-suggestion-${md5(chatMessage.id)}`;
+    try {
+      const cached = await EnjoyApp.cacheObjects.get(cacheKey);
+
+      if (cached && !reload && !suggestion) {
+        setSuggestion(cached);
+      } else {
+        setSuggesting(true);
+
+        const context = `I'm chatting in a chatroom. The previous messages are as follows:\n\n${buildChatHistory()}`;
+        const result = await refine(chatMessage.content, context);
+        EnjoyApp.cacheObjects.set(cacheKey, result);
+        setSuggestion(result);
+        setSuggesting(false);
+      }
+    } catch (err) {
+      toast.error(err.message);
+      setSuggesting(false);
+    }
+  };
+
+  const buildChatHistory = () => {
+    const messages = chatMessages.filter(
+      (m) => new Date(m.createdAt) < new Date(chatMessage.createdAt)
+    );
+    return messages
+      .map(
+        (message) =>
+          `${(message.member.user || message.member.agent).name}: ${
+            message.content
+          }`
+      )
+      .join("\n");
+  };
 
   useEffect(() => {
     if (ref.current) {
@@ -372,12 +423,24 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
           <MarkdownWrapper className="select-text prose dark:prose-invert">
             {chatMessage.content}
           </MarkdownWrapper>
+          {suggestion && (
+            <div className="p-4 font-serif bg-background">
+              <MarkdownWrapper className="select-text prose dark:prose-invert">
+                {suggestion}
+              </MarkdownWrapper>
+            </div>
+          )}
           <div className="flex items-center space-x-4">
-            <SparkleIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("suggestion")}
-              className="w-4 h-4 cursor-pointer"
-            />
+            {suggesting ? (
+              <LoaderIcon className="w-4 h-4 animate-spin" />
+            ) : (
+              <SparkleIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("suggestion")}
+                className="w-4 h-4 cursor-pointer"
+                onClick={() => handleSuggest()}
+              />
+            )}
             {chatMessage.state === "pending" ? (
               <>
                 {isPaused || isRecording ? (
