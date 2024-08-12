@@ -5,5 +5,7 @@ export * from "./chat-card";
 export * from "./chat-form";
 export * from "./chat-input";
 export * from "./chat-message";
+export * from "./chat-agent-message";
+export * from "./chat-user-message";
 export * from "./chat-messages";
 export * from "./chat-sidebar";
