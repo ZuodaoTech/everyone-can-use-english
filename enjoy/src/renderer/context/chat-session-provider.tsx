@@ -245,6 +245,24 @@ ${buildChatHistory()}`;
     }
   };
 
+  const onAssess = (assessment: PronunciationAssessmentType) => {
+    const message = chatMessages.find(
+      (m) => m.recording?.id === assessment.targetId
+    );
+    if (!message) return;
+
+    dispatchChatMessages({
+      type: "update",
+      record: {
+        ...message,
+        recording: {
+          ...message.recording,
+          pronunciationAssessment: assessment,
+        },
+      },
+    });
+  };
+
   useEffect(() => {
     askForMediaAccess();
   }, []);
@@ -334,6 +352,7 @@ ${buildChatHistory()}`;
               <RecordingDetail
                 recording={assessing}
                 pronunciationAssessment={assessing.pronunciationAssessment}
+                onAssess={onAssess}
               />
             )}
           </SheetContent>

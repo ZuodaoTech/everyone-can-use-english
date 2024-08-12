@@ -12,8 +12,9 @@ import { usePronunciationAssessments } from "@renderer/hooks";
 export const RecordingDetail = (props: {
   recording: RecordingType;
   pronunciationAssessment?: PronunciationAssessmentType;
+  onAssess?: (assessment: PronunciationAssessmentType) => void;
 }) => {
-  const { recording } = props;
+  const { recording, onAssess } = props;
   if (!recording) return;
 
   const [pronunciationAssessment, setPronunciationAssessment] =
@@ -42,7 +43,10 @@ export const RecordingDetail = (props: {
       reference: recording.referenceText || "",
       language: recording.language || learningLanguage,
     })
-      .then((assessment) => setPronunciationAssessment(assessment))
+      .then((assessment) => {
+        onAssess && onAssess(assessment);
+        setPronunciationAssessment(assessment);
+      })
       .catch((err) => {
         toast.error(err.message);
       })

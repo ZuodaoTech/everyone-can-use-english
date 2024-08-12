@@ -333,13 +333,8 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
 
 export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
   const { chatMessage } = props;
-  const {
-    askAgent,
-    startRecording,
-    isRecording,
-    isPaused,
-    setAssessing,
-  } = useContext(ChatSessionProviderContext);
+  const { askAgent, startRecording, isRecording, isPaused, setAssessing } =
+    useContext(ChatSessionProviderContext);
   const { recording } = chatMessage;
   const ref = useRef<HTMLDivElement>(null);
 
@@ -391,19 +386,21 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                   <MicIcon
                     data-tooltip-id="global-tooltip"
                     data-tooltip-content={t("reRecord")}
-                    className="w-4 h-4"
+                    className="w-4 h-4 cursor-pointer"
                     onClick={startRecording}
                   />
                 )}
                 <SendIcon
                   data-tooltip-id="global-tooltip"
                   data-tooltip-content={t("confirm")}
-                  className="w-4 h-4"
+                  className="w-4 h-4 cursor-pointer"
                   onClick={() => askAgent()}
                 />
               </>
             ) : (
               <GaugeCircleIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("pronunciationAssessment")}
                 onClick={() => setAssessing(recording)}
                 className="w-4 h-4 cursor-pointer"
               />
