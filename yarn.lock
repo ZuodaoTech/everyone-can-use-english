@@ -27,7 +27,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "1000h-portal@workspace:1000h-portal"
   dependencies:
-    "@nuxtjs/seo": "npm:^2.0.0-rc.16"
+    "@nuxtjs/seo": "npm:^2.0.0-rc.18"
     autoprefixer: "npm:^10.4.20"
     nuxt: "npm:^3.12.4"
     nuxt-og-image: "npm:^3.0.0-rc.64"
@@ -3833,13 +3833,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxtjs/seo@npm:^2.0.0-rc.16":
-  version: 2.0.0-rc.16
-  resolution: "@nuxtjs/seo@npm:2.0.0-rc.16"
+"@nuxtjs/seo@npm:^2.0.0-rc.18":
+  version: 2.0.0-rc.18
+  resolution: "@nuxtjs/seo@npm:2.0.0-rc.18"
   dependencies:
     "@nuxt/kit": "npm:^3.12.3"
     "@nuxtjs/robots": "npm:^4.0.2"
-    "@nuxtjs/sitemap": "npm:^5.3.5"
+    "@nuxtjs/sitemap": "npm:^6.0.0-beta.1"
     defu: "npm:^6.1.4"
     nuxt-link-checker: "npm:^3.0.2"
     nuxt-og-image: "npm:^3.0.0-rc.64"
@@ -3849,13 +3849,13 @@ __metadata:
     nuxt-site-config-kit: "npm:^2.2.15"
     pkg-types: "npm:^1.1.3"
     ufo: "npm:^1.5.4"
-  checksum: 10c0/91807e17da2964ad8d3b9c13917d0c01f9699f6e4c569794d18aca0d3b41c4d7889176fe00a76c28edb923cc7676eb34184aa70d76ceff5297410830fe2ad697
+  checksum: 10c0/6e6c58780e3c3066eabc993e54f7628551d354b5a0e563d8714c334fc915bb91ea8a85360e09013ae585525f47e5f2fb1c3c5ea4fa25acf3840f21353b908e57
   languageName: node
   linkType: hard
 
-"@nuxtjs/sitemap@npm:^5.3.5":
-  version: 5.3.5
-  resolution: "@nuxtjs/sitemap@npm:5.3.5"
+"@nuxtjs/sitemap@npm:^6.0.0-beta.1":
+  version: 6.0.0-beta.1
+  resolution: "@nuxtjs/sitemap@npm:6.0.0-beta.1"
   dependencies:
     "@nuxt/devtools-kit": "npm:^1.3.9"
     "@nuxt/kit": "npm:^3.12.3"
@@ -3872,7 +3872,7 @@ __metadata:
     sirv: "npm:^2.0.4"
     site-config-stack: "npm:^2.2.15"
     ufo: "npm:^1.5.3"
-  checksum: 10c0/20200c9de7c5bd5a56ca0752fe1d642b8f5f9c7c9bd84fb92ec410bbe986459bc3b4eeddbe76444bcb06fa664c20ef7c4febf4ff67d513479374980de4e1d111
+  checksum: 10c0/905befef14f524b4f6365938e017cd4a05df7b1d27b03c96a927a492fb0b26ca68ffc01768c8abb72edfc6df50c3237a6e6591da5d47af401ff35335a3851a02
   languageName: node
   linkType: hard
 
