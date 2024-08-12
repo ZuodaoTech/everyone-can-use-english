@@ -50,11 +50,11 @@ export class ChatMessage extends Model<ChatMessage> {
 
   @AllowNull(false)
   @Column(DataType.UUID)
-  memberId: string;
+  chatId: string;
 
   @AllowNull(false)
   @Column(DataType.UUID)
-  sessionId: string;
+  memberId: string;
 
   @Column(DataType.TEXT)
   content: string;

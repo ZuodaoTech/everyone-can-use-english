@@ -9,12 +9,30 @@ import { formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
 import { MicIcon, SquareIcon } from "lucide-react";
 import { useContext, useEffect, useRef } from "react";
-import { ChatSessionProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  ChatSessionProviderContext,
+} from "@renderer/context";
 
 export const ChatMessage = (props: { chatMessage: ChatMessageType }) => {
-  if (props.chatMessage.member.userType === "User") {
+  const { chatMessage } = props;
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { dispatchChatMessages } = useContext(ChatSessionProviderContext);
+
+  useEffect(() => {
+    if (!chatMessage?.member) {
+      EnjoyApp.chatMessages.findOne({ id: chatMessage.id }).then((message) => {
+        dispatchChatMessages({
+          type: "update",
+          record: message,
+        });
+      });
+    }
+  }, [chatMessage]);
+
+  if (chatMessage.member?.userType === "User") {
     return <ChatUserMessage chatMessage={props.chatMessage} />;
-  } else if (props.chatMessage.member.userType === "Agent") {
+  } else if (props.chatMessage.member?.userType === "Agent") {
     return <ChatAgentMessage chatMessage={props.chatMessage} />;
   }
 };
@@ -61,8 +79,6 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
     useContext(ChatSessionProviderContext);
   const { recording } = chatMessage;
   const ref = useRef<HTMLDivElement>(null);
-
-  const confirmRecording = async () => {};
 
   useEffect(() => {
     if (ref.current) {
@@ -115,7 +131,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                     {t("reRecord")}
                   </Button>
                 )}
-                <Button onClick={confirmRecording} size="sm" variant="default">
+                <Button onClick={() => askAgent()} size="sm" variant="default">
                   {t("confirm")}
                 </Button>
               </>

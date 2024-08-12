@@ -42,12 +42,12 @@ export const useChatMessage = (chat: ChatType) => {
     } else if (model === "Recording") {
       switch (action) {
         case "create":
-          const message = chatMessages.find(
-            (message) => message.id === record.targetId
-          );
           dispatchChatMessages({
             type: "update",
-            record: Object.assign(message, { recording: record }),
+            record: {
+              id: record.targetId,
+              recording: record,
+            } as ChatMessageType,
           });
           break;
       }
@@ -63,5 +63,9 @@ export const useChatMessage = (chat: ChatType) => {
     };
   }, []);
 
-  return {};
+  return {
+    chatMessages,
+    fetchChatMessages,
+    dispatchChatMessages,
+  };
 };

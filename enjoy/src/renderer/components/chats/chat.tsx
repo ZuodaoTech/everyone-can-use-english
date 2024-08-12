@@ -10,8 +10,7 @@ import {
 import { t } from "i18next";
 import { ChatProviderContext, ChatSessionProvider } from "@renderer/context";
 import { useContext, useState } from "react";
-import { ChatForm, ChatInput } from "@renderer/components";
-import { ChatMessages } from "./chat-messages";
+import { ChatForm, ChatInput, ChatMessages } from "@renderer/components";
 
 export const Chat = () => {
   const { currentChat, chatAgents, updateChat, destroyChat } =

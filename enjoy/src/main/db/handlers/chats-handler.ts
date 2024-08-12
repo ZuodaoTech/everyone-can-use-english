@@ -1,5 +1,5 @@
 import { ipcMain, IpcMainEvent } from "electron";
-import { Chat, ChatAgent, ChatMember, ChatSession } from "@main/db/models";
+import { Chat, ChatAgent, ChatMember } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
 import log from "@main/logger";
 import { t } from "i18next";

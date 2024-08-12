@@ -85,7 +85,7 @@ export const ChatInput = () => {
         <MicIcon className="w-6 h-6" />
       </Button>
       <Button
-        onClick={askAgent}
+        onClick={() => askAgent()}
         className="rounded-full shadow w-auto h-10"
         size="sm"
       >

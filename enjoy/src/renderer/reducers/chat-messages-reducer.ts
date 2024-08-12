@@ -3,7 +3,6 @@ export const chatMessagesReducer = (
   action: {
     type: "append" | "prepend" | "update" | "remove" | "set";
     record?: ChatMessageType;
-    recording?: RecordingType;
     records?: ChatMessageType[];
   }
 ) => {
@@ -24,11 +23,6 @@ export const chatMessagesReducer = (
       return chatMessages.map((chatMessage) => {
         if (action.record && chatMessage.id === action.record.id) {
           return Object.assign(chatMessage, action.record);
-        } else if (
-          action.recording &&
-          chatMessage.id === action.recording.targetId
-        ) {
-          return Object.assign(chatMessage, { recording: action.recording });
         } else {
           return chatMessage;
         }
