@@ -6,6 +6,10 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   toast,
 } from "@renderer/components/ui";
 import {
@@ -22,6 +26,7 @@ import {
   GaugeCircleIcon,
   LoaderIcon,
   MicIcon,
+  MoreVerticalIcon,
   SendIcon,
   SparkleIcon,
 } from "lucide-react";
@@ -43,6 +48,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
     isRecording,
     isPaused,
     setAssessing,
+    onDeleteMessage,
   } = useContext(ChatSessionProviderContext);
   const { recording } = chatMessage;
   const ref = useRef<HTMLDivElement>(null);
@@ -89,6 +95,41 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
           }`
       )
       .join("\n");
+  };
+
+  const handleDownload = () => {
+    if (!chatMessage.recording) return;
+
+    EnjoyApp.dialog
+      .showSaveDialog({
+        title: t("download"),
+        defaultPath: chatMessage.recording.filename,
+        filters: [
+          {
+            name: "Audio",
+            extensions: [chatMessage.recording.filename.split(".").pop()],
+          },
+        ],
+      })
+      .then((savePath) => {
+        if (!savePath) return;
+
+        toast.promise(
+          EnjoyApp.download.start(
+            chatMessage.recording.src,
+            savePath as string
+          ),
+          {
+            loading: t("downloading", { file: chatMessage.recording.filename }),
+            success: () => t("downloadedSuccessfully"),
+            error: t("downloadFailed"),
+            position: "bottom-right",
+          }
+        );
+      })
+      .catch((err) => {
+        if (err) toast.error(err.message);
+      });
   };
 
   useEffect(() => {
@@ -155,45 +196,69 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
               </div>
             </Collapsible>
           )}
-          <div className="flex items-center space-x-4">
-            {suggesting ? (
-              <LoaderIcon className="w-4 h-4 animate-spin" />
-            ) : (
-              <SparkleIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("suggestion")}
-                className="w-4 h-4 cursor-pointer"
-                onClick={() => handleSuggest()}
-              />
-            )}
-            {chatMessage.state === "pending" ? (
-              <>
-                {isPaused || isRecording ? (
-                  <LoaderIcon className="w-4 h-4 animate-spin" />
-                ) : (
-                  <MicIcon
-                    data-tooltip-id="global-tooltip"
-                    data-tooltip-content={t("reRecord")}
-                    className="w-4 h-4 cursor-pointer"
-                    onClick={startRecording}
-                  />
-                )}
-                <SendIcon
+          <DropdownMenu>
+            <div className="flex items-center space-x-4">
+              {suggesting ? (
+                <LoaderIcon className="w-4 h-4 animate-spin" />
+              ) : (
+                <SparkleIcon
                   data-tooltip-id="global-tooltip"
-                  data-tooltip-content={t("confirm")}
+                  data-tooltip-content={t("suggestion")}
                   className="w-4 h-4 cursor-pointer"
-                  onClick={() => askAgent()}
+                  onClick={() => handleSuggest()}
                 />
-              </>
-            ) : (
-              <GaugeCircleIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("pronunciationAssessment")}
-                onClick={() => setAssessing(recording)}
-                className="w-4 h-4 cursor-pointer"
-              />
-            )}
-          </div>
+              )}
+              {chatMessage.state === "pending" ? (
+                <>
+                  {isPaused || isRecording ? (
+                    <LoaderIcon className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <MicIcon
+                      data-tooltip-id="global-tooltip"
+                      data-tooltip-content={t("reRecord")}
+                      className="w-4 h-4 cursor-pointer"
+                      onClick={startRecording}
+                    />
+                  )}
+                  <SendIcon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("confirm")}
+                    className="w-4 h-4 cursor-pointer"
+                    onClick={() => askAgent()}
+                  />
+                </>
+              ) : (
+                <GaugeCircleIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("pronunciationAssessment")}
+                  onClick={() => setAssessing(recording)}
+                  className="w-4 h-4 cursor-pointer"
+                />
+              )}
+              {Boolean(chatMessage.recording) && (
+                <DownloadIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("download")}
+                  data-testid="chat-message-download-recording"
+                  onClick={handleDownload}
+                  className="w-4 h-4 cursor-pointer"
+                />
+              )}
+              <DropdownMenuTrigger>
+                <MoreVerticalIcon className="w-4 h-4" />
+              </DropdownMenuTrigger>
+            </div>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => onDeleteMessage(chatMessage.id)}
+              >
+                <span className="mr-auto text-destructive capitalize">
+                  {t("delete")}
+                </span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       <div className="flex justify-end text-xs text-muted-foreground timestamp">

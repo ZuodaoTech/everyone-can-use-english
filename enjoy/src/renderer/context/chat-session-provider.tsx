@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useChatMessage, useTranscribe } from "@renderer/hooks";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import {
@@ -13,6 +7,14 @@ import {
   MediaPlayerProvider,
 } from "@renderer/context";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
   Sheet,
   SheetClose,
   SheetContent,
@@ -44,6 +46,7 @@ type ChatSessionProviderState = {
   setShadowing: (audio: AudioType) => void;
   assessing: RecordingType;
   setAssessing: (recording: RecordingType) => void;
+  onDeleteMessage?: (id: string) => void;
 };
 
 const initialState: ChatSessionProviderState = {
@@ -80,7 +83,9 @@ export const ChatSessionProvider = ({
   const [submitting, setSubmitting] = useState(false);
   const [shadowing, setShadowing] = useState<AudioType>(null);
   const [assessing, setAssessing] = useState<RecordingType>(null);
-  const { chatMessages, dispatchChatMessages } = useChatMessage(chat);
+  const { chatMessages, dispatchChatMessages, onDeleteMessage } =
+    useChatMessage(chat);
+  const [deletingMessage, setDeletingMessage] = useState<string>(null);
 
   const {
     startRecording,
@@ -300,10 +305,36 @@ ${buildChatHistory()}`;
         setShadowing,
         assessing,
         setAssessing,
+        onDeleteMessage: (id) => setDeletingMessage(id),
       }}
     >
       <MediaPlayerProvider>
         {children}
+
+        <AlertDialog
+          open={Boolean(deletingMessage)}
+          onOpenChange={(value) => {
+            if (!value) setDeletingMessage(null);
+          }}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t("deleteMessage")}</AlertDialogTitle>
+              <AlertDialogDescription>
+                {t("areYouSureToDeleteThisMessage")}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => onDeleteMessage(deletingMessage)}
+              >
+                {t("confirm")}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
         <Sheet
           modal={false}
           open={Boolean(shadowing)}

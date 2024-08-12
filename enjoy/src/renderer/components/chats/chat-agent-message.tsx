@@ -2,6 +2,10 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   toast,
 } from "@renderer/components/ui";
 import {
@@ -22,6 +26,7 @@ import {
   LanguagesIcon,
   LoaderIcon,
   MicIcon,
+  MoreVerticalIcon,
 } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -34,7 +39,7 @@ import { md5 } from "js-md5";
 
 export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
   const { chatMessage } = props;
-  const { dispatchChatMessages, setShadowing } = useContext(
+  const { dispatchChatMessages, setShadowing, onDeleteMessage } = useContext(
     ChatSessionProviderContext
   );
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -213,89 +218,106 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
             )}
           </>
         )}
-        <div className="flex items-center space-x-4">
-          {displayContent ? (
-            <EyeOffIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("hideContent")}
-              className="w-4 h-4 cursor-pointer"
-              onClick={() => setDisplayContent(false)}
-            />
-          ) : (
-            <EyeIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("displayContent")}
-              className="w-4 h-4 cursor-pointer"
-              onClick={() => setDisplayContent(true)}
-            />
-          )}
-          {Boolean(chatMessage.speech) &&
-            (resourcing ? (
+        <DropdownMenu>
+          <div className="flex items-center space-x-4">
+            {displayContent ? (
+              <EyeOffIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("hideContent")}
+                className="w-4 h-4 cursor-pointer"
+                onClick={() => setDisplayContent(false)}
+              />
+            ) : (
+              <EyeIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("displayContent")}
+                className="w-4 h-4 cursor-pointer"
+                onClick={() => setDisplayContent(true)}
+              />
+            )}
+            {Boolean(chatMessage.speech) &&
+              (resourcing ? (
+                <LoaderIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("addingResource")}
+                  className="w-4 h-4 animate-spin"
+                />
+              ) : (
+                <MicIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("shadowingExercise")}
+                  data-testid="message-start-shadow"
+                  onClick={startShadow}
+                  className="w-4 h-4 cursor-pointer"
+                />
+              ))}
+            {translating ? (
               <LoaderIcon
                 data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("addingResource")}
+                data-tooltip-content={t("translating")}
                 className="w-4 h-4 animate-spin"
               />
             ) : (
-              <MicIcon
+              <LanguagesIcon
                 data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("shadowingExercise")}
-                data-testid="message-start-shadow"
-                onClick={startShadow}
+                data-tooltip-content={t("translation")}
+                className="w-4 h-4 cursor-pointer"
+                onClick={handleTranslate}
+              />
+            )}
+            {copied ? (
+              <CheckIcon className="w-4 h-4 text-green-500" />
+            ) : (
+              <CopyIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("copyText")}
+                className="w-4 h-4 cursor-pointer"
+                onClick={() => {
+                  copyToClipboard(chatMessage.content);
+                  setCopied(true);
+                  setTimeout(() => {
+                    setCopied(false);
+                  }, 3000);
+                }}
+              />
+            )}
+            <ConversationShortcuts
+              prompt={chatMessage.content}
+              excludedIds={[]}
+              trigger={
+                <ForwardIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("forward")}
+                  className="w-4 h-4 cursor-pointer"
+                />
+              }
+            />
+            {Boolean(chatMessage.speech) && (
+              <DownloadIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("download")}
+                data-testid="chat-message-download-speech"
+                onClick={handleDownload}
                 className="w-4 h-4 cursor-pointer"
               />
-            ))}
-          {translating ? (
-            <LoaderIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("translating")}
-              className="w-4 h-4 animate-spin"
-            />
-          ) : (
-            <LanguagesIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("translation")}
-              className="w-4 h-4 cursor-pointer"
-              onClick={handleTranslate}
-            />
-          )}
-          {copied ? (
-            <CheckIcon className="w-4 h-4 text-green-500" />
-          ) : (
-            <CopyIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("copyText")}
-              className="w-4 h-4 cursor-pointer"
-              onClick={() => {
-                copyToClipboard(chatMessage.content);
-                setCopied(true);
-                setTimeout(() => {
-                  setCopied(false);
-                }, 3000);
-              }}
-            />
-          )}
-          <ConversationShortcuts
-            prompt={chatMessage.content}
-            excludedIds={[]}
-            trigger={
-              <ForwardIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("forward")}
-                className="w-4 h-4 cursor-pointer"
-              />
-            }
-          />
-          {Boolean(chatMessage.speech) && (
-            <DownloadIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("download")}
-              data-testid="chat-message-download-speech"
-              onClick={handleDownload}
-              className="w-4 h-4 cursor-pointer"
-            />
-          )}
-        </div>
+            )}
+
+            <DropdownMenuTrigger>
+              <MoreVerticalIcon className="w-4 h-4" />
+            </DropdownMenuTrigger>
+          </div>
+
+          <DropdownMenuContent>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => onDeleteMessage(chatMessage.id)}
+            >
+              <span className="mr-auto text-destructive capitalize">
+                {t("delete")}
+              </span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className="flex justify-start text-xs text-muted-foreground timestamp">
         {formatDateTime(chatMessage.createdAt)}

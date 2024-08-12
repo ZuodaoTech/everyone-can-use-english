@@ -1,4 +1,4 @@
-import { useEffect, useContext, useReducer } from "react";
+import { useEffect, useContext, useReducer, useState } from "react";
 import {
   DbProviderContext,
   AppSettingsProviderContext,
@@ -23,6 +23,12 @@ export const useChatMessage = (chat: ChatType) => {
       .catch((error) => {
         toast.error(error.message);
       });
+  };
+
+  const onDeleteMessage = async (chatMessageId: string) => {
+    EnjoyApp.chatMessages.destroy(chatMessageId).catch((error) => {
+      toast.error(error.message);
+    });
   };
 
   const onChatMessageUpdate = (event: CustomEvent) => {
@@ -67,5 +73,6 @@ export const useChatMessage = (chat: ChatType) => {
     chatMessages,
     fetchChatMessages,
     dispatchChatMessages,
+    onDeleteMessage,
   };
 };
