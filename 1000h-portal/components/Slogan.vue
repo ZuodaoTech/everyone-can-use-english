@@ -47,6 +47,12 @@
         </button>
       </a>
     </div>
+
+    <div class="mt-6 text-greyscale_4 text-[14px] md:text-[18px] total-hour">
+      <span v-show="totalHour">
+        社区成员已累计练习 {{ totalHourText }} 小时
+      </span>
+    </div>
   </div>
 
   <div class="demo mt-[80px] md:mt-[120px] h-[160px] md:h-[300px] lg:h-[600px]">
@@ -64,7 +70,23 @@ export default {
 };
 </script>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const totalHour = ref(0);
+
+const totalHourText = computed(() => totalHour.value.toLocaleString());
+
+onMounted(() => {
+  requestTotalPracticeTime();
+});
+
+async function requestTotalPracticeTime() {
+  await fetch("https://enjoy.bot/api/badges/recordings")
+    .then((res) => res.json())
+    .then((data) => {
+      totalHour.value = Number.parseInt(data.message.replace("h", ""));
+    });
+}
+</script>
 
 <style lang="scss" scoped>
 .slogan {
@@ -100,6 +122,13 @@ export default {
     color: #4797f5;
     border-color: #4797f5;
   }
+}
+
+.total-hour {
+  transition: all ease 0.5s;
+  height: 28px;
+  line-height: 28px;
+  transition: all ease 0.5s;
 }
 
 .demo {
