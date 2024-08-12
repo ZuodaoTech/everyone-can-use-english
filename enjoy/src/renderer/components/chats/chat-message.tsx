@@ -2,7 +2,10 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-  Separator,
+  Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   toast,
 } from "@renderer/components/ui";
 import {
@@ -10,13 +13,14 @@ import {
   LoaderSpin,
   MarkdownWrapper,
   PronunciationAssessmentScoreDetail,
-  SpeechPlayer,
   WavesurferPlayer,
 } from "@renderer/components";
 import { formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
 import {
   CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
   CopyIcon,
   DownloadIcon,
   EyeIcon,
@@ -222,18 +226,19 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
         </Avatar>
         <div className="text-sm text-muted-foreground">{agent.name}</div>
       </div>
-      <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm w-full max-w-lg">
+      <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm w-full max-w-3xl">
         {speeching && <LoaderSpin />}
         {Boolean(chatMessage.speech) && (
           <>
-            <SpeechPlayer speech={chatMessage.speech} />
-            <MarkdownWrapper
-              className={`select-text prose dark:prose-invert ${
-                displayContent ? "" : "blur"
-              }`}
-            >
-              {chatMessage.content}
-            </MarkdownWrapper>
+            <WavesurferPlayer
+              id={chatMessage.speech.id}
+              src={chatMessage.speech.src}
+            />
+            {displayContent && (
+              <MarkdownWrapper className="select-text prose dark:prose-invert">
+                {chatMessage.content}
+              </MarkdownWrapper>
+            )}
             {translation && (
               <MarkdownWrapper className="select-text prose dark:prose-invert">
                 {translation}
@@ -276,7 +281,7 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
           {translating ? (
             <LoaderIcon
               data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("creatingSpeech")}
+              data-tooltip-content={t("translating")}
               className="w-4 h-4 animate-spin"
             />
           ) : (
@@ -347,6 +352,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [suggestion, setSuggestion] = useState<string>();
   const [suggesting, setSuggesting] = useState<boolean>(false);
+  const [suggestionVisible, setSuggestionVisible] = useState<boolean>(true);
   const { refine } = useAiCommand();
 
   const handleSuggest = async (params?: { reload?: boolean }) => {
@@ -409,7 +415,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
         </Avatar>
       </div>
       <div className="flex justify-end">
-        <div className="flex flex-col gap-2 px-4 py-2 mb-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full max-w-lg">
+        <div className="flex flex-col gap-2 px-4 py-2 mb-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full max-w-3xl">
           {recording && (
             <WavesurferPlayer id={recording.id} src={recording.src} />
           )}
@@ -424,11 +430,34 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
             {chatMessage.content}
           </MarkdownWrapper>
           {suggestion && (
-            <div className="p-4 font-serif bg-background">
-              <MarkdownWrapper className="select-text prose dark:prose-invert">
-                {suggestion}
-              </MarkdownWrapper>
-            </div>
+            <Collapsible
+              open={suggestionVisible}
+              onOpenChange={(value) => setSuggestionVisible(value)}
+            >
+              <CollapsibleContent>
+                <div className="p-4 font-serif bg-background rounded">
+                  <MarkdownWrapper className="select-text prose dark:prose-invert">
+                    {suggestion}
+                  </MarkdownWrapper>
+                </div>
+              </CollapsibleContent>
+              <div className="my-2 flex justify-center">
+                <CollapsibleTrigger asChild>
+                  <Button
+                    onClick={() => setSuggestionVisible(!suggestionVisible)}
+                    variant="ghost"
+                    size="icon"
+                    className="w-6 h-6"
+                  >
+                    {suggestionVisible ? (
+                      <ChevronUpIcon className="w-4 h-4" />
+                    ) : (
+                      <ChevronDownIcon className="w-4 h-4" />
+                    )}
+                  </Button>
+                </CollapsibleTrigger>
+              </div>
+            </Collapsible>
           )}
           <div className="flex items-center space-x-4">
             {suggesting ? (
