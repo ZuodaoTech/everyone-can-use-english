@@ -10,6 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  Textarea,
   toast,
 } from "@renderer/components/ui";
 import {
@@ -23,6 +24,7 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   DownloadIcon,
+  EditIcon,
   GaugeCircleIcon,
   LoaderIcon,
   MicIcon,
@@ -55,6 +57,8 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
   const [suggestion, setSuggestion] = useState<string>();
   const [suggesting, setSuggesting] = useState<boolean>(false);
   const [suggestionVisible, setSuggestionVisible] = useState<boolean>(true);
+  const [editing, setEditing] = useState<boolean>(false);
+  const [content, setContent] = useState<string>(chatMessage.content);
   const { refine } = useAiCommand();
 
   const handleSuggest = async (params?: { reload?: boolean }) => {
@@ -163,9 +167,40 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
               />
             </div>
           )}
-          <MarkdownWrapper className="select-text prose dark:prose-invert">
-            {chatMessage.content}
-          </MarkdownWrapper>
+          {editing ? (
+            <div className="">
+              <Textarea
+                className="bg-background mb-2"
+                value={content}
+                onChange={(event) => setContent(event.target.value)}
+              />
+              <div className="flex justify-end space-x-4">
+                <Button
+                  onClick={() => setEditing(false)}
+                  variant="secondary"
+                  size="sm"
+                >
+                  {t("cancel")}
+                </Button>
+                <Button
+                  onClick={() =>
+                    EnjoyApp.chatMessages
+                      .update(chatMessage.id, { content })
+                      .catch((err) => toast.error(err.message))
+                      .finally(() => setEditing(false))
+                  }
+                  variant="default"
+                  size="sm"
+                >
+                  {t("save")}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <MarkdownWrapper className="select-text prose dark:prose-invert">
+              {chatMessage.content}
+            </MarkdownWrapper>
+          )}
           {suggestion && (
             <Collapsible
               open={suggestionVisible}
@@ -198,16 +233,6 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
           )}
           <DropdownMenu>
             <div className="flex items-center space-x-4">
-              {suggesting ? (
-                <LoaderIcon className="w-4 h-4 animate-spin" />
-              ) : (
-                <SparkleIcon
-                  data-tooltip-id="global-tooltip"
-                  data-tooltip-content={t("suggestion")}
-                  className="w-4 h-4 cursor-pointer"
-                  onClick={() => handleSuggest()}
-                />
-              )}
               {chatMessage.state === "pending" ? (
                 <>
                   {isPaused || isRecording ? (
@@ -220,6 +245,12 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                       onClick={startRecording}
                     />
                   )}
+                  <EditIcon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("edit")}
+                    className="w-4 h-4 cursor-pointer"
+                    onClick={() => setEditing(true)}
+                  />
                   <SendIcon
                     data-tooltip-id="global-tooltip"
                     data-tooltip-content={t("confirm")}
@@ -233,6 +264,16 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                   data-tooltip-content={t("pronunciationAssessment")}
                   onClick={() => setAssessing(recording)}
                   className="w-4 h-4 cursor-pointer"
+                />
+              )}
+              {suggesting ? (
+                <LoaderIcon className="w-4 h-4 animate-spin" />
+              ) : (
+                <SparkleIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("suggestion")}
+                  className="w-4 h-4 cursor-pointer"
+                  onClick={() => handleSuggest()}
                 />
               )}
               {Boolean(chatMessage.recording) && (

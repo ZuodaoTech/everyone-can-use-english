@@ -70,6 +70,11 @@ class ChatMessagesHandler {
         transaction
       );
       message.recording = recording;
+    } else {
+      message.recording?.update(
+        { referenceText: message.content },
+        { transaction }
+      );
     }
     await transaction.commit();
 
@@ -107,6 +112,7 @@ class ChatMessagesHandler {
         {
           targetType: "ChatMessage",
           targetId: message.id,
+          referenceText: message.content,
         },
         transaction
       );
