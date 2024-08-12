@@ -40,7 +40,9 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
   const [speeching, setSpeeching] = useState<boolean>(false);
   const [resourcing, setResourcing] = useState<boolean>(false);
   const { tts } = useConversation();
-  const { summarizeTopic } = useAiCommand();
+  const { summarizeTopic, translate } = useAiCommand();
+  const [translation, setTranslation] = useState<string>();
+  const [translating, setTranslating] = useState<boolean>(false);
 
   const createSpeech = () => {
     if (speeching) return;
@@ -143,10 +145,6 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
         toast.error(err.message);
       });
   };
-
-  const [translation, setTranslation] = useState<string>();
-  const [translating, setTranslating] = useState<boolean>(false);
-  const { translate } = useAiCommand();
 
   const handleTranslate = async () => {
     if (translating) return;

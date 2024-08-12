@@ -10,11 +10,22 @@ import { useAudioRecorder } from "react-audio-voice-recorder";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
+  MediaPlayerProvider,
 } from "@renderer/context";
-import { toast } from "@renderer/components/ui";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  toast,
+} from "@renderer/components/ui";
 import { t } from "i18next";
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { ChevronDownIcon } from "lucide-react";
+import { AudioPlayer } from "@renderer/components";
 
 type ChatSessionProviderState = {
   chatMessages: ChatMessageType[];
@@ -29,6 +40,8 @@ type ChatSessionProviderState = {
   mediaRecorder: MediaRecorder;
   recordingBlob: Blob;
   askAgent: () => Promise<any>;
+  shadowing: AudioType;
+  setShadowing: (audio: AudioType) => void;
 };
 
 const initialState: ChatSessionProviderState = {
@@ -44,6 +57,8 @@ const initialState: ChatSessionProviderState = {
   mediaRecorder: null,
   recordingBlob: null,
   askAgent: () => null,
+  shadowing: null,
+  setShadowing: () => null,
 };
 
 export const ChatSessionProviderContext =
@@ -60,6 +75,7 @@ export const ChatSessionProvider = ({
   const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
   const [submitting, setSubmitting] = useState(false);
+  const [shadowing, setShadowing] = useState<AudioType>(null);
   const { chatMessages, dispatchChatMessages } = useChatMessage(chat);
 
   const {
@@ -258,9 +274,38 @@ ${buildChatHistory()}`;
         mediaRecorder,
         recordingBlob,
         askAgent,
+        shadowing,
+        setShadowing,
       }}
     >
-      {children}
+      <MediaPlayerProvider>
+        {children}
+        <Sheet
+          modal={false}
+          open={Boolean(shadowing)}
+          onOpenChange={(value) => {
+            if (!value) setShadowing(null);
+          }}
+        >
+          <SheetContent
+            side="bottom"
+            className="h-screen p-0"
+            displayClose={false}
+            onPointerDownOutside={(event) => event.preventDefault()}
+            onInteractOutside={(event) => event.preventDefault()}
+          >
+            <SheetHeader className="flex items-center justify-center h-14">
+              <SheetTitle className="sr-only">Shadow</SheetTitle>
+              <SheetDescription className="sr-only"></SheetDescription>
+              <SheetClose>
+                <ChevronDownIcon />
+              </SheetClose>
+            </SheetHeader>
+
+            <AudioPlayer id={shadowing?.id} />
+          </SheetContent>
+        </Sheet>
+      </MediaPlayerProvider>
     </ChatSessionProviderContext.Provider>
   );
 };

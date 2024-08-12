@@ -15,7 +15,7 @@ import {
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
-import { Chat, ChatMember, Recording } from "@main/db/models";
+import { Chat, ChatMember, Recording, Speech } from "@main/db/models";
 
 const logger = log.scope("db/models/chat-message");
 @Table({
@@ -37,6 +37,9 @@ const logger = log.scope("db/models/chat-message");
       },
       {
         association: ChatMessage.associations.recording,
+      },
+      {
+        association: ChatMessage.associations.speech,
       },
     ],
     order: [["createdAt", "ASC"]],
@@ -84,6 +87,15 @@ export class ChatMessage extends Model<ChatMessage> {
     },
   })
   recording: Recording;
+
+  @HasOne(() => Speech, {
+    foreignKey: "sourceId",
+    constraints: false,
+    scope: {
+      source_type: "ChatMessage",
+    },
+  })
+  speech: Speech;
 
   @AfterCreate
   static async notifyForCreate(chatMessage: ChatMessage) {
