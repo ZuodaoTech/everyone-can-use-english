@@ -37,6 +37,11 @@ const logger = log.scope("db/models/chat-message");
       },
       {
         association: ChatMessage.associations.recording,
+        include: [
+          {
+            association: Recording.associations.pronunciationAssessment,
+          },
+        ],
       },
       {
         association: ChatMessage.associations.speech,

@@ -2,13 +2,13 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-  Button,
   toast,
 } from "@renderer/components/ui";
 import {
   ConversationShortcuts,
   LoaderSpin,
   MarkdownWrapper,
+  PronunciationAssessmentScoreDetail,
   SpeechPlayer,
   WavesurferPlayer,
 } from "@renderer/components";
@@ -21,10 +21,12 @@ import {
   EyeIcon,
   EyeOffIcon,
   ForwardIcon,
+  GaugeCircleIcon,
   LanguagesIcon,
   LoaderIcon,
   MicIcon,
-  SquareIcon,
+  SendIcon,
+  SparkleIcon,
 } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -315,7 +317,7 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
             <DownloadIcon
               data-tooltip-id="global-tooltip"
               data-tooltip-content={t("download")}
-              data-testid="llm-message-download-speech"
+              data-testid="chat-message-download-speech"
               onClick={handleDownload}
               className="w-4 h-4 cursor-pointer"
             />
@@ -331,8 +333,13 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
 
 export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
   const { chatMessage } = props;
-  const { askAgent, startRecording, stopRecording, isRecording, isPaused } =
-    useContext(ChatSessionProviderContext);
+  const {
+    askAgent,
+    startRecording,
+    isRecording,
+    isPaused,
+    setAssessing,
+  } = useContext(ChatSessionProviderContext);
   const { recording } = chatMessage;
   const ref = useRef<HTMLDivElement>(null);
 
@@ -360,37 +367,46 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
           {recording && (
             <WavesurferPlayer id={recording.id} src={recording.src} />
           )}
+          {recording?.pronunciationAssessment && (
+            <div className="flex justify-end">
+              <PronunciationAssessmentScoreDetail
+                assessment={recording.pronunciationAssessment}
+              />
+            </div>
+          )}
           <MarkdownWrapper className="select-text prose dark:prose-invert">
             {chatMessage.content}
           </MarkdownWrapper>
-          <div className="w-full flex items-center justify-end space-x-2">
-            {chatMessage.state === "pending" && (
+          <div className="flex items-center space-x-4">
+            <SparkleIcon
+              data-tooltip-id="global-tooltip"
+              data-tooltip-content={t("suggestion")}
+              className="w-4 h-4 cursor-pointer"
+            />
+            {chatMessage.state === "pending" ? (
               <>
-                <Button size="sm" variant="secondary">
-                  {t("refine")}
-                </Button>
                 {isPaused || isRecording ? (
-                  <Button onClick={stopRecording} size="sm" variant="default">
-                    <SquareIcon
-                      fill="white"
-                      className="w-4 h-4 text-white mr-2"
-                    />
-                    {t("stop")}
-                  </Button>
+                  <LoaderIcon className="w-4 h-4 animate-spin" />
                 ) : (
-                  <Button
+                  <MicIcon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("reRecord")}
+                    className="w-4 h-4"
                     onClick={startRecording}
-                    size="sm"
-                    variant="secondary"
-                  >
-                    <MicIcon className="w-4 h-4 mr-2" />
-                    {t("reRecord")}
-                  </Button>
+                  />
                 )}
-                <Button onClick={() => askAgent()} size="sm" variant="default">
-                  {t("confirm")}
-                </Button>
+                <SendIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("confirm")}
+                  className="w-4 h-4"
+                  onClick={() => askAgent()}
+                />
               </>
+            ) : (
+              <GaugeCircleIcon
+                onClick={() => setAssessing(recording)}
+                className="w-4 h-4 cursor-pointer"
+              />
             )}
           </div>
         </div>

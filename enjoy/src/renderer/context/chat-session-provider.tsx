@@ -25,7 +25,7 @@ import { t } from "i18next";
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChevronDownIcon } from "lucide-react";
-import { AudioPlayer } from "@renderer/components";
+import { AudioPlayer, RecordingDetail } from "@renderer/components";
 
 type ChatSessionProviderState = {
   chatMessages: ChatMessageType[];
@@ -42,6 +42,8 @@ type ChatSessionProviderState = {
   askAgent: () => Promise<any>;
   shadowing: AudioType;
   setShadowing: (audio: AudioType) => void;
+  assessing: RecordingType;
+  setAssessing: (recording: RecordingType) => void;
 };
 
 const initialState: ChatSessionProviderState = {
@@ -59,6 +61,8 @@ const initialState: ChatSessionProviderState = {
   askAgent: () => null,
   shadowing: null,
   setShadowing: () => null,
+  assessing: null,
+  setAssessing: () => null,
 };
 
 export const ChatSessionProviderContext =
@@ -71,11 +75,11 @@ export const ChatSessionProvider = ({
   children: React.ReactNode;
   chat: ChatType;
 }) => {
-  console.log("current chat: ", chat);
   const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
   const [submitting, setSubmitting] = useState(false);
   const [shadowing, setShadowing] = useState<AudioType>(null);
+  const [assessing, setAssessing] = useState<RecordingType>(null);
   const { chatMessages, dispatchChatMessages } = useChatMessage(chat);
 
   const {
@@ -276,6 +280,8 @@ ${buildChatHistory()}`;
         askAgent,
         shadowing,
         setShadowing,
+        assessing,
+        setAssessing,
       }}
     >
       <MediaPlayerProvider>
@@ -303,6 +309,33 @@ ${buildChatHistory()}`;
             </SheetHeader>
 
             <AudioPlayer id={shadowing?.id} />
+          </SheetContent>
+        </Sheet>
+
+        <Sheet
+          open={Boolean(assessing)}
+          onOpenChange={(value) => {
+            if (!value) setAssessing(null);
+          }}
+        >
+          <SheetContent
+            aria-describedby={undefined}
+            side="bottom"
+            className="rounded-t-2xl shadow-lg max-h-screen overflow-y-scroll"
+            displayClose={false}
+          >
+            <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
+              <SheetTitle className="sr-only">Assessment</SheetTitle>
+              <SheetClose>
+                <ChevronDownIcon />
+              </SheetClose>
+            </SheetHeader>
+            {assessing && (
+              <RecordingDetail
+                recording={assessing}
+                pronunciationAssessment={assessing.pronunciationAssessment}
+              />
+            )}
           </SheetContent>
         </Sheet>
       </MediaPlayerProvider>
