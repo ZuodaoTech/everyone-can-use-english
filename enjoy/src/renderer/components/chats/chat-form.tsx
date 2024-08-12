@@ -132,7 +132,7 @@ export const ChatForm = (props: {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("name")}</FormLabel>
+                <FormLabel>{t("models.chat.name")}</FormLabel>
                 <Input {...field} />
                 <FormMessage />
               </FormItem>
@@ -143,7 +143,7 @@ export const ChatForm = (props: {
             name="language"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("models.chatAgent.language")}</FormLabel>
+                <FormLabel>{t("models.chat.language")}</FormLabel>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="text-xs">
                     <SelectValue>
@@ -174,7 +174,7 @@ export const ChatForm = (props: {
             name="topic"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("topic")}</FormLabel>
+                <FormLabel>{t("models.chat.topic")}</FormLabel>
                 <Textarea className="max-h-96" {...field} />
                 <FormMessage />
               </FormItem>
@@ -218,7 +218,7 @@ export const ChatForm = (props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  {t("members")}({field.value.length})
+                  {t("models.chat.members")}({field.value.length})
                 </FormLabel>
                 <ScrollArea className="w-full h-36 rounded-lg p-2 bg-muted">
                   <div className="grid grid-cols-3 gap-3">
@@ -425,7 +425,7 @@ ${members
   if (member.userType === "User") {
     return (
       <>
-        <Label>{t("memberConfig")}</Label>
+        <Label>{t("models.chat.memberConfig")}</Label>
         <div className="p-4 border rounded-lg">
           <div className="flex items-center space-x-2 mb-2">
             <Avatar className="w-12 h-12">
@@ -457,8 +457,8 @@ ${members
   } else if (chatAgent) {
     return (
       <>
-        <Label>{t("memberConfig")}</Label>
-        <div className="p-4 border rounded-lg">
+        <Label>{t("models.chat.memberConfig")}</Label>
+        <div className="p-4 border space-y-4 rounded-lg">
           <div className="flex items-center space-x-2 mb-2">
             <Avatar className="w-12 h-12">
               <img src={chatAgent.avatarUrl} />

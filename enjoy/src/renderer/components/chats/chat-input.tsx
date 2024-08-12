@@ -87,6 +87,7 @@ export const ChatInput = () => {
       <Button
         onClick={() => askAgent()}
         className="rounded-full shadow w-auto h-10"
+        variant="secondary"
         size="sm"
       >
         <StepForwardIcon className="w-6 h-6 mr-2" />

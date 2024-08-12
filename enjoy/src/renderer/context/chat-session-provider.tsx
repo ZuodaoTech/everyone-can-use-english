@@ -321,7 +321,7 @@ ${buildChatHistory()}`;
             <AlertDialogHeader>
               <AlertDialogTitle>{t("deleteMessage")}</AlertDialogTitle>
               <AlertDialogDescription>
-                {t("areYouSureToDeleteThisMessage")}
+                {t("deleteMessageConfirmation")}
               </AlertDialogDescription>
             </AlertDialogHeader>
 

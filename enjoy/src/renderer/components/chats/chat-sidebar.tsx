@@ -1,7 +1,5 @@
 import { PlusIcon } from "lucide-react";
 import {
-  Avatar,
-  AvatarFallback,
   Button,
   Dialog,
   DialogContent,
@@ -16,10 +14,8 @@ import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { ChatProviderContext } from "@renderer/context";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { ChatForm } from "./chat-form";
-import { ChatAgents } from "./chat-agents";
 import { useDebounce } from "@uidotdev/usehooks";
-import { ChatCard } from "./chat-card";
+import { ChatCard, ChatForm, ChatAgents } from "@renderer/components";
 
 export const ChatSidebar = () => {
   const {
@@ -60,7 +56,7 @@ export const ChatSidebar = () => {
               {t("addChat")}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setDisplayAgentForm(true)}>
-              {t("addAgent")}
+              {t("agentsManagement")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

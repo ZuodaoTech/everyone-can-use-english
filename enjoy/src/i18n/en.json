@@ -143,6 +143,14 @@
       "ttsEngine": "TTS Engine",
       "ttsModel": "TTS Model",
       "ttsVoice": "TTS Voice"
+    },
+    "chat": {
+      "notFound": "Chat not found",
+      "name": "Name",
+      "language": "Language",
+      "topic": "Topic",
+      "members": "Members",
+      "memberConfig": "Member Configuration"
     }
   },
   "sidebar": {
@@ -677,5 +685,20 @@
   "connectError": "Connect Error",
   "refresh": "refresh",
   "deleteChatAgent": "Delete agent",
-  "deleteChatAgentConfirmation": "Are you sure to delete this chat agent?"
+  "deleteChatAgentConfirmation": "Are you sure to delete this chat agent?",
+  "deleteMessage": "Delete message",
+  "deleteMessageConfirmation": "Are you sure to delete this message?",
+  "suggestion": "Suggestion",
+  "editChat": "Edit chat",
+  "newChat": "New chat",
+  "addChat": "Add chat",
+  "agentsManagement": "Agents management",
+  "newAgent": "New agent",
+  "editAgent": "Edit agent",
+  "addToChat": "Add to chat",
+  "introduction": "Introduction",
+  "introduceYourself": "Introduce yourself",
+  "prompt": "Prompt",
+  "extraPromptForChat": "Extra prompt for this chat",
+  "promptPreview": "Prompt preview"
 }

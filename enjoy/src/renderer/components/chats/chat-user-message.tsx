@@ -232,7 +232,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
             </Collapsible>
           )}
           <DropdownMenu>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-end space-x-4">
               {chatMessage.state === "pending" ? (
                 <>
                   {isPaused || isRecording ? (
