@@ -53,7 +53,7 @@ export class ChatAgent extends Model<ChatAgent> {
 
   @Column(DataType.VIRTUAL)
   get avatarUrl(): string {
-    return `https://api.dicebear.com/9.x/croodles/svg?seed=${this.getDataValue(
+    return `https://api.dicebear.com/9.x/thumbs/svg?seed=${this.getDataValue(
       "name"
     )}`;
   }
@@ -120,5 +120,10 @@ export class ChatAgent extends Model<ChatAgent> {
       action: action,
       record: chatAgent.toJSON(),
     });
+  }
+
+  @AfterDestroy
+  static destroyMembers(chatAgent: ChatAgent) {
+    ChatMember.destroy({ where: { userId: chatAgent.id } });
   }
 }

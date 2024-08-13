@@ -116,4 +116,9 @@ export class Chat extends Model<Chat> {
       record: chat.toJSON(),
     });
   }
+
+  @AfterDestroy
+  static async destroyMembers(chat: Chat) {
+    ChatMember.destroy({ where: { chatId: chat.id } });
+  }
 }

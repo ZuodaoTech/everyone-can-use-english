@@ -130,4 +130,10 @@ export class ChatMessage extends Model<ChatMessage> {
       record: chatMessage.toJSON(),
     });
   }
+
+  @AfterDestroy
+  static async destroyRecordings(chatMessage: ChatMessage) {
+    Recording.destroy({ where: { targetId: chatMessage.id } });
+    Speech.destroy({ where: { sourceId: chatMessage.id } });
+  }
 }

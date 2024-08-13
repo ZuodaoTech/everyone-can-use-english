@@ -159,7 +159,7 @@ export const ChatAgentForm = (props: {
           {form.watch("name") && (
             <Avatar className="w-16 h-16 border">
               <img
-                src={`https://api.dicebear.com/9.x/croodles/svg?seed=${form.watch(
+                src={`https://api.dicebear.com/9.x/thumbs/svg?seed=${form.watch(
                   "name"
                 )}`}
                 alt={form.watch("name")}

@@ -14,7 +14,7 @@ import {
 } from "sequelize-typescript";
 import log from "@main/logger";
 import settings from "@main/settings";
-import { Chat, ChatAgent } from "@main/db/models";
+import { Chat, ChatAgent, ChatMessage } from "@main/db/models";
 
 const logger = log.scope("db/models/chat-member");
 @Table({
@@ -77,7 +77,7 @@ export class ChatMember extends Model<ChatMember> {
       };
 
       if (!user.avatarUrl) {
-        user.avatarUrl = `https://api.dicebear.com/9.x/croodles/svg?seed=${user.name}`;
+        user.avatarUrl = `https://api.dicebear.com/9.x/thumbs/svg?seed=${user.name}`;
       }
 
       return user;
@@ -91,5 +91,10 @@ export class ChatMember extends Model<ChatMember> {
     const chat = await Chat.findByPk(member.chatId);
     if (!chat) return;
     await chat.update({ updatedAt: new Date() });
+  }
+
+  @AfterDestroy
+  static async destroyMessages(member: ChatMember) {
+    ChatMessage.destroy({ where: { memberId: member.id } });
   }
 }
