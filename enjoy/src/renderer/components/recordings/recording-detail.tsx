@@ -12,12 +12,15 @@ import { usePronunciationAssessments } from "@renderer/hooks";
 export const RecordingDetail = (props: {
   recording: RecordingType;
   pronunciationAssessment?: PronunciationAssessmentType;
+  onAssess?: (assessment: PronunciationAssessmentType) => void;
 }) => {
-  const { recording } = props;
+  const { recording, onAssess } = props;
   if (!recording) return;
 
-  const pronunciationAssessment =
-    props.pronunciationAssessment || recording.pronunciationAssessment;
+  const [pronunciationAssessment, setPronunciationAssessment] =
+    useState<PronunciationAssessmentType>(
+      props.pronunciationAssessment || recording.pronunciationAssessment
+    );
   const { result } = pronunciationAssessment || {};
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [seek, setSeek] = useState<{
@@ -37,9 +40,13 @@ export const RecordingDetail = (props: {
     setAssessing(true);
     createAssessment({
       recording,
-      reference: recording.referenceText,
+      reference: recording.referenceText || "",
       language: recording.language || learningLanguage,
     })
+      .then((assessment) => {
+        onAssess && onAssess(assessment);
+        setPronunciationAssessment(assessment);
+      })
       .catch((err) => {
         toast.error(err.message);
       })

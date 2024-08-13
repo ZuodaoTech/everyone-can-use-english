@@ -21,6 +21,7 @@ import {
   SheetClose,
   SheetContent,
   SheetHeader,
+  SheetTitle,
   toast,
 } from "@renderer/components/ui";
 import { ChevronDownIcon, ChevronLeftIcon } from "lucide-react";
@@ -172,6 +173,7 @@ export default () => {
           displayClose={false}
         >
           <SheetHeader className="flex items-center justify-center -mt-4 mb-2">
+            <SheetTitle className="sr-only">Assessment</SheetTitle>
             <SheetClose>
               <ChevronDownIcon />
             </SheetClose>

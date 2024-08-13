@@ -10,6 +10,7 @@ import {
   analyzeCommand,
   punctuateCommand,
   summarizeTopicCommand,
+  refineCommand,
 } from "@commands";
 
 export const useAiCommand = () => {
@@ -145,6 +146,30 @@ export const useAiCommand = () => {
     });
   };
 
+  const refine = async (
+    text: string,
+    options: {
+      learningLanguage?: string;
+      nativeLanguage?: string;
+      context: string;
+    }
+  ) => {
+    const { context } = options;
+    return refineCommand(
+      text,
+      {
+        learningLanguage: options.learningLanguage || learningLanguage,
+        nativeLanguage: options.nativeLanguage || nativeLanguage,
+        context,
+      },
+      {
+        key: currentEngine.key,
+        modelName: currentEngine.models.default,
+        baseUrl: currentEngine.baseUrl,
+      }
+    );
+  };
+
   return {
     lookupWord,
     extractStory,
@@ -152,5 +177,6 @@ export const useAiCommand = () => {
     analyzeText,
     punctuateText,
     summarizeTopic,
+    refine,
   };
 };
