@@ -706,5 +706,6 @@
   "prompt": "提示语",
   "extraPromptForChat": "额外提示语",
   "promptPreview": "提示语预览",
-  "noChatSelected": "未选择聊天"
+  "noChatSelected": "未选择聊天",
+  "reRecord": "重新录音"
 }

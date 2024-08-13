@@ -706,5 +706,6 @@
   "prompt": "Prompt",
   "extraPromptForChat": "Extra prompt for this chat",
   "promptPreview": "Prompt preview",
-  "noChatSelected": "No chat selected"
+  "noChatSelected": "No chat selected",
+  "reRecord": "Re-record"
 }

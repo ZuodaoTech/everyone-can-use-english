@@ -235,6 +235,21 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
             <div className="flex items-center justify-end space-x-4">
               {chatMessage.state === "pending" ? (
                 <>
+                  <SendIcon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("confirm")}
+                    className="w-4 h-4 cursor-pointer"
+                    onClick={() => askAgent()}
+                  />
+                  <EditIcon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("edit")}
+                    className="w-4 h-4 cursor-pointer"
+                    onClick={() => {
+                      setContent(chatMessage.content);
+                      setEditing(true);
+                    }}
+                  />
                   {isPaused || isRecording ? (
                     <LoaderIcon className="w-4 h-4 animate-spin" />
                   ) : (
@@ -245,18 +260,6 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                       onClick={startRecording}
                     />
                   )}
-                  <EditIcon
-                    data-tooltip-id="global-tooltip"
-                    data-tooltip-content={t("edit")}
-                    className="w-4 h-4 cursor-pointer"
-                    onClick={() => setEditing(true)}
-                  />
-                  <SendIcon
-                    data-tooltip-id="global-tooltip"
-                    data-tooltip-content={t("confirm")}
-                    className="w-4 h-4 cursor-pointer"
-                    onClick={() => askAgent()}
-                  />
                 </>
               ) : (
                 <GaugeCircleIcon
