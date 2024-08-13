@@ -35,5 +35,5 @@ const SYSTEM_PROMPT = `I speak {native_language}. You're my {learning_language} 
 
 Please try to understand my true meaning and provide several refined expressions in the native way. And explain them in {native_language}.
 
-<Context>
+[Context]
 {context}`;

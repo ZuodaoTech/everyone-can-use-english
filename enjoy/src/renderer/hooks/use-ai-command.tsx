@@ -146,12 +146,20 @@ export const useAiCommand = () => {
     });
   };
 
-  const refine = async (text: string, context: string) => {
+  const refine = async (
+    text: string,
+    options: {
+      learningLanguage?: string;
+      nativeLanguage?: string;
+      context: string;
+    }
+  ) => {
+    const { context } = options;
     return refineCommand(
       text,
       {
-        learningLanguage,
-        nativeLanguage,
+        learningLanguage: options.learningLanguage || learningLanguage,
+        nativeLanguage: options.nativeLanguage || nativeLanguage,
         context,
       },
       {

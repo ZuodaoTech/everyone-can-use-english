@@ -35,6 +35,7 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 import {
   AppSettingsProviderContext,
+  ChatProviderContext,
   ChatSessionProviderContext,
 } from "@renderer/context";
 import { useAiCommand } from "@renderer/hooks";
@@ -52,6 +53,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
     setAssessing,
     onDeleteMessage,
   } = useContext(ChatSessionProviderContext);
+  const { currentChat } = useContext(ChatProviderContext);
   const { recording } = chatMessage;
   const ref = useRef<HTMLDivElement>(null);
   const [suggestion, setSuggestion] = useState<string>();
@@ -76,7 +78,10 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
         setSuggesting(true);
 
         const context = `I'm chatting in a chatroom. The previous messages are as follows:\n\n${buildChatHistory()}`;
-        const result = await refine(chatMessage.content, context);
+        const result = await refine(chatMessage.content, {
+          learningLanguage: currentChat.language,
+          context,
+        });
         EnjoyApp.cacheObjects.set(cacheKey, result);
         setSuggestion(result);
         setSuggesting(false);
