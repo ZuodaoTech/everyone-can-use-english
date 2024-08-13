@@ -28,6 +28,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChevronDownIcon } from "lucide-react";
 import { AudioPlayer, RecordingDetail } from "@renderer/components";
+import { CHAT_SYSTEM_PROMPT_TEMPLATE } from "@/constants";
 
 type ChatSessionProviderState = {
   chatMessages: ChatMessageType[];
@@ -164,16 +165,40 @@ export const ChatSessionProvider = ({
     }
 
     const llm = buildLlm(member.agent);
-    const systemPrompt = buildAgentPrompt(member);
     const prompt = ChatPromptTemplate.fromMessages([
-      ["system", systemPrompt],
+      ["system", CHAT_SYSTEM_PROMPT_TEMPLATE],
       ["user", "{input}"],
     ]);
     const chain = prompt.pipe(llm);
     try {
       setSubmitting(true);
       const reply = await chain.invoke({
-        input: "Just return what you would say. No need to include others.",
+        name: member.agent.name,
+        agent_prompt: member.agent.config.prompt || "",
+        agent_chat_prompt: member.config.prompt || "",
+        language: chat.language,
+        topic: chat.topic,
+        members: chat.members
+          .map((m) => {
+            if (m.user) {
+              return `- ${m.user.name} (${m.config.introduction})`;
+            } else if (m.agent) {
+              return `- ${m.agent.name} (${m.agent.introduction})`;
+            }
+          })
+          .join("\n"),
+        history: chatMessages
+          .map(
+            (message) =>
+              `${(message.member.user || message.member.agent).name}: ${
+                message.content
+              }`
+          )
+          .join("\n"),
+        input:
+          chatMessages.length > 0
+            ? "Say somthing to continue the conversation."
+            : "Say something to start the conversation.",
       });
 
       return EnjoyApp.chatMessages
@@ -188,40 +213,6 @@ export const ChatSessionProvider = ({
       setSubmitting(false);
       toast.error(err.message);
     }
-  };
-
-  const buildAgentPrompt = (member: ChatMemberType) => {
-    return `You are ${member.agent.name}. ${member.agent.config.prompt}
-You are chatting in an online chatroom. You always reply in ${chat.language}.
-${member.config.prompt || ""}
-
-<Chat Topic>
-${chat.topic}
-
-<Chat Members>
-${chat.members
-  .map((m) => {
-    if (m.user) {
-      return `- ${m.user.name} (${m.config.introduction})`;
-    } else if (m.agent) {
-      return `- ${m.agent.name} (${m.agent.introduction})`;
-    }
-  })
-  .join("\n")}
-
-<Chat History>
-${buildChatHistory()}`;
-  };
-
-  const buildChatHistory = () => {
-    return chatMessages
-      .map(
-        (message) =>
-          `${(message.member.user || message.member.agent).name}: ${
-            message.content
-          }`
-      )
-      .join("\n");
   };
 
   const buildLlm = (agent: ChatAgentType) => {

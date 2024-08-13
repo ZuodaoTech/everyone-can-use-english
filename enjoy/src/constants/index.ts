@@ -56,3 +56,22 @@ export const NOT_SUPPORT_JSON_FORMAT_MODELS = [
   "gpt-4",
   "gpt-4-32k",
 ];
+
+export const CHAT_SYSTEM_PROMPT_TEMPLATE = `You are {name}. {agent_prompt}
+You are chatting in an online chat room.
+{agent_chat_prompt}
+
+[Rules must be followed]
+1. Always reply in {language}.
+2. Reply in your personality style and talk in casual way.
+3. Reply what you would say only, do not include any other format.
+
+[Chat Topic]
+{topic}
+
+[Chat Members]
+{members}
+
+[Chat History]
+{history}
+`;
