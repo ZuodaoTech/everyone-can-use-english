@@ -146,6 +146,9 @@
     },
     "chat": {
       "notFound": "Chat not found",
+      "created": "Chat created",
+      "updated": "Chat updated",
+      "deleted": "Chat deleted",
       "name": "Name",
       "language": "Language",
       "topic": "Topic",
@@ -684,6 +687,8 @@
   "networkState": "Network State",
   "connectError": "Connect Error",
   "refresh": "refresh",
+  "deleteChat": "Delete chat",
+  "deleteChatConfirmation": "Are you sure to delete this chat?",
   "deleteChatAgent": "Delete agent",
   "deleteChatAgentConfirmation": "Are you sure to delete this chat agent?",
   "deleteMessage": "Delete message",
@@ -700,5 +705,6 @@
   "introduceYourself": "Introduce yourself",
   "prompt": "Prompt",
   "extraPromptForChat": "Extra prompt for this chat",
-  "promptPreview": "Prompt preview"
+  "promptPreview": "Prompt preview",
+  "noChatSelected": "No chat selected"
 }

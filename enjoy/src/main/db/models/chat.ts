@@ -83,7 +83,7 @@ export class Chat extends Model<Chat> {
 
   @Column(DataType.VIRTUAL)
   get membersCount(): number {
-    return this.members.length;
+    return this.members?.length;
   }
 
   @Column(DataType.VIRTUAL)

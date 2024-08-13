@@ -79,6 +79,8 @@ export const useRecordings = (
   };
 
   useEffect(() => {
+    if (!media) return;
+
     addDblistener(onRecordingsUpdate);
 
     return () => {

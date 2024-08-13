@@ -15,9 +15,12 @@ export const useChatMessage = (chat: ChatType) => {
   );
 
   const fetchChatMessages = async (query?: string) => {
+    if (!chat?.id) return;
+
     EnjoyApp.chatMessages
-      .findAll({ chatId: chat.id, query })
+      .findAll({ where: { chatId: chat.id }, query })
       .then((data) => {
+        console.log(data);
         dispatchChatMessages({ type: "set", records: data });
       })
       .catch((error) => {
@@ -61,13 +64,15 @@ export const useChatMessage = (chat: ChatType) => {
   };
 
   useEffect(() => {
+    if (!chat) return;
+
     fetchChatMessages();
     addDblistener(onChatMessageUpdate);
 
     return () => {
       removeDbListener(onChatMessageUpdate);
     };
-  }, []);
+  }, [chat]);
 
   return {
     chatMessages,

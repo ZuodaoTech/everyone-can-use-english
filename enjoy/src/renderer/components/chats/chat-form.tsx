@@ -32,7 +32,7 @@ import {
   Textarea,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import { ChangeEventHandler, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { CheckCircleIcon } from "lucide-react";
 import {
   AISettingsProviderContext,
@@ -92,7 +92,7 @@ export const ChatForm = (props: {
           members: [...chat.members],
         }
       : {
-          name: "New Chat",
+          name: t("newChat"),
           topic: "Casual Chat.",
           language: learningLanguage,
           config: {
@@ -111,7 +111,6 @@ export const ChatForm = (props: {
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    console.log(data);
     const { name, topic, language, members, config } = data;
     return onSave({
       name,
@@ -352,10 +351,10 @@ export const ChatForm = (props: {
 
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>{t("deleteChatAgent")}</AlertDialogTitle>
+                  <AlertDialogTitle>{t("deleteChat")}</AlertDialogTitle>
                 </AlertDialogHeader>
                 <AlertDialogDescription>
-                  {t("deleteChatAgentConfirmation")}
+                  {t("deleteChatConfirmation")}
                 </AlertDialogDescription>
                 <AlertDialogFooter>
                   <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>

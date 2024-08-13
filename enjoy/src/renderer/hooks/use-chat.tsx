@@ -39,8 +39,9 @@ export const useChat = () => {
   }) => {
     return EnjoyApp.chats
       .create(data)
-      .then(() => {
-        toast.success(t("models.chats.created"));
+      .then((chat) => {
+        toast.success(t("models.chat.created"));
+        dispatchChats({ type: "append", record: chat });
       })
       .catch((error) => {
         toast.error(error.message);
@@ -69,7 +70,7 @@ export const useChat = () => {
       .then((chat) => {
         console.log(chat);
         dispatchChats({ type: "update", record: chat });
-        toast.success(t("models.chats.updated"));
+        toast.success(t("models.chat.updated"));
       })
       .catch((error) => {
         toast.error(error.message);
@@ -80,7 +81,7 @@ export const useChat = () => {
     return EnjoyApp.chats
       .destroy(id)
       .then(() => {
-        toast.success(t("models.chats.deleted"));
+        toast.success(t("models.chat.deleted"));
       })
       .catch((error) => {
         toast.error(error.message);
@@ -91,10 +92,6 @@ export const useChat = () => {
     const { model, action, record } = event.detail || {};
     if (model !== "Chat") return;
     switch (action) {
-      case "create": {
-        dispatchChats({ type: "prepend", record });
-        break;
-      }
       case "update": {
         dispatchChats({ type: "update", record });
         break;

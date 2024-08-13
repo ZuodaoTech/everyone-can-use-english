@@ -91,6 +91,7 @@ class ChatsHandler {
       );
     }
     await transaction.commit();
+    await chat.reload();
 
     return chat.toJSON();
   }

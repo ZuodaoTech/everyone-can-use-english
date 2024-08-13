@@ -145,8 +145,11 @@
       "ttsVoice": "TTS 音色"
     },
     "chat": {
-      "notFound": "未找到对话",
-      "name": "对话标题",
+      "notFound": "未找到聊天",
+      "created": "聊天创建成功",
+      "updated": "聊天更新成功",
+      "deleted": "聊天删除成功",
+      "name": "聊天标题",
       "language": "语言",
       "topic": "话题",
       "members": "成员",
@@ -684,6 +687,8 @@
   "networkState": "网络状态",
   "connectError": "连接错误",
   "refresh": "刷新",
+  "deleteChat": "删除聊天",
+  "deleteChatConfirmation": "您确定要删除此聊天吗？",
   "deleteChatAgent": "删除角色",
   "deleteChatAgentConfirmation": "您确定要删除此角色吗？",
   "deleteMessage": "删除消息",
@@ -700,5 +705,6 @@
   "introduceYourself": "自我介绍",
   "prompt": "提示语",
   "extraPromptForChat": "额外提示语",
-  "promptPreview": "提示语预览"
+  "promptPreview": "提示语预览",
+  "noChatSelected": "未选择聊天"
 }
