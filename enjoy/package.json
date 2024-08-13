@@ -3,7 +3,7 @@
   "private": true,
   "name": "enjoy",
   "productName": "Enjoy",
-  "version": "0.3.4",
+  "version": "0.4.0-preview",
   "description": "Enjoy desktop app",
   "main": ".vite/build/main.js",
   "types": "./src/types.d.ts",
