@@ -30,8 +30,10 @@ export const useChat = () => {
     members: Array<{
       userId?: string;
       userType?: "User" | "Agent";
-      prompt?: string;
-      introduction?: string;
+      config?: {
+        prompt?: string;
+        introduction?: string;
+      };
     }>;
     config: {
       sttEngine: string;

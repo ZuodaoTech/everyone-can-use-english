@@ -1,8 +1,4 @@
-import {
-  createContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useEffect, useState } from "react";
 import { useChat, useChatAgent } from "@renderer/hooks";
 
 type ChatProviderState = {
@@ -17,8 +13,10 @@ type ChatProviderState = {
     members: Array<{
       userId?: string;
       userType?: "User" | "Agent";
-      prompt?: string;
-      introduction?: string;
+      config?: {
+        prompt?: string;
+        introduction?: string;
+      };
     }>;
     config: {
       sttEngine: string;
@@ -33,8 +31,10 @@ type ChatProviderState = {
       members: Array<{
         userId?: string;
         userType?: "User" | "Agent";
-        prompt?: string;
-        introduction?: string;
+        config?: {
+          prompt?: string;
+          introduction?: string;
+        };
       }>;
       config: {
         sttEngine: string;
@@ -44,8 +44,13 @@ type ChatProviderState = {
   destroyChat: (id: string) => Promise<void>;
   chatAgents: ChatAgentType[];
   fetchChatAgents: (query?: string) => Promise<void>;
-  updateChatAgent: (id: string, data: Partial<ChatAgentType>) => Promise<void>;
-  createChatAgent: (data: Partial<ChatAgentType>) => Promise<void>;
+  updateChatAgent: (
+    id: string,
+    data: Partial<ChatAgentType>
+  ) => Promise<void | ChatAgentType>;
+  createChatAgent: (
+    data: Partial<ChatAgentType>
+  ) => Promise<void | ChatAgentType>;
   destroyChatAgent: (id: string) => Promise<void>;
 };
 

@@ -31,8 +31,9 @@ export const useChatAgent = () => {
   }) => {
     return EnjoyApp.chatAgents
       .create(data)
-      .then(() => {
-        toast.success(t("models.chatAgents.created"));
+      .then((agent) => {
+        toast.success(t("models.chatAgent.created"));
+        return agent;
       })
       .catch((error) => {
         toast.error(error.message);
@@ -50,8 +51,9 @@ export const useChatAgent = () => {
   ) => {
     return EnjoyApp.chatAgents
       .update(id, data)
-      .then(() => {
-        toast.success(t("models.chatAgents.updated"));
+      .then((agent) => {
+        toast.success(t("models.chatAgent.updated"));
+        return agent;
       })
       .catch((error) => {
         toast.error(error.message);
@@ -62,7 +64,7 @@ export const useChatAgent = () => {
     return EnjoyApp.chatAgents
       .destroy(id)
       .then(() => {
-        toast.success(t("models.chatAgents.deleted"));
+        toast.success(t("models.chatAgent.deleted"));
       })
       .catch((error) => {
         toast.error(error.message);

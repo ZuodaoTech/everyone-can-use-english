@@ -132,6 +132,9 @@
     },
     "chatAgent": {
       "notFound": "Chat agent not found",
+      "created": "Chat agent created",
+      "updated": "Chat agent updated",
+      "deleted": "Chat agent deleted",
       "name": "Name",
       "introduction": "Introduction",
       "language": "Language",

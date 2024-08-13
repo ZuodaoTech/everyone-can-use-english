@@ -132,6 +132,9 @@
     },
     "chatAgent": {
       "notFound": "未找到角色",
+      "created": "角色创建成功",
+      "updated": "角色更新成功",
+      "deleted": "角色删除成功",
       "name": "角色名称",
       "introduction": "角色介绍",
       "language": "语言",

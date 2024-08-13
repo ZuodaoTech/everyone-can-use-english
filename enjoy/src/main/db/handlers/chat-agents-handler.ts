@@ -62,7 +62,7 @@ class ChatAgentsHandler {
   ) {
     const agent = await ChatAgent.findByPk(id);
     if (!agent) {
-      throw new Error(t("models.chatAgents.notFound"));
+      throw new Error(t("models.chatAgent.notFound"));
     }
     await agent.update(data);
     return agent.toJSON();
@@ -71,10 +71,9 @@ class ChatAgentsHandler {
   private async destroy(_event: IpcMainEvent, id: string) {
     const agent = await ChatAgent.findByPk(id);
     if (!agent) {
-      throw new Error(t("models.chatAgents.notFound"));
+      throw new Error(t("models.chatAgent.notFound"));
     }
-    await agent.destroy();
-    return agent.toJSON();
+    agent.destroy();
   }
 
   register() {
