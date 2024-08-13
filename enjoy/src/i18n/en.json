@@ -712,5 +712,7 @@
   "noChatSelected": "No chat selected",
   "reRecord": "Re-record",
   "quickStart": "Quick start",
-  "itsYourTurn": "It's your turn. Please start speaking."
+  "itsYourTurn": "It's your turn. Please start speaking.",
+  "displayContent": "Display content",
+  "hideContent": "Hide content"
 }
