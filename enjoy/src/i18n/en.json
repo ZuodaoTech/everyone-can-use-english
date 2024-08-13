@@ -710,5 +710,6 @@
   "extraPromptForChat": "Extra prompt for this chat",
   "promptPreview": "Prompt preview",
   "noChatSelected": "No chat selected",
-  "reRecord": "Re-record"
+  "reRecord": "Re-record",
+  "quickStart": "Quick start"
 }
