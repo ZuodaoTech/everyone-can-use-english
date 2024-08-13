@@ -124,7 +124,7 @@
     "camelcase": "^8.0.0",
     "camelcase-keys": "^9.1.3",
     "chart.js": "^4.4.3",
-    "cheerio": "^1.0.0-rc.12",
+    "cheerio": "^1.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
