@@ -20,7 +20,6 @@ export const useChatMessage = (chat: ChatType) => {
     EnjoyApp.chatMessages
       .findAll({ where: { chatId: chat.id }, query })
       .then((data) => {
-        console.log(data);
         dispatchChatMessages({ type: "set", records: data });
       })
       .catch((error) => {

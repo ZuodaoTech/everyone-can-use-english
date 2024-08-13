@@ -20,6 +20,7 @@ import {
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { useDebounce } from "@uidotdev/usehooks";
 import { ChatCard, ChatForm, ChatAgents } from "@renderer/components";
+import { AGENT_FIXTURE_ANDREW, AGENT_FIXTURE_AVA } from "@/constants";
 
 export const ChatSidebar = () => {
   const {
@@ -41,36 +42,8 @@ export const ChatSidebar = () => {
   // generate chat agents and a chat for example
   const quickStart = async () => {
     try {
-      const ava = await createChatAgent({
-        name: "Ava",
-        introduction: "I'm Ava, your English speaking teacher.",
-        language: "en-US",
-        config: {
-          engine: "enjoyai",
-          model: "gpt-4o",
-          prompt:
-            "You are an experienced English teacher who excels at improving students' speaking skills. You always use simple yet authentic words and sentences to help students understand.",
-          temperature: 1,
-          ttsEngine: "enjoyai",
-          ttsModel: "azure/speech",
-          ttsVoice: "en-US-AvaNeural",
-        },
-      });
-      const andrew = await createChatAgent({
-        name: "Andrew",
-        introduction: "I'm Andrew, your American friend.",
-        language: "en-US",
-        config: {
-          engine: "enjoyai",
-          model: "gpt-4o",
-          prompt:
-            "You're a native American who speaks authentic American English, familiar with the culture and customs of the U.S. You're warm and welcoming, eager to make friends from abroad and share all aspects of American life.",
-          temperature: 0.7,
-          ttsEngine: "enjoyai",
-          ttsModel: "azure/speech",
-          ttsVoice: "en-US-AndrewNeural",
-        },
-      });
+      const ava = await createChatAgent(AGENT_FIXTURE_AVA as any);
+      const andrew = await createChatAgent(AGENT_FIXTURE_ANDREW as any);
       if (!ava || !andrew) return;
 
       await createChat({
