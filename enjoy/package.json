@@ -42,7 +42,7 @@
     "@electron-forge/publisher-github": "^7.4.0",
     "@electron/fuses": "^1.8.0",
     "@playwright/test": "^1.45.3",
-    "@tailwindcss/typography": "^0.5.13",
+    "@tailwindcss/typography": "^0.5.14",
     "@types/ahoy.js": "^0.4.2",
     "@types/autosize": "^4.0.3",
     "@types/command-exists": "^1.2.3",
