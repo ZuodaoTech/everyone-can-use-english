@@ -2,6 +2,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -27,6 +28,7 @@ import {
   LoaderIcon,
   MicIcon,
   MoreVerticalIcon,
+  RotateCcwIcon,
 } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -199,8 +201,7 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
         <div className="text-sm text-muted-foreground">{agent.name}</div>
       </div>
       <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm w-full max-w-3xl">
-        {speeching && <LoaderSpin />}
-        {Boolean(chatMessage.speech) && (
+        {Boolean(chatMessage.speech) ? (
           <>
             <WavesurferPlayer
               id={chatMessage.speech.id}
@@ -217,6 +218,15 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
               </MarkdownWrapper>
             )}
           </>
+        ) : speeching ? (
+          <LoaderSpin />
+        ) : (
+          <div className="flex justify-center">
+            <Button onClick={createSpeech}>
+              <RotateCcwIcon className="w-4 h-4 mr-2" />
+              {t("retry")}
+            </Button>
+          </div>
         )}
         <DropdownMenu>
           <div className="flex items-center space-x-4">

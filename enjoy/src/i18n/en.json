@@ -711,5 +711,6 @@
   "promptPreview": "Prompt preview",
   "noChatSelected": "No chat selected",
   "reRecord": "Re-record",
-  "quickStart": "Quick start"
+  "quickStart": "Quick start",
+  "itsYourTurn": "It's your turn. Please start speaking."
 }

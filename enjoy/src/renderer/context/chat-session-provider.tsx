@@ -111,6 +111,7 @@ export const ChatSessionProvider = ({
 
   const onRecorded = async (blob: Blob) => {
     try {
+      setSubmitting(true);
       const { transcript, url } = await transcribe(blob, {
         language: chat.language,
         service: chat.config.sttEngine,
@@ -121,7 +122,6 @@ export const ChatSessionProvider = ({
         (m) => m.member.userType === "User" && m.state === "pending"
       );
 
-      setSubmitting(true);
       if (pendingMessage) {
         return EnjoyApp.chatMessages
           .update(pendingMessage.id, {
@@ -130,7 +130,7 @@ export const ChatSessionProvider = ({
           })
           .finally(() => setSubmitting(false));
       } else {
-        EnjoyApp.chatMessages
+        return EnjoyApp.chatMessages
           .create({
             chatId: chat.id,
             memberId: chat.members.find((m) => m.userType === "User").id,
@@ -142,6 +142,7 @@ export const ChatSessionProvider = ({
       }
     } catch (error) {
       toast.error(error.message);
+      setSubmitting(false);
     }
   };
 
@@ -162,6 +163,10 @@ export const ChatSessionProvider = ({
           member.id !== chatMessages[chatMessages.length - 1]?.member?.id
       );
       member = members[Math.floor(Math.random() * members.length)];
+    }
+
+    if (!member) {
+      return toast.warning(t("itsYourTurn"));
     }
 
     const llm = buildLlm(member.agent);
@@ -190,7 +195,7 @@ export const ChatSessionProvider = ({
         history: chatMessages
           .map(
             (message) =>
-              `${(message.member.user || message.member.agent).name}: ${
+              `- ${(message.member.user || message.member.agent).name}: ${
                 message.content
               }`
           )

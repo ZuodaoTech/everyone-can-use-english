@@ -711,5 +711,6 @@
   "promptPreview": "提示语预览",
   "noChatSelected": "未选择聊天",
   "reRecord": "重新录音",
-  "quickStart": "快速开始"
+  "quickStart": "快速开始",
+  "itsYourTurn": "轮到您了，请开始说点什么"
 }

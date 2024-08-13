@@ -103,9 +103,6 @@ export class ChatAgent extends Model<ChatAgent> {
     this.notify(chatAgent, "update");
   }
 
-  @BeforeDestroy
-  static destroyAllMessages(chatAgent: ChatAgent) {}
-
   @AfterDestroy
   static notifyForDestroy(chatAgent: ChatAgent) {
     this.notify(chatAgent, "destroy");
@@ -122,7 +119,7 @@ export class ChatAgent extends Model<ChatAgent> {
     });
   }
 
-  @AfterDestroy
+  @BeforeDestroy
   static destroyMembers(chatAgent: ChatAgent) {
     ChatMember.destroy({ where: { userId: chatAgent.id } });
   }

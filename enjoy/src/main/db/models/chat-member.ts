@@ -1,6 +1,7 @@
 import {
   AfterUpdate,
   AfterDestroy,
+  BeforeDestroy,
   BelongsTo,
   Table,
   Column,
@@ -93,7 +94,7 @@ export class ChatMember extends Model<ChatMember> {
     await chat.update({ updatedAt: new Date() });
   }
 
-  @AfterDestroy
+  @BeforeDestroy
   static async destroyMessages(member: ChatMember) {
     ChatMessage.destroy({ where: { memberId: member.id } });
   }

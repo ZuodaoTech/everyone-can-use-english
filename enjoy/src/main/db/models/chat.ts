@@ -11,6 +11,7 @@ import {
   AllowNull,
   HasMany,
   Scopes,
+  BeforeDestroy,
 } from "sequelize-typescript";
 import log from "@main/logger";
 import { ChatAgent, ChatMember, ChatMessage } from "@main/db/models";
@@ -117,7 +118,7 @@ export class Chat extends Model<Chat> {
     });
   }
 
-  @AfterDestroy
+  @BeforeDestroy
   static async destroyMembers(chat: Chat) {
     ChatMember.destroy({ where: { chatId: chat.id } });
   }
