@@ -53,6 +53,8 @@ const defaultKeyMap = {
   PlayNextSegment: "N",
   Compare: "C",
   PronunciationAssessment: "A",
+  IncreasePlaybackRate: "]",
+  DecreasePlaybackRate: "[",
   // dev tools
   OpenDevTools: `${ControlOrCommand}+Shift+I`,
 };
