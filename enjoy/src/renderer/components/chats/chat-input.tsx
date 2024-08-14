@@ -53,14 +53,6 @@ export const ChatInput = () => {
     };
   }, [inputRef.current]);
 
-  if (submitting) {
-    return (
-      <div className="w-full flex justify-center">
-        <LoaderIcon className="w-6 h-6 animate-spin" />
-      </div>
-    );
-  }
-
   if (isRecording) {
     return (
       <div className="w-full flex justify-center">
@@ -107,6 +99,7 @@ export const ChatInput = () => {
     return (
       <div className="w-full flex items-end gap-2 px-2">
         <Button
+          disabled={submitting}
           onClick={() => setInputMode("audio")}
           variant="ghost"
           className=""
@@ -131,9 +124,19 @@ export const ChatInput = () => {
           variant="ghost"
           size="icon"
         >
-          <SendIcon className="w-6 h-6" />
+          {submitting ? (
+            <LoaderIcon className="w-6 h-6 animate-spin" />
+          ) : (
+            <SendIcon className="w-6 h-6" />
+          )}
         </Button>
-        <Button className="" variant="ghost" size="icon">
+        <Button
+          disabled={submitting}
+          onClick={() => askAgent()}
+          className=""
+          variant="ghost"
+          size="icon"
+        >
           <StepForwardIcon className="w-6 h-6" />
         </Button>
       </div>
@@ -141,30 +144,36 @@ export const ChatInput = () => {
   }
 
   return (
-    <div className="w-full flex gap-4 justify-center">
+    <div className="w-full flex items-center gap-4 justify-center">
       <Button
+        disabled={submitting}
         onClick={() => setInputMode("text")}
-        className="rounded-full shadow w-10 h-10"
+        className="rounded-full shadow w-8 h-8"
         variant="secondary"
-        size="sm"
+        size="icon"
       >
-        <TextIcon className="w-6 h-6" />
+        <TextIcon className="w-4 h-4" />
       </Button>
       <Button
+        disabled={submitting}
         onClick={startRecording}
         className="rounded-full shadow w-10 h-10"
         size="icon"
       >
-        <MicIcon className="w-6 h-6" />
+        {submitting ? (
+          <LoaderIcon className="w-6 h-6 animate-spin" />
+        ) : (
+          <MicIcon className="w-6 h-6" />
+        )}
       </Button>
       <Button
+        disabled={submitting}
         onClick={() => askAgent()}
-        className="rounded-full shadow w-auto h-10"
+        className="rounded-full shadow w-8 h-8"
         variant="secondary"
-        size="sm"
+        size="icon"
       >
-        <StepForwardIcon className="w-6 h-6 mr-2" />
-        {t("continue")}
+        <StepForwardIcon className="w-4 h-4" />
       </Button>
     </div>
   );
