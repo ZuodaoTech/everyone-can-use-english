@@ -168,7 +168,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
         </Avatar>
       </div>
       <div className="flex justify-end">
-        <div className="flex flex-col gap-2 px-4 py-2 mb-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full max-w-3xl">
+        <div className="flex flex-col gap-2 px-4 py-2 mb-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full max-w-prose">
           {recording && (
             <WavesurferPlayer id={recording.id} src={recording.src} />
           )}
@@ -244,7 +244,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
           )}
           <DropdownMenu>
             <div className="flex items-center justify-end space-x-4">
-              {chatMessage.state === "pending" ? (
+              {chatMessage.state === "pending" && (
                 <>
                   <EditIcon
                     data-tooltip-id="global-tooltip"
@@ -266,7 +266,8 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                     />
                   )}
                 </>
-              ) : (
+              )}
+              {chatMessage.recording && (
                 <GaugeCircleIcon
                   data-tooltip-id="global-tooltip"
                   data-tooltip-content={t("pronunciationAssessment")}

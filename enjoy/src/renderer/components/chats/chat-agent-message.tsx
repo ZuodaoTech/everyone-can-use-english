@@ -200,7 +200,7 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
         </Avatar>
         <div className="text-sm text-muted-foreground">{agent.name}</div>
       </div>
-      <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm w-full max-w-3xl">
+      <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm w-full max-w-prose">
         {Boolean(chatMessage.speech) ? (
           <>
             <WavesurferPlayer

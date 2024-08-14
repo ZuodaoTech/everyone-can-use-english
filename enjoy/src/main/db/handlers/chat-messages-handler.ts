@@ -112,6 +112,13 @@ class ChatMessagesHandler {
         transaction
       );
       message.recording = recording;
+    } else if (message.recording) {
+      message.recording.update(
+        {
+          referenceText: message.content,
+        },
+        { transaction }
+      );
     }
     await transaction.commit();
 
