@@ -30,18 +30,19 @@ import {
 } from "@renderer/components/ui";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { t } from "i18next";
-import WaveSurfer from "wavesurfer.js";
 import {
+  CheckIcon,
   ChevronDownIcon,
   DownloadIcon,
   GaugeCircleIcon,
   LoaderIcon,
   MicIcon,
   MoreHorizontalIcon,
+  PauseIcon,
+  PlayIcon,
   SquareIcon,
   Trash2Icon,
 } from "lucide-react";
-import RecordPlugin from "wavesurfer.js/dist/plugins/record";
 import { useRecordings } from "@renderer/hooks";
 import { formatDateTime } from "@renderer/lib/utils";
 import { MediaPlayer, MediaProvider } from "@vidstack/react";
@@ -50,6 +51,7 @@ import {
   defaultLayoutIcons,
 } from "@vidstack/react/player/layouts/default";
 import { Caption, RecordingDetail } from "@renderer/components";
+import { LiveAudioVisualizer } from "react-audio-visualize";
 
 const TEN_MINUTES = 60 * 10;
 let interval: NodeJS.Timeout;
@@ -278,13 +280,21 @@ export const MediaTranscriptionReadButton = (props: {
 
 const RecorderButton = (props: { onRecorded: () => void }) => {
   const { onRecorded } = props;
-  const { media, transcription } = useContext(MediaPlayerProviderContext);
+  const {
+    media,
+    recordingBlob,
+    isRecording,
+    isPaused,
+    togglePauseResume,
+    startRecording,
+    stopRecording,
+    transcription,
+    currentSegmentIndex,
+    mediaRecorder,
+    recordingTime,
+  } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const [isRecording, setIsRecording] = useState(false);
-  const [recorder, setRecorder] = useState<RecordPlugin>();
   const [access, setAccess] = useState<boolean>(false);
-  const [duration, setDuration] = useState<number>(0);
-  const ref = useRef(null);
 
   const askForMediaAccess = () => {
     EnjoyApp.system.preferences.mediaAccess("microphone").then((access) => {
@@ -297,53 +307,34 @@ const RecorderButton = (props: { onRecorded: () => void }) => {
     });
   };
 
-  const startRecord = () => {
-    if (isRecording) return;
-    if (!recorder) {
-      toast.warning(t("noMicrophoneAccess"));
-      return;
-    }
+  useEffect(() => {
+    askForMediaAccess();
+  }, []);
 
-    RecordPlugin.getAvailableAudioDevices()
-      .then((devices) => devices.find((d) => d.kind === "audioinput"))
-      .then((device) => {
-        if (device) {
-          recorder.startRecording({ deviceId: device.deviceId });
-          setIsRecording(true);
-          setDuration(0);
-          interval = setInterval(() => {
-            setDuration((duration) => {
-              if (duration >= TEN_MINUTES) {
-                recorder.stopRecording();
-              }
-              return duration + 0.1;
-            });
-          }, 100);
-        } else {
-          toast.error(t("cannotFindMicrophone"));
-        }
-      });
-  };
-
-  const createRecording = async (blob: Blob) => {
+  useEffect(() => {
     if (!media) return;
+    if (!transcription) return;
+    if (!recordingBlob) return;
 
     toast.promise(
-      EnjoyApp.recordings
-        .create({
+      async () => {
+        const currentSegment =
+          transcription?.result?.timeline?.[currentSegmentIndex];
+        if (!currentSegment) return;
+
+        await EnjoyApp.recordings.create({
           targetId: media.id,
           targetType: media.mediaType,
           blob: {
-            type: blob.type.split(";")[0],
-            arrayBuffer: await blob.arrayBuffer(),
+            type: recordingBlob.type.split(";")[0],
+            arrayBuffer: await recordingBlob.arrayBuffer(),
           },
           referenceId: -1,
           referenceText: transcription.result.timeline
             .map((s: TimelineEntry) => s.text)
             .join("\n"),
-          duration,
-        })
-        .then(() => onRecorded()),
+        });
+      },
       {
         loading: t("savingRecording"),
         success: t("recordingSaved"),
@@ -351,66 +342,70 @@ const RecorderButton = (props: { onRecorded: () => void }) => {
         position: "bottom-right",
       }
     );
-  };
+  }, [recordingBlob, media, transcription]);
 
-  useEffect(() => {
-    if (!access) return;
-    if (!ref?.current) return;
+  if (isRecording) {
+    return (
+      <div className="h-16 flex items-center justify-center px-6">
+        <div className="flex items-center space-x-2">
+          <LiveAudioVisualizer
+            mediaRecorder={mediaRecorder}
+            barWidth={2}
+            gap={2}
+            width={250}
+            height={30}
+            fftSize={512}
+            maxDecibels={-10}
+            minDecibels={-80}
+            smoothingTimeConstant={0.4}
+          />
+          <span className="text-sm text-muted-foreground">
+            {Math.floor(recordingTime / 60)}:
+            {String(recordingTime % 60).padStart(2, "0")}
+          </span>
+          <Button
+            onClick={togglePauseResume}
+            className="rounded-full shadow w-8 h-8"
+            size="icon"
+          >
+            {isPaused ? (
+              <PlayIcon
+                data-tooltip-id="chat-input-tooltip"
+                data-tooltip-content={t("continue")}
+                fill="white"
+                className="w-4 h-4"
+              />
+            ) : (
+              <PauseIcon
+                data-tooltip-id="chat-input-tooltip"
+                data-tooltip-content={t("pause")}
+                fill="white"
+                className="w-4 h-4"
+              />
+            )}
+          </Button>
+          <Button
+            data-tooltip-id="chat-input-tooltip"
+            data-tooltip-content={t("finish")}
+            onClick={stopRecording}
+            className="rounded-full bg-green-500 hover:bg-green-600 shadow w-8 h-8"
+            size="icon"
+          >
+            <CheckIcon className="w-4 h-4 text-white" />
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
-    const ws = WaveSurfer.create({
-      container: ref.current,
-      fillParent: true,
-      height: 40,
-      autoCenter: false,
-      normalize: false,
-    });
-
-    const record = ws.registerPlugin(RecordPlugin.create());
-    setRecorder(record);
-
-    record.on("record-end", async (blob: Blob) => {
-      if (interval) clearInterval(interval);
-      createRecording(blob);
-      setIsRecording(false);
-    });
-
-    return () => {
-      if (interval) clearInterval(interval);
-      recorder?.stopRecording();
-      ws?.destroy();
-    };
-  }, [access, ref]);
-
-  useEffect(() => {
-    askForMediaAccess();
-  }, []);
   return (
     <div className="h-16 flex items-center justify-center px-6">
-      <div
-        ref={ref}
-        className={isRecording ? "w-full mr-4" : "w-0 overflow-hidden"}
-      ></div>
-      {isRecording && (
-        <div className="text-muted-foreground text-sm w-24 mr-4">
-          {duration.toFixed(1)} / {TEN_MINUTES}
-        </div>
-      )}
       <Button
         variant="ghost"
         className="aspect-square p-0 h-12 rounded-full bg-red-500 hover:bg-red-500/90"
-        onClick={() => {
-          if (isRecording) {
-            recorder?.stopRecording();
-          } else {
-            startRecord();
-          }
-        }}
+        onClick={() => startRecording()}
       >
-        {isRecording ? (
-          <SquareIcon fill="white" className="w-6 h-6 text-white" />
-        ) : (
-          <MicIcon className="w-6 h-6 text-white" />
-        )}
+        <MicIcon className="w-6 h-6 text-white" />
       </Button>
     </div>
   );

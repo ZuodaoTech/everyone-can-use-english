@@ -608,39 +608,6 @@ export const MediaPlayerProvider = ({
     };
   }, []);
 
-  /*
-   * Save recording
-   */
-  useEffect(() => {
-    if (!media) return;
-    if (!recordingBlob) return;
-
-    toast.promise(
-      async () => {
-        const currentSegment =
-          transcription?.result?.timeline?.[currentSegmentIndex];
-        if (!currentSegment) return;
-
-        await EnjoyApp.recordings.create({
-          targetId: media.id,
-          targetType: media.mediaType,
-          blob: {
-            type: recordingBlob.type.split(";")[0],
-            arrayBuffer: await recordingBlob.arrayBuffer(),
-          },
-          referenceId: currentSegmentIndex,
-          referenceText: currentSegment.text,
-        });
-      },
-      {
-        loading: t("savingRecording"),
-        success: t("recordingSaved"),
-        error: (e) => t("failedToSaveRecording" + " : " + e.message),
-        position: "bottom-right",
-      }
-    );
-  }, [recordingBlob, media]);
-
   return (
     <>
       <MediaPlayerProviderContext.Provider
