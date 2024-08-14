@@ -135,6 +135,7 @@ export const PronunciationAssessmentForm = () => {
                   render={() => (
                     <FormItem className="grid w-full items-center gap-1.5">
                       <Input
+                        disabled={submitting}
                         placeholder={t("upload")}
                         type="file"
                         className="cursor-pointer"
@@ -155,6 +156,7 @@ export const PronunciationAssessmentForm = () => {
                   render={({ field }) => (
                     <FormItem className="grid w-full items-center gap-1.5">
                       <Input
+                        disabled={submitting}
                         placeholder={t("recording")}
                         type="file"
                         className="hidden"
@@ -191,7 +193,11 @@ export const PronunciationAssessmentForm = () => {
               render={({ field }) => (
                 <FormItem className="grid w-full items-center gap-1.5">
                   <FormLabel>{t("language")}</FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
+                  <Select
+                    disabled={submitting}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -216,6 +222,7 @@ export const PronunciationAssessmentForm = () => {
                 <FormItem className="grid w-full items-center gap-1.5">
                   <FormLabel>{t("referenceText")}</FormLabel>
                   <Textarea
+                    disabled={submitting}
                     placeholder={t("inputReferenceTextOrLeaveItBlank")}
                     className="h-64"
                     {...field}
