@@ -36,6 +36,7 @@ type ChatSessionProviderState = {
   submitting: boolean;
   startRecording: () => void;
   stopRecording: () => void;
+  cancelRecording: () => void;
   togglePauseResume: () => void;
   isRecording: boolean;
   isPaused: boolean;
@@ -48,6 +49,14 @@ type ChatSessionProviderState = {
   assessing: RecordingType;
   setAssessing: (recording: RecordingType) => void;
   onDeleteMessage?: (id: string) => void;
+  onCreateMessage?: (
+    content: string,
+    recordingUrl?: string
+  ) => Promise<ChatMessageType | void>;
+  onUpdateMessage?: (
+    id: string,
+    data: Partial<ChatMessageType>
+  ) => Promise<ChatMessageType>;
 };
 
 const initialState: ChatSessionProviderState = {
@@ -56,6 +65,7 @@ const initialState: ChatSessionProviderState = {
   submitting: false,
   startRecording: () => null,
   stopRecording: () => null,
+  cancelRecording: () => null,
   togglePauseResume: () => null,
   isRecording: false,
   isPaused: false,
@@ -67,6 +77,8 @@ const initialState: ChatSessionProviderState = {
   setShadowing: () => null,
   assessing: null,
   setAssessing: () => null,
+  onCreateMessage: () => null,
+  onUpdateMessage: () => null,
 };
 
 export const ChatSessionProviderContext =
@@ -84,9 +96,15 @@ export const ChatSessionProvider = ({
   const [submitting, setSubmitting] = useState(false);
   const [shadowing, setShadowing] = useState<AudioType>(null);
   const [assessing, setAssessing] = useState<RecordingType>(null);
-  const { chatMessages, dispatchChatMessages, onDeleteMessage } =
-    useChatMessage(chat);
+  const {
+    chatMessages,
+    dispatchChatMessages,
+    onCreateUserMessage,
+    onUpdateMessage,
+    onDeleteMessage,
+  } = useChatMessage(chat);
   const [deletingMessage, setDeletingMessage] = useState<string>(null);
+  const [cancelingRecording, setCancelingRecording] = useState(false);
 
   const {
     startRecording,
@@ -101,6 +119,10 @@ export const ChatSessionProvider = ({
 
   const { transcribe } = useTranscribe();
 
+  const cancelRecording = () => {
+    setCancelingRecording(true);
+  };
+
   const askForMediaAccess = () => {
     EnjoyApp.system.preferences.mediaAccess("microphone").then((access) => {
       if (!access) {
@@ -109,7 +131,22 @@ export const ChatSessionProvider = ({
     });
   };
 
+  const onCreateMessage = async (content: string, recordingUrl?: string) => {
+    if (submitting) return;
+
+    setSubmitting(true);
+    return onCreateUserMessage(content, recordingUrl).finally(() =>
+      setSubmitting(false)
+    );
+  };
+
   const onRecorded = async (blob: Blob) => {
+    if (cancelingRecording) {
+      setCancelingRecording(false);
+      return;
+    }
+    if (submitting) return;
+
     try {
       setSubmitting(true);
       const { transcript, url } = await transcribe(blob, {
@@ -117,29 +154,9 @@ export const ChatSessionProvider = ({
         service: chat.config.sttEngine,
         align: false,
       });
-
-      const pendingMessage = chatMessages.find(
-        (m) => m.member.userType === "User" && m.state === "pending"
+      return onCreateMessage(transcript, url).finally(() =>
+        setSubmitting(false)
       );
-
-      if (pendingMessage) {
-        return EnjoyApp.chatMessages
-          .update(pendingMessage.id, {
-            content: transcript,
-            recordingUrl: url,
-          })
-          .finally(() => setSubmitting(false));
-      } else {
-        return EnjoyApp.chatMessages
-          .create({
-            chatId: chat.id,
-            memberId: chat.members.find((m) => m.userType === "User").id,
-            content: transcript,
-            state: "pending",
-            recordingUrl: url,
-          })
-          .finally(() => setSubmitting(false));
-      }
     } catch (error) {
       toast.error(error.message);
       setSubmitting(false);
@@ -152,7 +169,7 @@ export const ChatSessionProvider = ({
       (m) => m.member.user && m.state === "pending"
     );
     if (pendingMessage) {
-      EnjoyApp.chatMessages.update(pendingMessage.id, { state: "completed" });
+      onUpdateMessage(pendingMessage.id, { state: "completed" });
     }
 
     // pick an random agent
@@ -213,6 +230,9 @@ export const ChatSessionProvider = ({
           content: reply.content,
           state: "completed",
         })
+        .then((message) =>
+          dispatchChatMessages({ type: "append", record: message })
+        )
         .finally(() => setSubmitting(false));
     } catch (err) {
       setSubmitting(false);
@@ -275,6 +295,12 @@ export const ChatSessionProvider = ({
   }, [recordingBlob]);
 
   useEffect(() => {
+    if (cancelingRecording) {
+      stopRecording();
+    }
+  }, [cancelingRecording]);
+
+  useEffect(() => {
     if (!isRecording) return;
 
     if (recordingTime >= 60) {
@@ -290,6 +316,7 @@ export const ChatSessionProvider = ({
         submitting,
         startRecording,
         stopRecording,
+        cancelRecording,
         togglePauseResume,
         isRecording,
         isPaused,
@@ -302,6 +329,8 @@ export const ChatSessionProvider = ({
         assessing,
         setAssessing,
         onDeleteMessage: (id) => setDeletingMessage(id),
+        onCreateMessage,
+        onUpdateMessage,
       }}
     >
       <MediaPlayerProvider>

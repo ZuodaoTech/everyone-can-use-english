@@ -14,6 +14,7 @@ import {
   toast,
 } from "@renderer/components/ui";
 import {
+  ConversationShortcuts,
   MarkdownWrapper,
   PronunciationAssessmentScoreDetail,
   WavesurferPlayer,
@@ -21,15 +22,17 @@ import {
 import { formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
 import {
+  CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  CopyIcon,
   DownloadIcon,
   EditIcon,
+  ForwardIcon,
   GaugeCircleIcon,
   LoaderIcon,
   MicIcon,
   MoreVerticalIcon,
-  SendIcon,
   SparkleIcon,
 } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -40,18 +43,20 @@ import {
 } from "@renderer/context";
 import { useAiCommand } from "@renderer/hooks";
 import { md5 } from "js-md5";
+import { useCopyToClipboard } from "@uidotdev/usehooks";
 
 export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
   const { chatMessage } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const {
     chatMessages,
-    askAgent,
     startRecording,
     isRecording,
     isPaused,
     setAssessing,
     onDeleteMessage,
+    onUpdateMessage,
+    submitting,
   } = useContext(ChatSessionProviderContext);
   const { currentChat } = useContext(ChatProviderContext);
   const { recording } = chatMessage;
@@ -62,6 +67,8 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
   const [editing, setEditing] = useState<boolean>(false);
   const [content, setContent] = useState<string>(chatMessage.content);
   const { refine } = useAiCommand();
+  const [_, copyToClipboard] = useCopyToClipboard();
+  const [copied, setCopied] = useState<boolean>(false);
 
   const handleSuggest = async (params?: { reload?: boolean }) => {
     if (suggesting) return;
@@ -161,7 +168,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
         </Avatar>
       </div>
       <div className="flex justify-end">
-        <div className="flex flex-col gap-2 px-4 py-2 mb-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full max-w-3xl">
+        <div className="flex flex-col gap-2 px-4 py-2 mb-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full max-w-prose">
           {recording && (
             <WavesurferPlayer id={recording.id} src={recording.src} />
           )}
@@ -189,10 +196,9 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                 </Button>
                 <Button
                   onClick={() =>
-                    EnjoyApp.chatMessages
-                      .update(chatMessage.id, { content })
-                      .catch((err) => toast.error(err.message))
-                      .finally(() => setEditing(false))
+                    onUpdateMessage(chatMessage.id, { content }).finally(() =>
+                      setEditing(false)
+                    )
                   }
                   variant="default"
                   size="sm"
@@ -238,14 +244,8 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
           )}
           <DropdownMenu>
             <div className="flex items-center justify-end space-x-4">
-              {chatMessage.state === "pending" ? (
+              {chatMessage.state === "pending" && (
                 <>
-                  <SendIcon
-                    data-tooltip-id="global-tooltip"
-                    data-tooltip-content={t("confirm")}
-                    className="w-4 h-4 cursor-pointer"
-                    onClick={() => askAgent()}
-                  />
                   <EditIcon
                     data-tooltip-id="global-tooltip"
                     data-tooltip-content={t("edit")}
@@ -255,7 +255,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                       setEditing(true);
                     }}
                   />
-                  {isPaused || isRecording ? (
+                  {isPaused || isRecording || submitting ? (
                     <LoaderIcon className="w-4 h-4 animate-spin" />
                   ) : (
                     <MicIcon
@@ -266,7 +266,8 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                     />
                   )}
                 </>
-              ) : (
+              )}
+              {chatMessage.recording && (
                 <GaugeCircleIcon
                   data-tooltip-id="global-tooltip"
                   data-tooltip-content={t("pronunciationAssessment")}
@@ -284,6 +285,33 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                   onClick={() => handleSuggest()}
                 />
               )}
+              {copied ? (
+                <CheckIcon className="w-4 h-4 text-green-500" />
+              ) : (
+                <CopyIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("copyText")}
+                  className="w-4 h-4 cursor-pointer"
+                  onClick={() => {
+                    copyToClipboard(chatMessage.content);
+                    setCopied(true);
+                    setTimeout(() => {
+                      setCopied(false);
+                    }, 3000);
+                  }}
+                />
+              )}
+              <ConversationShortcuts
+                prompt={chatMessage.content}
+                excludedIds={[]}
+                trigger={
+                  <ForwardIcon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("forward")}
+                    className="w-4 h-4 cursor-pointer"
+                  />
+                }
+              />
               {Boolean(chatMessage.recording) && (
                 <DownloadIcon
                   data-tooltip-id="global-tooltip"

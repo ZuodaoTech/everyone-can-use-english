@@ -7987,6 +7987,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mustache@npm:^4":
+  version: 4.2.5
+  resolution: "@types/mustache@npm:4.2.5"
+  checksum: 10c0/624975c39068d47407eadb89628aaff5ef60f3b7a71eef92a254310896a4e90518a01dcf71d95779ab2c986034a6ca5403d22fea237c67ff87f2e2b3fb794ea6
+  languageName: node
+  linkType: hard
+
 "@types/mysql@npm:2.15.22":
   version: 2.15.22
   resolution: "@types/mysql@npm:2.15.22"
@@ -12546,6 +12553,7 @@ __metadata:
     "@types/intl-tel-input": "npm:^18.1.4"
     "@types/lodash": "npm:^4.17.7"
     "@types/mark.js": "npm:^8.11.12"
+    "@types/mustache": "npm:^4"
     "@types/node": "npm:^22.2.0"
     "@types/rails__actioncable": "npm:^6.1.11"
     "@types/react": "npm:^18.3.3"
@@ -12600,6 +12608,7 @@ __metadata:
     lucide-react: "npm:^0.427.0"
     mark.js: "npm:^8.11.1"
     microsoft-cognitiveservices-speech-sdk: "npm:^1.40.0"
+    mustache: "npm:^4.2.0"
     next-themes: "npm:^0.3.0"
     octokit: "npm:^4.0.2"
     openai: "npm:^4.55.5"

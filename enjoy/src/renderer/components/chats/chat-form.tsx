@@ -38,7 +38,8 @@ import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
 } from "@renderer/context";
-import { LANGUAGES } from "@/constants";
+import { CHAT_SYSTEM_PROMPT_TEMPLATE, LANGUAGES } from "@/constants";
+import Mustache from "mustache";
 
 export const ChatForm = (props: {
   chat?: ChatType;
@@ -297,6 +298,7 @@ export const ChatForm = (props: {
                 </ScrollArea>
                 {editingMember && (
                   <MemberForm
+                    language={form.watch("language")}
                     topic={form.watch("topic")}
                     members={form.watch("members")}
                     member={editingMember}
@@ -376,6 +378,7 @@ export const ChatForm = (props: {
 };
 
 const MemberForm = (props: {
+  language: string;
   topic: string;
   members: Array<Partial<ChatMemberType>>;
   member: Partial<ChatMemberType>;
@@ -385,6 +388,7 @@ const MemberForm = (props: {
   onConfigChange?: (config: ChatMemberType["config"]) => void;
 }) => {
   const {
+    language,
     topic,
     members,
     member,
@@ -396,30 +400,32 @@ const MemberForm = (props: {
   const { user } = useContext(AppSettingsProviderContext);
   const chatAgent = chatAgents.find((a) => a.id === member.userId);
 
-  const fullPrompt =
-    chatAgent &&
-    `${chatAgent.config.prompt}
-You are chatting in a chat room. You always reply in ${
-      LANGUAGES.find((lang) => lang.code === chatAgent.language).name
-    }.
-${member.config.prompt || ""}
-
-<Chat Topic>
-${topic}
-
-<Chat Members>
-${members
-  .map((m) => {
-    if (m.userType === "User") {
-      return `- ${user.name} (${m.config.introduction})`;
-    } else {
-      const agent = chatAgents.find((a) => a.id === m.userId);
-      if (!agent) return "";
-      return `- ${agent.name} (${agent.introduction})`;
-    }
-  })
-  .join("\n")}
-`;
+  const fullPrompt = chatAgent
+    ? Mustache.render(
+        CHAT_SYSTEM_PROMPT_TEMPLATE,
+        {
+          name: chatAgent.name,
+          agent_prompt: chatAgent.config.prompt,
+          agent_chat_prompt: member.config.chatPrompt,
+          language,
+          topic,
+          members: members
+            .map((m) => {
+              if (m.userType === "User") {
+                return `- ${user.name} (${m.config.introduction})`;
+              } else {
+                const agent = chatAgents.find((a) => a.id === m.userId);
+                if (!agent) return "";
+                return `- ${agent.name} (${agent.introduction})`;
+              }
+            })
+            .join("\n"),
+          history: "...",
+        },
+        {},
+        ["{", "}"]
+      )
+    : "";
 
   if (member.userType === "User") {
     return (

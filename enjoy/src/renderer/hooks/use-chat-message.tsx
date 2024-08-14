@@ -1,7 +1,7 @@
-import { useEffect, useContext, useReducer, useState } from "react";
+import { useEffect, useContext, useReducer } from "react";
 import {
-  DbProviderContext,
   AppSettingsProviderContext,
+  DbProviderContext,
 } from "@renderer/context";
 import { toast } from "@renderer/components/ui";
 import { chatMessagesReducer } from "@renderer/reducers";
@@ -27,19 +27,55 @@ export const useChatMessage = (chat: ChatType) => {
       });
   };
 
-  const onDeleteMessage = async (chatMessageId: string) => {
-    EnjoyApp.chatMessages.destroy(chatMessageId).catch((error) => {
-      toast.error(error.message);
-    });
+  const onCreateUserMessage = (content: string, recordingUrl?: string) => {
+    if (!content) return;
+
+    const pendingMessage = chatMessages.find(
+      (m) => m.member.userType === "User" && m.state === "pending"
+    );
+
+    if (pendingMessage) {
+      return EnjoyApp.chatMessages.update(pendingMessage.id, {
+        content,
+        recordingUrl,
+      });
+    } else {
+      return EnjoyApp.chatMessages
+        .create({
+          chatId: chat.id,
+          memberId: chat.members.find((m) => m.userType === "User").id,
+          content,
+          state: "pending",
+          recordingUrl,
+        })
+        .then((message) =>
+          dispatchChatMessages({ type: "append", record: message })
+        );
+    }
   };
 
-  const onChatMessageUpdate = (event: CustomEvent) => {
+  const onUpdateMessage = (id: string, data: Partial<ChatMessageType>) => {
+    return EnjoyApp.chatMessages.update(id, data);
+  };
+
+  const onDeleteMessage = async (chatMessageId: string) => {
+    return EnjoyApp.chatMessages
+      .destroy(chatMessageId)
+      .then(() =>
+        dispatchChatMessages({
+          type: "remove",
+          record: { id: chatMessageId } as ChatMessageType,
+        })
+      )
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
+  const onChatMessageRecordUpdate = (event: CustomEvent) => {
     const { model, action, record } = event.detail;
     if (model === "ChatMessage") {
       switch (action) {
-        case "create":
-          dispatchChatMessages({ type: "append", record });
-          break;
         case "update":
           dispatchChatMessages({ type: "update", record });
           break;
@@ -65,11 +101,10 @@ export const useChatMessage = (chat: ChatType) => {
   useEffect(() => {
     if (!chat) return;
 
+    addDblistener(onChatMessageRecordUpdate);
     fetchChatMessages();
-    addDblistener(onChatMessageUpdate);
-
     return () => {
-      removeDbListener(onChatMessageUpdate);
+      removeDbListener(onChatMessageRecordUpdate);
     };
   }, [chat]);
 
@@ -77,6 +112,8 @@ export const useChatMessage = (chat: ChatType) => {
     chatMessages,
     fetchChatMessages,
     dispatchChatMessages,
+    onCreateUserMessage,
+    onUpdateMessage,
     onDeleteMessage,
   };
 };

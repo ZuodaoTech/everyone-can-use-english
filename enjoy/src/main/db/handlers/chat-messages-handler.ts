@@ -70,15 +70,10 @@ class ChatMessagesHandler {
         transaction
       );
       message.recording = recording;
-    } else {
-      message.recording?.update(
-        { referenceText: message.content },
-        { transaction }
-      );
     }
     await transaction.commit();
 
-    return message.toJSON();
+    return (await message.reload()).toJSON();
   }
 
   private async update(
@@ -117,11 +112,17 @@ class ChatMessagesHandler {
         transaction
       );
       message.recording = recording;
+    } else if (message.recording) {
+      message.recording.update(
+        {
+          referenceText: message.content,
+        },
+        { transaction }
+      );
     }
-
     await transaction.commit();
 
-    return message.toJSON();
+    return (await message.reload()).toJSON();
   }
 
   private async destroy(_event: IpcMainEvent, id: string) {
@@ -129,6 +130,8 @@ class ChatMessagesHandler {
     if (!message) return;
 
     await message.destroy();
+
+    return message.toJSON();
   }
 
   register() {

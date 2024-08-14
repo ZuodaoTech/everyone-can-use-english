@@ -11,6 +11,7 @@ import { t } from "i18next";
 import { ChatProviderContext, ChatSessionProvider } from "@renderer/context";
 import { useContext, useState } from "react";
 import { ChatForm, ChatInput, ChatMessages } from "@renderer/components";
+import { Tooltip } from "react-tooltip";
 
 export const Chat = () => {
   const { currentChat, chatAgents, updateChat, destroyChat } =
@@ -60,8 +61,9 @@ export const Chat = () => {
       </div>
       <ChatSessionProvider chat={currentChat}>
         <ChatMessages />
-        <div className="absolute bottom-0 w-full h-16 border-t z-10 bg-background flex items-center">
+        <div className="absolute bottom-0 w-full min-h-16 py-3 z-10 bg-background flex items-center border-t shadow-lg">
           <ChatInput />
+          <Tooltip id="chat-input-tooltip" />
         </div>
       </ChatSessionProvider>
     </ScrollArea>

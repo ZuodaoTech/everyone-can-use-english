@@ -200,7 +200,7 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
         </Avatar>
         <div className="text-sm text-muted-foreground">{agent.name}</div>
       </div>
-      <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm w-full max-w-3xl">
+      <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm w-full max-w-prose">
         {Boolean(chatMessage.speech) ? (
           <>
             <WavesurferPlayer
@@ -208,14 +208,16 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
               src={chatMessage.speech.src}
             />
             {displayContent && (
-              <MarkdownWrapper className="select-text prose dark:prose-invert">
-                {chatMessage.content}
-              </MarkdownWrapper>
-            )}
-            {translation && (
-              <MarkdownWrapper className="select-text prose dark:prose-invert">
-                {translation}
-              </MarkdownWrapper>
+              <>
+                <MarkdownWrapper className="select-text prose dark:prose-invert">
+                  {chatMessage.content}
+                </MarkdownWrapper>
+                {translation && (
+                  <MarkdownWrapper className="select-text prose dark:prose-invert">
+                    {translation}
+                  </MarkdownWrapper>
+                )}
+              </>
             )}
           </>
         ) : speeching ? (
@@ -230,21 +232,6 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
         )}
         <DropdownMenu>
           <div className="flex items-center space-x-4">
-            {displayContent ? (
-              <EyeOffIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("hideContent")}
-                className="w-4 h-4 cursor-pointer"
-                onClick={() => setDisplayContent(false)}
-              />
-            ) : (
-              <EyeIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("displayContent")}
-                className="w-4 h-4 cursor-pointer"
-                onClick={() => setDisplayContent(true)}
-              />
-            )}
             {Boolean(chatMessage.speech) &&
               (resourcing ? (
                 <LoaderIcon
@@ -261,6 +248,21 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
                   className="w-4 h-4 cursor-pointer"
                 />
               ))}
+            {displayContent ? (
+              <EyeOffIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("hideContent")}
+                className="w-4 h-4 cursor-pointer"
+                onClick={() => setDisplayContent(false)}
+              />
+            ) : (
+              <EyeIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("displayContent")}
+                className="w-4 h-4 cursor-pointer"
+                onClick={() => setDisplayContent(true)}
+              />
+            )}
             {translating ? (
               <LoaderIcon
                 data-tooltip-id="global-tooltip"
@@ -268,12 +270,14 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
                 className="w-4 h-4 animate-spin"
               />
             ) : (
-              <LanguagesIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("translation")}
-                className="w-4 h-4 cursor-pointer"
-                onClick={handleTranslate}
-              />
+              displayContent && (
+                <LanguagesIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("translation")}
+                  className="w-4 h-4 cursor-pointer"
+                  onClick={handleTranslate}
+                />
+              )
             )}
             {copied ? (
               <CheckIcon className="w-4 h-4 text-green-500" />
