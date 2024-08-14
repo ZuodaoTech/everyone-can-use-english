@@ -40,7 +40,6 @@ import {
   MoreHorizontalIcon,
   PauseIcon,
   PlayIcon,
-  SquareIcon,
   Trash2Icon,
 } from "lucide-react";
 import { useRecordings } from "@renderer/hooks";
@@ -54,8 +53,6 @@ import { Caption, RecordingDetail } from "@renderer/components";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 
 const TEN_MINUTES = 60 * 10;
-let interval: NodeJS.Timeout;
-
 export const MediaTranscriptionReadButton = (props: {
   children: React.ReactNode;
 }) => {
@@ -343,6 +340,12 @@ const RecorderButton = (props: { onRecorded: () => void }) => {
       }
     );
   }, [recordingBlob, media, transcription]);
+
+  useEffect(() => {
+    if (recordingTime >= TEN_MINUTES) {
+      onRecorded();
+    }
+  }, [recordingTime]);
 
   if (isRecording) {
     return (

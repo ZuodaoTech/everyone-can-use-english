@@ -688,6 +688,7 @@ export const MediaRecordButton = () => {
     isRecording,
     startRecording,
     stopRecording,
+    recordingTime,
     transcription,
     currentSegmentIndex,
   } = useContext(MediaPlayerProviderContext);
@@ -726,6 +727,12 @@ export const MediaRecordButton = () => {
       }
     );
   }, [recordingBlob, media, transcription]);
+
+  useEffect(() => {
+    if (recordingTime >= 60) {
+      stopRecording();
+    }
+  }, [recordingTime]);
 
   return (
     <Button
