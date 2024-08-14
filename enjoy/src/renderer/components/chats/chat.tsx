@@ -27,7 +27,7 @@ export const Chat = () => {
   }
 
   return (
-    <ScrollArea className="h-screen relative pb-16 bg-muted">
+    <ScrollArea className="h-screen relative pb-16">
       <div className="h-12 border-b px-4 shadow flex items-center justify-center sticky top-0 z-10 bg-background mb-4">
         <span>
           {currentChat.name}({currentChat.membersCount})
@@ -61,7 +61,7 @@ export const Chat = () => {
       </div>
       <ChatSessionProvider chat={currentChat}>
         <ChatMessages />
-        <div className="absolute bottom-0 w-full min-h-16 py-3 z-10 bg-background flex items-center">
+        <div className="absolute bottom-0 w-full min-h-16 py-3 z-10 bg-background flex items-center border-t shadow-lg">
           <ChatInput />
           <Tooltip id="chat-input-tooltip" />
         </div>
