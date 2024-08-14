@@ -714,5 +714,7 @@
   "quickStart": "快速开始",
   "itsYourTurn": "轮到您了，请开始说点什么",
   "displayContent": "显示内容",
-  "hideContent": "隐藏内容"
+  "hideContent": "隐藏内容",
+  "audioInput": "语音输入",
+  "textInput": "文字输入"
 }
