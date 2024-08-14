@@ -34,9 +34,7 @@ class ChatAgentsHandler {
 
   private async findOne(
     _event: IpcMainEvent,
-    options: FindOptions<Attributes<ChatAgent>> & {
-      where: WhereOptions<ChatAgent>;
-    }
+    options: FindOptions<Attributes<ChatAgent>>
   ) {
     const agent = await ChatAgent.findOne(options);
     return agent?.toJSON();

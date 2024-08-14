@@ -33,6 +33,7 @@ export const ChatSidebar = () => {
     createChatAgent,
   } = useContext(ChatProviderContext);
   const { user } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const [displayChatForm, setDisplayChatForm] = useState(false);
   const [displayAgentForm, setDisplayAgentForm] = useState(false);
@@ -42,8 +43,29 @@ export const ChatSidebar = () => {
   // generate chat agents and a chat for example
   const quickStart = async () => {
     try {
-      const ava = await createChatAgent(AGENT_FIXTURE_AVA as any);
-      const andrew = await createChatAgent(AGENT_FIXTURE_ANDREW as any);
+      let ava = await EnjoyApp.chatAgents.findOne({
+        where: {
+          name: AGENT_FIXTURE_AVA.name,
+          introduction: AGENT_FIXTURE_AVA.introduction,
+        },
+      });
+      if (!ava) {
+        ava = (await createChatAgent(
+          AGENT_FIXTURE_AVA as any
+        )) as ChatAgentType;
+      }
+
+      let andrew = await EnjoyApp.chatAgents.findOne({
+        where: {
+          name: AGENT_FIXTURE_ANDREW.name,
+          introduction: AGENT_FIXTURE_ANDREW.introduction,
+        },
+      });
+      if (!andrew) {
+        andrew = (await createChatAgent(
+          AGENT_FIXTURE_ANDREW as any
+        )) as ChatAgentType;
+      }
       if (!ava || !andrew) return;
 
       await createChat({
