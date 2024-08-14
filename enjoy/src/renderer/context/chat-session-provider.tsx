@@ -36,6 +36,7 @@ type ChatSessionProviderState = {
   submitting: boolean;
   startRecording: () => void;
   stopRecording: () => void;
+  cancelRecording: () => void;
   togglePauseResume: () => void;
   isRecording: boolean;
   isPaused: boolean;
@@ -64,6 +65,7 @@ const initialState: ChatSessionProviderState = {
   submitting: false,
   startRecording: () => null,
   stopRecording: () => null,
+  cancelRecording: () => null,
   togglePauseResume: () => null,
   isRecording: false,
   isPaused: false,
@@ -102,6 +104,7 @@ export const ChatSessionProvider = ({
     onDeleteMessage,
   } = useChatMessage(chat);
   const [deletingMessage, setDeletingMessage] = useState<string>(null);
+  const [cancelingRecording, setCancelingRecording] = useState(false);
 
   const {
     startRecording,
@@ -115,6 +118,10 @@ export const ChatSessionProvider = ({
   } = useAudioRecorder();
 
   const { transcribe } = useTranscribe();
+
+  const cancelRecording = () => {
+    setCancelingRecording(true);
+  };
 
   const askForMediaAccess = () => {
     EnjoyApp.system.preferences.mediaAccess("microphone").then((access) => {
@@ -134,6 +141,12 @@ export const ChatSessionProvider = ({
   };
 
   const onRecorded = async (blob: Blob) => {
+    if (cancelingRecording) {
+      setCancelingRecording(false);
+      return;
+    }
+    if (submitting) return;
+
     try {
       setSubmitting(true);
       const { transcript, url } = await transcribe(blob, {
@@ -282,6 +295,12 @@ export const ChatSessionProvider = ({
   }, [recordingBlob]);
 
   useEffect(() => {
+    if (cancelingRecording) {
+      stopRecording();
+    }
+  }, [cancelingRecording]);
+
+  useEffect(() => {
     if (!isRecording) return;
 
     if (recordingTime >= 60) {
@@ -297,6 +316,7 @@ export const ChatSessionProvider = ({
         submitting,
         startRecording,
         stopRecording,
+        cancelRecording,
         togglePauseResume,
         isRecording,
         isPaused,

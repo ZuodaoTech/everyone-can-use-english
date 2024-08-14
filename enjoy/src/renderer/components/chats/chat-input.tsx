@@ -1,12 +1,13 @@
 import {
+  CheckIcon,
   LoaderIcon,
   MicIcon,
   PauseIcon,
   PlayIcon,
   SendIcon,
-  SquareIcon,
   StepForwardIcon,
   TextIcon,
+  XIcon,
 } from "lucide-react";
 import { Button, Textarea } from "@renderer/components/ui";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -20,6 +21,7 @@ export const ChatInput = () => {
     submitting,
     startRecording,
     stopRecording,
+    cancelRecording,
     togglePauseResume,
     isRecording,
     mediaRecorder,
@@ -73,6 +75,14 @@ export const ChatInput = () => {
             {String(recordingTime % 60).padStart(2, "0")}
           </span>
           <Button
+            onClick={cancelRecording}
+            className="rounded-full shadow w-8 h-8 bg-red-500 hover:bg-red-600"
+            variant="secondary"
+            size="icon"
+          >
+            <XIcon fill="white" className="w-4 h-4 text-white" />
+          </Button>
+          <Button
             onClick={togglePauseResume}
             className="rounded-full shadow w-8 h-8"
             size="icon"
@@ -85,10 +95,10 @@ export const ChatInput = () => {
           </Button>
           <Button
             onClick={stopRecording}
-            className="rounded-full bg-red-500 hover:bg-red-600 shadow w-8 h-8"
+            className="rounded-full bg-green-500 hover:bg-green-600 shadow w-8 h-8"
             size="icon"
           >
-            <SquareIcon fill="white" className="w-4 h-4 text-white" />
+            <CheckIcon className="w-4 h-4 text-white" />
           </Button>
         </div>
       </div>
