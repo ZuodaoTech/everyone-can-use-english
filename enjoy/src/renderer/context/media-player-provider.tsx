@@ -16,6 +16,7 @@ import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
 import { debounce } from "lodash";
+import { useAudioRecorder } from "react-audio-voice-recorder";
 
 type MediaPlayerContextType = {
   layout: {
@@ -77,8 +78,14 @@ type MediaPlayerContextType = {
   transcriptionDraft: TranscriptionType["result"];
   setTranscriptionDraft: (result: TranscriptionType["result"]) => void;
   // Recordings
+  startRecording: () => void;
+  stopRecording: () => void;
+  togglePauseResume: () => void;
+  recordingBlob: Blob;
   isRecording: boolean;
-  setIsRecording: (isRecording: boolean) => void;
+  isPaused: boolean;
+  recordingTime: number;
+  mediaRecorder: MediaRecorder;
   currentRecording: RecordingType;
   setCurrentRecording: (recording: RecordingType) => void;
   recordings: RecordingType[];
@@ -163,7 +170,6 @@ export const MediaPlayerProvider = ({
   const [fitZoomRatio, setFitZoomRatio] = useState<number>(1.0);
   const [zoomRatio, setZoomRatio] = useState<number>(1.0);
 
-  const [isRecording, setIsRecording] = useState<boolean>(false);
   const [currentRecording, setCurrentRecording] = useState<RecordingType>(null);
 
   const [transcriptionDraft, setTranscriptionDraft] =
@@ -184,6 +190,17 @@ export const MediaPlayerProvider = ({
     loading: loadingRecordings,
     hasMore: hasMoreRecordings,
   } = useRecordings(media, currentSegmentIndex);
+
+  const {
+    startRecording,
+    stopRecording,
+    togglePauseResume,
+    recordingBlob,
+    isRecording,
+    isPaused,
+    recordingTime,
+    mediaRecorder,
+  } = useAudioRecorder();
 
   const { segment, createSegment } = useSegments({
     targetId: media?.id,
@@ -625,8 +642,14 @@ export const MediaPlayerProvider = ({
           transcribingOutput,
           transcriptionDraft,
           setTranscriptionDraft,
+          startRecording,
+          stopRecording,
+          togglePauseResume,
+          recordingBlob,
           isRecording,
-          setIsRecording,
+          isPaused,
+          recordingTime,
+          mediaRecorder,
           currentRecording,
           setCurrentRecording,
           recordings,

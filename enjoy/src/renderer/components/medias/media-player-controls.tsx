@@ -218,6 +218,20 @@ export const MediaPlayerControls = () => {
     setActiveRegion(groupRegions[0]);
   };
 
+  const findAndClickElement = (id: string) => {
+    const button = document.getElementById(id);
+    if (!button) return;
+
+    const rect = button.getBoundingClientRect();
+    const elementAtPoint = document.elementFromPoint(
+      rect.left + rect.width / 2,
+      rect.top + rect.height / 2
+    );
+    if (elementAtPoint !== button && !button.contains(elementAtPoint)) return;
+
+    button.click();
+  };
+
   /*
    * Update segmentRegion when currentSegmentIndex is updated
    */
@@ -376,7 +390,7 @@ export const MediaPlayerControls = () => {
   useHotkeys(
     currentHotkeys.PlayOrPause,
     () => {
-      document.getElementById("media-play-or-pause-button").click();
+      findAndClickElement("media-play-or-pause-button");
     },
     {
       preventDefault: true,
@@ -385,7 +399,7 @@ export const MediaPlayerControls = () => {
   useHotkeys(
     currentHotkeys.PlayPreviousSegment,
     () => {
-      document.getElementById("media-play-previous-button").click();
+      findAndClickElement("media-play-previous-button");
     },
     {
       preventDefault: true,
@@ -394,7 +408,7 @@ export const MediaPlayerControls = () => {
   useHotkeys(
     currentHotkeys.PlayNextSegment,
     () => {
-      document.getElementById("media-play-next-button").click();
+      findAndClickElement("media-play-next-button");
     },
     {
       preventDefault: true,
@@ -403,7 +417,7 @@ export const MediaPlayerControls = () => {
   useHotkeys(
     currentHotkeys.StartOrStopRecording,
     () => {
-      document.getElementById("media-record-button").click();
+      findAndClickElement("media-record-button");
     },
     {
       preventDefault: true,
@@ -412,7 +426,7 @@ export const MediaPlayerControls = () => {
   useHotkeys(
     currentHotkeys.Compare,
     () => {
-      document.getElementById("media-compare-button").click();
+      findAndClickElement("media-compare-button");
     },
     {
       preventDefault: true,
