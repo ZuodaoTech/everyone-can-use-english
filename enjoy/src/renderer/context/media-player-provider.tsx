@@ -17,7 +17,6 @@ import { toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
 import { debounce } from "lodash";
 import { useAudioRecorder } from "react-audio-voice-recorder";
-import { t } from "i18next";
 
 type MediaPlayerContextType = {
   layout: {

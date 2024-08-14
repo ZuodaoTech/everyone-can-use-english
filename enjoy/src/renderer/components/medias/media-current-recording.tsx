@@ -42,7 +42,6 @@ import {
   MicIcon,
   SquareIcon,
   DownloadIcon,
-  CheckIcon,
 } from "lucide-react";
 import { t } from "i18next";
 import { formatDuration } from "@renderer/lib/utils";
@@ -425,9 +424,21 @@ export const MediaCurrentRecording = () => {
   }, [currentRecording, isRecording, layout?.width]);
 
   useHotkeys(currentHotkeys.PlayOrPauseRecording, () => {
-    document.getElementById("recording-play-or-pause-button")?.click();
+    const button = document.getElementById("recording-play-or-pause-button");
+    if (!button) return;
+
+    const rect = button.getBoundingClientRect();
+    const elementAtPoint = document.elementFromPoint(
+      rect.left + rect.width / 2,
+      rect.top + rect.height / 2
+    );
+    if (elementAtPoint !== button && !button.contains(elementAtPoint)) return;
+
+    button.click();
   });
+
   useHotkeys(currentHotkeys.PronunciationAssessment, () => {
+    if (isRecording) return;
     setDetailIsOpen(!detailIsOpen);
   });
 
