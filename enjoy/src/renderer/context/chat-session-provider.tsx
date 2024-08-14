@@ -48,11 +48,14 @@ type ChatSessionProviderState = {
   assessing: RecordingType;
   setAssessing: (recording: RecordingType) => void;
   onDeleteMessage?: (id: string) => void;
-  onCreateMessage?: (content: string, recordingUrl?: string) => Promise<void>;
+  onCreateMessage?: (
+    content: string,
+    recordingUrl?: string
+  ) => Promise<ChatMessageType | void>;
   onUpdateMessage?: (
     id: string,
     data: Partial<ChatMessageType>
-  ) => Promise<void>;
+  ) => Promise<ChatMessageType>;
 };
 
 const initialState: ChatSessionProviderState = {
@@ -91,8 +94,13 @@ export const ChatSessionProvider = ({
   const [submitting, setSubmitting] = useState(false);
   const [shadowing, setShadowing] = useState<AudioType>(null);
   const [assessing, setAssessing] = useState<RecordingType>(null);
-  const { chatMessages, dispatchChatMessages, onDeleteMessage } =
-    useChatMessage(chat);
+  const {
+    chatMessages,
+    dispatchChatMessages,
+    onCreateUserMessage,
+    onUpdateMessage,
+    onDeleteMessage,
+  } = useChatMessage(chat);
   const [deletingMessage, setDeletingMessage] = useState<string>(null);
 
   const {
@@ -116,46 +124,13 @@ export const ChatSessionProvider = ({
     });
   };
 
-  const onCreateMessage = (content: string, recordingUrl?: string) => {
-    if (!content) return;
+  const onCreateMessage = async (content: string, recordingUrl?: string) => {
+    if (submitting) return;
 
-    const pendingMessage = chatMessages.find(
-      (m) => m.member.userType === "User" && m.state === "pending"
+    setSubmitting(true);
+    return onCreateUserMessage(content, recordingUrl).finally(() =>
+      setSubmitting(false)
     );
-
-    if (pendingMessage) {
-      return EnjoyApp.chatMessages
-        .update(pendingMessage.id, {
-          content,
-          recordingUrl,
-        })
-        .then((message) => {
-          dispatchChatMessages({ type: "update", record: message });
-        })
-        .finally(() => setSubmitting(false));
-    } else {
-      return EnjoyApp.chatMessages
-        .create({
-          chatId: chat.id,
-          memberId: chat.members.find((m) => m.userType === "User").id,
-          content,
-          state: "pending",
-          recordingUrl,
-        })
-        .then((message) =>
-          dispatchChatMessages({ type: "append", record: message })
-        )
-        .finally(() => setSubmitting(false));
-    }
-  };
-
-  const onUpdateMessage = (id: string, data: Partial<ChatMessageType>) => {
-    return EnjoyApp.chatMessages
-      .update(id, data)
-      .then((message) =>
-        dispatchChatMessages({ type: "update", record: message })
-      )
-      .finally(() => setSubmitting(false));
   };
 
   const onRecorded = async (blob: Blob) => {
@@ -166,7 +141,9 @@ export const ChatSessionProvider = ({
         service: chat.config.sttEngine,
         align: false,
       });
-      return onCreateMessage(transcript, url);
+      return onCreateMessage(transcript, url).finally(() =>
+        setSubmitting(false)
+      );
     } catch (error) {
       toast.error(error.message);
       setSubmitting(false);
@@ -179,11 +156,7 @@ export const ChatSessionProvider = ({
       (m) => m.member.user && m.state === "pending"
     );
     if (pendingMessage) {
-      EnjoyApp.chatMessages
-        .update(pendingMessage.id, { state: "completed" })
-        .then((message) =>
-          dispatchChatMessages({ type: "update", record: message })
-        );
+      onUpdateMessage(pendingMessage.id, { state: "completed" });
     }
 
     // pick an random agent
