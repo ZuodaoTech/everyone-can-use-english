@@ -58,7 +58,9 @@ export const NOT_SUPPORT_JSON_FORMAT_MODELS = [
   "gpt-4-32k",
 ];
 
-export const CHAT_SYSTEM_PROMPT_TEMPLATE = `You are {name}. {agent_prompt}
+export const CHAT_SYSTEM_PROMPT_TEMPLATE = `You are {name}. 
+{agent_prompt}
+
 You are chatting in an online chat room.
 {agent_chat_prompt}
 
