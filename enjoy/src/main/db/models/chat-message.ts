@@ -29,6 +29,7 @@ const logger = log.scope("db/models/chat-message");
     include: [
       {
         association: ChatMessage.associations.member,
+        model: ChatMember,
         include: [
           {
             association: ChatMember.associations.agent,
@@ -37,6 +38,7 @@ const logger = log.scope("db/models/chat-message");
       },
       {
         association: ChatMessage.associations.recording,
+        model: Recording,
         include: [
           {
             association: Recording.associations.pronunciationAssessment,
@@ -45,6 +47,7 @@ const logger = log.scope("db/models/chat-message");
       },
       {
         association: ChatMessage.associations.speech,
+        model: Speech,
       },
     ],
     order: [["createdAt", "ASC"]],

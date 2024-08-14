@@ -370,6 +370,6 @@ type EnjoyAppType = {
     findOne: (params: any) => Promise<ChatMessageType>;
     create: (params: any) => Promise<ChatMessageType>;
     update: (id: string, params: any) => Promise<ChatMessageType>;
-    destroy: (id: string) => Promise<void>;
+    destroy: (id: string) => Promise<ChatMessageType>;
   };
 };

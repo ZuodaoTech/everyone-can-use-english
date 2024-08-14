@@ -82,6 +82,8 @@ export class ChatMember extends Model<ChatMember> {
       }
 
       return user;
+    } else {
+      return null;
     }
   }
 

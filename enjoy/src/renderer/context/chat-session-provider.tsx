@@ -48,7 +48,11 @@ type ChatSessionProviderState = {
   assessing: RecordingType;
   setAssessing: (recording: RecordingType) => void;
   onDeleteMessage?: (id: string) => void;
-  onCreateMessage?: (content: string, recordingUrl?: string) => void;
+  onCreateMessage?: (content: string, recordingUrl?: string) => Promise<void>;
+  onUpdateMessage?: (
+    id: string,
+    data: Partial<ChatMessageType>
+  ) => Promise<void>;
 };
 
 const initialState: ChatSessionProviderState = {
@@ -69,6 +73,7 @@ const initialState: ChatSessionProviderState = {
   assessing: null,
   setAssessing: () => null,
   onCreateMessage: () => null,
+  onUpdateMessage: () => null,
 };
 
 export const ChatSessionProviderContext =
@@ -124,9 +129,9 @@ export const ChatSessionProvider = ({
           content,
           recordingUrl,
         })
-        .then((message) =>
-          dispatchChatMessages({ type: "update", record: message })
-        )
+        .then((message) => {
+          dispatchChatMessages({ type: "update", record: message });
+        })
         .finally(() => setSubmitting(false));
     } else {
       return EnjoyApp.chatMessages
@@ -142,6 +147,15 @@ export const ChatSessionProvider = ({
         )
         .finally(() => setSubmitting(false));
     }
+  };
+
+  const onUpdateMessage = (id: string, data: Partial<ChatMessageType>) => {
+    return EnjoyApp.chatMessages
+      .update(id, data)
+      .then((message) =>
+        dispatchChatMessages({ type: "update", record: message })
+      )
+      .finally(() => setSubmitting(false));
   };
 
   const onRecorded = async (blob: Blob) => {
@@ -165,7 +179,11 @@ export const ChatSessionProvider = ({
       (m) => m.member.user && m.state === "pending"
     );
     if (pendingMessage) {
-      EnjoyApp.chatMessages.update(pendingMessage.id, { state: "completed" });
+      EnjoyApp.chatMessages
+        .update(pendingMessage.id, { state: "completed" })
+        .then((message) =>
+          dispatchChatMessages({ type: "update", record: message })
+        );
     }
 
     // pick an random agent
@@ -226,6 +244,9 @@ export const ChatSessionProvider = ({
           content: reply.content,
           state: "completed",
         })
+        .then((message) =>
+          dispatchChatMessages({ type: "append", record: message })
+        )
         .finally(() => setSubmitting(false));
     } catch (err) {
       setSubmitting(false);
@@ -316,6 +337,7 @@ export const ChatSessionProvider = ({
         setAssessing,
         onDeleteMessage: (id) => setDeletingMessage(id),
         onCreateMessage,
+        onUpdateMessage,
       }}
     >
       <MediaPlayerProvider>

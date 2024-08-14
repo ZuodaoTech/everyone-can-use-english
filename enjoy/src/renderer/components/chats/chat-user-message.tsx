@@ -52,6 +52,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
     isPaused,
     setAssessing,
     onDeleteMessage,
+    onUpdateMessage,
     submitting,
   } = useContext(ChatSessionProviderContext);
   const { currentChat } = useContext(ChatProviderContext);
@@ -190,10 +191,9 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                 </Button>
                 <Button
                   onClick={() =>
-                    EnjoyApp.chatMessages
-                      .update(chatMessage.id, { content })
-                      .catch((err) => toast.error(err.message))
-                      .finally(() => setEditing(false))
+                    onUpdateMessage(chatMessage.id, { content }).finally(() =>
+                      setEditing(false)
+                    )
                   }
                   variant="default"
                   size="sm"
