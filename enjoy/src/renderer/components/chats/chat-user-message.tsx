@@ -52,6 +52,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
     isPaused,
     setAssessing,
     onDeleteMessage,
+    submitting,
   } = useContext(ChatSessionProviderContext);
   const { currentChat } = useContext(ChatProviderContext);
   const { recording } = chatMessage;
@@ -255,7 +256,7 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                       setEditing(true);
                     }}
                   />
-                  {isPaused || isRecording ? (
+                  {isPaused || isRecording || submitting ? (
                     <LoaderIcon className="w-4 h-4 animate-spin" />
                   ) : (
                     <MicIcon

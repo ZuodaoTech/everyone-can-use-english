@@ -3,14 +3,17 @@ import {
   MicIcon,
   PauseIcon,
   PlayIcon,
+  SendIcon,
   SquareIcon,
   StepForwardIcon,
+  TextIcon,
 } from "lucide-react";
-import { Button } from "@renderer/components/ui";
-import { useContext } from "react";
+import { Button, Textarea } from "@renderer/components/ui";
+import { useContext, useEffect, useRef, useState } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import { ChatSessionProviderContext } from "@renderer/context";
 import { t } from "i18next";
+import autosize from "autosize";
 
 export const ChatInput = () => {
   const {
@@ -23,7 +26,32 @@ export const ChatInput = () => {
     recordingTime,
     isPaused,
     askAgent,
+    onCreateMessage,
   } = useContext(ChatSessionProviderContext);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const submitRef = useRef<HTMLButtonElement>(null);
+  const [inputMode, setInputMode] = useState<"text" | "audio">("text");
+  const [content, setContent] = useState("");
+
+  useEffect(() => {
+    if (!inputRef.current) return;
+
+    autosize(inputRef.current);
+
+    inputRef.current.addEventListener("keypress", (event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        submitRef.current?.click();
+      }
+    });
+
+    inputRef.current.focus();
+
+    return () => {
+      inputRef.current?.removeEventListener("keypress", () => {});
+      autosize.destroy(inputRef.current);
+    };
+  }, [inputRef.current]);
 
   if (submitting) {
     return (
@@ -75,8 +103,53 @@ export const ChatInput = () => {
     );
   }
 
+  if (inputMode === "text") {
+    return (
+      <div className="w-full flex items-end gap-2 px-2">
+        <Button
+          onClick={() => setInputMode("audio")}
+          variant="ghost"
+          className=""
+          size="icon"
+        >
+          <MicIcon className="w-6 h-6" />
+        </Button>
+        <Textarea
+          ref={inputRef}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          disabled={submitting}
+          placeholder={t("pressEnterToSend")}
+          data-testid="chat-input"
+          className="leading-6 bg-muted h-9 text-muted-foreground rounded-lg text-base px-3 py-1 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none min-h-[2.25rem] max-h-[70vh] scrollbar-thin !overflow-x-hidden"
+        />
+        <Button
+          ref={submitRef}
+          onClick={() => onCreateMessage(content)}
+          disabled={submitting || !content}
+          className=""
+          variant="ghost"
+          size="icon"
+        >
+          <SendIcon className="w-6 h-6" />
+        </Button>
+        <Button className="" variant="ghost" size="icon">
+          <StepForwardIcon className="w-6 h-6" />
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full flex gap-4 justify-center">
+      <Button
+        onClick={() => setInputMode("text")}
+        className="rounded-full shadow w-10 h-10"
+        variant="secondary"
+        size="sm"
+      >
+        <TextIcon className="w-6 h-6" />
+      </Button>
       <Button
         onClick={startRecording}
         className="rounded-full shadow w-10 h-10"

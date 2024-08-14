@@ -48,6 +48,7 @@ type ChatSessionProviderState = {
   assessing: RecordingType;
   setAssessing: (recording: RecordingType) => void;
   onDeleteMessage?: (id: string) => void;
+  onCreateMessage?: (content: string, recordingUrl?: string) => void;
 };
 
 const initialState: ChatSessionProviderState = {
@@ -67,6 +68,7 @@ const initialState: ChatSessionProviderState = {
   setShadowing: () => null,
   assessing: null,
   setAssessing: () => null,
+  onCreateMessage: () => null,
 };
 
 export const ChatSessionProviderContext =
@@ -109,6 +111,39 @@ export const ChatSessionProvider = ({
     });
   };
 
+  const onCreateMessage = (content: string, recordingUrl?: string) => {
+    if (!content) return;
+
+    const pendingMessage = chatMessages.find(
+      (m) => m.member.userType === "User" && m.state === "pending"
+    );
+
+    if (pendingMessage) {
+      return EnjoyApp.chatMessages
+        .update(pendingMessage.id, {
+          content,
+          recordingUrl,
+        })
+        .then((message) =>
+          dispatchChatMessages({ type: "update", record: message })
+        )
+        .finally(() => setSubmitting(false));
+    } else {
+      return EnjoyApp.chatMessages
+        .create({
+          chatId: chat.id,
+          memberId: chat.members.find((m) => m.userType === "User").id,
+          content,
+          state: "pending",
+          recordingUrl,
+        })
+        .then((message) =>
+          dispatchChatMessages({ type: "append", record: message })
+        )
+        .finally(() => setSubmitting(false));
+    }
+  };
+
   const onRecorded = async (blob: Blob) => {
     try {
       setSubmitting(true);
@@ -117,29 +152,7 @@ export const ChatSessionProvider = ({
         service: chat.config.sttEngine,
         align: false,
       });
-
-      const pendingMessage = chatMessages.find(
-        (m) => m.member.userType === "User" && m.state === "pending"
-      );
-
-      if (pendingMessage) {
-        return EnjoyApp.chatMessages
-          .update(pendingMessage.id, {
-            content: transcript,
-            recordingUrl: url,
-          })
-          .finally(() => setSubmitting(false));
-      } else {
-        return EnjoyApp.chatMessages
-          .create({
-            chatId: chat.id,
-            memberId: chat.members.find((m) => m.userType === "User").id,
-            content: transcript,
-            state: "pending",
-            recordingUrl: url,
-          })
-          .finally(() => setSubmitting(false));
-      }
+      return onCreateMessage(transcript, url);
     } catch (error) {
       toast.error(error.message);
       setSubmitting(false);
@@ -302,6 +315,7 @@ export const ChatSessionProvider = ({
         assessing,
         setAssessing,
         onDeleteMessage: (id) => setDeletingMessage(id),
+        onCreateMessage,
       }}
     >
       <MediaPlayerProvider>
