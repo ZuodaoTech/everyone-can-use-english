@@ -32,7 +32,7 @@ export const ChatInput = () => {
   } = useContext(ChatSessionProviderContext);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
-  const [inputMode, setInputMode] = useState<"text" | "audio">("text");
+  const [inputMode, setInputMode] = useState<"text" | "audio">("audio");
   const [content, setContent] = useState("");
 
   useEffect(() => {
