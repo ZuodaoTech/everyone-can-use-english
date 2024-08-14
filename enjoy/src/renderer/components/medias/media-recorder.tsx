@@ -16,7 +16,6 @@ export const MediaRecorder = () => {
     layout,
     media,
     isRecording,
-    setIsRecording,
     transcription,
     currentSegmentIndex,
     currentSegment,
@@ -96,7 +95,6 @@ export const MediaRecorder = () => {
 
     record.on("record-end", async (blob: Blob) => {
       createRecording({ blob, duration: Date.now() - startAt });
-      setIsRecording(false);
     });
     let interval: NodeJS.Timeout;
 
@@ -144,10 +142,7 @@ export const MediaRecorder = () => {
       </div>
 
       <div className="h-full flex flex-col justify-start space-y-1.5">
-        <MediaRecordButton
-          isRecording={isRecording}
-          setIsRecording={setIsRecording}
-        />
+        <MediaRecordButton />
       </div>
     </div>
   );

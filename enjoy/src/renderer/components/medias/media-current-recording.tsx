@@ -42,16 +42,22 @@ import {
   MicIcon,
   SquareIcon,
   DownloadIcon,
+  CheckIcon,
 } from "lucide-react";
 import { t } from "i18next";
 import { formatDuration } from "@renderer/lib/utils";
 import { useHotkeys } from "react-hotkeys-hook";
+import { LiveAudioVisualizer } from "react-audio-visualize";
 
 export const MediaCurrentRecording = () => {
   const {
     layout,
     isRecording,
-    setIsRecording,
+    isPaused,
+    togglePauseResume,
+    stopRecording,
+    recordingTime,
+    mediaRecorder,
     currentRecording,
     renderPitchContour: renderMediaPitchContour,
     regions: mediaRegions,
@@ -427,7 +433,35 @@ export const MediaCurrentRecording = () => {
     setDetailIsOpen(!detailIsOpen);
   });
 
-  if (isRecording) return <MediaRecorder />;
+  if (isRecording || isPaused) {
+    return (
+      <div className="h-full w-full flex items-center space-x-4">
+        <div className="flex-1 h-full border rounded-xl shadow-lg relative">
+          <div className="w-full h-full flex justify-center items-center gap-4">
+            <LiveAudioVisualizer
+              mediaRecorder={mediaRecorder}
+              barWidth={2}
+              gap={2}
+              width={480}
+              height="100%"
+              fftSize={512}
+              maxDecibels={-10}
+              minDecibels={-80}
+              smoothingTimeConstant={0.4}
+            />
+            <span className="serif text-muted-foreground text-sm">
+              {Math.floor(recordingTime / 60)}:
+              {String(recordingTime % 60).padStart(2, "0")}
+            </span>
+          </div>
+        </div>
+        <div className="h-full flex flex-col justify-start space-y-1.5">
+          <MediaRecordButton />
+        </div>
+      </div>
+    );
+  }
+
   if (!currentRecording?.src)
     return (
       <div className="h-full w-full flex items-center space-x-4">
@@ -443,10 +477,7 @@ export const MediaCurrentRecording = () => {
         </div>
 
         <div className="h-full flex flex-col justify-start space-y-1.5">
-          <MediaRecordButton
-            isRecording={isRecording}
-            setIsRecording={setIsRecording}
-          />
+          <MediaRecordButton />
         </div>
       </div>
     );
@@ -494,10 +525,7 @@ export const MediaCurrentRecording = () => {
           )}
         </Button>
 
-        <MediaRecordButton
-          isRecording={isRecording}
-          setIsRecording={setIsRecording}
-        />
+        <MediaRecordButton />
 
         <Button
           variant={detailIsOpen ? "secondary" : "outline"}
@@ -655,16 +683,21 @@ export const MediaCurrentRecording = () => {
   );
 };
 
-export const MediaRecordButton = (props: {
-  isRecording: boolean;
-  setIsRecording: (value: boolean) => void;
-}) => {
-  const { isRecording, setIsRecording } = props;
+export const MediaRecordButton = () => {
+  const { isRecording, startRecording, stopRecording } = useContext(
+    MediaPlayerProviderContext
+  );
 
   return (
     <Button
       variant="ghost"
-      onClick={() => setIsRecording(!isRecording)}
+      onClick={() => {
+        if (isRecording) {
+          stopRecording();
+        } else {
+          startRecording();
+        }
+      }}
       id="media-record-button"
       data-tooltip-id="media-player-tooltip"
       data-tooltip-content={
