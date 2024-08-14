@@ -716,5 +716,7 @@
   "displayContent": "显示内容",
   "hideContent": "隐藏内容",
   "audioInput": "语音输入",
-  "textInput": "文字输入"
+  "textInput": "文字输入",
+  "increasePlaybackRate": "加快播放速度",
+  "decreasePlaybackRate": "减慢播放速度"
 }

@@ -716,5 +716,7 @@
   "displayContent": "Display content",
   "hideContent": "Hide content",
   "audioInput": "Audio input",
-  "textInput": "Text input"
+  "textInput": "Text input",
+  "increasePlaybackRate": "Increase playback rate",
+  "descreasePlaybackRate": "Descrease playback rate"
 }

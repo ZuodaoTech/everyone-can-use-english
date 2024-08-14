@@ -170,6 +170,44 @@ export const Hotkeys = () => {
 
         <div className="flex items-center justify-between py-4">
           <div className="flex items-center space-x-2 capitalize">
+            {t("increasePlaybackRate")}
+          </div>
+          <kbd
+            onClick={() =>
+              handleItemSelected({
+                name: t("increasePlaybackRate"),
+                keyName: "IncreasePlaybackRate",
+              })
+            }
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
+          >
+            {currentHotkeys.IncreasePlaybackRate}
+          </kbd>
+        </div>
+
+        <Separator />
+
+        <div className="flex items-center justify-between py-4">
+          <div className="flex items-center space-x-2 capitalize">
+            {t("decreasePlaybackRate")}
+          </div>
+          <kbd
+            onClick={() =>
+              handleItemSelected({
+                name: t("decreasePlaybackRate"),
+                keyName: "DecreasePlaybackRate",
+              })
+            }
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer"
+          >
+            {currentHotkeys.DecreasePlaybackRate}
+          </kbd>
+        </div>
+
+        <Separator />
+
+        <div className="flex items-center justify-between py-4">
+          <div className="flex items-center space-x-2 capitalize">
             {t("compare")}
           </div>
           <kbd

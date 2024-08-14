@@ -432,6 +432,32 @@ export const MediaPlayerControls = () => {
       preventDefault: true,
     }
   );
+  useHotkeys(
+    currentHotkeys.IncreasePlaybackRate,
+    () => {
+      setPlaybackRate(
+        PLAYBACK_RATE_OPTIONS[
+          PLAYBACK_RATE_OPTIONS.indexOf(playbackRate) + 1
+        ] ?? playbackRate
+      );
+    },
+    {
+      preventDefault: true,
+    }
+  );
+  useHotkeys(
+    currentHotkeys.DecreasePlaybackRate,
+    () => {
+      setPlaybackRate(
+        PLAYBACK_RATE_OPTIONS[
+          PLAYBACK_RATE_OPTIONS.indexOf(playbackRate) - 1
+        ] ?? playbackRate
+      );
+    },
+    {
+      preventDefault: true,
+    }
+  );
 
   /*
    * Fit zoom ratio when activeRegion is word or segment
@@ -514,7 +540,12 @@ export const MediaPlayerControls = () => {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-96">
-            <div className="mb-4 text-center">{t("playbackRate")}</div>
+            <div
+              id="media-playback-rate-controller"
+              className="mb-4 text-center"
+            >
+              {t("playbackRate")}
+            </div>
             <div className="w-full rounded-full flex items-center justify-between bg-muted">
               {PLAYBACK_RATE_OPTIONS.map((rate, i) => (
                 <div
