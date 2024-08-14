@@ -26,10 +26,18 @@ import { LANGUAGES } from "@/constants";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderIcon, MicIcon, SquareIcon } from "lucide-react";
-import WaveSurfer from "wavesurfer.js";
-import RecordPlugin from "wavesurfer.js/dist/plugins/record";
+import {
+  CheckIcon,
+  LoaderIcon,
+  MicIcon,
+  PauseIcon,
+  PlayIcon,
+  SquareIcon,
+  XIcon,
+} from "lucide-react";
 import { usePronunciationAssessments } from "@/renderer/hooks";
+import { useAudioRecorder } from "react-audio-voice-recorder";
+import { LiveAudioVisualizer } from "react-audio-visualize";
 
 const pronunciationAssessmentSchema = z.object({
   file: z.instanceof(FileList).optional(),
@@ -135,6 +143,7 @@ export const PronunciationAssessmentForm = () => {
                   render={() => (
                     <FormItem className="grid w-full items-center gap-1.5">
                       <Input
+                        disabled={submitting}
                         placeholder={t("upload")}
                         type="file"
                         className="cursor-pointer"
@@ -155,6 +164,7 @@ export const PronunciationAssessmentForm = () => {
                   render={({ field }) => (
                     <FormItem className="grid w-full items-center gap-1.5">
                       <Input
+                        disabled={submitting}
                         placeholder={t("recording")}
                         type="file"
                         className="hidden"
@@ -191,7 +201,11 @@ export const PronunciationAssessmentForm = () => {
               render={({ field }) => (
                 <FormItem className="grid w-full items-center gap-1.5">
                   <FormLabel>{t("language")}</FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
+                  <Select
+                    disabled={submitting}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -216,6 +230,7 @@ export const PronunciationAssessmentForm = () => {
                 <FormItem className="grid w-full items-center gap-1.5">
                   <FormLabel>{t("referenceText")}</FormLabel>
                   <Textarea
+                    disabled={submitting}
                     placeholder={t("inputReferenceTextOrLeaveItBlank")}
                     className="h-64"
                     {...field}
@@ -243,19 +258,24 @@ export const PronunciationAssessmentForm = () => {
   );
 };
 
-const TEN_MINUTES = 60 * 10;
-let interval: NodeJS.Timeout;
 const RecorderButton = (props: {
+  submitting?: boolean;
   onStart?: () => void;
   onFinish: (blob: Blob) => void;
 }) => {
-  const { onStart, onFinish } = props;
+  const { submitting, onStart, onFinish } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const [isRecording, setIsRecording] = useState(false);
-  const [recorder, setRecorder] = useState<RecordPlugin>();
   const [access, setAccess] = useState<boolean>(false);
-  const [duration, setDuration] = useState<number>(0);
-  const ref = useRef(null);
+  const {
+    startRecording,
+    stopRecording,
+    togglePauseResume,
+    recordingBlob,
+    isRecording,
+    isPaused,
+    recordingTime,
+    mediaRecorder,
+  } = useAudioRecorder();
 
   const askForMediaAccess = () => {
     EnjoyApp.system.preferences.mediaAccess("microphone").then((access) => {
@@ -268,99 +288,102 @@ const RecorderButton = (props: {
     });
   };
 
-  const startRecord = () => {
-    if (isRecording) return;
-    if (!recorder) {
-      toast.warning(t("noMicrophoneAccess"));
-      return;
-    }
-
-    onStart();
-    RecordPlugin.getAvailableAudioDevices()
-      .then((devices) => devices.find((d) => d.kind === "audioinput"))
-      .then((device) => {
-        if (device) {
-          recorder.startRecording({ deviceId: device.deviceId });
-          setIsRecording(true);
-          setDuration(0);
-          interval = setInterval(() => {
-            setDuration((duration) => {
-              if (duration >= TEN_MINUTES) {
-                recorder.stopRecording();
-              }
-              return duration + 0.1;
-            });
-          }, 100);
-        } else {
-          toast.error(t("cannotFindMicrophone"));
-        }
-      });
-  };
-
-  useEffect(() => {
-    if (!access) return;
-    if (!ref?.current) return;
-
-    const ws = WaveSurfer.create({
-      container: ref.current,
-      fillParent: true,
-      height: 40,
-      autoCenter: false,
-      normalize: false,
-    });
-
-    const record = ws.registerPlugin(RecordPlugin.create());
-    setRecorder(record);
-
-    record.on("record-end", async (blob: Blob) => {
-      if (interval) clearInterval(interval);
-      onFinish(blob);
-      setIsRecording(false);
-    });
-
-    return () => {
-      if (interval) clearInterval(interval);
-      recorder?.stopRecording();
-      ws?.destroy();
-    };
-  }, [access, ref]);
-
   useEffect(() => {
     askForMediaAccess();
   }, []);
+
+  useEffect(() => {
+    if (recordingBlob) {
+      onFinish(recordingBlob);
+    }
+  }, [recordingBlob]);
+
+  useEffect(() => {
+    if (!isRecording) return;
+
+    if (recordingTime >= 60 * 5) {
+      stopRecording();
+    }
+  }, [recordingTime]);
+
+  if (isRecording) {
+    return (
+      <div className="w-full flex justify-center">
+        <div className="flex items-center space-x-2">
+          <LiveAudioVisualizer
+            mediaRecorder={mediaRecorder}
+            barWidth={2}
+            gap={2}
+            width={140}
+            height={30}
+            fftSize={512}
+            maxDecibels={-10}
+            minDecibels={-80}
+            smoothingTimeConstant={0.4}
+          />
+          <span className="text-sm text-muted-foreground">
+            {Math.floor(recordingTime / 60)}:
+            {String(recordingTime % 60).padStart(2, "0")}
+          </span>
+          <Button
+            onClick={togglePauseResume}
+            className="rounded-full shadow w-8 h-8"
+            size="icon"
+          >
+            {isPaused ? (
+              <PlayIcon
+                data-tooltip-id="chat-input-tooltip"
+                data-tooltip-content={t("continue")}
+                fill="white"
+                className="w-4 h-4"
+              />
+            ) : (
+              <PauseIcon
+                data-tooltip-id="chat-input-tooltip"
+                data-tooltip-content={t("pause")}
+                fill="white"
+                className="w-4 h-4"
+              />
+            )}
+          </Button>
+          <Button
+            data-tooltip-id="chat-input-tooltip"
+            data-tooltip-content={t("finish")}
+            onClick={stopRecording}
+            className="rounded-full bg-green-500 hover:bg-green-600 shadow w-8 h-8"
+            size="icon"
+          >
+            <CheckIcon className="w-4 h-4 text-white" />
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full">
-      <div className="flex items-center justify-center">
-        <Button
-          type="button"
-          variant="ghost"
-          className="aspect-square p-0 h-12 rounded-full bg-red-500 hover:bg-red-500/90"
-          onClick={() => {
-            if (isRecording) {
-              recorder?.stopRecording();
-            } else {
-              startRecord();
-            }
-          }}
-        >
-          {isRecording ? (
-            <SquareIcon fill="white" className="w-6 h-6 text-white" />
-          ) : (
-            <MicIcon className="w-6 h-6 text-white" />
-          )}
-        </Button>
-      </div>
-      <div className="w-full flex items-center">
-        <div
-          ref={ref}
-          className={isRecording ? "w-full mr-4" : "h-0 overflow-hidden"}
-        ></div>
-        {isRecording && (
-          <div className="text-muted-foreground text-sm w-24">
-            {duration.toFixed(1)} / {TEN_MINUTES}
-          </div>
+    <div className="w-full flex items-center gap-4 justify-center">
+      <Button
+        data-tooltip-id="chat-input-tooltip"
+        data-tooltip-content={t("record")}
+        disabled={submitting}
+        onClick={(event) => {
+          event.preventDefault();
+          onStart && onStart();
+          if (access) {
+            startRecording();
+          } else {
+            askForMediaAccess();
+          }
+        }}
+        className="rounded-full shadow w-10 h-10"
+        size="icon"
+      >
+        {submitting ? (
+          <LoaderIcon className="w-6 h-6 animate-spin" />
+        ) : (
+          <MicIcon className="w-6 h-6" />
         )}
-      </div>
+      </Button>
     </div>
   );
 };

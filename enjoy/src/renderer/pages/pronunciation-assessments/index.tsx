@@ -34,7 +34,7 @@ import {
 
 export default () => {
   const navigate = useNavigate();
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const [assessments, setAssessments] = useState<PronunciationAssessmentType[]>(
     []
   );
@@ -45,6 +45,7 @@ export default () => {
   const [deleting, setDeleting] = useState<PronunciationAssessmentType | null>(
     null
   );
+  const [sharing, setSharing] = useState<RecordingType | null>(null);
 
   const handleDelete = async (assessment: PronunciationAssessmentType) => {
     try {
@@ -54,6 +55,43 @@ export default () => {
     } catch (err) {
       toast.error(err.message);
     }
+  };
+
+  const handleShare = async () => {
+    if (!sharing) return;
+
+    if (!sharing.isSynced) {
+      try {
+        await EnjoyApp.recordings.sync(sharing.id);
+      } catch (error) {
+        toast.error(t("shareFailed"), { description: error.message });
+        return;
+      }
+    }
+    if (!sharing.uploadedAt) {
+      try {
+        await EnjoyApp.recordings.upload(sharing.id);
+      } catch (error) {
+        toast.error(t("shareFailed"), { description: error.message });
+        return;
+      }
+    }
+
+    webApi
+      .createPost({
+        targetId: sharing.id,
+        targetType: "Recording",
+      })
+      .then(() => {
+        toast.success(t("sharedSuccessfully"), {
+          description: t("sharedRecording"),
+        });
+      })
+      .catch((error) => {
+        toast.error(t("shareFailed"), {
+          description: error.message,
+        });
+      });
   };
 
   const fetchAssessments = (params?: { offset: number; limit?: number }) => {
@@ -144,6 +182,7 @@ export default () => {
               pronunciationAssessment={assessment}
               onSelect={setSelecting}
               onDelete={setDeleting}
+              onSharing={setSharing}
             />
           ))}
         </div>
@@ -204,6 +243,28 @@ export default () => {
             <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={() => handleDelete(deleting)}>
               {t("confirm")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={Boolean(sharing)}
+        onOpenChange={(value) => {
+          if (!value) setSharing(null);
+        }}
+      >
+        <AlertDialogContent aria-describedby={undefined}>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("shareRecording")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("areYouSureToShareThisRecordingToCommunity")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button onClick={handleShare}>{t("share")}</Button>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

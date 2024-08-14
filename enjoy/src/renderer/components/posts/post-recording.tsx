@@ -15,6 +15,7 @@ export const PostRecording = (props: {
 
   const fetchSegment = async () => {
     if (segment) return;
+    if (!recording.targetId) return;
 
     webApi
       .mineSegments({

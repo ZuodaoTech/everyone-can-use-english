@@ -17,8 +17,14 @@ export const PronunciationAssessmentCard = (props: {
   pronunciationAssessment: PronunciationAssessmentType;
   onSelect: (assessment: PronunciationAssessmentType) => void;
   onDelete: (assessment: PronunciationAssessmentType) => void;
+  onSharing: (recording: RecordingType) => void;
 }) => {
-  const { pronunciationAssessment: assessment, onSelect, onDelete } = props;
+  const {
+    pronunciationAssessment: assessment,
+    onSelect,
+    onDelete,
+    onSharing,
+  } = props;
 
   return (
     <div
@@ -78,13 +84,20 @@ export const PronunciationAssessmentCard = (props: {
             progress={assessment.pronunciationScore || 0}
             fontSize={24}
           />
-          <div className="flex justify-center">
+          <div className="flex items-center justify-center gap-2">
             <Button
               onClick={() => onSelect(assessment)}
-              variant="secondary"
+              variant="outline"
               size="sm"
             >
               {t("detail")}
+            </Button>
+            <Button
+              onClick={() => onSharing(assessment.target)}
+              variant="outline"
+              size="sm"
+            >
+              {t("share")}
             </Button>
           </div>
         </div>
