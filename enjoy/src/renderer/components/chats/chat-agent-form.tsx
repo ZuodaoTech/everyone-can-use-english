@@ -46,7 +46,7 @@ export const ChatAgentForm = (props: {
     language: string;
     introduction: string;
     config: any;
-  }) => void;
+  }) => Promise<any>;
   onDestroy: () => void;
 }) => {
   const { agent, onSave, onDestroy } = props;
@@ -58,9 +58,9 @@ export const ChatAgentForm = (props: {
   const [ttsProviders, setTtsProviders] = useState<any>(TTS_PROVIDERS);
 
   const agentFormSchema = z.object({
-    name: z.string(),
-    introduction: z.string(),
-    language: z.string(),
+    name: z.string().min(1),
+    introduction: z.string().min(1),
+    language: z.string().min(1),
     engine: z.enum(["enjoyai", "openai", "ollama"]),
     model: z.string(),
     prompt: z.string(),
@@ -95,6 +95,9 @@ export const ChatAgentForm = (props: {
       language,
       introduction,
       config,
+    }).then(() => {
+      if (agent?.id) return;
+      form.reset();
     });
   });
 
@@ -172,7 +175,7 @@ export const ChatAgentForm = (props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chatAgent.name")}</FormLabel>
-                <Input {...field} />
+                <Input required {...field} />
                 <FormMessage />
               </FormItem>
             )}
@@ -184,7 +187,7 @@ export const ChatAgentForm = (props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chatAgent.introduction")}</FormLabel>
-                <Textarea className="max-h-36" {...field} />
+                <Textarea required className="max-h-36" {...field} />
                 <FormMessage />
               </FormItem>
             )}
@@ -196,7 +199,7 @@ export const ChatAgentForm = (props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chatAgent.prompt")}</FormLabel>
-                <Textarea className="max-h-48" {...field} />
+                <Textarea required className="max-h-48" {...field} />
                 <FormMessage />
               </FormItem>
             )}
@@ -208,7 +211,11 @@ export const ChatAgentForm = (props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chatAgent.language")}</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  required
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
                   <SelectTrigger className="text-xs">
                     <SelectValue>
                       {
@@ -240,7 +247,11 @@ export const ChatAgentForm = (props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chatAgent.engine")}</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  required
+                  onValueChange={field.onChange}
+                  value={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder={t("selectAiEngine")} />
@@ -268,7 +279,11 @@ export const ChatAgentForm = (props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chatAgent.model")}</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  required
+                  onValueChange={field.onChange}
+                  value={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder={t("selectAiModel")} />
@@ -321,6 +336,7 @@ export const ChatAgentForm = (props: {
               <FormItem>
                 <FormLabel>{t("models.chatAgent.ttsEngine")}</FormLabel>
                 <Select
+                  required
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                   value={field.value}
@@ -349,6 +365,7 @@ export const ChatAgentForm = (props: {
               <FormItem>
                 <FormLabel>{t("models.chatAgent.ttsModel")}</FormLabel>
                 <Select
+                  required
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                   value={field.value}
@@ -379,6 +396,7 @@ export const ChatAgentForm = (props: {
               <FormItem>
                 <FormLabel>{t("models.chatAgent.ttsVoice")}</FormLabel>
                 <Select
+                  required
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                   value={field.value}

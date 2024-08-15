@@ -80,9 +80,9 @@ export const ChatAgents = () => {
           agent={selected}
           onSave={(data) => {
             if (selected) {
-              updateChatAgent(selected.id, data);
+              return updateChatAgent(selected.id, data);
             } else {
-              createChatAgent(data).then(() => setSelected(null));
+              return createChatAgent(data).then(() => setSelected(null));
             }
           }}
           onDestroy={() => {
