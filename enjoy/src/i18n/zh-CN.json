@@ -718,5 +718,6 @@
   "audioInput": "语音输入",
   "textInput": "文字输入",
   "increasePlaybackRate": "加快播放速度",
-  "decreasePlaybackRate": "减慢播放速度"
+  "decreasePlaybackRate": "减慢播放速度",
+  "usage": "使用情况"
 }
