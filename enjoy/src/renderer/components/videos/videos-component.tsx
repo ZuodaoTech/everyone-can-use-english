@@ -32,6 +32,7 @@ import {
   SelectItem,
   toast,
   Input,
+  DialogDescription,
 } from "@renderer/components/ui";
 import {
   DbProviderContext,
@@ -268,6 +269,9 @@ export const VideosComponent = () => {
         <DialogContent aria-describedby={undefined}>
           <DialogHeader>
             <DialogTitle>{t("editResource")}</DialogTitle>
+            <DialogDescription className="sr-only">
+              edit video
+            </DialogDescription>
           </DialogHeader>
 
           <VideoEditForm
@@ -289,21 +293,23 @@ export const VideosComponent = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>{t("deleteResource")}</AlertDialogTitle>
             <AlertDialogDescription>
-              <p className="break-all">
+              <span className="break-all">
                 {t("deleteResourceConfirmation", {
                   name: deleting?.name || "",
                 })}
-              </p>
+              </span>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive"
-              onClick={async () => {
+              onClick={() => {
                 if (!deleting) return;
-                await EnjoyApp.videos.destroy(deleting.id);
-                setDeleting(null);
+                EnjoyApp.videos
+                  .destroy(deleting.id)
+                  .catch((err) => toast.error(err.message))
+                  .finally(() => setDeleting(null));
               }}
             >
               {t("delete")}

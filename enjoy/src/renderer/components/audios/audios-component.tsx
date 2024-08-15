@@ -32,6 +32,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  DialogDescription,
 } from "@renderer/components/ui";
 import {
   DbProviderContext,
@@ -273,6 +274,9 @@ export const AudiosComponent = () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("editResource")}</DialogTitle>
+            <DialogDescription className="sr-only">
+              edit audio
+            </DialogDescription>
           </DialogHeader>
 
           <AudioEditForm
@@ -284,7 +288,7 @@ export const AudiosComponent = () => {
       </Dialog>
 
       <AlertDialog
-        open={!!deleting}
+        open={Boolean(deleting)}
         onOpenChange={(value) => {
           if (value) return;
           setDeleting(null);
@@ -294,21 +298,23 @@ export const AudiosComponent = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>{t("deleteResource")}</AlertDialogTitle>
             <AlertDialogDescription>
-              <p className="break-all">
+              <span className="break-all">
                 {t("deleteResourceConfirmation", {
                   name: deleting?.name || "",
                 })}
-              </p>
+              </span>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive"
-              onClick={async () => {
+              onClick={() => {
                 if (!deleting) return;
-                await EnjoyApp.audios.destroy(deleting.id);
-                setDeleting(null);
+                EnjoyApp.audios
+                  .destroy(deleting.id)
+                  .catch((err) => toast.error(err.message))
+                  .finally(() => setDeleting(null));
               }}
             >
               {t("delete")}
