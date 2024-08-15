@@ -718,5 +718,6 @@
   "audioInput": "Audio input",
   "textInput": "Text input",
   "increasePlaybackRate": "Increase playback rate",
-  "descreasePlaybackRate": "Descrease playback rate"
+  "descreasePlaybackRate": "Descrease playback rate",
+  "usage": "Usage"
 }

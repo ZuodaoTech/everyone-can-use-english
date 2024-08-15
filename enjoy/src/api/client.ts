@@ -247,6 +247,10 @@ export class Client {
     });
   }
 
+  usages(): Promise<{ label: string; data: number[] }[]> {
+    return this.api.get("/api/mine/usages");
+  }
+
   syncAudio(audio: Partial<AudioType>) {
     return this.api.post("/api/mine/audios", decamelizeKeys(audio));
   }
