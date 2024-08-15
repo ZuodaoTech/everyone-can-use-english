@@ -280,6 +280,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     crop: (id: string, params: { startTime: number; endTime: number }) => {
       return ipcRenderer.invoke("audios-crop", id, params);
     },
+    cleanUp: () => {
+      return ipcRenderer.invoke("audios-clean-up");
+    },
   },
   videos: {
     findAll: (params: {
@@ -305,6 +308,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     crop: (id: string, params: { startTime: number; endTime: number }) => {
       return ipcRenderer.invoke("videos-crop", id, params);
+    },
+    cleanUp: () => {
+      return ipcRenderer.invoke("videos-clean-up");
     },
   },
   recordings: {
@@ -655,7 +661,11 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   chatMessages: {
-    findAll: (params: { chatSessionId: string; offset?: number; limit?: number }) => {
+    findAll: (params: {
+      chatSessionId: string;
+      offset?: number;
+      limit?: number;
+    }) => {
       return ipcRenderer.invoke("chat-messages-find-all", params);
     },
     findOne: (params: any) => {

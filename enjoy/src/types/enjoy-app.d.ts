@@ -159,6 +159,7 @@ type EnjoyAppType = {
       id: string,
       params: { startTime: number; endTime: number }
     ) => Promise<string>;
+    cleanUp: () => Promise<void>;
   };
   videos: {
     findAll: (params: any) => Promise<VideoType[]>;
@@ -171,6 +172,7 @@ type EnjoyAppType = {
       id: string,
       params: { startTime: number; endTime: number }
     ) => Promise<string>;
+    cleanUp: () => Promise<void>;
   };
   recordings: {
     findAll: (where: any) => Promise<RecordingType[]>;

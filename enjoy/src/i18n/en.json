@@ -667,7 +667,7 @@
   "scoreDesc": "Score desc",
   "scoreAsc": "Score asc",
   "recordingsDurationDesc": "Recordings duration",
-  "recordingsCountDesc": "Recordings duration",
+  "recordingsCountDesc": "Recordings count",
   "all": "All",
   "allLanguages": "All languages",
   "search": "Search",
@@ -719,5 +719,9 @@
   "textInput": "Text input",
   "increasePlaybackRate": "Increase playback rate",
   "descreasePlaybackRate": "Descrease playback rate",
-  "usage": "Usage"
+  "usage": "Usage",
+  "cannotFindSourceFile": "Cannot find source file",
+  "cleanUp": "Clean up",
+  "cleanUpConfirmation": "Are you sure to remove resources without source file?",
+  "cleanedUpSuccessfully": "Cleaned up successfully"
 }

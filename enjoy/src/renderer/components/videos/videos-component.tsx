@@ -32,6 +32,8 @@ import {
   SelectItem,
   toast,
   Input,
+  DialogDescription,
+  AlertDialogTrigger,
 } from "@renderer/components/ui";
 import {
   DbProviderContext,
@@ -56,8 +58,9 @@ export const VideosComponent = () => {
 
   const [editing, setEditing] = useState<Partial<VideoType> | null>(null);
   const [deleting, setDeleting] = useState<Partial<VideoType> | null>(null);
-
   const [loading, setLoading] = useState(false);
+
+  const [tab, setTab] = useState("grid");
 
   useEffect(() => {
     addDblistener(onVideosUpdate);
@@ -66,6 +69,18 @@ export const VideosComponent = () => {
       removeDbListener(onVideosUpdate);
     };
   }, []);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects.get("videos-page-tab").then((value) => {
+      if (value) {
+        setTab(value);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects.set("videos-page-tab", tab);
+  }, [tab]);
 
   const fetchVideos = async (options?: { offset: number }) => {
     if (loading) return;
@@ -154,7 +169,7 @@ export const VideosComponent = () => {
   return (
     <>
       <div className="">
-        <Tabs defaultValue="grid">
+        <Tabs value={tab} onValueChange={setTab}>
           <div className="flex flex-wrap items-center gap-4 mb-4">
             <TabsList>
               <TabsTrigger value="grid">
@@ -211,6 +226,29 @@ export const VideosComponent = () => {
               onChange={(e) => setQuery(e.target.value)}
             />
             <AddMediaButton type="Video" />
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="secondary">{t("cleanUp")}</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogTitle>{t("cleanUp")}</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t("cleanUpConfirmation")}
+                </AlertDialogDescription>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() =>
+                      EnjoyApp.videos
+                        .cleanUp()
+                        .then(() => toast.success(t("cleanedUpSuccessfully")))
+                    }
+                  >
+                    {t("confirm")}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
           {videos.length === 0 ? (
             <div className="flex items-center justify-center h-48 border border-dashed rounded-lg">
@@ -255,6 +293,9 @@ export const VideosComponent = () => {
         <DialogContent aria-describedby={undefined}>
           <DialogHeader>
             <DialogTitle>{t("editResource")}</DialogTitle>
+            <DialogDescription className="sr-only">
+              edit video
+            </DialogDescription>
           </DialogHeader>
 
           <VideoEditForm
@@ -276,21 +317,23 @@ export const VideosComponent = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>{t("deleteResource")}</AlertDialogTitle>
             <AlertDialogDescription>
-              <p className="break-all">
+              <span className="break-all">
                 {t("deleteResourceConfirmation", {
                   name: deleting?.name || "",
                 })}
-              </p>
+              </span>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive"
-              onClick={async () => {
+              onClick={() => {
                 if (!deleting) return;
-                await EnjoyApp.videos.destroy(deleting.id);
-                setDeleting(null);
+                EnjoyApp.videos
+                  .destroy(deleting.id)
+                  .catch((err) => toast.error(err.message))
+                  .finally(() => setDeleting(null));
               }}
             >
               {t("delete")}

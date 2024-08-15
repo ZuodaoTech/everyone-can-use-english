@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { cn } from "@renderer/lib/utils";
-import { AudioLinesIcon } from "lucide-react";
+import { AudioLinesIcon, CircleAlertIcon } from "lucide-react";
 import { Badge } from "@renderer/components/ui";
+import { t } from "i18next";
 
 export const AudioCard = (props: {
   audio: Partial<AudioType>;
@@ -31,6 +32,15 @@ export const AudioCard = (props: {
 
           {audio.language && (
             <Badge className="absolute left-2 top-2">{audio.language}</Badge>
+          )}
+          {!audio.src && (
+            <div
+              data-tooltip-content={t("cannotFindSourceFile")}
+              data-tooltip-id="global-tooltip"
+              className="absolute right-2 top-2"
+            >
+              <CircleAlertIcon className="text-destructive w-4 h-4" />
+            </div>
           )}
         </div>
       </Link>

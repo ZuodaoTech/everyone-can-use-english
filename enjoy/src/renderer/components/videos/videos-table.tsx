@@ -17,7 +17,7 @@ import {
   EditIcon,
   TrashIcon,
   CheckCircleIcon,
-  AudioWaveformIcon,
+  CircleAlertIcon,
 } from "lucide-react";
 import dayjs from "@renderer/lib/dayjs";
 import { secondsToTimestamp } from "@renderer/lib/utils";
@@ -62,8 +62,17 @@ export const VideosTable = (props: {
                 <Tooltip>
                   <TooltipTrigger>
                     <Link to={`/videos/${video.id}`}>
-                      <div className="cursor-pointer truncate max-w-[12rem]">
-                        {video.name}
+                      <div className="flex items-center space-x-2">
+                        {!video.src && (
+                          <CircleAlertIcon
+                            data-tooltip-content={t("cannotFindSourceFile")}
+                            data-tooltip-id="global-tooltip"
+                            className="text-destructive w-4 h-4"
+                          />
+                        )}
+                        <div className="cursor-pointer truncate max-w-[12rem]">
+                          {video.name}
+                        </div>
                       </div>
                     </Link>
                   </TooltipTrigger>

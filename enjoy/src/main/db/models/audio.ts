@@ -121,11 +121,15 @@ export class Audio extends Model<Audio> {
 
   @Column(DataType.VIRTUAL)
   get src(): string {
-    return `enjoy://${path.posix.join(
-      "library",
-      "audios",
-      this.getDataValue("md5") + this.extname
-    )}`;
+    if (this.filePath) {
+      return `enjoy://${path.posix.join(
+        "library",
+        "audios",
+        this.getDataValue("md5") + this.extname
+      )}`;
+    } else {
+      return null;
+    }
   }
 
   @Column(DataType.VIRTUAL)
@@ -152,11 +156,17 @@ export class Audio extends Model<Audio> {
   }
 
   get filePath(): string {
-    return path.join(
+    const file = path.join(
       settings.userDataPath(),
       "audios",
       this.getDataValue("md5") + this.extname
     );
+
+    if (fs.existsSync(file)) {
+      return file;
+    } else {
+      return null;
+    }
   }
 
   async upload(force: boolean = false) {
@@ -248,7 +258,9 @@ export class Audio extends Model<Audio> {
 
   @AfterDestroy
   static cleanupFile(audio: Audio) {
-    fs.remove(audio.filePath);
+    if (audio.filePath) {
+      fs.remove(audio.filePath);
+    }
     Recording.destroy({
       where: {
         targetId: audio.id,

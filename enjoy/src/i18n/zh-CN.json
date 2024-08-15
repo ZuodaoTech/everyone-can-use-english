@@ -719,5 +719,9 @@
   "textInput": "文字输入",
   "increasePlaybackRate": "加快播放速度",
   "decreasePlaybackRate": "减慢播放速度",
-  "usage": "使用情况"
+  "usage": "使用情况",
+  "cannotFindSourceFile": "无法找到源文件，可能已经被删除",
+  "cleanUp": "清理",
+  "cleanUpConfirmation": "您确定要移除所有找不到源文件的资源吗？",
+  "cleanedUpSuccessfully": "清理成功"
 }

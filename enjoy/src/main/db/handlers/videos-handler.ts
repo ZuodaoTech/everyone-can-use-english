@@ -158,6 +158,16 @@ class VideosHandler {
     return pathToEnjoyUrl(output);
   }
 
+  private async cleanUp() {
+    const videos = await Video.findAll();
+
+    for (const video of videos) {
+      if (!video.src) {
+        video.destroy();
+      }
+    }
+  }
+
   register() {
     ipcMain.handle("videos-find-all", this.findAll);
     ipcMain.handle("videos-find-one", this.findOne);
@@ -166,6 +176,7 @@ class VideosHandler {
     ipcMain.handle("videos-destroy", this.destroy);
     ipcMain.handle("videos-upload", this.upload);
     ipcMain.handle("videos-crop", this.crop);
+    ipcMain.handle("videos-clean-up", this.cleanUp);
   }
 }
 

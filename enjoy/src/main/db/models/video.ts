@@ -121,11 +121,15 @@ export class Video extends Model<Video> {
 
   @Column(DataType.VIRTUAL)
   get src(): string {
-    return `enjoy://${path.posix.join(
-      "library",
-      "videos",
-      this.getDataValue("md5") + this.extname
-    )}`;
+    if (this.filePath) {
+      return `enjoy://${path.posix.join(
+        "library",
+        "videos",
+        this.getDataValue("md5") + this.extname
+      )}`;
+    } else {
+      return null;
+    }
   }
 
   @Column(DataType.VIRTUAL)
@@ -152,11 +156,17 @@ export class Video extends Model<Video> {
   }
 
   get filePath(): string {
-    return path.join(
+    const file = path.join(
       settings.userDataPath(),
       "videos",
       this.getDataValue("md5") + this.extname
     );
+
+    if (fs.existsSync(file)) {
+      return file;
+    } else {
+      return null;
+    }
   }
 
   // generate cover and upload
@@ -270,7 +280,9 @@ export class Video extends Model<Video> {
 
   @AfterDestroy
   static cleanupFile(video: Video) {
-    fs.remove(video.filePath);
+    if (video.filePath) {
+      fs.remove(video.filePath);
+    }
     Recording.destroy({
       where: {
         targetId: video.id,

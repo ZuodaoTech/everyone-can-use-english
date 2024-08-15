@@ -32,6 +32,8 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  DialogDescription,
+  AlertDialogTrigger,
 } from "@renderer/components/ui";
 import {
   DbProviderContext,
@@ -58,6 +60,8 @@ export const AudiosComponent = () => {
   const [deleting, setDeleting] = useState<Partial<AudioType> | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const [tab, setTab] = useState("grid");
+
   useEffect(() => {
     addDblistener(onAudiosUpdate);
 
@@ -65,6 +69,18 @@ export const AudiosComponent = () => {
       removeDbListener(onAudiosUpdate);
     };
   }, []);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects.get("audios-page-tab").then((value) => {
+      if (value) {
+        setTab(value);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects.set("audios-page-tab", tab);
+  }, [tab]);
 
   const fetchAudios = async (options?: { offset: number }) => {
     if (loading) return;
@@ -154,7 +170,7 @@ export const AudiosComponent = () => {
   return (
     <>
       <div className="">
-        <Tabs defaultValue="grid">
+        <Tabs value={tab} onValueChange={setTab}>
           <div className="flex flex-wrap items-center gap-4 mb-4">
             <TabsList>
               <TabsTrigger value="grid">
@@ -213,6 +229,29 @@ export const AudiosComponent = () => {
             />
 
             <AddMediaButton type="Audio" />
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="secondary">{t("cleanUp")}</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogTitle>{t("cleanUp")}</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t("cleanUpConfirmation")}
+                </AlertDialogDescription>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() =>
+                      EnjoyApp.audios
+                        .cleanUp()
+                        .then(() => toast.success(t("cleanedUpSuccessfully")))
+                    }
+                  >
+                    {t("confirm")}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
 
           {audios.length === 0 ? (
@@ -259,6 +298,9 @@ export const AudiosComponent = () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("editResource")}</DialogTitle>
+            <DialogDescription className="sr-only">
+              edit audio
+            </DialogDescription>
           </DialogHeader>
 
           <AudioEditForm
@@ -270,7 +312,7 @@ export const AudiosComponent = () => {
       </Dialog>
 
       <AlertDialog
-        open={!!deleting}
+        open={Boolean(deleting)}
         onOpenChange={(value) => {
           if (value) return;
           setDeleting(null);
@@ -280,21 +322,23 @@ export const AudiosComponent = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>{t("deleteResource")}</AlertDialogTitle>
             <AlertDialogDescription>
-              <p className="break-all">
+              <span className="break-all">
                 {t("deleteResourceConfirmation", {
                   name: deleting?.name || "",
                 })}
-              </p>
+              </span>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive"
-              onClick={async () => {
+              onClick={() => {
                 if (!deleting) return;
-                await EnjoyApp.audios.destroy(deleting.id);
-                setDeleting(null);
+                EnjoyApp.audios
+                  .destroy(deleting.id)
+                  .catch((err) => toast.error(err.message))
+                  .finally(() => setDeleting(null));
               }}
             >
               {t("delete")}
