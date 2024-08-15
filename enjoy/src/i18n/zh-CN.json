@@ -723,5 +723,18 @@
   "cannotFindSourceFile": "无法找到源文件，可能已经被删除",
   "cleanUp": "清理",
   "cleanUpConfirmation": "您确定要移除所有找不到源文件的资源吗？",
-  "cleanedUpSuccessfully": "清理成功"
+  "cleanedUpSuccessfully": "清理成功",
+  "libraryDescriptions": {
+    "library": "资源库总目录，包含所有您使用 Enjoy 过程产生的文件",
+    "database": "数据库文件，记录您使用 Enjoy 的所有数据",
+    "audios": "您添加的所有音频文件",
+    "videos": "您添加的所有视频文件",
+    "segments": "音频/视频文件的段落，跟读过程中产生",
+    "speeches": "AI TTS 服务生成的语音文件",
+    "recordings": "您的所有录音文件",
+    "whisper": "Whisper 模型文件，用于语音转文本",
+    "waveforms": "波形文件，用于显示音频波形。用作缓存，可以删除",
+    "logs": "日志文件，帮助开发者调试问题",
+    "cache": "缓存文件，会自动清理。"
+  }
 }

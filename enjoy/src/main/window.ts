@@ -384,6 +384,43 @@ ${log}
     }
   );
 
+  ipcMain.handle("app-disk-usage", () => {
+    const paths: { [key: string]: string } = {
+      library: settings.libraryPath(),
+      database: settings.dbPath(),
+      audios: path.join(settings.userDataPath(), "audios"),
+      videos: path.join(settings.userDataPath(), "videos"),
+      segments: path.join(settings.userDataPath(), "segments"),
+      speeches: path.join(settings.userDataPath(), "speeches"),
+      recordings: path.join(settings.userDataPath(), "recordings"),
+      whisper: path.join(settings.libraryPath(), "whisper"),
+      waveforms: path.join(settings.libraryPath(), "waveforms"),
+      logs: path.join(settings.libraryPath(), "logs"),
+      cache: settings.cachePath(),
+    };
+
+    const sizeSync = (p: string): number => {
+      const stat = fs.statSync(p);
+      if (stat.isFile()) return stat.size;
+      else if (stat.isDirectory())
+        return fs
+          .readdirSync(p)
+          .reduce((a, e) => a + sizeSync(path.join(p, e)), 0);
+      else return 0; // can't take size of a stream/symlink/socket/
+    };
+
+    return Object.keys(paths).map((key) => {
+      const p = paths[key];
+      const size = sizeSync(p);
+
+      return {
+        name: key,
+        path: p,
+        size,
+      };
+    });
+  });
+
   // Shell
   ipcMain.handle("shell-open-external", (_event, url) => {
     shell.openExternal(url);

@@ -183,3 +183,9 @@ type PlatformInfo = {
   arch: string;
   version: string;
 };
+
+type DiskUsageType = {
+  name: string;
+  path: string;
+  size: number;
+}[];

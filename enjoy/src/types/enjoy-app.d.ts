@@ -13,6 +13,7 @@ type EnjoyAppType = {
     createIssue: (title: string, body: string) => Promise<void>;
     onCmdOutput: (callback: (event, output: string) => void) => void;
     removeCmdOutputListeners: () => void;
+    diskUsage: () => Promise<DiskUsageType>;
     version: string;
   };
   window: {

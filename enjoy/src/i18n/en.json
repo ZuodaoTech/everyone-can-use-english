@@ -723,5 +723,18 @@
   "cannotFindSourceFile": "Cannot find source file",
   "cleanUp": "Clean up",
   "cleanUpConfirmation": "Are you sure to remove resources without source file?",
-  "cleanedUpSuccessfully": "Cleaned up successfully"
+  "cleanedUpSuccessfully": "Cleaned up successfully",
+  "libraryDescriptions": {
+    "library": "Contains all files created by Enjoy while you are using the app.",
+    "database": "Records all your activities and settings.",
+    "audios": "Contains all audio files you added.",
+    "videos": "Contains all video files you added.",
+    "segments": "Contains all segments you make recording or note.",
+    "speeches": "Contains all speeches created by AI TTS.",
+    "recordings": "Contains all recordings you made.",
+    "whisper": "Contains all whisper models you downloaded.",
+    "waveforms": "Contains all waveforms decoded from audio/videos. They're for caching. It's save to delete them.",
+    "logs": "Contains some logs helpful for debugging.",
+    "cache": "Contains cached files. They will be cleaned up automatically."
+  }
 }
