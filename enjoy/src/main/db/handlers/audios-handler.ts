@@ -168,6 +168,16 @@ class AudiosHandler {
     return pathToEnjoyUrl(output);
   }
 
+  private async cleanUp() {
+    const audios = await Audio.findAll();
+
+    for (const audio of audios) {
+      if (!audio.src) {
+        audio.destroy();
+      }
+    }
+  }
+
   register() {
     ipcMain.handle("audios-find-all", this.findAll);
     ipcMain.handle("audios-find-one", this.findOne);
@@ -176,6 +186,7 @@ class AudiosHandler {
     ipcMain.handle("audios-destroy", this.destroy);
     ipcMain.handle("audios-upload", this.upload);
     ipcMain.handle("audios-crop", this.crop);
+    ipcMain.handle("audios-clean-up", this.cleanUp);
   }
 }
 

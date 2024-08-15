@@ -33,6 +33,7 @@ import {
   toast,
   Input,
   DialogDescription,
+  AlertDialogTrigger,
 } from "@renderer/components/ui";
 import {
   DbProviderContext,
@@ -225,6 +226,29 @@ export const VideosComponent = () => {
               onChange={(e) => setQuery(e.target.value)}
             />
             <AddMediaButton type="Video" />
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="secondary">{t("cleanUp")}</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogTitle>{t("cleanUp")}</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t("cleanUpConfirmation")}
+                </AlertDialogDescription>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() =>
+                      EnjoyApp.videos
+                        .cleanUp()
+                        .then(() => toast.success(t("cleanedUpSuccessfully")))
+                    }
+                  >
+                    {t("confirm")}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
           {videos.length === 0 ? (
             <div className="flex items-center justify-center h-48 border border-dashed rounded-lg">

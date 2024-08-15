@@ -33,6 +33,7 @@ import {
   SelectGroup,
   SelectItem,
   DialogDescription,
+  AlertDialogTrigger,
 } from "@renderer/components/ui";
 import {
   DbProviderContext,
@@ -228,6 +229,29 @@ export const AudiosComponent = () => {
             />
 
             <AddMediaButton type="Audio" />
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="secondary">{t("cleanUp")}</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogTitle>{t("cleanUp")}</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t("cleanUpConfirmation")}
+                </AlertDialogDescription>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() =>
+                      EnjoyApp.audios
+                        .cleanUp()
+                        .then(() => toast.success(t("cleanedUpSuccessfully")))
+                    }
+                  >
+                    {t("confirm")}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
 
           {audios.length === 0 ? (

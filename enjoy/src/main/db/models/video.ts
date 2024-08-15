@@ -280,7 +280,9 @@ export class Video extends Model<Video> {
 
   @AfterDestroy
   static cleanupFile(video: Video) {
-    fs.remove(video.filePath);
+    if (video.filePath) {
+      fs.remove(video.filePath);
+    }
     Recording.destroy({
       where: {
         targetId: video.id,
