@@ -14,7 +14,11 @@ import {
   TabsList,
   TabsTrigger,
 } from "@renderer/components/ui";
-import { CheckCircleIcon, LoaderIcon, XCircleIcon } from "lucide-react";
+import {
+  CheckCircleIcon,
+  CircleAlertIcon,
+  LoaderIcon,
+} from "lucide-react";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
 import { TranscriptionCreateForm, TranscriptionsList } from "../transcriptions";
@@ -53,7 +57,9 @@ export const MediaLoadingModal = () => {
             <Tabs defaultValue="transcribe">
               <TabsList className="w-full grid grid-cols-2 mb-4">
                 <TabsTrigger value="transcribe">{t("transcribe")}</TabsTrigger>
-                <TabsTrigger value="download">{t("downloadTranscript")}</TabsTrigger>
+                <TabsTrigger value="download">
+                  {t("downloadTranscript")}
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="transcribe">
                 <TranscriptionCreateForm
@@ -85,7 +91,7 @@ export const MediaLoadingModal = () => {
             {decodeError ? (
               <div className="mb-4 flex items-center space-x-4">
                 <div className="w-4 h-4">
-                  <XCircleIcon className="w-4 h-4 text-destructive" />
+                  <CircleAlertIcon className="text-destructive w-4 h-4" />
                 </div>
                 <div className="select-text">
                   <div className="mb-2">{decodeError}</div>
@@ -97,8 +103,17 @@ export const MediaLoadingModal = () => {
               </div>
             ) : (
               <div className="mb-4 flex items-center space-x-4">
-                <LoaderIcon className="w-4 h-4 animate-spin" />
-                <span>{t("decodingWaveform")}</span>
+                {media?.src ? (
+                  <>
+                    <LoaderIcon className="w-4 h-4 animate-spin" />
+                    <span>{t("decodingWaveform")}</span>
+                  </>
+                ) : (
+                  <>
+                    <CircleAlertIcon className="text-destructive w-4 h-4" />
+                    <span>{t("cannotFindSourceFile")}</span>
+                  </>
+                )}
               </div>
             )}
             <AlertDialogFooter>

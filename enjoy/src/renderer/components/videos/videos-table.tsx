@@ -67,7 +67,7 @@ export const VideosTable = (props: {
                           <CircleAlertIcon
                             data-tooltip-content={t("cannotFindSourceFile")}
                             data-tooltip-id="global-tooltip"
-                            className="text-red-500 w-4 h-4"
+                            className="text-destructive w-4 h-4"
                           />
                         )}
                         <div className="cursor-pointer truncate max-w-[12rem]">

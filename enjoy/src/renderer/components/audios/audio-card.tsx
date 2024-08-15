@@ -39,7 +39,7 @@ export const AudioCard = (props: {
               data-tooltip-id="global-tooltip"
               className="absolute right-2 top-2"
             >
-              <CircleAlertIcon className="text-red-500 w-4 h-4" />
+              <CircleAlertIcon className="text-destructive w-4 h-4" />
             </div>
           )}
         </div>

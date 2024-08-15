@@ -719,5 +719,6 @@
   "textInput": "Text input",
   "increasePlaybackRate": "Increase playback rate",
   "descreasePlaybackRate": "Descrease playback rate",
-  "usage": "Usage"
+  "usage": "Usage",
+  "cannotFindSourceFile": "Cannot find source file"
 }
