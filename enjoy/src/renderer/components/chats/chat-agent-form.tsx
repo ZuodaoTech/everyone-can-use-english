@@ -28,7 +28,6 @@ import {
   SelectValue,
   Slider,
   Textarea,
-  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { LANGUAGES } from "@/constants";
@@ -50,7 +49,7 @@ export const ChatAgentForm = (props: {
   onDestroy: () => void;
 }) => {
   const { agent, onSave, onDestroy } = props;
-  const { learningLanguage, webApi, EnjoyApp } = useContext(
+  const { learningLanguage, webApi } = useContext(
     AppSettingsProviderContext
   );
   const { openai } = useContext(AISettingsProviderContext);
@@ -125,15 +124,6 @@ export const ChatAgentForm = (props: {
     }
 
     setGptProviders({ ...providers });
-  };
-
-  const destroyChatAgent = async () => {
-    EnjoyApp.chatAgents
-      .destroy(agent.id)
-      .then(() => onDestroy())
-      .catch((e) => {
-        toast.error(t(e.message));
-      });
   };
 
   const refreshTtsProviders = async () => {
@@ -455,7 +445,7 @@ export const ChatAgentForm = (props: {
                   <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
                   <AlertDialogAction
                     className="bg-destructive hover:bg-destructive-hover"
-                    onClick={destroyChatAgent}
+                    onClick={onDestroy}
                   >
                     {t("delete")}
                   </AlertDialogAction>
