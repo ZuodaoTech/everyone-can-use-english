@@ -291,7 +291,10 @@ const UsageChart = () => {
     new Chart(chartRef.current, {
       type: "bar",
       data: {
-        labels: Object.keys(usages[0].data),
+        labels: Object.keys(
+          usages.find((u) => Boolean(Object.keys(u.data).length))?.data ||
+            {}
+        ),
         datasets: usages.map((usage) => ({
           label: usage.label,
           data: Object.values(usage.data),
