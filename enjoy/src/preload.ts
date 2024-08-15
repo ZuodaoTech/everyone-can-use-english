@@ -47,6 +47,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     removeCmdOutputListeners: () => {
       ipcRenderer.removeAllListeners("app-on-cmd-output");
     },
+    diskUsage: () => {
+      return ipcRenderer.invoke("app-disk-usage");
+    },
     version,
   },
   window: {
