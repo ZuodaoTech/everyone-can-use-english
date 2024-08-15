@@ -56,8 +56,9 @@ export const VideosComponent = () => {
 
   const [editing, setEditing] = useState<Partial<VideoType> | null>(null);
   const [deleting, setDeleting] = useState<Partial<VideoType> | null>(null);
-
   const [loading, setLoading] = useState(false);
+
+  const [tab, setTab] = useState("grid");
 
   useEffect(() => {
     addDblistener(onVideosUpdate);
@@ -66,6 +67,18 @@ export const VideosComponent = () => {
       removeDbListener(onVideosUpdate);
     };
   }, []);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects.get("videos-page-tab").then((value) => {
+      if (value) {
+        setTab(value);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects.set("videos-page-tab", tab);
+  }, [tab]);
 
   const fetchVideos = async (options?: { offset: number }) => {
     if (loading) return;
@@ -154,7 +167,7 @@ export const VideosComponent = () => {
   return (
     <>
       <div className="">
-        <Tabs defaultValue="grid">
+        <Tabs value={tab} onValueChange={setTab}>
           <div className="flex flex-wrap items-center gap-4 mb-4">
             <TabsList>
               <TabsTrigger value="grid">

@@ -58,6 +58,8 @@ export const AudiosComponent = () => {
   const [deleting, setDeleting] = useState<Partial<AudioType> | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const [tab, setTab] = useState("grid");
+
   useEffect(() => {
     addDblistener(onAudiosUpdate);
 
@@ -65,6 +67,18 @@ export const AudiosComponent = () => {
       removeDbListener(onAudiosUpdate);
     };
   }, []);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects.get("audios-page-tab").then((value) => {
+      if (value) {
+        setTab(value);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects.set("audios-page-tab", tab);
+  }, [tab]);
 
   const fetchAudios = async (options?: { offset: number }) => {
     if (loading) return;
@@ -154,7 +168,7 @@ export const AudiosComponent = () => {
   return (
     <>
       <div className="">
-        <Tabs defaultValue="grid">
+        <Tabs value={tab} onValueChange={setTab}>
           <div className="flex flex-wrap items-center gap-4 mb-4">
             <TabsList>
               <TabsTrigger value="grid">
