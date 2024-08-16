@@ -727,6 +727,7 @@
   "libraryDescriptions": {
     "library": "Contains all files created by Enjoy while you are using the app.",
     "database": "Records all your activities and settings.",
+    "settings": "Save all your settings.",
     "audios": "Contains all audio files you added.",
     "videos": "Contains all video files you added.",
     "segments": "Contains all segments you make recording or note.",

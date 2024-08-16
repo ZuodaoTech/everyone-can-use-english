@@ -388,6 +388,7 @@ ${log}
     const paths: { [key: string]: string } = {
       library: settings.libraryPath(),
       database: settings.dbPath(),
+      settings: settings.file(),
       audios: path.join(settings.userDataPath(), "audios"),
       videos: path.join(settings.userDataPath(), "videos"),
       segments: path.join(settings.userDataPath(), "segments"),

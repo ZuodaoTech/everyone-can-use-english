@@ -727,6 +727,7 @@
   "libraryDescriptions": {
     "library": "资源库总目录，包含所有您使用 Enjoy 过程产生的文件",
     "database": "数据库文件，记录您使用 Enjoy 的所有数据",
+    "settings": "您的配置文件",
     "audios": "您添加的所有音频文件",
     "videos": "您添加的所有视频文件",
     "segments": "音频/视频文件的段落，跟读过程中产生",
