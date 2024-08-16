@@ -51,7 +51,16 @@ export const LookupWidget = () => {
       .closest("[data-source-id]")
       ?.getAttribute("data-source-id");
 
-    setSelected({ word, context, position, sourceType, sourceId });
+    setSelected({
+      word,
+      context,
+      position: {
+        x: position.x,
+        y: position.y + window.scrollY + 10,
+      },
+      sourceType,
+      sourceId,
+    });
     setOpen(true);
   };
 
