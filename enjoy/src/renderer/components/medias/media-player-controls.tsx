@@ -426,7 +426,9 @@ export const MediaPlayerControls = () => {
   useHotkeys(
     currentHotkeys.Compare,
     () => {
-      findAndClickElement("media-compare-button");
+      // The button is hidden as default in small screens
+      // It's fine to fire the click event directly even other modal is open
+      document.getElementById("media-compare-button")?.click();
     },
     {
       preventDefault: true,
