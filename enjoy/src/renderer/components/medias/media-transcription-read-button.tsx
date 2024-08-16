@@ -2,7 +2,7 @@ import {
   AppSettingsProviderContext,
   MediaPlayerProviderContext,
 } from "@renderer/context";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -293,6 +293,32 @@ const RecorderButton = (props: { onRecorded: () => void }) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [access, setAccess] = useState<boolean>(false);
 
+  const createRecording = async (blob: Blob) => {
+    const currentSegment =
+      transcription?.result?.timeline?.[currentSegmentIndex];
+    if (!currentSegment) return;
+
+    EnjoyApp.recordings
+      .create({
+        targetId: media.id,
+        targetType: media.mediaType,
+        blob: {
+          type: recordingBlob.type.split(";")[0],
+          arrayBuffer: await blob.arrayBuffer(),
+        },
+        referenceId: -1,
+        referenceText: transcription.result.timeline
+          .map((s: TimelineEntry) => s.text)
+          .join("\n"),
+      })
+      .then(() =>
+        toast.success(t("recordingSaved"), { position: "bottom-right" })
+      )
+      .catch((err) =>
+        toast.error(t("failedToSaveRecording" + " : " + err.message))
+      );
+  };
+
   const askForMediaAccess = () => {
     EnjoyApp.system.preferences.mediaAccess("microphone").then((access) => {
       if (access) {
@@ -313,32 +339,7 @@ const RecorderButton = (props: { onRecorded: () => void }) => {
     if (!transcription) return;
     if (!recordingBlob) return;
 
-    toast.promise(
-      async () => {
-        const currentSegment =
-          transcription?.result?.timeline?.[currentSegmentIndex];
-        if (!currentSegment) return;
-
-        await EnjoyApp.recordings.create({
-          targetId: media.id,
-          targetType: media.mediaType,
-          blob: {
-            type: recordingBlob.type.split(";")[0],
-            arrayBuffer: await recordingBlob.arrayBuffer(),
-          },
-          referenceId: -1,
-          referenceText: transcription.result.timeline
-            .map((s: TimelineEntry) => s.text)
-            .join("\n"),
-        });
-      },
-      {
-        loading: t("savingRecording"),
-        success: t("recordingSaved"),
-        error: (e) => t("failedToSaveRecording" + " : " + e.message),
-        position: "bottom-right",
-      }
-    );
+    createRecording(recordingBlob);
   }, [recordingBlob, media, transcription]);
 
   useEffect(() => {
@@ -404,6 +405,7 @@ const RecorderButton = (props: { onRecorded: () => void }) => {
   return (
     <div className="h-16 flex items-center justify-center px-6">
       <Button
+        disabled={!access}
         variant="ghost"
         className="aspect-square p-0 h-12 rounded-full bg-red-500 hover:bg-red-500/90"
         onClick={() => startRecording()}

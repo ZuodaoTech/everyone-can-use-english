@@ -704,49 +704,70 @@ export const MediaRecordButton = () => {
     currentSegmentIndex,
   } = useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const [active, setActive] = useState(false);
+  const ref = useRef(null);
+
+  const createRecording = async (blob: Blob) => {
+    const currentSegment =
+      transcription?.result?.timeline?.[currentSegmentIndex];
+    if (!currentSegment) return;
+
+    EnjoyApp.recordings
+      .create({
+        targetId: media.id,
+        targetType: media.mediaType,
+        blob: {
+          type: recordingBlob.type.split(";")[0],
+          arrayBuffer: await blob.arrayBuffer(),
+        },
+        referenceId: currentSegmentIndex,
+        referenceText: currentSegment.text,
+      })
+      .then(() =>
+        toast.success(t("recordingSaved"), { position: "bottom-right" })
+      )
+      .catch((err) =>
+        toast.error(t("failedToSaveRecording" + " : " + err.message))
+      );
+  };
 
   /*
    * Save recording
+   * when recording is stopped
+   * And only when record button is active
    */
   useEffect(() => {
     if (!media) return;
     if (!transcription) return;
+    if (!active) return;
     if (!recordingBlob) return;
 
-    toast.promise(
-      async () => {
-        const currentSegment =
-          transcription?.result?.timeline?.[currentSegmentIndex];
-        if (!currentSegment) return;
-
-        await EnjoyApp.recordings.create({
-          targetId: media.id,
-          targetType: media.mediaType,
-          blob: {
-            type: recordingBlob.type.split(";")[0],
-            arrayBuffer: await recordingBlob.arrayBuffer(),
-          },
-          referenceId: currentSegmentIndex,
-          referenceText: currentSegment.text,
-        });
-      },
-      {
-        loading: t("savingRecording"),
-        success: t("recordingSaved"),
-        error: (e) => t("failedToSaveRecording" + " : " + e.message),
-        position: "bottom-right",
-      }
-    );
-  }, [recordingBlob, media, transcription]);
+    createRecording(recordingBlob);
+  }, [recordingBlob, media, transcription, active]);
 
   useEffect(() => {
+    if (!active) return;
     if (recordingTime >= 60) {
       stopRecording();
     }
-  }, [recordingTime]);
+  }, [active, recordingTime]);
+
+  useEffect(() => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const elementAtPoint = document.elementFromPoint(
+      rect.left + rect.width / 2,
+      rect.top + rect.height / 2
+    );
+    setActive(
+      elementAtPoint == ref.current || ref.current.contains(elementAtPoint)
+    );
+  }, [ref, isRecording]);
 
   return (
     <Button
+      ref={ref}
       variant="ghost"
       onClick={() => {
         if (isRecording) {
