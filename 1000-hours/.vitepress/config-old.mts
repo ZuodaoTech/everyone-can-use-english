@@ -91,13 +91,13 @@ export default withMermaid(
           },
           {
             text: "语音塑造",
-            link: "/sounds-of-american-english/0-intro",
+            link: "/sounds-of-american-english/1-basics",
             collapsed: true,
             items: [
               {
-                text: "1. 音素",
+                text: "1. 基础",
                 collapsed: true,
-                link: "/sounds-of-american-english/1-phonemes",
+                link: "/sounds-of-american-english/1-basics",
                 items: [
                   {
                     text: "1.1. 字母",
@@ -694,12 +694,6 @@ export default withMermaid(
         },
       ],
     },
-
-    sitemap: {
-      hostname: 'https://1000h.org'
-    },
-
-    lastUpdated: true,
 
     markdown: {
       // https://vitepress.dev/reference/markdown
