@@ -4,18 +4,18 @@
 
 我们采用的是《剑桥英语发声词典》（[Cambridge English Pronouncing Dictionary](https://dictionary.cambridge.org/pronunciation/), i.e. *CEPD*）的音标标注体系。
 
-在《剑桥英语发声词典》里，英式英语的音标采用 D.J 音标，而美式英语的音标则采用国际音标（IPA）[^1]，并针对美式英语做了些 “优化”：
+在《剑桥英语发声词典》里，英式英语的音标采用 *D.J.* 音标，而美式英语的音标则采用国际音标（*IPA*）[^1]，并针对美式英语做了些 “优化”：
 
 > * <span class="pho">ə</span> 的长短版本儿化音，分别是 <span class="pho">ɚ</span> 和 <span class="pho">ɝː</span>
-> * <span class="pho">ə</span> 结尾的双元音和三元音，结尾的 <span class="pho">ə</span> 使用 <span class="pho">r</span> 替换，比如 <span class="pho">ɪə</span>  ⭢ <span class="pho">ɪr</span>、<span class="pho">eə</span>  ⭢ <span class="pho">er</span>
+> * <span class="pho">ə</span> 结尾的双元音和三元音，结尾的 <span class="pho">ə</span> 使用 <span class="pho">r</span> 替换，比如 <span class="pho">ɪə</span>  ⭢ <span class="pho">ɪr</span>，或者 <span class="pho">aʊə</span>  ⭢ <span class="pho">aʊr</span>
 > * 短元音 <span class="pho">ɒ</span> 用 <span class="pho">ɑː</span> 标注
 > * <span class="pho">t</span> 增加了一个弹舌音版本 <span class="pho">t̬</span>
 
-以下罗列的音素、音标、例词、及其部分语音文件均来自于剑桥英语词典的官方网站[^2]，并在此基础上做了一些补充：
+以下的罗列部分基于[《剑桥英语发声词典》](https://dictionary.cambridge.org/pronunciation/)的官方音标指南，在此基础上做了一些补充并重新排序[^2]，并刻意减少了例词的数量。
 
-> https://dictionary.cambridge.org/help/phonetics.html
-
-理论上，我们的整个教程就基于以下内容……
+> [!Note]
+> 《剑桥英语发声词典》官方音标指南（Pronunciation symbols）：
+> > https://dictionary.cambridge.org/help/phonetics.html
 
 ## 元音
 
@@ -56,12 +56,6 @@
 <td>th<b>i</b>s <span class="pho alt">ðɪs</span><span class="speak-word-inline" data-audio-us-female="/audios/this_us_female.mp3" data-audio-us-male="/audios/this_us_male.mp3"></span></td>
 </tr>
 <tr>
-<td><span class="pho">ɪə</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_ear_2023feb.mp3"></span></td>
-<td>id<b>ea</b> <span class="pho alt">aɪˈdɪə</span><span class="speak-word-inline" data-audio-uk-female="/audios/idea_uk_female.mp3" data-audio-uk-male="/audios/idea_uk_male.mp3"></span></td>
-<td><span class="pho">ɪr</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_ear_2023feb.mp3"></span></td>
-<td>g<b>ear</b> <span class="pho alt">ɡɪr</span><span class="speak-word-inline" data-audio-us-female="/audios/gear_us_female.mp3" data-audio-us-male="/audios/gear_us_male.mp3"></span></td>
-</tr>
-<tr>
 <td><span class="pho">iː</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_sheep_2023feb.mp3"></span></td>
 <td>tr<b>ee</b> <span class="pho alt">triː</span><span class="speak-word-inline" data-audio-uk-female="/audios/tree_uk_female.mp3" data-audio-uk-male="/audios/tree_uk_male.mp3"></span></td>
 <td><span class="pho">iː</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_sheep_2023feb.mp3"></span></td>
@@ -74,16 +68,16 @@
 <td>cit<b>y</b> <span class="pho alt">ˈsɪt̬.i</span><span class="speak-word-inline" data-audio-us-female="/audios/city_us_female.mp3" data-audio-us-male="/audios/city_us_male.mp3"></span></td>
 </tr>
 <tr>
+<td><span class="pho">ɪə</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_ear_2023feb.mp3"></span></td>
+<td>id<b>ea</b> <span class="pho alt">aɪˈdɪə</span><span class="speak-word-inline" data-audio-uk-female="/audios/idea_uk_female.mp3" data-audio-uk-male="/audios/idea_uk_male.mp3"></span></td>
+<td><span class="pho">ɪr</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_ear_2023feb.mp3"></span></td>
+<td>g<b>ear</b> <span class="pho alt">ɡɪr</span><span class="speak-word-inline" data-audio-us-female="/audios/gear_us_female.mp3" data-audio-us-male="/audios/gear_us_male.mp3"></span></td>
+</tr>
+<tr>
 <td><span class="pho">ʊ</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_foot_2023feb.mp3"></span></td>
 <td>f<b>oo</b>t <span class="pho alt">fʊt</span><span class="speak-word-inline" data-audio-uk-female="/audios/foot_uk_female.mp3" data-audio-uk-male="/audios/foot_uk_male.mp3"></span></td>
 <td><span class="pho">ʊ</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_foot_2023feb.mp3"></span></td>
 <td>f<b>oo</b>t <span class="pho alt">fʊt</span><span class="speak-word-inline" data-audio-us-female="/audios/foot_us_female.mp3" data-audio-us-male="/audios/foot_us_male.mp3"></span></td>
-</tr>
-<tr>
-<td><span class="pho">ʊə</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_pure_2023feb.mp3"></span></td>
-<td>p<b>ure</b> <span class="pho alt">pjʊə</span><span class="speak-word-inline" data-audio-uk-female="/audios/pure_uk_female.mp3" data-audio-uk-male="/audios/pure_uk_male.mp3"></span></td>
-<td><span class="pho">ʊr</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_pure_2023feb.mp3"></span></td>
-<td>p<b>ure</b> <span class="pho alt">pjʊr</span><span class="speak-word-inline" data-audio-us-female="/audios/pure_us_female.mp3" data-audio-us-male="/audios/pure_us_male.mp3"></span></td>
 </tr>
 <tr>
 <td><span class="pho">u</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_situation_2023feb.mp3"></span></td>
@@ -98,6 +92,12 @@
 <td>m<b>oo</b>n <span class="pho alt">muːn</span><span class="speak-word-inline" data-audio-us-female="/audios/moon_us_female.mp3" data-audio-us-male="/audios/moon_us_male.mp3"></span></td>
 </tr>
 <tr>
+<td><span class="pho">ʊə</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_pure_2023feb.mp3"></span></td>
+<td>p<b>ure</b> <span class="pho alt">pjʊə</span><span class="speak-word-inline" data-audio-uk-female="/audios/pure_uk_female.mp3" data-audio-uk-male="/audios/pure_uk_male.mp3"></span></td>
+<td><span class="pho">ʊr</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_pure_2023feb.mp3"></span></td>
+<td>p<b>ure</b> <span class="pho alt">pjʊr</span><span class="speak-word-inline" data-audio-us-female="/audios/pure_us_female.mp3" data-audio-us-male="/audios/pure_us_male.mp3"></span></td>
+</tr>
+<tr>
 <td><span class="pho">e</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_head_2023feb.mp3"></span></td>
 <td>ch<b>e</b>ck <span class="pho alt">tʃek</span><span class="speak-word-inline" data-audio-uk-female="/audios/check_uk_female.mp3" data-audio-uk-male="/audios/check_uk_male.mp3"></span></td>
 <td><span class="pho">e</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_head_2023feb.mp3"></span></td>
@@ -108,6 +108,12 @@
 <td>th<b>a</b>nk <span class="pho alt">θæŋk</span><span class="speak-word-inline" data-audio-uk-female="/audios/thank_uk_female.mp3" data-audio-uk-male="/audios/thank_uk_male.mp3"></span></td>
 <td><span class="pho">æ</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_hat_2023feb.mp3"></span></td>
 <td>th<b>a</b>nk <span class="pho alt">θæŋk</span><span class="speak-word-inline" data-audio-us-female="/audios/thank_us_female.mp3" data-audio-us-male="/audios/thank_us_male.mp3"></span></td>
+</tr>
+<tr>
+<td><span class="pho">eə</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_hair_2023feb.mp3"></span></td>
+<td><b>air</b> <span class="pho alt">eə</span><span class="speak-word-inline" data-audio-uk-female="/audios/air_uk_female.mp3" data-audio-uk-male="/audios/air_uk_male.mp3"></span></td>
+<td><span class="pho">er</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_hair_2023feb.mp3"></span></td>
+<td><b>air</b> <span class="pho alt">er</span><span class="speak-word-inline" data-audio-us-female="/audios/air_us_female.mp3" data-audio-us-male="/audios/air_us_male.mp3"></span></td>
 </tr>
 <tr>
 <td><span class="pho">ɒ</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_sock_2023feb.mp3"></span></td>
@@ -386,14 +392,17 @@
 
 ## 自定义补充符号
 
-| 符号                                                                                     | 含义 |
-| ---------------------------------------------------------------------------------------- | ---- |
-| <span class="pho">ɤ</span>   |   比 schwa <span class="pho">ə</span> 更轻的近乎于无的元音   |
-| <span class="pho">ʔ</span>                |   <span class="pho">t</span> 的喉塞音版本     |
-| <span class="pho"><u>t</u> </span>   |   可选 <span class="pho">t</span>   |
-| <span class="pho">̚ </span>   |   阻塞音   |
-| <span class="pho">ā, á, ǎ, à</span>   |   音节声调（以字母 a 为例）   |
-| <span class="pho">â</span>   |   音高被抬高的音节（以字母 a 为例）   |
+| 符号                                | 含义                                                         |
+| ----------------------------------- | ------------------------------------------------------------ |
+| <span class="pho">ɤ</span>          | 比 *schwa* <span class="pho">ə</span> 更轻的近乎于无的元音   |
+| <span class="pho">ʔ</span>          | <span class="pho">t</span> 的喉塞音版本                      |
+| <span class="pho"><u>t</u></span>   | 可选 <span class="pho">t</span>                              |
+| <span class="pho">◌̚ </span>         | 清辅音的阻塞音符号                                           |
+| <span class="pho">ᵊ</span>          | 音节辅音  <span class="pho">l, m, n, r</span> 之前的附带元音 |
+| <span class="pho">ʲ</span>          | 音节之间的加音 <span class="pho">j</span>                    |
+| <span class="pho">ʷ</span>          | 音节之间的加音 <span class="pho">w</span>                    |
+| <span class="pho">◌̅, ◌́, ◌̌, ◌̀</span> | 音节声调                                                     |
+| <span class="pho">◌̂</span>          | 音高被抬高的音节                                             |
 
 [^1]: 现在几乎所有词典都声称自己采用国际音标（IPA），但它们无一例外，都是国际音标的一个 “**自定义子集**”。
-[^2]: 音标的语音文件来自剑桥官方网站；例词的语音文件部分由 Microsoft Edge TTS 生成，声音角色选择分别是：*en-GB-ThomasNeural*，*en-GB-MaisieNeural*，*en-US-RogerNeural*，和 *en-US-JennyNeural*
+[^2]: 音标的语音文件来自剑桥官方网站；例词的语音文件部分使用 [Microsoft Edge TTS](https://github.com/rany2/edge-tts) 生成，声音角色选择分别是：*en-GB-ThomasNeural*，*en-GB-MaisieNeural*，*en-US-RogerNeural*，和 *en-US-JennyNeural*

@@ -208,6 +208,7 @@ body {
     transition: color 0.25s, background-color 0.5s;
     font-family: "CharisSIL", "DejaVu Sans Mono", "Courier New", monospace;
     font-size: var(--vp-code-font-size);
+    // font-size: 100%;
     color: var(--vp-code-color);
     &.alt {
       &::before, &::after {
