@@ -117,12 +117,12 @@ export default withMermaid(
                         link: "/sounds-of-american-english/3.1.1-ə",
                       },
                       {
-                        text: "2.1.2. 舌位",
-                        link: "/sounds-of-american-english/2.1.2-tongue",
+                        text: "3.1.2. ʌ/ɑː/ɑːr",
+                        link: "/sounds-of-american-english/3.1.2-ɑ",
                       },
                       {
-                        text: "2.1.3. ʌ/ɑː/ɑːr",
-                        link: "/sounds-of-american-english/2.1.3-ʌ",
+                        text: "3.1.3. ɪ/i/iː",
+                        link: "/sounds-of-american-english/3.1.3-i",
                       },
                       {
                         text: "2.1.4. e/æ",
