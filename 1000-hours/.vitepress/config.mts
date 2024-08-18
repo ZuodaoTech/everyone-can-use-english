@@ -121,43 +121,31 @@ export default withMermaid(
                         link: "/sounds-of-american-english/3.1.2-ɑ",
                       },
                       {
-                        text: "3.1.3. ɪ/i/iː",
+                        text: "3.1.3. ɪ/i/iː/ɪr",
                         link: "/sounds-of-american-english/3.1.3-i",
                       },
                       {
-                        text: "2.1.4. e/æ",
-                        link: "/sounds-of-american-english/2.1.4-e",
+                        text: "3.1.4. ʊ/u/uː/ʊr",
+                        link: "/sounds-of-american-english/3.1.4-u",
                       },
                       {
-                        text: "2.1.5. ə/ɚ/ɝː",
-                        link: "/sounds-of-american-english/2.1.5-ə",
+                        text: "3.1.5. e/æ/er",
+                        link: "/sounds-of-american-english/3.1.5-e",
                       },
                       {
-                        text: "2.1.6. ɪ/i/iː",
-                        link: "/sounds-of-american-english/2.1.6-i",
+                        text: "3.1.6. ɒ/ɑː/ɔː/ɔːrː",
+                        link: "/sounds-of-american-english/3.1.6-ɔ",
                       },
                       {
-                        text: "2.1.7. ʊ/u/uː",
-                        link: "/sounds-of-american-english/2.1.7-u",
-                      },
-                      {
-                        text: "2.1.8. ɑː/ɔː/ɔːr",
-                        link: "/sounds-of-american-english/2.1.8-ɔ",
-                      },
-                      {
-                        text: "2.1.9. aɪ... əʊ",
-                        link: "/sounds-of-american-english/2.1.9-aɪ",
-                      },
-                      {
-                        text: "2.1.10. ɤ",
-                        link: "/sounds-of-american-english/2.1.10-ɤ",
+                        text: "3.1.7. aɪ... əʊ",
+                        link: "/sounds-of-american-english/3.1.7-aɪ",
                       },
                     ]
                   },
                   {
-                    text: "2.2. 辅音",
+                    text: "3.2. 辅音",
                     collapsed: true,
-                    link: "/sounds-of-american-english/2.2-consonants",
+                    link: "/sounds-of-american-english/3.2-consonants",
                     items: [
                       {
                         text: "2.2.1. 分类",
