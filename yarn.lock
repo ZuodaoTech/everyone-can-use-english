@@ -17,7 +17,7 @@ __metadata:
     markdown-it-sup: "npm:^2.0.0"
     mermaid: "npm:^10.9.1"
     sass: "npm:^1.77.8"
-    vitepress: "npm:^1.3.2"
+    vitepress: "npm:^1.3.3"
     vitepress-plugin-mermaid: "npm:^2.0.16"
     vue: "npm:^3.4.38"
   languageName: unknown
@@ -1608,14 +1608,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docsearch/css@npm:3.6.1, @docsearch/css@npm:^3.6.0":
+"@docsearch/css@npm:3.6.1, @docsearch/css@npm:^3.6.1":
   version: 3.6.1
   resolution: "@docsearch/css@npm:3.6.1"
   checksum: 10c0/546b7b725044d006fe5fd2061763fbd1f944d9db21c7b86adb2d11e7bd5eee41b102f1ecccb001bb1603ef7503282cc9ad204482db62e4bc0b038c46a9cd9e6d
   languageName: node
   linkType: hard
 
-"@docsearch/js@npm:^3.6.0":
+"@docsearch/js@npm:^3.6.1":
   version: 3.6.1
   resolution: "@docsearch/js@npm:3.6.1"
   dependencies:
@@ -3033,9 +3033,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/community@npm:^0.2.27":
-  version: 0.2.27
-  resolution: "@langchain/community@npm:0.2.27"
+"@langchain/community@npm:^0.2.28":
+  version: 0.2.28
+  resolution: "@langchain/community@npm:0.2.28"
   dependencies:
     "@langchain/core": "npm:>=0.2.21 <0.3.0"
     "@langchain/openai": "npm:>=0.2.0 <0.3.0"
@@ -3129,7 +3129,7 @@ __metadata:
     faiss-node: ^0.5.1
     firebase-admin: ^11.9.0 || ^12.0.0
     google-auth-library: "*"
-    googleapis: ^126.0.1
+    googleapis: "*"
     hnswlib-node: ^3.0.0
     html-to-text: ^9.0.5
     ignore: ^5.2.0
@@ -3410,7 +3410,7 @@ __metadata:
       optional: true
     youtubei.js:
       optional: true
-  checksum: 10c0/8ed11b0d21383b30c188eb90a69153dbc4c4bdb67fbf8577bf9e386252ea6d518c27419ad009bf11b23ced12d1a1e1260162b0d4669b6f6e1a926a1f84431aa5
+  checksum: 10c0/ff3ff37a70f62a8b65ac9e089f891970e333f1d497cda202431edbef1b203c7eaab2e498f5ee04b340f228ecc2fe604d2e070b98d5a8ff92f3ebf84a28807617
   languageName: node
   linkType: hard
 
@@ -4793,14 +4793,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.46.0":
-  version: 1.46.0
-  resolution: "@playwright/test@npm:1.46.0"
+"@playwright/test@npm:^1.46.1":
+  version: 1.46.1
+  resolution: "@playwright/test@npm:1.46.1"
   dependencies:
-    playwright: "npm:1.46.0"
+    playwright: "npm:1.46.1"
   bin:
     playwright: cli.js
-  checksum: 10c0/dced91081efc8b063267626059b37923f44f98132edba906f30281277d919de27c6acf6de082d390ad263112a983f856e7f4bf37722a33cc42f62c5be308bf87
+  checksum: 10c0/b2d33f33bedfa5a5c72cfc5ee212dfbf531d9c46320b0af901e71ab61b96845e43cc636181b33b3faae27f2f87ce2d44017ac65235bf9c95209f476477b16f93
   languageName: node
   linkType: hard
 
@@ -6896,21 +6896,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shikijs/core@npm:1.13.0, @shikijs/core@npm:^1.10.3":
-  version: 1.13.0
-  resolution: "@shikijs/core@npm:1.13.0"
+"@shikijs/core@npm:1.14.1, @shikijs/core@npm:^1.13.0":
+  version: 1.14.1
+  resolution: "@shikijs/core@npm:1.14.1"
   dependencies:
     "@types/hast": "npm:^3.0.4"
-  checksum: 10c0/271ce7f3a6589d0dc5f7e8028fd2a471d4545f87f569d9f33f69fa443d3de52d2b0011b57309eeb2e954c7e0bf5134e9c21fcb69fa0ad5b9590be5163869919a
+  checksum: 10c0/a9779634956010788f346f779a8e445d17101cae64e6769a7a4d6d479ccd5d47e6c897fd7a57445cea6b64f1b79f1126ff4f57dbc6ce28c1533f6b74450d752f
   languageName: node
   linkType: hard
 
-"@shikijs/transformers@npm:^1.10.3":
-  version: 1.13.0
-  resolution: "@shikijs/transformers@npm:1.13.0"
+"@shikijs/transformers@npm:^1.13.0":
+  version: 1.14.1
+  resolution: "@shikijs/transformers@npm:1.14.1"
   dependencies:
-    shiki: "npm:1.13.0"
-  checksum: 10c0/94dbbbe98c58782662a0b3b45dfec01da79963a8dba154c34ddbf29235fe92bd0fede2affe201417ecabd78ccd33f039f288bdb1f6dabbae6b74c9216d8c74d4
+    shiki: "npm:1.14.1"
+  checksum: 10c0/72dd1b145cfe4e0e11e2a9259ddf8f89545f17f0cd4431d013b957db1b03339e14b99985b2b15eaaa9b58e7381baba087e87eec65e810bac35f243e7f79c426c
   languageName: node
   linkType: hard
 
@@ -7931,7 +7931,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/markdown-it@npm:^14.1.1":
+"@types/markdown-it@npm:^14.1.2":
   version: 14.1.2
   resolution: "@types/markdown-it@npm:14.1.2"
   dependencies:
@@ -8013,7 +8013,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:>=20, @types/node@npm:^22.3.0":
+"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:>=20":
   version: 22.3.0
   resolution: "@types/node@npm:22.3.0"
   dependencies:
@@ -8044,6 +8044,15 @@ __metadata:
   dependencies:
     undici-types: "npm:~5.26.4"
   checksum: 10c0/093713db52dc544f3931a3dec9d7d8ef661f323e57becd083a7918c778cef1eb6ec32d1017bf5ade06bb06dc5c7551f4f4d749a14e40868cce44d51e54acd8ed
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.4.0":
+  version: 22.4.0
+  resolution: "@types/node@npm:22.4.0"
+  dependencies:
+    undici-types: "npm:~6.19.2"
+  checksum: 10c0/84cd094b19a27e0db425f1d02614e4f7ac59b5eb3b21e288c8f8d4d0a4c9ad370107bc1a649d4c2b4e810cd133feea26e0bbf7e7c617f93e9e139d6d2568cf50
   languageName: node
   linkType: hard
 
@@ -8538,7 +8547,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:^5.0.5":
+"@vitejs/plugin-vue@npm:^5.0.5, @vitejs/plugin-vue@npm:^5.1.2":
   version: 5.1.2
   resolution: "@vitejs/plugin-vue@npm:5.1.2"
   peerDependencies:
@@ -8670,7 +8679,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-api@npm:^7.3.5":
+"@vue/devtools-api@npm:^7.3.8":
   version: 7.3.8
   resolution: "@vue/devtools-api@npm:7.3.8"
   dependencies:
@@ -8775,26 +8784,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/shared@npm:3.4.38, @vue/shared@npm:^3.4.31, @vue/shared@npm:^3.4.32":
+"@vue/shared@npm:3.4.38, @vue/shared@npm:^3.4.32, @vue/shared@npm:^3.4.38":
   version: 3.4.38
   resolution: "@vue/shared@npm:3.4.38"
   checksum: 10c0/2a5368fa27a8cc59830f7d77df40247c5c61b10f14b7aa1f384bbbd0ff7cea90be46bdf6038320910bec7d7687403a4ae84d75f1681d0a40ff59628f6d044a92
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:10.11.1, @vueuse/core@npm:^10.11.0":
-  version: 10.11.1
-  resolution: "@vueuse/core@npm:10.11.1"
-  dependencies:
-    "@types/web-bluetooth": "npm:^0.0.20"
-    "@vueuse/metadata": "npm:10.11.1"
-    "@vueuse/shared": "npm:10.11.1"
-    vue-demi: "npm:>=0.14.8"
-  checksum: 10c0/6a974c1510ce84e652e3d180a4f4373e37e59a5ec025a7a8cec7f144a4ccff25dbdd82e3143ffb057323f467a1076b39da30953981e822c4bd41a7841121afee
-  languageName: node
-  linkType: hard
-
-"@vueuse/core@npm:^11.0.0-beta.2":
+"@vueuse/core@npm:11.0.0, @vueuse/core@npm:^11.0.0, @vueuse/core@npm:^11.0.0-beta.2":
   version: 11.0.0
   resolution: "@vueuse/core@npm:11.0.0"
   dependencies:
@@ -8806,26 +8803,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/integrations@npm:^10.11.0":
-  version: 10.11.1
-  resolution: "@vueuse/integrations@npm:10.11.1"
+"@vueuse/integrations@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "@vueuse/integrations@npm:11.0.0"
   dependencies:
-    "@vueuse/core": "npm:10.11.1"
-    "@vueuse/shared": "npm:10.11.1"
-    vue-demi: "npm:>=0.14.8"
+    "@vueuse/core": "npm:11.0.0"
+    "@vueuse/shared": "npm:11.0.0"
+    vue-demi: "npm:>=0.14.10"
   peerDependencies:
     async-validator: ^4
     axios: ^1
-    change-case: ^4
-    drauu: ^0.3
+    change-case: ^5
+    drauu: ^0.4
     focus-trap: ^7
-    fuse.js: ^6
+    fuse.js: ^7
     idb-keyval: ^6
-    jwt-decode: ^3
+    jwt-decode: ^4
     nprogress: ^0.2
     qrcode: ^1.5
     sortablejs: ^1
-    universal-cookie: ^6
+    universal-cookie: ^7
   peerDependenciesMeta:
     async-validator:
       optional: true
@@ -8851,14 +8848,7 @@ __metadata:
       optional: true
     universal-cookie:
       optional: true
-  checksum: 10c0/ba7f5fc5c5952a19836a92e8a4a4ef26a28d2fa2444dff0e1f363186766f9f6ad97155911e731e5f149d9da7dee4ecdef463972a723d0c0d45a4dd7363d3d058
-  languageName: node
-  linkType: hard
-
-"@vueuse/metadata@npm:10.11.1":
-  version: 10.11.1
-  resolution: "@vueuse/metadata@npm:10.11.1"
-  checksum: 10c0/c252056aa7e7bd5d207791a2e3b415dcb81fef5b24bfe18cefdec026ae9b7e5a5813100d2e55262fc66feafe15ccdc11a69351d724d848fafe4b3b052e559283
+  checksum: 10c0/ef2478716bc08760c04a5e0cde349d27949620ce54da9e053ecae3d1e13ee982b8b715dee414bc55c4b53c772555be0b9567c63a3812c40102e16e237f9300d1
   languageName: node
   linkType: hard
 
@@ -8866,15 +8856,6 @@ __metadata:
   version: 11.0.0
   resolution: "@vueuse/metadata@npm:11.0.0"
   checksum: 10c0/e729d729e1bbf2366e8571299aa3780585c5d7bd02bbdf55a245f282893b847743fab4d121cddfb62ee1df1a5220fb41266c6ce26d0fa9db741be51b5bfe0543
-  languageName: node
-  linkType: hard
-
-"@vueuse/shared@npm:10.11.1":
-  version: 10.11.1
-  resolution: "@vueuse/shared@npm:10.11.1"
-  dependencies:
-    vue-demi: "npm:>=0.14.8"
-  checksum: 10c0/22c4f04be8fdb5e95535cf20f13956fc1f3707540f3730282905e6f9b24f314ada28292e82f4401d88b2c1fcf7fc7203011260958f517abc2b756779243147e3
   languageName: node
   linkType: hard
 
@@ -12512,9 +12493,9 @@ __metadata:
     "@electron-forge/publisher-s3": "npm:^7.4.0"
     "@electron/fuses": "npm:^1.8.0"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@langchain/community": "npm:^0.2.27"
+    "@langchain/community": "npm:^0.2.28"
     "@mozilla/readability": "npm:^0.5.0"
-    "@playwright/test": "npm:^1.46.0"
+    "@playwright/test": "npm:^1.46.1"
     "@radix-ui/react-accordion": "npm:^1.2.0"
     "@radix-ui/react-alert-dialog": "npm:^1.1.1"
     "@radix-ui/react-aspect-ratio": "npm:^1.1.0"
@@ -12554,7 +12535,7 @@ __metadata:
     "@types/lodash": "npm:^4.17.7"
     "@types/mark.js": "npm:^8.11.12"
     "@types/mustache": "npm:^4.2.5"
-    "@types/node": "npm:^22.3.0"
+    "@types/node": "npm:^22.4.0"
     "@types/rails__actioncable": "npm:^6.1.11"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
@@ -12601,7 +12582,7 @@ __metadata:
     html-to-text: "npm:^9.0.5"
     https-proxy-agent: "npm:^7.0.5"
     i18next: "npm:^23.13.0"
-    intl-tel-input: "npm:^23.8.2"
+    intl-tel-input: "npm:^23.9.2"
     js-md5: "npm:^0.8.3"
     langchain: "npm:^0.2.16"
     lodash: "npm:^4.17.21"
@@ -12611,7 +12592,7 @@ __metadata:
     mustache: "npm:^4.2.0"
     next-themes: "npm:^0.3.0"
     octokit: "npm:^4.0.2"
-    openai: "npm:^4.55.9"
+    openai: "npm:^4.56.0"
     pitchfinder: "npm:^2.3.2"
     postcss: "npm:^8.4.41"
     progress: "npm:^2.0.3"
@@ -15353,10 +15334,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"intl-tel-input@npm:^23.8.2":
-  version: 23.8.2
-  resolution: "intl-tel-input@npm:23.8.2"
-  checksum: 10c0/84df0ecd9da972774b4e749fcf2c3c6612d3a36866a69d44849d59a0e0014f87fb9a62cd0b375e66dbfd71317b41c67978aefaa57e21a6225ad22cb4a61107b1
+"intl-tel-input@npm:^23.9.2":
+  version: 23.9.2
+  resolution: "intl-tel-input@npm:23.9.2"
+  checksum: 10c0/6d2486b629e9e7dc39ebf0bc81f6d661920b9e02b9cafefebe099452def3c23f27d5eabac9787f380736c072acb828cc5623327270a6ea912bbc54372bb701e5
   languageName: node
   linkType: hard
 
@@ -18142,7 +18123,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minisearch@npm:^7.0.0":
+"minisearch@npm:^7.1.0":
   version: 7.1.0
   resolution: "minisearch@npm:7.1.0"
   checksum: 10c0/e7f38938d1de799c5469f290c374d2f51781d427da3b3bccb002e7fa9bab85b5b93d2c2d045f567acc7198d50769c30d6262a141316b4d75fab29dab90b5b886
@@ -19236,7 +19217,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openai@npm:^4.47.1, openai@npm:^4.55.0, openai@npm:^4.55.9":
+"openai@npm:^4.47.1, openai@npm:^4.55.0":
   version: 4.55.9
   resolution: "openai@npm:4.55.9"
   dependencies:
@@ -19255,6 +19236,28 @@ __metadata:
   bin:
     openai: bin/cli
   checksum: 10c0/728001d4cf7b309cd5762c7ab4b47628e44ba81bdf0147e2b53d1101c6eecbc2af667ff3501c19ad67bcd4af297a7b4d564a159d0aecb306695b0e3ca079a09b
+  languageName: node
+  linkType: hard
+
+"openai@npm:^4.56.0":
+  version: 4.56.0
+  resolution: "openai@npm:4.56.0"
+  dependencies:
+    "@types/node": "npm:^18.11.18"
+    "@types/node-fetch": "npm:^2.6.4"
+    abort-controller: "npm:^3.0.0"
+    agentkeepalive: "npm:^4.2.1"
+    form-data-encoder: "npm:1.7.2"
+    formdata-node: "npm:^4.3.2"
+    node-fetch: "npm:^2.6.7"
+  peerDependencies:
+    zod: ^3.23.8
+  peerDependenciesMeta:
+    zod:
+      optional: true
+  bin:
+    openai: bin/cli
+  checksum: 10c0/d1a5ddda89ab95ad319c8d5af5a0e998916971cc453d22ace58475ffe34a624b37ff2e5fc614d489252c0de2f475ef11197b581836f6ac78c95c12089e6fa316
   languageName: node
   linkType: hard
 
@@ -19960,7 +19963,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.46.0, playwright-core@npm:^1.45.2":
+"playwright-core@npm:1.46.1":
+  version: 1.46.1
+  resolution: "playwright-core@npm:1.46.1"
+  bin:
+    playwright-core: cli.js
+  checksum: 10c0/98e48e271caccaa6c54b3c591cbddbef36a679eef011b38e2af11fbaba0aab1f997b45f9207c4099468a0c79047a1e879bbd9e81bd880ae24501a0ee3c7a33c7
+  languageName: node
+  linkType: hard
+
+"playwright-core@npm:^1.45.2":
   version: 1.46.0
   resolution: "playwright-core@npm:1.46.0"
   bin:
@@ -19969,18 +19981,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright@npm:1.46.0":
-  version: 1.46.0
-  resolution: "playwright@npm:1.46.0"
+"playwright@npm:1.46.1":
+  version: 1.46.1
+  resolution: "playwright@npm:1.46.1"
   dependencies:
     fsevents: "npm:2.3.2"
-    playwright-core: "npm:1.46.0"
+    playwright-core: "npm:1.46.1"
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     playwright: cli.js
-  checksum: 10c0/fa4192af99908c2c02ae20880e27f51efa6694348c2496d1c2818908eb394c4b21947edd0c5ce2a83f471f5399ac3f0cee8a7be8a35cd80d32d32875184962c7
+  checksum: 10c0/2a328a2073313136192d74b48b981d9aeb1d4cc54926ed235f638c875f9de59c41370bb20bb2d8cf30126c52c6e25cc02db21ffafeb487c92c84c52c84846912
   languageName: node
   linkType: hard
 
@@ -22041,13 +22053,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shiki@npm:1.13.0, shiki@npm:^1.10.3":
-  version: 1.13.0
-  resolution: "shiki@npm:1.13.0"
+"shiki@npm:1.14.1, shiki@npm:^1.13.0":
+  version: 1.14.1
+  resolution: "shiki@npm:1.14.1"
   dependencies:
-    "@shikijs/core": "npm:1.13.0"
+    "@shikijs/core": "npm:1.14.1"
     "@types/hast": "npm:^3.0.4"
-  checksum: 10c0/0536b255b2522fe89d5ef1be211a30a64ad18c50dc576d6a2afee2398c0d12e9135d9c80c1dfdc25a19e97ce90c3a2b9a2778549b56ccd22ed5ed941274bf918
+  checksum: 10c0/756f45917f281e158eef114b985b9a4cae9f0470f955e2f96f4473a3aed327dc1d653b9bd6280eb28398bd0da6d533caa4fce61b716c1263c5d85df53964ade2
   languageName: node
   linkType: hard
 
@@ -23509,6 +23521,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici-types@npm:~6.19.2":
+  version: 6.19.6
+  resolution: "undici-types@npm:6.19.6"
+  checksum: 10c0/9b2264c5700e7169c6c62c643aac56cd8984c5fd7e18ed31ff11780260e137f6340dee8317a2e6e0ae3c49f5e5ef6fa577ea07193cbaa535265cba76a267cae9
+  languageName: node
+  linkType: hard
+
 "undici@npm:^5.28.4":
   version: 5.28.4
   resolution: "undici@npm:5.28.4"
@@ -24316,7 +24335,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.0, vite@npm:^5.3.3, vite@npm:^5.3.4, vite@npm:^5.4.1":
+"vite@npm:^5.0.0, vite@npm:^5.3.4, vite@npm:^5.4.1":
   version: 5.4.1
   resolution: "vite@npm:5.4.1"
   dependencies:
@@ -24374,26 +24393,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitepress@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "vitepress@npm:1.3.2"
+"vitepress@npm:^1.3.3":
+  version: 1.3.3
+  resolution: "vitepress@npm:1.3.3"
   dependencies:
-    "@docsearch/css": "npm:^3.6.0"
-    "@docsearch/js": "npm:^3.6.0"
-    "@shikijs/core": "npm:^1.10.3"
-    "@shikijs/transformers": "npm:^1.10.3"
-    "@types/markdown-it": "npm:^14.1.1"
-    "@vitejs/plugin-vue": "npm:^5.0.5"
-    "@vue/devtools-api": "npm:^7.3.5"
-    "@vue/shared": "npm:^3.4.31"
-    "@vueuse/core": "npm:^10.11.0"
-    "@vueuse/integrations": "npm:^10.11.0"
+    "@docsearch/css": "npm:^3.6.1"
+    "@docsearch/js": "npm:^3.6.1"
+    "@shikijs/core": "npm:^1.13.0"
+    "@shikijs/transformers": "npm:^1.13.0"
+    "@types/markdown-it": "npm:^14.1.2"
+    "@vitejs/plugin-vue": "npm:^5.1.2"
+    "@vue/devtools-api": "npm:^7.3.8"
+    "@vue/shared": "npm:^3.4.38"
+    "@vueuse/core": "npm:^11.0.0"
+    "@vueuse/integrations": "npm:^11.0.0"
     focus-trap: "npm:^7.5.4"
     mark.js: "npm:8.11.1"
-    minisearch: "npm:^7.0.0"
-    shiki: "npm:^1.10.3"
-    vite: "npm:^5.3.3"
-    vue: "npm:^3.4.31"
+    minisearch: "npm:^7.1.0"
+    shiki: "npm:^1.13.0"
+    vite: "npm:^5.4.1"
+    vue: "npm:^3.4.38"
   peerDependencies:
     markdown-it-mathjax3: ^4
     postcss: ^8
@@ -24404,7 +24423,7 @@ __metadata:
       optional: true
   bin:
     vitepress: bin/vitepress.js
-  checksum: 10c0/36009afc959994ae3818e9fe8c4d12ae757a33fc45f36296073562d857f390f5f2fbd0053b7d776307794f0b68d01ad1830b11c57930ef8adae64c788bd2651a
+  checksum: 10c0/11606999fef83c48f081d066c61119f2207bd2e7b1f57d29e4ab9eebf52609f0e68b460ee11f56a93a0612606b3cc4cafbafc89a04399bf1900995a56d27718b
   languageName: node
   linkType: hard
 
@@ -24484,7 +24503,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-demi@npm:>=0.14.10, vue-demi@npm:>=0.14.8":
+"vue-demi@npm:>=0.14.10":
   version: 0.14.10
   resolution: "vue-demi@npm:0.14.10"
   peerDependencies:
@@ -24518,7 +24537,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.4.31, vue@npm:^3.4.32, vue@npm:^3.4.38":
+"vue@npm:^3.4.32, vue@npm:^3.4.38":
   version: 3.4.38
   resolution: "vue@npm:3.4.38"
   dependencies:
