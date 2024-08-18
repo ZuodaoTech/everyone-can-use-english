@@ -95,41 +95,26 @@ export default withMermaid(
             collapsed: true,
             items: [
               {
-                text: "1. 音素",
-                collapsed: true,
+                text: "1. 音素与音标",
                 link: "/sounds-of-american-english/1-phonemes",
-                items: [
-                  {
-                    text: "1.1. 字母",
-                    link: "/sounds-of-american-english/1.1-alphabet",
-                  },
-                  {
-                    text: "1.2. 音素",
-                    link: "/sounds-of-american-english/1.2-phonemes",
-                  },
-                  {
-                    text: "1.3. 口音",
-                    link: "/sounds-of-american-english/1.3-accents",
-                  },
-                  {
-                    text: "1.4. 器官",
-                    link: "/sounds-of-american-english/1.4-articulators",
-                  },
-                ],
               },
               {
-                text: "2. 详解",
+                text: "2. 发声器官",
+                link: "/sounds-of-american-english/2-articulators",
+              },
+              {
+                text: "3. 音素详解",
                 collapsed: true,
-                link: "/sounds-of-american-english/2-details",
+                link: "/sounds-of-american-english/3-details",
                 items: [
                   {
-                    text: "2.1. 元音",
+                    text: "3.1. 元音",
                     collapsed: true,
-                    link: "/sounds-of-american-english/2.1-vowels",
+                    link: "/sounds-of-american-english/3.1-vowels",
                     items: [
                       {
-                        text: "2.1.1. 口型",
-                        link: "/sounds-of-american-english/2.1.1-lips",
+                        text: "3.1.1. ə/ɚ/ɝː",
+                        link: "/sounds-of-american-english/3.1.1-ə",
                       },
                       {
                         text: "2.1.2. 舌位",

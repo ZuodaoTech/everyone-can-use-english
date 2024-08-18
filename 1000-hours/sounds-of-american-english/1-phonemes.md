@@ -1,4 +1,4 @@
-# 音素与音标
+# 1. 音素与音标
 
 在自然语音中，不可继续分割的组成部分被称为**音素**（*phonemes*）。英语的音素分为**元音**（*vowels*）和**辅音**（*consonants*）。**音标**（*phonetics*）是用来标记音素的符号系统 —— 每个音素都由一个独特的音标符号标记。
 
@@ -17,13 +17,15 @@
 > 《剑桥英语发声词典》官方音标指南（Pronunciation symbols）：
 > > https://dictionary.cambridge.org/help/phonetics.html
 
-## 元音
+虽然我们的教程着重讲解的是 “**美式英语**” 语音，但，为了教学方便，也同时罗列了 “英式英语” 的音素和音标。
+
+## 1.1. 元音
 
 <table>
 <tbody>
 <tr>
-<td colspan="2"><strong>British</strong></td>
-<td colspan="2"><strong>American</strong></td>
+<td colspan="2"><strong>British (24)</strong></td>
+<td colspan="2"><strong>American (26)</strong></td>
 </tr>
 <tr>
 <td>D.J.</td>
@@ -196,13 +198,18 @@
 </tbody>
 </table>
 
-## 辅音
+> [!Note]
+>
+> [《剑桥英语发声词典》的官方音标指南](https://dictionary.cambridge.org/help/phonetics.html)里除了 <span class="pho">ɚ</span> 和 <span class="pho">ɝː</span> 之外，其它元音的美式英语儿化音都没有罗列，比如，
+<span class="pho">ɑːr</span>、<span class="pho">ɔːr</span>、<span class="pho">er</span>、<span class="pho">ɪr</span>、<span class="pho">ʊr</span>、<span class="pho">aɪr</span>、<span class="pho">aʊr</span>。
+
+## 1.2. 辅音
 
 <table>
 <tbody>
 <tr>
-<td colspan="2"><strong>British</strong></td>
-<td colspan="2"><strong>American</strong></td>
+<td colspan="2"><strong>British (26)</strong></td>
+<td colspan="2"><strong>American (27)</strong></td>
 </tr>
 <tr>
 <td>D.J.</td>
@@ -375,14 +382,18 @@
 </tbody>
 </table>
 
-## 外来音素
+> [!Note]
+>
+> [《剑桥英语发声词典》的官方音标指南](https://dictionary.cambridge.org/help/phonetics.html)里没有罗列 <span class="pho">tr</span> 和 <span class="pho">dr</span>。
+
+## 1.3. 外来音素
 
 | 音素/音标                                                                                                                                                                                                      | 例词                                                                                                                                                                                                                                 |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | <span class="pho">ɒ̃</span> <span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_croissant_2023feb.mp3" data-audio-us-male="/audios/us_phonetics_sound_croissant_2023feb.mp3"></span> | croiss**ant** <span class="pho alt">ˈkwɑ.sɒ̃ŋ</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_word_croissant_2023feb.mp3" data-audio-us-male="/audios/us_phonetics_word_croissant_2023feb.mp3"></span> |
 | <span class="pho">x</span> <span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_loch_2023feb.mp3" data-audio-us-male="/audios/us_phonetics_sound_loch_2023feb.mp3"></span>           | lo**ch** <span class="pho alt">lɒx</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_word_loch_2023feb.mp3" data-audio-us-male="/audios/us_phonetics_word_loch_2023feb.mp3"></span>                     |
 
-## 其他符号
+## 1.4. 其他符号
 
 | 符号                       | 例词                                                                                                                                                                                                                               |
 | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -390,7 +401,7 @@
 | <span class="pho">ˈ</span> | surprise <span class="pho alt">sɚˈpraɪz, sə-</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_word_surprise_2023feb.mp3" data-audio-us-male="/audios/us_phonetics_word_surprise_2023feb.mp3"></span> |
 | <span class="pho">ˌ</span> | retell <span class="pho alt">ˌriːˈtel</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_word_retell_2023feb.mp3" data-audio-us-male="/audios/us_phonetics_word_retell_2023feb.mp3"></span>            |
 
-## 自定义补充符号
+## 1.5. 自定义补充符号
 
 | 符号                                | 含义                                                         |
 | ----------------------------------- | ------------------------------------------------------------ |
@@ -406,3 +417,7 @@
 
 [^1]: 现在几乎所有词典都声称自己采用国际音标（IPA），但它们无一例外，都是国际音标的一个 “**自定义子集**”。
 [^2]: 音标的语音文件来自剑桥官方网站；例词的语音文件部分使用 [Microsoft Edge TTS](https://github.com/rany2/edge-tts) 生成，声音角色选择分别是：*en-GB-ThomasNeural*，*en-GB-MaisieNeural*，*en-US-RogerNeural*，和 *en-US-JennyNeural*
+
+<style>
+    span.alt {display: none;}
+</style>

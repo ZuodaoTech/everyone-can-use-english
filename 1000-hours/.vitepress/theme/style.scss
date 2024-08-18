@@ -161,6 +161,7 @@ body {
 
   p img, p video {
     margin: 0 auto;
+    align-self: center;
   }
 
   blockquote > p{
@@ -224,4 +225,8 @@ audio {
   padding-left: 1em;
   height: 1.8em;
   margin-top: -0.2em;
+}
+
+video {
+  width: 95%;
 }
