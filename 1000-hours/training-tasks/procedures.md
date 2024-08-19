@@ -1,6 +1,6 @@
 # 2. 训练方法
 
-请后续反复认真阅读《[语音塑造](/sounds-of-american-english/1-basics)》中的每一个章节。
+请后续反复认真阅读《[语音塑造](/sounds-of-american-english/0-intro)》中的每一个章节。
 
 ## 2.1 搞清每个单词的读音
 
@@ -14,7 +14,7 @@
 
 ## 2.2 放慢播放速度仔细听
 
-要慢速听**很多遍**。从 2 大层面总计 7 个方面分别去分析，详情参见《[语音塑造](/sounds-of-american-english/1-basics)》：
+要慢速听**很多遍**。从 2 大层面总计 7 个方面分别去分析，详情参见《[语音塑造](/sounds-of-american-english/0-intro)》：
 
 > * 韵律节奏
 >   * 停顿（[2.4.1](/sounds-of-american-english/2.4.1-stop)）

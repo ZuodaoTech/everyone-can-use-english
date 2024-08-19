@@ -361,7 +361,7 @@ export default withMermaid(
           //     {
           //       text: "1. 基础",
           //       collapsed: true,
-          //       link: "/sounds-of-english/01-basics",
+          //       link: "/sounds-of-english/0-intro",
           //       items: [
           //         {
           //           text: "1.1. 音素",

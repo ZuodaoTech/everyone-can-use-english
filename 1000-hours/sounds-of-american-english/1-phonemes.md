@@ -1,6 +1,8 @@
 # 1. 音素与音标
 
-在自然语音中，不可继续分割的组成部分被称为**音素**（*phonemes*）。英语的音素分为**元音**（*vowels*）和**辅音**（*consonants*）。**音标**（*phonetics*）是用来标记音素的符号系统 —— 每个音素都由一个独特的音标符号标记。
+在自然语音中，不可继续分割的组成部分被称为**音素**（*phonemes*）。
+
+英语的音素分为**元音**（*vowels*）和**辅音**（*consonants*）。**音标**（*phonetics*）是用来标记音素的符号系统 —— 每个音素都由一个独特的音标符号标记。
 
 我们采用的是《剑桥英语发声词典》（[Cambridge English Pronouncing Dictionary](https://dictionary.cambridge.org/pronunciation/), i.e. *CEPD*）的音标标注体系。
 
@@ -11,7 +13,13 @@
 > * 短元音 <span class="pho">ɒ</span> 用 <span class="pho">ɑː</span> 标注
 > * <span class="pho">t</span> 增加了一个弹舌音版本 <span class="pho">t̬</span>
 
-以下的罗列部分基于[《剑桥英语发声词典》](https://dictionary.cambridge.org/pronunciation/)的官方音标指南，在此基础上做了一些补充并重新排序[^2]，并刻意减少了例词的数量。
+> [!Note]
+>
+> 你可能注意到了，同一个基础音素的变体，可能用了不同的写法，比如， <span class="pho">ɑ</span> 这个基础音素，短元音用的是 <span class="pho">ʌ</span>，长元音不是 <span class="pho">ʌː</span> 而是 <span class="pho">ɑː</span>，而后组合成双元音的时候用的是 <span class="pho">a</span> —— <span class="pho">aɪ，aʊ</span> 等等…… 
+>
+> 这么做的理由在于，当这些音素连在一起的时候，不会被错误组合，不会产生混淆，确保每个音素都有一个独特对应的符号[^2]。
+
+以下的罗列部分基于[《剑桥英语发声词典》](https://dictionary.cambridge.org/pronunciation/)的官方音标指南，在此基础上做了一些补充并重新排序[^3]，并刻意减少了例词的数量。
 
 > [!Note]
 > 《剑桥英语发声词典》官方音标指南（Pronunciation symbols）：
@@ -200,7 +208,7 @@
 
 > [!Note]
 >
-> [《剑桥英语发声词典》的官方音标指南](https://dictionary.cambridge.org/help/phonetics.html)里除了 <span class="pho">ɚ</span> 和 <span class="pho">ɝː</span> 之外，其它元音的美式英语儿化音都没有罗列，比如，
+> [《剑桥英语发声词典》官方音标指南](https://dictionary.cambridge.org/help/phonetics.html)中除了 <span class="pho">ɚ</span> 和 <span class="pho">ɝː</span> 之外，其它元音的美式英语儿化音都没有罗列，比如，
 <span class="pho">ɑːr</span>、<span class="pho">ɔːr</span>、<span class="pho">er</span>、<span class="pho">ɪr</span>、<span class="pho">ʊr</span>、<span class="pho">aɪr</span>、<span class="pho">aʊr</span>。
 
 ## 1.2. 辅音
@@ -384,7 +392,7 @@
 
 > [!Note]
 >
-> [《剑桥英语发声词典》的官方音标指南](https://dictionary.cambridge.org/help/phonetics.html)里没有罗列 <span class="pho">tr</span> 和 <span class="pho">dr</span>。
+> [《剑桥英语发声词典》官方音标指南](https://dictionary.cambridge.org/help/phonetics.html)中没有罗列 <span class="pho">tr</span> 和 <span class="pho">dr</span>。
 
 ## 1.3. 外来音素
 
@@ -415,8 +423,10 @@
 | <span class="pho">◌̅, ◌́, ◌̌, ◌̀</span> | 音节声调                                                     |
 | <span class="pho">◌̂</span>          | 音高被抬高的音节                                             |
 
-[^1]: 现在几乎所有词典都声称自己采用国际音标（IPA），但它们无一例外，都是国际音标的一个 “**自定义子集**”。
-[^2]: 音标的语音文件来自剑桥官方网站；例词的语音文件部分使用 [Microsoft Edge TTS](https://github.com/rany2/edge-tts) 生成，声音角色选择分别是：*en-GB-ThomasNeural*，*en-GB-MaisieNeural*，*en-US-RogerNeural*，和 *en-US-JennyNeural*
+
+[^1]: 教程内音标字体选用的是 *Charis SIL*，https://software.sil.org/charis/
+[^2]: 现在几乎所有词典都声称自己采用国际音标（IPA），但它们无一例外，都是国际音标的一个 “**自定义子集**”。
+[^3]: 音素的语音文件来自剑桥官方网站；例词的语音文件大部分使用 [Microsoft Edge TTS](https://github.com/rany2/edge-tts) 生成，声音角色选择分别是：*en-GB-ThomasNeural*，*en-GB-MaisieNeural*，*en-US-RogerNeural*，和 *en-US-JennyNeural*
 
 <style>
     span.alt {display: none;}
