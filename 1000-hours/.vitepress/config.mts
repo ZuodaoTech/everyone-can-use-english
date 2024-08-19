@@ -695,6 +695,10 @@ export default withMermaid(
       ],
     },
 
+    sitemap: {
+      hostname: 'https://1000h.org'
+    },
+
     markdown: {
       // https://vitepress.dev/reference/markdown
       math: true,
