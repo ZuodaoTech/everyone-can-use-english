@@ -531,9 +531,9 @@ export default withMermaid(
         md.use(mark);
         md.use(ins);
       },
-      // toc: {
-      //   level: [2, 3, 4]
-      // }
+      toc: {
+        level: [1, 2, 3]
+      }
     },
   })
 );
