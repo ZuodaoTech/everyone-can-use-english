@@ -137,7 +137,7 @@ export default withMermaid(
                         link: "/sounds-of-american-english/3.1.6-ɔ",
                       },
                       {
-                        text: "3.1.7. aɪ... əʊ",
+                        text: "3.1.7. aɪ... oʊ",
                         link: "/sounds-of-american-english/3.1.7-aɪ",
                       },
                     ]
@@ -204,83 +204,26 @@ export default withMermaid(
                         text: "3.2.14. h",
                         link: "/sounds-of-american-english/3.2.14-h",
                       },
-                    ]
-                  },
-                  {
-                    text: "2.3. 音节",
-                    collapsed: true,
-                    link: "/sounds-of-american-english/2.3-syllables",
-                    items: [
-                      {
-                        text: "2.3.1. 构成",
-                        link: "/sounds-of-american-english/2.3.1-structure",
-                      },
-                      {
-                        text: "2.3.2. 重音",
-                        link: "/sounds-of-american-english/2.3.2-stress",
-                      },
-                    ]
-                  },
-                  {
-                    text: "2.4. 连接",
-                    collapsed: true,
-                    link: "/sounds-of-american-english/2.4-linking",
-                    items: [
-                      {
-                        text: "2.4.1. 停顿",
-                        link: "/sounds-of-american-english/2.4.1-stop",
-                      },
-                      {
-                        text: "2.4.2. 辅音 + 元音",
-                        link: "/sounds-of-american-english/2.4.2-cv",
-                      },
-                      {
-                        text: "2.4.3. 辅音 + 辅音",
-                        link: "/sounds-of-american-english/2.4.3-cc",
-                      },
-                      {
-                        text: "2.4.4. 元音 + 元音",
-                        link: "/sounds-of-american-english/2.4.4-vv",
-                      },
-                    ]
-                  },
-                  {
-                    text: "2.5. 韵律",
-                    collapsed: true,
-                    link: "/sounds-of-american-english/2.5-prosody",
-                    items: [
-                      {
-                        text: "2.5.1. 高低",
-                        link: "/sounds-of-american-english/2.5.1-pitch",
-                      },
-                      {
-                        text: "2.5.2. 起伏",
-                        link: "/sounds-of-american-english/2.5.2-tone",
-                      },
-                      {
-                        text: "2.5.3. 轻重",
-                        link: "/sounds-of-american-english/2.5.3-emphasis",
-                      },
-                      {
-                        text: "2.5.4. 缓急",
-                        link: "/sounds-of-american-english/2.5.4-pace",
-                      },
-                    ]
+                    ],
                   },
                 ],
               },
               {
-                text: "3. 收官",
+                text: "4. 自然语流",
                 collapsed: true,
-                link: "/sounds-of-american-english/3-wrapping-up",
+                link: "/sounds-of-american-english/4-natural-speech",
                 items: [
                   {
-                    text: "3.1. 流利",
-                    link: "/sounds-of-american-english/3.1-fluency",
+                    text: "4.1. 句子",
+                    link: "/sounds-of-american-english/4.1-sentences",
                   },
                   {
-                    text: "3.2. 情绪",
-                    link: "/sounds-of-american-english/3.2-emotions",
+                    text: "4.2. 词汇",
+                    link: "/sounds-of-american-english/4.2-words",
+                  },
+                  {
+                    text: "4.3. 音节",
+                    link: "/sounds-of-american-english/4.3-syllables",
                   },
                 ],
               },
