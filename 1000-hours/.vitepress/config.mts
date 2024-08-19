@@ -177,32 +177,32 @@ export default withMermaid(
                         link: "/sounds-of-american-english/3.2.7-ʃʒ",
                       },
                       {
-                        text: "3.2.8. h",
-                        link: "/sounds-of-american-english/3.2.8-h",
+                        text: "3.2.8. tʃ/dʒ",
+                        link: "/sounds-of-american-english/3.2.8-tʃdʒ",
                       },
                       {
-                        text: "3.2.9. tʃ/dʒ",
-                        link: "/sounds-of-american-english/3.2.9-tʃdʒ",
+                        text: "3.2.9. tr/dr",
+                        link: "/sounds-of-american-english/3.2.9-trdr",
                       },
                       {
-                        text: "3.2.10. tr/dr",
-                        link: "/sounds-of-american-english/3.2.10-trdr",
+                        text: "3.2.10. ts/dz",
+                        link: "/sounds-of-american-english/3.2.10-tsdz",
                       },
                       {
-                        text: "3.2.11. ts/dz",
-                        link: "/sounds-of-american-english/3.2.11-tsdz",
+                        text: "3.2.11. m, n, ŋ",
+                        link: "/sounds-of-american-english/3.2.11-mnŋ",
                       },
                       {
-                        text: "3.2.12. m, n, ŋ",
-                        link: "/sounds-of-american-english/3.2.12-mnŋ",
+                        text: "3.2.12. l, r",
+                        link: "/sounds-of-american-english/3.2.12-lr",
                       },
                       {
-                        text: "3.2.13. l, r",
-                        link: "/sounds-of-american-english/3.2.13-lr",
-                      },
+                        text: "3.2.13. w, j",
+                        link: "/sounds-of-american-english/3.2.13-wj",
+                      },                    
                       {
-                        text: "3.2.14. w, j",
-                        link: "/sounds-of-american-english/3.2.14-wj",
+                        text: "3.2.14. h",
+                        link: "/sounds-of-american-english/3.2.14-h",
                       },
                     ]
                   },

@@ -340,6 +340,18 @@
 <td><b>dr</b>y <span class="pho alt">draɪ</span><span class="speak-word-inline" data-audio-us-female="/audios/dry-us-female.mp3" data-audio-us-male="/audios/dry-us-male.mp3"></span></td>
 </tr>
 <tr>
+<td><span class="pho">ts</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_cats.mp3"></span></td>
+<td>ca<b>ts</b> <span class="pho alt">kæts</span><span class="speak-word-inline" data-audio-uk-female="/audios/cats-uk-female.mp3" data-audio-uk-male="/audios/cats-uk-male.mp3"></span></td>
+<td><span class="pho">ts</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_cats.mp3"></span></td>
+<td>ca<b>ts</b> <span class="pho alt">kæts</span><span class="speak-word-inline" data-audio-us-female="/audios/cats-us-female.mp3" data-audio-us-male="/audios/cats-us-male.mp3"></span></td>
+</tr>
+<tr>
+<td><span class="pho">dz</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_kids.mp3"></span></td>
+<td>ki<b>ds</b> <span class="pho alt">kɪdz</span><span class="speak-word-inline" data-audio-uk-female="/audios/kids-uk-female.mp3" data-audio-uk-male="/audios/kids-uk-male.mp3"></span></td>
+<td><span class="pho">dz</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_kids.mp3"></span></td>
+<td>ki<b>ds</b> <span class="pho alt">kɪdz</span><span class="speak-word-inline" data-audio-us-female="/audios/kids-us-female.mp3" data-audio-us-male="/audios/kids-us-male.mp3"></span></td>
+</tr>
+<tr>
 <td><span class="pho">m</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_moon_2023feb.mp3"></span></td>
 <td><b>m</b>oon <span class="pho alt">muːn</span><span class="speak-word-inline" data-audio-uk-female="/audios/moon-uk-female.mp3" data-audio-uk-male="/audios/moon-uk-male.mp3"></span></td>
 <td><span class="pho">m</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_moon_2023feb.mp3"></span></td>
