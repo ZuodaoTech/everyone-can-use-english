@@ -33,7 +33,7 @@
 <tbody>
 <tr>
 <td colspan="2"><strong>British (24)</strong></td>
-<td colspan="2"><strong>American (26)</strong></td>
+<td colspan="2"><strong>American (27)</strong></td>
 </tr>
 <tr>
 <td>D.J.</td>
@@ -216,8 +216,8 @@
 <table>
 <tbody>
 <tr>
-<td colspan="2"><strong>British (26)</strong></td>
-<td colspan="2"><strong>American (27)</strong></td>
+<td colspan="2"><strong>British (28)</strong></td>
+<td colspan="2"><strong>American (29)</strong></td>
 </tr>
 <tr>
 <td>D.J.</td>

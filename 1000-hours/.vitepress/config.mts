@@ -95,7 +95,7 @@ export default withMermaid(
             collapsed: true,
             items: [
               {
-                text: "1. 音素与音标",
+                text: "1. 音素音标",
                 link: "/sounds-of-american-english/1-phonemes",
               },
               {
