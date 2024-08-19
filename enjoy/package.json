@@ -53,7 +53,7 @@
     "@types/lodash": "^4.17.7",
     "@types/mark.js": "^8.11.12",
     "@types/mustache": "^4.2.5",
-    "@types/node": "^22.4.0",
+    "@types/node": "^22.4.1",
     "@types/rails__actioncable": "^6.1.11",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -147,7 +147,7 @@
     "html-to-text": "^9.0.5",
     "https-proxy-agent": "^7.0.5",
     "i18next": "^23.13.0",
-    "intl-tel-input": "^23.9.2",
+    "intl-tel-input": "^23.9.3",
     "js-md5": "^0.8.3",
     "langchain": "^0.2.16",
     "lodash": "^4.17.21",
@@ -181,7 +181,7 @@
     "tailwind-scrollbar-hide": "^1.1.7",
     "umzug": "^3.8.1",
     "update-electron-app": "^3.0.0",
-    "wavesurfer.js": "^7.8.3",
+    "wavesurfer.js": "^7.8.4",
     "zod": "^3.23.8",
     "zod-to-json-schema": "^3.23.2"
   }

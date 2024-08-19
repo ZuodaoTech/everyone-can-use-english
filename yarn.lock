@@ -8047,12 +8047,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.4.0":
-  version: 22.4.0
-  resolution: "@types/node@npm:22.4.0"
+"@types/node@npm:^22.4.1":
+  version: 22.4.1
+  resolution: "@types/node@npm:22.4.1"
   dependencies:
     undici-types: "npm:~6.19.2"
-  checksum: 10c0/84cd094b19a27e0db425f1d02614e4f7ac59b5eb3b21e288c8f8d4d0a4c9ad370107bc1a649d4c2b4e810cd133feea26e0bbf7e7c617f93e9e139d6d2568cf50
+  checksum: 10c0/e42607438fcbd3a6aebd09084868fa0b22a4b0daf9eda79ed615df7ff8ae95e35ea56e090e1f3140ebae76b640abe42d4a6d5b60c0819eadf499adca737305b6
   languageName: node
   linkType: hard
 
@@ -12535,7 +12535,7 @@ __metadata:
     "@types/lodash": "npm:^4.17.7"
     "@types/mark.js": "npm:^8.11.12"
     "@types/mustache": "npm:^4.2.5"
-    "@types/node": "npm:^22.4.0"
+    "@types/node": "npm:^22.4.1"
     "@types/rails__actioncable": "npm:^6.1.11"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
@@ -12582,7 +12582,7 @@ __metadata:
     html-to-text: "npm:^9.0.5"
     https-proxy-agent: "npm:^7.0.5"
     i18next: "npm:^23.13.0"
-    intl-tel-input: "npm:^23.9.2"
+    intl-tel-input: "npm:^23.9.3"
     js-md5: "npm:^0.8.3"
     langchain: "npm:^0.2.16"
     lodash: "npm:^4.17.21"
@@ -12627,7 +12627,7 @@ __metadata:
     update-electron-app: "npm:^3.0.0"
     vite: "npm:^5.4.1"
     vite-plugin-static-copy: "npm:^1.0.6"
-    wavesurfer.js: "npm:^7.8.3"
+    wavesurfer.js: "npm:^7.8.4"
     zod: "npm:^3.23.8"
     zod-to-json-schema: "npm:^3.23.2"
     zx: "npm:^8.1.4"
@@ -15334,10 +15334,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"intl-tel-input@npm:^23.9.2":
-  version: 23.9.2
-  resolution: "intl-tel-input@npm:23.9.2"
-  checksum: 10c0/6d2486b629e9e7dc39ebf0bc81f6d661920b9e02b9cafefebe099452def3c23f27d5eabac9787f380736c072acb828cc5623327270a6ea912bbc54372bb701e5
+"intl-tel-input@npm:^23.9.3":
+  version: 23.9.3
+  resolution: "intl-tel-input@npm:23.9.3"
+  checksum: 10c0/9b43de5991d954cdac4d7750ee5ac81a88eb3d5b1a400c1236948a3c202f292556759bf48bb7b74de9297396aa27c909412562d731eec87eb88374f54f85165a
   languageName: node
   linkType: hard
 
@@ -24564,10 +24564,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wavesurfer.js@npm:^7.8.3":
-  version: 7.8.3
-  resolution: "wavesurfer.js@npm:7.8.3"
-  checksum: 10c0/4d8e9fb8816f5db2a3b65662f73a43eab2656e19f063818bc7bc8902f46cf96afbd0bd2a050a1aee6f0d0f7f6d99d9e92261b617cdde9f82ebb1e780aa317f12
+"wavesurfer.js@npm:^7.8.4":
+  version: 7.8.4
+  resolution: "wavesurfer.js@npm:7.8.4"
+  checksum: 10c0/15e1dce15afd290bdd22e051f46a92bc5f1d6b673d273d997ed60a3fc2dd4041a18f0ad3ced4d46caf52a43fa58a42acdb1f31b2d472ecff2ff904d73dc1dab3
   languageName: node
   linkType: hard
 
