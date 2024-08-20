@@ -146,7 +146,7 @@ export const ChatInput = () => {
           ref={submitRef}
           data-tooltip-id="chat-input-tooltip"
           data-tooltip-content={t("send")}
-          onClick={() => onCreateMessage(content)}
+          onClick={() => onCreateMessage(content).then(() => setContent(""))}
           disabled={submitting || !content}
           className=""
           variant="ghost"
