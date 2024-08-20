@@ -214,16 +214,16 @@ export default withMermaid(
                 link: "/sounds-of-american-english/4-natural-speech",
                 items: [
                   {
-                    text: "4.1. 句子",
-                    link: "/sounds-of-american-english/4.1-sentences",
+                    text: "4.1. 音节",
+                    link: "/sounds-of-american-english/4.1-syllables",
                   },
                   {
                     text: "4.2. 词汇",
                     link: "/sounds-of-american-english/4.2-words",
                   },
                   {
-                    text: "4.3. 音节",
-                    link: "/sounds-of-american-english/4.3-syllables",
+                    text: "4.3. 句子",
+                    link: "/sounds-of-american-english/4.3-sentences",
                   },
                 ],
               },
