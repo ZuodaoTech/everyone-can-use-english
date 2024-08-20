@@ -158,7 +158,7 @@ export const WavesurferPlayer = (props: {
   }
 
   return (
-    <>
+    <div className="w-full max-w-screen-lg">
       <div className="flex justify-end">
         <span className="text-xs text-muted-foreground">
           {secondsToTimestamp(duration)}
@@ -198,6 +198,6 @@ export const WavesurferPlayer = (props: {
           ref={containerRef}
         ></div>
       </div>
-    </>
+    </div>
   );
 };

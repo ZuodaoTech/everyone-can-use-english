@@ -1,7 +1,7 @@
 import {
-  RecordingPlayer,
   PronunciationAssessmentFulltextResult,
   PronunciationAssessmentScoreResult,
+  WavesurferPlayer,
 } from "@renderer/components";
 import { Separator, ScrollArea, toast } from "@renderer/components/ui";
 import { useState, useContext, useEffect } from "react";
@@ -23,11 +23,6 @@ export const RecordingDetail = (props: {
     );
   const { result } = pronunciationAssessment || {};
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [seek, setSeek] = useState<{
-    seekTo: number;
-    timestamp: number;
-  }>();
-  const [isPlaying, setIsPlaying] = useState(false);
 
   const { learningLanguage } = useContext(AppSettingsProviderContext);
   const { createAssessment } = usePronunciationAssessments();
@@ -61,13 +56,11 @@ export const RecordingDetail = (props: {
 
   return (
     <div className="">
-      <div className="mb-6 px-4">
-        <RecordingPlayer
-          recording={recording}
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          onCurrentTimeChange={(time) => setCurrentTime(time)}
-          seek={seek}
+      <div className="flex justify-center mb-6 px-4">
+        <WavesurferPlayer
+          id={recording.id}
+          src={recording.src}
+          setCurrentTime={setCurrentTime}
         />
       </div>
 
@@ -77,13 +70,7 @@ export const RecordingDetail = (props: {
         <PronunciationAssessmentFulltextResult
           words={result.words}
           currentTime={currentTime}
-          onSeek={(time) => {
-            setSeek({
-              seekTo: time,
-              timestamp: Date.now(),
-            });
-            setIsPlaying(true);
-          }}
+          src={recording.src}
         />
       ) : (
         <ScrollArea className="min-h-72 py-4 px-8 select-text">

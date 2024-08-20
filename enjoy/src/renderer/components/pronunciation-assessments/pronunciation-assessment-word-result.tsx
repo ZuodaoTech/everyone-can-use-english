@@ -1,12 +1,15 @@
 import { t } from "i18next";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Button,
 } from "@renderer/components/ui";
+import { Volume2Icon } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 export const PronunciationAssessmentWordResult = (props: {
+  src?: string;
   result: PronunciationAssessmentWordResultType;
   errorDisplay?: {
     mispronunciation: boolean;
@@ -17,7 +20,6 @@ export const PronunciationAssessmentWordResult = (props: {
     monotone: boolean;
   };
   currentTime?: number;
-  onSeek?: (time: number) => void;
 }) => {
   const {
     result,
@@ -30,8 +32,9 @@ export const PronunciationAssessmentWordResult = (props: {
       monotone: true,
     },
     currentTime = 0,
-    onSeek,
   } = props;
+
+  const audio = useRef<HTMLAudioElement>(null);
 
   const WordDisplay = {
     None: <CorrectWordDisplay word={result.word} />,
@@ -67,71 +70,90 @@ export const PronunciationAssessmentWordResult = (props: {
     ),
   }[result.pronunciationAssessment.errorType];
 
+  const play = () => {
+    const { offset, duration } = result;
+
+    // create a new audio element and play the segment
+    audio.current.src = `${props.src}#t=${(offset * 1.0) / 1e7},${
+      ((offset + duration) * 1.0) / 1e7
+    }`;
+    audio.current.play();
+  };
+
+  useEffect(() => {
+    if (!audio.current) {
+      audio.current = new Audio();
+    }
+  }, []);
+
   return (
-    <TooltipProvider>
-      <Tooltip delayDuration={500}>
-        <TooltipTrigger>
+    <Popover>
+      <PopoverTrigger asChild>
+        <div className="text-center mb-3 cursor-pointer">
           <div
-            onClick={() => {
-              onSeek && onSeek(result.offset / 1e7);
-            }}
-            className="text-center mb-3"
+            className={`${
+              currentTime * 1e7 >= result.offset &&
+              currentTime * 1e7 < result.offset + result.duration
+                ? "underline"
+                : ""
+            } underline-offset-4`}
           >
-            <div className="mb-1">
+            {WordDisplay}
+          </div>
+          <div className="mb-1">
+            {result.phonemes.map((phoneme, index) => (
+              <span
+                key={index}
+                className={`italic font-code ${scoreColor(
+                  phoneme.pronunciationAssessment.accuracyScore
+                )}`}
+              >
+                {phoneme.phoneme}
+              </span>
+            ))}
+          </div>
+        </div>
+      </PopoverTrigger>
+
+      <PopoverContent className="bg-muted">
+        {result.phonemes.length > 0 ? (
+          <>
+            <div className="text-sm flex items-center space-x-2 mb-2">
+              <span className="font-serif">{t("score")}:</span>
+              <span className="font-serif">
+                {result.pronunciationAssessment.accuracyScore}
+              </span>
+            </div>
+            <div className="flex items-center space-x-2 flex-wrap">
               {result.phonemes.map((phoneme, index) => (
-                <span
-                  key={index}
-                  className={`italic font-code ${scoreColor(
-                    phoneme.pronunciationAssessment.accuracyScore
-                  )}`}
-                >
-                  {phoneme.phoneme}
-                </span>
+                <div key={index} className="text-sm text-center">
+                  <div className="font-bold">{phoneme.phoneme}</div>
+                  <div
+                    className={`text-sm font-serif ${scoreColor(
+                      phoneme.pronunciationAssessment.accuracyScore
+                    )}`}
+                  >
+                    {phoneme.pronunciationAssessment.accuracyScore}
+                  </div>
+                </div>
               ))}
             </div>
-            <div
-              className={`${
-                currentTime * 1e7 >= result.offset &&
-                currentTime * 1e7 < result.offset + result.duration
-                  ? "underline"
-                  : ""
-              } underline-offset-4`}
-            >
-              {WordDisplay}
-            </div>
+          </>
+        ) : (
+          <div>
+            {t(
+              `models.pronunciationAssessment.errors.${result.pronunciationAssessment.errorType.toLowerCase()}`
+            )}
           </div>
-        </TooltipTrigger>
+        )}
 
-        <TooltipContent>
-          {result.phonemes.length > 0 ? (
-            <>
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="font-serif">{t("score")}:</span>
-                <span className="font-serif">
-                  {result.pronunciationAssessment.accuracyScore}
-                </span>
-              </div>
-              <div className="flex items-center space-x-4">
-                {result.phonemes.map((phoneme, index) => (
-                  <div key={index} className="text-center">
-                    <div className="font-bold">{phoneme.phoneme}</div>
-                    <div className="text-sm font-serif">
-                      {phoneme.pronunciationAssessment.accuracyScore}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          ) : (
-            <div>
-              {t(
-                `models.pronunciationAssessment.errors.${result.pronunciationAssessment.errorType.toLowerCase()}`
-              )}
-            </div>
-          )}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+        <div className="">
+          <Button onClick={play} variant="ghost" size="icon">
+            <Volume2Icon className="w-5 h-5" />
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 };
 
