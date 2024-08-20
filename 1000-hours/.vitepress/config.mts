@@ -218,7 +218,7 @@ export default withMermaid(
                     link: "/sounds-of-american-english/4.1-syllables",
                   },
                   {
-                    text: "4.2. 词汇",
+                    text: "4.2. 单词",
                     link: "/sounds-of-american-english/4.2-words",
                   },
                   {
