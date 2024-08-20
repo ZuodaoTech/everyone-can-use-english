@@ -26,7 +26,7 @@ export const MediaCaptionTabs = (props: {
     children,
   } = props;
 
-  const [tab, setTab] = useState<string>("note");
+  const [tab, setTab] = useState<string>("translation");
 
   if (!caption) return null;
 
@@ -51,11 +51,11 @@ export const MediaCaptionTabs = (props: {
         </div>
 
         <TabsList className="grid grid-cols-3 gap-4 rounded-none absolute w-full bottom-0 px-4">
-          <TabsTrigger value="note" className="block truncate px-1">
-            {t("captionTabs.note")}
-          </TabsTrigger>
           <TabsTrigger value="translation" className="block truncate px-1">
             {t("captionTabs.translation")}
+          </TabsTrigger>
+          <TabsTrigger value="note" className="block truncate px-1">
+            {t("captionTabs.note")}
           </TabsTrigger>
           <TabsTrigger value="analysis" className="block truncate px-1">
             {t("captionTabs.analysis")}
