@@ -32,7 +32,6 @@ export const PronunciationAssessmentWordResult = (props: {
       monotone: true,
     },
     currentTime = 0,
-    src,
   } = props;
 
   const audio = useRef<HTMLAudioElement>(null);
@@ -116,7 +115,7 @@ export const PronunciationAssessmentWordResult = (props: {
         </div>
       </PopoverTrigger>
 
-      <PopoverContent className="">
+      <PopoverContent className="bg-muted">
         {result.phonemes.length > 0 ? (
           <>
             <div className="text-sm flex items-center space-x-2 mb-2">
