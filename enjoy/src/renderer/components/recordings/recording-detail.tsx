@@ -1,7 +1,7 @@
 import {
-  RecordingPlayer,
   PronunciationAssessmentFulltextResult,
   PronunciationAssessmentScoreResult,
+  WavesurferPlayer,
 } from "@renderer/components";
 import { Separator, ScrollArea, toast } from "@renderer/components/ui";
 import { useState, useContext, useEffect } from "react";
@@ -61,13 +61,11 @@ export const RecordingDetail = (props: {
 
   return (
     <div className="">
-      <div className="mb-6 px-4">
-        <RecordingPlayer
-          recording={recording}
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          onCurrentTimeChange={(time) => setCurrentTime(time)}
-          seek={seek}
+      <div className="flex justify-center mb-6 px-4">
+        <WavesurferPlayer
+          id={recording.id}
+          src={recording.src}
+          setCurrentTime={setCurrentTime}
         />
       </div>
 
