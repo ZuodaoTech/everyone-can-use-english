@@ -23,11 +23,6 @@ export const RecordingDetail = (props: {
     );
   const { result } = pronunciationAssessment || {};
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [seek, setSeek] = useState<{
-    seekTo: number;
-    timestamp: number;
-  }>();
-  const [isPlaying, setIsPlaying] = useState(false);
 
   const { learningLanguage } = useContext(AppSettingsProviderContext);
   const { createAssessment } = usePronunciationAssessments();
@@ -75,13 +70,7 @@ export const RecordingDetail = (props: {
         <PronunciationAssessmentFulltextResult
           words={result.words}
           currentTime={currentTime}
-          onSeek={(time) => {
-            setSeek({
-              seekTo: time,
-              timestamp: Date.now(),
-            });
-            setIsPlaying(true);
-          }}
+          src={recording.src}
         />
       ) : (
         <ScrollArea className="min-h-72 py-4 px-8 select-text">

@@ -7,9 +7,9 @@ import { InfoIcon } from "lucide-react";
 export const PronunciationAssessmentFulltextResult = (props: {
   words: PronunciationAssessmentWordResultType[];
   currentTime?: number;
-  onSeek?: (time: number) => void;
+  src?: string;
 }) => {
-  const { words, currentTime, onSeek } = props;
+  const { words, currentTime, src } = props;
   const [errorStats, setErrorStats] = useState({
     mispronunciation: 0,
     omission: 0,
@@ -57,14 +57,14 @@ export const PronunciationAssessmentFulltextResult = (props: {
   return (
     <ScrollArea className="min-h-72 py-4 px-8">
       <div className="flex items-start justify-between space-x-6">
-        <div className="flex-1 py-4">
+        <div className="flex-1 py-4 flex items-center flex-wrap">
           {words.map((result, index: number) => (
             <PronunciationAssessmentWordResult
               key={index}
               result={result}
               errorDisplay={errorDisplay}
               currentTime={currentTime}
-              onSeek={onSeek}
+              src={src}
             />
           ))}
         </div>
