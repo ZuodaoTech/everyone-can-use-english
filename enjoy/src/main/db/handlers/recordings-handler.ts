@@ -97,11 +97,6 @@ class RecordingsHandler {
       recordings.forEach(async (recording) => {
         await recording.sync();
       });
-
-      event.sender.send("on-notification", {
-        type: "info",
-        message: t("allRecordingsSynced"),
-      });
     } catch (err) {
       logger.error("failed to sync recordings", err.message);
 
