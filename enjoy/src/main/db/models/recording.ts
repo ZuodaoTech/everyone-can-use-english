@@ -254,10 +254,9 @@ export class Recording extends Model<Recording> {
   ) {
     const { targetId, targetType, referenceId, referenceText, language } =
       params;
-    let { duration } = params;
 
     if (blob.arrayBuffer.byteLength === 0) {
-      throw new Error("Empty recording");
+      throw new Error(t("models.recording.cannotDetectAnySound"));
     }
 
     let rawAudio = await echogarden.ensureRawAudio(
@@ -270,10 +269,12 @@ export class Recording extends Model<Recording> {
       0,
       -50
     );
-    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples, 0, -50);
+    trimmedSamples = echogarden.trimAudioEnd(trimmedSamples, 0, -100);
     rawAudio.audioChannels[0] = trimmedSamples;
 
-    duration = Math.round(echogarden.getRawAudioDuration(rawAudio) * 1000);
+    const duration = Math.round(
+      echogarden.getRawAudioDuration(rawAudio) * 1000
+    );
 
     if (duration === 0) {
       throw new Error(t("models.recording.cannotDetectAnySound"));
