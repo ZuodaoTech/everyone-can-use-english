@@ -693,57 +693,27 @@ export const MediaCurrentRecording = () => {
 };
 
 export const MediaRecordButton = () => {
-  const {
-    media,
-    recordingBlob,
-    isRecording,
-    startRecording,
-    stopRecording,
-    recordingTime,
-    transcription,
-    currentSegmentIndex,
-  } = useContext(MediaPlayerProviderContext);
+  const { media, isRecording, startRecording, stopRecording, recordingTime } =
+    useContext(MediaPlayerProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const [access, setAccess] = useState(true);
   const [active, setActive] = useState(false);
   const ref = useRef(null);
 
-  const createRecording = async (blob: Blob) => {
-    const currentSegment =
-      transcription?.result?.timeline?.[currentSegmentIndex];
-    if (!currentSegment) return;
-
-    EnjoyApp.recordings
-      .create({
-        targetId: media.id,
-        targetType: media.mediaType,
-        blob: {
-          type: recordingBlob.type.split(";")[0],
-          arrayBuffer: await blob.arrayBuffer(),
-        },
-        referenceId: currentSegmentIndex,
-        referenceText: currentSegment.text,
-      })
-      .then(() =>
-        toast.success(t("recordingSaved"), { position: "bottom-right" })
-      )
-      .catch((err) =>
-        toast.error(t("failedToSaveRecording" + " : " + err.message))
-      );
+  const askForMediaAccess = () => {
+    EnjoyApp.system.preferences.mediaAccess("microphone").then((access) => {
+      if (access) {
+        setAccess(true);
+      } else {
+        setAccess(false);
+        toast.warning(t("noMicrophoneAccess"));
+      }
+    });
   };
 
-  /*
-   * Save recording
-   * when recording is stopped
-   * And only when record button is active
-   */
   useEffect(() => {
-    if (!media) return;
-    if (!transcription) return;
-    if (!active) return;
-    if (!recordingBlob) return;
-
-    createRecording(recordingBlob);
-  }, [recordingBlob, media, transcription, active]);
+    askForMediaAccess();
+  }, [media]);
 
   useEffect(() => {
     if (!active) return;
@@ -769,6 +739,7 @@ export const MediaRecordButton = () => {
     <Button
       ref={ref}
       variant="ghost"
+      disabled={!access}
       onClick={() => {
         if (isRecording) {
           stopRecording();

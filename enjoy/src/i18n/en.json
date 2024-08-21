@@ -61,7 +61,7 @@
       "durationTooShort": "Duration too short",
       "failedToSave": "Failed to save recording",
       "notFound": "Recording not found",
-      "cannotDetectAnySound": "Cannot detect any sound"
+      "cannotDetectAnySound": "Cannot detect any sound in the recording, please check your microphone"
     },
     "conversation": {
       "name": "Name",
@@ -737,5 +737,6 @@
     "waveforms": "Contains all waveforms decoded from audio/videos. They're for caching. It's save to delete them.",
     "logs": "Contains some logs helpful for debugging.",
     "cache": "Contains cached files. They will be cleaned up automatically."
-  }
+  },
+  "recordingIsTooLongToAssess": "Recording is too long to assess. The maximum duration is 60 seconds."
 }

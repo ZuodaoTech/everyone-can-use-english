@@ -61,7 +61,7 @@
       "durationTooShort": "录音时长太短",
       "failedToSave": "保存录音失败",
       "notFound": "未找到录音",
-      "cannotDetectAnySound": "未检测到任何声音"
+      "cannotDetectAnySound": "录音中未检测到任何声音，请检查您的录音设备是否正常后重试"
     },
     "conversation": {
       "name": "对话标题",
@@ -737,5 +737,6 @@
     "waveforms": "波形文件，用于显示音频波形。用作缓存，可以删除",
     "logs": "日志文件，帮助开发者调试问题",
     "cache": "缓存文件，会自动清理。"
-  }
+  },
+  "recordingIsTooLongToAssess": "录音时长过长，无法评估。最长支持 1 分钟。"
 }

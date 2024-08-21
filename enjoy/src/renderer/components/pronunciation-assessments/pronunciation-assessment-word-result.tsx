@@ -84,6 +84,11 @@ export const PronunciationAssessmentWordResult = (props: {
     if (!audio.current) {
       audio.current = new Audio();
     }
+
+    return () => {
+      audio.current?.pause();
+      delete audio.current;
+    };
   }, []);
 
   return (

@@ -16,7 +16,6 @@ import {
 import {
   ConversationCard,
   ConversationForm,
-  LoaderSpin,
 } from "@renderer/components";
 import { useState, useEffect, useContext, useReducer } from "react";
 import { ChevronLeftIcon, LoaderIcon } from "lucide-react";
@@ -212,7 +211,7 @@ export default () => {
 
   useEffect(() => {
     preparePresets();
-  }, []);
+  }, [currentEngine]);
 
   return (
     <div className="h-full px-4 py-6 lg:px-8 flex flex-col">
