@@ -739,5 +739,7 @@
     "logs": "Contains some logs helpful for debugging.",
     "cache": "Contains cached files. They will be cleaned up automatically."
   },
-  "recordingIsTooLongToAssess": "Recording is too long to assess. The maximum duration is 60 seconds."
+  "recordingIsTooLongToAssess": "Recording is too long to assess. The maximum duration is 60 seconds.",
+  "recorderConfig": "Recorder config",
+  "recorderConfigSaved": "Recorder config saved"
 }

@@ -207,7 +207,9 @@ export const MediaPlayerProvider = ({
     isPaused,
     recordingTime,
     mediaRecorder,
-  } = useAudioRecorder(recorderConfig);
+  } = useAudioRecorder(recorderConfig, (exception) => {
+    toast.error(exception.message);
+  });
 
   const { segment, createSegment } = useSegments({
     targetId: media?.id,
