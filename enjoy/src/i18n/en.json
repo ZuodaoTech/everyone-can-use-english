@@ -741,5 +741,6 @@
   },
   "recordingIsTooLongToAssess": "Recording is too long to assess. The maximum duration is 60 seconds.",
   "recorderConfig": "Recorder config",
-  "recorderConfigSaved": "Recorder config saved"
+  "recorderConfigSaved": "Recorder config saved",
+  "recorderConfigDescription": "Advanced settings for recorder"
 }

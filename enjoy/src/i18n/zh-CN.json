@@ -741,5 +741,6 @@
   },
   "recordingIsTooLongToAssess": "录音时长过长，无法评估。最长支持 1 分钟。",
   "recorderConfig": "录音设置",
-  "recorderConfigSaved": "录音设置已保存"
+  "recorderConfigSaved": "录音设置已保存",
+  "recorderConfigDescription": "调整录音高级设置"
 }

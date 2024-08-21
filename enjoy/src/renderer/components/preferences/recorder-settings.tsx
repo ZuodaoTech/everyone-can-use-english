@@ -40,7 +40,7 @@ export const RecorderSettings = () => {
       ...recorderConfig,
       ...data,
     })
-      .then(() => toast.success(t("recorderSettingsSaved")))
+      .then(() => toast.success(t("recorderConfigSaved")))
       .finally(() => setEditing(false));
   };
 
@@ -49,7 +49,10 @@ export const RecorderSettings = () => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex items-start justify-between py-4">
           <div className="">
-            <div className="mb-2">{t("recorderConfig")}</div>
+            <div className="mb-4">{t("recorderConfig")}</div>
+            <div className="text-sm text-muted-foreground mb-3">
+              {t("recorderConfigDescription")}
+            </div>
             <div
               className={`text-sm text-muted-foreground space-y-3 ${
                 editing ? "" : "hidden"
