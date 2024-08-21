@@ -7,6 +7,7 @@ import fs from "fs-extra";
 import log from "@main/logger";
 import url from "url";
 import { enjoyUrlToPath } from "./utils";
+import { t } from "i18next";
 
 const __filename = url.fileURLToPath(import.meta.url);
 /*
@@ -299,12 +300,19 @@ class Whipser {
     });
 
     ipcMain.handle("whisper-transcribe", async (event, params, options) => {
-      return await this.transcribe(params, {
+      return this.transcribe(params, {
         ...options,
         onProgress: (progress) => {
           event.sender.send("whisper-on-progress", progress);
         },
-      });
+      })
+        .then((result) => {
+          return result;
+        })
+        .catch((err) => {
+          logger.error(err);
+          throw t("whisperTranscribeFailed", { error: err.message });
+        });
     });
 
     ipcMain.handle("whisper-abort", async (_event) => {
