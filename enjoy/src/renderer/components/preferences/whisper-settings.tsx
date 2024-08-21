@@ -58,17 +58,7 @@ export const WhisperSettings = () => {
       <div className="">
         <div className="flex items-center mb-2">
           <span>{t("sttAiService")}</span>
-          {stderr && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => {
-                EnjoyApp.app.createIssue("Whisper is not working", stderr);
-              }}
-            >
-              <AlertCircleIcon className="w-4 h-4 text-yellow-500" />
-            </Button>
-          )}
+          {stderr && <AlertCircleIcon className="ml-2 w-4 h-4 text-yellow-500" />}
         </div>
         <div className="text-sm text-muted-foreground">
           {whisperConfig?.service === "local" &&
