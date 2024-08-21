@@ -200,7 +200,7 @@ export const Sidebar = () => {
           </div>
         </ScrollArea>
 
-        <div className="w-full absolute bottom-0 px-1 xl:px-4 py-2">
+        <div className="w-full absolute bottom-0 px-1 xl:px-2 py-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
