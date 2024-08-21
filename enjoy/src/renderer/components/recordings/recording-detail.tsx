@@ -8,6 +8,7 @@ import { useState, useContext, useEffect } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { Tooltip } from "react-tooltip";
 import { usePronunciationAssessments } from "@renderer/hooks";
+import { t } from "i18next";
 
 export const RecordingDetail = (props: {
   recording: RecordingType;
@@ -32,6 +33,10 @@ export const RecordingDetail = (props: {
     if (assessing) return;
     if (result) return;
 
+    if (recording.duration > 60 * 1000) {
+      toast.error(t("recordingIsTooLongToAssess"));
+      return;
+    }
     setAssessing(true);
     createAssessment({
       recording,

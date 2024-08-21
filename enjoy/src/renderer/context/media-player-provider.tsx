@@ -17,6 +17,10 @@ import { toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
 import { debounce } from "lodash";
 import { useAudioRecorder } from "react-audio-voice-recorder";
+import { t } from "i18next";
+
+const ONE_MINUTE = 60;
+const TEN_MINUTES = 10 * ONE_MINUTE;
 
 type MediaPlayerContextType = {
   layout: {
@@ -84,6 +88,8 @@ type MediaPlayerContextType = {
   recordingBlob: Blob;
   isRecording: boolean;
   isPaused: boolean;
+  recordingType: string;
+  setRecordingType: (type: string) => void;
   recordingTime: number;
   mediaRecorder: MediaRecorder;
   currentRecording: RecordingType;
@@ -171,6 +177,7 @@ export const MediaPlayerProvider = ({
   const [zoomRatio, setZoomRatio] = useState<number>(1.0);
 
   const [currentRecording, setCurrentRecording] = useState<RecordingType>(null);
+  const [recordingType, setRecordingType] = useState<string>("segment");
 
   const [transcriptionDraft, setTranscriptionDraft] =
     useState<TranscriptionType["result"]>();
@@ -454,6 +461,44 @@ export const MediaPlayerProvider = ({
 
   const deboundeCalculateHeight = debounce(calculateHeight, 100);
 
+  const createRecording = async (blob: Blob) => {
+    if (!blob) return;
+    if (!media) return;
+    if (!transcription?.result?.timeline) return;
+
+    let referenceId = -1;
+    let referenceText = transcription.result.timeline
+      .map((s: TimelineEntry) => s.text)
+      .join("\n");
+
+    if (recordingType === "segment") {
+      const currentSegment =
+        transcription?.result?.timeline?.[currentSegmentIndex];
+      if (!currentSegment) return;
+
+      referenceId = currentSegmentIndex;
+      referenceText = currentSegment.text;
+    }
+
+    EnjoyApp.recordings
+      .create({
+        targetId: media.id,
+        targetType: media.mediaType,
+        blob: {
+          type: recordingBlob.type.split(";")[0],
+          arrayBuffer: await blob.arrayBuffer(),
+        },
+        referenceId,
+        referenceText,
+      })
+      .then(() =>
+        toast.success(t("recordingSaved"), { position: "bottom-right" })
+      )
+      .catch((err) =>
+        toast.error(t("failedToSaveRecording" + " : " + err.message))
+      );
+  };
+
   /*
    * When wavesurfer is decoded,
    * set up event listeners for wavesurfer
@@ -607,6 +652,24 @@ export const MediaPlayerProvider = ({
     };
   }, []);
 
+  /**
+   * create recording when recordingBlob is updated
+   */
+  useEffect(() => {
+    createRecording(recordingBlob);
+  }, [recordingBlob]);
+
+  /**
+   * auto stop recording when recording time is over
+   */
+  useEffect(() => {
+    if (recordingType === "segment" && recordingTime >= ONE_MINUTE) {
+      stopRecording();
+    } else if (recordingTime >= TEN_MINUTES) {
+      stopRecording();
+    }
+  }, [recordingTime, recordingType]);
+
   return (
     <>
       <MediaPlayerProviderContext.Provider
@@ -648,6 +711,8 @@ export const MediaPlayerProvider = ({
           recordingBlob,
           isRecording,
           isPaused,
+          recordingType,
+          setRecordingType,
           recordingTime,
           mediaRecorder,
           currentRecording,
