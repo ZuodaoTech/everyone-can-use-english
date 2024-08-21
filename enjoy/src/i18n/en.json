@@ -411,6 +411,7 @@
   "pleaseDownloadWhisperModelFirst": "Please download whisper model first",
   "whisperIsWorkingGood": "Whisper is working good",
   "whisperIsNotWorking": "Whisper is not working",
+  "whisperTranscribeFailed": "Whisper transcribe failed. Maybe your machine is not compatbile with it. Please use other STT service. {{error}}",
   "checkingWhisperModel": "Checking whisper model",
   "whisperModelIsWorkingGood": "Whisper model is working good",
   "whisperModelIsNotWorking": "Whisper model is not working",

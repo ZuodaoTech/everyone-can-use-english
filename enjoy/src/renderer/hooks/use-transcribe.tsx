@@ -222,6 +222,10 @@ export const useTranscribe = () => {
       }
     );
 
+    if (!res) {
+      throw new Error(t("whisperTranscribeFailed", { error: "" }));
+    }
+
     const timeline: TimelineEntry[] = res.transcription
       .map((segment) => {
         // ignore the word if it is empty or in the format of `[xxx]` or `(xxx)`
