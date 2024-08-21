@@ -17,6 +17,7 @@ import {
   NativeLanguageSettings,
   LearningLanguageSettings,
   NetworkState,
+  RecorderSettings,
 } from "@renderer/components";
 import { useState } from "react";
 import { Tooltip } from "react-tooltip";
@@ -58,6 +59,8 @@ export const Preferences = () => {
           <ProxySettings />
           <Separator />
           <NetworkState />
+          <Separator />
+          <RecorderSettings />
           <Separator />
           <ResetSettings />
           <Separator />

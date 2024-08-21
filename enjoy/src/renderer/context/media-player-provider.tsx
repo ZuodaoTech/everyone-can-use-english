@@ -138,7 +138,7 @@ export const MediaPlayerProvider = ({
   children: React.ReactNode;
 }) => {
   const minPxPerSec = 150;
-  const { EnjoyApp, webApi, learningLanguage } = useContext(
+  const { EnjoyApp, learningLanguage, recorderConfig } = useContext(
     AppSettingsProviderContext
   );
 
@@ -207,7 +207,7 @@ export const MediaPlayerProvider = ({
     isPaused,
     recordingTime,
     mediaRecorder,
-  } = useAudioRecorder();
+  } = useAudioRecorder(recorderConfig);
 
   const { segment, createSegment } = useSegments({
     targetId: media?.id,
