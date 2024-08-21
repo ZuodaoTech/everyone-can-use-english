@@ -222,8 +222,12 @@ export default withMermaid(
                     link: "/sounds-of-american-english/4.2-words",
                   },
                   {
-                    text: "4.3. 句子",
-                    link: "/sounds-of-american-english/4.3-sentences",
+                    text: "4.3. 意群",
+                    link: "/sounds-of-american-english/4.3-group",
+                  },
+                  {
+                    text: "4.4. 句子",
+                    link: "/sounds-of-american-english/4.4-sentences",
                   },
                 ],
               },
