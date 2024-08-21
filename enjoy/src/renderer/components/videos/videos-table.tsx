@@ -96,12 +96,10 @@ export const VideosTable = (props: {
               {dayjs(video.createdAt).format("YYYY-MM-DD HH:mm")}
             </TableCell>
             <TableCell>
-              {video.transcribing ? (
-                <PingPoint colorClassName="bg-yellow-500" />
-              ) : video.transcribed ? (
+              {video.transcribed ? (
                 <CheckCircleIcon className="text-green-500 w-4 h-4" />
               ) : (
-                <PingPoint colorClassName="bg-gray-500" />
+                <PingPoint colorClassName="bg-gray-500" className="w-2 h-2" />
               )}
             </TableCell>
             <TableCell>

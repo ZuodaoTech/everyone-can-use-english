@@ -96,12 +96,10 @@ export const AudiosTable = (props: {
               {dayjs(audio.createdAt).format("YYYY-MM-DD HH:mm")}
             </TableCell>
             <TableCell>
-              {audio.transcribing ? (
-                <PingPoint colorClassName="bg-yellow-500" />
-              ) : audio.transcribed ? (
+              {audio.transcribed ? (
                 <CheckCircleIcon className="text-green-500 w-4 h-4" />
               ) : (
-                <PingPoint colorClassName="bg-gray-500" />
+                <PingPoint colorClassName="bg-gray-500" className="w-2 h-2" />
               )}
             </TableCell>
             <TableCell>
