@@ -189,3 +189,11 @@ type DiskUsageType = {
   path: string;
   size: number;
 }[];
+
+type RecorderConfigType = {
+  autoGainControl: boolean;
+  echoCancellation: boolean;
+  noiseSuppression: boolean;
+  sampleRate: number;
+  sampleSize: number;
+};

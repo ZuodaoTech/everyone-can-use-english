@@ -182,7 +182,7 @@ export default {
       return settings.setSync("defaultHotkeys", records);
     });
 
-    ipcMain.handle("settings-get-api-url", (_event, url) => {
+    ipcMain.handle("settings-get-api-url", (_event) => {
       return settings.getSync("apiUrl");
     });
 

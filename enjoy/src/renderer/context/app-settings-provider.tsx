@@ -29,6 +29,8 @@ type AppSettingsProviderState = {
   setProxy?: (config: ProxyConfigType) => Promise<void>;
   cable?: Consumer;
   ahoy?: typeof ahoy;
+  recorderConfig?: RecorderConfigType;
+  setRecorderConfig?: (config: RecorderConfigType) => Promise<void>;
   // remote config
   ipaMappings?: { [key: string]: string };
 };
@@ -58,6 +60,7 @@ export const AppSettingsProvider = ({
   const [learningLanguage, setLearningLanguage] = useState<string>("en-US");
   const [proxy, setProxy] = useState<ProxyConfigType>();
   const EnjoyApp = window.__ENJOY_APP__;
+  const [recorderConfig, setRecorderConfig] = useState<RecorderConfigType>();
   const [ipaMappings, setIpaMappings] = useState<{ [key: string]: string }>(
     IPA_MAPPINGS
   );
@@ -177,6 +180,28 @@ export const AppSettingsProvider = ({
     setCable(consumer);
   };
 
+  const fetchRecorderConfig = async () => {
+    const config = await EnjoyApp.settings.get("recorderConfig");
+    if (config) {
+      setRecorderConfig(config);
+    } else {
+      const defaultConfig: RecorderConfigType = {
+        autoGainControl: true,
+        echoCancellation: true,
+        noiseSuppression: true,
+        sampleRate: 16000,
+        sampleSize: 16,
+      };
+      setRecorderConfigHandler(defaultConfig);
+    }
+  };
+
+  const setRecorderConfigHandler = async (config: RecorderConfigType) => {
+    return EnjoyApp.settings.set("recorderConfig", config).then(() => {
+      setRecorderConfig(config);
+    });
+  };
+
   useEffect(() => {
     fetchVersion();
     fetchUser();
@@ -184,6 +209,7 @@ export const AppSettingsProvider = ({
     fetchLanguages();
     fetchProxyConfig();
     initSentry();
+    fetchRecorderConfig();
   }, []);
 
   useEffect(() => {
@@ -238,6 +264,8 @@ export const AppSettingsProvider = ({
         initialized: Boolean(user && libraryPath),
         ahoy,
         cable,
+        recorderConfig,
+        setRecorderConfig: setRecorderConfigHandler,
         ipaMappings,
       }}
     >

@@ -739,5 +739,8 @@
     "logs": "日志文件，帮助开发者调试问题",
     "cache": "缓存文件，会自动清理。"
   },
-  "recordingIsTooLongToAssess": "录音时长过长，无法评估。最长支持 1 分钟。"
+  "recordingIsTooLongToAssess": "录音时长过长，无法评估。最长支持 1 分钟。",
+  "recorderConfig": "录音设置",
+  "recorderConfigSaved": "录音设置已保存",
+  "recorderConfigDescription": "调整录音高级设置"
 }
