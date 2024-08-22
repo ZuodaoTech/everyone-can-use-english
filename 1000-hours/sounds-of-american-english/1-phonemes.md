@@ -435,6 +435,7 @@
 | <span class="pho">◌̅, ◌́, ◌̀</span>  | 音节声调，平、升、降                                         |
 | <span class="pho">◌̂</span>        | 音高被抬高的音节                                             |
 | <span class="pho">·</span>        | 音节之间的停顿（*stop*）                                     |
+| <span class="pho">◌‿◌</span>      | 连读符号                                                     |
 | <span class="pho">｜</span>       | 单词之间分割意群的暂停（*pause*）                            |
 
 

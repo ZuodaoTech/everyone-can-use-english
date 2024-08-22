@@ -243,6 +243,10 @@ export default withMermaid(
                 text: "6. 词汇构建",
                 link: "/sounds-of-american-english/6-vocabulary",
               },
+              {
+                text: "7. 从此之后",
+                link: "/sounds-of-american-english/7-whats-next",
+              },
             ],
           },
           {

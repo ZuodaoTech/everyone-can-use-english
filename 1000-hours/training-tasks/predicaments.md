@@ -16,7 +16,34 @@
 
 成年人在说话的时候，除了发音过程中**音素**上的问题之外，其实还要面临并处理更多更复杂的问题。他们想要用更准确的词汇表达。比如，针对 “想” 这个动作，他们可能有很多选择，根据 Roget's Thesaurus，词汇丰富的人需要在以下 24 种说法里选择一个当时最为恰当的词汇：
 
-> *appreciate consult fancy reason believe contemplate imagine reflect  cerebrate deliberate meditate ruminate cogitate digest muse speculate  conceive discuss ponder suppose consider dream realize weigh*
+<div class="four-column">
+
+> * appreciate
+> * believe
+> * cerebrate
+> * cogitate
+> * conceive
+> * consider
+> * consult
+> * contemplate
+> * deliberate
+> * digest
+> * discuss
+> * dream
+> * fancy
+> * imagine
+> * meditate
+> * muse
+> * ponder
+> * realize
+> * reason
+> * reflect
+> * ruminate
+> * speculate
+> * suppose
+> * weigh
+
+</div>
 
 不仅如此，他们拥有更多的语法知识，所以可能需要选择一个恰当的句型；他们能够识别应用环境，所以，在日常对话中使用一种腔调，但做学术报告的时候使用另外一种腔调；到最后，每个人都有不一样的风格，不同的词汇库，以及独特的表达法。也就是说，语言能力越强的人，在学外语的时候遇到的障碍越多，到最后有很多甚至可能是无法逾越的障碍。
 
@@ -44,3 +71,10 @@
 
 6 岁就已经出现这种情况了，16 岁呢？26 岁呢？36 岁呢？—— 当然，有些人 16 岁之后，我们之前提到过的那些能力从未真正进一步发展过，从另外一个角度来看，也不见得一定是坏事，起码，他们学外语的难度并没有增加，或者说相对较低…… 又当然，在那种情况下，学外语干嘛呢？
 
+<style>
+    .four-column ul {
+        column-count: 4 !important;
+        column-gap: 2em;
+        list-style-type: none;
+    }
+</style>
