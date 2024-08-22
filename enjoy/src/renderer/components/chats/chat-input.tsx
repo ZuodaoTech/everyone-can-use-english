@@ -26,6 +26,7 @@ import {
   AppSettingsProviderContext,
   ChatProviderContext,
   ChatSessionProviderContext,
+  HotKeysSettingsProviderContext,
 } from "@renderer/context";
 import { t } from "i18next";
 import autosize from "autosize";
@@ -33,6 +34,7 @@ import { LoaderSpin } from "@renderer/components";
 import { useAiCommand } from "@renderer/hooks";
 import { formatDateTime } from "@renderer/lib/utils";
 import { md5 } from "js-md5";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const ChatInput = () => {
   const { currentChat } = useContext(ChatProviderContext);
@@ -54,6 +56,7 @@ export const ChatInput = () => {
   const submitRef = useRef<HTMLButtonElement>(null);
   const [inputMode, setInputMode] = useState<"text" | "audio">("audio");
   const [content, setContent] = useState("");
+  const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
 
   useEffect(() => {
     if (!inputRef.current) return;
@@ -88,6 +91,20 @@ export const ChatInput = () => {
   useEffect(() => {
     EnjoyApp.cacheObjects.set(`chat-input-mode-${currentChat.id}`, inputMode);
   }, [inputMode]);
+
+  useHotkeys(
+    currentHotkeys.StartOrStopRecording,
+    () => {
+      if (isRecording) {
+        stopRecording();
+      } else {
+        startRecording();
+      }
+    },
+    {
+      preventDefault: true,
+    }
+  );
 
   if (isRecording) {
     return (
