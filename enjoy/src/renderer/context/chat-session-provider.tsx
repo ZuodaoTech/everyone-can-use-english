@@ -91,7 +91,9 @@ export const ChatSessionProvider = ({
   children: React.ReactNode;
   chat: ChatType;
 }) => {
-  const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, user, apiUrl, recorderConfig } = useContext(
+    AppSettingsProviderContext
+  );
   const { openai } = useContext(AISettingsProviderContext);
   const [submitting, setSubmitting] = useState(false);
   const [shadowing, setShadowing] = useState<AudioType>(null);
@@ -115,7 +117,9 @@ export const ChatSessionProvider = ({
     isPaused,
     recordingTime,
     mediaRecorder,
-  } = useAudioRecorder();
+  } = useAudioRecorder(recorderConfig, (exception) => {
+    toast.error(exception.message);
+  });
 
   const { transcribe } = useTranscribe();
 
