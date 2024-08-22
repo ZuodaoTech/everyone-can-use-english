@@ -106,6 +106,10 @@ export const ChatInput = () => {
     }
   );
 
+  useHotkeys(currentHotkeys.PlayNextSegment, () => askAgent(), {
+    preventDefault: true,
+  });
+
   if (isRecording) {
     return (
       <div className="w-full flex justify-center">
