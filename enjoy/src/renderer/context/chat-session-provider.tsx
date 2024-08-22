@@ -222,10 +222,7 @@ export const ChatSessionProvider = ({
               }(${formatDateTime(message.createdAt)})`
           )
           .join("\n"),
-        input:
-          chatMessages.length > 0
-            ? "Say somthing to continue the conversation."
-            : "Say something to start the conversation.",
+        input: chatMessages.length > 0 ? "Continue" : "Start the conversation",
       });
 
       return EnjoyApp.chatMessages
