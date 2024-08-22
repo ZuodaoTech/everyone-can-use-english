@@ -47,7 +47,7 @@ const SYSTEM_PROMPT = `I speak {native_language}. You're my {learning_language} 
 [Context]
 {context}`;
 
-const PROMPT = `Please provide me with some suggestions for what counld I say and explain them in {native_language}.
+const PROMPT = `Please provide me with at least 5 suggestions for what counld I say and explain them in {native_language}.
 
 Reply in JSON format only. The output should be structured like this:
 {{
