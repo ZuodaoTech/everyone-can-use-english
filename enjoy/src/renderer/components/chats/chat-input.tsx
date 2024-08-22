@@ -333,6 +333,8 @@ const ChatSuggestionButton = (props: {
     EnjoyApp.cacheObjects.get(contextCacheKey).then((result) => {
       if (result && result?.suggestions) {
         setSuggestions(result.suggestions as typeof suggestions);
+      } else {
+        setSuggestions([]);
       }
     });
   }, [contextCacheKey]);
@@ -364,21 +366,23 @@ const ChatSuggestionButton = (props: {
                 <div key={index} className="grid gap-4">
                   <div className="text-sm">{suggestion.explaination}</div>
                   <div className="px-4 py-2 rounded bg-background flex items-end justify-between space-x-2">
-                    <p>{suggestion.text}</p>
-                    <Button
-                      data-tooltip-id="global-tooltip"
-                      data-tooltip-content={t("send")}
-                      variant="default"
-                      size="icon"
-                      className="rounded-full w-6 h-6"
-                      onClick={() =>
-                        onCreateMessage(suggestion.text).finally(() =>
-                          setOpen(false)
-                        )
-                      }
-                    >
-                      <SendIcon className="w-3 h-3" />
-                    </Button>
+                    <div className="font-serif">{suggestion.text}</div>
+                    <div>
+                      <Button
+                        data-tooltip-id="global-tooltip"
+                        data-tooltip-content={t("send")}
+                        variant="default"
+                        size="icon"
+                        className="rounded-full w-6 h-6"
+                        onClick={() =>
+                          onCreateMessage(suggestion.text).finally(() =>
+                            setOpen(false)
+                          )
+                        }
+                      >
+                        <SendIcon className="w-3 h-3" />
+                      </Button>
+                    </div>
                   </div>
                   <Separator />
                 </div>
