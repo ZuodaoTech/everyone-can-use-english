@@ -192,10 +192,7 @@ export const ChatInput = () => {
             <SendIcon className="w-6 h-6" />
           )}
         </Button>
-        <ChatSuggestionButton
-          asChild
-          onSend={(content) => onCreateMessage(content)}
-        >
+        <ChatSuggestionButton asChild>
           <Button
             data-tooltip-id="chat-input-tooltip"
             data-tooltip-content={t("suggestion")}
@@ -247,7 +244,7 @@ export const ChatInput = () => {
           <MicIcon className="w-6 h-6" />
         )}
       </Button>
-      <ChatSuggestionButton onSend={(content) => onCreateMessage(content)} />
+      <ChatSuggestionButton />
       <Button
         data-tooltip-id="chat-input-tooltip"
         data-tooltip-content={t("continue")}
@@ -266,11 +263,11 @@ export const ChatInput = () => {
 const ChatSuggestionButton = (props: {
   asChild?: boolean;
   children?: ReactElement;
-  onSend: (text: string) => void;
 }) => {
-  const { onSend } = props;
   const { currentChat } = useContext(ChatProviderContext);
-  const { chatMessages } = useContext(ChatSessionProviderContext);
+  const { chatMessages, onCreateMessage } = useContext(
+    ChatSessionProviderContext
+  );
   const [suggestions, setSuggestions] = useState<
     { text: string; explaination: string }[]
   >([]);
@@ -316,27 +313,29 @@ const ChatSuggestionButton = (props: {
   )}`;
 
   const suggest = async () => {
-    const cached = await EnjoyApp.cacheObjects.get(contextCacheKey);
-
-    if (cached) {
-      setSuggestions(cached as typeof suggestions);
-      return;
-    }
-
     setLoading(true);
-    chatSuggestion(context)
-      .then((res) => {
-        setSuggestions(res.suggestions);
-        EnjoyApp.cacheObjects.set(contextCacheKey, res.suggestions);
-      })
+    chatSuggestion(context, {
+      cacheKey: contextCacheKey,
+    })
+      .then((res) => setSuggestions(res.suggestions))
       .finally(() => {
         setLoading(false);
       });
   };
 
   useEffect(() => {
-    suggest();
-  }, []);
+    if (open && !suggestions?.length) {
+      suggest();
+    }
+  }, [open]);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects.get(contextCacheKey).then((result) => {
+      if (result && result?.suggestions) {
+        setSuggestions(result.suggestions as typeof suggestions);
+      }
+    });
+  }, [contextCacheKey]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -372,7 +371,11 @@ const ChatSuggestionButton = (props: {
                       variant="default"
                       size="icon"
                       className="rounded-full w-6 h-6"
-                      onClick={() => onSend(suggestion.text)}
+                      onClick={() =>
+                        onCreateMessage(suggestion.text).finally(() =>
+                          setOpen(false)
+                        )
+                      }
                     >
                       <SendIcon className="w-3 h-3" />
                     </Button>
@@ -380,6 +383,16 @@ const ChatSuggestionButton = (props: {
                   <Separator />
                 </div>
               ))}
+              <div className="flex justify-end">
+                <Button
+                  disabled={loading}
+                  variant="default"
+                  size="sm"
+                  onClick={() => suggest()}
+                >
+                  {t("refresh")}
+                </Button>
+              </div>
             </div>
           </ScrollArea>
         )}

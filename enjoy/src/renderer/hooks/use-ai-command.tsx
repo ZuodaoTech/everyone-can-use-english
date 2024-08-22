@@ -176,9 +176,10 @@ export const useAiCommand = () => {
     options?: {
       learningLanguage?: string;
       nativeLanguage?: string;
+      cacheKey?: string;
     }
   ) => {
-    return chatSuggestionCommand(
+    const result = await chatSuggestionCommand(
       {
         context,
         learningLanguage: options?.learningLanguage || learningLanguage,
@@ -190,6 +191,12 @@ export const useAiCommand = () => {
         baseUrl: currentEngine.baseUrl,
       }
     );
+
+    if (options.cacheKey) {
+      EnjoyApp.cacheObjects.set(options.cacheKey, result);
+    }
+
+    return result;
   };
 
   return {
