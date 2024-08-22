@@ -202,7 +202,7 @@ export const ChatInput = () => {
             variant="ghost"
             size="icon"
           >
-            <WandIcon className="w-4 h-4" />
+            <WandIcon className="w-6 h-6" />
           </Button>
         </ChatSuggestionButton>
         <Button
@@ -257,7 +257,7 @@ export const ChatInput = () => {
         variant="default"
         size="icon"
       >
-        <StepForwardIcon className="w-6 h-6" />
+        <StepForwardIcon className="w-4 h-4" />
       </Button>
     </div>
   );
