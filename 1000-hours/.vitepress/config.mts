@@ -237,22 +237,11 @@ export default withMermaid(
               },
               {
                 text: "5. 基础之上",
-                collapsed: true,
                 link: "/sounds-of-american-english/5-above-ground",
-                items: [
-                  {
-                    text: "5.1. 流利",
-                    link: "/sounds-of-american-english/5.1-fluency",
-                  },
-                  {
-                    text: "5.2. 情绪",
-                    link: "/sounds-of-american-english/5.2-emotions",
-                  },
-                ],
               },
               {
-                text: "6. 而后",
-                link: "/sounds-of-american-english/5-sumup",
+                text: "6. 词汇构建",
+                link: "/sounds-of-american-english/6-vocabulary",
               },
             ],
           },
