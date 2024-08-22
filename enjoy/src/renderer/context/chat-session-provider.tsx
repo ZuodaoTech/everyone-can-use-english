@@ -225,11 +225,17 @@ export const ChatSessionProvider = ({
         input: chatMessages.length > 0 ? "Continue" : "Start the conversation",
       });
 
+      // the reply may contain the member's name like "Agent: xxx". We need to remove it.
+      const content = reply.content
+        .toString()
+        .replaceAll(new RegExp(`^(${member.agent.name}):`), "")
+        .trim();
+
       return EnjoyApp.chatMessages
         .create({
           chatId: chat.id,
           memberId: member.id,
-          content: reply.content,
+          content,
           state: "completed",
         })
         .then((message) =>
