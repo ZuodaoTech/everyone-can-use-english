@@ -26,19 +26,20 @@
 
 在我们的语音塑造训练中，每个音素都可能有不止一条验收标准，比如，<span class="pho">t</span> 这个**音素**的发音就有很多验收标准：
 
-> * 发声时舌尖的起始位置对不对？（[2.2.12](/sounds-of-american-english/2.2.12-tsdz)）
-> * 它是不是产生了声门停顿？（[2.4.3.1](/sounds-of-american-english/2.4.3-cc#_2-4-3-1-省音-elision)、[2.4.3.2](/sounds-of-american-english/2.4.3-cc#_2-4-3-2-叠音-geminates)）
-> * 它是不是应该被读成 <span class="pho alt">tʃ</span>？（[2.4.3.2](/sounds-of-american-english/2.4.3-cc#_2-4-3-3-同化-assimilation)）
-> * 它是不是应该被读成弹舌音 <span class="pho alt">t̬</span>？
-> * 它是不是应该被读成 <span class="pho alt">denglish</span>？（[2.2.3](/sounds-of-american-english/2.2.3-td)）
+> * 发声时舌尖的起始位置对不对？（[3.2.2.2](/sounds-of-american-english/3.2.2-td#_3-2-2-2-舌尖起始位置)）
+> * 它是不是产生了塞音？（[3.2.2.3.2](/sounds-of-american-english/3.2.2-td#_3-2-2-3-2-阻塞音-t)）
+> * 它是不是应该被读成浊化音 <span class="pho alt">d</span>？（[3.2.2.3.5](/sounds-of-american-english/3.2.2-td#_3-2-2-3-5-t-的浊化t)）
+> * 它是不是应该被读成 <span class="pho alt">tʃ</span>？（[4.4.2.3](/sounds-of-american-english/4.4-linking#_4-4-2-3-同化-assimilation)）
+> * 它是不是应该被读成弹舌音 <span class="pho alt">t̬</span>？（[3.2.2.3.1](/sounds-of-american-english/4.4-linking#3.2.2-td#_3-2-2-3-1-弹舌音-t)）
+> * 它是不是应该被读成喉塞音 <span class="pho alt">ʔ</span>？（[3.2.2.3.4](/sounds-of-american-english/3.2.2-td#_3-2-2-3-4-喉塞音-ʔ)）
 
 对整个自然语句，除了每个**音素**都有自己的验收标准之外，还有**韵律**和**节奏**上的判断标准：
 
-> * 停顿：每个停顿是否处理得当？有没有分别做对做好？（[2.4.1](/sounds-of-american-english/2.4.1-stop)）
-> * 高低：哪些音节音高被拔高了？有没有分别做对做好？（[2.5.1](/sounds-of-american-english/2.5.1-pitch)）
-> * 起伏：哪些音节带着明显的声调？分别是什么？有没有分别做对做好？（[2.5.2](/sounds-of-american-english/2.5.2-tone)）
-> * 轻重：哪些词被弱读了？被弱读成了什么样子？有没有分别做对做好？（[2.5.3](/sounds-of-american-english/2.5.3-emphasis)）
-> * 缓急：哪些词连在一起读得很快？被读成了什么样子？有没有分别做对做好？（[2.5.4](/sounds-of-american-english/2.5.4-pace)）
+> * 停顿：每个停顿是否处理得当？有没有分别做对做好？（[4.2](/sounds-of-american-english/4.3-grouping)）
+> * 高低：哪些音节音高被拔高了？有没有分别做对做好？（[4.5.4](/sounds-of-american-english/4.5-sentences#_4-5-4-音高变化)）
+> * 起伏：哪些音节带着明显的声调？分别是什么？有没有分别做对做好？（[4.5.5](/sounds-of-american-english/4.5-sentences#_4-5-5-声调变化)）
+> * 轻重：哪些词被弱读了？被弱读成了什么样子？有没有分别做对做好？（[4.5.1](/sounds-of-american-english/4.5-sentences#_4-5-1-弱读词汇)）
+> * 缓急：哪些词连在一起读得很快？被读成了什么样子？有没有分别做对做好？（[4.5.6](/sounds-of-american-english/4.5-sentences#_4-5-6-语速)）
 
 无论学什么，都一样的，每个重点知识的理解和应用都有相应的**验收标准**。从这个角度望过去，无论是校内的数学、物理、化学，还是地理、生物，抑或历史、文学，课本的核心都一样，都是一个又一个的验收标准…… 校外的计算机编程语言的教材里还是如此 —— 天下所有教材都是如此。
 
