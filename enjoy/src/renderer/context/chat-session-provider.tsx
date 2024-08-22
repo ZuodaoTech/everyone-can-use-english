@@ -29,6 +29,7 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChevronDownIcon } from "lucide-react";
 import { AudioPlayer, RecordingDetail } from "@renderer/components";
 import { CHAT_SYSTEM_PROMPT_TEMPLATE } from "@/constants";
+import { formatDateTime } from "@renderer/lib/utils";
 
 type ChatSessionProviderState = {
   chatMessages: ChatMessageType[];
@@ -218,7 +219,7 @@ export const ChatSessionProvider = ({
             (message) =>
               `- ${(message.member.user || message.member.agent).name}: ${
                 message.content
-              }`
+              }(${formatDateTime(message.createdAt)})`
           )
           .join("\n"),
         input:
