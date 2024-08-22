@@ -5,8 +5,11 @@ import {
   ChatSessionProviderContext,
 } from "@renderer/context";
 
-export const ChatMessage = (props: { chatMessage: ChatMessageType }) => {
-  const { chatMessage } = props;
+export const ChatMessage = (props: {
+  chatMessage: ChatMessageType;
+  isLastMessage: boolean;
+}) => {
+  const { chatMessage, isLastMessage } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { dispatchChatMessages } = useContext(ChatSessionProviderContext);
 
@@ -22,8 +25,18 @@ export const ChatMessage = (props: { chatMessage: ChatMessageType }) => {
   }, [chatMessage]);
 
   if (chatMessage.member?.userType === "User") {
-    return <ChatUserMessage chatMessage={props.chatMessage} />;
+    return (
+      <ChatUserMessage
+        chatMessage={props.chatMessage}
+        isLastMessage={isLastMessage}
+      />
+    );
   } else if (props.chatMessage.member?.userType === "Agent") {
-    return <ChatAgentMessage chatMessage={props.chatMessage} />;
+    return (
+      <ChatAgentMessage
+        chatMessage={props.chatMessage}
+        isLastMessage={isLastMessage}
+      />
+    );
   }
 };

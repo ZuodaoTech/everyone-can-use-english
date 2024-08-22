@@ -7,16 +7,37 @@ import {
   SendIcon,
   StepForwardIcon,
   TextIcon,
+  WandIcon,
   XIcon,
 } from "lucide-react";
-import { Button, Textarea } from "@renderer/components/ui";
-import { useContext, useEffect, useRef, useState } from "react";
+import {
+  Button,
+  Popover,
+  PopoverArrow,
+  PopoverContent,
+  PopoverTrigger,
+  ScrollArea,
+  Separator,
+  Textarea,
+} from "@renderer/components/ui";
+import { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
-import { ChatSessionProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  ChatProviderContext,
+  ChatSessionProviderContext,
+  HotKeysSettingsProviderContext,
+} from "@renderer/context";
 import { t } from "i18next";
 import autosize from "autosize";
+import { LoaderSpin } from "@renderer/components";
+import { useAiCommand } from "@renderer/hooks";
+import { formatDateTime } from "@renderer/lib/utils";
+import { md5 } from "js-md5";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const ChatInput = () => {
+  const { currentChat } = useContext(ChatProviderContext);
   const {
     submitting,
     startRecording,
@@ -30,10 +51,12 @@ export const ChatInput = () => {
     askAgent,
     onCreateMessage,
   } = useContext(ChatSessionProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
   const [inputMode, setInputMode] = useState<"text" | "audio">("audio");
   const [content, setContent] = useState("");
+  const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
 
   useEffect(() => {
     if (!inputRef.current) return;
@@ -54,6 +77,38 @@ export const ChatInput = () => {
       autosize.destroy(inputRef.current);
     };
   }, [inputRef.current]);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects
+      .get(`chat-input-mode-${currentChat.id}`)
+      .then((cachedInputMode) => {
+        if (cachedInputMode) {
+          setInputMode(cachedInputMode as typeof inputMode);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects.set(`chat-input-mode-${currentChat.id}`, inputMode);
+  }, [inputMode]);
+
+  useHotkeys(
+    currentHotkeys.StartOrStopRecording,
+    () => {
+      if (isRecording) {
+        stopRecording();
+      } else {
+        startRecording();
+      }
+    },
+    {
+      preventDefault: true,
+    }
+  );
+
+  useHotkeys(currentHotkeys.PlayNextSegment, () => askAgent(), {
+    preventDefault: true,
+  });
 
   if (isRecording) {
     return (
@@ -158,6 +213,16 @@ export const ChatInput = () => {
             <SendIcon className="w-6 h-6" />
           )}
         </Button>
+        <ChatSuggestionButton asChild>
+          <Button
+            data-tooltip-id="chat-input-tooltip"
+            data-tooltip-content={t("suggestion")}
+            variant="ghost"
+            size="icon"
+          >
+            <WandIcon className="w-6 h-6" />
+          </Button>
+        </ChatSuggestionButton>
         <Button
           data-tooltip-id="chat-input-tooltip"
           data-tooltip-content={t("continue")}
@@ -174,7 +239,7 @@ export const ChatInput = () => {
   }
 
   return (
-    <div className="w-full flex items-center gap-4 justify-center">
+    <div className="w-full flex items-center gap-4 justify-center relative">
       <Button
         data-tooltip-id="chat-input-tooltip"
         data-tooltip-content={t("textInput")}
@@ -200,17 +265,164 @@ export const ChatInput = () => {
           <MicIcon className="w-6 h-6" />
         )}
       </Button>
+      <ChatSuggestionButton />
       <Button
         data-tooltip-id="chat-input-tooltip"
         data-tooltip-content={t("continue")}
         disabled={submitting}
         onClick={() => askAgent()}
-        className="rounded-full shadow w-8 h-8"
-        variant="secondary"
+        className="absolute right-4 rounded-full shadow w-8 h-8"
+        variant="default"
         size="icon"
       >
         <StepForwardIcon className="w-4 h-4" />
       </Button>
     </div>
+  );
+};
+
+const ChatSuggestionButton = (props: {
+  asChild?: boolean;
+  children?: ReactElement;
+}) => {
+  const { currentChat } = useContext(ChatProviderContext);
+  const { chatMessages, onCreateMessage } = useContext(
+    ChatSessionProviderContext
+  );
+  const [suggestions, setSuggestions] = useState<
+    { text: string; explaination: string }[]
+  >([]);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+
+  const { chatSuggestion } = useAiCommand();
+
+  const context = `I'm ${
+    currentChat.members.find((member) => member.user).user.name
+  }.
+  
+  [Chat Topic]
+  ${currentChat.topic}
+
+  [Chat Members]
+  ${currentChat.members.map((m) => {
+    if (m.user) {
+      return `- ${m.user.name} (${m.config.introduction})[It's me]`;
+    } else if (m.agent) {
+      return `- ${m.agent.name} (${m.agent.introduction})`;
+    }
+  })}
+
+  [Chat History]
+  ${chatMessages
+    .filter((m) => m.state === "completed")
+    .map(
+      (message) =>
+        `- ${(message.member.user || message.member.agent).name}: ${
+          message.content
+        }(${formatDateTime(message.createdAt)})`
+    )
+    .join("\n")}
+  `;
+
+  const contextCacheKey = `chat-suggestion-${md5(
+    chatMessages
+      .filter((m) => m.state === "completed")
+      .map((m) => m.content)
+      .join("\n")
+  )}`;
+
+  const suggest = async () => {
+    setLoading(true);
+    chatSuggestion(context, {
+      cacheKey: contextCacheKey,
+    })
+      .then((res) => setSuggestions(res.suggestions))
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (open && !suggestions?.length) {
+      suggest();
+    }
+  }, [open]);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects.get(contextCacheKey).then((result) => {
+      if (result && result?.suggestions) {
+        setSuggestions(result.suggestions as typeof suggestions);
+      } else {
+        setSuggestions([]);
+      }
+    });
+  }, [contextCacheKey]);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        {props.asChild ? (
+          { ...props.children }
+        ) : (
+          <Button
+            data-tooltip-id="chat-input-tooltip"
+            data-tooltip-content={t("suggestion")}
+            className="rounded-full shadow w-8 h-8"
+            variant="secondary"
+            size="icon"
+          >
+            <WandIcon className="w-4 h-4" />
+          </Button>
+        )}
+      </PopoverTrigger>
+      <PopoverContent side="top" className="bg-muted w-full max-w-screen-md">
+        {loading || suggestions.length === 0 ? (
+          <LoaderSpin />
+        ) : (
+          <ScrollArea className="h-72 px-3">
+            <div className="select-text grid gap-6">
+              {suggestions.map((suggestion, index) => (
+                <div key={index} className="grid gap-4">
+                  <div className="text-sm">{suggestion.explaination}</div>
+                  <div className="px-4 py-2 rounded bg-background flex items-end justify-between space-x-2">
+                    <div className="font-serif">{suggestion.text}</div>
+                    <div>
+                      <Button
+                        data-tooltip-id="global-tooltip"
+                        data-tooltip-content={t("send")}
+                        variant="default"
+                        size="icon"
+                        className="rounded-full w-6 h-6"
+                        onClick={() =>
+                          onCreateMessage(suggestion.text).finally(() =>
+                            setOpen(false)
+                          )
+                        }
+                      >
+                        <SendIcon className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  </div>
+                  <Separator />
+                </div>
+              ))}
+              <div className="flex justify-end">
+                <Button
+                  disabled={loading}
+                  variant="default"
+                  size="sm"
+                  onClick={() => suggest()}
+                >
+                  {t("refresh")}
+                </Button>
+              </div>
+            </div>
+          </ScrollArea>
+        )}
+        <PopoverArrow />
+      </PopoverContent>
+    </Popover>
   );
 };

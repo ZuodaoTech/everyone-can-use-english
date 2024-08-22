@@ -29,6 +29,7 @@ import {
   MicIcon,
   MoreVerticalIcon,
   RotateCcwIcon,
+  Volume2Icon,
 } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -39,8 +40,11 @@ import { useAiCommand, useConversation } from "@renderer/hooks";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { md5 } from "js-md5";
 
-export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
-  const { chatMessage } = props;
+export const ChatAgentMessage = (props: {
+  chatMessage: ChatMessageType;
+  isLastMessage: boolean;
+}) => {
+  const { chatMessage, isLastMessage } = props;
   const { dispatchChatMessages, setShadowing, onDeleteMessage } = useContext(
     ChatSessionProviderContext
   );
@@ -51,11 +55,12 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
   const [copied, setCopied] = useState<boolean>(false);
   const [speeching, setSpeeching] = useState(false);
   const [resourcing, setResourcing] = useState<boolean>(false);
-  const [displayContent, setDisplayContent] = useState(false);
   const { tts } = useConversation();
   const [translation, setTranslation] = useState<string>();
   const [translating, setTranslating] = useState<boolean>(false);
   const { translate, summarizeTopic } = useAiCommand();
+  const [displayContent, setDisplayContent] = useState(!isLastMessage);
+  const [displayPlayer, setDisplayPlayer] = useState(false);
 
   const handleTranslate = async () => {
     if (translating) return;
@@ -203,10 +208,22 @@ export const ChatAgentMessage = (props: { chatMessage: ChatMessageType }) => {
       <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm w-full max-w-prose">
         {Boolean(chatMessage.speech) ? (
           <>
-            <WavesurferPlayer
-              id={chatMessage.speech.id}
-              src={chatMessage.speech.src}
-            />
+            {displayPlayer ? (
+              <WavesurferPlayer
+                id={chatMessage.speech.id}
+                src={chatMessage.speech.src}
+                autoplay={true}
+              />
+            ) : (
+              <Button
+                onClick={() => setDisplayPlayer(true)}
+                className="w-8 h-8"
+                variant="ghost"
+                size="icon"
+              >
+                <Volume2Icon className="w-5 h-5" />
+              </Button>
+            )}
             {displayContent && (
               <>
                 <MarkdownWrapper className="select-text prose dark:prose-invert">

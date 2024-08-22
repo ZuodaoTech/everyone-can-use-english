@@ -11,6 +11,7 @@ import {
   punctuateCommand,
   summarizeTopicCommand,
   refineCommand,
+  chatSuggestionCommand,
 } from "@commands";
 
 export const useAiCommand = () => {
@@ -170,6 +171,34 @@ export const useAiCommand = () => {
     );
   };
 
+  const chatSuggestion = async (
+    context: string,
+    options?: {
+      learningLanguage?: string;
+      nativeLanguage?: string;
+      cacheKey?: string;
+    }
+  ) => {
+    const result = await chatSuggestionCommand(
+      {
+        context,
+        learningLanguage: options?.learningLanguage || learningLanguage,
+        nativeLanguage: options?.nativeLanguage || nativeLanguage,
+      },
+      {
+        key: currentEngine.key,
+        modelName: currentEngine.models.default,
+        baseUrl: currentEngine.baseUrl,
+      }
+    );
+
+    if (options.cacheKey) {
+      EnjoyApp.cacheObjects.set(options.cacheKey, result);
+    }
+
+    return result;
+  };
+
   return {
     lookupWord,
     extractStory,
@@ -178,5 +207,6 @@ export const useAiCommand = () => {
     punctuateText,
     summarizeTopic,
     refine,
+    chatSuggestion,
   };
 };

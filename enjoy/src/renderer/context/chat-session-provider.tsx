@@ -29,6 +29,7 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChevronDownIcon } from "lucide-react";
 import { AudioPlayer, RecordingDetail } from "@renderer/components";
 import { CHAT_SYSTEM_PROMPT_TEMPLATE } from "@/constants";
+import { formatDateTime } from "@renderer/lib/utils";
 
 type ChatSessionProviderState = {
   chatMessages: ChatMessageType[];
@@ -91,7 +92,9 @@ export const ChatSessionProvider = ({
   children: React.ReactNode;
   chat: ChatType;
 }) => {
-  const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, user, apiUrl, recorderConfig } = useContext(
+    AppSettingsProviderContext
+  );
   const { openai } = useContext(AISettingsProviderContext);
   const [submitting, setSubmitting] = useState(false);
   const [shadowing, setShadowing] = useState<AudioType>(null);
@@ -115,7 +118,9 @@ export const ChatSessionProvider = ({
     isPaused,
     recordingTime,
     mediaRecorder,
-  } = useAudioRecorder();
+  } = useAudioRecorder(recorderConfig, (exception) => {
+    toast.error(exception.message);
+  });
 
   const { transcribe } = useTranscribe();
 
@@ -214,20 +219,23 @@ export const ChatSessionProvider = ({
             (message) =>
               `- ${(message.member.user || message.member.agent).name}: ${
                 message.content
-              }`
+              }(${formatDateTime(message.createdAt)})`
           )
           .join("\n"),
-        input:
-          chatMessages.length > 0
-            ? "Say somthing to continue the conversation."
-            : "Say something to start the conversation.",
+        input: chatMessages.length > 0 ? "Continue" : "Start the conversation",
       });
+
+      // the reply may contain the member's name like "Agent: xxx". We need to remove it.
+      const content = reply.content
+        .toString()
+        .replace(new RegExp(`^(${member.agent.name}):`), "")
+        .trim();
 
       return EnjoyApp.chatMessages
         .create({
           chatId: chat.id,
           memberId: member.id,
-          content: reply.content,
+          content,
           state: "completed",
         })
         .then((message) =>

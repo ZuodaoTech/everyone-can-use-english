@@ -21,6 +21,7 @@ export const WavesurferPlayer = (props: {
   wavesurferOptions?: any;
   pitchContourOptions?: any;
   className?: string;
+  autoplay?: boolean;
 }) => {
   const {
     id,
@@ -31,6 +32,7 @@ export const WavesurferPlayer = (props: {
     wavesurferOptions,
     pitchContourOptions,
     className = "",
+    autoplay = false,
   } = props;
   const [initialized, setInitialized] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -61,6 +63,7 @@ export const WavesurferPlayer = (props: {
       cursorWidth: 0,
       autoCenter: true,
       autoScroll: true,
+      autoplay,
       dragToSeek: true,
       hideScrollbar: true,
       minPxPerSec: 100,
