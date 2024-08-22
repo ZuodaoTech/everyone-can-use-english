@@ -288,13 +288,17 @@ const UsageChart = () => {
     if (!chartRef.current) return;
     if (!usages.length) return;
 
+    // make labels unique and sorted
+    const labels = usages
+      .map((usage) => Object.keys(usage.data))
+      .flat()
+      .filter((v, i, a) => a.indexOf(v) === i)
+      .sort();
+
     new Chart(chartRef.current, {
       type: "bar",
       data: {
-        labels: Object.keys(
-          usages.find((u) => Boolean(Object.keys(u.data).length))?.data ||
-            {}
-        ),
+        labels,
         datasets: usages.map((usage) => ({
           label: usage.label,
           data: Object.values(usage.data),
