@@ -151,6 +151,7 @@ const ChatUserMessageActions = (props: {
     startRecording,
     isRecording,
     isPaused,
+    assessing,
     setAssessing,
     onDeleteMessage,
     submitting,
@@ -240,15 +241,19 @@ const ChatUserMessageActions = (props: {
         <div className="flex items-center justify-end space-x-4">
           {chatMessage.state === "pending" && (
             <>
-              <EditIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("edit")}
-                className="w-4 h-4 cursor-pointer"
-                onClick={() => {
-                  setContent(chatMessage.content);
-                  setEditing(true);
-                }}
-              />
+              {submitting ? (
+                <LoaderIcon className="w-4 h-4 animate-spin" />
+              ) : (
+                <EditIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("edit")}
+                  className="w-4 h-4 cursor-pointer"
+                  onClick={() => {
+                    setContent(chatMessage.content);
+                    setEditing(true);
+                  }}
+                />
+              )}
               {isPaused || isRecording || submitting ? (
                 <LoaderIcon className="w-4 h-4 animate-spin" />
               ) : (
@@ -261,14 +266,17 @@ const ChatUserMessageActions = (props: {
               )}
             </>
           )}
-          {chatMessage.recording && (
-            <GaugeCircleIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("pronunciationAssessment")}
-              onClick={() => setAssessing(recording)}
-              className="w-4 h-4 cursor-pointer"
-            />
-          )}
+          {chatMessage.recording &&
+            (assessing ? (
+              <LoaderIcon className="w-4 h-4 animate-spin" />
+            ) : (
+              <GaugeCircleIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("pronunciationAssessment")}
+                onClick={() => setAssessing(recording)}
+                className="w-4 h-4 cursor-pointer"
+              />
+            ))}
           {refining ? (
             <LoaderIcon className="w-4 h-4 animate-spin" />
           ) : (
