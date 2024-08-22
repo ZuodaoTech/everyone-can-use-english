@@ -223,7 +223,7 @@ export default withMermaid(
                   },
                   {
                     text: "4.3. 意群",
-                    link: "/sounds-of-american-english/4.3-group",
+                    link: "/sounds-of-american-english/4.3-grouping",
                   },
                   {
                     text: "4.4. 连接",
@@ -236,41 +236,22 @@ export default withMermaid(
                 ],
               },
               {
-                text: "4. 而后",
+                text: "5. 基础之上",
                 collapsed: true,
-                link: "/sounds-of-american-english/4-whats-next",
+                link: "/sounds-of-american-english/5-above-ground",
                 items: [
                   {
-                    text: "4.1. 多音拼写",
-                    link: "/sounds-of-american-english/4.1-multisounds",
+                    text: "5.1. 流利",
+                    link: "/sounds-of-american-english/5.1-fluency",
                   },
                   {
-                    text: "4.2. 组合词汇",
-                    link: "/sounds-of-american-english/4.2-compounds",
-                  },
-                  {
-                    text: "4.3. 词根词缀",
-                    collapsed: false,
-                    link: "/sounds-of-american-english/4.3-components",
-                    items: [
-                      {
-                        text: "4.3.1. 常见前缀",
-                        link: "/sounds-of-american-english/4.3.1-prefixes",
-                      },
-                      {
-                        text: "4.3.2. 常见后缀",
-                        link: "/sounds-of-american-english/4.3.2-suffixes",
-                      },
-                      {
-                        text: "4.3.3. 常见词根",
-                        link: "/sounds-of-american-english/4.3.3-roots",
-                      },
-                    ],
+                    text: "5.2. 情绪",
+                    link: "/sounds-of-american-english/5.2-emotions",
                   },
                 ],
               },
               {
-                text: "5. 总结",
+                text: "6. 而后",
                 link: "/sounds-of-american-english/5-sumup",
               },
             ],

@@ -434,6 +434,8 @@
 | <span class="pho">ʷ</span>          | 音节之间的加音 <span class="pho">w</span>                    |
 | <span class="pho">◌̅, ◌́, ◌̌, ◌̀</span> | 音节声调                                                     |
 | <span class="pho">◌̂</span>          | 音高被抬高的音节                                             |
+| <span class="pho">·</span>          | 音节之间的停顿（*pause*）                                    |
+| <span class="pho">｜</span>         | 单词之间分割意群的暂停（*pause*）                            |
 
 
 [^1]: 教程内音标字体选用的是 *Charis SIL*，https://software.sil.org/charis/
