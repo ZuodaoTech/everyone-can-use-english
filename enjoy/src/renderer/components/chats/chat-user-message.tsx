@@ -25,7 +25,6 @@ import {
   CheckIcon,
   ChevronDownIcon,
   ChevronRightIcon,
-  ChevronUpIcon,
   CopyIcon,
   DownloadIcon,
   EditIcon,
@@ -35,6 +34,7 @@ import {
   MicIcon,
   MoreVerticalIcon,
   SparklesIcon,
+  Volume2Icon,
 } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -46,13 +46,17 @@ import { useAiCommand } from "@renderer/hooks";
 import { md5 } from "js-md5";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 
-export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
-  const { chatMessage } = props;
+export const ChatUserMessage = (props: {
+  chatMessage: ChatMessageType;
+  isLastMessage: boolean;
+}) => {
+  const { chatMessage, isLastMessage } = props;
   const { recording } = chatMessage;
   const ref = useRef<HTMLDivElement>(null);
   const [editing, setEditing] = useState<boolean>(false);
   const [content, setContent] = useState<string>(chatMessage.content);
   const { onUpdateMessage } = useContext(ChatSessionProviderContext);
+  const [displayPlayer, setDisplayPlayer] = useState(isLastMessage);
 
   useEffect(() => {
     if (ref.current) {
@@ -75,16 +79,32 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
       </div>
       <div className="flex justify-end">
         <div className="flex flex-col gap-2 p-4 mb-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full max-w-prose">
-          {recording && (
-            <WavesurferPlayer id={recording.id} src={recording.src} />
-          )}
-          {recording?.pronunciationAssessment && (
-            <div className="flex justify-end">
-              <PronunciationAssessmentScoreDetail
-                assessment={recording.pronunciationAssessment}
-              />
-            </div>
-          )}
+          {recording &&
+            (displayPlayer ? (
+              <>
+                <WavesurferPlayer
+                  id={recording.id}
+                  src={recording.src}
+                  autoplay={true}
+                />
+                {recording?.pronunciationAssessment && (
+                  <div className="flex justify-end">
+                    <PronunciationAssessmentScoreDetail
+                      assessment={recording.pronunciationAssessment}
+                    />
+                  </div>
+                )}
+              </>
+            ) : (
+              <Button
+                onClick={() => setDisplayPlayer(true)}
+                className="w-8 h-8"
+                variant="ghost"
+                size="icon"
+              >
+                <Volume2Icon className="w-5 h-5" />
+              </Button>
+            ))}
           {editing ? (
             <div className="">
               <Textarea
