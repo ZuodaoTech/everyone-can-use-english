@@ -7,16 +7,30 @@ import {
   SendIcon,
   StepForwardIcon,
   TextIcon,
+  WandIcon,
   XIcon,
 } from "lucide-react";
-import { Button, Textarea } from "@renderer/components/ui";
+import {
+  Button,
+  Popover,
+  PopoverArrow,
+  PopoverContent,
+  PopoverTrigger,
+  Textarea,
+} from "@renderer/components/ui";
 import { useContext, useEffect, useRef, useState } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
-import { ChatSessionProviderContext } from "@renderer/context";
-import { t } from "i18next";
+import {
+  AppSettingsProviderContext,
+  ChatProviderContext,
+  ChatSessionProviderContext,
+} from "@renderer/context";
+import { t, use } from "i18next";
 import autosize from "autosize";
+import { LoaderSpin } from "../misc";
 
 export const ChatInput = () => {
+  const { currentChat } = useContext(ChatProviderContext);
   const {
     submitting,
     startRecording,
@@ -30,6 +44,7 @@ export const ChatInput = () => {
     askAgent,
     onCreateMessage,
   } = useContext(ChatSessionProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
   const [inputMode, setInputMode] = useState<"text" | "audio">("audio");
@@ -54,6 +69,20 @@ export const ChatInput = () => {
       autosize.destroy(inputRef.current);
     };
   }, [inputRef.current]);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects
+      .get(`chat-input-mode-${currentChat.id}`)
+      .then((cachedInputMode) => {
+        if (cachedInputMode) {
+          setInputMode(cachedInputMode as typeof inputMode);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    EnjoyApp.cacheObjects.set(`chat-input-mode-${currentChat.id}`, inputMode);
+  }, [inputMode]);
 
   if (isRecording) {
     return (
@@ -174,7 +203,7 @@ export const ChatInput = () => {
   }
 
   return (
-    <div className="w-full flex items-center gap-4 justify-center">
+    <div className="w-full flex items-center gap-4 justify-center relative">
       <Button
         data-tooltip-id="chat-input-tooltip"
         data-tooltip-content={t("textInput")}
@@ -200,13 +229,31 @@ export const ChatInput = () => {
           <MicIcon className="w-6 h-6" />
         )}
       </Button>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            data-tooltip-id="chat-input-tooltip"
+            data-tooltip-content={t("suggestion")}
+            disabled={submitting}
+            className="rounded-full shadow w-8 h-8"
+            variant="secondary"
+            size="icon"
+          >
+            <WandIcon className="w-4 h-4" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent side="top">
+          <LoaderSpin />
+          <PopoverArrow />
+        </PopoverContent>
+      </Popover>
       <Button
         data-tooltip-id="chat-input-tooltip"
         data-tooltip-content={t("continue")}
         disabled={submitting}
         onClick={() => askAgent()}
-        className="rounded-full shadow w-8 h-8"
-        variant="secondary"
+        className="absolute right-4 rounded-full shadow w-8 h-8"
+        variant="default"
         size="icon"
       >
         <StepForwardIcon className="w-4 h-4" />

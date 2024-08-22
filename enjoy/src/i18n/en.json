@@ -697,6 +697,7 @@
   "deleteChatAgentConfirmation": "Are you sure to delete this chat agent?",
   "deleteMessage": "Delete message",
   "deleteMessageConfirmation": "Are you sure to delete this message?",
+  "refine": "Refine",
   "suggestion": "Suggestion",
   "editChat": "Edit chat",
   "newChat": "New chat",

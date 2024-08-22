@@ -33,7 +33,7 @@ import {
   LoaderIcon,
   MicIcon,
   MoreVerticalIcon,
-  SparkleIcon,
+  SparklesIcon,
 } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -61,9 +61,9 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
   const { currentChat } = useContext(ChatProviderContext);
   const { recording } = chatMessage;
   const ref = useRef<HTMLDivElement>(null);
-  const [suggestion, setSuggestion] = useState<string>();
-  const [suggesting, setSuggesting] = useState<boolean>(false);
-  const [suggestionVisible, setSuggestionVisible] = useState<boolean>(true);
+  const [refinement, setRefinement] = useState<string>();
+  const [refining, setRefining] = useState<boolean>(false);
+  const [refinementVisible, setRefinementVisible] = useState<boolean>(true);
   const [editing, setEditing] = useState<boolean>(false);
   const [content, setContent] = useState<string>(chatMessage.content);
   const { refine } = useAiCommand();
@@ -71,18 +71,18 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
   const [copied, setCopied] = useState<boolean>(false);
 
   const handleSuggest = async (params?: { reload?: boolean }) => {
-    if (suggesting) return;
+    if (refining) return;
     if (!chatMessage.content) return;
 
     const { reload = false } = params || {};
-    const cacheKey = `chat-message-suggestion-${md5(chatMessage.id)}`;
+    const cacheKey = `chat-message-refinement-${md5(chatMessage.id)}`;
     try {
       const cached = await EnjoyApp.cacheObjects.get(cacheKey);
 
-      if (cached && !reload && !suggestion) {
-        setSuggestion(cached);
+      if (cached && !reload && !refinement) {
+        setRefinement(cached);
       } else {
-        setSuggesting(true);
+        setRefining(true);
 
         const context = `I'm chatting in a chatroom. The previous messages are as follows:\n\n${buildChatHistory()}`;
         const result = await refine(chatMessage.content, {
@@ -90,12 +90,12 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
           context,
         });
         EnjoyApp.cacheObjects.set(cacheKey, result);
-        setSuggestion(result);
-        setSuggesting(false);
+        setRefinement(result);
+        setRefining(false);
       }
     } catch (err) {
       toast.error(err.message);
-      setSuggesting(false);
+      setRefining(false);
     }
   };
 
@@ -212,27 +212,27 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
               {chatMessage.content}
             </MarkdownWrapper>
           )}
-          {suggestion && (
+          {refinement && (
             <Collapsible
-              open={suggestionVisible}
-              onOpenChange={(value) => setSuggestionVisible(value)}
+              open={refinementVisible}
+              onOpenChange={(value) => setRefinementVisible(value)}
             >
               <CollapsibleContent>
                 <div className="p-4 font-serif bg-background rounded">
                   <MarkdownWrapper className="select-text prose dark:prose-invert">
-                    {suggestion}
+                    {refinement}
                   </MarkdownWrapper>
                 </div>
               </CollapsibleContent>
               <div className="my-2 flex justify-center">
                 <CollapsibleTrigger asChild>
                   <Button
-                    onClick={() => setSuggestionVisible(!suggestionVisible)}
+                    onClick={() => setRefinementVisible(!refinementVisible)}
                     variant="ghost"
                     size="icon"
                     className="w-6 h-6"
                   >
-                    {suggestionVisible ? (
+                    {refinementVisible ? (
                       <ChevronUpIcon className="w-4 h-4" />
                     ) : (
                       <ChevronDownIcon className="w-4 h-4" />
@@ -275,12 +275,12 @@ export const ChatUserMessage = (props: { chatMessage: ChatMessageType }) => {
                   className="w-4 h-4 cursor-pointer"
                 />
               )}
-              {suggesting ? (
+              {refining ? (
                 <LoaderIcon className="w-4 h-4 animate-spin" />
               ) : (
-                <SparkleIcon
+                <SparklesIcon
                   data-tooltip-id="global-tooltip"
-                  data-tooltip-content={t("suggestion")}
+                  data-tooltip-content={t("refine")}
                   className="w-4 h-4 cursor-pointer"
                   onClick={() => handleSuggest()}
                 />
