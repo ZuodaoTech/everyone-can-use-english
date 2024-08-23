@@ -232,3 +232,8 @@ video, img {
 }
 
 span.not-display {display: none;}
+
+.two-column ol, .two-column ul {
+  column-count: 2;
+  column-gap: 2em;
+}

@@ -514,11 +514,3 @@ In the previous chapters, we listed the possible spellings for each phoneme. Som
   * invisible <span class="pho alt">ɪnˈvɪz.ə.bəl</span> <span class="speak-word-inline" data-audio-us-male="/audios/invisible-us-male.mp3" data-audio-us-female="/audios/invisible-us-female.mp3"></span>
 
 </div>
-
-<style>
-    .two-column ol, .two-column ul {
-        column-count: 2 !important;
-        column-gap: 2em;
-    }
-</style>
-
