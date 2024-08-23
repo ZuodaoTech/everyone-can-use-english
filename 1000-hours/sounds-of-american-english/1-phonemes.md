@@ -13,13 +13,7 @@
 > * 短元音 <span class="pho">ɒ</span> 用 <span class="pho">ɑː</span> 标注
 > * <span class="pho">t</span> 增加了一个弹舌音版本 <span class="pho">t̬</span>
 
-> [!Note]
->
-> 你可能注意到了，同一个基础音素的变体，可能用了不同的写法，比如， <span class="pho">ɑ</span> 这个基础音素，短元音用的是 <span class="pho">ʌ</span>，长元音不是 <span class="pho">ʌː</span> 而是 <span class="pho">ɑː</span>，而后组合成双元音的时候用的是 <span class="pho">a</span> —— <span class="pho">aɪ，aʊ</span> 等等…… 
->
-> 这么做的理由在于，当这些音素连在一起的时候，不可能被错误组合，不会产生混淆，所以要确保每个音素都有一个独特对应的符号[^2]。
-
-以下的罗列部分基于[《剑桥英语发声词典》](https://dictionary.cambridge.org/pronunciation/)的官方音标指南，在此基础上做了一些补充并重新排序[^3]，并刻意减少了例词的数量。
+以下的罗列部分基于[《剑桥英语发声词典》](https://dictionary.cambridge.org/pronunciation/)的官方音标指南，在此基础上做了一些补充并重新排序[^2]，并刻意减少了例词的数量。
 
 > [!Note]
 > 《剑桥英语发声词典》官方音标指南（Pronunciation symbols）：
@@ -438,10 +432,16 @@
 | <span class="pho">◌‿◌</span>      | 连读符号                                                     |
 | <span class="pho">｜</span>       | 单词之间分割意群的暂停（*pause*）                            |
 
+> [!Note]
+>
+> 你可能注意到了，同一个基础音素的变体，可能用了不同的写法，比如， <span class="pho">ɑ</span> 这个基础音素，短元音用的是 <span class="pho">ʌ</span>，长元音不是 <span class="pho">ʌː</span> 而是 <span class="pho">ɑː</span>，而后组合成双元音的时候用的是 <span class="pho">a</span> —— <span class="pho">aɪ，aʊ</span> 等等……
+>
+> 这么做的理由在于，当这些音素连在一起的时候，不可能被错误组合，不会产生混淆，所以要确保每个音素都有一个独特对应的符号[^3]。
 
 [^1]: 教程内音标字体选用的是 *Charis SIL*，https://software.sil.org/charis/
-[^2]: 现在几乎所有词典都声称自己采用国际音标（IPA），但它们无一例外，都是国际音标的一个 “**自定义子集**”。
-[^3]: 音素的语音文件来自剑桥官方网站；例词的语音文件大部分使用 [Microsoft Edge TTS](https://github.com/rany2/edge-tts) 生成，声音角色选择分别是：*en-GB-ThomasNeural*，*en-GB-MaisieNeural*，*en-US-RogerNeural*，和 *en-US-JennyNeural*
+[^2]: 音素的语音文件来自剑桥官方网站；例词的语音文件大部分使用 [Microsoft Edge TTS](https://github.com/rany2/edge-tts) 生成，声音角色选择分别是：*en-GB-ThomasNeural*，*en-GB-MaisieNeural*，*en-US-RogerNeural*，和 *en-US-JennyNeural*
+[^3]: 现在几乎所有词典都声称自己采用国际音标（IPA），但它们无一例外，都是国际音标的一个 “**自定义子集**”。
+
 
 <style>
     span.not-display {display: none;}
