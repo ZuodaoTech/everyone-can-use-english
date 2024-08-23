@@ -59,8 +59,6 @@ sounds<--->spellings
 
 之前的章节里，都罗列了对应每个音素可能的拼写。有些拼写只对应一个读音，比如，**h** 就只对应着 <span class="pho">h</span>；但，有一些拼写可能对应着多个读音。以下是一个总结整理，需要经过反复对照而谙熟于心。
 
-In the previous chapters, we listed the possible spellings for each phoneme. Some spellings correspond to just one sound, like **h**, which only corresponds to <span class="pho">h</span>. However, some spellings can correspond to multiple sounds. Here's a summary that needs to be reviewed repeatedly until it becomes second nature.
-
 ## 6.2.1. 元音拼写
 
 <div class="two-column">
