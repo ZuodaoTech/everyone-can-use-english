@@ -441,8 +441,3 @@
 [^1]: 教程内音标字体选用的是 *Charis SIL*，https://software.sil.org/charis/
 [^2]: 音素的语音文件来自剑桥官方网站；例词的语音文件大部分使用 [Microsoft Edge TTS](https://github.com/rany2/edge-tts) 生成，声音角色选择分别是：*en-GB-ThomasNeural*，*en-GB-MaisieNeural*，*en-US-RogerNeural*，和 *en-US-JennyNeural*
 [^3]: 现在几乎所有词典都声称自己采用国际音标（IPA），但它们无一例外，都是国际音标的一个 “**自定义子集**”。
-
-
-<style>
-    span.not-display {display: none;}
-</style>
