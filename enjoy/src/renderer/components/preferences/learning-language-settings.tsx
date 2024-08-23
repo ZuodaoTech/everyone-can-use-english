@@ -44,7 +44,7 @@ export const LearningLanguageSettings = () => {
                   value={lang.code}
                   key={lang.code}
                 >
-                  {lang.name}
+                  {lang.name} ({lang.code})
                 </SelectItem>
               ))}
             </SelectContent>
