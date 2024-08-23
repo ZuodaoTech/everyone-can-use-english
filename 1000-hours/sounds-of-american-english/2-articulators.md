@@ -28,15 +28,17 @@
 
 比如，你可以试试舌头。练一下就知道了，有意识地控制舌头是相当困难的。虽然我们的舌头事实上很灵活，几乎可以与我们的手相媲美，可问题在于，它处于一个我们用眼睛观察不到的部位 —— 如果没看过 X 光视频或者 3D 展示，我们可能都不知道自己的舌头究竟是怎样的形状 —— 学也好练也罢，相对于手多出了一整个维度的困难。
 
+再比如，控制唇形也很难，虽然嘴唇通过照镜子是可以看到的。有两个元音，被称作 “圆元音”（*round vowels*）—— <span class="pho">ɔ</span> 和 <span class="pho">u</span>，需要把嘴唇略微缩作圆形，并且 <span class="pho">u</span> 还得嘴唇略微凸出…… 这好像并不难，可想要真正熟练，并且永远不出错，就没那么简单了。
+
 不过，为了练好美式英语，你可能需要格外注意的发声器官其实只有两个，都是**舌头**（*tongue*）：
 
 > * **舌尖**（适应若干个辅音发声的新的舌尖起始位置）
 > * **舍背**（需要学习一个将它后缩的动作以便发出儿化音）
 
+凡事都不容易，但，只要肯练，谁都可以掌握。
+
 [^1]: https://www.youtube.com/watch?v=YHFx6O5x5Hw
 [^2]: https://www.youtube.com/watch?v=2N5q85G3ydk
 [^3]: https://www.youtube.com/watch?v=wYwk07QM4rc —— 这是 [Speech Graphics](https://www.speech-graphics.com) 为 [Saundz app](https://soundz.pro/)（[iOS](https://apps.apple.com/us/app/soundz/id6448163324)/Android 已无可用链接）开发的视频展示片段。
-
-再比如，控制唇形也很难，虽然嘴唇通过照镜子是可以看到的。有两个元音，被称作 “圆元音”（*round vowels*）—— <span class="pho">ɔ</span> 和 <span class="pho">u</span>，需要把嘴唇略微缩作圆形，并且 <span class="pho">u</span> 还得嘴唇略微凸出…… 这好像并不难，可想要真正熟练，并且永远不出错，就没那么简单了。
 
 ![vowels-mouth-ɔ-u](/images/vowels-mouth-ɔ-u.svg)
