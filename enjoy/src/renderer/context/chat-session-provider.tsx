@@ -29,7 +29,10 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChevronDownIcon } from "lucide-react";
 import { AudioPlayer, RecordingDetail } from "@renderer/components";
 import { CHAT_SYSTEM_PROMPT_TEMPLATE } from "@/constants";
-import { formatDateTime } from "@renderer/lib/utils";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 type ChatSessionProviderState = {
   chatMessages: ChatMessageType[];
@@ -219,7 +222,7 @@ export const ChatSessionProvider = ({
             (message) =>
               `- ${(message.member.user || message.member.agent).name}: ${
                 message.content
-              }(${formatDateTime(message.createdAt)})`
+              }(${dayjs(message.createdAt).fromNow()})`
           )
           .join("\n"),
         input: chatMessages.length > 0 ? "Continue" : "Start the conversation",
