@@ -4,15 +4,11 @@ export const GPT_PROVIDERS: { [key: string]: any } = {
   enjoyai: {
     name: "EnjoyAI",
     models: [
+      "gpt-4o-mini",
       "gpt-4o",
+      "chatgpt-4o-latest",
       "gpt-4-turbo",
-      "gpt-4-turbo-preview",
-      "gpt-4-vision-preview",
       "gpt-4",
-      "gpt-4-32k",
-      "gpt-3.5-turbo",
-      "gpt-3.5-turbo-16k",
-      "gpt-3.5-turbo-instruct",
     ],
     configurable: [
       "model",
@@ -30,15 +26,11 @@ export const GPT_PROVIDERS: { [key: string]: any } = {
     name: "OpenAI",
     description: t("youNeedToSetupApiKeyBeforeUsingOpenAI"),
     models: [
+      "gpt-4o-mini",
       "gpt-4o",
+      "chatgpt-4o-latest",
       "gpt-4-turbo",
-      "gpt-4-turbo-preview",
-      "gpt-4-vision-preview",
       "gpt-4",
-      "gpt-4-32k",
-      "gpt-3.5-turbo",
-      "gpt-3.5-turbo-16k",
-      "gpt-3.5-turbo-instruct",
     ],
     configurable: [
       "model",
