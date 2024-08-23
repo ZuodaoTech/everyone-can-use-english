@@ -42,6 +42,24 @@
 <td>例词（Example）</td>
 </tr>
 <tr>
+<td><span class="pho">ə</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_above_2023feb.mp3"></span></td>
+<td><b>a</b>bout <span class="pho alt not-display">əˈbaʊt</span><span class="speak-word-inline" data-audio-uk-female="/audios/about-uk-female.mp3" data-audio-uk-male="/audios/about-uk-male.mp3"></span></td>
+<td><span class="pho">ə</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_above_2023feb.mp3"></span></td>
+<td><b>a</b>bout <span class="pho alt not-display">əˈbaʊt</span><span class="speak-word-inline" data-audio-us-female="/audios/about-us-female.mp3" data-audio-us-male="/audios/about-us-male.mp3"></span></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><span class="pho">ɚ</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_mother_2023feb.mp3"></span></td>
+<td>w<b>or</b>ker <span class="pho alt not-display">ˈwɝː.kɚ</span><span class="speak-word-inline" data-audio-us-female="/audios/worker-us-female.mp3" data-audio-us-male="/audios/worker-us-male.mp3"></span></td>
+</tr>
+<tr>
+<td><span class="pho">ɜː</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_bird_2023feb.mp3"></span></td>
+<td>w<b>or</b>ker <span class="pho alt not-display">ˈwɜː.kə</span><span class="speak-word-inline" data-audio-uk-female="/audios/worker-uk-female.mp3" data-audio-uk-male="/audios/worker-uk-male.mp3"></span></td>
+<td><span class="pho">ɝː</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_bird_2023feb.mp3"></span></td>
+<td>w<b>or</b>ker <span class="pho alt not-display">ˈwɝː.kɚ</span><span class="speak-word-inline" data-audio-us-female="/audios/worker-us-female.mp3" data-audio-us-male="/audios/worker-us-male.mp3"></span></td>
+</tr>
+<tr>
 <td><span class="pho">ʌ</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_cup_2023feb.mp3"></span></td>
 <td>b<b>u</b>t <span class="pho alt not-display">bʌt</span><span class="speak-word-inline" data-audio-uk-female="/audios/but-uk-female.mp3" data-audio-uk-male="/audios/but-uk-male.mp3"></span></td>
 <td><span class="pho">ʌ</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_cup_2023feb.mp3"></span></td>
@@ -142,24 +160,6 @@
 <td></td>
 <td><span class="pho">ɔːr</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_ho_rse_2023feb.mp3"></span></td>
 <td>sh<b>ore</b><span class="pho alt not-display">ʃɔːr</span><span class="speak-word-inline" data-audio-us-female="/audios/shore-us-female.mp3" data-audio-us-male="/audios/shore-us-male.mp3"></span></td>
-</tr>
-<tr>
-<td><span class="pho">ə</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_above_2023feb.mp3"></span></td>
-<td><b>a</b>bout <span class="pho alt not-display">əˈbaʊt</span><span class="speak-word-inline" data-audio-uk-female="/audios/about-uk-female.mp3" data-audio-uk-male="/audios/about-uk-male.mp3"></span></td>
-<td><span class="pho">ə</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_above_2023feb.mp3"></span></td>
-<td><b>a</b>bout <span class="pho alt not-display">əˈbaʊt</span><span class="speak-word-inline" data-audio-us-female="/audios/about-us-female.mp3" data-audio-us-male="/audios/about-us-male.mp3"></span></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td><span class="pho">ɚ</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_mother_2023feb.mp3"></span></td>
-<td>w<b>or</b>ker <span class="pho alt not-display">ˈwɝː.kɚ</span><span class="speak-word-inline" data-audio-us-female="/audios/worker-us-female.mp3" data-audio-us-male="/audios/worker-us-male.mp3"></span></td>
-</tr>
-<tr>
-<td><span class="pho">ɜː</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_bird_2023feb.mp3"></span></td>
-<td>w<b>or</b>ker <span class="pho alt not-display">ˈwɜː.kə</span><span class="speak-word-inline" data-audio-uk-female="/audios/worker-uk-female.mp3" data-audio-uk-male="/audios/worker-uk-male.mp3"></span></td>
-<td><span class="pho">ɝː</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_bird_2023feb.mp3"></span></td>
-<td>w<b>or</b>ker <span class="pho alt not-display">ˈwɝː.kɚ</span><span class="speak-word-inline" data-audio-us-female="/audios/worker-us-female.mp3" data-audio-us-male="/audios/worker-us-male.mp3"></span></td>
 </tr>
 <tr>
 <td><span class="pho">aɪ</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_eye_2023feb.mp3"></span></td>
