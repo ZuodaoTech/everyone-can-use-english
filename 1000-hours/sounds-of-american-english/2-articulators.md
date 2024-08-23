@@ -28,18 +28,10 @@
 
 比如，你可以试试舌头。练一下就知道了，有意识地控制舌头是相当困难的。虽然我们的舌头事实上很灵活，几乎可以与我们的手相媲美，可问题在于，它处于一个我们用眼睛观察不到的部位 —— 如果没看过 X 光视频或者 3D 展示，我们可能都不知道自己的舌头究竟是怎样的形状 —— 学也好练也罢，相对于手多出了一整个维度的困难。
 
-不过，需要你现在就牢记的是，说辅音时的 **4 个舌尖起始位置**。同样一个基础音素，在不同的语言里，舌尖起始位置有细微的差别 —— 量化来看，可能只不过是几毫米的距离差别，但重新定位却相当耗时费力。
+不过，为了练好美式英语，你可能需要格外注意的发声器官其实只有两个，都是**舌头**（*tongue*）：
 
-![articulator-tongue-tip-positions](/images/articulator-tongue-tip-positions.svg)
-
-以下表格中舌尖起始位置和辅音的对应会在随后的章节中进一步讲解：
-
-| Positions of tongue tip | Consonants                                      |
-| :---------------------: | :---------------------------------------------- |
-|            ①            | <span class="pho">θ</span>, <span class="pho">ð</span>                                        |
-|            ②            | <span class="pho">s</span>, <span class="pho">z</span>                                        |
-|            ③            | <span class="pho">t</span>, <span class="pho">d</span>, <span class="pho">l</span>, <span class="pho">ʃ</span>, <span class="pho">ʒ</span>, <span class="pho">tʃ</span>, <span class="pho">dʒ</span>, <span class="pho">tr</span>, <span class="pho">dr</span> |
-|            ④            | <span class="pho">r</span>                                             |
+> * **舌尖**（适应若干个辅音发声的新的舌尖起始位置）
+> * **舍背**（需要学习一个将它后缩的动作以便发出儿化音）
 
 
 [^1]: https://www.youtube.com/watch?v=YHFx6O5x5Hw
