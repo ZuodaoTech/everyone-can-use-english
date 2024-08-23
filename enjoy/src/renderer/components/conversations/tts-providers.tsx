@@ -669,6 +669,36 @@ export const TTS_PROVIDERS: { [key: string]: any } = {
           value: "zh-CN-YunjieNeural",
           language: "zh-CN",
         },
+        {
+          label: "HiuMaan (Female)",
+          value: "zh-HK-HiuMaanNeural",
+          language: "zh-HK",
+        },
+        {
+          label: "WanLung (Male)",
+          value: "zh-HK-WanLungNeural",
+          language: "zh-HK",
+        },
+        {
+          label: "HiuGaai (Female)",
+          value: "zh-HK-HiuGaaiNeural",
+          language: "zh-HK",
+        },
+        {
+          label: "Premwadee (Female)",
+          value: "th-TH-PremwadeeNeural",
+          language: "th-TH",
+        },
+        {
+          label: "Niwat (Male)",
+          value: "th-TH-NiwatNeural",
+          language: "th-TH",
+        },
+        {
+          label: "Achara (Male)",
+          value: "th-TH-AcharaNeural",
+          language: "th-TH",
+        },
       ],
     },
     configurable: ["model", "language", "voice"],
