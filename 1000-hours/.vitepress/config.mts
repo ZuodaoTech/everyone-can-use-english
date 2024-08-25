@@ -147,7 +147,6 @@ export default withMermaid(
                     collapsed: true,
                     link: "/sounds-of-american-english/3.2-consonants",
                     items: [
-
                       {
                         text: "3.2.1. p/b",
                         link: "/sounds-of-american-english/3.2.1-pb",
@@ -246,6 +245,29 @@ export default withMermaid(
               {
                 text: "7. 从此之后",
                 link: "/sounds-of-american-english/7-whats-next",
+              },
+              {
+                text: "8. 附录",
+                collapsed: true,
+                link: "/sounds-of-american-english/8-appendix",
+                items: [
+                  {
+                    text: "8.1. 输入音标与特殊符号",
+                    link: "/sounds-of-american-english/8.1-inputting-phonemes-and-symbols",
+                  },
+                  {
+                    text: "8.2. 获取 CEPD 音标",
+                    link: "/sounds-of-american-english/8.2-cepd-phonetics-and-sound",
+                  },
+                  {
+                    text: "8.3. 音标练习",
+                    link: "/sounds-of-american-english/8.3-phoneme-exercises",
+                  },
+                  {
+                    text: "8.4. 每日练习语音生成",
+                    link: "/sounds-of-american-english/8.4-daily-speech-exercises",
+                  },
+                ],
               },
             ],
           },
