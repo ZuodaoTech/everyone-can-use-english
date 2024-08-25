@@ -8,7 +8,7 @@
 
 > Brain signals precisely coordinate nearly 100 muscles to move the lips, jaw, tongue, and larynx, shaping our breath into sounds that form our words and sentences.
 
-再详细一点，我们说话的时候动用的器官实际上很多，包括但不限于：下巴（*lower jaw*）、嘴唇（*lips*）、牙齿（*teeth*）、龈脊（*alveolar ridge*）、舌尖（*tongue tip*）、舌背（*tongue roof*）、舌尾（*back of tongue*）、软腭（*soft palate*）、咽（*pharynx*）、喉（*larynx*）、声带（*vocal cords*）等等。
+再详细一点，我们说话的时候动用的器官实际上很多，包括但不限于：下巴（*lower jaw*）、嘴唇（*lips*）、牙齿（*teeth*）、龈脊（*alveolar ridge*）、舌尖（*tongue tip*）、舌背（*tongue roof*）、软腭（*soft palate*）、咽（*pharynx*）、喉（*larynx*）、声带（*vocal cords*）等等。
 
 ![Speech Tract (zh-CN)](/images/articulators-cn.svg)
 
