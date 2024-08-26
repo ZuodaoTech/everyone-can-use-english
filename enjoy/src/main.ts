@@ -1,4 +1,12 @@
-import { app, BrowserWindow, protocol, net } from "electron";
+import {
+  app,
+  BrowserWindow,
+  protocol,
+  net,
+  globalShortcut,
+  desktopCapturer,
+  screen,
+} from "electron";
 import path from "path";
 import fs from "fs-extra";
 import settings from "@main/settings";
@@ -11,6 +19,7 @@ import { t } from "i18next";
 import * as Sentry from "@sentry/electron/main";
 import { SENTRY_DSN } from "@/constants";
 import { updateElectronApp, UpdateSourceType } from "update-electron-app";
+import sharp from "sharp";
 
 const logger = log.scope("main");
 
@@ -127,6 +136,65 @@ app.on("ready", async () => {
     }
 
     return net.fetch(`file:///${url}`);
+  });
+
+  globalShortcut.register("CommandOrControl+X", () => {
+    console.log("CommandOrControl+X is pressed");
+
+    // get the mouse cursor position
+    const { x, y } = screen.getCursorScreenPoint();
+    console.log("mouse", x, y);
+
+    // get the display where the mouse is
+    const display = screen.getDisplayNearestPoint({ x, y });
+    const displaySize = display.workAreaSize;
+    console.log("display", displaySize.width, displaySize.height);
+
+    // calculate the capture area
+    let captureWidth = 500;
+    let captureHeight = 500;
+    let left = Math.max(x - captureWidth / 2, 0);
+    let top = Math.max(y - captureHeight / 2, 0);
+    console.log("left", left, "top", top);
+
+    // Make sure the capture area is within the display
+    left = Math.min(left, displaySize.width - captureWidth);
+    top = Math.min(top, displaySize.height - captureHeight);
+    console.log("left", left, "top", top);
+
+    // capture screen and save to file
+    desktopCapturer
+      .getSources({
+        types: ["screen"],
+        // should be the same as the size of the display
+        thumbnailSize: displaySize,
+      })
+      .then(async (sources) => {
+        const image = sources[0];
+
+        // save image to file
+        const buffer = await sharp(await image.thumbnail.toPNG())
+          .composite([
+            {
+              input: Buffer.from(
+                '<svg><circle cx="200" cy="50" r="5" fill="red"/></svg>'
+              ),
+            },
+          ])
+          .extract({
+            left: left,
+            top: top,
+            width: captureWidth,
+            height: captureHeight,
+          })
+          .grayscale()
+          .toBuffer();
+
+        fs.writeFileSync(
+          path.join(settings.cachePath(), "screenshot-for-lookup.png"),
+          buffer
+        );
+      });
   });
 
   mainWindow.init();
