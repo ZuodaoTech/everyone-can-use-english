@@ -151,7 +151,7 @@
     "js-md5": "^0.8.3",
     "langchain": "^0.2.16",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.428.0",
+    "lucide-react": "^0.436.0",
     "mark.js": "^8.11.1",
     "microsoft-cognitiveservices-speech-sdk": "^1.40.0",
     "mustache": "^4.2.0",
