@@ -226,8 +226,6 @@ Anaconda Navigator 提示有新版本，点击 No, remind me later 暂不升级�
 
 ![installJL-13](../images/win-installJL-13.png)
 
-
-
 > 如果一开始你没有更新 Anaconda Navigator 可能会弹出新版本提示，我们同样点击 No, remind me later 暂不升级
 >
 > ![installJL-8](../images/win-installJL-8.png)

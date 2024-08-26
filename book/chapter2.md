@@ -134,8 +134,6 @@ Meanwhile, everyone is becoming even more distinctive, especially in terms of th
 没多久你就会发现：
 1. 实际上你必须表达的话并不多……
 2. 这些内容中的绝大多数其实你完全有能力用英文表达（最多查查词典就可以了）。
-
-
 在这个过程中，对你来说可能更重要的发现是你的中文，即，你的母语，并不像你自己原本以为的那么好。有时，你想说的话其实并不通顺。
 
 比如，某论坛上曾有一位用户提问：“请问，‘盲目地做出的决定通常是不理智的’，这句话用英文怎么写，请大家帮忙，谢谢！”
@@ -196,8 +194,6 @@ Meanwhile, everyone is becoming even more distinctive, especially in terms of th
 
 1. 在 …… 之下，比如 underground；
 2. ……不足、不良，比如，undernutrition，比如 underage drinking……
-
-
 读到 “underage drinking”（未成年人饮酒）的那一瞬间，我突然想到，实际上，我可以不用 “早恋” 这个词就能把我要说的说明白。其实，中国的父母害怕的并不是所谓的 “早恋”，如若一切发生在思维之中，他们很可能其实是并不关心的，就算因 “早恋” 发生了行动，拉拉手、亲亲嘴，他们也很可能不会太过紧张；然而，他们真的害怕自己的孩子发生 “underage sexual behaviors”……
 One of the reasons why many parents want to send their children to separate school is that they are worried about possible underage sexual behaviors.
 

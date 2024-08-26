@@ -6,8 +6,6 @@ Download Youtube Video in Golang
 [![Build Status](https://github.com/kkdai/youtube/workflows/go/badge.svg?branch=master)](https://github.com/kkdai/youtube/actions)
 [![Coverage](https://codecov.io/gh/kkdai/youtube/branch/master/graph/badge.svg)](https://codecov.io/gh/kkdai/youtube)
 [![](https://goreportcard.com/badge/github.com/kkdai/youtube)](https://goreportcard.com/badge/github.com/kkdai/youtube)
-
-
 This package is a Youtube video download package, for more detail refer [https://github.com/ytdl-org/youtube-dl](https://github.com/ytdl-org/youtube-dl) for more download options.
 
 This tool is meant to be used to download CC0 licenced content, we do not support nor recommend using it for illegal activities.
@@ -59,13 +57,9 @@ It's really simple to use, just get the video id from youtube url - ex: `https:/
 $ youtubedr download QAGDGja7kbs
 $ youtubedr download https://www.youtube.com/watch?v=rFejpH_tAHM
 ```
-
-
 ### Use this package in your golang program
 
 Please check out the [example_test.go](example_test.go) for example code.
-
-
 ## Example:
  * ### Get information of dotGo-2015-rob-pike video for downloading
 
@@ -121,8 +115,6 @@ youtubedr download -q medium https://www.youtube.com/watch?v=rFejpH_tAHM
    ffmpeg   //check ffmpeg is installed, if not please download ffmpeg and set to your PATH.
    youtubedr download -q hd1080 https://www.youtube.com/watch?v=rFejpH_tAHM
    ```
-
-
  * ### Download video with specific itag
 
     `go get github.com/kkdai/youtube/v2/youtubedr`
@@ -151,11 +143,7 @@ youtubedr download -q medium https://www.youtube.com/watch?v=rFejpH_tAHM
 - [拆解 Youtube 影片下載位置](http://hkgoldenmra.blogspot.tw/2013/05/youtube.html)
 - [iawia002/annie](https://github.com/iawia002/annie)
 - [How to get url from obfuscate video info: youtube video downloader with php](https://stackoverflow.com/questions/60607291/youtube-video-downloader-with-php)
-
-
 ## Project52
 It is one of my [project 52](https://github.com/kkdai/project52).
-
-
 ## License
 This package is licensed under MIT license. See LICENSE for details.

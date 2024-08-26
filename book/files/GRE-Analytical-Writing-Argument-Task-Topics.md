@@ -626,8 +626,6 @@ When Ida McAllister ran for mayor of Lake City four years ago, she failed to win
 
 According to information recently reported in the Eliottown Gazette, the number of people who travel to Eliottown has increased significantly over the past several years. So far this year over 100,000 people have arrived on flights to Eliottown's airport, compared with only 80,000 last year and 40,000 the year before. Eliottown's train station has received more than 50,000 passengers this year, compared with less than 40,000 last year and 20,000 the year before. Clearly tourism in Eliottown has been increasing, thanks to the new Central Park and Museum of Modern Art that opened last year. Therefore, the funding for the park and museum should be increased significantly.
 
-
-
 ———————————————
 
 The following appeared in the editorial section of a newsmagazine.

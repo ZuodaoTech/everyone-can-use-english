@@ -2,7 +2,7 @@
 
 请后续反复认真阅读《[语音塑造](/sounds-of-american-english/0-intro)》中的每一个章节。
 
-## 2.1 搞清每个单词的读音
+## 2.1. 搞清每个单词的读音
 
 在挣扎着**读准**之前，**首先要避免读错**。这只是一个习惯，遇到任何不确定的词汇都要查词典 —— 当然，在有各种辅助工具的情况下（[GPT: Phonetic Transcriber](https://chat.openai.com/g/g-nWwuxUVqO-phonetic-transcriber)），甚至可以整句查询音标。
 
@@ -12,7 +12,7 @@
 
 遇到自己不熟悉发音的词汇，要单独反复大声朗读，直至自己的舌头和嘴唇都协调得非常轻松自然。每个人遇到的困难不一样。比如，Instagram 上就有个人[演示](https://www.instagram.com/reel/C1VmSpuIvTO/?igsh=czY3cDAzcGIxMGN4)过自己 *literally* 这个单词死活读不明白的尴尬<span class="speak-word-inline" data-audio-uk="/audios/literally-instagram.mp3"></span> —— 不过，这恰恰就是在自己的大脑里**新建连接新建网络**所要面临的困难，要通过练习克服的就是这个困难，并且还要通过短时间内足量重复把**新连接新网络**强化到**原有近似连接近似网络**无法竞争的地步……
 
-## 2.2 放慢播放速度仔细听
+## 2.2. 放慢播放速度仔细听
 
 要慢速听**很多遍**。从 2 大层面总计 7 个方面分别去分析，详情参见《[语音塑造](/sounds-of-american-english/0-intro)》：
 
