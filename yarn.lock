@@ -8117,13 +8117,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.3.3":
+"@types/react@npm:*":
   version: 18.3.3
   resolution: "@types/react@npm:18.3.3"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
   checksum: 10c0/fe455f805c5da13b89964c3d68060cebd43e73ec15001a68b34634604a78140e6fc202f3f61679b9d809dde6d7a7c2cb3ed51e0fd1462557911db09879b55114
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^18.3.4":
+  version: 18.3.4
+  resolution: "@types/react@npm:18.3.4"
+  dependencies:
+    "@types/prop-types": "npm:*"
+    csstype: "npm:^3.0.2"
+  checksum: 10c0/5c52e1e6f540cff21e3c2a5212066d02e005f6fb21e4a536a29097fae878db9f407cd7a4b43778f51359349c5f692e08bc77ddb5f5cecbfca9ca4d4e3c91a48e
   languageName: node
   linkType: hard
 
@@ -12537,7 +12547,7 @@ __metadata:
     "@types/mustache": "npm:^4.2.5"
     "@types/node": "npm:^22.4.1"
     "@types/rails__actioncable": "npm:^6.1.11"
-    "@types/react": "npm:^18.3.3"
+    "@types/react": "npm:^18.3.4"
     "@types/react-dom": "npm:^18.3.0"
     "@types/validator": "npm:^13.12.0"
     "@types/wavesurfer.js": "npm:^6.0.12"
