@@ -81,25 +81,19 @@ export const PronunciationAssessmentForm = () => {
     if (!recording) return;
 
     setSubmitting(true);
-    toast.promise(
-      createAssessment({
-        language,
-        reference: referenceText,
-        recording,
+    createAssessment({
+      language,
+      reference: referenceText,
+      recording,
+    })
+      .then(() => {
+        navigate("/pronunciation_assessments");
       })
-        .then(() => {
-          navigate("/pronunciation_assessments");
-        })
-        .catch(() => {
-          EnjoyApp.recordings.destroy(recording.id);
-        })
-        .finally(() => setSubmitting(false)),
-      {
-        loading: t("assessing"),
-        success: t("assessedSuccessfully"),
-        error: (err) => err.message,
-      }
-    );
+      .catch((err) => {
+        toast.error(err.message);
+        EnjoyApp.recordings.destroy(recording.id);
+      })
+      .finally(() => setSubmitting(false));
   };
 
   const createRecording = async (
