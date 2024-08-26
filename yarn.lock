@@ -12582,7 +12582,7 @@ __metadata:
     html-to-text: "npm:^9.0.5"
     https-proxy-agent: "npm:^7.0.5"
     i18next: "npm:^23.14.0"
-    intl-tel-input: "npm:^24.0.1"
+    intl-tel-input: "npm:^24.3.4"
     js-md5: "npm:^0.8.3"
     langchain: "npm:^0.2.16"
     lodash: "npm:^4.17.21"
@@ -15334,10 +15334,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"intl-tel-input@npm:^24.0.1":
-  version: 24.0.1
-  resolution: "intl-tel-input@npm:24.0.1"
-  checksum: 10c0/3a871b3cc74602892641403262a14479211a188a132464d5bb428fc4b7e9860699ca1d17c71d4ae22a9149bc60d7cc196a969d82d16c5668901479ff872168b4
+"intl-tel-input@npm:^24.3.4":
+  version: 24.3.4
+  resolution: "intl-tel-input@npm:24.3.4"
+  checksum: 10c0/6b2c0b985d778a6d345a938c8bec216a5947b9253c12a9ac226bd680abe7eb30a36ef2bb1d0720ed4152879ce122c8016b3751b3b62fc14522ef60afdb89e884
   languageName: node
   linkType: hard
 
