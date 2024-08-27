@@ -417,20 +417,20 @@
 
 ## 1.5. 自定义补充符号
 
-| 符号                              | 含义                                                         |
-| --------------------------------- | ------------------------------------------------------------ |
-| <span class="pho">ɤ</span>        | 比 *schwa* <span class="pho">ə</span> 更轻的近乎于无的元音   |
-| <span class="pho">ʔ</span>        | <span class="pho">t</span> 的喉塞音版本                      |
-| <span class="pho"><u>t</u></span> | 可选 <span class="pho">t</span>                              |
-| <span class="pho">◌̚ </span>       | 清辅音的阻塞音符号                                           |
-| <span class="pho">ᵊ</span>        | 音节辅音  <span class="pho">l, m, n, r</span> 之前的附带元音 |
-| <span class="pho">ʲ</span>        | 音节之间的加音 <span class="pho">j</span>                    |
-| <span class="pho">ʷ</span>        | 音节之间的加音 <span class="pho">w</span>                    |
-| <span class="pho">◌̅, ◌́, ◌̀</span>  | 音节声调，平、升、降                                         |
-| <span class="pho">◌̂</span>        | 音高被抬高的音节                                             |
-| <span class="pho">·</span>        | 音节之间的停顿（*stop*）                                     |
-| <span class="pho">◌‿◌</span>      | 连读符号                                                     |
-| <span class="pho">｜</span>       | 单词之间分割意群的暂停（*pause*）                            |
+| 符号                                                   | 含义                                                                        |
+| ------------------------------------------------------ | --------------------------------------------------------------------------- |
+| <span class="pho">ɤ</span>                             | 比 *schwa* <span class="pho">ə</span> 更轻的近乎于无的元音                  |
+| <span class="pho">ʔ</span>                             | <span class="pho">t</span> 的喉塞音版本                                     |
+| <span class="pho">ᵗ</span>/<span class="pho">◌̥</span>  | 可选 <span class="pho">t</span> 或者 <span class="pho">t̥</span>，即，不发声 |
+| <span class="pho">◌̚ </span>/<span class="pho">◌̥</span> | 清辅音的阻塞音符号（可与 /<span class="pho">◌̥</span> 通用，都不发声）         |
+| <span class="pho">ᵊ</span>                             | 音节辅音  <span class="pho">l, m, n, r</span> 之前的附带元音                |
+| <span class="pho">ʲ</span>                             | 音节之间的加音 <span class="pho">j</span>                                   |
+| <span class="pho">ʷ</span>                             | 音节之间的加音 <span class="pho">w</span>                                   |
+| <span class="pho">◌̅, ◌́, ◌̀</span>                       | 音节声调，平、升、降                                                        |
+| <span class="pho">◌̂</span>                             | 音高被抬高的音节                                                            |
+| <span class="pho">·</span>                             | 音节之间的停顿（*stop*）                                                    |
+| <span class="pho">◌‿◌</span>                           | 连读符号                                                                    |
+| <span class="pho">｜</span>                            | 单词之间分割意群的暂停（*pause*）                                           |
 
 > [!Note]
 >
