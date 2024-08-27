@@ -138,7 +138,7 @@ app.on("ready", async () => {
     return net.fetch(`file:///${url}`);
   });
 
-  globalShortcut.register("CommandOrControl+X", () => {
+  globalShortcut.register("CommandOrControl+X", async () => {
     console.log("CommandOrControl+X is pressed");
 
     // get the mouse cursor position
@@ -151,11 +151,10 @@ app.on("ready", async () => {
     console.log("display", displaySize.width, displaySize.height);
 
     // calculate the capture area
-    let captureWidth = 500;
+    let captureWidth = 1200;
     let captureHeight = 500;
     let left = Math.max(x - captureWidth / 2, 0);
     let top = Math.max(y - captureHeight / 2, 0);
-    console.log("left", left, "top", top);
 
     // Make sure the capture area is within the display
     left = Math.min(left, displaySize.width - captureWidth);
@@ -163,38 +162,54 @@ app.on("ready", async () => {
     console.log("left", left, "top", top);
 
     // capture screen and save to file
-    desktopCapturer
-      .getSources({
-        types: ["screen"],
-        // should be the same as the size of the display
-        thumbnailSize: displaySize,
+    const sources = await desktopCapturer.getSources({
+      types: ["screen"],
+      // should be the same as the size of the display
+      thumbnailSize: displaySize,
+    });
+    const image = sources[0];
+    const size = image.thumbnail.getSize();
+
+    const highlightSize = 20; // 高亮区域的大小
+    const highlightColor = { r: 255, g: 255, b: 0, alpha: 0.5 }; // 荧光黄色，半透明
+    const highlightBuffer = await sharp({
+      create: {
+        width: 20,
+        height: 20,
+        channels: 4,
+        background: { r: 255, g: 255, b: 0, alpha: 0.5 },
+      },
+    })
+      .png()
+      .toBuffer();
+    fs.writeFileSync(
+      path.join(settings.cachePath(), "mark.png"),
+      highlightBuffer
+    );
+
+    console.log("image", image.thumbnail.getSize());
+
+    // save image to file
+    const buffer = await sharp(await image.thumbnail.toPNG())
+      .grayscale()
+      .composite([
+        { input: highlightBuffer, blend: "over", top: y - 20, left: x - 10 },
+      ])
+      .toBuffer();
+    const cropedBuffer = await sharp(buffer)
+      .extract({
+        left: left,
+        top: top,
+        width: captureWidth,
+        height: captureHeight,
       })
-      .then(async (sources) => {
-        const image = sources[0];
+      .resize(600, 250)
+      .toBuffer();
 
-        // save image to file
-        const buffer = await sharp(await image.thumbnail.toPNG())
-          .composite([
-            {
-              input: Buffer.from(
-                '<svg><circle cx="200" cy="50" r="5" fill="red"/></svg>'
-              ),
-            },
-          ])
-          .extract({
-            left: left,
-            top: top,
-            width: captureWidth,
-            height: captureHeight,
-          })
-          .grayscale()
-          .toBuffer();
-
-        fs.writeFileSync(
-          path.join(settings.cachePath(), "screenshot-for-lookup.png"),
-          buffer
-        );
-      });
+    fs.writeFileSync(
+      path.join(settings.cachePath(), "screenshot-for-lookup.png"),
+      cropedBuffer
+    );
   });
 
   mainWindow.init();
