@@ -169,6 +169,7 @@ app.on("ready", async () => {
     });
     const image = sources[0];
     const size = image.thumbnail.getSize();
+    console.log("image", image);
 
     const highlightSize = 20; // 高亮区域的大小
     const highlightColor = { r: 255, g: 255, b: 0, alpha: 0.5 }; // 荧光黄色，半透明
@@ -177,7 +178,7 @@ app.on("ready", async () => {
         width: 20,
         height: 20,
         channels: 4,
-        background: { r: 255, g: 255, b: 0, alpha: 0.5 },
+        background: { r: 255, g: 255, b: 0, alpha: 0.3 },
       },
     })
       .png()
@@ -193,7 +194,7 @@ app.on("ready", async () => {
     const buffer = await sharp(await image.thumbnail.toPNG())
       .grayscale()
       .composite([
-        { input: highlightBuffer, blend: "over", top: y - 20, left: x - 10 },
+        { input: highlightBuffer, blend: "over", top: y - 20, left: x - 50 },
       ])
       .toBuffer();
     const cropedBuffer = await sharp(buffer)
@@ -203,7 +204,9 @@ app.on("ready", async () => {
         width: captureWidth,
         height: captureHeight,
       })
-      .resize(600, 250)
+      .png({
+        quality: 50,
+      })
       .toBuffer();
 
     fs.writeFileSync(
