@@ -240,7 +240,26 @@ export default withMermaid(
               },
               {
                 text: "6. 词汇构建",
+                collapsed: true,
                 link: "/sounds-of-american-english/6-vocabulary",
+                items: [
+                  {
+                    text: "6.1. 有效记忆单词",
+                    link: "/sounds-of-american-english/6.1-effectiveness",
+                  },
+                  {
+                    text: "6.2. 多音拼写",
+                    link: "/sounds-of-american-english/6.2-polyphonic-spellings",
+                  },
+                  {
+                    text: "6.3. 常见复合词汇",
+                    link: "/sounds-of-american-english/6.3-compound-words",
+                  },
+                  {
+                    text: "6.4. 常见词根词缀",
+                    link: "/sounds-of-american-english/6.4-parts-of-words",
+                  },
+                ]
               },
               {
                 text: "7. 从此之后",
