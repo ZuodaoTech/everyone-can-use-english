@@ -17,10 +17,20 @@ type LlmProviderType = {
 
 type DownloadStateType = {
   name: string;
+  isPaused: boolean;
+  canResume: boolean;
   state: "progressing" | "interrupted" | "completed" | "cancelled";
   received: number;
   total: number;
   speed?: string;
+};
+
+type DecompressTask = {
+  id: string;
+  filePath: string;
+  destPath: string;
+  hash: string;
+  progress?: string;
 };
 
 type NotificationType = {
@@ -158,6 +168,10 @@ type ProxyConfigType = {
   url: string;
 };
 
+type VocabularyConfigType = {
+  lookupOnMouseOver: boolean;
+};
+
 type YoutubeVideoType = {
   title: string;
   thumbnail: string;
@@ -196,4 +210,18 @@ type RecorderConfigType = {
   noiseSuppression: boolean;
   sampleRate: number;
   sampleSize: number;
+};
+
+type DictSettingItem = {
+  name: string;
+  path: string;
+  description: string;
+  isKeyCaseSensitive: string;
+  title: string;
+  resources: string[];
+};
+
+type DictSettingType = {
+  default: string;
+  removing: string[];
 };

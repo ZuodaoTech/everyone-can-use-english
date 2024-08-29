@@ -7,3 +7,4 @@ export * from "./db-provider";
 export * from "./hotkeys-settings-provider";
 export * from "./media-player-provider";
 export * from "./theme-provider";
+export * from "./dict-provider";

@@ -23,6 +23,8 @@ import { Waveform } from "./waveform";
 import url from "url";
 import echogarden from "./echogarden";
 import camdict from "./camdict";
+import dict from "./dict";
+import decompresser from "./decompresser";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,6 +52,7 @@ main.init = () => {
   db.registerIpcHandlers();
 
   camdict.registerIpcHandlers();
+  dict.registerIpcHandlers();
 
   // Prepare Settings
   settings.registerIpcHandlers();
@@ -65,6 +68,8 @@ main.init = () => {
 
   // Downloader
   downloader.registerIpcHandlers();
+
+  decompresser.registerIpcHandlers();
 
   // ffmpeg
   ffmpeg.registerIpcHandlers();

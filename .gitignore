@@ -131,6 +131,7 @@ ffmpeg-core.worker.js
 
 # dict
 cam_dict.refined.sqlite
+enjoy/lib/dictionaries
 
 .vitepress/cache/
 public/jupyter-notebooks/*.mp3

@@ -20,8 +20,10 @@ class Downloader {
     }
   ): Promise<string | undefined> {
     const { webContents = mainWin.win.webContents, savePath } = options || {};
+
     return new Promise((resolve, _reject) => {
       webContents.downloadURL(url);
+
       webContents.session.on("will-download", (_event, item, _webContents) => {
         if (savePath) {
           try {
@@ -115,8 +117,27 @@ class Downloader {
     });
   }
 
+  pause(filename: string) {
+    this.tasks
+      .filter(
+        (t) => t.getFilename() === filename && t.getState() === "progressing"
+      )
+      .forEach((t) => {
+        t.pause();
+      });
+  }
+
+  resume(filename: string) {
+    this.tasks
+      .filter(
+        (t) => t.getFilename() === filename && t.getState() === "progressing"
+      )
+      .forEach((t) => {
+        t.resume();
+      });
+  }
+
   cancel(filename: string) {
-    logger.debug("dashboard", this.dashboard());
     this.tasks
       .filter(
         (t) => t.getFilename() === filename && t.getState() === "progressing"
@@ -124,6 +145,11 @@ class Downloader {
       .forEach((t) => {
         t.cancel();
       });
+  }
+
+  remove(filename: string) {
+    this.cancel(filename);
+    this.tasks = this.tasks.filter((t) => t.getFilename() !== filename);
   }
 
   cancelAll() {
@@ -154,8 +180,16 @@ class Downloader {
       });
     });
     ipcMain.handle("download-cancel", (_event, filename) => {
-      logger.debug("download-cancel", filename);
       this.cancel(filename);
+    });
+    ipcMain.handle("download-pause", (_event, filename) => {
+      this.pause(filename);
+    });
+    ipcMain.handle("download-resume", (_event, filename) => {
+      this.resume(filename);
+    });
+    ipcMain.handle("download-remove", (_event, filename) => {
+      this.remove(filename);
     });
     ipcMain.handle("download-cancel-all", () => {
       this.cancelAll();

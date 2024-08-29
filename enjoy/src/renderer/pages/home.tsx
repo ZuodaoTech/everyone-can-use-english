@@ -5,6 +5,7 @@ import {
   VideosSegment,
   YoutubeVideosSegment,
   EnrollmentSegment,
+  Vocabulary,
 } from "@renderer/components";
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";

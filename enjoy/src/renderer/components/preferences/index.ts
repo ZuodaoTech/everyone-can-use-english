@@ -31,3 +31,6 @@ export * from "./whisper-model-options";
 export * from "./network-state";
 
 export * from "./recorder-settings";
+
+export * from "./vocabulary-settings";
+export * from "./dict-settings";

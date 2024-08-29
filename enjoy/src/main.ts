@@ -35,6 +35,11 @@ if (!process.env.CI) {
   });
 }
 
+if (!app.isPackaged) {
+  app.disableHardwareAcceleration();
+  app.commandLine.appendSwitch("disable-software-rasterizer");
+}
+
 // Add context menu
 contextMenu({
   showSearchWithGoogle: false,
@@ -64,7 +69,10 @@ contextMenu({
         !parameters.selectionText.trim().includes(" "),
       click: () => {
         const { x, y, selectionText } = parameters;
-        browserWindow.webContents.send("on-lookup", selectionText, { x, y });
+        browserWindow.webContents.send("on-lookup", selectionText, "", {
+          x,
+          y,
+        });
       },
     },
     {

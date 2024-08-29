@@ -148,3 +148,7 @@ export const humanFileSize = (bytes: number, si: boolean = false) => {
   );
   return bytes.toFixed(1) + " " + units[u];
 };
+
+export function getExtension(filename: string, defaultExt: string) {
+  return /(?:\.([^.]+))?$/.exec(filename)[1] || defaultExt;
+}

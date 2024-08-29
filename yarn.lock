@@ -8120,7 +8120,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prop-types@npm:*":
+"@types/prop-types@npm:*, @types/prop-types@npm:^15":
   version: 15.7.12
   resolution: "@types/prop-types@npm:15.7.12"
   checksum: 10c0/1babcc7db6a1177779f8fde0ccc78d64d459906e6ef69a4ed4dd6339c920c2e05b074ee5a92120fe4e9d9f1a01c952f843ebd550bee2332fc2ef81d1706878f8
@@ -8201,6 +8201,15 @@ __metadata:
   version: 2.0.11
   resolution: "@types/unist@npm:2.0.11"
   checksum: 10c0/24dcdf25a168f453bb70298145eb043cfdbb82472db0bc0b56d6d51cd2e484b9ed8271d4ac93000a80da568f2402e9339723db262d0869e2bf13bc58e081768d
+  languageName: node
+  linkType: hard
+
+"@types/unzipper@npm:^0":
+  version: 0.10.10
+  resolution: "@types/unzipper@npm:0.10.10"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/10e9da33791be1087adb25adc2fe4d5ab267dae51fbcf7b1f10d0aca3130a13ef5fed994d7be45af8c465ff3946bc360a53eff6e5aab4eb9ac9489477535342f
   languageName: node
   linkType: hard
 
@@ -9703,7 +9712,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bluebird@npm:^3.1.1":
+"bluebird@npm:^3.1.1, bluebird@npm:~3.7.2":
   version: 3.7.2
   resolution: "bluebird@npm:3.7.2"
   checksum: 10c0/680de03adc54ff925eaa6c7bb9a47a0690e8b5de60f4792604aae8ed618c65e6b63a7893b57ca924beaf53eee69c5af4f8314148c08124c550fe1df1add897d2
@@ -12160,6 +12169,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"duplexer2@npm:~0.1.4":
+  version: 0.1.4
+  resolution: "duplexer2@npm:0.1.4"
+  dependencies:
+    readable-stream: "npm:^2.0.2"
+  checksum: 10c0/0765a4cc6fe6d9615d43cc6dbccff6f8412811d89a6f6aa44828ca9422a0a469625ce023bf81cee68f52930dbedf9c5716056ff264ac886612702d134b5e39b4
+  languageName: node
+  linkType: hard
+
 "duplexer@npm:^0.1.2":
   version: 0.1.2
   resolution: "duplexer@npm:0.1.2"
@@ -12580,9 +12598,11 @@ __metadata:
     "@types/mark.js": "npm:^8.11.12"
     "@types/mustache": "npm:^4.2.5"
     "@types/node": "npm:^22.5.0"
+    "@types/prop-types": "npm:^15"
     "@types/rails__actioncable": "npm:^6.1.11"
     "@types/react": "npm:^18.3.4"
     "@types/react-dom": "npm:^18.3.0"
+    "@types/unzipper": "npm:^0"
     "@types/validator": "npm:^13.12.1"
     "@types/wavesurfer.js": "npm:^6.0.12"
     "@typescript-eslint/eslint-plugin": "npm:^8.2.0"
@@ -12630,6 +12650,7 @@ __metadata:
     js-md5: "npm:^0.8.3"
     langchain: "npm:^0.2.17"
     lodash: "npm:^4.17.21"
+    lru-cache: "npm:^11.0.0"
     lucide-react: "npm:^0.436.0"
     mark.js: "npm:^8.11.1"
     microsoft-cognitiveservices-speech-sdk: "npm:^1.40.0"
@@ -12640,18 +12661,21 @@ __metadata:
     pitchfinder: "npm:^2.3.2"
     postcss: "npm:^8.4.41"
     progress: "npm:^2.0.3"
+    prop-types: "npm:^15.8.1"
     proxy-agent: "npm:^6.4.0"
     react: "npm:^18.3.1"
     react-activity-calendar: "npm:^2.4.0"
     react-audio-visualize: "npm:^1.1.3"
     react-audio-voice-recorder: "npm:^2.2.0"
     react-dom: "npm:^18.3.1"
+    react-frame-component: "npm:^5.2.7"
     react-hook-form: "npm:^7.53.0"
     react-hotkeys-hook: "npm:^4.5.0"
     react-i18next: "npm:^15.0.1"
     react-markdown: "npm:^9.0.1"
     react-resizable-panels: "npm:^2.1.1"
     react-router-dom: "npm:^6.26.1"
+    react-shadow-root: "npm:^6.2.0"
     react-tooltip: "npm:^5.28.0"
     reflect-metadata: "npm:^0.2.2"
     rimraf: "npm:^6.0.1"
@@ -12668,6 +12692,7 @@ __metadata:
     tslib: "npm:^2.7.0"
     typescript: "npm:^5.5.4"
     umzug: "npm:^3.8.1"
+    unzipper: "npm:^0.12.3"
     update-electron-app: "npm:^3.0.0"
     vite: "npm:^5.4.2"
     vite-plugin-static-copy: "npm:^1.0.6"
@@ -14666,7 +14691,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.11, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
+"graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.11, graceful-fs@npm:^4.2.2, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
   checksum: 10c0/386d011a553e02bc594ac2ca0bd6d9e4c22d7fa8cfbfc448a6d148c59ea881b092db9dbe3547ae4b88e55f1b01f7c4a2ecc53b310c042793e63aa44cf6c257f2
@@ -16844,7 +16869,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -18412,6 +18437,13 @@ __metadata:
   bin:
     node-gyp: bin/node-gyp.js
   checksum: 10c0/00630d67dbd09a45aee0a5d55c05e3916ca9e6d427ee4f7bc392d2d3dc5fad7449b21fc098dd38260a53d9dcc9c879b36704a1994235d4707e7271af7e9a835b
+  languageName: node
+  linkType: hard
+
+"node-int64@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "node-int64@npm:0.4.0"
+  checksum: 10c0/a6a4d8369e2f2720e9c645255ffde909c0fbd41c92ea92a5607fc17055955daac99c1ff589d421eee12a0d24e99f7bfc2aabfeb1a4c14742f6c099a51863f31a
   languageName: node
   linkType: hard
 
@@ -20395,6 +20427,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prop-types@npm:^15.8.1":
+  version: 15.8.1
+  resolution: "prop-types@npm:15.8.1"
+  dependencies:
+    loose-envify: "npm:^1.4.0"
+    object-assign: "npm:^4.1.1"
+    react-is: "npm:^16.13.1"
+  checksum: 10c0/59ece7ca2fb9838031d73a48d4becb9a7cc1ed10e610517c7d8f19a1e02fa47f7c27d557d8a5702bec3cfeccddc853579832b43f449e54635803f277b1c78077
+  languageName: node
+  linkType: hard
+
 "property-information@npm:^6.0.0":
   version: 6.5.0
   resolution: "property-information@npm:6.5.0"
@@ -20666,6 +20709,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-frame-component@npm:^5.2.7":
+  version: 5.2.7
+  resolution: "react-frame-component@npm:5.2.7"
+  peerDependencies:
+    prop-types: ^15.5.9
+    react: ">= 16.3"
+    react-dom: ">= 16.3"
+  checksum: 10c0/e138602aa98557c021ae825f51468026c53b9939140c5961d5371b65ad07ff9a5adaf2cd4e4a8a77414a05ae0f95a842939c8e102aa576ef21ff096368b905a3
+  languageName: node
+  linkType: hard
+
 "react-hook-form@npm:^7.53.0":
   version: 7.53.0
   resolution: "react-hook-form@npm:7.53.0"
@@ -20700,6 +20754,13 @@ __metadata:
     react-native:
       optional: true
   checksum: 10c0/74ed8903cb0dbc4d05f8eef176eba2d60ffad65c48bf6695e8294d70dd035563ebdb52b012319ef2835010fe4ccfc95a3e431d5b22d2b0a264141299aa6beb30
+  languageName: node
+  linkType: hard
+
+"react-is@npm:^16.13.1":
+  version: 16.13.1
+  resolution: "react-is@npm:16.13.1"
+  checksum: 10c0/33977da7a5f1a287936a0c85639fec6ca74f4f15ef1e59a6bc20338fc73dc69555381e211f7a3529b8150a1f71e4225525b41b60b52965bda53ce7d47377ada1
   languageName: node
   linkType: hard
 
@@ -20819,6 +20880,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-shadow-root@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "react-shadow-root@npm:6.2.0"
+  peerDependencies:
+    prop-types: ">=15.6.0"
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  checksum: 10c0/898ac8c3d025f5d854700dc329b8f9e8b43a489a3f4c55b830d640fca480c6326196449c5241527d09403e6f4291d5953ee4a4db13e80df3e8581f7aa8a04b9a
+  languageName: node
+  linkType: hard
+
 "react-style-singleton@npm:^2.2.1":
   version: 2.2.1
   resolution: "react-style-singleton@npm:2.2.1"
@@ -20922,7 +20994,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^2.0.5, readable-stream@npm:~2.3.6":
+"readable-stream@npm:^2.0.2, readable-stream@npm:^2.0.5, readable-stream@npm:~2.3.6":
   version: 2.3.8
   resolution: "readable-stream@npm:2.3.8"
   dependencies:
@@ -23759,6 +23831,19 @@ __metadata:
     mkdirp: "npm:^0.5.1"
     yaku: "npm:^0.16.6"
   checksum: 10c0/e551cb3d57d0271da41825e9bd9a7f4ef9ec5c3f15edc37bf909928c8327f21a6938ddc922787ee2b1b31f95ac83232dac79fd5a44e2727f9e800df9017a3b91
+  languageName: node
+  linkType: hard
+
+"unzipper@npm:^0.12.3":
+  version: 0.12.3
+  resolution: "unzipper@npm:0.12.3"
+  dependencies:
+    bluebird: "npm:~3.7.2"
+    duplexer2: "npm:~0.1.4"
+    fs-extra: "npm:^11.2.0"
+    graceful-fs: "npm:^4.2.2"
+    node-int64: "npm:^0.4.0"
+  checksum: 10c0/4cae2ad23bfd47011d5f8a6d61fb1dc0e4b5008bc3896e6f3d5ab946a64e9482714992a988128bce541440aa646e16e5e5c9bf35e49097edbaf833e7f814d36d
   languageName: node
   linkType: hard
 

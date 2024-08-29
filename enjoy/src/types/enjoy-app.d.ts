@@ -78,10 +78,16 @@ type EnjoyAppType = {
   onNotification: (
     callback: (event, notification: NotificationType) => void
   ) => void;
+  lookup: (
+    selection: string,
+    context: string,
+    position: { x: number; y: number }
+  ) => void;
   onLookup: (
     callback: (
-      event,
+      event: IpcRendererEvent,
       selection: string,
+      context: string,
       position: { x: number; y: number }
     ) => void
   ) => void;
@@ -130,8 +136,12 @@ type EnjoyAppType = {
     switchLanguage: (language: string) => Promise<void>;
     getDefaultHotkeys: () => Promise<Record<string, string> | undefined>;
     setDefaultHotkeys: (records: Record<string, string>) => Promise<void>;
+    getDictSettings: () => Promise<DictSettingType>;
+    setDictSettings: (dict: DictSettingType) => Promise<void>;
     getApiUrl: () => Promise<string>;
     setApiUrl: (url: string) => Promise<void>;
+    getVocabularyConfig: () => Promise<VocabularyConfigType | undefined>;
+    setVocabularyConfig: (records: VocabularyConfigType) => Promise<void>;
   };
   fs: {
     ensureDir: (path: string) => Promise<boolean>;
@@ -148,6 +158,14 @@ type EnjoyAppType = {
   };
   camdict: {
     lookup: (word: string) => Promise<CamdictWordType | null>;
+  };
+  dict: {
+    getDicts: () => Promise<Dict[]>;
+    download: (dict: Dict) => Promise<void>;
+    decompress: (dict: Dict) => Promise<void>;
+    remove: (dict: Dict) => Promise<void>;
+    getResource: (key: string, dict: Dict) => Promise<string | null>;
+    lookup: (word: string, dict: Dict) => Promise<string | null>;
   };
   audios: {
     findAll: (params: any) => Promise<AudioType[]>;
@@ -299,10 +317,18 @@ type EnjoyAppType = {
       options?: string[]
     ) => Promise<string>;
   };
+  decompress: {
+    onUpdate: (callback: (event, tasks: DecompressTask[]) => void) => void;
+    dashboard: () => Promise<DecompressTask[]>;
+    removeAllListeners: () => void;
+  };
   download: {
     onState: (callback: (event, state) => void) => void;
     start: (url: string, savePath?: string) => Promise<string | undefined>;
     cancel: (filename: string) => Promise<void>;
+    pause: (filename: string) => Promis<void>;
+    resume: (filename: string) => Promise<void>;
+    remove: (filename: string) => Promise<void>;
     cancelAll: () => void;
     dashboard: () => Promise<DownloadStateType[]>;
     removeAllListeners: () => void;
