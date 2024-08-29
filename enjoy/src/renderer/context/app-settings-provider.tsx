@@ -208,7 +208,7 @@ export const AppSettingsProvider = ({
 
   const fetchVocabularyConfig = async () => {
     const config = await EnjoyApp.settings.getVocabularyConfig();
-    config && setVocabularyConfig(config);
+    setVocabularyConfig(config || { lookupOnMouseOver: false });
   };
 
   const setVocabularyConfigHandler = async (config: VocabularyConfigType) => {
