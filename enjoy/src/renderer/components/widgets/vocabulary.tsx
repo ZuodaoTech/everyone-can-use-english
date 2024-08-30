@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 
 export const Vocabulary = ({
@@ -10,18 +10,28 @@ export const Vocabulary = ({
   context?: string;
   children?: React.ReactNode;
 }) => {
-  let timeout: ReturnType<typeof setTimeout>;
-
+  let [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
   const { vocabularyConfig, EnjoyApp } = useContext(AppSettingsProviderContext);
 
-  const handleMouseEnter = (e: React.MouseEvent) => {
-    timeout = setTimeout(() => {
-      EnjoyApp.lookup(word, context, { x: e.clientX, y: e.clientY });
-    }, 500);
+  const handleMouseEnter = (e: any) => {
+    let _timer = setTimeout(() => {
+      if (!context) {
+        context = e.target?.parentElement
+          .closest(".sentence, h2, p, div")
+          ?.textContent?.trim();
+      }
+
+      const { x, bottom: y } = e.target.getBoundingClientRect();
+      const _word = word.replace(/[^\w\s]|_/g, "");
+
+      EnjoyApp.lookup(_word, context, { x, y });
+    }, 1000);
+
+    setTimer(_timer);
   };
 
   const handleMouseLeave = () => {
-    clearTimeout(timeout);
+    clearTimeout(timer);
   };
 
   return vocabularyConfig.lookupOnMouseOver ? (
@@ -30,7 +40,7 @@ export const Vocabulary = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <span>{word || children}</span>
+      {word || children}
     </span>
   ) : (
     <span>{word || children}</span>

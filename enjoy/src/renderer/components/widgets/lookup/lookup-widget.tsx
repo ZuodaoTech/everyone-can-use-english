@@ -14,6 +14,7 @@ import {
   DictLookupResult,
   DictSelect,
   AiLookupResult,
+  CamdictLookupResult,
 } from "@renderer/components";
 import { ChevronLeft, ChevronFirst } from "lucide-react";
 
@@ -41,12 +42,12 @@ export const LookupWidget = () => {
   ) => {
     let word = _word;
     let context = _context;
+    let sourceType;
+    let sourceId;
 
-    if (word) {
-      if (word.indexOf(" ") > -1) return;
-      setSelected({ word, context, position });
-    } else {
-      const selection = document.getSelection();
+    const selection = document.getSelection();
+
+    if (!word) {
       if (!selection?.anchorNode?.parentElement) return;
 
       word = selection
@@ -54,24 +55,23 @@ export const LookupWidget = () => {
         .trim()
         .replace(/[.,/#!$%^&*;:{}=\-_`~()]+$/, "");
 
-      if (!word) return;
       // can only lookup single word
-      if (word.indexOf(" ") > -1) return;
+      if (!word || word.indexOf(" ") > -1) return;
+    }
 
+    if (!context) {
       context = selection?.anchorNode.parentElement
         .closest(".sentence, h2, p, div")
         ?.textContent?.trim();
-
-      const sourceType = selection?.anchorNode.parentElement
+      sourceType = selection?.anchorNode.parentElement
         .closest("[data-source-type]")
         ?.getAttribute("data-source-type");
-      const sourceId = selection?.anchorNode.parentElement
+      sourceId = selection?.anchorNode.parentElement
         .closest("[data-source-id]")
         ?.getAttribute("data-source-id");
-
-      setSelected({ word, context, position, sourceType, sourceId });
     }
 
+    setSelected({ word, context, position, sourceType, sourceId });
     handleLookup(word);
     setOpen(true);
   };
@@ -102,7 +102,7 @@ export const LookupWidget = () => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverAnchor
-        className="absolute w-0 h-0"
+        className="fixed w-0 h-0"
         style={{
           top: selected?.position?.y,
           left: selected?.position?.x,
@@ -152,6 +152,8 @@ export const LookupWidget = () => {
                     sourceId={selected?.sourceId}
                     sourceType={selected?.sourceType}
                   />
+                ) : currentDictValue === "cambridge" ? (
+                  <CamdictLookupResult word={selected?.word} />
                 ) : (
                   <DictLookupResult word={current} onJump={handleLookup} />
                 )}

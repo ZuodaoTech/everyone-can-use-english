@@ -62,6 +62,15 @@ const InstalledDictItem = function ({ dict }: { dict: Dict }) {
     }
   }
 
+  async function handleRemoveDefault() {
+    try {
+      await setDefault(null);
+      toast.success(t("dictFileRemoveDefaultSuccess"));
+    } catch (err) {
+      toast.error(err.message);
+    }
+  }
+
   async function handleRemove() {
     setRemoving(true);
 
@@ -120,9 +129,15 @@ const InstalledDictItem = function ({ dict }: { dict: Dict }) {
             </AlertDialogContent>
           </AlertDialog>
 
-          <Button size="sm" variant="secondary" onClick={handleSetDefault}>
-            {t("setDefault")}
-          </Button>
+          {settings.default === dict.name ? (
+            <Button size="sm" variant="secondary" onClick={handleRemoveDefault}>
+              {t("removeDefault")}
+            </Button>
+          ) : (
+            <Button size="sm" variant="secondary" onClick={handleSetDefault}>
+              {t("setDefault")}
+            </Button>
+          )}
         </div>
       );
     }

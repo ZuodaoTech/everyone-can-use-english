@@ -104,9 +104,16 @@ export class DictDefinitionNormalizer {
         ...this.$('a[href^="bword://"]').toArray(),
       ].map((link) => {
         const $link = this.$(link);
-        const word = $link.attr("_href") || $link.attr("href").substring(8);
 
-        $link.attr("data-type", "jump").attr("data-word", word);
+        const href = $link.attr("_href") || $link.attr("href").substring(8);
+        const [word, hash] = href.split("#");
+
+        if (word) {
+          $link
+            .attr("data-type", "jump")
+            .attr("data-word", word)
+            .attr("data-hash", hash);
+        }
       })
     );
   }

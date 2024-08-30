@@ -2,6 +2,7 @@ import { useContext } from "react";
 import {
   AppSettingsProviderContext,
   MediaPlayerProviderContext,
+  DictProviderContext,
 } from "@renderer/context";
 import { TabsContent, Separator } from "@renderer/components/ui";
 import { t } from "i18next";
@@ -9,6 +10,7 @@ import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { convertWordIpaToNormal } from "@/utils";
 import {
   CamdictLookupResult,
+  DictLookupResult,
   AiLookupResult,
   TranslateResult,
 } from "@renderer/components";
@@ -40,6 +42,7 @@ const SelectedWords = (props: {
 }) => {
   const { selectedIndices, caption } = props;
 
+  const { currentDictValue } = useContext(DictProviderContext);
   const { transcription } = useContext(MediaPlayerProviderContext);
   const { learningLanguage, ipaMappings } = useContext(
     AppSettingsProviderContext
@@ -100,10 +103,15 @@ const SelectedWords = (props: {
         })}
       </div>
 
-      {learningLanguage.startsWith("en") && (
+      {currentDictValue === "cambridge" ? (
         <>
           <Separator className="my-2" />
           <CamdictLookupResult word={word} />
+        </>
+      ) : (
+        <>
+          <Separator className="my-2" />
+          <DictLookupResult word={word} autoHeight={true} />
         </>
       )}
 
