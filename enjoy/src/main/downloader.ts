@@ -130,7 +130,9 @@ class Downloader {
   resume(filename: string) {
     this.tasks
       .filter(
-        (t) => t.getFilename() === filename && t.getState() === "progressing"
+        (t) =>
+          t.getFilename() === filename &&
+          ["progressing", "interrupted"].includes(t.getState())
       )
       .forEach((t) => {
         t.resume();

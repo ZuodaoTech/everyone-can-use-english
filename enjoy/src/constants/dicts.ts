@@ -1,5 +1,28 @@
 export const DICTS = [
   {
+    name: "ccalecd",
+    fileName: "ccalecd.zip",
+    title: "Collins COBUILD Advanced British EN-CN Dictionary",
+    pronunciation: true,
+    lang: "En-CN",
+    downloadUrl: "https://dl.enjoy.bot/dicts/ccalecd.zip",
+    size: "13.879MB",
+    hash: "96940f85e52df4586b287e1859723a39",
+    addition: '<link href="theme.css" rel="stylesheet" type="text/css" />',
+  },
+
+  {
+    name: "ccabeld",
+    fileName: "ccabeld.zip",
+    title: "Collins COBUILD Advanced British English Learners Dictionary",
+    pronunciation: true,
+    lang: "En-En",
+    downloadUrl: "https://dl.enjoy.bot/dicts/ccabeld.zip",
+    size: "485.6MB",
+    hash: "5b53498536f3ce3ed173752b7888ca51",
+    addition: '<link href="theme.css" rel="stylesheet" type="text/css" />',
+  },
+  {
     name: "ldoce5",
     fileName: "ldoce5.zip",
     title: "Longman Dictionary of Contemporary English",
@@ -13,7 +36,7 @@ export const DICTS = [
   {
     name: "oxford_en_mac",
     fileName: "oxford_en_mac.zip",
-    title: "Oxford Dictionary of English (Mac)",
+    title: "Oxford Dictionary of English",
     pronunciation: false,
     lang: "En-En",
     downloadUrl: "https://dl.enjoy.bot/dicts/oxford_en_mac.zip",
@@ -24,7 +47,7 @@ export const DICTS = [
   {
     name: "koen_mac",
     fileName: "koen_mac.zip",
-    title: "Korean English Dictionary (Mac)",
+    title: "Korean English Dictionary",
     pronunciation: false,
     lang: "Ko-En",
     downloadUrl: "https://dl.enjoy.bot/dicts/koen_mac.zip",
@@ -46,7 +69,7 @@ export const DICTS = [
   {
     name: "deen_mac",
     fileName: "deen_mac.zip",
-    title: "German English Dictionary (Mac)",
+    title: "German English Dictionary",
     pronunciation: false,
     lang: "Ge-En",
     downloadUrl: "https://dl.enjoy.bot/dicts/deen_mac.zip",
@@ -57,7 +80,7 @@ export const DICTS = [
   {
     name: "ruen_mac",
     fileName: "ruen_mac.zip",
-    title: "Russian English Dictionary (Mac)",
+    title: "Russian English Dictionary",
     pronunciation: false,
     lang: "Ru-En",
     downloadUrl: "https://dl.enjoy.bot/dicts/ruen_mac.zip",

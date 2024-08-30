@@ -751,7 +751,8 @@
   "dictFileExist": "{{name}} has already been imported",
   "dictFileAddSuccess": "Add {{name}} successfully",
   "dictFileRemoveSuccess": "Remove {{name}} successfully",
-  "dictFileSetDefaultSuccess": "Set default successfully",
+  "dictFileSetDefaultSuccess": "Successfully set as default dictionary",
+  "dictFileRemoveDefaultSuccess": "Operation successful",
   "dictionaries": "Dictionaries",
   "import": "Import",
   "default": "Default",
@@ -769,5 +770,6 @@
   "removing": "Removing",
   "removeDictTitle": "Are you sure you want to delete this dictionary? ",
   "removeDictDescription": "It will delete the dictionary file from your local computer and you will have to download it again next time.",
-  "downloadingDict": "Downloading"
+  "downloadingDict": "Downloading",
+  "removeDefault": "No longer as Default"
 }

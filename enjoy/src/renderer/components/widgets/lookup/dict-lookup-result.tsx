@@ -23,10 +23,12 @@ const MIME: Record<string, string> = {
 
 export function DictLookupResult({
   word,
+  autoHeight,
   onJump,
 }: {
   word: string;
-  onJump: (v: string) => void;
+  autoHeight?: boolean;
+  onJump?: (v: string) => void;
 }) {
   const { colorScheme } = useContext(ThemeProviderContext);
   const initialContent = `<!DOCTYPE html><html class=${colorScheme}><head></head><body></body></html>`;
@@ -36,6 +38,7 @@ export function DictLookupResult({
   const [looking, setLooking] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState(false);
+  const [height, setHeight] = useState<number>();
 
   useEffect(() => {
     if (currentDict && word) {
@@ -72,6 +75,10 @@ export function DictLookupResult({
     setError(false);
   }
 
+  function handleResize(h: number) {
+    setHeight(h);
+  }
+
   if (looking) {
     return (
       <div className="text-center">
@@ -100,9 +107,14 @@ export function DictLookupResult({
     <Frame
       initialContent={initialContent}
       mountTarget="body"
-      className="h-full"
+      style={{ height: autoHeight ? `${height}px` : "100%" }}
     >
-      <DictLookupResultInner text={definition} onJump={onJump} />
+      <DictLookupResultInner
+        text={definition}
+        onJump={onJump}
+        autoHeight={autoHeight}
+        onResize={handleResize}
+      />
     </Frame>
   );
 }
@@ -110,17 +122,38 @@ export function DictLookupResult({
 export const DictLookupResultInner = ({
   text,
   onJump,
+  onResize,
+  autoHeight,
 }: {
   text: string;
-  onJump: (v: string) => void;
+  autoHeight: boolean;
+  onJump?: (v: string) => void;
+  onResize?: (v: number) => void;
 }) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { currentDict } = useContext(DictProviderContext);
   const { document: innerDocument } = useFrame();
   const [html, setHtml] = useState("");
+  const [hash, setHash] = useState("");
 
   useEffect(() => {
-    normalize();
+    if (autoHeight) {
+      const resizeObserver = new ResizeObserver(() => {
+        const html = innerDocument.getElementsByTagName("html")[0];
+        onResize(html.scrollHeight);
+      });
+
+      resizeObserver.observe(innerDocument.getElementById("inner-dict"));
+    }
+  }, []);
+
+  useEffect(() => {
+    normalize().then(() => {
+      if (hash) {
+        handleScroll();
+        setHash("");
+      }
+    });
 
     return () => {
       normalizer.revoke();
@@ -166,7 +199,18 @@ export const DictLookupResultInner = ({
 
   function handleJump(el: Element) {
     const word = el.getAttribute("data-word");
-    onJump(word);
+    const hash = el.getAttribute("data-hash");
+    onJump?.(word);
+    setHash(hash);
+  }
+
+  function handleScroll() {
+    setTimeout(() => {
+      const el = innerDocument.querySelector(`a[name='${hash}']`);
+      if (el) {
+        el.scrollIntoView();
+      }
+    }, 200);
   }
 
   const registerAudioHandler = () => {
@@ -199,5 +243,5 @@ export const DictLookupResultInner = ({
     };
   };
 
-  return <div dangerouslySetInnerHTML={{ __html: html }}></div>;
+  return <div id="inner-dict" dangerouslySetInnerHTML={{ __html: html }}></div>;
 };

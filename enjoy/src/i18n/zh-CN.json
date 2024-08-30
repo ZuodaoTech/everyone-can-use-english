@@ -751,7 +751,8 @@
   "dictFileExist": "{{name}} 已经存在了",
   "dictFileAddSuccess": "已添加 {{name}}",
   "dictFileRemoveSuccess": "已删除 {{name}}",
-  "dictFileSetDefaultSuccess": "设置成功",
+  "dictFileSetDefaultSuccess": "成功设置为默认词典",
+  "dictFileRemoveDefaultSuccess": "操作成功",
   "dictionaries": "词典",
   "import": "导入",
   "default": "默认",
@@ -769,5 +770,6 @@
   "removing": "正在删除",
   "removeDictTitle": "你确定要删除词典吗？",
   "removeDictDescription": "此操作将会从本地删除词典文件，下次安装需要重新下载",
-  "downloadingDict": "正在下载"
+  "downloadingDict": "正在下载",
+  "removeDefault": "不再设置为默认"
 }

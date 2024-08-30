@@ -23,6 +23,11 @@ const AIDict = {
   value: "ai",
 };
 
+const CamDict = {
+  text: t("cambridgeDictionary"),
+  value: "cambridge",
+};
+
 const initialState: DictProviderState = {
   dicts: [],
   downloadingDicts: [],
@@ -39,7 +44,7 @@ export const DictProviderContext =
   createContext<DictProviderState>(initialState);
 
 export const DictProvider = ({ children }: { children: React.ReactNode }) => {
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const [dicts, setDicts] = useState<Dict[]>([]);
   const [settings, setSettings] = useState<DictSettingType>({
     default: "",
@@ -60,14 +65,18 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   const dictSelectItems = useMemo(() => {
+    const presets = learningLanguage.startsWith("en")
+      ? [CamDict, AIDict]
+      : [AIDict];
+
     return [
-      AIDict,
+      ...presets,
       ...availableDicts.map((item) => ({
         text: item.title,
         value: item.name,
       })),
     ];
-  }, [availableDicts]);
+  }, [availableDicts, learningLanguage]);
 
   const downloadingDicts = useMemo(() => {
     return dicts.filter(
@@ -84,18 +93,16 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   }, [dicts]);
 
   useEffect(() => {
-    if (availableDicts.length) {
-      const _currentDict = availableDicts.find(
-        (dict) => dict.name === settings.default
-      );
+    const defaultDict = availableDicts.find(
+      (dict) => dict.name === settings.default
+    );
 
-      if (_currentDict) {
-        handleSetCurrentDict(_currentDict.name);
-      } else {
-        setDefault(availableDicts[0]);
-      }
+    if (defaultDict) {
+      handleSetCurrentDict(defaultDict.name);
     } else {
-      setCurrentDictValue(AIDict.value);
+      setCurrentDictValue(
+        learningLanguage.startsWith("en") ? CamDict.value : AIDict.value
+      );
     }
   }, [availableDicts, settings]);
 
@@ -123,7 +130,7 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
     if (dict) setCurrentDict(dict);
   };
 
-  const setDefault = async (dict: Dict) => {
+  const setDefault = async (dict: Dict | null) => {
     const _settings = { ...settings, default: dict?.name ?? "" };
 
     EnjoyApp.settings

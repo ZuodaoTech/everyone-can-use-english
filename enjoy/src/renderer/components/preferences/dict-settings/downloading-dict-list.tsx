@@ -5,7 +5,7 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { Button, toast } from "@renderer/components/ui";
 import { t } from "i18next";
-import { LoaderSpin } from "@renderer/components";
+import { LoaderIcon } from "lucide-react";
 
 export const DownloadingDictList = function () {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -129,7 +129,12 @@ const DownloadingDictItem = function ({ dict }: { dict: Dict }) {
   }
 
   function renderActions() {
-    if (loading) return <LoaderSpin />;
+    if (loading)
+      return (
+        <div>
+          <LoaderIcon className="text-muted-foreground animate-spin" />
+        </div>
+      );
 
     if (
       dict.downloadState?.state === "progressing" &&
