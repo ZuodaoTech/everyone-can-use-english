@@ -128,7 +128,7 @@ export const BalanceSettings = () => {
             ) : (
               <>
                 <div className="grid grid-cols-4 gap-4">
-                  {[1, 10, 50, 100].map((amount) => (
+                  {[2, 10, 50, 100].map((amount) => (
                     <div
                       className={`text-xl w-full h-20 border rounded-md flex items-center justify-center cursor-pointer shadow hover:bg-gray-100 hover:dark:text-primary-foreground transition-colors duration-200 ease-in-out ${
                         amount == depositAmount ? "bg-gray-100 dark:text-primary-foreground" : ""
