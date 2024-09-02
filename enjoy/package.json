@@ -84,7 +84,7 @@
     "typescript": "^5.5.4",
     "vite": "^5.4.2",
     "vite-plugin-static-copy": "^1.0.6",
-    "zx": "^8.1.4"
+    "zx": "^8.1.5"
   },
   "dependencies": {
     "@andrkrn/ffprobe-static": "^5.2.0",

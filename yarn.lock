@@ -12699,7 +12699,7 @@ __metadata:
     wavesurfer.js: "npm:^7.8.4"
     zod: "npm:^3.23.8"
     zod-to-json-schema: "npm:^3.23.2"
-    zx: "npm:^8.1.4"
+    zx: "npm:^8.1.5"
   languageName: unknown
   linkType: soft
 
@@ -24981,9 +24981,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zx@npm:^8.1.4":
-  version: 8.1.4
-  resolution: "zx@npm:8.1.4"
+"zx@npm:^8.1.5":
+  version: 8.1.5
+  resolution: "zx@npm:8.1.5"
   dependencies:
     "@types/fs-extra": "npm:>=11"
     "@types/node": "npm:>=20"
@@ -24994,6 +24994,6 @@ __metadata:
       optional: true
   bin:
     zx: build/cli.js
-  checksum: 10c0/ced255787ecb5e8d4ea6931c8d9a4f0662c2e6048c0727675c221cfdf4bdb8df9f9fbc860bd0abb93135409a33f667c33d79b900e51030ca6872efee2a886ef0
+  checksum: 10c0/9b525dcd703d708d249844d00359aadf0be6e8ba0d128d8aee28aa00ffc78a91b94bc2155f53c4c7e8831624bae17014bde3033a33b5e12139e163c3c3603dea
   languageName: node
   linkType: hard
