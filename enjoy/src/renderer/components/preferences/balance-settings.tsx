@@ -29,7 +29,7 @@ import Chart from "chart.js/auto";
 export const BalanceSettings = () => {
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
   const [balance, setBalance] = useState<number>(0);
-  const [depositAmount, setDepositAmount] = useState<number>(5);
+  const [depositAmount, setDepositAmount] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
   const [paymentCreated, setPaymentCreated] = useState<boolean>(false);
   const [payments, setPayments] = useState<any[]>([]);
@@ -128,7 +128,7 @@ export const BalanceSettings = () => {
             ) : (
               <>
                 <div className="grid grid-cols-4 gap-4">
-                  {[5, 10, 50, 100].map((amount) => (
+                  {[1, 10, 50, 100].map((amount) => (
                     <div
                       className={`text-xl w-full h-20 border rounded-md flex items-center justify-center cursor-pointer shadow hover:bg-gray-100 hover:dark:text-primary-foreground transition-colors duration-200 ease-in-out ${
                         amount == depositAmount ? "bg-gray-100 dark:text-primary-foreground" : ""
