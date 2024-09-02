@@ -205,6 +205,10 @@ export default withMermaid(
                       },
                     ],
                   },
+                  {
+                    text: "3.3. 变体",
+                    link: "/sounds-of-american-english/3.3-variations",
+                  },
                 ],
               },
               {
