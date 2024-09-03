@@ -470,7 +470,7 @@ export class Client {
     return this.api.get(`/api/payments/${id}`);
   }
 
-  mineSegments(params?: {
+  segments(params?: {
     page?: number;
     segmentIndex?: number;
     targetId?: string;
@@ -480,7 +480,7 @@ export class Client {
       segments: SegmentType[];
     } & PagyResponseType
   > {
-    return this.api.get("/api/mine/segments", {
+    return this.api.get("/api/segments", {
       params: decamelizeKeys(params),
     });
   }

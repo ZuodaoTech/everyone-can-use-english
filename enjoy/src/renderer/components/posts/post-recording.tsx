@@ -18,7 +18,7 @@ export const PostRecording = (props: {
     if (!recording.targetId) return;
 
     webApi
-      .mineSegments({
+      .segments({
         targetId: recording.targetId,
         targetType: recording.targetType,
         segmentIndex: recording.referenceId,
