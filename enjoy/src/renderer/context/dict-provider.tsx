@@ -5,8 +5,6 @@ import { t } from "i18next";
 type DictProviderState = {
   settings: DictSettingType;
   dicts: Dict[];
-  downloadingDicts: Dict[];
-  uninstallDicts: Dict[];
   installedDicts: Dict[];
   dictSelectItems: { text: string; value: string }[];
   reload?: () => void;
@@ -30,8 +28,6 @@ const CamDict = {
 
 const initialState: DictProviderState = {
   dicts: [],
-  downloadingDicts: [],
-  uninstallDicts: [],
   installedDicts: [],
   dictSelectItems: [AIDict],
   settings: {
@@ -77,16 +73,6 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
       })),
     ];
   }, [availableDicts, learningLanguage]);
-
-  const downloadingDicts = useMemo(() => {
-    return dicts.filter(
-      (dict) => dict.state === "downloading" || dict.state === "decompressing"
-    );
-  }, [dicts]);
-
-  const uninstallDicts = useMemo(() => {
-    return dicts.filter((dict) => dict.state === "uninstall");
-  }, [dicts]);
 
   const installedDicts = useMemo(() => {
     return dicts.filter((dict) => dict.state === "installed");
@@ -168,8 +154,6 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
         removed,
         reload: fetchDicts,
         dictSelectItems,
-        downloadingDicts,
-        uninstallDicts,
         installedDicts,
         currentDict,
         currentDictValue,

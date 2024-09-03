@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { WavesurferPlayer } from "@/renderer/components/misc";
 import { AppSettingsProviderContext } from "@/renderer/context";
 import { convertWordIpaToNormal } from "@/utils";
+import { Vocabulary } from "@renderer/components";
 
 export const NoteSemgent = (props: {
   segment: SegmentType;
@@ -51,7 +52,7 @@ export const NoteSemgent = (props: {
               }
           `}
             >
-              {word}
+              <Vocabulary word={word} context={caption.text} />
             </div>
 
             <div

@@ -33,4 +33,10 @@ declare global {
   interface Window {
     __ENJOY_APP__: EnjoyAppType;
   }
+
+  namespace JSX {
+    interface IntrinsicElements {
+      vocabulary: any;
+    }
+  }
 }

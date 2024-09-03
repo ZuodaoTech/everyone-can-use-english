@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { DictImportButton } from "./dict-import-button";
-import { DownloadingDictList, InstalledDictList } from ".";
+import { InstalledDictList } from ".";
 
 export const DictSettings = () => {
   return (
@@ -12,7 +12,6 @@ export const DictSettings = () => {
         </div>
 
         <div className="my-4">
-          <DownloadingDictList />
           <InstalledDictList />
         </div>
       </div>

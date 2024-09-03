@@ -29,6 +29,7 @@ import {
   MediaTranscriptionPrint,
   TranscriptionEditButton,
 } from "@renderer/components";
+import { Sentence } from "@renderer/components";
 
 export const MediaTranscription = (props: { display?: boolean }) => {
   const { display } = props;
@@ -202,7 +203,8 @@ export const MediaTranscription = (props: { display?: boolean }) => {
                 </span>
               </div>
             </div>
-            <p className="">{sentence.text}</p>
+
+            <Sentence sentence={sentence.text} />
           </div>
         )
       )}

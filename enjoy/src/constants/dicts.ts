@@ -8,6 +8,7 @@ export const DICTS = [
     downloadUrl: "https://dl.enjoy.bot/dicts/ccalecd.zip",
     size: "13.879MB",
     hash: "96940f85e52df4586b287e1859723a39",
+    sqlFileHash: "e1e7baafaa8bce936409763d27a027f8",
     addition: '<link href="theme.css" rel="stylesheet" type="text/css" />',
   },
 
@@ -20,6 +21,7 @@ export const DICTS = [
     downloadUrl: "https://dl.enjoy.bot/dicts/ccabeld.zip",
     size: "485.6MB",
     hash: "5b53498536f3ce3ed173752b7888ca51",
+    sqlFileHash: "0eed5c046a006f3fe0c7a4af1bee5da1",
     addition: '<link href="theme.css" rel="stylesheet" type="text/css" />',
   },
   {
@@ -31,6 +33,7 @@ export const DICTS = [
     downloadUrl: "https://dl.enjoy.bot/dicts/ldoce5.zip",
     size: "1.63GB",
     hash: "4a03ce291ea7b6e0ea46f4c2fc335ad4",
+    sqlFileHash: "b38a9e55bd97c5acfa267b87c825baf7",
     addition: '<link href="theme.css" rel="stylesheet" type="text/css" />',
   },
   {
@@ -41,6 +44,7 @@ export const DICTS = [
     lang: "En-En",
     downloadUrl: "https://dl.enjoy.bot/dicts/oxford_en_mac.zip",
     hash: "cffaef4b3ed6ec7d3ee7209b18e05c6f",
+    sqlFileHash: "3362137bf8e2e2578665db3ad8d49814",
     size: "33.6MB",
     addition: '<link href="theme.css" rel="stylesheet" type="text/css" />',
   },
@@ -53,6 +57,7 @@ export const DICTS = [
     downloadUrl: "https://dl.enjoy.bot/dicts/koen_mac.zip",
     size: "52.1MB",
     hash: "fa028c585de10e54a7028c6683738499",
+    sqlFileHash: "e55f771e6acd50d757428fe61f13650e",
     addition: '<link href="theme.css" rel="stylesheet" type="text/css" />',
   },
   {
@@ -63,6 +68,7 @@ export const DICTS = [
     lang: "Ja-En",
     downloadUrl: "https://dl.enjoy.bot/dicts/jaen_mac.zip",
     hash: "3008e1cd2a8b6f224f90d14a8e1de9cb",
+    sqlFileHash: "76597b8608ba085b9b88adce10449bf3",
     size: "39.8MB",
     addition: '<link href="theme.css" rel="stylesheet" type="text/css" />',
   },
@@ -74,6 +80,7 @@ export const DICTS = [
     lang: "Ge-En",
     downloadUrl: "https://dl.enjoy.bot/dicts/deen_mac.zip",
     hash: "3fedde07108236f6e6cfe907bd60faba",
+    sqlFileHash: "84b3097bfa83cdae8c264ca595923101",
     size: "32.1MB",
     addition: '<link href="theme.css" rel="stylesheet" type="text/css" />',
   },
@@ -85,6 +92,7 @@ export const DICTS = [
     lang: "Ru-En",
     downloadUrl: "https://dl.enjoy.bot/dicts/ruen_mac.zip",
     hash: "5b98fc0e5c3de9df43189cb79d5bf4cc",
+    sqlFileHash: "1d72eadd51d82d48b3c772e5580d3524",
     size: "18.1MB",
     addition: '<link href="theme.css" rel="stylesheet" type="text/css" />',
   },

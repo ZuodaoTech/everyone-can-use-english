@@ -6,8 +6,6 @@ import log from "@main/logger";
 import { DICTS } from "@/constants/dicts";
 import sqlite3, { Database } from "sqlite3";
 import settings from "./settings";
-import downloader from "./downloader";
-import decompresser from "./decompresser";
 import { hashFile } from "@/main/utils";
 
 const logger = log.scope("dict");
@@ -25,54 +23,28 @@ export class DictHandler {
     return _path;
   }
 
-  async isDictFileValid(dict: Dict) {
-    const filePath = path.join(this.dictsPath, dict.fileName);
+  async import(dir: string) {
+    const files = await fs.readdir(dir);
 
-    if (!fs.existsSync(filePath)) return false;
-
-    const hash = await hashFile(filePath, { algo: "md5" });
-
-    return hash === dict.hash;
-  }
-
-  async download(dict: Dict) {
-    const filePath = path.join(this.dictsPath, dict.fileName);
-    const dictPath = path.join(this.dictsPath, dict.name);
-
-    if (fs.existsSync(dictPath)) {
-      throw new Error("Dictionary already exists");
+    const sqlFileName = files.find((file) => file.match(/\.sqlite$/));
+    if (!sqlFileName) {
+      throw new Error("SQLite file not found");
     }
 
-    const isDictFileValid = await this.isDictFileValid(dict);
-
-    if (isDictFileValid) {
-      this.decompress(dict);
-    } else {
-      if (fs.existsSync(filePath)) {
-        await fs.remove(filePath);
-      }
-
-      downloader.download(dict.downloadUrl, {
-        savePath: this.dictsPath,
-      });
-    }
-  }
-
-  async decompress(dict: Dict) {
-    const filePath = path.join(this.dictsPath, dict.fileName);
-    const dictPath = path.join(this.dictsPath, dict.name);
-    const isDictFileValid = await this.isDictFileValid(dict);
-
-    if (isDictFileValid) {
-      await decompresser.depress({
-        filePath,
-        hash: dict.hash,
-        destPath: dictPath,
-        id: `dict-${dict.fileName}`,
-      });
+    const sqlFilePath = path.join(dir, sqlFileName);
+    const hash = await hashFile(sqlFilePath, { algo: "md5" });
+    const dict = DICTS.find((dict) => dict.sqlFileHash === hash);
+    if (!dict) {
+      throw new Error("SQLite file not match with any perset dictionary");
     }
 
-    downloader.remove(dict.fileName);
+    if (this.isInstalled(dict)) {
+      throw new Error("Current dict is already installed");
+    }
+
+    await fs.copy(dir, path.join(this.dictsPath, dict.name), {
+      recursive: true,
+    });
   }
 
   async remove(dict: Dict) {
@@ -84,6 +56,7 @@ export class DictHandler {
       this.db = new sqlite.Database(
         path.join(this.dictsPath, dict.name, `${dict.name}.sqlite`)
       );
+
       this.currentDict = dict.name;
     }
 
@@ -104,41 +77,17 @@ export class DictHandler {
     });
   }
 
+  isInstalled(dict: Dict) {
+    const files = fs.readdirSync(this.dictsPath);
+    return files.find((file) => file === dict.name);
+  }
+
   async getDicts() {
     const dicts = DICTS.map((dict: Dict) => {
-      let state: DictState = "uninstall";
-      let downloadState;
-      let decompressProgress;
-
-      const files = fs.readdirSync(this.dictsPath);
-      const isInstalled = files.find((file) => file === dict.name);
-
-      const decompressTask = decompresser.tasks.find(
-        (task) => task.id === `dict-${dict.fileName}`
-      );
-
-      const downloadTask = downloader.tasks.find(
-        (task) => task.getFilename() === dict.fileName
-      );
-
-      if (decompressTask) {
-        state = "decompressing";
-        decompressProgress = decompressTask.progress;
-      } else if (isInstalled) {
-        state = "installed";
-      } else if (downloadTask) {
-        state = "downloading";
-        downloadState = {
-          name: downloadTask.getFilename(),
-          state: downloadTask.getState(),
-          isPaused: downloadTask.isPaused(),
-          canResume: downloadTask.canResume(),
-          total: downloadTask.getTotalBytes(),
-          received: downloadTask.getReceivedBytes(),
-        };
-      }
-
-      return { ...dict, state, downloadState, decompressProgress };
+      return {
+        ...dict,
+        state: this.isInstalled(dict) ? "installed" : "uninstall",
+      };
     });
 
     return dicts;
@@ -161,12 +110,8 @@ export class DictHandler {
   }
 
   registerIpcHandlers() {
-    ipcMain.handle("dict-download", async (_event, dict: Dict) =>
-      this.download(dict)
-    );
-
-    ipcMain.handle("dict-decompress", async (_event, dict: Dict) =>
-      this.decompress(dict)
+    ipcMain.handle("dict-import", async (_event, dir: string) =>
+      this.import(dir)
     );
 
     ipcMain.handle("dict-remove", async (_event, dict: Dict) =>
