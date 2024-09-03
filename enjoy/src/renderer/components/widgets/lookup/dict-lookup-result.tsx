@@ -50,6 +50,10 @@ export function DictLookupResult({
     revoke();
     setLooking(true);
 
+    if (autoHeight) {
+      setHeight(0);
+    }
+
     const _word = word.trim().indexOf(" ") > -1 ? word : word.toLowerCase();
 
     EnjoyApp.dict
@@ -107,7 +111,7 @@ export function DictLookupResult({
     <Frame
       initialContent={initialContent}
       mountTarget="body"
-      style={{ height: autoHeight ? `${height}px` : "100%" }}
+      style={{ minHeight: autoHeight ? `${height}px` : "100%" }}
     >
       <DictLookupResultInner
         text={definition}

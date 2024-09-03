@@ -13,8 +13,10 @@ import { TabContentNote } from "./tab-content-note";
 
 export const MediaCaptionTabs = (props: {
   caption: TimelineEntry;
+  tab: string;
   currentSegmentIndex: number;
   selectedIndices: number[];
+  setTab: (v: string) => void;
   setSelectedIndices: (indices: number[]) => void;
   children?: React.ReactNode;
 }) => {
@@ -24,9 +26,9 @@ export const MediaCaptionTabs = (props: {
     selectedIndices,
     setSelectedIndices,
     children,
+    tab,
+    setTab,
   } = props;
-
-  const [tab, setTab] = useState<string>("translation");
 
   if (!caption) return null;
 

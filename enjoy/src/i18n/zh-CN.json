@@ -744,7 +744,7 @@
   "recorderConfig": "录音设置",
   "recorderConfigSaved": "录音设置已保存",
   "recorderConfigDescription": "调整录音高级设置",
-  "lookupOnMouseOver": "鼠标悬停查询单词",
+  "lookupOnMouseOver": "鼠标点击查询单词",
   "selectDictFile": "选择字典文件 (扩展名为 .mdx 和 .mdd 的文件)",
   "dictFiles": "字典文件",
   "dictFileRequired": "未找到字典文件 (扩展名为 .mdx 的文件是必须的) ",
@@ -771,5 +771,14 @@
   "removeDictTitle": "你确定要删除词典吗？",
   "removeDictDescription": "此操作将会从本地删除词典文件，下次安装需要重新下载",
   "downloadingDict": "正在下载",
-  "removeDefault": "不再设置为默认"
+  "removeDefault": "不再设置为默认",
+  "selectAdaptionDictTitle": "选择预先适配的词典文件夹",
+  "selectMdictFileOrDirTitle": "选择词典文件 (.mdx 和可选的 .mdd 文件) or 文件夹",
+  "dictImportSlowTip": "词典文件较大时可能需要的时间比较长",
+  "importAdaptionDict": "导入已经适配好的词典",
+  "adaptionDictTip": "已经适配好的词典可用性较好。",
+  "howToDownload": "如何下载？",
+  "selectDir": "选择文件夹",
+  "importMdictFile": "导入原词典文件",
+  "mdictFileTip": "直接导入 .mdx .mdd 格式的文件 (.mdx 文件是必须的，.mdd 文件是可选的且可以有多个)，不过样式和可用性可能存在问题。"
 }

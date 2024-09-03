@@ -5,6 +5,7 @@ import { ChevronLeftIcon, ExternalLinkIcon } from "lucide-react";
 import { Button } from "@renderer/components/ui";
 import uniq from "lodash/uniq";
 import Mark from "mark.js";
+import { Vocabulary } from "@/renderer/components";
 
 export const StoryViewer = (props: {
   story: Partial<StoryType> & Partial<CreateStoryParamsType>;
@@ -112,11 +113,14 @@ export const StoryViewer = (props: {
                       key={`paragraph-${i}-sentence-${j}`}
                     >
                       {sentence.terms.map((term) => (
-                        <span key={term.id} className="">
+                        <>
                           {term.pre}
-                          {term.text}
+                          <Vocabulary
+                            word={term.text}
+                            context={sentence.text}
+                          />
                           {term.post}
-                        </span>
+                        </>
                       ))}
                     </span>
                   );

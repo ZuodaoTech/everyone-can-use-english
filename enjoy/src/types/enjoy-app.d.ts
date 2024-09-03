@@ -161,11 +161,10 @@ type EnjoyAppType = {
   };
   dict: {
     getDicts: () => Promise<Dict[]>;
-    download: (dict: Dict) => Promise<void>;
-    decompress: (dict: Dict) => Promise<void>;
     remove: (dict: Dict) => Promise<void>;
     getResource: (key: string, dict: Dict) => Promise<string | null>;
     lookup: (word: string, dict: Dict) => Promise<string | null>;
+    import: (path: string) => Promise<void>;
   };
   audios: {
     findAll: (params: any) => Promise<AudioType[]>;

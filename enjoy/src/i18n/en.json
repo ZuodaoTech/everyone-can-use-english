@@ -744,7 +744,7 @@
   "recorderConfig": "Recorder config",
   "recorderConfigSaved": "Recorder config saved",
   "recorderConfigDescription": "Advanced settings for recorder",
-  "lookupOnMouseOver": "Lookup On MouseOver",
+  "lookupOnMouseOver": "Lookup On Click",
   "selectDictFile": "Select Dict Files (extension with .mdx and .mdd files)",
   "dictFiles": "Dict Files",
   "dictFileRequired": "Dict file (the extension is mdx) not found.",
@@ -771,5 +771,14 @@
   "removeDictTitle": "Are you sure you want to delete this dictionary? ",
   "removeDictDescription": "It will delete the dictionary file from your local computer and you will have to download it again next time.",
   "downloadingDict": "Downloading",
-  "removeDefault": "No longer as Default"
+  "removeDefault": "No longer as Default",
+  "selectAdaptionDictTitle": "Select adapted dictionary folder",
+  "selectMdictFileOrDirTitle": "Select dict files (.mdx and optional .mdd) or folder",
+  "dictImportSlowTip": "It may take longer if the dictionary file is large.",
+  "importAdaptionDict": "Import the adapted dictionary",
+  "adaptionDictTip": "The adapted dictionaries have better usability.",
+  "howToDownload": "How to download?",
+  "selectDir": "Select Folder",
+  "importMdictFile": "Import the original dictionary file",
+  "mdictFileTip": "Directly import .mdx .mdd format files (.mdx files are required, .mdd files are optional and can have multiple), but there may be problems with style and usability."
 }

@@ -281,13 +281,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   },
   dict: {
     getDicts: () => ipcRenderer.invoke("dict-list"),
-    download: (dict: Dict) => ipcRenderer.invoke("dict-download", dict),
-    decompress: (dict: Dict) => ipcRenderer.invoke("dict-decompress", dict),
     remove: (dict: Dict) => ipcRenderer.invoke("dict-remove", dict),
     getResource: (key: string, dict: Dict) =>
       ipcRenderer.invoke("dict-read-file", key, dict),
     lookup: (word: string, dict: Dict) =>
       ipcRenderer.invoke("dict-lookup", word, dict),
+    import: (path: string) => ipcRenderer.invoke("dict-import", path),
   },
   audios: {
     findAll: (params: {

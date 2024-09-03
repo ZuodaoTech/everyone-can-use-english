@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import {
   AppSettingsProviderContext,
   MediaPlayerProviderContext,
@@ -51,6 +51,7 @@ export const MediaCaption = () => {
   const [copied, setCopied] = useState<boolean>(false);
 
   const [caption, setCaption] = useState<TimelineEntry | null>(null);
+  const [tab, setTab] = useState<string>("translation");
 
   const toggleMultiSelect = (event: KeyboardEvent) => {
     setMultiSelecting(event.shiftKey && event.type === "keydown");
@@ -362,12 +363,15 @@ export const MediaCaption = () => {
     <div className="h-full flex justify-between space-x-4">
       <div className="flex-1 font-serif h-full border shadow-lg rounded-lg">
         <MediaCaptionTabs
+          tab={tab}
+          setTab={setTab}
           caption={caption}
           currentSegmentIndex={currentSegmentIndex}
           selectedIndices={selectedIndices}
           setSelectedIndices={setSelectedIndices}
         >
           <Caption
+            tab={tab}
             caption={caption}
             language={transcription.language}
             selectedIndices={selectedIndices}
@@ -481,6 +485,7 @@ export const MediaCaption = () => {
 
 export const Caption = (props: {
   caption: TimelineEntry;
+  tab: string;
   language?: string;
   selectedIndices?: number[];
   currentSegmentIndex: number;
@@ -544,7 +549,7 @@ export const Caption = (props: {
             }`}
             onClick={() => onClick && onClick(index)}
           >
-            <Vocabulary word={word} context={caption.text} />
+            {word}
           </div>
 
           {displayIpa && (

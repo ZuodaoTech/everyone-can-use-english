@@ -3,6 +3,7 @@ import { AppSettingsProviderContext } from "@renderer/context";
 import {
   PronunciationAssessmentScoreDetail,
   WavesurferPlayer,
+  Sentence,
 } from "@renderer/components";
 
 export const PostRecording = (props: {
@@ -63,7 +64,7 @@ export const PostRecording = (props: {
       {recording.referenceText && (
         <div className="my-2 bg-muted px-4 py-2 rounded">
           <div className="text-muted-foreground text-center font-serif select-text">
-            {recording.referenceText}
+            <Sentence sentence={recording.referenceText} />
           </div>
         </div>
       )}

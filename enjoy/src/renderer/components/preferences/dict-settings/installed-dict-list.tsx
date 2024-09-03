@@ -19,14 +19,13 @@ import {
 import { t } from "i18next";
 
 export const InstalledDictList = function () {
-  const { installedDicts, downloadingDicts, reload } =
-    useContext(DictProviderContext);
+  const { installedDicts, reload } = useContext(DictProviderContext);
 
   useEffect(() => {
     reload();
   }, []);
 
-  if (installedDicts.length === 0 && downloadingDicts.length === 0) {
+  if (installedDicts.length === 0) {
     return (
       <div className="text-sm text-muted-foreground">{t("dictEmpty")}</div>
     );
@@ -119,6 +118,7 @@ const InstalledDictItem = function ({ dict }: { dict: Dict }) {
                 <AlertDialogAction asChild>
                   <Button
                     size="sm"
+                    variant="secondary"
                     className="text-destructive mr-2"
                     onClick={handleRemove}
                   >
