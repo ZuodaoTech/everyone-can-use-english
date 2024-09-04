@@ -317,6 +317,7 @@ type EnjoyAppType = {
     ) => Promise<string>;
   };
   decompress: {
+    onComplete: (callback: (event, task: DecompressTask) => void) => void;
     onUpdate: (callback: (event, tasks: DecompressTask[]) => void) => void;
     dashboard: () => Promise<DecompressTask[]>;
     removeAllListeners: () => void;

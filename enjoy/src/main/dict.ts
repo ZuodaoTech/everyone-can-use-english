@@ -7,6 +7,7 @@ import { DICTS } from "@/constants/dicts";
 import sqlite3, { Database } from "sqlite3";
 import settings from "./settings";
 import { hashFile } from "@/main/utils";
+import decompresser from "./decompresser";
 
 const logger = log.scope("dict");
 const sqlite = sqlite3.verbose();
@@ -23,17 +24,10 @@ export class DictHandler {
     return _path;
   }
 
-  async import(dir: string) {
-    const files = await fs.readdir(dir);
+  async import(_path: string) {
+    const hash = await hashFile(_path, { algo: "md5" });
+    const dict = DICTS.find((dict) => dict.hash === hash);
 
-    const sqlFileName = files.find((file) => file.match(/\.sqlite$/));
-    if (!sqlFileName) {
-      throw new Error("SQLite file not found");
-    }
-
-    const sqlFilePath = path.join(dir, sqlFileName);
-    const hash = await hashFile(sqlFilePath, { algo: "md5" });
-    const dict = DICTS.find((dict) => dict.sqlFileHash === hash);
     if (!dict) {
       throw new Error("SQLite file not match with any perset dictionary");
     }
@@ -42,8 +36,12 @@ export class DictHandler {
       throw new Error("Current dict is already installed");
     }
 
-    await fs.copy(dir, path.join(this.dictsPath, dict.name), {
-      recursive: true,
+    decompresser.depress({
+      id: `dict-${dict.name}`,
+      type: "dict",
+      title: dict.title,
+      filePath: _path,
+      destPath: path.join(this.dictsPath, dict.name),
     });
   }
 

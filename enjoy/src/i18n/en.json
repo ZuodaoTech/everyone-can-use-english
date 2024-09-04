@@ -772,13 +772,14 @@
   "removeDictDescription": "It will delete the dictionary file from your local computer and you will have to download it again next time.",
   "downloadingDict": "Downloading",
   "removeDefault": "No longer as Default",
-  "selectAdaptionDictTitle": "Select adapted dictionary folder",
+  "selectAdaptionDictTitle": "Select adapted dictionary",
   "selectMdictFileOrDirTitle": "Select dict files (.mdx and optional .mdd) or folder",
-  "dictImportSlowTip": "It may take longer if the dictionary file is large.",
+  "dictImportSlowTip": "Checking...(It may take longer if the dictionary file is large.)",
   "importAdaptionDict": "Import the adapted dictionary",
   "adaptionDictTip": "The adapted dictionaries have better usability.",
   "howToDownload": "How to download?",
   "selectDir": "Select Folder",
+  "selectFile": "Select File",
   "importMdictFile": "Import the original dictionary file",
   "mdictFileTip": "Directly import .mdx .mdd format files (.mdx files are required, .mdd files are optional and can have multiple), but there may be problems with style and usability."
 }

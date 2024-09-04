@@ -17,15 +17,34 @@ import {
   AlertDialogAction,
 } from "@renderer/components/ui";
 import { t } from "i18next";
+import { LoaderIcon } from "lucide-react";
 
 export const InstalledDictList = function () {
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { installedDicts, reload } = useContext(DictProviderContext);
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     reload();
+
+    EnjoyApp.decompress.dashboard().then((_tasks) => {
+      setTasks(_tasks.filter((_task) => _task.type === "dict"));
+    });
+
+    EnjoyApp.decompress.onComplete((_, task) => {
+      if (task.type === "dict") reload();
+    });
+
+    EnjoyApp.decompress.onUpdate((_, _tasks) => {
+      setTasks(_tasks.filter((_task) => _task.type === "dict"));
+    });
+
+    return () => {
+      EnjoyApp.decompress.removeAllListeners();
+    };
   }, []);
 
-  if (installedDicts.length === 0) {
+  if (installedDicts.length === 0 && tasks.length === 0) {
     return (
       <div className="text-sm text-muted-foreground">{t("dictEmpty")}</div>
     );
@@ -33,10 +52,30 @@ export const InstalledDictList = function () {
 
   return (
     <>
+      {tasks.map((task) => (
+        <DecompressDictItem key={task.id} task={task} />
+      ))}
+
       {installedDicts.map((item) => (
         <InstalledDictItem key={item.name} dict={item} />
       ))}
     </>
+  );
+};
+
+const DecompressDictItem = function ({ task }: { task: DecompressTask }) {
+  return (
+    <div key={task.id} className="flex justify-between items-center group">
+      <div className="flex items-center text-sm text-left h-8 hover:opacity-80">
+        <span className="mr-2">{task.title}</span>
+      </div>
+
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <span>{t("decompressing")}</span>
+        <span>{task.progress || 0}%</span>
+        <LoaderIcon className="w-4 h-4 text-muted-foreground animate-spin" />
+      </div>
+    </div>
   );
 };
 
@@ -89,7 +128,10 @@ const InstalledDictItem = function ({ dict }: { dict: Dict }) {
   function renderActions() {
     if (removing) {
       return (
-        <span className="text-sm text-muted-foreground">{t("removing")}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">{t("removing")}</span>
+          <LoaderIcon className="w-4 h-4 text-muted-foreground animate-spin" />
+        </div>
       );
     }
 

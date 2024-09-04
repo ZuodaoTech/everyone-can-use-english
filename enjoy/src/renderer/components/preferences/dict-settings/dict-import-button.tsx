@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   AppSettingsProviderContext,
   DictProviderContext,
@@ -20,7 +20,6 @@ export const DictImportButton = () => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [tipVisible, setTipVisible] = useState(false);
 
   const handleOpen = (value: boolean) => {
     setOpen(value);
@@ -29,17 +28,12 @@ export const DictImportButton = () => {
   const handleAdaptationDictImport = async () => {
     const pathes = await EnjoyApp.dialog.showOpenDialog({
       title: t("selectAdaptionDictTitle"),
-      properties: ["openDirectory"],
+      properties: ["openFile"],
+      filters: [{ name: "zip", extensions: [".zip"] }],
     });
 
     if (!pathes[0]) return;
-
     setLoading(true);
-    setTimeout(() => {
-      if (loading) {
-        setTipVisible(true);
-      }
-    }, 10000);
 
     try {
       await EnjoyApp.dict.import(pathes[0]);
@@ -49,7 +43,6 @@ export const DictImportButton = () => {
     }
 
     setLoading(false);
-    setTipVisible(false);
     reload();
   };
 
@@ -75,11 +68,9 @@ export const DictImportButton = () => {
             <div className="px-4 py-4 flex justify-center items-center">
               <LoaderIcon className="text-muted-foreground animate-spin" />
             </div>
-            {tipVisible && (
-              <div className="text-xs text-center text-muted-foreground mb-8">
-                {t("dictImportSlowTip")}
-              </div>
-            )}
+            <div className="text-xs text-center text-muted-foreground mb-8">
+              {t("dictImportSlowTip")}
+            </div>
           </div>
         ) : (
           <div>
@@ -102,7 +93,7 @@ export const DictImportButton = () => {
               </div>
 
               <Button size="sm" onClick={handleAdaptationDictImport}>
-                {t("selectDir")}
+                {t("selectFile")}
               </Button>
             </div>
 
