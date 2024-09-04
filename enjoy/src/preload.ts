@@ -234,23 +234,11 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     setDefaultHotkeys: (records: Record<string, string>) => {
       return ipcRenderer.invoke("settings-set-default-hotkeys", records);
     },
-    getDictSettings: () => {
-      return ipcRenderer.invoke("settings-get-dict");
-    },
-    setDictSettings: (dict: DictSettingType) => {
-      return ipcRenderer.invoke("settings-set-dicts", dict);
-    },
     getApiUrl: () => {
       return ipcRenderer.invoke("settings-get-api-url");
     },
     setApiUrl: (url: string) => {
       return ipcRenderer.invoke("settings-set-api-url", url);
-    },
-    getVocabularyConfig: () => {
-      return ipcRenderer.invoke("settings-get-vocabulary-config");
-    },
-    setVocabularyConfig: (records: Record<string, string>) => {
-      return ipcRenderer.invoke("settings-set-vocabulary-config", records);
     },
   },
   userSettings: {

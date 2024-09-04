@@ -197,14 +197,6 @@ export default {
     ipcMain.handle("settings-set-api-url", (_event, url) => {
       return settings.setSync("apiUrl", url);
     });
-
-    ipcMain.handle("settings-get-vocabulary-config", (_event) => {
-      return settings.getSync("vocabularyConfig");
-    });
-
-    ipcMain.handle("settings-set-vocabulary-config", (_event, records) => {
-      return settings.setSync("vocabularyConfig", records);
-    });
   },
   cachePath,
   libraryPath,

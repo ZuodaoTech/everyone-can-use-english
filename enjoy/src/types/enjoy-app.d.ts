@@ -136,12 +136,8 @@ type EnjoyAppType = {
     switchLanguage: (language: string) => Promise<void>;
     getDefaultHotkeys: () => Promise<Record<string, string> | undefined>;
     setDefaultHotkeys: (records: Record<string, string>) => Promise<void>;
-    getDictSettings: () => Promise<DictSettingType>;
-    setDictSettings: (dict: DictSettingType) => Promise<void>;
     getApiUrl: () => Promise<string>;
     setApiUrl: (url: string) => Promise<void>;
-    getVocabularyConfig: () => Promise<VocabularyConfigType | undefined>;
-    setVocabularyConfig: (records: VocabularyConfigType) => Promise<void>;
   };
   userSettings: {
     get: (key: string) => Promise<any>;

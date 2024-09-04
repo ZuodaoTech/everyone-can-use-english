@@ -98,7 +98,7 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const fetchSettings = async () => {
-    return EnjoyApp.settings.getDictSettings().then((res) => {
+    return EnjoyApp.userSettings.get("dicts").then((res) => {
       res && setSettings(res);
     });
   };
@@ -119,8 +119,8 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   const setDefault = async (dict: Dict | null) => {
     const _settings = { ...settings, default: dict?.name ?? "" };
 
-    EnjoyApp.settings
-      .setDictSettings(_settings)
+    EnjoyApp.userSettings
+      .set("dicts", _settings)
       .then(() => setSettings(_settings));
   };
 
@@ -129,8 +129,8 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
       const removing = [...(settings.removing ?? []), dict.name];
       const _settings = { ...settings, removing };
 
-      EnjoyApp.settings
-        .setDictSettings(_settings)
+      EnjoyApp.userSettings
+        .set("dicts", _settings)
         .then(() => setSettings(_settings));
     }
   };
@@ -140,8 +140,8 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
       settings.removing?.filter((name) => name !== dict.name) ?? [];
     const _settings = { ...settings, removing };
 
-    EnjoyApp.settings
-      .setDictSettings(_settings)
+    EnjoyApp.userSettings
+      .set("dicts", _settings)
       .then(() => setSettings(_settings));
   };
 
