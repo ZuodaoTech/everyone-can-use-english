@@ -83,9 +83,13 @@ const DiskUsage = () => {
   const [usage, setUsage] = useState<DiskUsageType>([]);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
-  const openPath = async (path: string) => {
-    if (path) {
-      await EnjoyApp.shell.openPath(path);
+  const openPath = async (filePath: string) => {
+    console.log(filePath);
+
+    if (filePath?.match(/.+\.json$/)) {
+      await EnjoyApp.shell.openPath(filePath.split("/").slice(0, -1).join("/"));
+    } else if (filePath) {
+      await EnjoyApp.shell.openPath(filePath);
     }
   };
 

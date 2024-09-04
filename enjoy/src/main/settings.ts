@@ -174,22 +174,6 @@ export default {
       return settings.setSync("engine.gpt", engine);
     });
 
-    ipcMain.handle("settings-get-default-hotkeys", (_event) => {
-      return settings.getSync("defaultHotkeys");
-    });
-
-    ipcMain.handle("settings-set-default-hotkeys", (_event, records) => {
-      return settings.setSync("defaultHotkeys", records);
-    });
-
-    ipcMain.handle("settings-get-dict", (_event) => {
-      return settings.getSync("dicts");
-    });
-
-    ipcMain.handle("settings-set-dicts", (_event, dict) => {
-      return settings.setSync("dicts", dict);
-    });
-
     ipcMain.handle("settings-get-api-url", (_event) => {
       return settings.getSync("apiUrl");
     });
