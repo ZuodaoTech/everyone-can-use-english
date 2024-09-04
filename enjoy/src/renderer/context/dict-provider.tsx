@@ -1,5 +1,8 @@
 import { createContext, useState, useEffect, useContext, useMemo } from "react";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  DbProviderContext,
+} from "@renderer/context";
 import { t } from "i18next";
 
 type DictProviderState = {
@@ -48,6 +51,7 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   });
   const [currentDictValue, setCurrentDictValue] = useState<string>("");
   const [currentDict, setCurrentDict] = useState<Dict | null>();
+  const { state: dbState } = useContext(DbProviderContext);
 
   const availableDicts = useMemo(
     () =>
@@ -93,9 +97,11 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   }, [availableDicts, settings]);
 
   useEffect(() => {
+    if (dbState !== "connected") return;
+
     fetchSettings();
     fetchDicts();
-  }, []);
+  }, [dbState]);
 
   const fetchSettings = async () => {
     return EnjoyApp.userSettings.get("dicts").then((res) => {

@@ -10,7 +10,7 @@ import {
   AppSettingsProviderContext,
   DbProviderContext,
 } from "@renderer/context";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 
 function isShortcutValid(shortcut: string) {
   const modifiers = ["ctrl", "alt", "shift", "meta"];
@@ -236,7 +236,9 @@ export const HotKeysSettingsProvider = ({
         changeHotkey,
       }}
     >
-      {_.isEmpty(currentHotkeys) ? null : (
+      {isEmpty(currentHotkeys) ? (
+        children
+      ) : (
         <HotKeysSettingsSystemSettings
           {...{
             currentHotkeys,
