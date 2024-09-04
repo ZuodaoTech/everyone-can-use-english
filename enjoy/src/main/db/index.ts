@@ -6,6 +6,10 @@ import {
   Audio,
   Recording,
   CacheObject,
+  Chat,
+  ChatAgent,
+  ChatMember,
+  ChatMessage,
   Conversation,
   Message,
   Note,
@@ -14,14 +18,15 @@ import {
   Speech,
   Transcription,
   Video,
-  Chat,
-  ChatAgent,
-  ChatMember,
-  ChatMessage,
+  UserSetting,
 } from "./models";
 import {
   audiosHandler,
   cacheObjectsHandler,
+  chatAgentsHandler,
+  chatMembersHandler,
+  chatMessagesHandler,
+  chatsHandler,
   conversationsHandler,
   messagesHandler,
   notesHandler,
@@ -31,10 +36,7 @@ import {
   speechesHandler,
   transcriptionsHandler,
   videosHandler,
-  chatAgentsHandler,
-  chatMembersHandler,
-  chatMessagesHandler,
-  chatsHandler,
+  userSettingsHandler,
 } from "./handlers";
 import os from "os";
 import path from "path";
@@ -59,6 +61,10 @@ db.connect = async () => {
     models: [
       Audio,
       CacheObject,
+      Chat,
+      ChatAgent,
+      ChatMember,
+      ChatMessage,
       Conversation,
       Message,
       Note,
@@ -67,11 +73,8 @@ db.connect = async () => {
       Segment,
       Speech,
       Transcription,
+      UserSetting,
       Video,
-      Chat,
-      ChatAgent,
-      ChatMember,
-      ChatMessage,
     ],
   });
 
@@ -149,6 +152,10 @@ db.connect = async () => {
   // register handlers
   audiosHandler.register();
   cacheObjectsHandler.register();
+  chatAgentsHandler.register();
+  chatMembersHandler.register();
+  chatMessagesHandler.register();
+  chatsHandler.register();
   conversationsHandler.register();
   messagesHandler.register();
   notesHandler.register();
@@ -157,11 +164,8 @@ db.connect = async () => {
   segmentsHandler.register();
   speechesHandler.register();
   transcriptionsHandler.register();
+  userSettingsHandler.register();
   videosHandler.register();
-  chatAgentsHandler.register();
-  chatMembersHandler.register();
-  chatMessagesHandler.register();
-  chatsHandler.register();
 };
 
 db.registerIpcHandlers = () => {

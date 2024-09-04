@@ -11,5 +11,6 @@ export * from "./pronunciation-assessment";
 export * from "./recording";
 export * from "./segment";
 export * from "./speech";
+export * from "./user-setting";
 export * from "./transcription";
 export * from "./video";
