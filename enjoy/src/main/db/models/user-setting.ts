@@ -59,16 +59,23 @@ export class UserSetting extends Model<UserSetting> {
   static async migrateFromSettings(): Promise<void> {
     // hotkeys
     const hotkeys = await UserSetting.get(UserSettingKey.HOT_KEYS);
-    if (!hotkeys) {
-      const prevHotkeys = await settings.get("defaultHotkeys");
+    const prevHotkeys = await settings.get("defaultHotkeys");
+    if (prevHotkeys && !hotkeys) {
       UserSetting.set("hotkeys", prevHotkeys as object);
     }
 
     // GPT Engine
     const gptEngine = await UserSetting.get(UserSettingKey.GPT_ENGINE);
-    if (!gptEngine) {
-      const prevGptEngine = await settings.get("engine.gpt");
+    const prevGptEngine = await settings.get("engine.gpt");
+    if (prevGptEngine && !gptEngine) {
       UserSetting.set("gptEngine", prevGptEngine as object);
+    }
+
+    // OpenAI API Key
+    const openai = await UserSetting.get(UserSettingKey.OPENAI);
+    const prevOpenai = await settings.get("openai");
+    if (prevOpenai && !openai) {
+      UserSetting.set("openai", prevOpenai as object);
     }
   }
 }

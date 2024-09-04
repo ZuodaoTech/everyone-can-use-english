@@ -64,7 +64,7 @@ export const AISettingsProvider = ({
   };
 
   const fetchSettings = async () => {
-    const _openai = await EnjoyApp.settings.getLlm("openai");
+    const _openai = await EnjoyApp.userSettings.get(UserSettingKey.OPENAI);
     if (_openai) {
       setOpenai(Object.assign({ name: "openai" }, _openai));
     }
@@ -97,20 +97,9 @@ export const AISettingsProvider = ({
     }
   };
 
-  const handleSetLlm = async (
-    name: SupportedLlmProviderType,
-    config: LlmProviderType
-  ) => {
-    await EnjoyApp.settings.setLlm(name, config);
-    const _config = await EnjoyApp.settings.getLlm(name);
-
-    switch (name) {
-      case "openai":
-        setOpenai(Object.assign({ name: "openai" }, _config));
-        break;
-      default:
-        throw new Error("Unsupported LLM provider");
-    }
+  const handleSetOpenai = async (config: LlmProviderType) => {
+    await EnjoyApp.userSettings.set(UserSettingKey.OPENAI, config);
+    setOpenai(Object.assign({ name: "openai" }, config));
   };
 
   return (
@@ -134,7 +123,7 @@ export const AISettingsProvider = ({
                 baseUrl: `${apiUrl}/api/ai`,
               }),
         openai,
-        setOpenai: (config: LlmProviderType) => handleSetLlm("openai", config),
+        setOpenai: (config: LlmProviderType) => handleSetOpenai(config),
         whisperConfig,
         refreshWhisperConfig,
         setWhisperModel,

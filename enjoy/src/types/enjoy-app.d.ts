@@ -123,11 +123,6 @@ type EnjoyAppType = {
     getUser: () => Promise<UserType>;
     setUser: (user: UserType) => Promise<void>;
     getUserDataPath: () => Promise<string>;
-    getLlm: (provider: SupportedLlmProviderType) => Promise<LlmProviderType>;
-    setLlm: (
-      provider: SupportedLlmProviderType,
-      LlmProviderType
-    ) => Promise<void>;
     getLanguage: () => Promise<string>;
     switchLanguage: (language: string) => Promise<void>;
     getApiUrl: () => Promise<string>;

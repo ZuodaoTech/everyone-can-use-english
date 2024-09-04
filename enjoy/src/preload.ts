@@ -204,12 +204,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     getUserDataPath: () => {
       return ipcRenderer.invoke("settings-get-user-data-path");
     },
-    getLlm: (provider: string) => {
-      return ipcRenderer.invoke("settings-get-llm", provider);
-    },
-    setLlm: (provider: string, config: LlmProviderType) => {
-      return ipcRenderer.invoke("settings-set-llm", provider, config);
-    },
     getLanguage: (language: string) => {
       return ipcRenderer.invoke("settings-get-language", language);
     },
