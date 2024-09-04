@@ -27,9 +27,10 @@ type DownloadStateType = {
 
 type DecompressTask = {
   id: string;
+  type: string;
+  title: string;
   filePath: string;
   destPath: string;
-  hash: string;
   progress?: string;
 };
 

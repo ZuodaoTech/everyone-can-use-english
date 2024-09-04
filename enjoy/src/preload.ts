@@ -524,12 +524,17 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   decompress: {
+    onComplete: (
+      callback: (event: IpcRendererEvent, task: DecompressTask) => void
+    ) => ipcRenderer.on("decompress-task-done", callback),
     onUpdate: (
       callback: (event: IpcRendererEvent, tasks: DecompressTask[]) => void
     ) => ipcRenderer.on("decompress-tasks-update", callback),
     dashboard: () => ipcRenderer.invoke("decompress-tasks"),
-    removeAllListeners: () =>
-      ipcRenderer.removeAllListeners("decompress-tasks-update"),
+    removeAllListeners: () => {
+      ipcRenderer.removeAllListeners("decompress-tasks-update");
+      ipcRenderer.removeAllListeners("decompress-tasks-done");
+    },
   },
   download: {
     onState: (
