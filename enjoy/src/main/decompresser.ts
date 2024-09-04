@@ -23,8 +23,8 @@ class Decompresser {
 
     await directory.extract({ path: task.destPath + ".depressing" });
     await fs.rename(task.destPath + ".depressing", task.destPath);
-    await fs.remove(task.filePath);
 
+    this.done(task);
     this.remove(task);
   }
 
@@ -46,7 +46,7 @@ class Decompresser {
     if (currentTask) {
       setTimeout(() => {
         this.onProgress(task, total);
-      }, 5000);
+      }, 1000);
     }
   }
 
@@ -71,6 +71,10 @@ class Decompresser {
 
   notify() {
     mainWin.win.webContents.send("decompress-tasks-update", this.tasks);
+  }
+
+  done(task: DecompressTask) {
+    mainWin.win.webContents.send("decompress-task-done", task);
   }
 
   registerIpcHandlers() {
