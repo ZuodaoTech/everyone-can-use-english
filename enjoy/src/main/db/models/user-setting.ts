@@ -63,5 +63,12 @@ export class UserSetting extends Model<UserSetting> {
       const prevHotkeys = await settings.get("defaultHotkeys");
       UserSetting.set("hotkeys", prevHotkeys as object);
     }
+
+    // GPT Engine
+    const gptEngine = await UserSetting.get("gptEngine");
+    if (!gptEngine) {
+      const prevGptEngine = await settings.get("engine.gpt");
+      UserSetting.set("gptEngine", prevGptEngine as object);
+    }
   }
 }

@@ -69,21 +69,9 @@ export const AISettingsProvider = ({
       setOpenai(Object.assign({ name: "openai" }, _openai));
     }
 
-    const _defaultEngine = await EnjoyApp.settings.getDefaultEngine();
-    const _gptEngine = await EnjoyApp.settings.getGptEngine();
+    const _gptEngine = await EnjoyApp.userSettings.get("gptEngine");
     if (_gptEngine) {
       setGptEngine(_gptEngine);
-    } else if (_defaultEngine) {
-      // Migrate default engine to gpt engine
-      const engine = {
-        name: _defaultEngine,
-        models: {
-          default: "gpt-4o",
-        },
-      };
-      EnjoyApp.settings.setGptEngine(engine).then(() => {
-        setGptEngine(engine);
-      });
     } else if (_openai?.key) {
       const engine = {
         name: "openai",
@@ -91,7 +79,7 @@ export const AISettingsProvider = ({
           default: "gpt-4o",
         },
       };
-      EnjoyApp.settings.setGptEngine(engine).then(() => {
+      EnjoyApp.userSettings.set("gptEngine", engine).then(() => {
         setGptEngine(engine);
       });
     } else {
@@ -101,7 +89,7 @@ export const AISettingsProvider = ({
           default: "gpt-4o",
         },
       };
-      EnjoyApp.settings.setGptEngine(engine).then(() => {
+      EnjoyApp.userSettings.set("gptEngine", engine).then(() => {
         setGptEngine(engine);
       });
     }
@@ -127,7 +115,7 @@ export const AISettingsProvider = ({
     <AISettingsProviderContext.Provider
       value={{
         setGptEngine: (engine: GptEngineSettingType) => {
-          EnjoyApp.settings.setGptEngine(engine).then(() => {
+          EnjoyApp.userSettings.set("gptEngine", engine).then(() => {
             setGptEngine(engine);
           });
         },

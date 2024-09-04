@@ -204,18 +204,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     getUserDataPath: () => {
       return ipcRenderer.invoke("settings-get-user-data-path");
     },
-    getDefaultEngine: () => {
-      return ipcRenderer.invoke("settings-get-default-engine");
-    },
-    setDefaultEngine: (engine: "enjoyai" | "openai") => {
-      return ipcRenderer.invoke("settings-set-default-engine", engine);
-    },
-    getGptEngine: () => {
-      return ipcRenderer.invoke("settings-get-gpt-engine");
-    },
-    setGptEngine: (engine: GptEngineSettingType) => {
-      return ipcRenderer.invoke("settings-set-gpt-engine", engine);
-    },
     getLlm: (provider: string) => {
       return ipcRenderer.invoke("settings-get-llm", provider);
     },
