@@ -10,6 +10,7 @@ import {
 import log from "@main/logger";
 import settings from "@main/settings";
 import * as i18n from "i18next";
+import { UserSettingKeyEnum } from "@/types/enums";
 
 const logger = log.scope("db/userSetting");
 
@@ -32,7 +33,7 @@ export class UserSetting extends Model<UserSetting> {
   @Column(DataType.TEXT)
   value: string;
 
-  static async get(key: UserSettingKey): Promise<UserSetting["value"] | null> {
+  static async get(key: UserSettingKeyEnum): Promise<UserSetting["value"] | null> {
     const setting = await UserSetting.findOne({ where: { key } });
     if (!setting) return null;
 
@@ -43,7 +44,7 @@ export class UserSetting extends Model<UserSetting> {
     }
   }
 
-  static async set(key: UserSettingKey, value: object | string): Promise<void> {
+  static async set(key: UserSettingKeyEnum, value: object | string): Promise<void> {
     const setting = await UserSetting.findOne({ where: { key } });
 
     if (typeof value === "object") {
@@ -57,62 +58,69 @@ export class UserSetting extends Model<UserSetting> {
     }
 
     // update i18n
-    if (key === UserSettingKey.LANGUAGE) {
+    if (key === UserSettingKeyEnum.LANGUAGE) {
       i18n.changeLanguage(value);
     }
   }
 
   static async migrateFromSettings(): Promise<void> {
     // hotkeys
-    const hotkeys = await UserSetting.get(UserSettingKey.HOT_KEYS);
+    const hotkeys = await UserSetting.get(UserSettingKeyEnum.HOTKEYS);
     const prevHotkeys = await settings.get("defaultHotkeys");
     if (prevHotkeys && !hotkeys) {
-      UserSetting.set(UserSettingKey.HOT_KEYS, prevHotkeys as object);
+      UserSetting.set(UserSettingKeyEnum.HOTKEYS, prevHotkeys as object);
     }
 
     // GPT Engine
-    const gptEngine = await UserSetting.get(UserSettingKey.GPT_ENGINE);
+    const gptEngine = await UserSetting.get(UserSettingKeyEnum.GPT_ENGINE);
     const prevGptEngine = await settings.get("engine.gpt");
     if (prevGptEngine && !gptEngine) {
-      UserSetting.set(UserSettingKey.GPT_ENGINE, prevGptEngine as object);
+      UserSetting.set(UserSettingKeyEnum.GPT_ENGINE, prevGptEngine as object);
     }
 
     // OpenAI API Key
-    const openai = await UserSetting.get(UserSettingKey.OPENAI);
+    const openai = await UserSetting.get(UserSettingKeyEnum.OPENAI);
     const prevOpenai = await settings.get("openai");
     if (prevOpenai && !openai) {
-      UserSetting.set(UserSettingKey.OPENAI, prevOpenai as object);
+      UserSetting.set(UserSettingKeyEnum.OPENAI, prevOpenai as object);
     }
 
     // Language
-    const language = await UserSetting.get(UserSettingKey.LANGUAGE);
+    const language = await UserSetting.get(UserSettingKeyEnum.LANGUAGE);
     const prevLanguage = await settings.get("language");
     if (prevLanguage && !language) {
-      UserSetting.set(UserSettingKey.LANGUAGE, prevLanguage as string);
+      UserSetting.set(UserSettingKeyEnum.LANGUAGE, prevLanguage as string);
     }
 
     // Native Language
     const nativeLanguage = await UserSetting.get(
-      UserSettingKey.NATIVE_LANGUAGE
+      UserSettingKeyEnum.NATIVE_LANGUAGE
     );
     const prevNativeLanguage = await settings.get("nativeLanguage");
     if (prevNativeLanguage && !nativeLanguage) {
       UserSetting.set(
-        UserSettingKey.NATIVE_LANGUAGE,
+        UserSettingKeyEnum.NATIVE_LANGUAGE,
         prevNativeLanguage as string
       );
     }
 
     // Learning Language
     const learningLanguage = await UserSetting.get(
-      UserSettingKey.LEARNING_LANGUAGE
+      UserSettingKeyEnum.LEARNING_LANGUAGE
     );
     const prevLearningLanguage = await settings.get("learningLanguage");
     if (prevLearningLanguage && !learningLanguage) {
       UserSetting.set(
-        UserSettingKey.LEARNING_LANGUAGE,
+        UserSettingKeyEnum.LEARNING_LANGUAGE,
         prevLearningLanguage as string
       );
+    }
+
+    // STT Engine
+    const sttEngine = await UserSetting.get(UserSettingKeyEnum.STT_ENGINE);
+    const prevSttEngine = await settings.get("whisper.service");
+    if (prevSttEngine && !sttEngine) {
+      UserSetting.set(UserSettingKeyEnum.STT_ENGINE, prevSttEngine as string);
     }
   }
 }

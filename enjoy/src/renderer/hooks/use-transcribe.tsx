@@ -18,6 +18,7 @@ import {
 import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
 import { parseText } from "media-captions";
+import { SttEngineOptionEnum } from "@/types/enums";
 
 // test a text string has any punctuations or not
 // some transcribed text may not have any punctuations
@@ -48,7 +49,7 @@ export const useTranscribe = () => {
       targetType?: string;
       originalText?: string;
       language: string;
-      service: WhisperConfigType["service"] | "upload";
+      service: SttEngineOptionEnum | "upload";
       isolate?: boolean;
       align?: boolean;
     }
@@ -100,15 +101,18 @@ export const useTranscribe = () => {
           text: originalText,
         };
       }
-    } else if (service === "local") {
+    } else if (service === SttEngineOptionEnum.LOCAL) {
       result = await transcribeByLocal(url, language);
-    } else if (service === "cloudflare") {
+    } else if (service === SttEngineOptionEnum.CLOUDFLARE) {
       result = await transcribeByCloudflareAi(blob);
-    } else if (service === "openai") {
+    } else if (service === SttEngineOptionEnum.OPENAI) {
       result = await transcribeByOpenAi(
         new File([blob], "audio.mp3", { type: "audio/mp3" })
       );
-    } else if (service === "azure") {
+    } else if (
+      service === SttEngineOptionEnum.AZURE ||
+      service === SttEngineOptionEnum.ENJOYAI
+    ) {
       result = await transcribeByAzureAi(
         new File([blob], "audio.wav", { type: "audio/wav" }),
         language,

@@ -21,11 +21,11 @@ import {
 } from "@renderer/context";
 import { useContext, useEffect, useState } from "react";
 import { InfoIcon, AlertCircleIcon } from "lucide-react";
+import { SttEngineOptionEnum } from "@/types/enums";
 
 export const WhisperSettings = () => {
-  const { whisperConfig, refreshWhisperConfig, setWhisperService } = useContext(
-    AISettingsProviderContext
-  );
+  const { sttEngine, whisperConfig, refreshWhisperConfig, setSttEngine } =
+    useContext(AISettingsProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [stderr, setStderr] = useState("");
 
@@ -58,39 +58,52 @@ export const WhisperSettings = () => {
       <div className="">
         <div className="flex items-center mb-2">
           <span>{t("sttAiService")}</span>
-          {stderr && <AlertCircleIcon className="ml-2 w-4 h-4 text-yellow-500" />}
+          {stderr && (
+            <AlertCircleIcon className="ml-2 w-4 h-4 text-yellow-500" />
+          )}
         </div>
         <div className="text-sm text-muted-foreground">
-          {whisperConfig?.service === "local" &&
+          {sttEngine === SttEngineOptionEnum.LOCAL &&
             t("localSpeechToTextDescription")}
-          {whisperConfig?.service === "azure" &&
+          {sttEngine === SttEngineOptionEnum.ENJOYAI &&
+            t("enjoyaiSpeechToTextDescription")}
+          {sttEngine === SttEngineOptionEnum.AZURE &&
             t("azureSpeechToTextDescription")}
-          {whisperConfig?.service === "cloudflare" &&
+          {sttEngine === SttEngineOptionEnum.CLOUDFLARE &&
             t("cloudflareSpeechToTextDescription")}
-          {whisperConfig?.service === "openai" &&
+          {sttEngine === SttEngineOptionEnum.OPENAI &&
             t("openaiSpeechToTextDescription")}
         </div>
       </div>
 
       <div className="flex items-center space-x-2">
         <Select
-          value={whisperConfig.service}
+          value={sttEngine}
           onValueChange={(value) => {
-            setWhisperService(value);
+            setSttEngine(value);
           }}
         >
           <SelectTrigger className="min-w-fit">
             <SelectValue placeholder="service"></SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="local">{t("local")}</SelectItem>
-            <SelectItem value="azure">{t("azureAi")}</SelectItem>
-            <SelectItem value="cloudflare">{t("cloudflareAi")}</SelectItem>
-            <SelectItem value="openai">OpenAI</SelectItem>
+            <SelectItem value={SttEngineOptionEnum.LOCAL}>
+              {t("local")}
+            </SelectItem>
+            <SelectItem value={SttEngineOptionEnum.ENJOYAI}>
+              {t("enjoyai")}
+            </SelectItem>
+            <SelectItem value={SttEngineOptionEnum.CLOUDFLARE}>
+              {t("cloudflareAi")}
+            </SelectItem>
+            <SelectItem value={SttEngineOptionEnum.AZURE}>
+              {t("azureAi")}
+            </SelectItem>
+            <SelectItem value={SttEngineOptionEnum.OPENAI}>OpenAI</SelectItem>
           </SelectContent>
         </Select>
 
-        {whisperConfig.service === "local" && (
+        {sttEngine === "local" && (
           <>
             <Button onClick={handleCheck} variant="secondary" size="sm">
               {t("check")}

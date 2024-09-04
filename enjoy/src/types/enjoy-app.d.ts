@@ -127,8 +127,8 @@ type EnjoyAppType = {
     setApiUrl: (url: string) => Promise<void>;
   };
   userSettings: {
-    get: (key: UserSettingKey) => Promise<any>;
-    set: (key: UserSettingKey, value: any) => Promise<void>;
+    get: (key: UserSettingKeyEnum) => Promise<any>;
+    set: (key: UserSettingKeyEnum, value: any) => Promise<void>;
   };
   fs: {
     ensureDir: (path: string) => Promise<boolean>;
@@ -277,9 +277,6 @@ type EnjoyAppType = {
     config: () => Promise<WhisperConfigType>;
     check: () => Promise<{ success: boolean; log: string }>;
     setModel: (model: string) => Promise<WhisperConfigType>;
-    setService: (
-      service: WhisperConfigType["service"]
-    ) => Promise<WhisperConfigType>;
     transcribe: (
       params: {
         file?: string;

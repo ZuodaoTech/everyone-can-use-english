@@ -3,7 +3,7 @@ import { UserSetting } from "@main/db/models";
 import db from "@main/db";
 
 class UserSettingsHandler {
-  private async get(event: IpcMainEvent, key: UserSettingKey) {
+  private async get(event: IpcMainEvent, key: UserSettingKeyEnum) {
     return UserSetting.get(key)
       .then((value) => {
         return value;
@@ -18,7 +18,7 @@ class UserSettingsHandler {
 
   private async set(
     event: IpcMainEvent,
-    key: UserSettingKey,
+    key: UserSettingKeyEnum,
     value: string | object
   ) {
     return UserSetting.set(key, value)
@@ -33,7 +33,7 @@ class UserSettingsHandler {
       });
   }
 
-  private async delete(event: IpcMainEvent, key: UserSettingKey) {
+  private async delete(event: IpcMainEvent, key: UserSettingKeyEnum) {
     return UserSetting.destroy({ where: { key } })
       .then(() => {
         return;

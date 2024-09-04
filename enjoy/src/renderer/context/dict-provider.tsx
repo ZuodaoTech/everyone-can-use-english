@@ -4,6 +4,7 @@ import {
   DbProviderContext,
 } from "@renderer/context";
 import { t } from "i18next";
+import { UserSettingKeyEnum } from "@/types/enums";
 
 type DictProviderState = {
   settings: DictSettingType;
@@ -104,7 +105,7 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   }, [dbState]);
 
   const fetchSettings = async () => {
-    return EnjoyApp.userSettings.get(UserSettingKey.DICTS).then((res) => {
+    return EnjoyApp.userSettings.get(UserSettingKeyEnum.DICTS).then((res) => {
       res && setSettings(res);
     });
   };
@@ -126,7 +127,7 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
     const _settings = { ...settings, default: dict?.name ?? "" };
 
     EnjoyApp.userSettings
-      .set(UserSettingKey.DICTS, _settings)
+      .set(UserSettingKeyEnum.DICTS, _settings)
       .then(() => setSettings(_settings));
   };
 
@@ -136,7 +137,7 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
       const _settings = { ...settings, removing };
 
       EnjoyApp.userSettings
-        .set(UserSettingKey.DICTS, _settings)
+        .set(UserSettingKeyEnum.DICTS, _settings)
         .then(() => setSettings(_settings));
     }
   };
@@ -147,7 +148,7 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
     const _settings = { ...settings, removing };
 
     EnjoyApp.userSettings
-      .set(UserSettingKey.DICTS, _settings)
+      .set(UserSettingKeyEnum.DICTS, _settings)
       .then(() => setSettings(_settings));
   };
 

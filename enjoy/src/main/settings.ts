@@ -48,17 +48,7 @@ const dbPath = () => {
 const whisperConfig = (): WhisperConfigType => {
   const model = settings.getSync("whisper.model") as string;
 
-  let service = settings.getSync(
-    "whisper.service"
-  ) as WhisperConfigType["service"];
-
-  if (!service) {
-    settings.setSync("whisper.service", "azure");
-    service = "azure";
-  }
-
   return {
-    service,
     availableModels: settings.getSync(
       "whisper.availableModels"
     ) as WhisperConfigType["availableModels"],

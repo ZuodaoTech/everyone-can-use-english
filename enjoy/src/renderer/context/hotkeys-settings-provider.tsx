@@ -11,6 +11,7 @@ import {
   DbProviderContext,
 } from "@renderer/context";
 import isEmpty from "lodash/isEmpty";
+import { UserSettingKeyEnum } from "@/types/enums";
 
 function isShortcutValid(shortcut: string) {
   const modifiers = ["ctrl", "alt", "shift", "meta"];
@@ -162,11 +163,13 @@ export const HotKeysSettingsProvider = ({
   }, [dbState]);
 
   const fetchSettings = async () => {
-    const _hotkeys = await EnjoyApp.userSettings.get(UserSettingKey.HOT_KEYS);
+    const _hotkeys = await EnjoyApp.userSettings.get(
+      UserSettingKeyEnum.HOTKEYS
+    );
     // During version iterations, there may be added or removed keys.
     const merged = mergeWithPreference(_hotkeys ?? {}, defaultKeyMap);
     await EnjoyApp.userSettings
-      .set(UserSettingKey.HOT_KEYS, merged)
+      .set(UserSettingKeyEnum.HOTKEYS, merged)
       .then(() => {
         setCurrentHotkeys(merged);
       });
@@ -209,7 +212,7 @@ export const HotKeysSettingsProvider = ({
       }
 
       await EnjoyApp.userSettings
-        .set(UserSettingKey.HOT_KEYS, newMap)
+        .set(UserSettingKeyEnum.HOTKEYS, newMap)
         .then(() => {
           setCurrentHotkeys(newMap);
         });

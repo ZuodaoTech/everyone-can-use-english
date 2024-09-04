@@ -10,19 +10,15 @@ import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@/constants";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
-  const { whisperConfig } = useContext(AISettingsProviderContext);
-  const { EnjoyApp, learningLanguage } = useContext(
-    AppSettingsProviderContext
-  );
+  const { sttEngine } = useContext(AISettingsProviderContext);
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [transcription, setTranscription] = useState<TranscriptionType>(null);
   const { transcribe, output } = useTranscribe();
   const [transcribingProgress, setTranscribingProgress] = useState<number>(0);
   const [transcribing, setTranscribing] = useState<boolean>(false);
   const [transcribingOutput, setTranscribingOutput] = useState<string>("");
-  const [service, setService] = useState<
-    WhisperConfigType["service"] | "upload"
-  >(whisperConfig.service);
+  const [service, setService] = useState<SttEngineOptionEnum | "upload">(sttEngine);
 
   const onTransactionUpdate = (event: CustomEvent) => {
     if (!transcription) return;
@@ -63,13 +59,13 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const generateTranscription = async (params?: {
     originalText?: string;
     language?: string;
-    service?: WhisperConfigType["service"] | "upload";
+    service?: SttEngineOptionEnum | "upload";
     isolate?: boolean;
   }) => {
     let {
       originalText,
       language = learningLanguage,
-      service = whisperConfig.service,
+      service = sttEngine,
       isolate = false,
     } = params || {};
     setService(service);

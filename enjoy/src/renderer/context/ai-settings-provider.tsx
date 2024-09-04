@@ -1,9 +1,14 @@
 import { createContext, useEffect, useState, useContext } from "react";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  DbProviderContext,
+} from "@renderer/context";
+import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/types/enums";
 
 type AISettingsProviderState = {
   setWhisperModel?: (name: string) => Promise<void>;
-  setWhisperService?: (name: string) => Promise<void>;
+  sttEngine?: SttEngineOptionEnum;
+  setSttEngine?: (name: string) => Promise<void>;
   whisperConfig?: WhisperConfigType;
   refreshWhisperConfig?: () => void;
   openai?: LlmProviderType;
@@ -30,13 +35,19 @@ export const AISettingsProvider = ({
   });
   const [openai, setOpenai] = useState<LlmProviderType>(null);
   const [whisperConfig, setWhisperConfig] = useState<WhisperConfigType>(null);
+  const [sttEngine, setSttEngine] = useState<SttEngineOptionEnum>(
+    "enjoyai" as SttEngineOptionEnum
+  );
   const { EnjoyApp, libraryPath, user, apiUrl } = useContext(
     AppSettingsProviderContext
   );
+  const { state: dbState } = useContext(DbProviderContext);
 
   useEffect(() => {
+    if (dbState !== "connected") return;
+
     fetchSettings();
-  }, []);
+  }, [dbState]);
 
   useEffect(() => {
     if (!libraryPath) return;
@@ -56,21 +67,26 @@ export const AISettingsProvider = ({
     });
   };
 
-  const setWhisperService = async (name: WhisperConfigType["service"]) => {
-    return EnjoyApp.whisper.setService(name).then((config) => {
-      if (!config) return;
-      setWhisperConfig(config);
-    });
+  const handleSetSttEngine = async (name: SttEngineOptionEnum) => {
+    setSttEngine(name);
+    return EnjoyApp.userSettings.set(UserSettingKeyEnum.STT_ENGINE, name);
   };
 
   const fetchSettings = async () => {
-    const _openai = await EnjoyApp.userSettings.get(UserSettingKey.OPENAI);
+    const _sttEngine = await EnjoyApp.userSettings.get(
+      "sttEngine" as UserSettingKeyEnum
+    );
+    if (_sttEngine) {
+      setSttEngine(sttEngine);
+    }
+
+    const _openai = await EnjoyApp.userSettings.get(UserSettingKeyEnum.OPENAI);
     if (_openai) {
       setOpenai(Object.assign({ name: "openai" }, _openai));
     }
 
     const _gptEngine = await EnjoyApp.userSettings.get(
-      UserSettingKey.GPT_ENGINE
+      UserSettingKeyEnum.GPT_ENGINE
     );
     if (_gptEngine) {
       setGptEngine(_gptEngine);
@@ -81,9 +97,11 @@ export const AISettingsProvider = ({
           default: "gpt-4o",
         },
       };
-      EnjoyApp.userSettings.set(UserSettingKey.GPT_ENGINE, engine).then(() => {
-        setGptEngine(engine);
-      });
+      EnjoyApp.userSettings
+        .set(UserSettingKeyEnum.GPT_ENGINE, engine)
+        .then(() => {
+          setGptEngine(engine);
+        });
     } else {
       const engine = {
         name: "enjoyai",
@@ -91,14 +109,16 @@ export const AISettingsProvider = ({
           default: "gpt-4o",
         },
       };
-      EnjoyApp.userSettings.set(UserSettingKey.GPT_ENGINE, engine).then(() => {
-        setGptEngine(engine);
-      });
+      EnjoyApp.userSettings
+        .set(UserSettingKeyEnum.GPT_ENGINE, engine)
+        .then(() => {
+          setGptEngine(engine);
+        });
     }
   };
 
   const handleSetOpenai = async (config: LlmProviderType) => {
-    await EnjoyApp.userSettings.set(UserSettingKey.OPENAI, config);
+    await EnjoyApp.userSettings.set(UserSettingKeyEnum.OPENAI, config);
     setOpenai(Object.assign({ name: "openai" }, config));
   };
 
@@ -107,7 +127,7 @@ export const AISettingsProvider = ({
       value={{
         setGptEngine: (engine: GptEngineSettingType) => {
           EnjoyApp.userSettings
-            .set(UserSettingKey.GPT_ENGINE, engine)
+            .set(UserSettingKeyEnum.GPT_ENGINE, engine)
             .then(() => {
               setGptEngine(engine);
             });
@@ -127,7 +147,8 @@ export const AISettingsProvider = ({
         whisperConfig,
         refreshWhisperConfig,
         setWhisperModel,
-        setWhisperService,
+        sttEngine,
+        setSttEngine: (name: SttEngineOptionEnum) => handleSetSttEngine(name),
       }}
     >
       {children}

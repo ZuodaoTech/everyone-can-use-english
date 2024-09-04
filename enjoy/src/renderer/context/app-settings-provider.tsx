@@ -7,6 +7,7 @@ import { type Consumer, createConsumer } from "@rails/actioncable";
 import * as Sentry from "@sentry/electron/renderer";
 import { SENTRY_DSN } from "@/constants";
 import { DbProviderContext } from "@renderer/context";
+import { UserSettingKeyEnum } from "@/types/enums";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -82,26 +83,30 @@ export const AppSettingsProvider = ({
   };
 
   const fetchLanguages = async () => {
-    const language = await EnjoyApp.userSettings.get(UserSettingKey.LANGUAGE);
+    const language = await EnjoyApp.userSettings.get(
+      UserSettingKeyEnum.LANGUAGE
+    );
     setLanguage((language as "en" | "zh-CN") || "en");
     i18n.changeLanguage(language);
 
     const _nativeLanguage =
-      (await EnjoyApp.userSettings.get(UserSettingKey.NATIVE_LANGUAGE)) ||
+      (await EnjoyApp.userSettings.get(UserSettingKeyEnum.NATIVE_LANGUAGE)) ||
       "zh-CN";
     setNativeLanguage(_nativeLanguage);
 
     const _learningLanguage =
-      (await EnjoyApp.userSettings.get(UserSettingKey.LEARNING_LANGUAGE)) ||
+      (await EnjoyApp.userSettings.get(UserSettingKeyEnum.LEARNING_LANGUAGE)) ||
       "en-US";
     setLearningLanguage(_learningLanguage);
   };
 
   const switchLanguage = (language: "en" | "zh-CN") => {
-    EnjoyApp.userSettings.set(UserSettingKey.LANGUAGE, language).then(() => {
-      i18n.changeLanguage(language);
-      setLanguage(language);
-    });
+    EnjoyApp.userSettings
+      .set(UserSettingKeyEnum.LANGUAGE, language)
+      .then(() => {
+        i18n.changeLanguage(language);
+        setLanguage(language);
+      });
   };
 
   const switchNativeLanguage = (lang: string) => {
@@ -109,14 +114,14 @@ export const AppSettingsProvider = ({
     if (lang == learningLanguage) return;
 
     setNativeLanguage(lang);
-    EnjoyApp.userSettings.set(UserSettingKey.NATIVE_LANGUAGE, lang);
+    EnjoyApp.userSettings.set(UserSettingKeyEnum.NATIVE_LANGUAGE, lang);
   };
 
   const switchLearningLanguage = (lang: string) => {
     if (LANGUAGES.findIndex((l) => l.code == lang) < 0) return;
     if (lang == nativeLanguage) return;
 
-    EnjoyApp.userSettings.set(UserSettingKey.LEARNING_LANGUAGE, lang);
+    EnjoyApp.userSettings.set(UserSettingKeyEnum.LEARNING_LANGUAGE, lang);
     setLearningLanguage(lang);
   };
 
@@ -212,7 +217,7 @@ export const AppSettingsProvider = ({
 
   const fetchVocabularyConfig = async () => {
     EnjoyApp.userSettings
-      .get(UserSettingKey.VOCABULARY)
+      .get(UserSettingKeyEnum.VOCABULARY)
       .then((config) => {
         setVocabularyConfig(config || { lookupOnMouseOver: true });
       })
@@ -223,7 +228,7 @@ export const AppSettingsProvider = ({
   };
 
   const setVocabularyConfigHandler = async (config: VocabularyConfigType) => {
-    await EnjoyApp.userSettings.set(UserSettingKey.VOCABULARY, config);
+    await EnjoyApp.userSettings.set(UserSettingKeyEnum.VOCABULARY, config);
     setVocabularyConfig(config);
   };
 

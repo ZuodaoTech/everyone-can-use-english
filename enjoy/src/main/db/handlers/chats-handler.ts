@@ -1,10 +1,10 @@
 import { ipcMain, IpcMainEvent } from "electron";
-import { Chat, ChatAgent, ChatMember } from "@main/db/models";
+import { Chat, ChatAgent, ChatMember, UserSetting } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
 import log from "@main/logger";
 import { t } from "i18next";
 import db from "@main/db";
-import settings from "@/main/settings";
+import { UserSettingKeyEnum } from "@/types/enums";
 
 const logger = log.scope("db/handlers/chats-handler");
 
@@ -73,7 +73,9 @@ class ChatsHandler {
 
     const transaction = await db.connection.transaction();
     if (!chatData.config?.sttEngine) {
-      chatData.config.sttEngine = settings.whisperConfig().service;
+      chatData.config.sttEngine = await UserSetting.get(
+        UserSettingKeyEnum.STT_ENGINE
+      );
     }
     const chat = await Chat.create(chatData, {
       transaction,

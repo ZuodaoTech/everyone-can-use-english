@@ -280,21 +280,6 @@ class Whipser {
         });
     });
 
-    ipcMain.handle("whisper-set-service", async (_event, service) => {
-      if (service === "local") {
-        await this.check();
-        settings.setSync("whisper.service", service);
-        this.config.service = service;
-        return this.config;
-      } else if (["cloudflare", "azure", "openai"].includes(service)) {
-        settings.setSync("whisper.service", service);
-        this.config.service = service;
-        return this.config;
-      } else {
-        throw new Error("Unknown service");
-      }
-    });
-
     ipcMain.handle("whisper-check", async (_event) => {
       return await this.check();
     });
