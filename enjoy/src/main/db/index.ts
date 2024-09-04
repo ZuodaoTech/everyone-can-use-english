@@ -41,6 +41,7 @@ import {
 import os from "os";
 import path from "path";
 import url from "url";
+import { i18n } from "@main/i18n";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -146,8 +147,12 @@ db.connect = async () => {
     });
   });
 
-  // migrate
+  // migrate settings
   await UserSetting.migrateFromSettings();
+
+  // initialize i18n
+  const language = await UserSetting.get(UserSettingKey.LANGUAGE);
+  i18n(language);
 
   // vacuum the database
   await sequelize.query("VACUUM");

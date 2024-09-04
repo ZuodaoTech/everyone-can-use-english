@@ -2,7 +2,6 @@ import { app, BrowserWindow, protocol, net } from "electron";
 import path from "path";
 import fs from "fs-extra";
 import settings from "@main/settings";
-import "@main/i18n";
 import log from "@main/logger";
 import mainWindow from "@main/window";
 import ElectronSquirrelStartup from "electron-squirrel-startup";

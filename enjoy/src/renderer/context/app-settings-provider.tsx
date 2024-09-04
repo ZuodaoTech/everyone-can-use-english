@@ -82,21 +82,23 @@ export const AppSettingsProvider = ({
   };
 
   const fetchLanguages = async () => {
-    const language = await EnjoyApp.settings.getLanguage();
-    setLanguage(language as "en" | "zh-CN");
+    const language = await EnjoyApp.userSettings.get(UserSettingKey.LANGUAGE);
+    setLanguage((language as "en" | "zh-CN") || "en");
     i18n.changeLanguage(language);
 
     const _nativeLanguage =
-      (await EnjoyApp.settings.get("nativeLanguage")) || "zh-CN";
+      (await EnjoyApp.userSettings.get(UserSettingKey.NATIVE_LANGUAGE)) ||
+      "zh-CN";
     setNativeLanguage(_nativeLanguage);
 
     const _learningLanguage =
-      (await EnjoyApp.settings.get("learningLanguage")) || "en-US";
+      (await EnjoyApp.userSettings.get(UserSettingKey.LEARNING_LANGUAGE)) ||
+      "en-US";
     setLearningLanguage(_learningLanguage);
   };
 
   const switchLanguage = (language: "en" | "zh-CN") => {
-    EnjoyApp.settings.switchLanguage(language).then(() => {
+    EnjoyApp.userSettings.set(UserSettingKey.LANGUAGE, language).then(() => {
       i18n.changeLanguage(language);
       setLanguage(language);
     });
@@ -107,14 +109,14 @@ export const AppSettingsProvider = ({
     if (lang == learningLanguage) return;
 
     setNativeLanguage(lang);
-    EnjoyApp.settings.set("nativeLanguage", lang);
+    EnjoyApp.userSettings.set(UserSettingKey.NATIVE_LANGUAGE, lang);
   };
 
   const switchLearningLanguage = (lang: string) => {
     if (LANGUAGES.findIndex((l) => l.code == lang) < 0) return;
     if (lang == nativeLanguage) return;
 
-    EnjoyApp.settings.set("learningLanguage", lang);
+    EnjoyApp.userSettings.set(UserSettingKey.LEARNING_LANGUAGE, lang);
     setLearningLanguage(lang);
   };
 

@@ -12,21 +12,6 @@ if (process.env.SETTINGS_PATH) {
   });
 }
 
-const language = () => {
-  const _language = settings.getSync("language");
-
-  if (!_language || typeof _language !== "string") {
-    settings.setSync("language", "en");
-  }
-
-  return settings.getSync("language") as string;
-};
-
-const switchLanguage = (language: string) => {
-  settings.setSync("language", language);
-  i18n.changeLanguage(language);
-};
-
 const libraryPath = () => {
   const _library = settings.getSync("library");
 
@@ -142,22 +127,6 @@ export default {
       return userDataPath();
     });
 
-    ipcMain.handle("settings-get-llm", (_event, provider) => {
-      return settings.getSync(provider);
-    });
-
-    ipcMain.handle("settings-set-llm", (_event, provider, config) => {
-      return settings.setSync(provider, config);
-    });
-
-    ipcMain.handle("settings-get-language", (_event) => {
-      return language();
-    });
-
-    ipcMain.handle("settings-switch-language", (_event, language) => {
-      switchLanguage(language);
-    });
-
     ipcMain.handle("settings-get-api-url", (_event) => {
       return settings.getSync("apiUrl");
     });
@@ -171,8 +140,6 @@ export default {
   userDataPath,
   dbPath,
   whisperConfig,
-  language,
-  switchLanguage,
   apiUrl,
   ...settings,
 };
