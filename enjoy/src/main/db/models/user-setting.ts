@@ -31,7 +31,7 @@ export class UserSetting extends Model<UserSetting> {
   @Column(DataType.TEXT)
   value: string;
 
-  static async get(key: string): Promise<UserSetting["value"] | null> {
+  static async get(key: UserSettingKey): Promise<UserSetting["value"] | null> {
     const setting = await UserSetting.findOne({ where: { key } });
     if (!setting) return null;
 
@@ -58,14 +58,14 @@ export class UserSetting extends Model<UserSetting> {
 
   static async migrateFromSettings(): Promise<void> {
     // hotkeys
-    const hotkeys = await UserSetting.get("hotkeys");
+    const hotkeys = await UserSetting.get(UserSettingKey.HOT_KEYS);
     if (!hotkeys) {
       const prevHotkeys = await settings.get("defaultHotkeys");
       UserSetting.set("hotkeys", prevHotkeys as object);
     }
 
     // GPT Engine
-    const gptEngine = await UserSetting.get("gptEngine");
+    const gptEngine = await UserSetting.get(UserSettingKey.GPT_ENGINE);
     if (!gptEngine) {
       const prevGptEngine = await settings.get("engine.gpt");
       UserSetting.set("gptEngine", prevGptEngine as object);

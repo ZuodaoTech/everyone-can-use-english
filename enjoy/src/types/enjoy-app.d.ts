@@ -134,8 +134,8 @@ type EnjoyAppType = {
     setApiUrl: (url: string) => Promise<void>;
   };
   userSettings: {
-    get: (key: string) => Promise<any>;
-    set: (key: string, value: any) => Promise<void>;
+    get: (key: UserSettingKey) => Promise<any>;
+    set: (key: UserSettingKey, value: any) => Promise<void>;
   };
   fs: {
     ensureDir: (path: string) => Promise<boolean>;
