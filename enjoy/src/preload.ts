@@ -228,12 +228,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     switchLanguage: (language: string) => {
       return ipcRenderer.invoke("settings-switch-language", language);
     },
-    getDefaultHotkeys: () => {
-      return ipcRenderer.invoke("settings-get-default-hotkeys");
-    },
-    setDefaultHotkeys: (records: Record<string, string>) => {
-      return ipcRenderer.invoke("settings-set-default-hotkeys", records);
-    },
     getApiUrl: () => {
       return ipcRenderer.invoke("settings-get-api-url");
     },

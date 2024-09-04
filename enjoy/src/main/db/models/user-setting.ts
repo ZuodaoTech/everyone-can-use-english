@@ -8,6 +8,7 @@ import {
   AllowNull,
 } from "sequelize-typescript";
 import log from "@main/logger";
+import settings from "@main/settings";
 
 const logger = log.scope("db/userSetting");
 
@@ -52,6 +53,15 @@ export class UserSetting extends Model<UserSetting> {
       await setting.update({ value });
     } else {
       await UserSetting.create({ key, value });
+    }
+  }
+
+  static async migrateFromSettings(): Promise<void> {
+    // hotkeys
+    const hotkeys = await UserSetting.get("hotkeys");
+    if (!hotkeys) {
+      const prevHotkeys = await settings.get("defaultHotkeys");
+      UserSetting.set("hotkeys", prevHotkeys as object);
     }
   }
 }

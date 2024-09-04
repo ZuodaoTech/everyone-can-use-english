@@ -146,6 +146,9 @@ db.connect = async () => {
     });
   });
 
+  // migrate
+  await UserSetting.migrateFromSettings();
+
   // vacuum the database
   await sequelize.query("VACUUM");
 

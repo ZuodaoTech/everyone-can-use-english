@@ -6,7 +6,10 @@ import {
   useState,
 } from "react";
 import { useHotkeys, useRecordHotkeys } from "react-hotkeys-hook";
-import { AppSettingsProviderContext } from "./app-settings-provider";
+import {
+  AppSettingsProviderContext,
+  DbProviderContext,
+} from "@renderer/context";
 import _ from "lodash";
 
 function isShortcutValid(shortcut: string) {
@@ -150,16 +153,19 @@ export const HotKeysSettingsProvider = ({
   const [keys, { start, stop, resetKeys, isRecording }] = useRecordHotkeys();
 
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { state: dbState } = useContext(DbProviderContext);
 
   useEffect(() => {
+    if (dbState !== "connected") return;
+
     fetchSettings();
-  }, []);
+  }, [dbState]);
 
   const fetchSettings = async () => {
-    const _hotkeys = await EnjoyApp.settings.getDefaultHotkeys();
+    const _hotkeys = await EnjoyApp.userSettings.get("hotkeys");
     // During version iterations, there may be added or removed keys.
     const merged = mergeWithPreference(_hotkeys ?? {}, defaultKeyMap);
-    await EnjoyApp.settings.setDefaultHotkeys(merged).then(() => {
+    await EnjoyApp.userSettings.set("hotkeys", merged).then(() => {
       setCurrentHotkeys(merged);
     });
   };
@@ -200,7 +206,7 @@ export const HotKeysSettingsProvider = ({
         };
       }
 
-      await EnjoyApp.settings.setDefaultHotkeys(newMap).then(() => {
+      await EnjoyApp.userSettings.set("hotkeys", newMap).then(() => {
         setCurrentHotkeys(newMap);
       });
       resetKeys();
