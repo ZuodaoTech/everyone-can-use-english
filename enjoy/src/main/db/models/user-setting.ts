@@ -9,11 +9,11 @@ import {
 } from "sequelize-typescript";
 import log from "@main/logger";
 
-const logger = log.scope("db/setting");
+const logger = log.scope("db/userSetting");
 
 @Table({
-  modelName: "Setting",
-  tableName: "settings",
+  modelName: "UserSetting",
+  tableName: "user_settings",
   underscored: true,
   timestamps: true,
 })

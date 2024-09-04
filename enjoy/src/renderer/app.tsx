@@ -35,21 +35,21 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <AppSettingsProvider>
-        <HotKeysSettingsProvider>
-          <AISettingsProvider>
-            <DictProvider>
-              <DbProvider>
+      <DbProvider>
+        <AppSettingsProvider>
+          <HotKeysSettingsProvider>
+            <AISettingsProvider>
+              <DictProvider>
                 <RouterProvider router={router} />
                 <Toaster richColors closeButton position="top-center" />
                 <Tooltip id="global-tooltip" />
                 <TranslateWidget />
                 <LookupWidget />
-              </DbProvider>
-            </DictProvider>
-          </AISettingsProvider>
-        </HotKeysSettingsProvider>
-      </AppSettingsProvider>
+              </DictProvider>
+            </AISettingsProvider>
+          </HotKeysSettingsProvider>
+        </AppSettingsProvider>
+      </DbProvider>
     </ThemeProvider>
   );
 }

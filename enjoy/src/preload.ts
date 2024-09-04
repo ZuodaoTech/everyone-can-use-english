@@ -253,6 +253,14 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       return ipcRenderer.invoke("settings-set-vocabulary-config", records);
     },
   },
+  userSettings: {
+    get: (key: string) => {
+      return ipcRenderer.invoke("user-settings-get", key);
+    },
+    set: (key: string, value: any) => {
+      return ipcRenderer.invoke("user-settings-set", key, value);
+    },
+  },
   path: {
     join: (...paths: string[]) => {
       return ipcRenderer.invoke("path-join", ...paths);

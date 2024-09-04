@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { WEB_API_URL, LANGUAGES, IPA_MAPPINGS } from "@/constants";
 import { Client } from "@/api";
 import i18n from "@renderer/i18n";
@@ -6,6 +6,7 @@ import ahoy from "ahoy.js";
 import { type Consumer, createConsumer } from "@rails/actioncable";
 import * as Sentry from "@sentry/electron/renderer";
 import { SENTRY_DSN } from "@/constants";
+import { DbProviderContext } from "@renderer/context";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -68,6 +69,7 @@ export const AppSettingsProvider = ({
   const [ipaMappings, setIpaMappings] = useState<{ [key: string]: string }>(
     IPA_MAPPINGS
   );
+  const { state: dbState } = useContext(DbProviderContext);
 
   const initSentry = () => {
     EnjoyApp.app.isPackaged().then((isPackaged) => {
@@ -207,24 +209,36 @@ export const AppSettingsProvider = ({
   };
 
   const fetchVocabularyConfig = async () => {
-    const config = await EnjoyApp.settings.getVocabularyConfig();
-    setVocabularyConfig(config || { lookupOnMouseOver: false });
+    EnjoyApp.userSettings
+      .get("vocabularyConfig")
+      .then((config) => {
+        setVocabularyConfig(config || { lookupOnMouseOver: true });
+      })
+      .catch((err) => {
+        console.error(err);
+        setVocabularyConfig({ lookupOnMouseOver: true });
+      });
   };
 
   const setVocabularyConfigHandler = async (config: VocabularyConfigType) => {
-    await EnjoyApp.settings.setVocabularyConfig(config);
+    await EnjoyApp.userSettings.set("vocabularyConfig", config);
     setVocabularyConfig(config);
   };
 
   useEffect(() => {
-    fetchVersion();
-    fetchUser();
-    fetchLibraryPath();
+    if (dbState !== "connected") return;
+
     fetchLanguages();
     fetchProxyConfig();
     fetchVocabularyConfig();
     initSentry();
     fetchRecorderConfig();
+  }, [dbState]);
+
+  useEffect(() => {
+    fetchVersion();
+    fetchUser();
+    fetchLibraryPath();
   }, []);
 
   useEffect(() => {

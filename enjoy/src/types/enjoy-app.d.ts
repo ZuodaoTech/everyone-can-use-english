@@ -143,6 +143,10 @@ type EnjoyAppType = {
     getVocabularyConfig: () => Promise<VocabularyConfigType | undefined>;
     setVocabularyConfig: (records: VocabularyConfigType) => Promise<void>;
   };
+  userSettings: {
+    get: (key: string) => Promise<any>;
+    set: (key: string, value: any) => Promise<void>;
+  };
   fs: {
     ensureDir: (path: string) => Promise<boolean>;
   };

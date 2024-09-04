@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import { AppSettingsProviderContext } from "./app-settings-provider";
 import log from "electron-log/renderer";
 
 type DbStateEnum = "connected" | "connecting" | "error" | "disconnected";
@@ -25,7 +24,7 @@ export const DbProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, setState] = useState<DbStateEnum>("disconnected");
   const [path, setPath] = useState();
   const [error, setError] = useState();
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const EnjoyApp = window.__ENJOY_APP__;
 
   const connect = async () => {
     if (["connected", "connecting"].includes(state)) return;
