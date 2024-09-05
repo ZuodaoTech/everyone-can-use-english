@@ -8,9 +8,12 @@ import { useContext } from "react";
 import { Button } from "@renderer/components/ui/button";
 import { DbState } from "@renderer/components";
 import { t } from "i18next";
+import { redirect } from "react-router-dom";
 
 export const Layout = () => {
-  const { initialized } = useContext(AppSettingsProviderContext);
+  const { initialized, apiStatus, logout } = useContext(
+    AppSettingsProviderContext
+  );
   const db = useContext(DbProviderContext);
 
   if (!initialized) {

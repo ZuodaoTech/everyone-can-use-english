@@ -127,7 +127,7 @@ export const UserSettings = () => {
                   className="bg-destructive hover:bg-destructive-hover"
                   onClick={() => {
                     logout();
-                    redirect("/");
+                    redirect("/landing");
                   }}
                 >
                   {t("logout")}

@@ -48,7 +48,6 @@ main.init = async () => {
   }
 
   // Prepare local database
-  await db.connect();
   db.registerIpcHandlers();
 
   camdict.registerIpcHandlers();

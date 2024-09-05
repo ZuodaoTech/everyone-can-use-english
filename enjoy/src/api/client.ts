@@ -52,10 +52,10 @@ export class Client {
           this.logger.error(
             err.response.status,
             err.response.config.method.toUpperCase(),
-            err.response.config.baseURL + err.response.config.url
+            err.response.config.baseURL + err.response.config.url,
+            err.response.data
           );
-          this.logger.error(err.response.data);
-          return Promise.reject(new Error(err.response.data));
+          return Promise.reject(err);
         }
 
         this.logger.error(err.message);

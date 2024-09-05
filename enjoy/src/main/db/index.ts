@@ -57,9 +57,14 @@ db.connect = async () => {
   if (db.connection) {
     return;
   }
+  const dbPath = settings.dbPath();
+  if (!dbPath) {
+    throw new Error("Db path is not ready");
+  }
+
   const sequelize = new Sequelize({
     dialect: "sqlite",
-    storage: settings.dbPath(),
+    storage: dbPath,
     models: [
       Audio,
       CacheObject,

@@ -42,6 +42,8 @@ const cachePath = () => {
 };
 
 const dbPath = () => {
+  if (!userDataPath()) return null;
+
   const dbName = app.isPackaged
     ? `${DATABASE_NAME}.sqlite`
     : `${DATABASE_NAME}_dev.sqlite`;
@@ -49,10 +51,10 @@ const dbPath = () => {
 };
 
 const userDataPath = () => {
-  const userData = path.join(
-    libraryPath(),
-    settings.getSync("user.id").toString()
-  );
+  const userId = settings.getSync("user.id");
+  if (!userId) return null;
+
+  const userData = path.join(libraryPath(), userId.toString());
   fs.ensureDirSync(userData);
 
   return userData;

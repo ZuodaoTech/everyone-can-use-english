@@ -8,9 +8,9 @@ import log from "@main/logger";
 import url from "url";
 import { enjoyUrlToPath } from "./utils";
 import { t } from "i18next";
-import { UserSetting } from "./db/models";
+import { UserSetting } from "@main/db/models";
+import db from "@main/db";
 import { UserSettingKeyEnum } from "@/types/enums";
-import { availableCodecs } from "fluent-ffmpeg";
 
 const __filename = url.fileURLToPath(import.meta.url);
 /*
@@ -70,14 +70,22 @@ class Whipser {
       });
     }
 
-    const whisperConfig = (await UserSetting.get(
-      UserSettingKeyEnum.WHISPER
-    )) as string;
-    this.config = {
-      model: whisperConfig || models[0].name,
-      availableModels: models,
-      modelsPath: dir,
-    };
+    if (db.connection) {
+      const whisperConfig = (await UserSetting.get(
+        UserSettingKeyEnum.WHISPER
+      )) as string;
+      this.config = {
+        model: whisperConfig || models[0].name,
+        availableModels: models,
+        modelsPath: dir,
+      };
+    } else {
+      this.config = {
+        model: models[0].name,
+        availableModels: models,
+        modelsPath: dir,
+      };
+    }
   }
 
   currentModel() {
@@ -268,9 +276,7 @@ class Whipser {
 
   registerIpcHandlers() {
     ipcMain.handle("whisper-config", async () => {
-      if (!this.config) {
-        await this.initialize();
-      }
+      await this.initialize();
       return this.config;
     });
 
