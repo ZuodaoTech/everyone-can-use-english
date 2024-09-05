@@ -72,7 +72,9 @@ export const AppSettingsProvider = ({
   const [ipaMappings, setIpaMappings] = useState<{ [key: string]: string }>(
     IPA_MAPPINGS
   );
-  const [apiStatus, setApiStatus] = useState<"connected" | "connecting" | "unauthorized" | "error">("connecting");
+  const [apiStatus, setApiStatus] = useState<
+    "connected" | "connecting" | "unauthorized" | "error"
+  >("connecting");
   const { state: dbState } = useContext(DbProviderContext);
 
   const initSentry = () => {
@@ -137,7 +139,9 @@ export const AppSettingsProvider = ({
     const apiUrl = await EnjoyApp.app.apiUrl();
     setApiUrl(apiUrl);
 
-    const currentUser = await EnjoyApp.userSettings.get(UserSettingKeyEnum.PROFILE);
+    const currentUser = await EnjoyApp.userSettings.get(
+      UserSettingKeyEnum.PROFILE
+    );
     if (!currentUser) return;
 
     login(currentUser);
@@ -148,17 +152,20 @@ export const AppSettingsProvider = ({
     });
 
     // Refresh user accessToken
-    client.me().then((user) => {
-      if (user?.id) {
-        login(Object.assign({}, currentUser, user));
-      }
-    }).catch((err) => {
-      if (err.response && err.response.status === 401) {
-        setApiStatus("unauthorized");
-      } else {
-        setApiStatus("error");
-      }
-    });
+    client
+      .me()
+      .then((user) => {
+        if (user?.id) {
+          login(Object.assign({}, currentUser, user));
+        }
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 401) {
+          setApiStatus("unauthorized");
+        } else {
+          setApiStatus("error");
+        }
+      });
   };
 
   const login = (user: UserType) => {
@@ -168,7 +175,7 @@ export const AppSettingsProvider = ({
     // Save user profile to DB, included accessToken
     EnjoyApp.userSettings.set(UserSettingKeyEnum.PROFILE, user);
     // Set current user to App settings
-    EnjoyApp.appSettings.setUser({id: user.id, name: user.name});
+    EnjoyApp.appSettings.setUser({ id: user.id, name: user.name });
     createCable(user.accessToken);
   };
 
@@ -229,9 +236,11 @@ export const AppSettingsProvider = ({
   };
 
   const setRecorderConfigHandler = async (config: RecorderConfigType) => {
-    return EnjoyApp.userSettings.set(UserSettingKeyEnum.RECORDER, config).then(() => {
-      setRecorderConfig(config);
-    });
+    return EnjoyApp.userSettings
+      .set(UserSettingKeyEnum.RECORDER, config)
+      .then(() => {
+        setRecorderConfig(config);
+      });
   };
 
   const fetchVocabularyConfig = async () => {
@@ -254,6 +263,7 @@ export const AppSettingsProvider = ({
   useEffect(() => {
     if (dbState !== "connected") return;
 
+    fetchUser();
     fetchLanguages();
     fetchProxyConfig();
     fetchVocabularyConfig();
@@ -263,7 +273,6 @@ export const AppSettingsProvider = ({
 
   useEffect(() => {
     fetchVersion();
-    fetchUser();
     fetchLibraryPath();
   }, []);
 
