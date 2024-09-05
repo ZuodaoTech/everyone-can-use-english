@@ -114,6 +114,7 @@ export const LoginForm = () => {
                 </Button>
                 <Button
                   variant="default"
+                  data-testid="login-with-remembered-user-button"
                   size="sm"
                   onClick={loginWithRememberedUser}
                 >

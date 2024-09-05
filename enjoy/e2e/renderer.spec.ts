@@ -61,13 +61,13 @@ test.describe("with login", async () => {
     settings.user = user;
     fs.writeJsonSync(path.join(resultDir, "settings.json"), settings);
 
-    page.route("**/api/me", (route) => {
+    await page.route("**/api/me", (route) => {
       route.fulfill({
         json: user,
       });
     });
 
-    page.route("**/api/stories", (route) => {
+    await page.route("**/api/stories", (route) => {
       route.fulfill({
         json: {
           stories: [],
@@ -79,6 +79,9 @@ test.describe("with login", async () => {
     await page.evaluate(() => {
       return (window as any).__ENJOY_APP__.app.reload();
     });
+    await page.getByTestId("landing-button").click();
+    await page.getByTestId("login-with-remembered-user-button").click();
+    await page.getByTestId("start-to-use-button").click();
   });
 
   test("should enter homepage after login", async () => {
@@ -199,6 +202,7 @@ test.describe("with login", async () => {
 
       // add to library
       await page.getByTestId("message-start-shadow").click();
+      await page.getByTestId("transcribe-continue-button").click();
       await page.getByTestId("audio-player").waitFor();
       await page
         .getByTestId("media-player-container")

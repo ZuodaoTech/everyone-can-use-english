@@ -59,13 +59,13 @@ export const TranscriptionCreateForm = (props: {
     originalText,
   } = props;
   const { learningLanguage } = useContext(AppSettingsProviderContext);
-  const { whisperConfig } = useContext(AISettingsProviderContext);
+  const { sttEngine } = useContext(AISettingsProviderContext);
 
   const form = useForm<z.infer<typeof transcriptionSchema>>({
     resolver: zodResolver(transcriptionSchema),
     values: {
       language: learningLanguage,
-      service: originalText ? "upload" : whisperConfig.service,
+      service: originalText ? "upload" : sttEngine,
       text: originalText,
       isolate: false,
     },
@@ -324,7 +324,12 @@ export const TranscriptionCreateForm = (props: {
               {t("cancel")}
             </Button>
           )}
-          <Button disabled={transcribing} type="submit" variant="default">
+          <Button
+            data-testid="transcribe-continue-button"
+            disabled={transcribing}
+            type="submit"
+            variant="default"
+          >
             {transcribing && <LoaderIcon className="animate-spin w-4 mr-2" />}
             {t("continue")}
           </Button>

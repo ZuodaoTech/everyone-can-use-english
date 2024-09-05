@@ -18,6 +18,7 @@ import { Tooltip } from "react-tooltip";
 import { debounce } from "lodash";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import { t } from "i18next";
+import { SttEngineOptionEnum } from "@/types/enums";
 
 const ONE_MINUTE = 60;
 const TEN_MINUTES = 10 * ONE_MINUTE;
@@ -73,7 +74,7 @@ type MediaPlayerContextType = {
   generateTranscription: (params?: {
     originalText?: string;
     language?: string;
-    service?: WhisperConfigType["service"] | "upload";
+    service?: SttEngineOptionEnum | "upload";
     isolate?: boolean;
   }) => Promise<void>;
   transcribing: boolean;
