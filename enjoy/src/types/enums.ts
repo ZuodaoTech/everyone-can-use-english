@@ -10,6 +10,7 @@ export enum UserSettingKeyEnum {
   STT_ENGINE = "sttEngine",
   VOCABULARY = "vocabulary",
   DICTS = "dicts",
+  RECORDER = "recorder",
 }
 
 export enum SttEngineOptionEnum {

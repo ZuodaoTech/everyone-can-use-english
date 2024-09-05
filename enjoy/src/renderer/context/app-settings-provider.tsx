@@ -204,7 +204,7 @@ export const AppSettingsProvider = ({
   };
 
   const fetchRecorderConfig = async () => {
-    const config = await EnjoyApp.settings.get("recorderConfig");
+    const config = await EnjoyApp.userSettings.get(UserSettingKeyEnum.RECORDER);
     if (config) {
       setRecorderConfig(config);
     } else {
@@ -220,7 +220,7 @@ export const AppSettingsProvider = ({
   };
 
   const setRecorderConfigHandler = async (config: RecorderConfigType) => {
-    return EnjoyApp.settings.set("recorderConfig", config).then(() => {
+    return EnjoyApp.userSettings.set(UserSettingKeyEnum.RECORDER, config).then(() => {
       setRecorderConfig(config);
     });
   };
