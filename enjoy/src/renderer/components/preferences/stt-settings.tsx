@@ -132,7 +132,7 @@ export const WhisperSettings = () => {
                     </span>
                     <Button
                       onClick={() => {
-                        EnjoyApp.shell.openPath(whisperConfig.modelsPath);
+                        EnjoyApp.shell.openPath(whisperConfig?.modelsPath);
                       }}
                       variant="outline"
                       size="sm"

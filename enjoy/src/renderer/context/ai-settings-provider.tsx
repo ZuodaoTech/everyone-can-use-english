@@ -36,7 +36,7 @@ export const AISettingsProvider = ({
   const [openai, setOpenai] = useState<LlmProviderType>(null);
   const [whisperConfig, setWhisperConfig] = useState<WhisperConfigType>(null);
   const [sttEngine, setSttEngine] = useState<SttEngineOptionEnum>(
-    "enjoyai" as SttEngineOptionEnum
+    SttEngineOptionEnum.ENJOYAI
   );
   const { EnjoyApp, libraryPath, user, apiUrl } = useContext(
     AppSettingsProviderContext
@@ -58,7 +58,6 @@ export const AISettingsProvider = ({
 
   const refreshWhisperConfig = async () => {
     const config = await EnjoyApp.whisper.config();
-    console.log("whisper config", config);
     setWhisperConfig(config);
   };
 
@@ -76,10 +75,10 @@ export const AISettingsProvider = ({
 
   const fetchSettings = async () => {
     const _sttEngine = await EnjoyApp.userSettings.get(
-      "sttEngine" as UserSettingKeyEnum
+      UserSettingKeyEnum.STT_ENGINE
     );
     if (_sttEngine) {
-      setSttEngine(sttEngine);
+      setSttEngine(_sttEngine);
     }
 
     const _openai = await EnjoyApp.userSettings.get(UserSettingKeyEnum.OPENAI);
