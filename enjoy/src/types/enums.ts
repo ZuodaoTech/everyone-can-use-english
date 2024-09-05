@@ -2,6 +2,7 @@ export enum UserSettingKeyEnum {
   LANGUAGE = "language",
   NATIVE_LANGUAGE = "nativeLanguage",
   LEARNING_LANGUAGE = "learningLanguage",
+  WHISPER = "whisper",
   OPENAI = "openai",
   HOTKEYS = "hotkeys",
   GPT_ENGINE = "gptEngine",

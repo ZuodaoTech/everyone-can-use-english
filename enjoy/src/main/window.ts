@@ -41,13 +41,14 @@ const main = {
   init: () => {},
 };
 
-main.init = () => {
+main.init = async () => {
   if (main.win) {
     main.win.show();
     return;
   }
 
   // Prepare local database
+  await db.connect();
   db.registerIpcHandlers();
 
   camdict.registerIpcHandlers();

@@ -33,7 +33,9 @@ export class UserSetting extends Model<UserSetting> {
   @Column(DataType.TEXT)
   value: string;
 
-  static async get(key: UserSettingKeyEnum): Promise<UserSetting["value"] | null> {
+  static async get(
+    key: UserSettingKeyEnum
+  ): Promise<string | Object | number | null> {
     const setting = await UserSetting.findOne({ where: { key } });
     if (!setting) return null;
 
@@ -44,7 +46,10 @@ export class UserSetting extends Model<UserSetting> {
     }
   }
 
-  static async set(key: UserSettingKeyEnum, value: object | string): Promise<void> {
+  static async set(
+    key: UserSettingKeyEnum,
+    value: object | string
+  ): Promise<void> {
     const setting = await UserSetting.findOne({ where: { key } });
 
     if (typeof value === "object") {
@@ -121,6 +126,13 @@ export class UserSetting extends Model<UserSetting> {
     const prevSttEngine = await settings.get("whisper.service");
     if (prevSttEngine && !sttEngine) {
       UserSetting.set(UserSettingKeyEnum.STT_ENGINE, prevSttEngine as string);
+    }
+
+    // Whisper
+    const whisper = await UserSetting.get(UserSettingKeyEnum.WHISPER);
+    const prevWhisper = await settings.get("whisper.model");
+    if (prevWhisper && !whisper) {
+      UserSetting.set(UserSettingKeyEnum.WHISPER, prevWhisper as string);
     }
   }
 }

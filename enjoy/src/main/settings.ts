@@ -45,18 +45,6 @@ const dbPath = () => {
   return path.join(userDataPath(), dbName);
 };
 
-const whisperConfig = (): WhisperConfigType => {
-  const model = settings.getSync("whisper.model") as string;
-
-  return {
-    availableModels: settings.getSync(
-      "whisper.availableModels"
-    ) as WhisperConfigType["availableModels"],
-    modelsPath: settings.getSync("whisper.modelsPath") as string,
-    model,
-  };
-};
-
 const userDataPath = () => {
   const userData = path.join(
     libraryPath(),
@@ -129,7 +117,6 @@ export default {
   libraryPath,
   userDataPath,
   dbPath,
-  whisperConfig,
   apiUrl,
   ...settings,
 };

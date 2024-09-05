@@ -152,7 +152,9 @@ db.connect = async () => {
   await UserSetting.migrateFromSettings();
 
   // initialize i18n
-  const language = await UserSetting.get(UserSettingKeyEnum.LANGUAGE);
+  const language = (await UserSetting.get(
+    UserSettingKeyEnum.LANGUAGE
+  )) as string;
   i18n(language);
 
   // vacuum the database

@@ -50,13 +50,15 @@ export const AISettingsProvider = ({
   }, [dbState]);
 
   useEffect(() => {
+    if (dbState !== "connected") return;
     if (!libraryPath) return;
 
     refreshWhisperConfig();
-  }, [libraryPath]);
+  }, [dbState, libraryPath]);
 
   const refreshWhisperConfig = async () => {
     const config = await EnjoyApp.whisper.config();
+    console.log("whisper config", config);
     setWhisperConfig(config);
   };
 
