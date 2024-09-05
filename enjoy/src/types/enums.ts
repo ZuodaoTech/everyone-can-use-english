@@ -1,4 +1,5 @@
 export enum UserSettingKeyEnum {
+  PROFILE = "profile",
   LANGUAGE = "language",
   NATIVE_LANGUAGE = "nativeLanguage",
   LEARNING_LANGUAGE = "learningLanguage",

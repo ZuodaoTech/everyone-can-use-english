@@ -134,14 +134,17 @@ export const AppSettingsProvider = ({
     const apiUrl = await EnjoyApp.app.apiUrl();
     setApiUrl(apiUrl);
 
-    const currentUser = await EnjoyApp.settings.getUser();
+    const currentUser = await EnjoyApp.userSettings.get(UserSettingKeyEnum.PROFILE);
     if (!currentUser) return;
+
+    login(currentUser);
 
     const client = new Client({
       baseUrl: apiUrl,
       accessToken: currentUser.accessToken,
     });
 
+    // Refresh user accessToken
     client.me().then((user) => {
       if (user?.id) {
         login(Object.assign({}, currentUser, user));
@@ -150,8 +153,13 @@ export const AppSettingsProvider = ({
   };
 
   const login = (user: UserType) => {
+    if (!user.accessToken) return;
+
     setUser(user);
-    EnjoyApp.settings.setUser(user);
+    // Save user profile to DB, included accessToken
+    EnjoyApp.userSettings.set(UserSettingKeyEnum.PROFILE, user);
+    // Set current user to App settings
+    EnjoyApp.settings.setUser({id: user.id, name: user.name});
     createCable(user.accessToken);
   };
 
@@ -188,6 +196,8 @@ export const AppSettingsProvider = ({
   };
 
   const createCable = async (token: string) => {
+    if (!token) return;
+
     const wsUrl = await EnjoyApp.app.wsUrl();
     const consumer = createConsumer(wsUrl + "/cable?token=" + token);
     setCable(consumer);
