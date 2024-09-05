@@ -3,7 +3,7 @@ import { LIBRARY_PATH_SUFFIX, DATABASE_NAME, WEB_API_URL } from "@/constants";
 import { ipcMain, app } from "electron";
 import path from "path";
 import fs from "fs-extra";
-import * as i18n from "i18next";
+import { AppSettingsKeyEnum } from "@/types/enums";
 
 if (process.env.SETTINGS_PATH) {
   settings.configure({
@@ -17,15 +17,18 @@ const libraryPath = () => {
 
   if (!_library || typeof _library !== "string") {
     settings.setSync(
-      "library",
+      AppSettingsKeyEnum.LIBRARY,
       process.env.LIBRARY_PATH ||
         path.join(app.getPath("documents"), LIBRARY_PATH_SUFFIX)
     );
   } else if (path.parse(_library).base !== LIBRARY_PATH_SUFFIX) {
-    settings.setSync("library", path.join(_library, LIBRARY_PATH_SUFFIX));
+    settings.setSync(
+      AppSettingsKeyEnum.LIBRARY,
+      path.join(_library, LIBRARY_PATH_SUFFIX)
+    );
   }
 
-  const library = settings.getSync("library") as string;
+  const library = settings.getSync(AppSettingsKeyEnum.LIBRARY) as string;
   fs.ensureDirSync(library);
 
   return library;
@@ -56,7 +59,7 @@ const userDataPath = () => {
 };
 
 const apiUrl = () => {
-  const url: string = settings.getSync("apiUrl") as string;
+  const url: string = settings.getSync(AppSettingsKeyEnum.API_URL) as string;
   return process.env.WEB_API_URL || url || WEB_API_URL;
 };
 
@@ -64,25 +67,25 @@ export default {
   registerIpcHandlers: () => {
     ipcMain.handle("app-settings-get-library", (_event) => {
       libraryPath();
-      return settings.getSync("library");
+      return settings.getSync(AppSettingsKeyEnum.LIBRARY);
     });
 
     ipcMain.handle("app-settings-set-library", (_event, library) => {
       if (path.parse(library).base === LIBRARY_PATH_SUFFIX) {
-        settings.setSync("library", library);
+        settings.setSync(AppSettingsKeyEnum.LIBRARY, library);
       } else {
         const dir = path.join(library, LIBRARY_PATH_SUFFIX);
         fs.ensureDirSync(dir);
-        settings.setSync("library", dir);
+        settings.setSync(AppSettingsKeyEnum.LIBRARY, dir);
       }
     });
 
     ipcMain.handle("app-settings-get-user", (_event) => {
-      return settings.getSync("user");
+      return settings.getSync(AppSettingsKeyEnum.USER);
     });
 
     ipcMain.handle("app-settings-set-user", (_event, user) => {
-      settings.setSync("user", user);
+      settings.setSync(AppSettingsKeyEnum.USER, user);
     });
 
     ipcMain.handle("app-settings-get-user-data-path", (_event) => {
@@ -90,11 +93,11 @@ export default {
     });
 
     ipcMain.handle("app-settings-get-api-url", (_event) => {
-      return settings.getSync("apiUrl");
+      return settings.getSync(AppSettingsKeyEnum.API_URL);
     });
 
     ipcMain.handle("app-settings-set-api-url", (_event, url) => {
-      return settings.setSync("apiUrl", url);
+      settings.setSync(AppSettingsKeyEnum.API_URL, url);
     });
   },
   cachePath,

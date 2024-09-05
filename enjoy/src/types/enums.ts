@@ -20,3 +20,9 @@ export enum SttEngineOptionEnum {
   CLOUDFLARE = "cloudflare",
   OPENAI = "openai",
 }
+
+export enum AppSettingsKeyEnum {
+  LIBRARY = "library",
+  USER = "user",
+  API_URL = "apiUrl",
+}
