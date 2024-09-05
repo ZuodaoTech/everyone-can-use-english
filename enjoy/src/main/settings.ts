@@ -62,20 +62,12 @@ const apiUrl = () => {
 
 export default {
   registerIpcHandlers: () => {
-    ipcMain.handle("settings-get", (_event, key) => {
-      return settings.getSync(key);
-    });
-
-    ipcMain.handle("settings-set", (_event, key, value) => {
-      settings.setSync(key, value);
-    });
-
-    ipcMain.handle("settings-get-library", (_event) => {
+    ipcMain.handle("app-settings-get-library", (_event) => {
       libraryPath();
       return settings.getSync("library");
     });
 
-    ipcMain.handle("settings-set-library", (_event, library) => {
+    ipcMain.handle("app-settings-set-library", (_event, library) => {
       if (path.parse(library).base === LIBRARY_PATH_SUFFIX) {
         settings.setSync("library", library);
       } else {
@@ -85,23 +77,23 @@ export default {
       }
     });
 
-    ipcMain.handle("settings-get-user", (_event) => {
+    ipcMain.handle("app-settings-get-user", (_event) => {
       return settings.getSync("user");
     });
 
-    ipcMain.handle("settings-set-user", (_event, user) => {
+    ipcMain.handle("app-settings-set-user", (_event, user) => {
       settings.setSync("user", user);
     });
 
-    ipcMain.handle("settings-get-user-data-path", (_event) => {
+    ipcMain.handle("app-settings-get-user-data-path", (_event) => {
       return userDataPath();
     });
 
-    ipcMain.handle("settings-get-api-url", (_event) => {
+    ipcMain.handle("app-settings-get-api-url", (_event) => {
       return settings.getSync("apiUrl");
     });
 
-    ipcMain.handle("settings-set-api-url", (_event, url) => {
+    ipcMain.handle("app-settings-set-api-url", (_event, url) => {
       return settings.setSync("apiUrl", url);
     });
   },

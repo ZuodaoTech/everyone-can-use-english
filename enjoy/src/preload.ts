@@ -182,33 +182,33 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     showErrorBox: (title: string, content: string) =>
       ipcRenderer.invoke("dialog-show-error-box", title, content),
   },
-  settings: {
+  appSettings: {
     get: (key: string) => {
-      return ipcRenderer.invoke("settings-get", key);
+      return ipcRenderer.invoke("app-settings-get", key);
     },
     set: (key: string, value: any) => {
-      return ipcRenderer.invoke("settings-set", key, value);
+      return ipcRenderer.invoke("app-settings-set", key, value);
     },
     getLibrary: () => {
-      return ipcRenderer.invoke("settings-get-library");
+      return ipcRenderer.invoke("app-settings-get-library");
     },
     setLibrary: (library: string) => {
-      return ipcRenderer.invoke("settings-set-library", library);
+      return ipcRenderer.invoke("app-settings-set-library", library);
     },
     getUser: () => {
-      return ipcRenderer.invoke("settings-get-user");
+      return ipcRenderer.invoke("app-settings-get-user");
     },
     setUser: (user: UserType) => {
-      return ipcRenderer.invoke("settings-set-user", user);
+      return ipcRenderer.invoke("app-settings-set-user", user);
     },
     getUserDataPath: () => {
-      return ipcRenderer.invoke("settings-get-user-data-path");
+      return ipcRenderer.invoke("app-settings-get-user-data-path");
     },
     getApiUrl: () => {
-      return ipcRenderer.invoke("settings-get-api-url");
+      return ipcRenderer.invoke("app-settings-get-api-url");
     },
     setApiUrl: (url: string) => {
-      return ipcRenderer.invoke("settings-set-api-url", url);
+      return ipcRenderer.invoke("app-settings-set-api-url", url);
     },
   },
   userSettings: {

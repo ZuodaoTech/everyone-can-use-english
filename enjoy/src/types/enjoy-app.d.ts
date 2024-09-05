@@ -115,7 +115,7 @@ type EnjoyAppType = {
     ) => Promise<Electron.MessageBoxReturnValue>;
     showErrorBox: (title: string, content: string) => Promise<void>;
   };
-  settings: {
+  appSettings: {
     get: (key: string) => Promise<any>;
     set: (key: string, value: any) => Promise<void>;
     getLibrary: () => Promise<string>;

@@ -58,7 +58,7 @@ export const LoginForm = () => {
   useEffect(() => {
     if (user) return;
 
-    EnjoyApp.settings.getUser().then((user) => {
+    EnjoyApp.appSettings.getUser().then((user) => {
       setRememberedUser(user);
     });
   }, [user]);
