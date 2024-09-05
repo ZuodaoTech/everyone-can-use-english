@@ -51,7 +51,7 @@ export const LoginForm = () => {
         }
       })
       .catch((error) => {
-        toast.error(error.message);
+        toast.error(error.repsonse?.data || error.message);
       });
   };
 

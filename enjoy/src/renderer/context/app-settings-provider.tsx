@@ -135,9 +135,13 @@ export const AppSettingsProvider = ({
     setVersion(version);
   };
 
-  const fetchUser = async () => {
+  const fetchApiUrl = async () => {
     const apiUrl = await EnjoyApp.app.apiUrl();
     setApiUrl(apiUrl);
+  };
+
+  const fetchUser = async () => {
+    if (!apiUrl) return;
 
     const currentUser = await EnjoyApp.userSettings.get(
       UserSettingKeyEnum.PROFILE
@@ -274,6 +278,7 @@ export const AppSettingsProvider = ({
   useEffect(() => {
     fetchVersion();
     fetchLibraryPath();
+    fetchApiUrl();
   }, []);
 
   useEffect(() => {
