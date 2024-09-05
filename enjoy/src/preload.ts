@@ -482,9 +482,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     setModel: (model: string) => {
       return ipcRenderer.invoke("whisper-set-model", model);
     },
-    setService: (service: string) => {
-      return ipcRenderer.invoke("whisper-set-service", service);
-    },
     check: () => {
       return ipcRenderer.invoke("whisper-check");
     },

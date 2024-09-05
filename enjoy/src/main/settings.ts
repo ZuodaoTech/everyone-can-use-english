@@ -93,14 +93,6 @@ export default {
       settings.setSync("user", user);
     });
 
-    ipcMain.handle("settings-get-whisper-model", (_event) => {
-      return settings.getSync("whisper.model");
-    });
-
-    ipcMain.handle("settings-set-whisper-model", (_event, model) => {
-      settings.setSync("whisper.model", model);
-    });
-
     ipcMain.handle("settings-get-user-data-path", (_event) => {
       return userDataPath();
     });
