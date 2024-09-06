@@ -1,13 +1,13 @@
 export enum UserSettingKeyEnum {
   PROFILE = "profile",
   LANGUAGE = "language",
-  NATIVE_LANGUAGE = "nativeLanguage",
-  LEARNING_LANGUAGE = "learningLanguage",
+  NATIVE_LANGUAGE = "native_language",
+  LEARNING_LANGUAGE = "learning_language",
   WHISPER = "whisper",
   OPENAI = "openai",
   HOTKEYS = "hotkeys",
-  GPT_ENGINE = "gptEngine",
-  STT_ENGINE = "sttEngine",
+  GPT_ENGINE = "gpt_engine",
+  STT_ENGINE = "stt_engine",
   VOCABULARY = "vocabulary",
   DICTS = "dicts",
   RECORDER = "recorder",
@@ -23,5 +23,5 @@ export enum SttEngineOptionEnum {
 export enum AppSettingsKeyEnum {
   LIBRARY = "library",
   USER = "user",
-  API_URL = "apiUrl",
+  API_URL = "api_url",
 }
