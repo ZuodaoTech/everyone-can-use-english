@@ -79,9 +79,6 @@ test.describe("with login", async () => {
     await page.evaluate(() => {
       return (window as any).__ENJOY_APP__.app.reload();
     });
-    await page.getByTestId("landing-button").click();
-    await page.getByTestId("login-with-remembered-user-button").click();
-    await page.getByTestId("start-to-use-button").click();
   });
 
   test("should enter homepage after login", async () => {
