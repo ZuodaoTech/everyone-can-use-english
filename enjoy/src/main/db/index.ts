@@ -50,6 +50,7 @@ const __dirname = path.dirname(__filename);
 const db = {
   connection: null as Sequelize | null,
   connect: async () => {},
+  disconnect: async () => {},
   registerIpcHandlers: () => {},
 };
 
@@ -184,21 +185,46 @@ db.connect = async () => {
   videosHandler.register();
 };
 
+db.disconnect = async () => {
+  // unregister handlers
+  audiosHandler.unregister();
+  cacheObjectsHandler.unregister();
+  chatAgentsHandler.unregister();
+  chatMembersHandler.unregister();
+  chatMessagesHandler.unregister();
+  chatsHandler.unregister();
+  conversationsHandler.unregister();
+  messagesHandler.unregister();
+  notesHandler.unregister();
+  pronunciationAssessmentsHandler.unregister();
+  recordingsHandler.unregister();
+  segmentsHandler.unregister();
+  speechesHandler.unregister();
+  transcriptionsHandler.unregister();
+  userSettingsHandler.unregister();
+  videosHandler.unregister();
+
+  await db.connection?.close();
+  db.connection = null;
+};
+
 db.registerIpcHandlers = () => {
-  ipcMain.handle("db-init", async () => {
-    return db
-      .connect()
-      .then(() => {
-        return {
-          state: "connected",
-        };
-      })
-      .catch((err) => {
-        return {
-          state: "error",
-          error: err.message,
-        };
-      });
+  ipcMain.handle("db-connect", async () => {
+    try {
+      await db.connect();
+      return {
+        state: "connected",
+      };
+    } catch (err) {
+      return {
+        state: "error",
+        error: err.message,
+      };
+    }
+  });
+
+  ipcMain.handle("db-disconnect", async () => {
+    db.disconnect();
   });
 };
 

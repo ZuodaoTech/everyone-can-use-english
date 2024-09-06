@@ -73,9 +73,9 @@ class ChatsHandler {
 
     const transaction = await db.connection.transaction();
     if (!chatData.config?.sttEngine) {
-      chatData.config.sttEngine = await UserSetting.get(
+      chatData.config.sttEngine = (await UserSetting.get(
         UserSettingKeyEnum.STT_ENGINE
-      );
+      )) as string;
     }
     const chat = await Chat.create(chatData, {
       transaction,
@@ -196,6 +196,14 @@ class ChatsHandler {
     ipcMain.handle("chats-create", this.create);
     ipcMain.handle("chats-update", this.update);
     ipcMain.handle("chats-destroy", this.destroy);
+  }
+
+  unregister() {
+    ipcMain.removeHandler("chats-find-all");
+    ipcMain.removeHandler("chats-find-one");
+    ipcMain.removeHandler("chats-create");
+    ipcMain.removeHandler("chats-update");
+    ipcMain.removeHandler("chats-destroy");
   }
 }
 

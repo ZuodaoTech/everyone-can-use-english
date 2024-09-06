@@ -158,9 +158,9 @@ export class UserSetting extends Model<UserSetting> {
 
     // Profile
     const profile = await UserSetting.get(UserSettingKeyEnum.PROFILE);
-    const prevProfile = await settings.get("user");
+    const prevProfile = (await settings.get("user")) as UserType;
     if (prevProfile && !profile) {
-      UserSetting.set(UserSettingKeyEnum.PROFILE, prevProfile as string);
+      UserSetting.set(UserSettingKeyEnum.PROFILE, prevProfile as UserType);
     }
 
     // Recorder Config

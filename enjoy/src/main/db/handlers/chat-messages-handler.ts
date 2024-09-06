@@ -141,6 +141,14 @@ class ChatMessagesHandler {
     ipcMain.handle("chat-messages-update", this.update);
     ipcMain.handle("chat-messages-destroy", this.destroy);
   }
+
+  unregister() {
+    ipcMain.removeHandler("chat-messages-find-all");
+    ipcMain.removeHandler("chat-messages-find-one");
+    ipcMain.removeHandler("chat-messages-create");
+    ipcMain.removeHandler("chat-messages-update");
+    ipcMain.removeHandler("chat-messages-destroy");
+  }
 }
 
 export const chatMessagesHandler = new ChatMessagesHandler();

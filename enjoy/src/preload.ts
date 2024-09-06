@@ -225,7 +225,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   db: {
-    init: () => ipcRenderer.invoke("db-init"),
+    connect: () => ipcRenderer.invoke("db-connect"),
+    disconnect: () => ipcRenderer.invoke("db-disconnect"),
     onTransaction: (
       callback: (
         event: IpcRendererEvent,

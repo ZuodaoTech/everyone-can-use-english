@@ -47,9 +47,15 @@ export const Sidebar = () => {
   const { EnjoyApp, cable } = useContext(AppSettingsProviderContext);
 
   useEffect(() => {
+    if (!cable) return;
+
     const channel = new NoticiationsChannel(cable);
     channel.subscribe();
-  }, []);
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [cable]);
 
   return (
     <div

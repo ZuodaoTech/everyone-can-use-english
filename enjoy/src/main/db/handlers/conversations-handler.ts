@@ -120,6 +120,14 @@ class ConversationsHandler {
     ipcMain.handle("conversations-update", this.update);
     ipcMain.handle("conversations-destroy", this.destroy);
   }
+
+  unregister() {
+    ipcMain.removeHandler("conversations-find-all");
+    ipcMain.removeHandler("conversations-find-one");
+    ipcMain.removeHandler("conversations-create");
+    ipcMain.removeHandler("conversations-update");
+    ipcMain.removeHandler("conversations-destroy");
+  }
 }
 
 export const conversationsHandler = new ConversationsHandler();

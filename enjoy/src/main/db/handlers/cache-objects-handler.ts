@@ -82,6 +82,14 @@ class CacheObjectsHandler {
     ipcMain.handle("cache-objects-clear", this.clear);
     ipcMain.handle("cache-objects-write-file", this.writeFile);
   }
+
+  unregister() {
+    ipcMain.removeHandler("cache-objects-get");
+    ipcMain.removeHandler("cache-objects-set");
+    ipcMain.removeHandler("cache-objects-delete");
+    ipcMain.removeHandler("cache-objects-clear");
+    ipcMain.removeHandler("cache-objects-write-file");
+  }
 }
 
 export const cacheObjectsHandler = new CacheObjectsHandler();

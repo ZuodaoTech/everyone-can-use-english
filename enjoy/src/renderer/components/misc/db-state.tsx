@@ -8,12 +8,6 @@ import { t } from "i18next";
 export const DbState = () => {
   const db = useContext(DbProviderContext);
 
-  useEffect(() => {
-    if (db.state === "disconnected") {
-      db.connect();
-    }
-  }, [db.state]);
-
   if (db.state === "connecting") {
     return (
       <div className="flex justify-center">

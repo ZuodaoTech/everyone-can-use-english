@@ -137,7 +137,8 @@ type EnjoyAppType = {
     join: (...paths: string[]) => Promise<string>;
   };
   db: {
-    init: () => Promise<DbState>;
+    connect: () => Promise<DbState>;
+    disconnect: () => Promise<void>;
     onTransaction: (
       callback: (event, state: TransactionStateType) => void
     ) => Promise<void>;

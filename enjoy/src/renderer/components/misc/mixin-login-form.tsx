@@ -141,7 +141,7 @@ export const MixinLoginForm = () => {
                   setCountdown(120);
                 })
                 .catch((err) => {
-                  toast.error(err.message);
+                  toast.error(err.response?.data || err.message);
                 })
                 .finally(() => {
                   setLoading(false);
@@ -164,7 +164,7 @@ export const MixinLoginForm = () => {
                   if (user?.id && user?.accessToken) login(user);
                 })
                 .catch((err) => {
-                  toast.error(err.message);
+                  toast.error(err.response?.data || err.message);
                 });
             }}
           >

@@ -46,4 +46,8 @@ export class NoticiationsChannel {
       }
     );
   }
+
+  unsubscribe() {
+    this.consumer.disconnect();
+  }
 }

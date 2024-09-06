@@ -41,20 +41,20 @@ export const AISettingsProvider = ({
   const { EnjoyApp, libraryPath, user, apiUrl } = useContext(
     AppSettingsProviderContext
   );
-  const { state: dbState } = useContext(DbProviderContext);
+  const db = useContext(DbProviderContext);
 
   useEffect(() => {
-    if (dbState !== "connected") return;
+    if (db.state !== "connected") return;
 
     fetchSettings();
-  }, [dbState]);
+  }, [db.state]);
 
   useEffect(() => {
-    if (dbState !== "connected") return;
+    if (db.state !== "connected") return;
     if (!libraryPath) return;
 
     refreshWhisperConfig();
-  }, [dbState, libraryPath]);
+  }, [db.state, libraryPath]);
 
   const refreshWhisperConfig = async () => {
     const config = await EnjoyApp.whisper.config();

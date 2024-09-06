@@ -8,6 +8,7 @@ import * as Sentry from "@sentry/electron/renderer";
 import { SENTRY_DSN } from "@/constants";
 import { DbProviderContext } from "@renderer/context";
 import { UserSettingKeyEnum } from "@/types/enums";
+import { toast } from "sonner";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -75,7 +76,7 @@ export const AppSettingsProvider = ({
   const [apiStatus, setApiStatus] = useState<
     "connected" | "connecting" | "unauthorized" | "error"
   >("connecting");
-  const { state: dbState } = useContext(DbProviderContext);
+  const db = useContext(DbProviderContext);
 
   const initSentry = () => {
     EnjoyApp.app.isPackaged().then((isPackaged) => {
@@ -140,47 +141,19 @@ export const AppSettingsProvider = ({
     setApiUrl(apiUrl);
   };
 
-  const fetchUser = async () => {
-    if (!apiUrl) return;
-
-    const currentUser = await EnjoyApp.userSettings.get(
-      UserSettingKeyEnum.PROFILE
-    );
+  const autoLogin = async () => {
+    const currentUser = await EnjoyApp.appSettings.getUser();
     if (!currentUser) return;
 
-    login(currentUser);
-
-    const client = new Client({
-      baseUrl: apiUrl,
-      accessToken: currentUser.accessToken,
-    });
-
-    // Refresh user accessToken
-    client
-      .me()
-      .then((user) => {
-        if (user?.id) {
-          login(Object.assign({}, currentUser, user));
-        }
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 401) {
-          setApiStatus("unauthorized");
-        } else {
-          setApiStatus("error");
-        }
-      });
+    setUser(currentUser);
   };
 
-  const login = (user: UserType) => {
+  const login = async (user: UserType) => {
     if (!user.accessToken) return;
 
     setUser(user);
-    // Save user profile to DB, included accessToken
-    EnjoyApp.userSettings.set(UserSettingKeyEnum.PROFILE, user);
     // Set current user to App settings
     EnjoyApp.appSettings.setUser({ id: user.id, name: user.name });
-    createCable(user.accessToken);
   };
 
   const logout = () => {
@@ -265,19 +238,19 @@ export const AppSettingsProvider = ({
   };
 
   useEffect(() => {
-    if (dbState !== "connected") return;
+    if (db.state !== "connected") return;
 
-    fetchUser();
     fetchLanguages();
-    fetchProxyConfig();
     fetchVocabularyConfig();
     initSentry();
     fetchRecorderConfig();
-  }, [dbState]);
+  }, [db.state]);
 
   useEffect(() => {
+    autoLogin();
     fetchVersion();
     fetchLibraryPath();
+    fetchProxyConfig();
     fetchApiUrl();
   }, []);
 
@@ -308,6 +281,29 @@ export const AppSettingsProvider = ({
       if (mappings) setIpaMappings(mappings);
     });
   }, [webApi]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    console.log("user", user);
+    console.log("db", db.state);
+    db.connect().then(async () => {
+      // Login via API, update profile to DB
+      if (user.accessToken) {
+        EnjoyApp.userSettings.set(UserSettingKeyEnum.PROFILE, user);
+      } else {
+        // Auto login from local settings, get full profile from DB
+        const profile = await EnjoyApp.userSettings.get(
+          UserSettingKeyEnum.PROFILE
+        );
+        console.log("profile", profile);
+        setUser(profile);
+      }
+    });
+    return () => {
+      db.disconnect();
+    };
+  }, [user?.id]);
 
   return (
     <AppSettingsProviderContext.Provider

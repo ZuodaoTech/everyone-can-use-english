@@ -57,6 +57,13 @@ class SegmentsHandler {
     ipcMain.handle("segments-find-all", this.findAll);
     ipcMain.handle("segments-sync", this.sync);
   }
+
+  unregister() {
+    ipcMain.removeHandler("segments-create");
+    ipcMain.removeHandler("segments-find");
+    ipcMain.removeHandler("segments-find-all");
+    ipcMain.removeHandler("segments-sync");
+  }
 }
 
 export const segmentsHandler = new SegmentsHandler();

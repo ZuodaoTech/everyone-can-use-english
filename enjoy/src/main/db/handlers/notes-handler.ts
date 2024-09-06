@@ -165,6 +165,17 @@ class NotesHandler {
     ipcMain.handle("notes-create", this.create);
     ipcMain.handle("notes-sync", this.sync);
   }
+
+  unregister() {
+    ipcMain.removeHandler("notes-group-by-target");
+    ipcMain.removeHandler("notes-group-by-segment");
+    ipcMain.removeHandler("notes-find-all");
+    ipcMain.removeHandler("notes-find");
+    ipcMain.removeHandler("notes-update");
+    ipcMain.removeHandler("notes-delete");
+    ipcMain.removeHandler("notes-create");
+    ipcMain.removeHandler("notes-sync");
+  }
 }
 
 export const notesHandler = new NotesHandler();

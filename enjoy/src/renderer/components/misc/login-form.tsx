@@ -15,7 +15,10 @@ import {
   TabsContent,
 } from "@renderer/components/ui";
 import { useContext, useEffect, useState } from "react";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  DbProviderContext,
+} from "@renderer/context";
 import { t } from "i18next";
 import {
   UserSettings,
@@ -29,11 +32,13 @@ import {
 } from "@renderer/components";
 import { EmailLoginForm } from "./email-login-form";
 import { Client } from "@/api";
+import { UserSettingKeyEnum } from "@/types/enums";
 
 export const LoginForm = () => {
   const { user, EnjoyApp, login, apiUrl } = useContext(
     AppSettingsProviderContext
   );
+  const db = useContext(DbProviderContext);
   const [rememberedUser, setRememberedUser] = useState(null);
 
   const loginWithRememberedUser = async () => {
@@ -51,17 +56,17 @@ export const LoginForm = () => {
         }
       })
       .catch((error) => {
-        toast.error(error.repsonse?.data || error.message);
+        toast.error(error.response?.data || error.message);
       });
   };
 
   useEffect(() => {
-    if (user) return;
+    if (!user || db.state !== "connected") return;
 
-    EnjoyApp.appSettings.getUser().then((user) => {
+    EnjoyApp.userSettings.get(UserSettingKeyEnum.PROFILE).then((user) => {
       setRememberedUser(user);
     });
-  }, [user]);
+  }, [user, db.state]);
 
   if (user) {
     return (
