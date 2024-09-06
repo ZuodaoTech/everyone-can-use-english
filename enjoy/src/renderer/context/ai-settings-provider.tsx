@@ -36,7 +36,7 @@ export const AISettingsProvider = ({
   const [openai, setOpenai] = useState<LlmProviderType>(null);
   const [whisperConfig, setWhisperConfig] = useState<WhisperConfigType>(null);
   const [sttEngine, setSttEngine] = useState<SttEngineOptionEnum>(
-    SttEngineOptionEnum.ENJOYAI
+    SttEngineOptionEnum.AZURE_ENJOY
   );
   const { EnjoyApp, libraryPath, user, apiUrl } = useContext(
     AppSettingsProviderContext

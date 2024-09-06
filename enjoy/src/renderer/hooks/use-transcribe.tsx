@@ -103,16 +103,13 @@ export const useTranscribe = () => {
       }
     } else if (service === SttEngineOptionEnum.LOCAL) {
       result = await transcribeByLocal(url, language);
-    } else if (service === SttEngineOptionEnum.CLOUDFLARE) {
+    } else if (service === SttEngineOptionEnum.CLOUDFLARE_ENJOY) {
       result = await transcribeByCloudflareAi(blob);
     } else if (service === SttEngineOptionEnum.OPENAI) {
       result = await transcribeByOpenAi(
         new File([blob], "audio.mp3", { type: "audio/mp3" })
       );
-    } else if (
-      service === SttEngineOptionEnum.AZURE ||
-      service === SttEngineOptionEnum.ENJOYAI
-    ) {
+    } else if (service === SttEngineOptionEnum.AZURE_ENJOY) {
       result = await transcribeByAzureAi(
         new File([blob], "audio.wav", { type: "audio/wav" }),
         language,

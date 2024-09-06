@@ -10,7 +10,7 @@ import {
 import log from "@main/logger";
 import settings from "@main/settings";
 import * as i18n from "i18next";
-import { UserSettingKeyEnum } from "@/types/enums";
+import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/types/enums";
 
 const logger = log.scope("db/userSetting");
 
@@ -125,7 +125,28 @@ export class UserSetting extends Model<UserSetting> {
     const sttEngine = await UserSetting.get(UserSettingKeyEnum.STT_ENGINE);
     const prevSttEngine = await settings.get("whisper.service");
     if (prevSttEngine && !sttEngine) {
-      UserSetting.set(UserSettingKeyEnum.STT_ENGINE, prevSttEngine as string);
+      switch (prevSttEngine) {
+        case "azure":
+          UserSetting.set(
+            UserSettingKeyEnum.STT_ENGINE,
+            SttEngineOptionEnum.AZURE_ENJOY
+          );
+          break;
+        case "cloudflare":
+          UserSetting.set(
+            UserSettingKeyEnum.STT_ENGINE,
+            SttEngineOptionEnum.CLOUDFLARE_ENJOY
+          );
+          break;
+        case "openai":
+          UserSetting.set(
+            UserSettingKeyEnum.STT_ENGINE,
+            SttEngineOptionEnum.OPENAI
+          );
+          break;
+        default:
+          break;
+      }
     }
 
     // Whisper
