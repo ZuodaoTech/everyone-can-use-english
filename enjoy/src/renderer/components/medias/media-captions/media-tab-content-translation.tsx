@@ -13,6 +13,7 @@ import {
   DictLookupResult,
   AiLookupResult,
   TranslateResult,
+  DictSelect,
 } from "@renderer/components";
 
 /*
@@ -27,7 +28,7 @@ export function MediaTabContentTranslation(props: {
   return (
     <TabsContent value="translation">
       <SelectedWords {...props} />
-      <Separator className="my-2" />
+      <Separator className="my-4" />
       <div className="text-sm italic text-muted-foreground mb-2">
         {t("translateSentence")}
       </div>
@@ -62,66 +63,66 @@ const SelectedWords = (props: {
 
   return (
     <>
-      <div className="flex flex-wrap items-center space-x-2 select-text mb-4">
-        {selectedIndices.map((index, i) => {
-          const word = caption.timeline[index];
-          if (!word) return;
-          return (
-            <div key={index}>
-              <div className="font-serif text-lg font-semibold tracking-tight">
-                {word.text}
-              </div>
-              {word.timeline.length > 0 && (
-                <div className="text-sm text-serif text-muted-foreground">
-                  <span
-                    className={`mr-2 font-code ${
-                      i === 0 ? "before:content-['/']" : ""
-                    }
+      <div className="flex justify-between items-start">
+        <div className="flex flex-wrap items-center space-x-2 select-text mb-4">
+          {selectedIndices.map((index, i) => {
+            const word = caption.timeline[index];
+            if (!word) return;
+            return (
+              <div key={index}>
+                <div className="font-serif text-lg font-semibold tracking-tight">
+                  {word.text}
+                </div>
+                {word.timeline.length > 0 && (
+                  <div className="text-sm text-serif text-muted-foreground">
+                    <span
+                      className={`mr-2 font-code ${
+                        i === 0 ? "before:content-['/']" : ""
+                      }
                         ${
                           i === selectedIndices.length - 1
                             ? "after:content-['/']"
                             : ""
                         }`}
-                  >
-                    {word.timeline
-                      .map((t) =>
-                        learningLanguage.startsWith("en")
-                          ? convertWordIpaToNormal(
-                              t.timeline.map((s) => s.text),
-                              {
-                                mappings: ipaMappings,
-                              }
-                            ).join("")
-                          : t.text
-                      )
-                      .join(" ")}
-                  </span>
-                </div>
-              )}
-            </div>
-          );
-        })}
+                    >
+                      {word.timeline
+                        .map((t) =>
+                          learningLanguage.startsWith("en")
+                            ? convertWordIpaToNormal(
+                                t.timeline.map((s) => s.text),
+                                {
+                                  mappings: ipaMappings,
+                                }
+                              ).join("")
+                            : t.text
+                        )
+                        .join(" ")}
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <div className="w-60">
+          <DictSelect />
+        </div>
       </div>
 
-      {currentDictValue === "cambridge" ? (
-        <>
-          <Separator className="my-2" />
-          <CamdictLookupResult word={word} />
-        </>
-      ) : (
-        <>
-          <Separator className="my-2" />
-          <DictLookupResult word={word} autoHeight={true} />
-        </>
-      )}
+      <Separator className="my-4" />
 
-      <Separator className="my-2" />
-      <AiLookupResult
-        word={word}
-        context={caption.text}
-        sourceId={transcription.targetId}
-        sourceType={transcription.targetType}
-      />
+      {currentDictValue === "cambridge" ? (
+        <CamdictLookupResult word={word} />
+      ) : currentDictValue === "ai" ? (
+        <AiLookupResult
+          word={word}
+          context={caption.text}
+          sourceId={transcription.targetId}
+          sourceType={transcription.targetType}
+        />
+      ) : (
+        <DictLookupResult word={word} autoHeight={true} />
+      )}
     </>
   );
 };
