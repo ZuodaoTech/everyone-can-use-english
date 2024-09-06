@@ -342,6 +342,20 @@ class RecordingsHandler {
     ipcMain.handle("recordings-group-by-target", this.groupByTarget);
     ipcMain.handle("recordings-group-by-segment", this.groupBySegment);
   }
+
+  unregister() {
+    ipcMain.removeHandler("recordings-find-all");
+    ipcMain.removeHandler("recordings-find-one");
+    ipcMain.removeHandler("recordings-sync");
+    ipcMain.removeHandler("recordings-sync-all");
+    ipcMain.removeHandler("recordings-create");
+    ipcMain.removeHandler("recordings-destroy");
+    ipcMain.removeHandler("recordings-upload");
+    ipcMain.removeHandler("recordings-stats");
+    ipcMain.removeHandler("recordings-group-by-date");
+    ipcMain.removeHandler("recordings-group-by-target");
+    ipcMain.removeHandler("recordings-group-by-segment");
+  }
 }
 
 export const recordingsHandler = new RecordingsHandler();

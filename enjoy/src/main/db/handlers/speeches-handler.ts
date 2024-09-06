@@ -59,6 +59,11 @@ class SpeechesHandler {
     ipcMain.handle("speeches-find-one", this.findOne);
     ipcMain.handle("speeches-create", this.create);
   }
+
+  unregister() {
+    ipcMain.removeHandler("speeches-find-one");
+    ipcMain.removeHandler("speeches-create");
+  }
 }
 
 export const speechesHandler = new SpeechesHandler();

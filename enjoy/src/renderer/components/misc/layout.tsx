@@ -25,7 +25,7 @@ export const Layout = () => {
           </div>
 
           <div className="">
-            <Link to="/landing" replace>
+            <Link data-testid="landing-button" to="/landing" replace>
               <Button size="lg">{t("startToUse")}</Button>
             </Link>
           </div>

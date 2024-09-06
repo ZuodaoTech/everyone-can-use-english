@@ -6,8 +6,12 @@ import {
   useState,
 } from "react";
 import { useHotkeys, useRecordHotkeys } from "react-hotkeys-hook";
-import { AppSettingsProviderContext } from "./app-settings-provider";
-import _ from "lodash";
+import {
+  AppSettingsProviderContext,
+  DbProviderContext,
+} from "@renderer/context";
+import isEmpty from "lodash/isEmpty";
+import { UserSettingKeyEnum } from "@/types/enums";
 
 function isShortcutValid(shortcut: string) {
   const modifiers = ["ctrl", "alt", "shift", "meta"];
@@ -150,18 +154,25 @@ export const HotKeysSettingsProvider = ({
   const [keys, { start, stop, resetKeys, isRecording }] = useRecordHotkeys();
 
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { state: dbState } = useContext(DbProviderContext);
 
   useEffect(() => {
+    if (dbState !== "connected") return;
+
     fetchSettings();
-  }, []);
+  }, [dbState]);
 
   const fetchSettings = async () => {
-    const _hotkeys = await EnjoyApp.settings.getDefaultHotkeys();
+    const _hotkeys = await EnjoyApp.userSettings.get(
+      UserSettingKeyEnum.HOTKEYS
+    );
     // During version iterations, there may be added or removed keys.
     const merged = mergeWithPreference(_hotkeys ?? {}, defaultKeyMap);
-    await EnjoyApp.settings.setDefaultHotkeys(merged).then(() => {
-      setCurrentHotkeys(merged);
-    });
+    await EnjoyApp.userSettings
+      .set(UserSettingKeyEnum.HOTKEYS, merged)
+      .then(() => {
+        setCurrentHotkeys(merged);
+      });
   };
 
   const changeHotkey = useCallback(
@@ -200,9 +211,11 @@ export const HotKeysSettingsProvider = ({
         };
       }
 
-      await EnjoyApp.settings.setDefaultHotkeys(newMap).then(() => {
-        setCurrentHotkeys(newMap);
-      });
+      await EnjoyApp.userSettings
+        .set(UserSettingKeyEnum.HOTKEYS, newMap)
+        .then(() => {
+          setCurrentHotkeys(newMap);
+        });
       resetKeys();
     },
     [currentHotkeys]
@@ -230,7 +243,9 @@ export const HotKeysSettingsProvider = ({
         changeHotkey,
       }}
     >
-      {_.isEmpty(currentHotkeys) ? null : (
+      {isEmpty(currentHotkeys) ? (
+        children
+      ) : (
         <HotKeysSettingsSystemSettings
           {...{
             currentHotkeys,

@@ -13,11 +13,14 @@ class ChatMembersHandler {
   private async findAll(
     _event: IpcMainEvent,
     options: FindOptions<Attributes<ChatMember>> & { query?: string }
-  ) {
-  }
+  ) {}
 
   register() {
     ipcMain.handle("chat-members-find-all", this.findAll);
+  }
+
+  unregister() {
+    ipcMain.removeHandler("chat-members-find-all");
   }
 }
 

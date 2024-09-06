@@ -20,7 +20,7 @@ export default () => {
       <div className="mt-auto">
         <div className="flex mb-4 justify-end space-x-4">
           {initialized && (
-            <Link to="/" replace>
+            <Link data-testid="start-to-use-button" to="/" replace>
               <Button className="w-24">{t("startToUse")}</Button>
             </Link>
           )}

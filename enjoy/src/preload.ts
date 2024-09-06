@@ -182,75 +182,44 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     showErrorBox: (title: string, content: string) =>
       ipcRenderer.invoke("dialog-show-error-box", title, content),
   },
-  settings: {
+  appSettings: {
     get: (key: string) => {
-      return ipcRenderer.invoke("settings-get", key);
+      return ipcRenderer.invoke("app-settings-get", key);
     },
     set: (key: string, value: any) => {
-      return ipcRenderer.invoke("settings-set", key, value);
+      return ipcRenderer.invoke("app-settings-set", key, value);
     },
     getLibrary: () => {
-      return ipcRenderer.invoke("settings-get-library");
+      return ipcRenderer.invoke("app-settings-get-library");
     },
     setLibrary: (library: string) => {
-      return ipcRenderer.invoke("settings-set-library", library);
+      return ipcRenderer.invoke("app-settings-set-library", library);
+    },
+    getSessions: () => {
+      return ipcRenderer.invoke("app-settings-get-sessions");
     },
     getUser: () => {
-      return ipcRenderer.invoke("settings-get-user");
+      return ipcRenderer.invoke("app-settings-get-user");
     },
     setUser: (user: UserType) => {
-      return ipcRenderer.invoke("settings-set-user", user);
+      return ipcRenderer.invoke("app-settings-set-user", user);
     },
     getUserDataPath: () => {
-      return ipcRenderer.invoke("settings-get-user-data-path");
-    },
-    getDefaultEngine: () => {
-      return ipcRenderer.invoke("settings-get-default-engine");
-    },
-    setDefaultEngine: (engine: "enjoyai" | "openai") => {
-      return ipcRenderer.invoke("settings-set-default-engine", engine);
-    },
-    getGptEngine: () => {
-      return ipcRenderer.invoke("settings-get-gpt-engine");
-    },
-    setGptEngine: (engine: GptEngineSettingType) => {
-      return ipcRenderer.invoke("settings-set-gpt-engine", engine);
-    },
-    getLlm: (provider: string) => {
-      return ipcRenderer.invoke("settings-get-llm", provider);
-    },
-    setLlm: (provider: string, config: LlmProviderType) => {
-      return ipcRenderer.invoke("settings-set-llm", provider, config);
-    },
-    getLanguage: (language: string) => {
-      return ipcRenderer.invoke("settings-get-language", language);
-    },
-    switchLanguage: (language: string) => {
-      return ipcRenderer.invoke("settings-switch-language", language);
-    },
-    getDefaultHotkeys: () => {
-      return ipcRenderer.invoke("settings-get-default-hotkeys");
-    },
-    setDefaultHotkeys: (records: Record<string, string>) => {
-      return ipcRenderer.invoke("settings-set-default-hotkeys", records);
-    },
-    getDictSettings: () => {
-      return ipcRenderer.invoke("settings-get-dict");
-    },
-    setDictSettings: (dict: DictSettingType) => {
-      return ipcRenderer.invoke("settings-set-dicts", dict);
+      return ipcRenderer.invoke("app-settings-get-user-data-path");
     },
     getApiUrl: () => {
-      return ipcRenderer.invoke("settings-get-api-url");
+      return ipcRenderer.invoke("app-settings-get-api-url");
     },
     setApiUrl: (url: string) => {
-      return ipcRenderer.invoke("settings-set-api-url", url);
+      return ipcRenderer.invoke("app-settings-set-api-url", url);
     },
-    getVocabularyConfig: () => {
-      return ipcRenderer.invoke("settings-get-vocabulary-config");
+  },
+  userSettings: {
+    get: (key: string) => {
+      return ipcRenderer.invoke("user-settings-get", key);
     },
-    setVocabularyConfig: (records: Record<string, string>) => {
-      return ipcRenderer.invoke("settings-set-vocabulary-config", records);
+    set: (key: string, value: any) => {
+      return ipcRenderer.invoke("user-settings-set", key, value);
     },
   },
   path: {
@@ -259,7 +228,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   db: {
-    init: () => ipcRenderer.invoke("db-init"),
+    connect: () => ipcRenderer.invoke("db-connect"),
+    disconnect: () => ipcRenderer.invoke("db-disconnect"),
     onTransaction: (
       callback: (
         event: IpcRendererEvent,
@@ -515,9 +485,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     setModel: (model: string) => {
       return ipcRenderer.invoke("whisper-set-model", model);
-    },
-    setService: (service: string) => {
-      return ipcRenderer.invoke("whisper-set-service", service);
     },
     check: () => {
       return ipcRenderer.invoke("whisper-check");

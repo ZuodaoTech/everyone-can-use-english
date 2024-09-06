@@ -61,13 +61,13 @@ test.describe("with login", async () => {
     settings.user = user;
     fs.writeJsonSync(path.join(resultDir, "settings.json"), settings);
 
-    page.route("**/api/me", (route) => {
+    await page.route("**/api/me", (route) => {
       route.fulfill({
         json: user,
       });
     });
 
-    page.route("**/api/stories", (route) => {
+    await page.route("**/api/stories", (route) => {
       route.fulfill({
         json: {
           stories: [],
@@ -199,6 +199,7 @@ test.describe("with login", async () => {
 
       // add to library
       await page.getByTestId("message-start-shadow").click();
+      await page.getByTestId("transcribe-continue-button").click();
       await page.getByTestId("audio-player").waitFor();
       await page
         .getByTestId("media-player-container")

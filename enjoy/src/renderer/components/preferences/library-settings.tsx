@@ -25,8 +25,8 @@ export const LibrarySettings = () => {
     });
 
     if (filePaths) {
-      EnjoyApp.settings.setLibrary(filePaths[0]);
-      const _library = await EnjoyApp.settings.getLibrary();
+      EnjoyApp.appSettings.setLibrary(filePaths[0]);
+      const _library = await EnjoyApp.appSettings.getLibrary();
       if (_library !== libraryPath) {
         EnjoyApp.app.relaunch();
       }
@@ -83,9 +83,13 @@ const DiskUsage = () => {
   const [usage, setUsage] = useState<DiskUsageType>([]);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
-  const openPath = async (path: string) => {
-    if (path) {
-      await EnjoyApp.shell.openPath(path);
+  const openPath = async (filePath: string) => {
+    console.log(filePath);
+
+    if (filePath?.match(/.+\.json$/)) {
+      await EnjoyApp.shell.openPath(filePath.split("/").slice(0, -1).join("/"));
+    } else if (filePath) {
+      await EnjoyApp.shell.openPath(filePath);
     }
   };
 

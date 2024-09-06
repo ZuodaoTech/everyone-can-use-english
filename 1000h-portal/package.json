@@ -10,16 +10,16 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxtjs/seo": "^2.0.0-rc.19",
-    "nuxt": "^3.13.0",
-    "nuxt-og-image": "^3.0.0-rc.65",
-    "vue": "^3.4.38",
+    "@nuxtjs/seo": "^2.0.0-rc.21",
+    "nuxt": "^3.13.1",
+    "nuxt-og-image": "^3.0.0-rc.66",
+    "vue": "^3.5.3",
     "vue-router": "^4.4.3"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.43",
-    "sass": "^1.77.8",
+    "postcss": "^8.4.45",
+    "sass": "^1.78.0",
     "tailwindcss": "^3.4.10"
   }
 }

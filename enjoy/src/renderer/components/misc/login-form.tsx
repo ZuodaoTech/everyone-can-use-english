@@ -2,13 +2,10 @@ import {
   Separator,
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
   Avatar,
   AvatarImage,
   AvatarFallback,
   Button,
-  toast,
   Tabs,
   TabsList,
   TabsTrigger,
@@ -28,40 +25,16 @@ import {
   NetworkState,
 } from "@renderer/components";
 import { EmailLoginForm } from "./email-login-form";
-import { Client } from "@/api";
 
 export const LoginForm = () => {
-  const { user, EnjoyApp, login, apiUrl } = useContext(
-    AppSettingsProviderContext
-  );
-  const [rememberedUser, setRememberedUser] = useState(null);
-
-  const loginWithRememberedUser = async () => {
-    if (!rememberedUser) return;
-    const client = new Client({
-      baseUrl: apiUrl,
-      accessToken: rememberedUser.accessToken,
-    });
-
-    client
-      .me()
-      .then((user) => {
-        if (user?.id) {
-          login(Object.assign({}, rememberedUser, user));
-        }
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  };
+  const { user, EnjoyApp, login } = useContext(AppSettingsProviderContext);
+  const [rememberedUsers, setRememberedUsers] = useState<{ id: string }[]>([]);
 
   useEffect(() => {
-    if (user) return;
-
-    EnjoyApp.settings.getUser().then((user) => {
-      setRememberedUser(user);
+    EnjoyApp.appSettings.getSessions().then((sessions) => {
+      setRememberedUsers(sessions);
     });
-  }, [user]);
+  }, []);
 
   if (user) {
     return (
@@ -73,77 +46,67 @@ export const LoginForm = () => {
     );
   }
 
-  if (rememberedUser) {
-    return (
-      <Tabs className="w-full max-w-md" defaultValue="login">
-        <TabsList className="w-full grid grid-cols-2">
-          <TabsTrigger value="login">{t("login")}</TabsTrigger>
-          <TabsTrigger value="advanced">{t("advanced")}</TabsTrigger>
-        </TabsList>
-        <TabsContent value="login">
-          <div className="px-4 py-2 border rounded-lg w-full max-w-md">
-            <div className="flex items-start justify-between py-4">
-              <div className="">
-                <div className="flex items-center space-x-2">
-                  <Avatar>
-                    <AvatarImage
-                      crossOrigin="anonymous"
-                      src={rememberedUser.avatarUrl}
-                    />
-                    <AvatarFallback className="text-xl">
-                      {rememberedUser.name[0].toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="">
-                    <div className="text-sm font-semibold">
-                      {rememberedUser.name}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      {rememberedUser.id}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => setRememberedUser(null)}
-                >
-                  {t("reLogin")}
-                </Button>
-                <Button
-                  variant="default"
-                  size="sm"
-                  onClick={loginWithRememberedUser}
-                >
-                  {t("login")}
-                </Button>
-              </div>
-            </div>
-          </div>
-        </TabsContent>
-        <TabsContent value="advanced">
-          <Card className="w-full max-w-md">
-            <CardContent className="mt-6">
-              <ApiUrlSettings />
-              <Separator />
-              <ProxySettings />
-              <Separator />
-              <NetworkState />
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    );
-  }
-
   return (
-    <Tabs className="w-full max-w-md" defaultValue="login">
-      <TabsList className="w-full grid grid-cols-2">
+    <Tabs
+      className="w-full max-w-md"
+      defaultValue={rememberedUsers.length > 0 ? "selectUser" : "login"}
+    >
+      <TabsList
+        className={`w-full grid grid-cols-${
+          rememberedUsers.length > 0 ? 3 : 2
+        }`}
+      >
+        {rememberedUsers.length > 0 && (
+          <TabsTrigger value="selectUser">{t("selectUser")}</TabsTrigger>
+        )}
         <TabsTrigger value="login">{t("login")}</TabsTrigger>
         <TabsTrigger value="advanced">{t("advanced")}</TabsTrigger>
       </TabsList>
+      {rememberedUsers.length > 0 && (
+        <TabsContent value="selectUser">
+          <div className="grid gap-4 border rounded-lg">
+            {rememberedUsers.map((rememberedUser) => (
+              <div
+                key={rememberedUser.id}
+                className="px-4 py-2 border-b last:border-b-0 w-full max-w-md"
+              >
+                <div className="flex items-center justify-between py-4">
+                  <div className="">
+                    <div className="flex items-center space-x-2">
+                      <Avatar>
+                        <AvatarImage
+                          crossOrigin="anonymous"
+                          src={`https://api.dicebear.com/9.x/thumbs/svg?seed=${rememberedUser.id}`}
+                        />
+                        <AvatarFallback className="text-xl"></AvatarFallback>
+                      </Avatar>
+                      <div className="">
+                        <div className="text-sm font-semibold"></div>
+                        <div className="text-xs text-muted-foreground">
+                          {rememberedUser.id}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="">
+                    <Button
+                      variant="default"
+                      data-testid="login-with-remembered-user-button"
+                      size="sm"
+                      onClick={async () => {
+                        await EnjoyApp.appSettings.setUser(rememberedUser);
+                        login(rememberedUser);
+                      }}
+                    >
+                      {t("select")}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </TabsContent>
+      )}
       <TabsContent value="login">
         <Card className="w-full max-w-md">
           <CardContent className="mt-6">

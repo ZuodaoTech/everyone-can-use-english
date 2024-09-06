@@ -115,7 +115,7 @@ type EnjoyAppType = {
     ) => Promise<Electron.MessageBoxReturnValue>;
     showErrorBox: (title: string, content: string) => Promise<void>;
   };
-  settings: {
+  appSettings: {
     get: (key: string) => Promise<any>;
     set: (key: string, value: any) => Promise<void>;
     getLibrary: () => Promise<string>;
@@ -123,25 +123,13 @@ type EnjoyAppType = {
     getUser: () => Promise<UserType>;
     setUser: (user: UserType) => Promise<void>;
     getUserDataPath: () => Promise<string>;
-    getDefaultEngine: () => Promise<string>;
-    setDefaultEngine: (string) => Promise<string>;
-    getGptEngine: () => Promise<GptEngineSettingType>;
-    setGptEngine: (GptEngineSettingType) => Promise<GptEngineSettingType>;
-    getLlm: (provider: SupportedLlmProviderType) => Promise<LlmProviderType>;
-    setLlm: (
-      provider: SupportedLlmProviderType,
-      LlmProviderType
-    ) => Promise<void>;
-    getLanguage: () => Promise<string>;
-    switchLanguage: (language: string) => Promise<void>;
-    getDefaultHotkeys: () => Promise<Record<string, string> | undefined>;
-    setDefaultHotkeys: (records: Record<string, string>) => Promise<void>;
-    getDictSettings: () => Promise<DictSettingType>;
-    setDictSettings: (dict: DictSettingType) => Promise<void>;
     getApiUrl: () => Promise<string>;
     setApiUrl: (url: string) => Promise<void>;
-    getVocabularyConfig: () => Promise<VocabularyConfigType | undefined>;
-    setVocabularyConfig: (records: VocabularyConfigType) => Promise<void>;
+    getSessions: () => Promise<{ id: string }[]>;
+  };
+  userSettings: {
+    get: (key: UserSettingKeyEnum) => Promise<any>;
+    set: (key: UserSettingKeyEnum, value: any) => Promise<void>;
   };
   fs: {
     ensureDir: (path: string) => Promise<boolean>;
@@ -150,7 +138,8 @@ type EnjoyAppType = {
     join: (...paths: string[]) => Promise<string>;
   };
   db: {
-    init: () => Promise<DbState>;
+    connect: () => Promise<DbState>;
+    disconnect: () => Promise<void>;
     onTransaction: (
       callback: (event, state: TransactionStateType) => void
     ) => Promise<void>;
@@ -290,9 +279,6 @@ type EnjoyAppType = {
     config: () => Promise<WhisperConfigType>;
     check: () => Promise<{ success: boolean; log: string }>;
     setModel: (model: string) => Promise<WhisperConfigType>;
-    setService: (
-      service: WhisperConfigType["service"]
-    ) => Promise<WhisperConfigType>;
     transcribe: (
       params: {
         file?: string;

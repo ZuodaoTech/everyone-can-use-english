@@ -42,7 +42,7 @@ export const ApiUrlSettings = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex items-start justify-between py-4">
+        <div className="flex items-start justify-between space-x-2 py-4">
           <div className="">
             <div className="mb-2">{t("apiSettings")}</div>
             <div className="text-sm text-muted-foreground mb-2 ml-1">
@@ -100,7 +100,7 @@ export const ApiUrlSettings = () => {
                 </Button>
               )}
             </div>
-            <div className="text-xs text-muted-foreground">
+            <div className="text-xs text-muted-foreground text-right">
               <InfoIcon className="mr-1 w-3 h-3 inline" />
               <span>{t("reloadIsNeededAfterChanged")}</span>
             </div>

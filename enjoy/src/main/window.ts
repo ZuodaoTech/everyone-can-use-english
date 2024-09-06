@@ -14,7 +14,6 @@ import settings from "@main/settings";
 import downloader from "@main/downloader";
 import whisper from "@main/whisper";
 import fs from "fs-extra";
-import "@main/i18n";
 import log from "@main/logger";
 import { REPO_URL, WS_URL } from "@/constants";
 import { AudibleProvider, TedProvider, YoutubeProvider } from "@main/providers";
@@ -42,7 +41,7 @@ const main = {
   init: () => {},
 };
 
-main.init = () => {
+main.init = async () => {
   if (main.win) {
     main.win.show();
     return;

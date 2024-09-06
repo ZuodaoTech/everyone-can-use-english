@@ -81,6 +81,14 @@ class ChatAgentsHandler {
     ipcMain.handle("chat-agents-update", this.update);
     ipcMain.handle("chat-agents-destroy", this.destroy);
   }
+
+  unregister() {
+    ipcMain.removeHandler("chat-agents-find-all");
+    ipcMain.removeHandler("chat-agents-find-one");
+    ipcMain.removeHandler("chat-agents-create");
+    ipcMain.removeHandler("chat-agents-update");
+    ipcMain.removeHandler("chat-agents-destroy");
+  }
 }
 
 export const chatAgentsHandler = new ChatAgentsHandler();

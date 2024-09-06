@@ -177,6 +177,16 @@ class MessagesHandler {
     ipcMain.handle("messages-destroy", this.destroy);
     ipcMain.handle("messages-create-speech", this.createSpeech);
   }
+
+  unregister() {
+    ipcMain.removeHandler("messages-find-all");
+    ipcMain.removeHandler("messages-find-one");
+    ipcMain.removeHandler("messages-create");
+    ipcMain.removeHandler("messages-create-in-batch");
+    ipcMain.removeHandler("messages-update");
+    ipcMain.removeHandler("messages-destroy");
+    ipcMain.removeHandler("messages-create-speech");
+  }
 }
 
 export const messagesHandler = new MessagesHandler();

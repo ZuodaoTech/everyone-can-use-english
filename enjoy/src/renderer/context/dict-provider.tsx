@@ -1,6 +1,10 @@
 import { createContext, useState, useEffect, useContext, useMemo } from "react";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  DbProviderContext,
+} from "@renderer/context";
 import { t } from "i18next";
+import { UserSettingKeyEnum } from "@/types/enums";
 
 type DictProviderState = {
   settings: DictSettingType;
@@ -48,6 +52,7 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   });
   const [currentDictValue, setCurrentDictValue] = useState<string>("");
   const [currentDict, setCurrentDict] = useState<Dict | null>();
+  const { state: dbState } = useContext(DbProviderContext);
 
   const availableDicts = useMemo(
     () =>
@@ -93,12 +98,14 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   }, [availableDicts, settings]);
 
   useEffect(() => {
+    if (dbState !== "connected") return;
+
     fetchSettings();
     fetchDicts();
-  }, []);
+  }, [dbState]);
 
   const fetchSettings = async () => {
-    return EnjoyApp.settings.getDictSettings().then((res) => {
+    return EnjoyApp.userSettings.get(UserSettingKeyEnum.DICTS).then((res) => {
       res && setSettings(res);
     });
   };
@@ -119,8 +126,8 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   const setDefault = async (dict: Dict | null) => {
     const _settings = { ...settings, default: dict?.name ?? "" };
 
-    EnjoyApp.settings
-      .setDictSettings(_settings)
+    EnjoyApp.userSettings
+      .set(UserSettingKeyEnum.DICTS, _settings)
       .then(() => setSettings(_settings));
   };
 
@@ -129,8 +136,8 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
       const removing = [...(settings.removing ?? []), dict.name];
       const _settings = { ...settings, removing };
 
-      EnjoyApp.settings
-        .setDictSettings(_settings)
+      EnjoyApp.userSettings
+        .set(UserSettingKeyEnum.DICTS, _settings)
         .then(() => setSettings(_settings));
     }
   };
@@ -140,8 +147,8 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
       settings.removing?.filter((name) => name !== dict.name) ?? [];
     const _settings = { ...settings, removing };
 
-    EnjoyApp.settings
-      .setDictSettings(_settings)
+    EnjoyApp.userSettings
+      .set(UserSettingKeyEnum.DICTS, _settings)
       .then(() => setSettings(_settings));
   };
 

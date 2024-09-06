@@ -14,14 +14,11 @@ import {
   TabsList,
   TabsTrigger,
 } from "@renderer/components/ui";
-import {
-  CheckCircleIcon,
-  CircleAlertIcon,
-  LoaderIcon,
-} from "lucide-react";
+import { CheckCircleIcon, CircleAlertIcon, LoaderIcon } from "lucide-react";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
 import { TranscriptionCreateForm, TranscriptionsList } from "../transcriptions";
+import { SttEngineOptionEnum } from "@/types/enums";
 
 export const MediaLoadingModal = () => {
   const navigate = useNavigate();
@@ -68,7 +65,7 @@ export const MediaLoadingModal = () => {
                     generateTranscription({
                       originalText: data.text,
                       language: data.language,
-                      service: data.service as WhisperConfigType["service"],
+                      service: data.service as SttEngineOptionEnum | "upload",
                       isolate: data.isolate,
                     });
                   }}

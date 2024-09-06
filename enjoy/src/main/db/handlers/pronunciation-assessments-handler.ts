@@ -102,6 +102,14 @@ class PronunciationAssessmentsHandler {
     ipcMain.handle("pronunciation-assessments-update", this.update);
     ipcMain.handle("pronunciation-assessments-destroy", this.destroy);
   }
+
+  unregister() {
+    ipcMain.removeHandler("pronunciation-assessments-find-all");
+    ipcMain.removeHandler("pronunciation-assessments-find-one");
+    ipcMain.removeHandler("pronunciation-assessments-create");
+    ipcMain.removeHandler("pronunciation-assessments-update");
+    ipcMain.removeHandler("pronunciation-assessments-destroy");
+  }
 }
 
 export const pronunciationAssessmentsHandler =

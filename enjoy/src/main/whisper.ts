@@ -8,6 +8,9 @@ import log from "@main/logger";
 import url from "url";
 import { enjoyUrlToPath } from "./utils";
 import { t } from "i18next";
+import { UserSetting } from "@main/db/models";
+import db from "@main/db";
+import { UserSettingKeyEnum } from "@/types/enums";
 
 const __filename = url.fileURLToPath(import.meta.url);
 /*
@@ -40,7 +43,7 @@ class Whipser {
     this.initialize();
   }
 
-  initialize() {
+  async initialize() {
     const models = [];
 
     const bundledModels = fs.readdirSync(this.bundledModelsDir);
@@ -66,9 +69,23 @@ class Whipser {
         savePath: path.join(dir, file),
       });
     }
-    settings.setSync("whisper.availableModels", models);
-    settings.setSync("whisper.modelsPath", dir);
-    this.config = settings.whisperConfig();
+
+    if (db.connection) {
+      const whisperConfig = (await UserSetting.get(
+        UserSettingKeyEnum.WHISPER
+      )) as string;
+      this.config = {
+        model: whisperConfig || models[0].name,
+        availableModels: models,
+        modelsPath: dir,
+      };
+    } else {
+      this.config = {
+        model: models[0].name,
+        availableModels: models,
+        modelsPath: dir,
+      };
+    }
   }
 
   currentModel() {
@@ -82,9 +99,10 @@ class Whipser {
     }
     if (!model) {
       model = this.config.availableModels[0];
+      this.config = Object.assign({}, this.config, { model: model.name });
+      UserSetting.set(UserSettingKeyEnum.WHISPER, model.name);
     }
 
-    settings.setSync("whisper.model", model.name);
     return model;
   }
 
@@ -258,13 +276,13 @@ class Whipser {
 
   registerIpcHandlers() {
     ipcMain.handle("whisper-config", async () => {
+      await this.initialize();
       return this.config;
     });
 
     ipcMain.handle("whisper-set-model", async (_event, model) => {
-      const originalModel = settings.getSync("whisper.model");
-      settings.setSync("whisper.model", model);
-      this.config = settings.whisperConfig();
+      const originalModel = this.config.model;
+      this.config.model = model;
 
       return this.check()
         .then(({ success, log }) => {
@@ -275,24 +293,12 @@ class Whipser {
           }
         })
         .catch((err) => {
-          settings.setSync("whisper.model", originalModel);
+          this.config.model = originalModel;
           throw err;
+        })
+        .finally(() => {
+          UserSetting.set(UserSettingKeyEnum.WHISPER, this.config.model);
         });
-    });
-
-    ipcMain.handle("whisper-set-service", async (_event, service) => {
-      if (service === "local") {
-        await this.check();
-        settings.setSync("whisper.service", service);
-        this.config.service = service;
-        return this.config;
-      } else if (["cloudflare", "azure", "openai"].includes(service)) {
-        settings.setSync("whisper.service", service);
-        this.config.service = service;
-        return this.config;
-      } else {
-        throw new Error("Unknown service");
-      }
     });
 
     ipcMain.handle("whisper-check", async (_event) => {

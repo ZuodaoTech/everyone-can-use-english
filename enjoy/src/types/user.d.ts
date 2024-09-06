@@ -1,6 +1,6 @@
 type UserType = {
   id: string;
-  name: string;
+  name?: string;
   email?: string;
   balance?: number;
   avatarUrl?: string;

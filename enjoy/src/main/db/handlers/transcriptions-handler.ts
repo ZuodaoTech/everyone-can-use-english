@@ -60,6 +60,11 @@ class TranscriptionsHandler {
     ipcMain.handle("transcriptions-find-or-create", this.findOrCreate);
     ipcMain.handle("transcriptions-update", this.update);
   }
+
+  unregister() {
+    ipcMain.removeHandler("transcriptions-find-or-create");
+    ipcMain.removeHandler("transcriptions-update");
+  }
 }
 
 export const transcriptionsHandler = new TranscriptionsHandler();

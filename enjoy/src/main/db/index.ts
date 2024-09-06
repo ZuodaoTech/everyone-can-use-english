@@ -6,6 +6,10 @@ import {
   Audio,
   Recording,
   CacheObject,
+  Chat,
+  ChatAgent,
+  ChatMember,
+  ChatMessage,
   Conversation,
   Message,
   Note,
@@ -14,14 +18,15 @@ import {
   Speech,
   Transcription,
   Video,
-  Chat,
-  ChatAgent,
-  ChatMember,
-  ChatMessage,
+  UserSetting,
 } from "./models";
 import {
   audiosHandler,
   cacheObjectsHandler,
+  chatAgentsHandler,
+  chatMembersHandler,
+  chatMessagesHandler,
+  chatsHandler,
   conversationsHandler,
   messagesHandler,
   notesHandler,
@@ -31,14 +36,13 @@ import {
   speechesHandler,
   transcriptionsHandler,
   videosHandler,
-  chatAgentsHandler,
-  chatMembersHandler,
-  chatMessagesHandler,
-  chatsHandler,
+  userSettingsHandler,
 } from "./handlers";
 import os from "os";
 import path from "path";
 import url from "url";
+import { i18n } from "@main/i18n";
+import { UserSettingKeyEnum } from "@/types/enums";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,6 +50,7 @@ const __dirname = path.dirname(__filename);
 const db = {
   connection: null as Sequelize | null,
   connect: async () => {},
+  disconnect: async () => {},
   registerIpcHandlers: () => {},
 };
 
@@ -53,12 +58,21 @@ db.connect = async () => {
   if (db.connection) {
     return;
   }
+  const dbPath = settings.dbPath();
+  if (!dbPath) {
+    throw new Error("Db path is not ready");
+  }
+
   const sequelize = new Sequelize({
     dialect: "sqlite",
-    storage: settings.dbPath(),
+    storage: dbPath,
     models: [
       Audio,
       CacheObject,
+      Chat,
+      ChatAgent,
+      ChatMember,
+      ChatMessage,
       Conversation,
       Message,
       Note,
@@ -67,11 +81,8 @@ db.connect = async () => {
       Segment,
       Speech,
       Transcription,
+      UserSetting,
       Video,
-      Chat,
-      ChatAgent,
-      ChatMember,
-      ChatMessage,
     ],
   });
 
@@ -143,12 +154,25 @@ db.connect = async () => {
     });
   });
 
+  // migrate settings
+  await UserSetting.migrateFromSettings();
+
+  // initialize i18n
+  const language = (await UserSetting.get(
+    UserSettingKeyEnum.LANGUAGE
+  )) as string;
+  i18n(language);
+
   // vacuum the database
   await sequelize.query("VACUUM");
 
   // register handlers
   audiosHandler.register();
   cacheObjectsHandler.register();
+  chatAgentsHandler.register();
+  chatMembersHandler.register();
+  chatMessagesHandler.register();
+  chatsHandler.register();
   conversationsHandler.register();
   messagesHandler.register();
   notesHandler.register();
@@ -157,28 +181,53 @@ db.connect = async () => {
   segmentsHandler.register();
   speechesHandler.register();
   transcriptionsHandler.register();
+  userSettingsHandler.register();
   videosHandler.register();
-  chatAgentsHandler.register();
-  chatMembersHandler.register();
-  chatMessagesHandler.register();
-  chatsHandler.register();
+};
+
+db.disconnect = async () => {
+  // unregister handlers
+  audiosHandler.unregister();
+  cacheObjectsHandler.unregister();
+  chatAgentsHandler.unregister();
+  chatMembersHandler.unregister();
+  chatMessagesHandler.unregister();
+  chatsHandler.unregister();
+  conversationsHandler.unregister();
+  messagesHandler.unregister();
+  notesHandler.unregister();
+  pronunciationAssessmentsHandler.unregister();
+  recordingsHandler.unregister();
+  segmentsHandler.unregister();
+  speechesHandler.unregister();
+  transcriptionsHandler.unregister();
+  userSettingsHandler.unregister();
+  videosHandler.unregister();
+
+  await db.connection?.close();
+  db.connection = null;
 };
 
 db.registerIpcHandlers = () => {
-  ipcMain.handle("db-init", async () => {
-    return db
-      .connect()
-      .then(() => {
-        return {
-          state: "connected",
-        };
-      })
-      .catch((err) => {
-        return {
-          state: "error",
-          error: err.message,
-        };
-      });
+  ipcMain.handle("db-connect", async () => {
+    try {
+      await db.connect();
+      return {
+        state: "connected",
+        path: settings.dbPath(),
+        error: null,
+      };
+    } catch (err) {
+      return {
+        state: "error",
+        error: err.message,
+        path: settings.dbPath(),
+      };
+    }
+  });
+
+  ipcMain.handle("db-disconnect", async () => {
+    db.disconnect();
   });
 };
 
