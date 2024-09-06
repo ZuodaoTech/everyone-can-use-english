@@ -14,8 +14,17 @@ export class Client {
     accessToken?: string;
     logger?: any;
     locale?: "en" | "zh-CN";
+    onError?: (err: any) => void;
+    onSuccess?: (res: any) => void;
   }) {
-    const { baseUrl, accessToken, logger, locale = "en" } = options;
+    const {
+      baseUrl,
+      accessToken,
+      logger,
+      locale = "en",
+      onError,
+      onSuccess,
+    } = options;
     this.baseUrl = baseUrl;
     this.logger = logger || console;
 
@@ -40,6 +49,10 @@ export class Client {
     });
     this.api.interceptors.response.use(
       (response) => {
+        if (onSuccess) {
+          onSuccess(response);
+        }
+
         this.logger.debug(
           response.status,
           response.config.method.toUpperCase(),
@@ -48,6 +61,10 @@ export class Client {
         return camelcaseKeys(response.data, { deep: true });
       },
       (err) => {
+        if (onError) {
+          onError(err);
+        }
+
         if (err.response) {
           this.logger.error(
             err.response.status,
@@ -55,6 +72,10 @@ export class Client {
             err.response.config.baseURL + err.response.config.url,
             err.response.data
           );
+
+          if (err.response.data) {
+            err.message = err.response.data;
+          }
           return Promise.reject(err);
         }
 

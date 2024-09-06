@@ -780,5 +780,7 @@
   "howToDownload": "How to download?",
   "selectDir": "Select Folder",
   "importMdictFile": "Import the original dictionary file",
-  "mdictFileTip": "Directly import .mdx .mdd format files (.mdx files are required, .mdd files are optional and can have multiple), but there may be problems with style and usability."
+  "mdictFileTip": "Directly import .mdx .mdd format files (.mdx files are required, .mdd files are optional and can have multiple), but there may be problems with style and usability.",
+  "authorizationExpired": "Your authorization has expired. Please login again.",
+  "selectUser": "Select user"
 }

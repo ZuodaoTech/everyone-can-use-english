@@ -37,8 +37,6 @@ type AppSettingsProviderState = {
   setRecorderConfig?: (config: RecorderConfigType) => Promise<void>;
   // remote config
   ipaMappings?: { [key: string]: string };
-  // api status
-  apiStatus?: "connected" | "connecting" | "unauthorized" | "error";
 };
 
 const initialState: AppSettingsProviderState = {
@@ -72,9 +70,6 @@ export const AppSettingsProvider = ({
   const [ipaMappings, setIpaMappings] = useState<{ [key: string]: string }>(
     IPA_MAPPINGS
   );
-  const [apiStatus, setApiStatus] = useState<
-    "connected" | "connecting" | "unauthorized" | "error"
-  >("connecting");
   const db = useContext(DbProviderContext);
 
   const initSentry = () => {
@@ -263,6 +258,11 @@ export const AppSettingsProvider = ({
         baseUrl: apiUrl,
         accessToken: user?.accessToken,
         locale: language,
+        onError: (err) => {
+          if (user.accessToken && err.status == 401) {
+            setUser({ ...user, accessToken: null });
+          }
+        },
       })
     );
   }, [user, apiUrl, language]);
@@ -333,7 +333,6 @@ export const AppSettingsProvider = ({
         recorderConfig,
         setRecorderConfig: setRecorderConfigHandler,
         ipaMappings,
-        apiStatus,
       }}
     >
       {children}

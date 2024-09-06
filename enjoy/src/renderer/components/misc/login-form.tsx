@@ -46,19 +46,29 @@ export const LoginForm = () => {
     );
   }
 
-  if (rememberedUsers.length > 0) {
-    return (
-      <Tabs className="w-full max-w-md" defaultValue="login">
-        <TabsList className="w-full grid grid-cols-2">
-          <TabsTrigger value="login">{t("login")}</TabsTrigger>
-          <TabsTrigger value="advanced">{t("advanced")}</TabsTrigger>
-        </TabsList>
-        <TabsContent value="login">
-          <div className="grid gap-4">
+  return (
+    <Tabs
+      className="w-full max-w-md"
+      defaultValue={rememberedUsers.length > 0 ? "selectUser" : "login"}
+    >
+      <TabsList
+        className={`w-full grid grid-cols-${
+          rememberedUsers.length > 0 ? 3 : 2
+        }`}
+      >
+        {rememberedUsers.length > 0 && (
+          <TabsTrigger value="selectUser">{t("selectUser")}</TabsTrigger>
+        )}
+        <TabsTrigger value="login">{t("login")}</TabsTrigger>
+        <TabsTrigger value="advanced">{t("advanced")}</TabsTrigger>
+      </TabsList>
+      {rememberedUsers.length > 0 && (
+        <TabsContent value="selectUser">
+          <div className="grid gap-4 border rounded-lg">
             {rememberedUsers.map((rememberedUser) => (
               <div
                 key={rememberedUser.id}
-                className="px-4 py-2 border rounded-lg w-full max-w-md"
+                className="px-4 py-2 border-b last:border-b-0 w-full max-w-md"
               >
                 <div className="flex items-center justify-between py-4">
                   <div className="">
@@ -88,7 +98,7 @@ export const LoginForm = () => {
                         login(rememberedUser);
                       }}
                     >
-                      {t("login")}
+                      {t("select")}
                     </Button>
                   </div>
                 </div>
@@ -96,27 +106,7 @@ export const LoginForm = () => {
             ))}
           </div>
         </TabsContent>
-        <TabsContent value="advanced">
-          <Card className="w-full max-w-md">
-            <CardContent className="mt-6">
-              <ApiUrlSettings />
-              <Separator />
-              <ProxySettings />
-              <Separator />
-              <NetworkState />
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    );
-  }
-
-  return (
-    <Tabs className="w-full max-w-md" defaultValue="login">
-      <TabsList className="w-full grid grid-cols-2">
-        <TabsTrigger value="login">{t("login")}</TabsTrigger>
-        <TabsTrigger value="advanced">{t("advanced")}</TabsTrigger>
-      </TabsList>
+      )}
       <TabsContent value="login">
         <Card className="w-full max-w-md">
           <CardContent className="mt-6">
