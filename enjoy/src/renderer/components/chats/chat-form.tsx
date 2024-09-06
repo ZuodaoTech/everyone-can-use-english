@@ -192,9 +192,9 @@ export const ChatForm = (props: {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="local">{t("local")}</SelectItem>
-                    <SelectItem value="azure">{t("azureAi")}</SelectItem>
+                    <SelectItem value="azure">{t("enjoyAzure")}</SelectItem>
                     <SelectItem value="cloudflare">
-                      {t("cloudflareAi")}
+                      {t("enjoyCloudflare")}
                     </SelectItem>
                     <SelectItem value="openai">OpenAI</SelectItem>
                   </SelectContent>
@@ -203,9 +203,9 @@ export const ChatForm = (props: {
                   {form.watch("config.sttEngine") === "local" &&
                     t("localSpeechToTextDescription")}
                   {form.watch("config.sttEngine") === "azure" &&
-                    t("azureSpeechToTextDescription")}
+                    t("enjoyAzureSpeechToTextDescription")}
                   {form.watch("config.sttEngine") === "cloudflare" &&
-                    t("cloudflareSpeechToTextDescription")}
+                    t("enjoyCloudflareSpeechToTextDescription")}
                   {form.watch("config.sttEngine") === "openai" &&
                     t("openaiSpeechToTextDescription")}
                 </FormDescription>

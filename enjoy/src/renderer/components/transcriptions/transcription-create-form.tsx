@@ -166,9 +166,9 @@ export const TranscriptionCreateForm = (props: {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="local">{t("local")}</SelectItem>
-                  <SelectItem value="azure">{t("azureAi")}</SelectItem>
+                  <SelectItem value="azure">{t("enjoyAzure")}</SelectItem>
                   <SelectItem value="cloudflare">
-                    {t("cloudflareAi")}
+                    {t("enjoyCloudflare")}
                   </SelectItem>
                   <SelectItem value="openai">OpenAI</SelectItem>
                   <SelectItem value="upload">{t("upload")}</SelectItem>
@@ -178,9 +178,9 @@ export const TranscriptionCreateForm = (props: {
                 {form.watch("service") === "local" &&
                   t("localSpeechToTextDescription")}
                 {form.watch("service") === "azure" &&
-                  t("azureSpeechToTextDescription")}
+                  t("enjoyAzureSpeechToTextDescription")}
                 {form.watch("service") === "cloudflare" &&
-                  t("cloudflareSpeechToTextDescription")}
+                  t("enjoyCloudflareSpeechToTextDescription")}
                 {form.watch("service") === "openai" &&
                   t("openaiSpeechToTextDescription")}
                 {form.watch("service") === "upload" &&
