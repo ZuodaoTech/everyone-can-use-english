@@ -114,9 +114,8 @@ Enjoy 目前暂时仅支持以下词典：
 
 | 词典名称 | 语言 | 支持发音 | 文件名 |
 | -------- | ---- | -------- | ------ |
-| Collins COBUILD Advanced British EN-CN Dictionary | 英-中 | 是 | ccalecd.zip |
+| Longman Dictionary of Contemporary English | 英-英 / 英-中 | 是 | ldocd5.zip |
 | Collins COBUILD Advanced British English Learners Dictionary | 英-英 | 是 | ccabeld.zip |
-| Longman Dictionary of Contemporary English | 英-英 | 是 | ldocd5.zip |
 | Oxford Dictionary of English | 英-英 | 否 | oxford_en_mac.zip |
 | Korean English Dictionary | 韩-英 | 否 | koen_mac.zip |
 | Japanese English Dictionary | 日-英 | 否 | jaen_mac.zip |
