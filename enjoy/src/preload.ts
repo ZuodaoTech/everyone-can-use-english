@@ -195,6 +195,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     setLibrary: (library: string) => {
       return ipcRenderer.invoke("app-settings-set-library", library);
     },
+    getSessions: () => {
+      return ipcRenderer.invoke("app-settings-get-sessions");
+    },
     getUser: () => {
       return ipcRenderer.invoke("app-settings-get-user");
     },

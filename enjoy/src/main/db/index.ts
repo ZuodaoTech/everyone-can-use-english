@@ -214,11 +214,14 @@ db.registerIpcHandlers = () => {
       await db.connect();
       return {
         state: "connected",
+        path: settings.dbPath(),
+        error: null,
       };
     } catch (err) {
       return {
         state: "error",
         error: err.message,
+        path: settings.dbPath(),
       };
     }
   });

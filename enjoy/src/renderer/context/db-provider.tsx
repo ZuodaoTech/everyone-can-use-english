@@ -51,6 +51,15 @@ export const DbProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  useEffect(() => {
+    console.info(
+      "--- db state changed ---\n",
+      `state: ${state};\n`,
+      `path: ${path};\n`,
+      `error: ${error};\n`
+    );
+  }, [state]);
+
   const addDblistener = (callback: (event: CustomEvent) => void) => {
     document.addEventListener("db-on-transaction", callback);
   };

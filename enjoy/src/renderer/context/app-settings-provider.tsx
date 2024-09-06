@@ -8,7 +8,6 @@ import * as Sentry from "@sentry/electron/renderer";
 import { SENTRY_DSN } from "@/constants";
 import { DbProviderContext } from "@renderer/context";
 import { UserSettingKeyEnum } from "@/types/enums";
-import { toast } from "sonner";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -149,11 +148,15 @@ export const AppSettingsProvider = ({
   };
 
   const login = async (user: UserType) => {
-    if (!user.accessToken) return;
+    if (!user?.id) return;
 
-    setUser(user);
-    // Set current user to App settings
-    EnjoyApp.appSettings.setUser({ id: user.id, name: user.name });
+    if (user.accessToken) {
+      setUser(user);
+      // Set current user to App settings
+      EnjoyApp.appSettings.setUser({ id: user.id, name: user.name });
+    } else {
+      setUser(user);
+    }
   };
 
   const logout = () => {
@@ -294,8 +297,8 @@ export const AppSettingsProvider = ({
         const profile = await EnjoyApp.userSettings.get(
           UserSettingKeyEnum.PROFILE
         );
-        console.log("profile", profile);
         setUser(profile);
+        EnjoyApp.appSettings.setUser({ id: profile.id, name: profile.name });
       }
     });
     return () => {

@@ -65,6 +65,16 @@ const apiUrl = () => {
   return process.env.WEB_API_URL || url || WEB_API_URL;
 };
 
+// scan library directory and get all user data directories
+// the name of user data directory is the user id, and they are all numbers and 8 digits
+const sessions = () => {
+  const library = libraryPath();
+  const sessions = fs.readdirSync(library).filter((dir) => {
+    return dir.match(/^\d{8}$/);
+  });
+  return sessions.map((id) => ({ id: parseInt(id), name: id }));
+};
+
 export default {
   registerIpcHandlers: () => {
     ipcMain.handle("app-settings-get-library", (_event) => {
@@ -100,6 +110,10 @@ export default {
 
     ipcMain.handle("app-settings-set-api-url", (_event, url) => {
       settings.setSync(AppSettingsKeyEnum.API_URL, url);
+    });
+
+    ipcMain.handle("app-settings-get-sessions", (_event) => {
+      return sessions();
     });
   },
   cachePath,

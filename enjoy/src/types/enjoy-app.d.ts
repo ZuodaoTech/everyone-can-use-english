@@ -125,6 +125,7 @@ type EnjoyAppType = {
     getUserDataPath: () => Promise<string>;
     getApiUrl: () => Promise<string>;
     setApiUrl: (url: string) => Promise<void>;
+    getSessions: () => Promise<{ id: string }[]>;
   };
   userSettings: {
     get: (key: UserSettingKeyEnum) => Promise<any>;
