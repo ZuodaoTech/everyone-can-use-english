@@ -63,8 +63,8 @@ const SelectedWords = (props: {
 
   return (
     <>
-      <div className="flex justify-between items-start">
-        <div className="flex flex-wrap items-center space-x-2 select-text mb-4">
+      <div className="flex justify-between items-start flex-wrap">
+        <div className="flex flex-1 flex-wrap items-center space-x-2 select-text mb-4">
           {selectedIndices.map((index, i) => {
             const word = caption.timeline[index];
             if (!word) return;
