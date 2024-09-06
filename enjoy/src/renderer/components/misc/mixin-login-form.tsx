@@ -6,6 +6,8 @@ import {
   Sheet,
   SheetTrigger,
   SheetContent,
+  SheetHeader,
+  SheetTitle,
 } from "@renderer/components/ui";
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
@@ -37,6 +39,9 @@ export const MixinLoginButton = () => {
         className="h-screen"
         aria-describedby={undefined}
       >
+        <SheetHeader>
+          <SheetTitle className="sr-only">Mixin Messenger Login</SheetTitle>
+        </SheetHeader>
         <div className="w-full h-full flex">
           <div className="m-auto">{open && <MixinLoginForm />}</div>
         </div>

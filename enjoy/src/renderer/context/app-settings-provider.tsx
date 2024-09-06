@@ -285,8 +285,6 @@ export const AppSettingsProvider = ({
   useEffect(() => {
     if (!user) return;
 
-    console.log("user", user);
-    console.log("db", db.state);
     db.connect().then(async () => {
       // Login via API, update profile to DB
       if (user.accessToken) {

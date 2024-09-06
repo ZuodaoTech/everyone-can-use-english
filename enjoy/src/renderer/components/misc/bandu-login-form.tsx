@@ -6,6 +6,8 @@ import {
   Sheet,
   SheetTrigger,
   SheetContent,
+  SheetHeader,
+  SheetTitle,
 } from "@renderer/components/ui";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
@@ -38,6 +40,9 @@ export const BanduLoginButton = () => {
         className="h-screen"
         aria-describedby={undefined}
       >
+        <SheetHeader>
+          <SheetTitle className="sr-only">学升登录</SheetTitle>
+        </SheetHeader>
         <div className="w-full h-full flex">
           <div className="m-auto">{open && <BanduLoginForm />}</div>
         </div>
