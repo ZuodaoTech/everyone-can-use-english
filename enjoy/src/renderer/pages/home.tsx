@@ -50,7 +50,7 @@ export default () => {
 const AuthorizationStatusBar = () => {
   const { user, logout } = useContext(AppSettingsProviderContext);
 
-  if (user.accessToken === null) {
+  if (!user.accessToken) {
     return (
       <div className="bg-red-500 text-white py-2 px-4 h-12 flex items-center sticky top-0">
         <span className="text-sm">{t("authorizationExpired")}</span>
