@@ -65,9 +65,9 @@ export const WhisperSettings = () => {
         <div className="text-sm text-muted-foreground">
           {sttEngine === SttEngineOptionEnum.LOCAL &&
             t("localSpeechToTextDescription")}
-          {sttEngine === SttEngineOptionEnum.AZURE_ENJOY &&
+          {sttEngine === SttEngineOptionEnum.ENJOY_AZURE &&
             t("azureSpeechToTextDescription")}
-          {sttEngine === SttEngineOptionEnum.CLOUDFLARE_ENJOY &&
+          {sttEngine === SttEngineOptionEnum.ENJOY_CLOUDFLARE &&
             t("cloudflareSpeechToTextDescription")}
           {sttEngine === SttEngineOptionEnum.OPENAI &&
             t("openaiSpeechToTextDescription")}
@@ -88,10 +88,10 @@ export const WhisperSettings = () => {
             <SelectItem value={SttEngineOptionEnum.LOCAL}>
               {t("local")}
             </SelectItem>
-            <SelectItem value={SttEngineOptionEnum.AZURE_ENJOY}>
+            <SelectItem value={SttEngineOptionEnum.ENJOY_AZURE}>
               {t("azureAi")}
             </SelectItem>
-            <SelectItem value={SttEngineOptionEnum.CLOUDFLARE_ENJOY}>
+            <SelectItem value={SttEngineOptionEnum.ENJOY_CLOUDFLARE}>
               {t("cloudflareAi")}
             </SelectItem>
             <SelectItem value={SttEngineOptionEnum.OPENAI}>OpenAI</SelectItem>

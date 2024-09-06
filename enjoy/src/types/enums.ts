@@ -15,8 +15,8 @@ export enum UserSettingKeyEnum {
 
 export enum SttEngineOptionEnum {
   LOCAL = "local",
-  AZURE_ENJOY = "azure-enjoy",
-  CLOUDFLARE_ENJOY = "cloudflare-enjoy",
+  ENJOY_AZURE = "enjoy_azure",
+  ENJOY_CLOUDFLARE = "enjoy_cloudflare",
   OPENAI = "openai",
 }
 

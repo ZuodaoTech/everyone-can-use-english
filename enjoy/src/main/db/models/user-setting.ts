@@ -129,13 +129,13 @@ export class UserSetting extends Model<UserSetting> {
         case "azure":
           UserSetting.set(
             UserSettingKeyEnum.STT_ENGINE,
-            SttEngineOptionEnum.AZURE_ENJOY
+            SttEngineOptionEnum.ENJOY_AZURE
           );
           break;
         case "cloudflare":
           UserSetting.set(
             UserSettingKeyEnum.STT_ENGINE,
-            SttEngineOptionEnum.CLOUDFLARE_ENJOY
+            SttEngineOptionEnum.ENJOY_CLOUDFLARE
           );
           break;
         case "openai":
