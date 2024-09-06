@@ -9,7 +9,7 @@ import { LoaderIcon } from "lucide-react";
 import { md5 } from "js-md5";
 import Markdown from "react-markdown";
 
-export function TabContentAnalysis(props: { text: string; }) {
+export function MediaTabContentAnalysis(props: { text: string }) {
   const { text } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [analyzing, setAnalyzing] = useState<boolean>(false);
@@ -55,7 +55,7 @@ export function TabContentAnalysis(props: { text: string; }) {
                   new URL(props.href ?? "");
                   props.target = "_blank";
                   props.rel = "noopener noreferrer";
-                } catch (e) { }
+                } catch (e) {}
 
                 return <a {...props}>{children}</a>;
               },
@@ -82,8 +82,9 @@ export function TabContentAnalysis(props: { text: string; }) {
                 const result = replies.map((m) => m.content).join("\n");
                 setAnalysisResult(result);
                 EnjoyApp.cacheObjects.set(`analyze-${md5(text)}`, result);
-              } }
-              tooltip={t("useAIAssistantToAnalyze")} />
+              }}
+              tooltip={t("useAIAssistantToAnalyze")}
+            />
           </div>
         </>
       ) : (
@@ -98,8 +99,9 @@ export function TabContentAnalysis(props: { text: string; }) {
               const result = replies.map((m) => m.content).join("\n");
               setAnalysisResult(result);
               EnjoyApp.cacheObjects.set(`analyze-${md5(text)}`, result);
-            } }
-            tooltip={t("useAIAssistantToAnalyze")} />
+            }}
+            tooltip={t("useAIAssistantToAnalyze")}
+          />
         </div>
       )}
     </TabsContent>

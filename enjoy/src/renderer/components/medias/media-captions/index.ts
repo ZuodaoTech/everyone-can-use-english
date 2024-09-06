@@ -1,4 +1,4 @@
 export * from "./media-caption-tabs";
-export * from "./tab-content-analysis";
-export * from "./tab-content-note";
-export * from "./tab-content-translation";
+export * from "./media-tab-content-analysis";
+export * from "./media-tab-content-note";
+export * from "./media-tab-content-translation";
