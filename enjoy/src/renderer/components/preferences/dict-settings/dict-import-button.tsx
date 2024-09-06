@@ -29,7 +29,7 @@ export const DictImportButton = () => {
     const pathes = await EnjoyApp.dialog.showOpenDialog({
       title: t("selectAdaptionDictTitle"),
       properties: ["openFile"],
-      filters: [{ name: "zip", extensions: [".zip"] }],
+      filters: [{ name: "zip", extensions: ["zip"] }],
     });
 
     if (!pathes[0]) return;
