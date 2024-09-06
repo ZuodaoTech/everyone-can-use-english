@@ -34,10 +34,11 @@ import { LANGUAGES } from "@/constants";
 import { ChevronDownIcon, ChevronUpIcon, LoaderIcon } from "lucide-react";
 import { parseText } from "media-captions";
 import { milisecondsToTimestamp } from "@/utils";
+import { SttEngineOptionEnum } from "@/types/enums";
 
 const transcriptionSchema = z.object({
   language: z.string(),
-  service: z.string(),
+  service: z.union([z.nativeEnum(SttEngineOptionEnum), z.literal("upload")]),
   text: z.string().optional(),
   isolate: z.boolean().optional(),
 });
@@ -165,23 +166,30 @@ export const TranscriptionCreateForm = (props: {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="local">{t("local")}</SelectItem>
-                  <SelectItem value="azure">{t("enjoyAzure")}</SelectItem>
-                  <SelectItem value="cloudflare">
+                  <SelectItem value={SttEngineOptionEnum.LOCAL}>
+                    {t("local")}
+                  </SelectItem>
+                  <SelectItem value={SttEngineOptionEnum.ENJOY_AZURE}>
+                    {t("enjoyAzure")}
+                  </SelectItem>
+                  <SelectItem value={SttEngineOptionEnum.ENJOY_CLOUDFLARE}>
                     {t("enjoyCloudflare")}
                   </SelectItem>
-                  <SelectItem value="openai">OpenAI</SelectItem>
+                  <SelectItem value={SttEngineOptionEnum.OPENAI}>
+                    OpenAI
+                  </SelectItem>
                   <SelectItem value="upload">{t("upload")}</SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>
-                {form.watch("service") === "local" &&
+                {form.watch("service") === SttEngineOptionEnum.LOCAL &&
                   t("localSpeechToTextDescription")}
-                {form.watch("service") === "azure" &&
+                {form.watch("service") === SttEngineOptionEnum.ENJOY_AZURE &&
                   t("enjoyAzureSpeechToTextDescription")}
-                {form.watch("service") === "cloudflare" &&
+                {form.watch("service") ===
+                  SttEngineOptionEnum.ENJOY_CLOUDFLARE &&
                   t("enjoyCloudflareSpeechToTextDescription")}
-                {form.watch("service") === "openai" &&
+                {form.watch("service") === SttEngineOptionEnum.OPENAI &&
                   t("openaiSpeechToTextDescription")}
                 {form.watch("service") === "upload" &&
                   t("uploadSpeechToTextDescription")}
