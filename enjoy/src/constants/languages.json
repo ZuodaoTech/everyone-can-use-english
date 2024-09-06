@@ -42,5 +42,9 @@
   {
     "code": "th-TH",
     "name": "แบบไทย"
+  },
+  {
+    "code": "vi-VN",
+    "name": "Tiếng Việt"
   }
 ]

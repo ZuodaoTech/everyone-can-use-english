@@ -699,6 +699,36 @@ export const TTS_PROVIDERS: { [key: string]: any } = {
           value: "th-TH-AcharaNeural",
           language: "th-TH",
         },
+        {
+          label: "An (Female)",
+          value: "vi-VN-HoaiMyNeural",
+          language: "vi-VN",
+        },
+        {
+          label: "Hoai (Male)",
+          value: "vi-VN-NamMinhNeural",
+          language: "vi-VN",
+        },
+        {
+          label: "Giang (Female)",
+          value: "vi-VN-NgocHoaiGiangNeural",
+          language: "vi-VN",
+        },
+        {
+          label: "Linh (Female)",
+          value: "vi-VN-ThanhLinhNeural",
+          language: "vi-VN",
+        },
+        {
+          label: "Mai (Female)",
+          value: "vi-VN-HuuMaiNeural",
+          language: "vi-VN",
+        },
+        {
+          label: "Nam (Male)",
+          value: "vi-VN-HoaiNamNeural",
+          language: "vi-VN",
+        },
       ],
     },
     configurable: ["model", "language", "voice"],
