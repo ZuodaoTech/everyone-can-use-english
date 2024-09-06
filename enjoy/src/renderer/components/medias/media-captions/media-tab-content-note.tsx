@@ -7,7 +7,7 @@ import { NoteCard, NoteForm } from "@renderer/components";
 /*
  * Note tab content.
  */
-export const TabContentNote = (props: {
+export const MediaTabContentNote = (props: {
   currentSegmentIndex: number;
   selectedIndices: number[];
   setSelectedIndices: (indices: number[]) => void;

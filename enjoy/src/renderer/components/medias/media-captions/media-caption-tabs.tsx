@@ -7,9 +7,9 @@ import {
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
-import { TabContentTranslation } from "./tab-content-translation";
-import { TabContentAnalysis } from "./tab-content-analysis";
-import { TabContentNote } from "./tab-content-note";
+import { MediaTabContentTranslation } from "./media-tab-content-translation";
+import { MediaTabContentAnalysis } from "./media-tab-content-analysis";
+import { MediaTabContentNote } from "./media-tab-content-note";
 
 export const MediaCaptionTabs = (props: {
   caption: TimelineEntry;
@@ -38,18 +38,18 @@ export const MediaCaptionTabs = (props: {
         {children}
 
         <div className="px-4 pb-10 min-h-32">
-          <TabContentNote
+          <MediaTabContentNote
             currentSegmentIndex={currentSegmentIndex}
             selectedIndices={selectedIndices}
             setSelectedIndices={setSelectedIndices}
           />
 
-          <TabContentTranslation
+          <MediaTabContentTranslation
             caption={caption}
             selectedIndices={selectedIndices}
           />
 
-          <TabContentAnalysis text={caption.text} />
+          <MediaTabContentAnalysis text={caption.text} />
         </div>
 
         <TabsList className="grid grid-cols-3 gap-4 rounded-none absolute w-full bottom-0 px-4">
