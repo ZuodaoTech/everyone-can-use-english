@@ -83,7 +83,7 @@ export const DictImportButton = () => {
                     className="text-blue-600 cursor-pointer"
                     onClick={() => {
                       EnjoyApp.shell.openExternal(
-                        "https://1000h.org/enjoy-app/dicts.html"
+                        "https://1000h.org/enjoy-app/settings.html#词典设置"
                       );
                     }}
                   >

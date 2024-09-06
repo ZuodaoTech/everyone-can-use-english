@@ -102,6 +102,34 @@ Enjoy 中提供了很多方便的功能，例如 [提取关键词汇](./webpage#
 由于 OpenAI 在某些地区不提供服务，有些用户会使用第三方提供的中转服务。请务必根据服务提供方的信息填写好 **接口地址**。如果使用时出现报错，可能需要在接口地址结尾加上 `/v1`。
 :::
 
+## 词典设置
+
+### 词典导入
+
+::: info 设置路径
+软件设置 -> 词典设置 -> 词典导入
+:::
+
+Enjoy 目前暂时仅支持以下词典：
+
+| 词典名称 | 语言 | 支持发音 | 文件名 |
+| -------- | ---- | -------- | ------ |
+| Collins COBUILD Advanced British EN-CN Dictionary | 英-中 | 是 | ccalecd.zip |
+| Collins COBUILD Advanced British English Learners Dictionary | 英-英 | 是 | ccabeld.zip |
+| Longman Dictionary of Contemporary English | 英-英 | 是 | ldocd5.zip |
+| Oxford Dictionary of English | 英-英 | 否 | oxford_en_mac.zip |
+| Korean English Dictionary | 韩-英 | 否 | koen_mac.zip |
+| Japanese English Dictionary | 日-英 | 否 | jaen_mac.zip |
+| German English Dictionary | 德-英 | 否 | deen_mac.zip |
+| Russian English Dictionary | 俄-英 | 否 | ruen_mac.zip |
+
+::: tip 下载词典
+网盘下载： [链接](https://pan.baidu.com/share/init?surl=zK-dHs40HpfYNUEdoYxZUw)
+提取码: 7975
+:::
+
+下载 `zip` 格式的词典文件后，点击 `导入词典` 按钮，即可导入词典。
+
 ## 高级设置
 
 ### API 设置
