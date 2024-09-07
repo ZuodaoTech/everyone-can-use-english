@@ -112,16 +112,16 @@ Enjoy 中提供了很多方便的功能，例如 [提取关键词汇](./webpage#
 
 Enjoy 目前暂时仅支持以下词典：
 
-| 词典名称 | 语言 | 支持发音 | 文件名 |
-| -------- | ---- | -------- | ------ |
-| Longman Dictionary of Contemporary English | 英-英 / 英-中 | 是 | ldocd5.zip |
-| Collins COBUILD Advanced British EN-CN Dictionary | 英-中 | 是 | ccalecd.zip |
-| Collins COBUILD Advanced British English Learners Dictionary | 英-英 | 是 | ccabeld.zip |
-| Oxford Dictionary of English | 英-英 | 否 | oxford_en_mac.zip |
-| Korean English Dictionary | 韩-英 | 否 | koen_mac.zip |
-| Japanese English Dictionary | 日-英 | 否 | jaen_mac.zip |
-| German English Dictionary | 德-英 | 否 | deen_mac.zip |
-| Russian English Dictionary | 俄-英 | 否 | ruen_mac.zip |
+| 词典名称 | 语言 | 支持发音 | 文件名 | 大小 |
+| -------- | ---- | -------- | ------ | ------ |
+| Longman Dictionary of Contemporary English | 英-英 / 英-中 | 是 | ldocd5.zip | 1.63GB |
+| Collins COBUILD Advanced British EN-CN Dictionary | 英-中 | 否 | ccalecd.zip | 13.879MB |
+| Collins COBUILD Advanced British English Learners Dictionary | 英-英 | 是 | ccabeld.zip | 485.6MB |
+| Oxford Dictionary of English | 英-英 | 否 | oxford_en_mac.zip | 33.6MB |
+| Korean English Dictionary | 韩-英 | 否 | koen_mac.zip | 52.1MB |
+| Japanese English Dictionary | 日-英 | 否 | jaen_mac.zip | 39.8MB |
+| German English Dictionary | 德-英 | 否 | deen_mac.zip | 32.1MB |
+| Russian English Dictionary | 俄-英 | 否 | ruen_mac.zip | 18.1MB |
 
 ::: tip 下载词典
 网盘下载： [链接](https://pan.baidu.com/share/init?surl=zK-dHs40HpfYNUEdoYxZUw)
