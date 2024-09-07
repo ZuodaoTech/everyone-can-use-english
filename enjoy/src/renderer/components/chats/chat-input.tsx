@@ -19,6 +19,7 @@ import {
   ScrollArea,
   Separator,
   Textarea,
+  toast,
 } from "@renderer/components/ui";
 import { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
@@ -339,6 +340,9 @@ const ChatSuggestionButton = (props: {
       cacheKey: contextCacheKey,
     })
       .then((res) => setSuggestions(res.suggestions))
+      .catch((err) => {
+        toast.error(err.message);
+      })
       .finally(() => {
         setLoading(false);
       });
