@@ -109,7 +109,8 @@ export const useTranscribe = () => {
       result = await transcribeByOpenAi(
         new File([blob], "audio.mp3", { type: "audio/mp3" })
       );
-    } else if (service === SttEngineOptionEnum.ENJOY_AZURE) {
+    } else {
+      // Azure AI is the default service
       result = await transcribeByAzureAi(
         new File([blob], "audio.wav", { type: "audio/wav" }),
         language,
@@ -118,8 +119,6 @@ export const useTranscribe = () => {
           targetType,
         }
       );
-    } else {
-      throw new Error(t("whisperServiceNotSupported"));
     }
 
     let transcript = result.text;
