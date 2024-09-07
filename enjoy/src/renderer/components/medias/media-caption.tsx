@@ -371,7 +371,6 @@ export const MediaCaption = () => {
           setSelectedIndices={setSelectedIndices}
         >
           <Caption
-            tab={tab}
             caption={caption}
             language={transcription.language}
             selectedIndices={selectedIndices}
@@ -485,7 +484,6 @@ export const MediaCaption = () => {
 
 export const Caption = (props: {
   caption: TimelineEntry;
-  tab: string;
   language?: string;
   selectedIndices?: number[];
   currentSegmentIndex: number;

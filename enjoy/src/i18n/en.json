@@ -784,5 +784,9 @@
   "importMdictFile": "Import the original dictionary file",
   "mdictFileTip": "Directly import .mdx .mdd format files (.mdx files are required, .mdd files are optional and can have multiple), but there may be problems with style and usability.",
   "authorizationExpired": "Your authorization has expired. Please login again.",
-  "selectUser": "Select user"
+  "selectUser": "Select user",
+  "export": "Export",
+  "exportRecordings": "Export recording",
+  "exportRecordingsConfirmation": "Select the highest score of the recordings of each segment to export as a single file.",
+  "exportRecordingsSuccess": "Export recordings successfully"
 }

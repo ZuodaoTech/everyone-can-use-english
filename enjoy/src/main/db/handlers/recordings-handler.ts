@@ -16,6 +16,10 @@ import dayjs from "dayjs";
 import { t } from "i18next";
 import log from "@main/logger";
 import { NIL as NIL_UUID } from "uuid";
+import FfmpegWrapper from "@main/ffmpeg";
+import path from "path";
+import settings from "@main/settings";
+import { enjoyUrlToPath, pathToEnjoyUrl } from "@main/utils";
 
 const logger = log.scope("db/handlers/recordings-handler");
 
@@ -329,6 +333,71 @@ class RecordingsHandler {
       });
   }
 
+  // Select the highest score of the recordings of each referenceId from the
+  // recordings of the target and export as a single file.
+  private async export(
+    event: IpcMainEvent,
+    targetId: string,
+    targetType: string
+  ) {
+    let target: Audio | Video;
+    if (targetType === "Audio") {
+      target = await Audio.findOne({
+        where: {
+          id: targetId,
+        },
+      });
+    } else {
+      target = await Video.findOne({
+        where: {
+          id: targetId,
+        },
+      });
+    }
+
+    if (!target) {
+      throw new Error(t("models.recording.notFound"));
+    }
+
+    // query all recordings of the target
+    const recordings = await Recording.findAll({
+      where: {
+        targetId,
+        targetType,
+      },
+      include: [
+        {
+          model: PronunciationAssessment,
+          attributes: [
+            [
+              Sequelize.fn("MAX", Sequelize.col("pronunciation_score")),
+              "pronunciationScore",
+            ],
+          ],
+        },
+      ],
+      group: ["referenceId"],
+      order: [["referenceId", "ASC"]],
+    });
+
+    if (!recordings || recordings.length === 0) {
+      throw new Error(t("models.recording.notFound"));
+    }
+
+    // export the recordings to a single file
+    // using ffmpeg concat
+    const ffmpeg = new FfmpegWrapper();
+    const outputFilePath = path.join(
+      settings.cachePath(),
+      `${targetType}-${target.id}.mp3`
+    );
+    const inputFiles = recordings.map((recording) =>
+      enjoyUrlToPath(recording.src)
+    );
+    await ffmpeg.concat(inputFiles, outputFilePath);
+    return pathToEnjoyUrl(outputFilePath);
+  }
+
   register() {
     ipcMain.handle("recordings-find-all", this.findAll);
     ipcMain.handle("recordings-find-one", this.findOne);
@@ -341,6 +410,7 @@ class RecordingsHandler {
     ipcMain.handle("recordings-group-by-date", this.groupByDate);
     ipcMain.handle("recordings-group-by-target", this.groupByTarget);
     ipcMain.handle("recordings-group-by-segment", this.groupBySegment);
+    ipcMain.handle("recordings-export", this.export);
   }
 
   unregister() {
@@ -355,6 +425,7 @@ class RecordingsHandler {
     ipcMain.removeHandler("recordings-group-by-date");
     ipcMain.removeHandler("recordings-group-by-target");
     ipcMain.removeHandler("recordings-group-by-segment");
+    ipcMain.removeHandler("recordings-export");
   }
 }
 

@@ -66,7 +66,6 @@ export const DbProvider = ({ children }: { children: React.ReactNode }) => {
     );
 
     if (state === "disconnected") {
-      setState("reconnecting");
       setTimeout(() => {
         connect();
       }, 1000);
