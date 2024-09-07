@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
+  toast,
 } from "@renderer/components/ui";
 import { useContext } from "react";
 import { AppSettingsProviderContext } from "../../context";
@@ -48,8 +49,13 @@ export const ResetAllButton = (props: { children: React.ReactNode }) => {
 export const ResetSettingsButton = (props: { children: React.ReactNode }) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
-  const reset = () => {
-    EnjoyApp.app.resetSettings();
+  const reset = async () => {
+    try {
+      await EnjoyApp.app.resetSettings();
+      toast.success(t("settingsReseted"));
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (

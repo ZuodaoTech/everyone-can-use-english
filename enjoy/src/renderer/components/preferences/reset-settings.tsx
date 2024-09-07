@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { Button } from "@renderer/components/ui";
-import { ResetAllButton } from "@renderer/components";
+import { ResetSettingsButton } from "@renderer/components";
 import { InfoIcon } from "lucide-react";
 
 export const ResetSettings = () => {
@@ -15,11 +15,11 @@ export const ResetSettings = () => {
 
       <div className="">
         <div className="mb-2 flex justify-end">
-          <ResetAllButton>
+          <ResetSettingsButton>
             <Button variant="secondary" className="text-destructive" size="sm">
               {t("resetSettings")}
             </Button>
-          </ResetAllButton>
+          </ResetSettingsButton>
         </div>
         <div className="text-xs text-muted-foreground">
           <InfoIcon className="mr-1 w-3 h-3 inline" />
