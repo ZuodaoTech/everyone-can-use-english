@@ -194,13 +194,14 @@ export const ChatSessionProvider = ({
       return toast.warning(t("itsYourTurn"));
     }
 
-    const llm = buildLlm(member.agent);
-    const prompt = ChatPromptTemplate.fromMessages([
-      ["system", CHAT_SYSTEM_PROMPT_TEMPLATE],
-      ["user", "{input}"],
-    ]);
-    const chain = prompt.pipe(llm);
     try {
+      const llm = buildLlm(member.agent);
+      const prompt = ChatPromptTemplate.fromMessages([
+        ["system", CHAT_SYSTEM_PROMPT_TEMPLATE],
+        ["user", "{input}"],
+      ]);
+      const chain = prompt.pipe(llm);
+
       setSubmitting(true);
       const reply = await chain.invoke({
         name: member.agent.name,
@@ -244,6 +245,9 @@ export const ChatSessionProvider = ({
         .then((message) =>
           dispatchChatMessages({ type: "append", record: message })
         )
+        .catch((error) => {
+          toast.error(error.message);
+        })
         .finally(() => setSubmitting(false));
     } catch (err) {
       setSubmitting(false);

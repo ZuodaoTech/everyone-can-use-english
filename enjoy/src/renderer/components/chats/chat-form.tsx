@@ -40,6 +40,7 @@ import {
 } from "@renderer/context";
 import { CHAT_SYSTEM_PROMPT_TEMPLATE, LANGUAGES } from "@/constants";
 import Mustache from "mustache";
+import { SttEngineOptionEnum } from "@/types/enums";
 
 export const ChatForm = (props: {
   chat?: ChatType;
@@ -57,7 +58,7 @@ export const ChatForm = (props: {
   const { user, learningLanguage, nativeLanguage } = useContext(
     AppSettingsProviderContext
   );
-  const { whisperConfig } = useContext(AISettingsProviderContext);
+  const { sttEngine } = useContext(AISettingsProviderContext);
   const [editingMember, setEditingMember] =
     useState<Partial<ChatMemberType> | null>();
 
@@ -97,7 +98,7 @@ export const ChatForm = (props: {
           topic: "Casual Chat.",
           language: learningLanguage,
           config: {
-            sttEngine: whisperConfig.service,
+            sttEngine,
           },
           members: [
             {
@@ -191,22 +192,32 @@ export const ChatForm = (props: {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="local">{t("local")}</SelectItem>
-                    <SelectItem value="azure">{t("enjoyAzure")}</SelectItem>
-                    <SelectItem value="cloudflare">
+                    <SelectItem value={SttEngineOptionEnum.LOCAL}>
+                      {t("local")}
+                    </SelectItem>
+                    <SelectItem value={SttEngineOptionEnum.ENJOY_AZURE}>
+                      {t("enjoyAzure")}
+                    </SelectItem>
+                    <SelectItem value={SttEngineOptionEnum.ENJOY_CLOUDFLARE}>
                       {t("enjoyCloudflare")}
                     </SelectItem>
-                    <SelectItem value="openai">OpenAI</SelectItem>
+                    <SelectItem value={SttEngineOptionEnum.OPENAI}>
+                      {t("openai")}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <FormDescription>
-                  {form.watch("config.sttEngine") === "local" &&
+                  {form.watch("config.sttEngine") ===
+                    SttEngineOptionEnum.LOCAL &&
                     t("localSpeechToTextDescription")}
-                  {form.watch("config.sttEngine") === "azure" &&
+                  {form.watch("config.sttEngine") ===
+                    SttEngineOptionEnum.ENJOY_AZURE &&
                     t("enjoyAzureSpeechToTextDescription")}
-                  {form.watch("config.sttEngine") === "cloudflare" &&
+                  {form.watch("config.sttEngine") ===
+                    SttEngineOptionEnum.ENJOY_CLOUDFLARE &&
                     t("enjoyCloudflareSpeechToTextDescription")}
-                  {form.watch("config.sttEngine") === "openai" &&
+                  {form.watch("config.sttEngine") ===
+                    SttEngineOptionEnum.OPENAI &&
                     t("openaiSpeechToTextDescription")}
                 </FormDescription>
               </FormItem>

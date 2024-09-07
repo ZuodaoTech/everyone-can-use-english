@@ -50,7 +50,10 @@ export const useChatMessage = (chat: ChatType) => {
         })
         .then((message) =>
           dispatchChatMessages({ type: "append", record: message })
-        );
+        )
+        .catch((error) => {
+          toast.error(error.message);
+        });
     }
   };
 
