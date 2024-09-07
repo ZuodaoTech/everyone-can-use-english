@@ -7,7 +7,7 @@ export const DICTS = [
     lang: "En-CN",
     downloadUrl: "https://dl.enjoy.bot/dicts/ccalecd.zip",
     size: "13.879MB",
-    hash: "96940f85e52df4586b287e1859723a39",
+    hash: "b12201e2ba737e98e09f30cfb8e01c7e",
     sqlFileHash: "e1e7baafaa8bce936409763d27a027f8",
     addition: '<link href="theme.css" rel="stylesheet" type="text/css" />',
   },
