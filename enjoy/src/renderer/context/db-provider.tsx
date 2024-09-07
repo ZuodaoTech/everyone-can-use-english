@@ -1,7 +1,12 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import log from "electron-log/renderer";
 
-type DbStateEnum = "connected" | "connecting" | "error" | "disconnected";
+type DbStateEnum =
+  | "connected"
+  | "connecting"
+  | "error"
+  | "disconnected"
+  | "reconnecting";
 type DbProviderState = {
   state: DbStateEnum;
   path?: string;
@@ -44,6 +49,7 @@ export const DbProvider = ({ children }: { children: React.ReactNode }) => {
 
   const disconnect = () => {
     console.info("--- disconnecting db ---");
+    setState("disconnected");
     return EnjoyApp.db.disconnect().then(() => {
       setState("disconnected");
       setPath(undefined);
@@ -58,6 +64,13 @@ export const DbProvider = ({ children }: { children: React.ReactNode }) => {
       `path: ${path};\n`,
       `error: ${error};\n`
     );
+
+    if (state === "disconnected") {
+      setState("reconnecting");
+      setTimeout(() => {
+        connect();
+      }, 1000);
+    }
   }, [state]);
 
   const addDblistener = (callback: (event: CustomEvent) => void) => {
