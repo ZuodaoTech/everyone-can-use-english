@@ -101,4 +101,16 @@ body {
   :focus-visible {
     outline: none;
   }
+
+  /* make scrollbar beautiful */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f8f8f8;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+  }
 }
