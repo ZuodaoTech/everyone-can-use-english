@@ -290,6 +290,7 @@ export const AppSettingsProvider = ({
       // Login via API, update profile to DB
       if (user.accessToken) {
         EnjoyApp.userSettings.set(UserSettingKeyEnum.PROFILE, user);
+        createCable(user.accessToken);
       } else {
         // Auto login from local settings, get full profile from DB
         const profile = await EnjoyApp.userSettings.get(

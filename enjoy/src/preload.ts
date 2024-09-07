@@ -362,6 +362,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
         targetType
       );
     },
+    export: (targetId: string, targetType: string) => {
+      return ipcRenderer.invoke("recordings-export", targetId, targetType);
+    },
   },
   conversations: {
     findAll: (params: { where?: any; offset?: number; limit?: number }) => {

@@ -8,12 +8,12 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
+  AlertDialogTrigger,
   Button,
   DropdownMenu,
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  ScrollArea,
   toast,
 } from "@renderer/components/ui";
 import {
@@ -26,6 +26,7 @@ import {
   LoaderIcon,
   MicIcon,
   MoreHorizontalIcon,
+  SquareMenuIcon,
   Trash2Icon,
 } from "lucide-react";
 import { t } from "i18next";
@@ -42,6 +43,8 @@ export const MediaRecordings = () => {
     currentRecording,
     setCurrentRecording,
     currentSegmentIndex,
+    transcription,
+    media,
   } = useContext(MediaPlayerProviderContext);
 
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -55,12 +58,83 @@ export const MediaRecordings = () => {
     });
   };
 
+  const handleExport = async () => {
+    try {
+      const url = await EnjoyApp.recordings.export(media.id, media.mediaType);
+      const filename = `Recording(${media.name}).mp3`;
+
+      EnjoyApp.dialog
+        .showSaveDialog({
+          title: t("download"),
+          defaultPath: filename,
+          filters: [
+            {
+              name: "Audio",
+              extensions: ["mp3"],
+            },
+          ],
+        })
+        .then((savePath) => {
+          if (!savePath) return;
+
+          toast.promise(EnjoyApp.download.start(url, savePath as string), {
+            loading: t("downloading", { file: filename }),
+            success: () => t("downloadedSuccessfully"),
+            error: t("downloadFailed"),
+            position: "bottom-right",
+          });
+        })
+        .catch((err) => {
+          if (err) toast.error(err.message);
+        });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     setCurrentRecording(recordings[0]);
   }, [currentSegmentIndex, recordings]);
 
   return (
     <div ref={containerRef} data-testid="media-recordings-result">
+      <div className="flex items-center justify-between mb-2 px-4">
+        <div className="text-sm text-muted-foreground">
+          #{currentSegmentIndex + 1}/{transcription?.result?.timeline?.length}
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button variant="ghost" size="sm">
+              <SquareMenuIcon className="w-5 h-5 text-muted-foreground" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem asChild>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" className="block w-full">
+                    {t("export")}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t("exportRecordings")}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {t("exportRecordingsConfirmation")}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                      <Button onClick={handleExport}>{t("export")}</Button>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       {recordings.length == 0 && (
         <div
           className="text-center px-6 py-8 text-sm text-muted-foreground"

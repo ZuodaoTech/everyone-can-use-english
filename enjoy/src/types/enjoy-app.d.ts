@@ -215,6 +215,7 @@ type EnjoyAppType = {
       targetId: string,
       targetType
     ) => Promise<SegementRecordingStatsType>;
+    export: (targetId: string, targetType: string) => Promise<string>;
   };
   pronunciationAssessments: {
     findAll: (params: any) => Promise<PronunciationAssessmentType[]>;
