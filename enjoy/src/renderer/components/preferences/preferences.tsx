@@ -43,8 +43,6 @@ export const Preferences = () => {
           <Separator />
           <DefaultEngineSettings />
           <Separator />
-          <OpenaiSettings />
-          <Separator />
         </div>
       ),
     },
@@ -76,6 +74,8 @@ export const Preferences = () => {
           <ProxySettings />
           <Separator />
           <NetworkState />
+          <Separator />
+          <OpenaiSettings />
           <Separator />
           <RecorderSettings />
           <Separator />
