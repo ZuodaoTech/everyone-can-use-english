@@ -24,6 +24,7 @@ import echogarden from "./echogarden";
 import camdict from "./camdict";
 import dict from "./dict";
 import decompresser from "./decompresser";
+import { UserSetting } from "@main/db/models";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -292,8 +293,12 @@ main.init = async () => {
     };
   });
 
-  ipcMain.handle("app-reset", () => {
-    fs.removeSync(settings.userDataPath());
+  ipcMain.handle("app-reset", async () => {
+    const userDataPath = settings.userDataPath();
+
+    await db.disconnect();
+
+    fs.removeSync(userDataPath);
     fs.removeSync(settings.file());
 
     app.relaunch();
@@ -301,10 +306,7 @@ main.init = async () => {
   });
 
   ipcMain.handle("app-reset-settings", () => {
-    fs.removeSync(settings.file());
-
-    app.relaunch();
-    app.exit();
+    UserSetting.clear();
   });
 
   ipcMain.handle("app-relaunch", () => {

@@ -288,6 +288,7 @@
   "resetAllConfirmation": "这将删除您的所有个人数据, 您确定要重置吗？",
   "resetSettings": "重置设置选项",
   "resetSettingsConfirmation": "您确定要重置个人设置选项吗？资料库不会受影响。",
+  "settingsReseted": "设置选项已重置",
   "proxySettings": "代理设置",
   "proxyConfigUpdated": "代理配置已更新",
   "apiSettings": "API 设置",

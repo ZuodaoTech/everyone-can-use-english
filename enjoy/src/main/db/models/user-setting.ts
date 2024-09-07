@@ -68,6 +68,10 @@ export class UserSetting extends Model<UserSetting> {
     }
   }
 
+  static async clear(): Promise<void> {
+    await UserSetting.destroy({ where: {} });
+  }
+
   static async migrateFromSettings(): Promise<void> {
     // hotkeys
     const hotkeys = await UserSetting.get(UserSettingKeyEnum.HOTKEYS);
