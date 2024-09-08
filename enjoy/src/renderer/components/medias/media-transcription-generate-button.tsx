@@ -20,6 +20,7 @@ import {
   TranscriptionCreateForm,
   TranscriptionsList,
 } from "@renderer/components";
+import { SttEngineOptionEnum } from "@/types/enums";
 
 export const MediaTranscriptionGenerateButton = (props: {
   children: React.ReactNode;
@@ -67,7 +68,9 @@ export const MediaTranscriptionGenerateButton = (props: {
         <Tabs defaultValue="transcribe">
           <TabsList className="w-full grid grid-cols-2 mb-4">
             <TabsTrigger value="transcribe">{t("transcribe")}</TabsTrigger>
-            <TabsTrigger value="download">{t("downloadTranscript")}</TabsTrigger>
+            <TabsTrigger value="download">
+              {t("downloadTranscript")}
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="transcribe">
             <TranscriptionCreateForm
@@ -76,9 +79,7 @@ export const MediaTranscriptionGenerateButton = (props: {
                 generateTranscription({
                   originalText: data.text,
                   language: data.language,
-                  service: data.service as
-                    | WhisperConfigType["service"]
-                    | "upload",
+                  service: data.service as SttEngineOptionEnum | "upload",
                   isolate: data.isolate,
                 })
                   .then(() => {

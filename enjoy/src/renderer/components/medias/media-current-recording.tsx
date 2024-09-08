@@ -693,12 +693,11 @@ export const MediaCurrentRecording = () => {
 };
 
 export const MediaRecordButton = () => {
-  const { media, isRecording, startRecording, stopRecording, recordingTime } =
-    useContext(MediaPlayerProviderContext);
+  const { media, isRecording, startRecording, stopRecording } = useContext(
+    MediaPlayerProviderContext
+  );
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [access, setAccess] = useState(true);
-  const [active, setActive] = useState(false);
-  const ref = useRef(null);
 
   const askForMediaAccess = () => {
     EnjoyApp.system.preferences.mediaAccess("microphone").then((access) => {
@@ -715,29 +714,8 @@ export const MediaRecordButton = () => {
     askForMediaAccess();
   }, [media]);
 
-  useEffect(() => {
-    if (!active) return;
-    if (recordingTime >= 60) {
-      stopRecording();
-    }
-  }, [active, recordingTime]);
-
-  useEffect(() => {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-
-    const elementAtPoint = document.elementFromPoint(
-      rect.left + rect.width / 2,
-      rect.top + rect.height / 2
-    );
-    setActive(
-      elementAtPoint == ref.current || ref.current.contains(elementAtPoint)
-    );
-  }, [ref, isRecording]);
-
   return (
     <Button
-      ref={ref}
       variant="ghost"
       disabled={!access}
       onClick={() => {

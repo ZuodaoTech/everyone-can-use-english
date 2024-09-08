@@ -666,6 +666,8 @@ export const MediaPlayerProvider = ({
    * auto stop recording when recording time is over
    */
   useEffect(() => {
+    if (!isRecording) return;
+
     if (recordingType === "segment" && recordingTime >= ONE_MINUTE) {
       stopRecording();
     } else if (recordingTime >= TEN_MINUTES) {
