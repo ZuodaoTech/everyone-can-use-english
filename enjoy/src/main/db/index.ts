@@ -216,6 +216,13 @@ db.disconnect = async () => {
 
 db.registerIpcHandlers = () => {
   ipcMain.handle("db-connect", async () => {
+    if (db.isConnecting)
+      return {
+        state: "connecting",
+        path: settings.dbPath(),
+        error: null,
+      };
+
     try {
       await db.connect();
       return {
