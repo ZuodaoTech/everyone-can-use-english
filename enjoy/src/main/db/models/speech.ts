@@ -21,7 +21,7 @@ import settings from "@main/settings";
 import OpenAI, { type ClientOptions } from "openai";
 import { t } from "i18next";
 import { hashFile } from "@main/utils";
-import { Audio, Message } from "@main/db/models";
+import { Audio, Message, UserSetting } from "@main/db/models";
 import log from "@main/logger";
 import proxyAgent from "@main/proxy-agent";
 
@@ -180,7 +180,7 @@ export class Speech extends Model<Speech> {
     let openaiConfig: ClientOptions = {};
     if (engine === "enjoyai") {
       openaiConfig = {
-        apiKey: settings.getSync("user.accessToken") as string,
+        apiKey: (await UserSetting.accessToken()) as string,
         baseURL: `${settings.apiUrl()}/api/ai`,
       };
     } else if (engine === "openai") {

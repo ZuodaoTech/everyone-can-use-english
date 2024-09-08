@@ -13,7 +13,7 @@ import {
   AllowNull,
   AfterFind,
 } from "sequelize-typescript";
-import { Audio, Transcription, Video } from "@main/db/models";
+import { Audio, Transcription, UserSetting, Video } from "@main/db/models";
 import mainWindow from "@main/window";
 import log from "@main/logger";
 import { Client } from "@/api";
@@ -110,7 +110,7 @@ export class Segment extends Model<Segment> {
 
     const webApi = new Client({
       baseUrl: settings.apiUrl(),
-      accessToken: settings.getSync("user.accessToken") as string,
+      accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });
     return webApi.syncSegment(this.toJSON()).then(() => {

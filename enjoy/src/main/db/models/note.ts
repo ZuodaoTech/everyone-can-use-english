@@ -16,7 +16,7 @@ import mainWindow from "@main/window";
 import log from "@main/logger";
 import { Client } from "@/api";
 import settings from "@main/settings";
-import { Segment } from "@main/db/models";
+import { Segment, UserSetting } from "@main/db/models";
 
 const logger = log.scope("db/models/note");
 @Table({
@@ -61,7 +61,7 @@ export class Note extends Model<Note> {
 
     const webApi = new Client({
       baseUrl: settings.apiUrl(),
-      accessToken: settings.getSync("user.accessToken") as string,
+      accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });
 
@@ -118,10 +118,10 @@ export class Note extends Model<Note> {
   }
 
   @AfterDestroy
-  static destroyRemote(note: Note) {
+  static async destroyRemote(note: Note) {
     const webApi = new Client({
       baseUrl: settings.apiUrl(),
-      accessToken: settings.getSync("user.accessToken") as string,
+      accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });
 

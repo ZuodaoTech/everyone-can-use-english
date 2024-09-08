@@ -14,7 +14,13 @@ import {
   DataType,
   Unique,
 } from "sequelize-typescript";
-import { Audio, Recording, Speech, Transcription } from "@main/db/models";
+import {
+  Audio,
+  Recording,
+  Speech,
+  Transcription,
+  UserSetting,
+} from "@main/db/models";
 import settings from "@main/settings";
 import { AudioFormats, VideoFormats, WEB_API_URL } from "@/constants";
 import { hashFile } from "@main/utils";
@@ -214,7 +220,7 @@ export class Video extends Model<Video> {
 
     const webApi = new Client({
       baseUrl: settings.apiUrl(),
-      accessToken: settings.getSync("user.accessToken") as string,
+      accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });
 
@@ -279,7 +285,7 @@ export class Video extends Model<Video> {
   }
 
   @AfterDestroy
-  static cleanupFile(video: Video) {
+  static async cleanupFile(video: Video) {
     if (video.filePath) {
       fs.remove(video.filePath);
     }
@@ -292,7 +298,7 @@ export class Video extends Model<Video> {
 
     const webApi = new Client({
       baseUrl: settings.apiUrl(),
-      accessToken: settings.getSync("user.accessToken") as string,
+      accessToken: (await UserSetting.accessToken()) as string,
       logger: log.scope("video/cleanupFile"),
     });
 

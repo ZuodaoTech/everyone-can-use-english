@@ -15,7 +15,12 @@ import {
   HasOne,
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
-import { Audio, PronunciationAssessment, Video } from "@main/db/models";
+import {
+  Audio,
+  PronunciationAssessment,
+  UserSetting,
+  Video,
+} from "@main/db/models";
 import fs from "fs-extra";
 import path from "path";
 import settings from "@main/settings";
@@ -144,7 +149,7 @@ export class Recording extends Model<Recording> {
 
     const webApi = new Client({
       baseUrl: settings.apiUrl(),
-      accessToken: settings.getSync("user.accessToken") as string,
+      accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });
 
@@ -234,11 +239,11 @@ export class Recording extends Model<Recording> {
   }
 
   @AfterDestroy
-  static cleanupFile(recording: Recording) {
+  static async cleanupFile(recording: Recording) {
     fs.remove(recording.filePath);
     const webApi = new Client({
       baseUrl: settings.apiUrl(),
-      accessToken: settings.getSync("user.accessToken") as string,
+      accessToken: (await UserSetting.accessToken()) as string,
       logger: log.scope("recording/cleanupFile"),
     });
     webApi.deleteRecording(recording.id);

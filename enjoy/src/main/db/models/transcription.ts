@@ -11,7 +11,7 @@ import {
   DataType,
   Unique,
 } from "sequelize-typescript";
-import { Audio, Video } from "@main/db/models";
+import { Audio, UserSetting, Video } from "@main/db/models";
 import mainWindow from "@main/window";
 import log from "@main/logger";
 import { Client } from "@/api";
@@ -81,7 +81,7 @@ export class Transcription extends Model<Transcription> {
 
     const webApi = new Client({
       baseUrl: settings.apiUrl(),
-      accessToken: settings.getSync("user.accessToken") as string,
+      accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });
     return webApi.syncTranscription(this.toJSON()).then(() => {

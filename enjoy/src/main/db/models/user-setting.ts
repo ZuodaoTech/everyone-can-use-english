@@ -33,9 +33,7 @@ export class UserSetting extends Model<UserSetting> {
   @Column(DataType.TEXT)
   value: string;
 
-  static async get(
-    key: UserSettingKeyEnum
-  ): Promise<string | Object | number | null> {
+  static async get(key: UserSettingKeyEnum): Promise<any> {
     const setting = await UserSetting.findOne({ where: { key } });
     if (!setting) return null;
 
@@ -46,10 +44,7 @@ export class UserSetting extends Model<UserSetting> {
     }
   }
 
-  static async set(
-    key: UserSettingKeyEnum,
-    value: object | string
-  ): Promise<void> {
+  static async set(key: UserSettingKeyEnum, value: any): Promise<void> {
     const setting = await UserSetting.findOne({ where: { key } });
 
     if (typeof value === "object") {
@@ -66,6 +61,10 @@ export class UserSetting extends Model<UserSetting> {
     if (key === UserSettingKeyEnum.LANGUAGE) {
       i18n.changeLanguage(value);
     }
+  }
+
+  static async accessToken(): Promise<string | null> {
+    return (await UserSetting.get(UserSettingKeyEnum.PROFILE))?.accessToken;
   }
 
   static async clear(): Promise<void> {
