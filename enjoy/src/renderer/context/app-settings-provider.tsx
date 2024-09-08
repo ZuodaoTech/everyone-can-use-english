@@ -16,6 +16,7 @@ type AppSettingsProviderState = {
   user: UserType | null;
   initialized: boolean;
   version?: string;
+  latestVersion?: string;
   libraryPath?: string;
   login?: (user: UserType) => void;
   logout?: () => void;
@@ -54,6 +55,7 @@ export const AppSettingsProvider = ({
   children: React.ReactNode;
 }) => {
   const [version, setVersion] = useState<string>("");
+  const [latestVersion, setLatestVersion] = useState<string>("");
   const [apiUrl, setApiUrl] = useState<string>(WEB_API_URL);
   const [webApi, setWebApi] = useState<Client>(null);
   const [cable, setCable] = useState<Consumer>();
@@ -259,7 +261,7 @@ export const AppSettingsProvider = ({
         accessToken: user?.accessToken,
         locale: language,
         onError: (err) => {
-          if (user.accessToken && err.status == 401) {
+          if (user && user.accessToken && err.status == 401) {
             setUser({ ...user, accessToken: null });
           }
         },
@@ -280,6 +282,10 @@ export const AppSettingsProvider = ({
 
     webApi.config("ipa_mappings").then((mappings) => {
       if (mappings) setIpaMappings(mappings);
+    });
+
+    webApi.config("app_version").then((config) => {
+      if (config.version) setLatestVersion(config.version);
     });
   }, [webApi]);
 
@@ -316,6 +322,7 @@ export const AppSettingsProvider = ({
         switchLearningLanguage,
         EnjoyApp,
         version,
+        latestVersion,
         webApi,
         apiUrl,
         setApiUrl: setApiUrlHandler,
