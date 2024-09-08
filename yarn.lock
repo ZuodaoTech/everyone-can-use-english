@@ -8322,6 +8322,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/semver@npm:^7":
+  version: 7.5.8
+  resolution: "@types/semver@npm:7.5.8"
+  checksum: 10c0/8663ff927234d1c5fcc04b33062cb2b9fcfbe0f5f351ed26c4d1e1581657deebd506b41ff7fdf89e787e3d33ce05854bc01686379b89e9c49b564c4cfa988efa
+  languageName: node
+  linkType: hard
+
 "@types/shimmer@npm:^1.0.2":
   version: 1.2.0
   resolution: "@types/shimmer@npm:1.2.0"
@@ -12852,6 +12859,7 @@ __metadata:
     "@types/rails__actioncable": "npm:^6.1.11"
     "@types/react": "npm:^18.3.5"
     "@types/react-dom": "npm:^18.3.0"
+    "@types/semver": "npm:^7"
     "@types/unzipper": "npm:^0.10.10"
     "@types/validator": "npm:^13.12.1"
     "@types/wavesurfer.js": "npm:^6.0.12"
@@ -12929,6 +12937,7 @@ __metadata:
     react-tooltip: "npm:^5.28.0"
     reflect-metadata: "npm:^0.2.2"
     rimraf: "npm:^6.0.1"
+    semver: "npm:^7.6.3"
     sequelize: "npm:^6.37.3"
     sequelize-typescript: "npm:^2.1.6"
     sonner: "npm:^1.5.0"

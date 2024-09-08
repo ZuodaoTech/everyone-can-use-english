@@ -788,5 +788,7 @@
   "export": "导出",
   "exportRecordings": "导出录音",
   "exportRecordingsConfirmation": "选择每个段落最高分的录音，导出为单个文件。",
-  "exportRecordingsSuccess": "导出录音成功"
+  "exportRecordingsSuccess": "导出录音成功",
+  "upgrade": "升级",
+  "upgradeNotice": "Enjoy App v{{version}} 已发布。请升级到最新版本。"
 }
