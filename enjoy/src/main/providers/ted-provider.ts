@@ -44,25 +44,24 @@ export class TedProvider {
     if (!html) return [];
 
     const ideas: TedIdeaType[] = [];
-    cheerio
-      .load(html)(".post.block")
-      .each((_, el) => {
-        const url = $(el).find("a.block-post-link").attr("href");
-        const cover = $(el).find("img").attr("src");
-        const title = $(el).find("h2.block-entry-title").text();
-        const description = $(el).find("p").text();
+    const $ = cheerio.load(html);
+    $(".post.block").each((_, el) => {
+      const url = $(el).find("a.block-post-link").attr("href");
+      const cover = $(el).find("img").attr("src");
+      const title = $(el).find("h2.block-entry-title").text();
+      const description = $(el).find("p").text();
 
-        if (!url) {
-          return;
-        }
+      if (!url) {
+        return;
+      }
 
-        ideas.push({
-          url,
-          cover,
-          title,
-          description,
-        });
+      ideas.push({
+        url,
+        cover,
+        title,
+        description,
       });
+    });
 
     return ideas;
   };

@@ -35,19 +35,18 @@ export class AudibleProvider {
     if (!html) return [];
 
     const categories: { id: number; label: string }[] = [];
+    const $ = cheerio.load(html);
 
-    cheerio
-      .load(html)(".leftSlot a.refinementFormLink")
-      .each((_, el) => {
-        const id = new URLSearchParams(
-          $(el).attr("href")?.split("?")?.pop() ?? ""
-        ).get("searchCategory");
-        const label = $(el).text()?.trim();
+    $(".leftSlot a.refinementFormLink").each((_, el) => {
+      const id = new URLSearchParams(
+        $(el).attr("href")?.split("?")?.pop() ?? ""
+      ).get("searchCategory");
+      const label = $(el).text()?.trim();
 
-        if (id && label) {
-          categories.push({ id: parseInt(id), label });
-        }
-      });
+      if (id && label) {
+        categories.push({ id: parseInt(id), label });
+      }
+    });
 
     return categories;
   };
@@ -56,36 +55,35 @@ export class AudibleProvider {
     if (!html) return { books: [], hasNextPage: false };
 
     const books: AudibleBookType[] = [];
+    const $ = cheerio.load(html);
 
-    cheerio
-      .load(html)("li.bc-list-item.productListItem")
-      .each((_, el) => {
-        const cover = $(el).find("img").attr("src");
-        const title = $(el).find("h3.bc-heading a.bc-link").text()?.trim();
-        const href = $(el).find("h3.bc-heading a.bc-link").attr("href");
-        const url = this.baseURL + new URL(href ?? "", this.baseURL).pathname;
-        const subtitle = $(el).find(".subtitle").text()?.trim();
-        const author = $(el).find(".authorLabel a.bc-link").text()?.trim();
-        const narrator = $(el).find(".narratorLabel a.bc-link").text();
-        const language = $(el)
-          .find(".languageLabel")
-          .text()
-          ?.split(":")
-          ?.pop()
-          ?.trim();
-        const sample = $(el).find("button[data-mp3]").attr("data-mp3");
+    $("li.bc-list-item.productListItem").each((_, el) => {
+      const cover = $(el).find("img").attr("src");
+      const title = $(el).find("h3.bc-heading a.bc-link").text()?.trim();
+      const href = $(el).find("h3.bc-heading a.bc-link").attr("href");
+      const url = this.baseURL + new URL(href ?? "", this.baseURL).pathname;
+      const subtitle = $(el).find(".subtitle").text()?.trim();
+      const author = $(el).find(".authorLabel a.bc-link").text()?.trim();
+      const narrator = $(el).find(".narratorLabel a.bc-link").text();
+      const language = $(el)
+        .find(".languageLabel")
+        .text()
+        ?.split(":")
+        ?.pop()
+        ?.trim();
+      const sample = $(el).find("button[data-mp3]").attr("data-mp3");
 
-        books.push({
-          title,
-          subtitle,
-          author,
-          narrator,
-          language,
-          cover,
-          sample,
-          url,
-        });
+      books.push({
+        title,
+        subtitle,
+        author,
+        narrator,
+        language,
+        cover,
+        sample,
+        url,
       });
+    });
 
     const hasNextPage =
       cheerio.load(html)(".nextButton a").attr("aria-disabled") !== "true";
