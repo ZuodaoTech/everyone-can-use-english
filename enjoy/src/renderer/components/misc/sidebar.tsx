@@ -33,18 +33,22 @@ import {
   SpeechIcon,
   GraduationCapIcon,
   MessagesSquareIcon,
+  PanelRightCloseIcon,
+  PanelRightOpenIcon,
 } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import { t } from "i18next";
 import { Preferences } from "@renderer/components";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { useContext, useEffect } from "react";
-import { NoticiationsChannel } from "@/renderer/cables";
+import { NoticiationsChannel } from "@renderer/cables";
+import { useState } from "react";
 
 export const Sidebar = () => {
   const location = useLocation();
   const activeTab = location.pathname;
   const { EnjoyApp, cable } = useContext(AppSettingsProviderContext);
+  const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
     if (!cable) return;
@@ -57,26 +61,51 @@ export const Sidebar = () => {
     };
   }, [cable]);
 
+  // Save the sidebar state to cache
+  useEffect(() => {
+    EnjoyApp.cacheObjects.set("sidebarOpen", isOpen);
+  }, [isOpen]);
+
+  // Restore the sidebar state from cache
+  useEffect(() => {
+    EnjoyApp.cacheObjects.get("sidebarOpen").then((value) => {
+      if (value !== undefined) {
+        setIsOpen(!!value);
+      }
+    });
+  }, []);
+
   return (
     <div
-      className="h-[100vh] w-16 xl:w-40 transition-all relative"
+      className={`h-[100vh] transition-all relative ${
+        isOpen ? "w-36" : "w-14"
+      }`}
       data-testid="sidebar"
     >
-      <div className="fixed top-0 left-0 h-full w-16 xl:w-40 bg-muted">
+      <div
+        className={`fixed top-0 left-0 h-full bg-muted ${
+          isOpen ? "w-36" : "w-14"
+        }`}
+      >
         <ScrollArea className="w-full h-full pb-12">
           <div className="py-4 mb-4 flex items-center space-x-1 justify-center">
             <img src="./assets/logo-light.svg" className="w-8 h-8" />
-            <span className="hidden xl:block text-xl font-semibold text-[#4797F5]">
+            <span
+              className={`text-xl font-semibold text-[#4797F5] ${
+                isOpen ? "" : "hidden"
+              }`}
+            >
               ENJOY
             </span>
           </div>
-          <div className="grid gap-2">
+          <div className="grid gap-2 mb-4">
             <SidebarItem
               href="/"
               label={t("sidebar.home")}
               tooltip={t("sidebar.home")}
               active={activeTab === "/"}
               Icon={HomeIcon}
+              isOpen={isOpen}
             />
 
             <SidebarItem
@@ -85,6 +114,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.chats")}
               active={activeTab.startsWith("/chats")}
               Icon={MessagesSquareIcon}
+              isOpen={isOpen}
             />
 
             <SidebarItem
@@ -93,9 +123,10 @@ export const Sidebar = () => {
               tooltip={t("sidebar.courses")}
               active={activeTab.startsWith("/courses")}
               Icon={GraduationCapIcon}
+              isOpen={isOpen}
             />
 
-            <Separator className="hidden xl:block" />
+            <Separator />
 
             <SidebarItem
               href="/audios"
@@ -103,6 +134,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.audios")}
               active={activeTab.startsWith("/audios")}
               Icon={HeadphonesIcon}
+              isOpen={isOpen}
             />
 
             <SidebarItem
@@ -111,6 +143,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.videos")}
               active={activeTab.startsWith("/videos")}
               Icon={VideoIcon}
+              isOpen={isOpen}
             />
 
             <SidebarItem
@@ -119,9 +152,10 @@ export const Sidebar = () => {
               tooltip={t("sidebar.stories")}
               active={activeTab.startsWith("/stories")}
               Icon={NewspaperIcon}
+              isOpen={isOpen}
             />
 
-            <Separator className="hidden xl:block" />
+            <Separator />
 
             <SidebarItem
               href="/conversations"
@@ -130,6 +164,7 @@ export const Sidebar = () => {
               active={activeTab.startsWith("/conversations")}
               Icon={BotIcon}
               testid="sidebar-conversations"
+              isOpen={isOpen}
             />
 
             <SidebarItem
@@ -139,6 +174,7 @@ export const Sidebar = () => {
               active={activeTab.startsWith("/pronunciation_assessments")}
               Icon={SpeechIcon}
               testid="sidebar-pronunciation-assessments"
+              isOpen={isOpen}
             />
 
             <SidebarItem
@@ -147,6 +183,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.notes")}
               active={activeTab === "/notes"}
               Icon={NotebookPenIcon}
+              isOpen={isOpen}
             />
 
             <SidebarItem
@@ -155,9 +192,10 @@ export const Sidebar = () => {
               tooltip={t("sidebar.vocabulary")}
               active={activeTab.startsWith("/vocabulary")}
               Icon={BookMarkedIcon}
+              isOpen={isOpen}
             />
 
-            <Separator className="hidden xl:block" />
+            <Separator />
 
             <SidebarItem
               href="/community"
@@ -165,6 +203,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.community")}
               active={activeTab === "/community"}
               Icon={UsersRoundIcon}
+              isOpen={isOpen}
             />
 
             <SidebarItem
@@ -173,25 +212,29 @@ export const Sidebar = () => {
               tooltip={t("sidebar.profile")}
               active={activeTab.startsWith("/profile")}
               Icon={UserIcon}
+              isOpen={isOpen}
             />
 
-            <Separator className="hidden xl:block" />
+            <Separator />
 
             <Dialog>
               <DialogTrigger asChild>
-                <div className="px-1 xl:px-2">
+                <div className="px-1">
                   <Button
+                    size="sm"
                     variant="ghost"
                     id="preferences-button"
-                    className="w-full xl:justify-start"
+                    className={`w-full ${
+                      isOpen ? "justify-start" : "justify-center"
+                    }`}
                     data-tooltip-id="global-tooltip"
                     data-tooltip-content={t("sidebar.preferences")}
                     data-tooltip-place="right"
                   >
-                    <SettingsIcon className="xl:mr-2 h-5 w-5" />
-                    <span className="hidden xl:block">
-                      {t("sidebar.preferences")}
-                    </span>
+                    <SettingsIcon className="h-5 w-5" />
+                    {isOpen && (
+                      <span className="ml-2"> {t("sidebar.preferences")} </span>
+                    )}
                   </Button>
                 </div>
               </DialogTrigger>
@@ -206,71 +249,90 @@ export const Sidebar = () => {
                 <Preferences />
               </DialogContent>
             </Dialog>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="px-1">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className={`w-full ${
+                      isOpen ? "justify-start" : "justify-center"
+                    }`}
+                  >
+                    <HelpCircleIcon className="h-5 w-5" />
+                    {isOpen && (
+                      <span className="ml-2"> {t("sidebar.help")} </span>
+                    )}
+                  </Button>
+                </div>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent className="px-6">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      EnjoyApp.shell.openExternal("https://998h.org/enjoy-app/")
+                    }
+                    className="flex justify-between space-x-4"
+                  >
+                    <span>{t("userGuide")}</span>
+                    <ExternalLinkIcon className="h-6 w-4" />
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+
+                <DropdownMenuGroup>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      {t("feedback")}
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem
+                          onClick={() =>
+                            EnjoyApp.shell.openExternal(
+                              "https://mixin.one/codes/f6ff96b8-54fb-4ad8-a6d4-5a5bdb1df13e"
+                            )
+                          }
+                          className="flex justify-between space-x-4"
+                        >
+                          <span>Mixin</span>
+                          <ExternalLinkIcon className="h-6 w-4" />
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() =>
+                            EnjoyApp.shell.openExternal(
+                              "https://github.com/zuodaotech/everyone-can-use-english/discussions"
+                            )
+                          }
+                          className="flex justify-between space-x-4"
+                        >
+                          <span>Github</span>
+                          <ExternalLinkIcon className="h-6 w-4" />
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                  </DropdownMenuSub>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </ScrollArea>
 
-        <div className="w-full absolute bottom-0 px-1 xl:px-2 py-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="w-full xl:justify-start px-2 xl:px-4"
-              >
-                <HelpCircleIcon className="h-5 w-5" />
-                <span className="ml-2 hidden xl:block">
-                  {t("sidebar.help")}
-                </span>
-              </Button>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent className="px-4">
-              <DropdownMenuGroup>
-                <DropdownMenuItem
-                  onClick={() =>
-                    EnjoyApp.shell.openExternal("https://1000h.org/enjoy-app/")
-                  }
-                  className="flex justify-between space-x-2"
-                >
-                  <span>{t("userGuide")}</span>
-                  <ExternalLinkIcon className="h-4 w-4" />
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-
-              <DropdownMenuGroup>
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>
-                    {t("feedback")}
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuPortal>
-                    <DropdownMenuSubContent>
-                      <DropdownMenuItem
-                        onClick={() =>
-                          EnjoyApp.shell.openExternal(
-                            "https://mixin.one/codes/f8ff96b8-54fb-4ad8-a6d4-5a5bdb1df13e"
-                          )
-                        }
-                        className="flex justify-between space-x-2"
-                      >
-                        <span>Mixin</span>
-                        <ExternalLinkIcon className="h-4 w-4" />
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() =>
-                          EnjoyApp.shell.openExternal(
-                            "https://github.com/zuodaotech/everyone-can-use-english/discussions"
-                          )
-                        }
-                        className="flex justify-between space-x-2"
-                      >
-                        <span>Github</span>
-                        <ExternalLinkIcon className="h-4 w-4" />
-                      </DropdownMenuItem>
-                    </DropdownMenuSubContent>
-                  </DropdownMenuPortal>
-                </DropdownMenuSub>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="w-full absolute bottom-0 pt-4 pb-2 px-1">
+          <Button
+            size="sm"
+            variant="ghost"
+            className={`w-full ${isOpen ? "justify-start" : "justify-center"}`}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? (
+              <PanelRightOpenIcon className="h-5 w-5" />
+            ) : (
+              <PanelRightCloseIcon className="h-5 w-5" />
+            )}
+            {isOpen && <span className="ml-2"> {t("sidebar.collapse")} </span>}
+          </Button>
         </div>
       </div>
     </div>
@@ -284,8 +346,9 @@ const SidebarItem = (props: {
   active: boolean;
   Icon: LucideIcon;
   testid?: string;
+  isOpen: boolean;
 }) => {
-  const { href, label, tooltip, active, Icon, testid } = props;
+  const { href, label, tooltip, active, Icon, testid, isOpen } = props;
 
   return (
     <Link
@@ -294,14 +357,15 @@ const SidebarItem = (props: {
       data-tooltip-content={tooltip}
       data-tooltip-place="right"
       data-testid={testid}
-      className="block px-1 xl:px-2"
+      className="block px-1"
     >
       <Button
+        size="sm"
         variant={active ? "default" : "ghost"}
-        className="w-full xl:justify-start px-2 xl:px-4"
+        className={`w-full ${isOpen ? "justify-start" : "justify-center"}`}
       >
         <Icon className="h-5 w-5" />
-        <span className="ml-2 hidden xl:block">{label}</span>
+        {isOpen && <span className="ml-2">{label}</span>}
       </Button>
     </Link>
   );

@@ -178,7 +178,8 @@
     "preferences": "Preferences",
     "profile": "My Profile",
     "notes": "Note",
-    "help": "Help"
+    "help": "Help",
+    "collapse": "Collapse"
   },
   "form": {
     "lengthMustBeAtLeast": "{{field}} must be at least {{length}} characters",
