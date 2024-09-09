@@ -161,7 +161,7 @@
     "microsoft-cognitiveservices-speech-sdk": "^1.40.0",
     "mustache": "^4.2.0",
     "next-themes": "^0.3.0",
-    "openai": "^4.58.0",
+    "openai": "^4.58.1",
     "pitchfinder": "^2.3.2",
     "postcss": "^8.4.45",
     "proxy-agent": "^6.4.0",

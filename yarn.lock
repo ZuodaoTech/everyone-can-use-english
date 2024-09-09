@@ -12915,7 +12915,7 @@ __metadata:
     mustache: "npm:^4.2.0"
     next-themes: "npm:^0.3.0"
     octokit: "npm:^4.0.2"
-    openai: "npm:^4.58.0"
+    openai: "npm:^4.58.1"
     pitchfinder: "npm:^2.3.2"
     postcss: "npm:^8.4.45"
     progress: "npm:^2.0.3"
@@ -19618,9 +19618,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openai@npm:^4.58.0":
-  version: 4.58.0
-  resolution: "openai@npm:4.58.0"
+"openai@npm:^4.58.1":
+  version: 4.58.1
+  resolution: "openai@npm:4.58.1"
   dependencies:
     "@types/node": "npm:^18.11.18"
     "@types/node-fetch": "npm:^2.6.4"
@@ -19638,7 +19638,7 @@ __metadata:
       optional: true
   bin:
     openai: bin/cli
-  checksum: 10c0/681a195051deb68e6a13423a090d52616c64eb8198c303b22ca3462a132852cde0067151bb183e7b1b3359b7ea1b8515003cac9e02b35f563c13eadca8aa2392
+  checksum: 10c0/d63c3cec14c47c8e6a3656d51ae99eeeff5e754c31d119da7fd74ef4b403bdc82587db62c9aba940cbf539df2f31b07b3ac56bd6c69581009ef0ddefc2ab44fd
   languageName: node
   linkType: hard
 
