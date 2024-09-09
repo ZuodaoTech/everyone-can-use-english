@@ -190,7 +190,7 @@
     "umzug": "^3.8.1",
     "unzipper": "^0.12.3",
     "update-electron-app": "^3.0.0",
-    "wavesurfer.js": "^7.8.4",
+    "wavesurfer.js": "^7.8.5",
     "zod": "^3.23.8",
     "zod-to-json-schema": "^3.23.2"
   }
