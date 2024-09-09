@@ -15,7 +15,7 @@ __metadata:
     markdown-it-mathjax3: "npm:^4.3.2"
     markdown-it-sub: "npm:^2.0.0"
     markdown-it-sup: "npm:^2.0.0"
-    mermaid: "npm:^11.1.0"
+    mermaid: "npm:^11.1.1"
     sass: "npm:^1.78.0"
     vitepress: "npm:^1.3.4"
     vitepress-plugin-mermaid: "npm:^2.0.16"
@@ -17891,9 +17891,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mermaid@npm:^11.1.0":
-  version: 11.1.0
-  resolution: "mermaid@npm:11.1.0"
+"mermaid@npm:^11.1.1":
+  version: 11.1.1
+  resolution: "mermaid@npm:11.1.1"
   dependencies:
     "@braintree/sanitize-url": "npm:^7.0.1"
     "@iconify/utils": "npm:^2.1.32"
@@ -17914,7 +17914,7 @@ __metadata:
     stylis: "npm:^4.3.1"
     ts-dedent: "npm:^2.2.0"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/65cf4eff6a35a9bb5d51e542521c7d95f36d517e4dab28b3d98370ea0fdde11fd2dad7e55ec86e427145a5fe256c7f164341ed0c4ca8c8aaf56476603c8b8f74
+  checksum: 10c0/d9e5d575d68ff0aa032f588d2b049ce40c14891b8ed566f55d4abe7b9146372ae6e50cd37d2d7fa383e3df4ff33163b7742b8ec03de9f9ea608f212fc98a30c5
   languageName: node
   linkType: hard
 
