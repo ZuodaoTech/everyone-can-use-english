@@ -2,13 +2,19 @@ import { useEffect, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import {
   MediaLoadingModal,
-  MediaCaption,
+  MediaCaptionPanel,
   MediaPlayerControls,
   MediaTabs,
   MediaCurrentRecording,
   MediaPlayer,
   LoaderSpin,
 } from "@renderer/components";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@renderer/components/ui";
+
 import { useVideo } from "@renderer/hooks";
 
 export const VideoPlayer = (props: {
@@ -17,13 +23,8 @@ export const VideoPlayer = (props: {
   segmentIndex?: number;
 }) => {
   const { id, md5, segmentIndex } = props;
-  const {
-    media,
-    setMedia,
-    layout,
-    setCurrentSegmentIndex,
-    getCachedSegmentIndex,
-  } = useContext(MediaPlayerProviderContext);
+  const { media, setMedia, setCurrentSegmentIndex, getCachedSegmentIndex } =
+    useContext(MediaPlayerProviderContext);
   const { video } = useVideo({ id, md5 });
 
   const updateCurrentSegmentIndex = async () => {
@@ -45,38 +46,35 @@ export const VideoPlayer = (props: {
   }, [media]);
 
   if (!video) return null;
-  if (!layout) return <LoaderSpin />;
 
   return (
-    <div data-testid="video-player" className={layout.wrapper}>
-      <div className={`${layout.upperWrapper} mb-4`}>
-        <div className="grid grid-cols-5 xl:grid-cols-3 gap-3 xl:gap-6 px-6 h-full">
-          <div
-            className={`col-span-2 xl:col-span-1 rounded-lg border shadow-lg ${layout.upperWrapper}`}
-          >
-            <MediaTabs />
+    <>
+      <ResizablePanelGroup direction="vertical" data-testid="video-player">
+        <ResizablePanel defaultSize={60} minSize={50}>
+          <ResizablePanelGroup direction="horizontal">
+            <ResizablePanel defaultSize={40} minSize={20}>
+              <MediaTabs />
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel minSize={20}>
+              <MediaCaptionPanel />
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </ResizablePanel>
+        <ResizableHandle />
+
+        <ResizablePanel minSize={20}>
+          <div className="flex flex-col h-full">
+            <div className="flex-1 grid grid-rows-2 gap-4">
+              <MediaCurrentRecording />
+              <MediaPlayer />
+            </div>
+
+            <MediaPlayerControls />
           </div>
-          <div className={`col-span-3 xl:col-span-2 ${layout.upperWrapper}`}>
-            <MediaCaption />
-          </div>
-        </div>
-      </div>
-
-      <div className={`${layout.lowerWrapper} flex flex-col`}>
-        <div className={`${layout.playerWrapper} py-2 px-3 xl:px-6`}>
-          <MediaCurrentRecording />
-        </div>
-
-        <div className={`${layout.playerWrapper} py-2 px-3 xl:px-6`}>
-          <MediaPlayer />
-        </div>
-
-        <div className={`${layout.panelWrapper} bg-background shadow-xl`}>
-          <MediaPlayerControls />
-        </div>
-      </div>
-
+        </ResizablePanel>
+      </ResizablePanelGroup>
       <MediaLoadingModal />
-    </div>
+    </>
   );
 };

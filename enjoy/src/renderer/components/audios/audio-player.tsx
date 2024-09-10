@@ -2,7 +2,7 @@ import { useEffect, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import {
   MediaLoadingModal,
-  MediaCaption,
+  MediaCaptionPanel,
   MediaPlayerControls,
   MediaTabs,
   MediaCurrentRecording,
@@ -57,7 +57,7 @@ export const AudioPlayer = (props: {
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel minSize={20}>
-              <MediaCaption />
+              <MediaCaptionPanel />
             </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>

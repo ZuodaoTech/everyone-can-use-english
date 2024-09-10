@@ -11,7 +11,7 @@ import { MediaTabContentTranslation } from "./media-tab-content-translation";
 import { MediaTabContentAnalysis } from "./media-tab-content-analysis";
 import { MediaTabContentNote } from "./media-tab-content-note";
 
-export const MediaCaptionTabs = (props: {
+export const MediaCaptionPanelTabs = (props: {
   caption: TimelineEntry;
   tab: string;
   currentSegmentIndex: number;

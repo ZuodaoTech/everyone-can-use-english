@@ -29,9 +29,9 @@ import {
 } from "echogarden/dist/utilities/Timeline.d.js";
 import { convertWordIpaToNormal } from "@/utils";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
-import { MediaCaptionTabs } from "./media-captions";
+import { MediaCaptionPanelTabs } from "./media-caption-panels";
 
-export const MediaCaption = () => {
+export const MediaCaptionPanel = () => {
   const {
     media,
     currentSegmentIndex,
@@ -372,7 +372,7 @@ export const MediaCaption = () => {
   return (
     <div className="h-full relative">
       <div className="flex-1 font-serif h-full">
-        <MediaCaptionTabs
+        <MediaCaptionPanelTabs
           tab={tab}
           setTab={setTab}
           caption={caption}
@@ -390,7 +390,7 @@ export const MediaCaption = () => {
             displayNotes={displayNotes}
             onClick={toggleSeletedIndex}
           />
-        </MediaCaptionTabs>
+        </MediaCaptionPanelTabs>
       </div>
 
       <div className="pr-4 absolute bottom-12 right-0">
