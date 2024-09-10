@@ -45,7 +45,7 @@ import {
 import { useRecordings } from "@renderer/hooks";
 import { formatDateTime } from "@renderer/lib/utils";
 import {
-  Caption,
+  MediaCaption,
   RecordingDetail,
   WavesurferPlayer,
 } from "@renderer/components";
@@ -94,7 +94,7 @@ export const MediaTranscriptionReadButton = (props: {
                       <span className="text-sm text-muted-foreground min-w-max leading-8">
                         #{index + 1}
                       </span>
-                      <Caption
+                      <MediaCaption
                         caption={sentence}
                         currentSegmentIndex={index}
                         displayIpa={true}

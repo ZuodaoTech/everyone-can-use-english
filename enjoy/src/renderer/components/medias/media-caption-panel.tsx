@@ -380,7 +380,7 @@ export const MediaCaptionPanel = () => {
           selectedIndices={selectedIndices}
           setSelectedIndices={setSelectedIndices}
         >
-          <Caption
+          <MediaCaption
             caption={caption}
             language={transcription.language}
             selectedIndices={selectedIndices}
@@ -514,7 +514,7 @@ export const MediaCaptionPanel = () => {
   );
 };
 
-export const Caption = (props: {
+export const MediaCaption = (props: {
   caption: TimelineEntry;
   language?: string;
   selectedIndices?: number[];
@@ -568,7 +568,7 @@ export const Caption = (props: {
           id={`word-${currentSegmentIndex}-${index}`}
         >
           <div
-            className={`font-serif text-lg xl:text-xl 2xl:text-2xl p-1 pb-2 rounded ${
+            className={`font-serif xl:text-lg 2xl:text-xl px-1 ${
               onClick && "hover:bg-red-500/10 cursor-pointer"
             } ${index === activeIndex ? "text-red-500" : ""} ${
               selectedIndices.includes(index) ? "bg-red-500/10 selected" : ""
@@ -584,7 +584,7 @@ export const Caption = (props: {
 
           {displayIpa && (
             <div
-              className={`select-text text-sm 2xl:text-base text-muted-foreground font-code mb-1 px-1 ${
+              className={`select-text text-sm 2xl:text-base text-muted-foreground font-code px-1 ${
                 index === 0 ? "before:content-['/']" : ""
               } ${
                 index === caption.timeline.length - 1
