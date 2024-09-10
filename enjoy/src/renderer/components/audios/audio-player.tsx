@@ -3,11 +3,8 @@ import { MediaPlayerProviderContext } from "@renderer/context";
 import {
   MediaLoadingModal,
   MediaRightPanel,
-  MediaPlayerControls,
   MediaLeftPanel,
-  MediaCurrentRecording,
-  MediaPlayer,
-  LoaderSpin,
+  MediaBottomPanel,
 } from "@renderer/components";
 import {
   ResizableHandle,
@@ -64,14 +61,7 @@ export const AudioPlayer = (props: {
         <ResizableHandle />
 
         <ResizablePanel minSize={20}>
-          <div className="flex flex-col h-full">
-            <div className="flex-1 grid grid-rows-2 gap-4">
-              <MediaCurrentRecording />
-              <MediaPlayer />
-            </div>
-
-            <MediaPlayerControls />
-          </div>
+          <MediaBottomPanel />
         </ResizablePanel>
       </ResizablePanelGroup>
       <MediaLoadingModal />

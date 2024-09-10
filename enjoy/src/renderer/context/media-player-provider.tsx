@@ -125,7 +125,7 @@ export const MediaPlayerProvider = ({
 
   const [ref, setRef] = useState(null);
 
-  // Player state
+  //  Player state
   const [decoded, setDecoded] = useState<boolean>(false);
   const [decodeError, setDecodeError] = useState<string>(null);
   const [currentTime, setCurrentTime] = useState<number>(0);
