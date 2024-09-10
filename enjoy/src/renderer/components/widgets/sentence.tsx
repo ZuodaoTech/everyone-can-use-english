@@ -4,7 +4,7 @@ export const Sentence = ({ sentence }: { sentence: string }) => {
   let words = sentence.split(" ");
 
   return (
-    <span className="break-all align-middle">
+    <span className="break-words align-middle">
       {words.map((word, index) => {
         return (
           <span key={index}>

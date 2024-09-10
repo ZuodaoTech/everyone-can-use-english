@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
   toast,
 } from "@renderer/components/ui";
-import { ConversationShortcuts, Vocabulary } from "@renderer/components";
+import { ConversationShortcuts } from "@renderer/components";
 import { t } from "i18next";
 import {
   BotIcon,
@@ -29,9 +29,9 @@ import {
 } from "echogarden/dist/utilities/Timeline.d.js";
 import { convertWordIpaToNormal } from "@/utils";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
-import { MediaCaptionPanelTabs } from "./media-caption-panels";
+import { MediaCaptionPanelTabs } from "./media-caption-panel";
 
-export const MediaCaptionPanel = () => {
+export const MediaRightPanel = () => {
   const {
     media,
     currentSegmentIndex,
@@ -393,7 +393,7 @@ export const MediaCaptionPanel = () => {
         </MediaCaptionPanelTabs>
       </div>
 
-      <div className="pr-4 absolute bottom-12 right-0">
+      <div className="absolute bottom-4 right-4">
         <Popover open={fbtOpen} onOpenChange={setFbtOpen}>
           <PopoverTrigger asChild>
             <Button

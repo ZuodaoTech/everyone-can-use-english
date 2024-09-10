@@ -1,5 +1,5 @@
 export * from "./media-player-controls";
-export * from "./media-caption-panel";
+export * from "./media-right-panel";
 export * from "./media-info-panel";
 export * from "./media-recordings";
 export * from "./media-current-recording";
@@ -8,7 +8,7 @@ export * from "./media-transcription-read-button";
 export * from "./media-transcription-generate-button";
 export * from "./media-player";
 export * from "./media-provider";
-export * from "./media-tabs";
+export * from "./media-left-panel";
 export * from "./media-loading-modal";
 export * from "./add-media-button";
 export * from "./media-transcription-print";

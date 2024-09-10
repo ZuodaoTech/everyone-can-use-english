@@ -33,8 +33,29 @@ export const MediaCaptionPanelTabs = (props: {
   if (!caption) return null;
 
   return (
-    <ScrollArea className="h-full relative">
-      <Tabs value={tab} onValueChange={(value) => setTab(value)} className="">
+    <Tabs
+      value={tab}
+      onValueChange={(value) => setTab(value)}
+      className="h-full flex flex-col"
+    >
+      <TabsList className="grid grid-cols-3 gap-4 rounded-none w-full px-4">
+        <TabsTrigger
+          value="translation"
+          className="capitalize block truncate px-1"
+        >
+          {t("captionTabs.translation")}
+        </TabsTrigger>
+        <TabsTrigger value="note" className="capitalize block truncate px-1">
+          {t("captionTabs.note")}
+        </TabsTrigger>
+        <TabsTrigger
+          value="analysis"
+          className="capitalize block truncate px-1"
+        >
+          {t("captionTabs.analysis")}
+        </TabsTrigger>
+      </TabsList>
+      <ScrollArea className="flex-1 relative">
         {children}
 
         <div className="px-4 pb-10 min-h-32">
@@ -51,19 +72,7 @@ export const MediaCaptionPanelTabs = (props: {
 
           <MediaTabContentAnalysis text={caption.text} />
         </div>
-
-        <TabsList className="grid grid-cols-3 gap-4 rounded-none absolute w-full bottom-0 px-4">
-          <TabsTrigger value="translation" className="block truncate px-1">
-            {t("captionTabs.translation")}
-          </TabsTrigger>
-          <TabsTrigger value="note" className="block truncate px-1">
-            {t("captionTabs.note")}
-          </TabsTrigger>
-          <TabsTrigger value="analysis" className="block truncate px-1">
-            {t("captionTabs.analysis")}
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
-    </ScrollArea>
+      </ScrollArea>
+    </Tabs>
   );
 };

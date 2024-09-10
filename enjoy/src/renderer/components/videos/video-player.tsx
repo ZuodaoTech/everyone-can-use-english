@@ -2,9 +2,9 @@ import { useEffect, useContext } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import {
   MediaLoadingModal,
-  MediaCaptionPanel,
+  MediaRightPanel,
   MediaPlayerControls,
-  MediaTabs,
+  MediaLeftPanel,
   MediaCurrentRecording,
   MediaPlayer,
   LoaderSpin,
@@ -53,11 +53,11 @@ export const VideoPlayer = (props: {
         <ResizablePanel defaultSize={60} minSize={50}>
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel defaultSize={40} minSize={20}>
-              <MediaTabs />
+              <MediaLeftPanel />
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel minSize={20}>
-              <MediaCaptionPanel />
+              <MediaRightPanel />
             </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>

@@ -109,7 +109,7 @@ export const MediaTranscription = (props: { display?: boolean }) => {
 
   return (
     <div ref={containerRef} data-testid="media-transcription-result">
-      <div className="px-4 py-1 bg-background">
+      <div className="px-4 py-0.5 bg-background">
         <div className="flex items-cener justify-between">
           <div className="flex items-center space-x-2">
             {transcribing || transcription.state === "processing" ? (

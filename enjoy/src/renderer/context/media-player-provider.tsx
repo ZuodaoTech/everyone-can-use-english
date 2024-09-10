@@ -200,6 +200,7 @@ export const MediaPlayerProvider = ({
   });
 
   const initializeWavesurfer = async () => {
+    console.log("initializeWavesurfer", media, mediaProvider, ref?.current);
     if (!media) return;
     if (!mediaProvider) return;
     if (!ref?.current) return;
