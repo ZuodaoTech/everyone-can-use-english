@@ -31,6 +31,7 @@ import {
   MoreVerticalIcon,
   DownloadIcon,
 } from "lucide-react";
+import debounce from "lodash/debounce";
 
 const ZOOM_RATIO_OPTIONS = [
   0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 3.5, 4.0,
@@ -38,12 +39,13 @@ const ZOOM_RATIO_OPTIONS = [
 const MIN_ZOOM_RATIO = 0.25;
 const MAX_ZOOM_RATIO = 4.0;
 
-export const MediaPlayer = () => {
+export const MediaPlayer = (props: { layout?: number[] }) => {
+  const { layout } = props;
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const {
     media,
     currentTime,
-    setRef,
+    setWaveformContainerRef,
     pitchChart,
     wavesurfer,
     zoomRatio,
@@ -54,6 +56,7 @@ export const MediaPlayer = () => {
     useState<boolean>(true);
   const [isSharing, setIsSharing] = useState(false);
   const [width, setWidth] = useState<number>();
+  const [size, setSize] = useState<{ width: number; height: number }>();
 
   const ref = useRef(null);
 
@@ -85,14 +88,21 @@ export const MediaPlayer = () => {
       });
   };
 
-  const calContainerWidth = () => {
-    const w = document
-      .querySelector(".media-player-wrapper")
-      ?.getBoundingClientRect()?.width;
-    if (!w) return;
+  const calContainerSize = () => {
+    const size = ref?.current
+      ?.closest(".media-player-wrapper")
+      ?.getBoundingClientRect();
+    if (!size) return;
 
-    setWidth(w - 48);
+    setSize({ width: size.width, height: size.height });
+    if (wavesurfer) {
+      wavesurfer.setOptions({
+        height: size.height - 10,
+      });
+    }
   };
+
+  const debouncedCalContainerSize = debounce(calContainerSize, 100);
 
   const handleDownload = () => {
     EnjoyApp.dialog
@@ -122,31 +132,38 @@ export const MediaPlayer = () => {
   };
 
   useEffect(() => {
-    if (ref?.current) {
-      setRef(ref);
-    }
-  }, [ref]);
+    if (!ref?.current) return;
+
+    setWaveformContainerRef(ref);
+
+    if (!wavesurfer) return;
+    const observer = new ResizeObserver(() => {
+      debouncedCalContainerSize();
+    });
+    observer.observe(ref.current);
+
+    EnjoyApp.window.onResize(debouncedCalContainerSize);
+
+    return () => {
+      EnjoyApp.window.removeListeners();
+      observer.disconnect();
+    };
+  }, [ref, wavesurfer]);
 
   useEffect(() => {
-    const container: HTMLDivElement = document.querySelector(
-      ".media-player-container"
-    );
-    if (!container) return;
-
-    ref.current.style.width = `${width}px`;
-  }, [width]);
-
-  useEffect(() => {
-    calContainerWidth();
-  }, []);
+    // debouncedCalContainerSize();
+  }, [layout]);
 
   return (
-    <div className="flex media-player-wrapper border rounded-lg">
+    <div ref={ref} className="flex h-full media-player-wrapper">
       <div
         data-testid="media-player-container"
-        className="flex-1 relative media-player-container"
+        className="flex-1 relative media-player-container overflow-hidden"
       >
-        <div ref={ref} />
+        <div
+          style={{ width: `${size?.width}px`, height: `${size?.height}px` }}
+          className="waveform-container"
+        />
         <div className="absolute right-2 top-1">
           <span className="text-sm">{formatDuration(currentTime || 0)}</span>
           <span className="mx-1">/</span>

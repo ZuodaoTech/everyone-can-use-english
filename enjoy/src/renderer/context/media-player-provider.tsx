@@ -30,7 +30,7 @@ type MediaPlayerContextType = {
   waveform: WaveFormDataType;
   // wavesurfer
   wavesurfer: WaveSurfer;
-  setRef: (ref: any) => void;
+  setWaveformContainerRef: (ref: any) => void;
   decoded: boolean;
   decodeError: string;
   setDecodeError: (error: string) => void;
@@ -123,7 +123,7 @@ export const MediaPlayerProvider = ({
   const [editingRegion, setEditingRegion] = useState<boolean>(false);
   const [pitchChart, setPitchChart] = useState<Chart>(null);
 
-  const [ref, setRef] = useState(null);
+  const [waveformContainerRef, setWaveformContainerRef] = useState(null);
 
   //  Player state
   const [decoded, setDecoded] = useState<boolean>(false);
@@ -200,14 +200,17 @@ export const MediaPlayerProvider = ({
   });
 
   const initializeWavesurfer = async () => {
-    console.log("initializeWavesurfer", media, mediaProvider, ref?.current);
     if (!media) return;
     if (!mediaProvider) return;
-    if (!ref?.current) return;
+    if (!waveformContainerRef?.current) return;
 
-    const height = ref.current.getBoundingClientRect().height;
+    const height =
+      waveformContainerRef.current.getBoundingClientRect().height - 10;
+    const container = document.querySelector(".waveform-container");
+    if (!container) return;
+
     const ws = WaveSurfer.create({
-      container: ref.current,
+      container: container as HTMLElement,
       height,
       waveColor: "#eaeaea",
       progressColor: "#c0d6df",
@@ -272,7 +275,7 @@ export const MediaPlayerProvider = ({
 
     // calculate offset and width
     const wrapperWidth = wrapper.getBoundingClientRect().width;
-    const height = ref.current.getBoundingClientRect().height;
+    const height = waveformContainerRef.current.getBoundingClientRect().height;
     const offsetLeft = (region.start / duration) * wrapperWidth;
     const width = ((region.end - region.start) / duration) * wrapperWidth;
 
@@ -495,12 +498,13 @@ export const MediaPlayerProvider = ({
    * update fitZoomRatio when currentSegmentIndex is updated
    */
   useEffect(() => {
-    if (!ref?.current) return;
+    if (!waveformContainerRef?.current) return;
     if (!wavesurfer) return;
 
     if (!activeRegion) return;
 
-    const containerWidth = ref.current.getBoundingClientRect().width;
+    const containerWidth =
+      waveformContainerRef.current.getBoundingClientRect().width;
     const duration = activeRegion.end - activeRegion.start;
     if (activeRegion.id.startsWith("word-region")) {
       setFitZoomRatio(containerWidth / 3 / duration / minPxPerSec);
@@ -511,7 +515,7 @@ export const MediaPlayerProvider = ({
     return () => {
       setFitZoomRatio(1.0);
     };
-  }, [ref, wavesurfer, activeRegion]);
+  }, [waveformContainerRef, wavesurfer, activeRegion]);
 
   /*
    * Zoom chart when zoomRatio update
@@ -568,7 +572,7 @@ export const MediaPlayerProvider = ({
       setDecoded(false);
       setDecodeError(null);
     };
-  }, [media?.src, ref?.current, mediaProvider]);
+  }, [media?.src, waveformContainerRef?.current, mediaProvider]);
 
   /* cache last segment index */
   useEffect(() => {
@@ -615,7 +619,7 @@ export const MediaPlayerProvider = ({
           setMedia,
           setMediaProvider,
           wavesurfer,
-          setRef,
+          setWaveformContainerRef,
           decoded,
           decodeError,
           setDecodeError,

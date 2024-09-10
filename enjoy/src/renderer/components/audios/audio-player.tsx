@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { MediaPlayerProviderContext } from "@renderer/context";
 import {
   MediaLoadingModal,
@@ -12,6 +12,7 @@ import {
   ResizablePanelGroup,
 } from "@renderer/components/ui";
 import { useAudio } from "@renderer/hooks";
+import { useDebounce } from "@uidotdev/usehooks";
 
 export const AudioPlayer = (props: {
   id?: string;
@@ -23,6 +24,8 @@ export const AudioPlayer = (props: {
     useContext(MediaPlayerProviderContext);
 
   const { audio } = useAudio({ id, md5 });
+  const [layout, setLayout] = useState<number[]>();
+  const debouncedSetLayout = useDebounce(layout, 100);
 
   const updateCurrentSegmentIndex = async () => {
     let index = segmentIndex || (await getCachedSegmentIndex());
@@ -46,7 +49,11 @@ export const AudioPlayer = (props: {
 
   return (
     <>
-      <ResizablePanelGroup direction="vertical" data-testid="audio-player">
+      <ResizablePanelGroup
+        direction="vertical"
+        data-testid="audio-player"
+        onLayout={setLayout}
+      >
         <ResizablePanel defaultSize={60} minSize={50}>
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel defaultSize={40} minSize={20}>
@@ -61,7 +68,7 @@ export const AudioPlayer = (props: {
         <ResizableHandle />
 
         <ResizablePanel minSize={20}>
-          <MediaBottomPanel />
+          <MediaBottomPanel layout={layout} />
         </ResizablePanel>
       </ResizablePanelGroup>
       <MediaLoadingModal />
