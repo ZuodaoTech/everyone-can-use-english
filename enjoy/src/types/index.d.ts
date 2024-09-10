@@ -213,16 +213,16 @@ type RecorderConfigType = {
   sampleSize: number;
 };
 
-type DictSettingItem = {
-  name: string;
-  path: string;
-  description: string;
-  isKeyCaseSensitive: string;
-  title: string;
-  resources: string[];
+type DictType = "dict" | "mdict" | "preset";
+
+type DictItem = {
+  type: DictType;
+  text: string;
+  value: string;
 };
 
 type DictSettingType = {
   default: string;
   removing: string[];
+  mdicts: MDict[];
 };

@@ -8,35 +8,38 @@ import { UserSettingKeyEnum } from "@/types/enums";
 
 type DictProviderState = {
   settings: DictSettingType;
-  dicts: Dict[];
-  installedDicts: Dict[];
-  dictSelectItems: { text: string; value: string }[];
+  installedDicts: DictItem[];
+  dictSelectItems: DictItem[];
   reload?: () => void;
-  remove?: (v: Dict) => void;
-  removed?: (v: Dict) => void;
-  currentDict?: Dict | null;
+  importMDict?: (mdict: MDict) => Promise<void>;
+  lookup?: (word: string, dict: DictItem) => Promise<string | null>;
+  getResource?: (key: string, dict: DictItem) => Promise<string | null>;
+  remove?: (v: DictItem) => Promise<void>;
+  currentDict?: DictItem | null;
   currentDictValue?: string;
   handleSetCurrentDict?: (v: string) => void;
-  setDefault?: (v: Dict) => Promise<void>;
+  setDefault?: (v: DictItem) => Promise<void>;
 };
 
 const AIDict = {
+  type: "preset" as DictType,
   text: t("aiLookup"),
   value: "ai",
 };
 
 const CamDict = {
+  type: "preset" as DictType,
   text: t("cambridgeDictionary"),
   value: "cambridge",
 };
 
 const initialState: DictProviderState = {
-  dicts: [],
   installedDicts: [],
   dictSelectItems: [AIDict],
   settings: {
     default: "",
     removing: [],
+    mdicts: [],
   },
 };
 
@@ -49,47 +52,50 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   const [settings, setSettings] = useState<DictSettingType>({
     default: "",
     removing: [],
+    mdicts: [],
   });
   const [currentDictValue, setCurrentDictValue] = useState<string>("");
-  const [currentDict, setCurrentDict] = useState<Dict | null>();
+  const [currentDict, setCurrentDict] = useState<DictItem | null>();
   const { state: dbState } = useContext(DbProviderContext);
 
-  const availableDicts = useMemo(
-    () =>
-      dicts.filter((dict) => {
-        return (
-          dict.state === "installed" &&
-          !settings.removing?.find((v) => v === dict.name)
-        );
-      }),
-    [dicts, settings]
-  );
+  const installedDicts = useMemo<DictItem[]>(() => {
+    const _dicts = dicts
+      .filter((dict) => dict.state === "installed")
+      .map((dict) => ({
+        type: "dict" as DictType,
+        text: dict.title,
+        value: dict.name,
+      }));
+    const _mdicts = settings.mdicts.map((mdict) => ({
+      type: "mdict" as DictType,
+      text: mdict.title,
+      value: mdict.hash,
+    }));
+
+    return [..._dicts, ..._mdicts];
+  }, [dicts, settings]);
+
+  const availableDicts = useMemo(() => {
+    return installedDicts.filter(
+      ({ value }) => !settings.removing.find((v) => v === value)
+    );
+  }, [installedDicts, settings]);
 
   const dictSelectItems = useMemo(() => {
     const presets = learningLanguage.startsWith("en")
       ? [CamDict, AIDict]
       : [AIDict];
 
-    return [
-      ...presets,
-      ...availableDicts.map((item) => ({
-        text: item.title,
-        value: item.name,
-      })),
-    ];
+    return [...presets, ...availableDicts];
   }, [availableDicts, learningLanguage]);
-
-  const installedDicts = useMemo(() => {
-    return dicts.filter((dict) => dict.state === "installed");
-  }, [dicts]);
 
   useEffect(() => {
     const defaultDict = availableDicts.find(
-      (dict) => dict.name === settings.default
+      (dict) => dict.value === settings.default
     );
 
     if (defaultDict) {
-      handleSetCurrentDict(defaultDict.name);
+      handleSetCurrentDict(defaultDict.value);
     } else {
       setCurrentDictValue(
         learningLanguage.startsWith("en") ? CamDict.value : AIDict.value
@@ -110,6 +116,12 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  const updateSettings = async (_settings: DictSettingType) => {
+    return EnjoyApp.userSettings
+      .set(UserSettingKeyEnum.DICTS, _settings)
+      .then(() => setSettings(_settings));
+  };
+
   const fetchDicts = async () => {
     return EnjoyApp.dict.getDicts().then((dicts) => {
       setDicts(dicts);
@@ -119,46 +131,78 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   const handleSetCurrentDict = (value: string) => {
     setCurrentDictValue(value);
 
-    const dict = dicts.find((dict) => dict.name === value);
+    const dict = availableDicts.find((dict) => dict.value === value);
     if (dict) setCurrentDict(dict);
   };
 
-  const setDefault = async (dict: Dict | null) => {
-    const _settings = { ...settings, default: dict?.name ?? "" };
-
-    EnjoyApp.userSettings
-      .set(UserSettingKeyEnum.DICTS, _settings)
-      .then(() => setSettings(_settings));
+  const setDefault = async (dict: DictItem | null) => {
+    updateSettings({ ...settings, default: dict?.value ?? "" });
   };
 
-  const remove = (dict: Dict) => {
-    if (!settings.removing?.find((name) => dict.name === name)) {
-      const removing = [...(settings.removing ?? []), dict.name];
-      const _settings = { ...settings, removing };
+  const remove = async (dict: DictItem) => {
+    const isRemoving = settings.removing?.find((value) => dict.value === value);
+    if (isRemoving) return;
 
-      EnjoyApp.userSettings
-        .set(UserSettingKeyEnum.DICTS, _settings)
-        .then(() => setSettings(_settings));
+    await updateSettings({
+      ...settings,
+      removing: [...(settings.removing ?? []), dict.value],
+    });
+
+    if (dict.type === "dict") {
+      const _dict = dicts.find(({ name }) => name === dict.value);
+      await EnjoyApp.dict.remove(_dict);
+    } else if (dict.type === "mdict") {
+      const _dict = settings.mdicts.find(({ hash }) => hash === dict.value);
+      await EnjoyApp.mdict.remove(_dict);
+    }
+
+    await updateSettings({
+      ...settings,
+      mdicts: settings.mdicts?.filter(({ hash }) => dict.value !== hash) ?? [],
+      removing:
+        settings.removing?.filter((value) => value !== dict.value) ?? [],
+    });
+  };
+
+  const lookup = async (word: string, dict: DictItem) => {
+    if (dict.type === "dict") {
+      const _dict = dicts.find(({ name }) => name === dict.value);
+      return EnjoyApp.dict.lookup(word, _dict);
+    } else if (dict.type === "mdict") {
+      const _dict = settings.mdicts.find(({ hash }) => hash === dict.value);
+      return EnjoyApp.mdict.lookup(word, _dict);
+    } else {
+      return null;
     }
   };
 
-  const removed = (dict: Dict) => {
-    const removing =
-      settings.removing?.filter((name) => name !== dict.name) ?? [];
-    const _settings = { ...settings, removing };
+  const getResource = async (key: string, dict: DictItem) => {
+    if (dict.type === "dict") {
+      const _dict = dicts.find(({ name }) => name === dict.value);
+      return EnjoyApp.dict.getResource(key, _dict);
+    } else if (dict.type === "mdict") {
+      const _dict = settings.mdicts.find(({ hash }) => hash === dict.value);
+      return EnjoyApp.mdict.getResource(key, _dict);
+    } else {
+      return null;
+    }
+  };
 
-    EnjoyApp.userSettings
-      .set(UserSettingKeyEnum.DICTS, _settings)
-      .then(() => setSettings(_settings));
+  const importMDict = async (mdict: MDict) => {
+    const mdicts = settings.mdicts.filter(({ hash }) => hash !== mdict.hash);
+    const _settings = { ...settings, mdicts: [mdict, ...mdicts] };
+
+    await updateSettings(_settings);
   };
 
   return (
     <DictProviderContext.Provider
       value={{
         settings,
-        dicts,
+        importMDict,
         remove,
-        removed,
+        lookup,
+        getResource,
         reload: fetchDicts,
         dictSelectItems,
         installedDicts,

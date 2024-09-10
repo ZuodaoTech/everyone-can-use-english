@@ -783,7 +783,7 @@
   "selectDir": "选择文件夹",
   "selectFile": "选择文件",
   "importMdictFile": "导入原词典文件",
-  "mdictFileTip": "直接导入 .mdx .mdd 格式的文件 (.mdx 文件是必须的，.mdd 文件是可选的且可以有多个)，不过样式和可用性可能存在问题。",
+  "mdictFileTip": "直接导入 .mdx .mdd 格式的文件 (.mdx 文件是必须的，.mdd 文件是可选的且可以有多个)。",
   "authorizationExpired": "您的登录授权已过期，请重新登录。",
   "selectUser": "选择用户",
   "export": "导出",

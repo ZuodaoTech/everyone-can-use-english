@@ -1,0 +1,23 @@
+html {
+  --background-color: #fff;
+  --text-color: #505050;
+  --white: #fff;
+  --black: #000;
+
+  padding-right: 4px;
+  background: var(--background-color);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  background-color: var(--background-color);
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: #cccccc;
+}

@@ -89,6 +89,7 @@
   },
   "dependencies": {
     "@andrkrn/ffprobe-static": "^5.2.0",
+    "@divisey/js-mdict": "^5.0.0",
     "@electron-forge/publisher-s3": "^7.4.0",
     "@hookform/resolvers": "^3.9.0",
     "@langchain/community": "^0.2.32",

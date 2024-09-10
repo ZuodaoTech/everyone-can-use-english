@@ -249,6 +249,14 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       return ipcRenderer.invoke("camdict-lookup", word);
     },
   },
+  mdict: {
+    remove: (dict: Dict) => ipcRenderer.invoke("mdict-remove", dict),
+    getResource: (key: string, dict: Dict) =>
+      ipcRenderer.invoke("mdict-read-file", key, dict),
+    lookup: (word: string, dict: Dict) =>
+      ipcRenderer.invoke("mdict-lookup", word, dict),
+    import: (pathes: string[]) => ipcRenderer.invoke("mdict-import", pathes),
+  },
   dict: {
     getDicts: () => ipcRenderer.invoke("dict-list"),
     remove: (dict: Dict) => ipcRenderer.invoke("dict-remove", dict),
