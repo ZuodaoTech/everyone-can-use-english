@@ -3,7 +3,7 @@ import { VideoPlayer } from "@renderer/components";
 import { Button } from "@renderer/components/ui";
 import { ChevronLeftIcon } from "lucide-react";
 import { t } from "i18next";
-import { MediaPlayerProvider } from "@renderer/context";
+import { MediaShadowProvider } from "@renderer/context";
 
 export default () => {
   const navigate = useNavigate();
@@ -21,9 +21,9 @@ export default () => {
           <span>{t("shadowingVideo")}</span>
         </div>
 
-        <MediaPlayerProvider>
+        <MediaShadowProvider>
           <VideoPlayer id={id} segmentIndex={parseInt(segmentIndex)} />
-        </MediaPlayerProvider>
+        </MediaShadowProvider>
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 import { useEffect, useContext, useState } from "react";
-import { MediaPlayerProviderContext } from "@renderer/context";
+import { MediaShadowProviderContext } from "@renderer/context";
 import {
   MediaProvider,
   MediaTranscription,
@@ -16,7 +16,7 @@ import {
 import { t } from "i18next";
 
 export const MediaLeftPanel = () => {
-  const { media, decoded } = useContext(MediaPlayerProviderContext);
+  const { media, decoded } = useContext(MediaShadowProviderContext);
   const [tab, setTab] = useState("provider");
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { MediaPlayerProviderContext } from "@renderer/context";
+import { MediaShadowProviderContext } from "@renderer/context";
 import {
   AlertDialog,
   AlertDialogHeader,
@@ -31,7 +31,7 @@ export const MediaLoadingModal = () => {
     transcribingProgress,
     transcribingOutput,
     generateTranscription,
-  } = useContext(MediaPlayerProviderContext);
+  } = useContext(MediaShadowProviderContext);
 
   useEffect(() => {
     console.log("decoded", decoded);

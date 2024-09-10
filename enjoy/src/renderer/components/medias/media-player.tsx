@@ -1,7 +1,7 @@
 import { useEffect, useContext, useRef, useState } from "react";
 import {
   AppSettingsProviderContext,
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
 } from "@renderer/context";
 import { formatDuration } from "@renderer/lib/utils";
 import { t } from "i18next";
@@ -51,7 +51,7 @@ export const MediaPlayer = (props: { layout?: number[] }) => {
     zoomRatio,
     setZoomRatio,
     fitZoomRatio,
-  } = useContext(MediaPlayerProviderContext);
+  } = useContext(MediaShadowProviderContext);
   const [displayInlineCaption, setDisplayInlineCaption] =
     useState<boolean>(true);
   const [isSharing, setIsSharing] = useState(false);

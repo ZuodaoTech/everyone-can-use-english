@@ -1,5 +1,5 @@
 import { useEffect, useContext } from "react";
-import { MediaPlayerProviderContext } from "@renderer/context";
+import { MediaShadowProviderContext } from "@renderer/context";
 import {
   MediaLoadingModal,
   MediaRightPanel,
@@ -24,7 +24,7 @@ export const VideoPlayer = (props: {
 }) => {
   const { id, md5, segmentIndex } = props;
   const { media, setMedia, setCurrentSegmentIndex, getCachedSegmentIndex } =
-    useContext(MediaPlayerProviderContext);
+    useContext(MediaShadowProviderContext);
   const { video } = useVideo({ id, md5 });
 
   const updateCurrentSegmentIndex = async () => {

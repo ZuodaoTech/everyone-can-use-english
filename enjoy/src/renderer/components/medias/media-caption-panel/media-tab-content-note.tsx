@@ -1,4 +1,4 @@
-import { MediaPlayerProviderContext } from "@renderer/context";
+import { MediaShadowProviderContext } from "@renderer/context";
 import { Button, TabsContent, toast } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useContext, useState } from "react";
@@ -14,7 +14,7 @@ export const MediaTabContentNote = (props: {
 }) => {
   const { selectedIndices, setSelectedIndices } = props;
   const { currentSegment, createSegment, currentNotes } = useContext(
-    MediaPlayerProviderContext
+    MediaShadowProviderContext
   );
   const [editingNote, setEditingNote] = useState<NoteType>();
 

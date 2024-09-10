@@ -2,7 +2,7 @@ import { useEffect, useContext, useRef, useState } from "react";
 import {
   AppSettingsProviderContext,
   DbProviderContext,
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
 } from "@renderer/context";
 import { t } from "i18next";
 import {
@@ -43,7 +43,7 @@ export const MediaTranscription = (props: { display?: boolean }) => {
     transcription,
     transcribing,
     transcribingProgress,
-  } = useContext(MediaPlayerProviderContext);
+  } = useContext(MediaShadowProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
 

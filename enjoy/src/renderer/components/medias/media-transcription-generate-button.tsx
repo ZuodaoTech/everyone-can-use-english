@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { MediaPlayerProviderContext } from "@renderer/context";
+import { MediaShadowProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import {
   Button,
@@ -32,7 +32,7 @@ export const MediaTranscriptionGenerateButton = (props: {
     transcription,
     transcribingProgress,
     transcribingOutput,
-  } = useContext(MediaPlayerProviderContext);
+  } = useContext(MediaShadowProviderContext);
   const [open, setOpen] = useState(false);
 
   return (

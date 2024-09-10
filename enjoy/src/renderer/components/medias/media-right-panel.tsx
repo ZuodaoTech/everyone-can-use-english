@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import {
   AppSettingsProviderContext,
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
 } from "@renderer/context";
 import cloneDeep from "lodash/cloneDeep";
 import {
@@ -45,7 +45,7 @@ export const MediaRightPanel = () => {
     editingRegion,
     setEditingRegion,
     setTranscriptionDraft,
-  } = useContext(MediaPlayerProviderContext);
+  } = useContext(MediaShadowProviderContext);
   const { EnjoyApp, learningLanguage, ipaMappings } = useContext(
     AppSettingsProviderContext
   );
@@ -524,7 +524,7 @@ export const MediaCaption = (props: {
   displayNotes?: boolean;
   onClick?: (index: number) => void;
 }) => {
-  const { currentNotes } = useContext(MediaPlayerProviderContext);
+  const { currentNotes } = useContext(MediaShadowProviderContext);
   const { learningLanguage, ipaMappings } = useContext(
     AppSettingsProviderContext
   );

@@ -11,7 +11,7 @@ import {
   PopoverContent,
 } from "@renderer/components/ui";
 import {
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
   AppSettingsProviderContext,
   HotKeysSettingsProviderContext,
 } from "@renderer/context";
@@ -55,7 +55,7 @@ export const MediaPlayerControls = () => {
     setEditingRegion,
     transcriptionDraft,
     setTranscriptionDraft,
-  } = useContext(MediaPlayerProviderContext);
+  } = useContext(MediaShadowProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
   const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("single");

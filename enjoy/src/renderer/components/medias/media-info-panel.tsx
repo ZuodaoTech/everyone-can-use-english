@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import {
   AppSettingsProviderContext,
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
 } from "@renderer/context";
 import { formatDuration, formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
@@ -10,7 +10,7 @@ import { useAiCommand } from "@renderer/hooks";
 import { LoaderIcon } from "lucide-react";
 
 export const MediaInfoPanel = () => {
-  const { media, transcription } = useContext(MediaPlayerProviderContext);
+  const { media, transcription } = useContext(MediaShadowProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { summarizeTopic } = useAiCommand();
   const [summarizing, setSummarizing] = useState<boolean>(false);

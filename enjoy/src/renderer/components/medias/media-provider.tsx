@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef } from "react";
 import {
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
   ThemeProviderContext,
 } from "@renderer/context";
 import {
@@ -24,7 +24,7 @@ import { toast } from "@renderer/components/ui";
 export const MediaProvider = () => {
   const { theme } = useContext(ThemeProviderContext);
   const { media, setMediaProvider, setDecodeError, transcription } = useContext(
-    MediaPlayerProviderContext
+    MediaShadowProviderContext
   );
   const mediaRemote = useMediaRemote();
   const player = useRef<MediaPlayerInstance>(null);

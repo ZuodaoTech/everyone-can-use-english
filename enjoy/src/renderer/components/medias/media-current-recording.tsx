@@ -2,7 +2,7 @@ import { useEffect, useContext, useRef, useState } from "react";
 import {
   AppSettingsProviderContext,
   HotKeysSettingsProviderContext,
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
 } from "@renderer/context";
 import { RecordingDetail } from "@renderer/components";
 import { renderPitchContour } from "@renderer/lib/utils";
@@ -64,7 +64,7 @@ export const MediaCurrentRecording = () => {
     currentSegment,
     createSegment,
     currentTime: mediaCurrentTime,
-  } = useContext(MediaPlayerProviderContext);
+  } = useContext(MediaShadowProviderContext);
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
   const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
   const [player, setPlayer] = useState(null);
@@ -688,7 +688,7 @@ export const MediaCurrentRecording = () => {
 
 export const MediaRecordButton = () => {
   const { media, isRecording, startRecording, stopRecording } = useContext(
-    MediaPlayerProviderContext
+    MediaShadowProviderContext
   );
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [access, setAccess] = useState(true);

@@ -23,7 +23,7 @@ import { SttEngineOptionEnum } from "@/types/enums";
 const ONE_MINUTE = 60;
 const TEN_MINUTES = 10 * ONE_MINUTE;
 
-type MediaPlayerContextType = {
+type MediaShadowContextType = {
   media: AudioType | VideoType;
   setMedia: (media: AudioType | VideoType) => void;
   setMediaProvider: (mediaProvider: HTMLAudioElement | null) => void;
@@ -98,10 +98,10 @@ type MediaPlayerContextType = {
   setCachedSegmentIndex: (index: number) => void;
 };
 
-export const MediaPlayerProviderContext =
-  createContext<MediaPlayerContextType>(null);
+export const MediaShadowProviderContext =
+  createContext<MediaShadowContextType>(null);
 
-export const MediaPlayerProvider = ({
+export const MediaShadowProvider = ({
   children,
 }: {
   children: React.ReactNode;
@@ -613,7 +613,7 @@ export const MediaPlayerProvider = ({
 
   return (
     <>
-      <MediaPlayerProviderContext.Provider
+      <MediaShadowProviderContext.Provider
         value={{
           media,
           setMedia,
@@ -670,7 +670,7 @@ export const MediaPlayerProvider = ({
         }}
       >
         {children}
-      </MediaPlayerProviderContext.Provider>
+      </MediaShadowProviderContext.Provider>
       <Tooltip className="z-10" id="media-player-tooltip" />
     </>
   );

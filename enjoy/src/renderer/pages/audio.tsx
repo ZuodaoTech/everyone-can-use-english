@@ -3,7 +3,7 @@ import { AudioPlayer } from "@renderer/components";
 import { Button } from "@renderer/components/ui";
 import { ChevronLeftIcon } from "lucide-react";
 import { t } from "i18next";
-import { MediaPlayerProvider } from "@renderer/context";
+import { MediaShadowProvider } from "@renderer/context";
 
 export default () => {
   const navigate = useNavigate();
@@ -22,9 +22,9 @@ export default () => {
         </div>
 
         <div className="flex-1">
-          <MediaPlayerProvider>
+          <MediaShadowProvider>
             <AudioPlayer id={id} segmentIndex={parseInt(segmentIndex)} />
-          </MediaPlayerProvider>
+          </MediaShadowProvider>
         </div>
       </div>
     </>

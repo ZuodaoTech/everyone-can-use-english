@@ -1,5 +1,5 @@
 import { useEffect, useContext, useState } from "react";
-import { MediaPlayerProviderContext } from "@renderer/context";
+import { MediaShadowProviderContext } from "@renderer/context";
 import {
   MediaLoadingModal,
   MediaRightPanel,
@@ -21,7 +21,7 @@ export const AudioPlayer = (props: {
 }) => {
   const { id, md5, segmentIndex } = props;
   const { media, setMedia, setCurrentSegmentIndex, getCachedSegmentIndex } =
-    useContext(MediaPlayerProviderContext);
+    useContext(MediaShadowProviderContext);
 
   const { audio } = useAudio({ id, md5 });
   const [layout, setLayout] = useState<number[]>();

@@ -9,7 +9,7 @@ import {
   toast,
 } from "@renderer/components/ui";
 import {
-  MediaPlayerProvider,
+  MediaShadowProvider,
   AppSettingsProviderContext,
 } from "@renderer/context";
 import { ChevronDownIcon } from "lucide-react";
@@ -61,7 +61,7 @@ export const CourseProvider = ({
         setShadowing,
       }}
     >
-      <MediaPlayerProvider>
+      <MediaShadowProvider>
         {children}
         <Sheet
           modal={false}
@@ -88,7 +88,7 @@ export const CourseProvider = ({
             <AudioPlayer id={shadowing?.id} />
           </SheetContent>
         </Sheet>
-      </MediaPlayerProvider>
+      </MediaShadowProvider>
     </CourseProviderContext.Provider>
   );
 };
