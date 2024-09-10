@@ -45,7 +45,7 @@
 <td></td>
 <td></td>
 <td><span class="pho">ɚ</span><span class="speak-word-inline" data-audio-us-male="/audios/us_phonetics_sound_mother_2023feb.mp3"></span></td>
-<td>w<b>or</b>ker <span class="pho alt not-display">ˈwɝː.kɚ</span><span class="speak-word-inline" data-audio-us-female="/audios/worker-us-female.mp3" data-audio-us-male="/audios/worker-us-male.mp3"></span></td>
+<td>work<b>er</b> <span class="pho alt not-display">ˈwɝː.kɚ</span><span class="speak-word-inline" data-audio-us-female="/audios/worker-us-female.mp3" data-audio-us-male="/audios/worker-us-male.mp3"></span></td>
 </tr>
 <tr>
 <td><span class="pho">ɜː</span><span class="speak-word-inline" data-audio-uk-male="/audios/uk_phonetics_sound_bird_2023feb.mp3"></span></td>
