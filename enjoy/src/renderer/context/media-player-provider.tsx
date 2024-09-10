@@ -24,17 +24,6 @@ const ONE_MINUTE = 60;
 const TEN_MINUTES = 10 * ONE_MINUTE;
 
 type MediaPlayerContextType = {
-  layout: {
-    name: string;
-    width: number;
-    height: number;
-    wrapper: string;
-    upperWrapper: string;
-    lowerWrapper: string;
-    playerWrapper: string;
-    panelWrapper: string;
-    playerHeight: number;
-  };
   media: AudioType | VideoType;
   setMedia: (media: AudioType | VideoType) => void;
   setMediaProvider: (mediaProvider: HTMLAudioElement | null) => void;
@@ -112,27 +101,6 @@ type MediaPlayerContextType = {
 export const MediaPlayerProviderContext =
   createContext<MediaPlayerContextType>(null);
 
-const LAYOUT = {
-  sm: {
-    name: "sm",
-    wrapper: "h-[calc(100vh-3.5rem)]",
-    upperWrapper: "h-[calc(100vh-27.5rem)] min-h-64",
-    lowerWrapper: "h-[23rem]",
-    playerWrapper: "h-[9rem] mb-2",
-    panelWrapper: "h-16 w-full z-10 sticky bottom-0",
-    playerHeight: 128,
-  },
-  lg: {
-    name: "lg",
-    wrapper: "h-[calc(100vh-3.5rem)]",
-    upperWrapper: "h-[calc(100vh-37.5rem)]",
-    lowerWrapper: "h-[33rem]",
-    panelWrapper: "h-20 w-full z-10 sticky bottom-0",
-    playerWrapper: "h-[13rem] mb-4",
-    playerHeight: 192,
-  },
-};
-
 export const MediaPlayerProvider = ({
   children,
 }: {
@@ -142,18 +110,6 @@ export const MediaPlayerProvider = ({
   const { EnjoyApp, learningLanguage, recorderConfig } = useContext(
     AppSettingsProviderContext
   );
-
-  const [layout, setLayout] = useState<{
-    name: string;
-    width: number;
-    height: number;
-    wrapper: string;
-    upperWrapper: string;
-    lowerWrapper: string;
-    playerWrapper: string;
-    panelWrapper: string;
-    playerHeight: number;
-  }>();
 
   const [media, setMedia] = useState<AudioType | VideoType>(null);
   const [mediaProvider, setMediaProvider] = useState<HTMLAudioElement | null>(
@@ -244,14 +200,14 @@ export const MediaPlayerProvider = ({
   });
 
   const initializeWavesurfer = async () => {
-    if (!layout?.playerHeight) return;
     if (!media) return;
     if (!mediaProvider) return;
     if (!ref?.current) return;
 
+    const height = ref.current.getBoundingClientRect().height;
     const ws = WaveSurfer.create({
       container: ref.current,
-      height: layout.playerHeight,
+      height,
       waveColor: "#eaeaea",
       progressColor: "#c0d6df",
       cursorColor: "#ff0054",
@@ -315,6 +271,7 @@ export const MediaPlayerProvider = ({
 
     // calculate offset and width
     const wrapperWidth = wrapper.getBoundingClientRect().width;
+    const height = ref.current.getBoundingClientRect().height;
     const offsetLeft = (region.start / duration) * wrapperWidth;
     const width = ((region.end - region.start) / duration) * wrapperWidth;
 
@@ -324,7 +281,7 @@ export const MediaPlayerProvider = ({
     const canvasId = options?.canvasId || `pitch-contour-${region.id}-canvas`;
     canvas.id = canvasId;
     canvas.style.width = `${width}px`;
-    canvas.style.height = `${layout.playerHeight}px`;
+    canvas.style.height = `${height}px`;
     pitchContourWidthContainer.appendChild(canvas);
 
     pitchContourWidthContainer.style.position = "absolute";
@@ -332,7 +289,7 @@ export const MediaPlayerProvider = ({
     pitchContourWidthContainer.style.left = "0";
 
     pitchContourWidthContainer.style.width = `${width}px`;
-    pitchContourWidthContainer.style.height = `${layout.playerHeight}px`;
+    pitchContourWidthContainer.style.height = `${height}px`;
     pitchContourWidthContainer.style.marginLeft = `${offsetLeft}px`;
     pitchContourWidthContainer.classList.add(
       "pitch-contour",
@@ -445,24 +402,6 @@ export const MediaPlayerProvider = ({
       })
     );
   };
-
-  const calculateHeight = () => {
-    if (window.innerHeight <= 1080) {
-      setLayout({
-        ...LAYOUT.sm,
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    } else {
-      setLayout({
-        ...LAYOUT.lg,
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-  };
-
-  const deboundeCalculateHeight = debounce(calculateHeight, 100);
 
   const createRecording = async (blob: Blob) => {
     if (!blob) return;
@@ -628,7 +567,7 @@ export const MediaPlayerProvider = ({
       setDecoded(false);
       setDecodeError(null);
     };
-  }, [media?.src, ref?.current, mediaProvider, layout?.playerHeight]);
+  }, [media?.src, ref?.current, mediaProvider]);
 
   /* cache last segment index */
   useEffect(() => {
@@ -639,18 +578,10 @@ export const MediaPlayerProvider = ({
   }, [currentSegmentIndex]);
 
   /*
-   * Update layout when window is resized
    * Abort transcription when component is unmounted
    */
   useEffect(() => {
-    calculateHeight();
-
-    EnjoyApp.window.onResize(() => {
-      deboundeCalculateHeight();
-    });
-
     return () => {
-      EnjoyApp.window.removeListeners();
       abortGenerateTranscription();
     };
   }, []);
@@ -679,7 +610,6 @@ export const MediaPlayerProvider = ({
     <>
       <MediaPlayerProviderContext.Provider
         value={{
-          layout,
           media,
           setMedia,
           setMediaProvider,

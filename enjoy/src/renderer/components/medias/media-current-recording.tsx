@@ -50,7 +50,6 @@ import { LiveAudioVisualizer } from "react-audio-visualize";
 
 export const MediaCurrentRecording = () => {
   const {
-    layout,
     isRecording,
     isPaused,
     recordingTime,
@@ -269,12 +268,12 @@ export const MediaCurrentRecording = () => {
     if (!ref.current) return;
     if (isRecording) return;
     if (!currentRecording?.src) return;
-    if (!layout?.playerHeight) return;
 
+    const height = ref.current.getBoundingClientRect().height;
     const ws = WaveSurfer.create({
       container: ref.current,
       url: currentRecording.src,
-      height: layout.playerHeight,
+      height,
       barWidth: 2,
       cursorWidth: 1,
       autoCenter: true,
@@ -320,7 +319,7 @@ export const MediaCurrentRecording = () => {
     return () => {
       ws?.destroy();
     };
-  }, [ref, currentRecording, isRecording, layout?.playerHeight]);
+  }, [ref, currentRecording, isRecording]);
 
   useEffect(() => {
     setCurrentTime(0);
@@ -421,7 +420,7 @@ export const MediaCurrentRecording = () => {
 
   useEffect(() => {
     calContainerWidth();
-  }, [currentRecording, isRecording, layout?.width]);
+  }, [currentRecording, isRecording]);
 
   useHotkeys(currentHotkeys.PlayOrPauseRecording, () => {
     const button = document.getElementById("recording-play-or-pause-button");
@@ -542,9 +541,7 @@ export const MediaCurrentRecording = () => {
           id="media-pronunciation-assessment-button"
           data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("pronunciationAssessment")}
-          className={
-            layout?.name === "sm" ? "hidden" : "rounded-full w-8 h-8 p-0"
-          }
+          className="rounded-full w-8 h-8 p-0"
           onClick={() => setDetailIsOpen(true)}
         >
           <GaugeCircleIcon
@@ -570,9 +567,7 @@ export const MediaCurrentRecording = () => {
           id="media-compare-button"
           data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("compare")}
-          className={
-            layout?.name === "sm" ? "hidden" : "rounded-full w-8 h-8 p-0"
-          }
+          className="rounded-full w-8 h-8 p-0"
           onClick={toggleCompare}
         >
           <GitCompareIcon className="w-4 h-4" />
@@ -592,14 +587,13 @@ export const MediaCurrentRecording = () => {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent>
-            {layout?.name === "sm" && (
-              <>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => setDetailIsOpen(true)}
-                >
-                  <GaugeCircleIcon
-                    className={`w-4 h-4 mr-4
+            <>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => setDetailIsOpen(true)}
+              >
+                <GaugeCircleIcon
+                  className={`w-4 h-4 mr-4
                     ${
                       currentRecording.pronunciationAssessment
                         ? currentRecording.pronunciationAssessment
@@ -612,19 +606,19 @@ export const MediaCurrentRecording = () => {
                         : ""
                     }
                     `}
-                  />
-                  <span>{t("pronunciationAssessment")}</span>
-                </DropdownMenuItem>
+                />
+                <span>{t("pronunciationAssessment")}</span>
+              </DropdownMenuItem>
 
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={toggleCompare}
-                >
-                  <GitCompareIcon className="w-4 h-4 mr-4" />
-                  <span>{t("compare")}</span>
-                </DropdownMenuItem>
-              </>
-            )}
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={toggleCompare}
+              >
+                <GitCompareIcon className="w-4 h-4 mr-4" />
+                <span>{t("compare")}</span>
+              </DropdownMenuItem>
+            </>
+
             <DropdownMenuItem
               className="cursor-pointer"
               data-tooltip-content={t("selectRegion")}

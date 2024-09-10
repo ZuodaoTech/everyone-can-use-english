@@ -4,7 +4,13 @@ import {
   MediaPlayerProviderContext,
 } from "@renderer/context";
 import cloneDeep from "lodash/cloneDeep";
-import { Button, toast } from "@renderer/components/ui";
+import {
+  Button,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  toast,
+} from "@renderer/components/ui";
 import { ConversationShortcuts, Vocabulary } from "@renderer/components";
 import { t } from "i18next";
 import {
@@ -14,6 +20,8 @@ import {
   SpeechIcon,
   NotebookPenIcon,
   DownloadIcon,
+  PlusIcon,
+  XIcon,
 } from "lucide-react";
 import {
   Timeline,
@@ -52,6 +60,8 @@ export const MediaCaption = () => {
 
   const [caption, setCaption] = useState<TimelineEntry | null>(null);
   const [tab, setTab] = useState<string>("translation");
+
+  const [fbtOpen, setFbtOpen] = useState<boolean>(false);
 
   const toggleMultiSelect = (event: KeyboardEvent) => {
     setMultiSelecting(event.shiftKey && event.type === "keydown");
@@ -360,8 +370,8 @@ export const MediaCaption = () => {
   if (!caption) return null;
 
   return (
-    <div className="h-full flex justify-between space-x-4">
-      <div className="flex-1 font-serif h-full border shadow-lg rounded-lg">
+    <div className="h-full relative">
+      <div className="flex-1 font-serif h-full">
         <MediaCaptionTabs
           tab={tab}
           setTab={setTab}
@@ -383,100 +393,122 @@ export const MediaCaption = () => {
         </MediaCaptionTabs>
       </div>
 
-      <div className="flex flex-col space-y-2">
-        <Button
-          variant={displayIpa ? "secondary" : "outline"}
-          size="icon"
-          className="rounded-full w-8 h-8 p-0"
-          data-tooltip-id="media-player-tooltip"
-          data-tooltip-content={t("displayIpa")}
-          onClick={() => setDisplayIpa(!displayIpa)}
-        >
-          <SpeechIcon className="w-4 h-4" />
-        </Button>
-
-        <Button
-          variant={displayNotes ? "secondary" : "outline"}
-          size="icon"
-          className="rounded-full w-8 h-8 p-0"
-          data-tooltip-id="media-player-tooltip"
-          data-tooltip-content={t("displayNotes")}
-          onClick={() => setDisplayNotes(!displayNotes)}
-        >
-          <NotebookPenIcon className="w-4 h-4" />
-        </Button>
-
-        <ConversationShortcuts
-          prompt={caption.text as string}
-          trigger={
+      <div className="pr-4 absolute bottom-12 right-0">
+        <Popover open={fbtOpen} onOpenChange={setFbtOpen}>
+          <PopoverTrigger asChild>
             <Button
-              data-tooltip-id="media-player-tooltip"
-              data-tooltip-content={t("sendToAIAssistant")}
-              variant="outline"
-              size="sm"
-              className="p-0 w-8 h-8 rounded-full"
+              size="icon"
+              variant={fbtOpen ? "secondary" : "outline"}
+              className="rounded-full w-8 h-8 p-0 shadow-lg"
             >
-              <BotIcon className="w-5 h-5" />
+              {fbtOpen ? (
+                <XIcon className="w-4 h-4" />
+              ) : (
+                <PlusIcon className="w-4 h-4" />
+              )}
             </Button>
-          }
-        />
+          </PopoverTrigger>
+          <PopoverContent
+            side="top"
+            className="w-8 bg-transparent p-0 border-none shadow-none"
+          >
+            <div className="flex flex-col space-y-1">
+              <Button
+                variant={displayIpa ? "secondary" : "outline"}
+                size="icon"
+                className="rounded-full w-8 h-8 p-0"
+                data-tooltip-id="media-player-tooltip"
+                data-tooltip-content={t("displayIpa")}
+                onClick={() => setDisplayIpa(!displayIpa)}
+              >
+                <SpeechIcon className="w-4 h-4" />
+              </Button>
 
-        <Button
-          variant="outline"
-          size="icon"
-          className="rounded-full w-8 h-8 p-0"
-          data-tooltip-id="media-player-tooltip"
-          data-tooltip-content={t("copyText")}
-          onClick={() => {
-            if (displayIpa) {
-              const text = caption.timeline
-                .map((word) => {
-                  const ipas = word.timeline.map((t) =>
-                    t.timeline.map((s) => s.text).join("")
-                  );
-                  return `${word.text}(${
-                    (transcription.language || learningLanguage).startsWith(
-                      "en"
-                    )
-                      ? convertWordIpaToNormal(ipas, {
-                          mappings: ipaMappings,
-                        }).join("")
-                      : ipas.join("")
-                  })`;
-                })
-                .join(" ");
+              <Button
+                variant={displayNotes ? "secondary" : "outline"}
+                size="icon"
+                className="rounded-full w-8 h-8 p-0"
+                data-tooltip-id="media-player-tooltip"
+                data-tooltip-content={t("displayNotes")}
+                onClick={() => setDisplayNotes(!displayNotes)}
+              >
+                <NotebookPenIcon className="w-4 h-4" />
+              </Button>
 
-              copyToClipboard(text);
-            } else {
-              copyToClipboard(caption.text);
-            }
-            setCopied(true);
-            setTimeout(() => {
-              setCopied(false);
-            }, 1500);
-          }}
-        >
-          {copied ? (
-            <CheckIcon className="w-4 h-4 text-green-500" />
-          ) : (
-            <CopyIcon
-              data-tooltip-id="media-player-tooltip"
-              data-tooltip-content={t("copyText")}
-              className="w-4 h-4"
-            />
-          )}
-        </Button>
+              <ConversationShortcuts
+                prompt={caption.text as string}
+                trigger={
+                  <Button
+                    data-tooltip-id="media-player-tooltip"
+                    data-tooltip-content={t("sendToAIAssistant")}
+                    variant="outline"
+                    size="sm"
+                    className="p-0 w-8 h-8 rounded-full"
+                  >
+                    <BotIcon className="w-5 h-5" />
+                  </Button>
+                }
+              />
 
-        <Button
-          variant="outline"
-          size="icon"
-          className="rounded-full w-8 h-8 p-0"
-          data-tooltip-id="media-player-tooltip"
-          data-tooltip-content={t("downloadSegment")}
-          onClick={handleDownload}
-        >
-          <DownloadIcon className="w-4 h-4" />
-        </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full w-8 h-8 p-0"
+                data-tooltip-id="media-player-tooltip"
+                data-tooltip-content={t("copyText")}
+                onClick={() => {
+                  if (displayIpa) {
+                    const text = caption.timeline
+                      .map((word) => {
+                        const ipas = word.timeline.map((t) =>
+                          t.timeline.map((s) => s.text).join("")
+                        );
+                        return `${word.text}(${
+                          (
+                            transcription.language || learningLanguage
+                          ).startsWith("en")
+                            ? convertWordIpaToNormal(ipas, {
+                                mappings: ipaMappings,
+                              }).join("")
+                            : ipas.join("")
+                        })`;
+                      })
+                      .join(" ");
+
+                    copyToClipboard(text);
+                  } else {
+                    copyToClipboard(caption.text);
+                  }
+                  setCopied(true);
+                  setTimeout(() => {
+                    setCopied(false);
+                  }, 1500);
+                }}
+              >
+                {copied ? (
+                  <CheckIcon className="w-4 h-4 text-green-500" />
+                ) : (
+                  <CopyIcon
+                    data-tooltip-id="media-player-tooltip"
+                    data-tooltip-content={t("copyText")}
+                    className="w-4 h-4"
+                  />
+                )}
+              </Button>
+
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full w-8 h-8 p-0"
+                data-tooltip-id="media-player-tooltip"
+                data-tooltip-content={t("downloadSegment")}
+                onClick={handleDownload}
+              >
+                <DownloadIcon className="w-4 h-4" />
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );
@@ -527,7 +559,7 @@ export const Caption = (props: {
   }
 
   return (
-    <div className="flex flex-wrap px-4 py-2 rounded-t-lg bg-muted/50">
+    <div className="flex flex-wrap px-4 py-2 bg-muted/50">
       {/* use the words splitted by caption text if it is matched with the timeline length, otherwise use the timeline */}
       {words.map((word, index) => (
         <div

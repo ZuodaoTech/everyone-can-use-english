@@ -24,7 +24,7 @@ export const MediaTabs = () => {
   return (
     <ScrollArea className="h-full">
       <div
-        className={`p-1 bg-muted rounded-t-lg mb-2 text-sm sticky top-0 z-[1] grid gap-4 ${
+        className={`p-1 bg-muted mb-2 text-sm sticky top-0 z-[1] grid gap-4 ${
           media?.mediaType === "Video" ? "grid-cols-4" : "grid-cols-3"
         }`}
       >

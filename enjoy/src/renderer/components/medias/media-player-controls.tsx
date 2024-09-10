@@ -523,7 +523,7 @@ export const MediaPlayerControls = () => {
   }, [grouping]);
 
   return (
-    <div className="w-full h-full flex items-center justify-center px-6">
+    <div className="w-full h-14 flex items-center justify-center px-6">
       <div className="flex items-center justify-center space-x-2">
         <Popover>
           <PopoverTrigger asChild>
@@ -531,7 +531,7 @@ export const MediaPlayerControls = () => {
               variant={`${playbackRate == 1.0 ? "ghost" : "secondary"}`}
               data-tooltip-id="media-player-tooltip"
               data-tooltip-content={t("playbackSpeed")}
-              className="relative aspect-square p-0 h-10"
+              className="relative aspect-square p-0 h-8"
             >
               <GaugeIcon className="w-6 h-6" />
               {playbackRate != 1.0 && (
@@ -552,7 +552,7 @@ export const MediaPlayerControls = () => {
               {PLAYBACK_RATE_OPTIONS.map((rate, i) => (
                 <div
                   key={i}
-                  className={`cursor-pointer h-10 w-10 leading-10 rounded-full flex items-center justify-center ${
+                  className={`cursor-pointer h-8 w-8 leading-8 rounded-full flex items-center justify-center ${
                     rate === playbackRate
                       ? "bg-primary text-white text-md"
                       : "text-black/70 text-xs"
@@ -574,7 +574,7 @@ export const MediaPlayerControls = () => {
               variant="ghost"
               data-tooltip-id="media-player-tooltip"
               data-tooltip-content={t("switchPlayMode")}
-              className="aspect-square p-0 h-10"
+              className="aspect-square p-0 h-8"
             >
               {playMode === "single" && <RepeatIcon className="w-6 h-6" />}
               {playMode === "loop" && <Repeat1Icon className="w-6 h-6" />}
@@ -613,7 +613,7 @@ export const MediaPlayerControls = () => {
           id="media-play-previous-button"
           data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("playPreviousSegment")}
-          className="aspect-square p-0 h-10"
+          className="aspect-square p-0 h-8"
         >
           <SkipBackIcon className="w-6 h-6" />
         </Button>
@@ -625,7 +625,7 @@ export const MediaPlayerControls = () => {
             id="media-play-or-pause-button"
             data-tooltip-id="media-player-tooltip"
             data-tooltip-content={t("pause")}
-            className="aspect-square p-0 h-12 rounded-full"
+            className="aspect-square p-0 h-10 rounded-full"
           >
             <PauseIcon fill="white" className="w-6 h-6" />
           </Button>
@@ -636,7 +636,7 @@ export const MediaPlayerControls = () => {
             id="media-play-or-pause-button"
             data-tooltip-id="media-player-tooltip"
             data-tooltip-content={t("play")}
-            className="aspect-square p-0 h-12 rounded-full"
+            className="aspect-square p-0 h-10 rounded-full"
           >
             <PlayIcon fill="white" className="w-6 h-6" />
           </Button>
@@ -649,7 +649,7 @@ export const MediaPlayerControls = () => {
           id="media-play-next-button"
           data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("playNextSegment")}
-          className="aspect-square p-0 h-10"
+          className="aspect-square p-0 h-8"
         >
           <SkipForwardIcon className="w-6 h-6" />
         </Button>
@@ -659,7 +659,7 @@ export const MediaPlayerControls = () => {
           size="icon"
           data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("autoGroup")}
-          className="relative aspect-square p-0 h-10"
+          className="relative aspect-square p-0 h-8"
           onClick={() => setGrouping(!grouping)}
         >
           <GroupIcon className="w-6 h-6" />
@@ -672,7 +672,7 @@ export const MediaPlayerControls = () => {
             data-tooltip-content={
               editingRegion ? t("dragRegionBorderToEdit") : t("editRegion")
             }
-            className="relative aspect-square p-0 h-10"
+            className="relative aspect-square p-0 h-8"
             onClick={() => {
               setEditingRegion(!editingRegion);
             }}
@@ -684,7 +684,7 @@ export const MediaPlayerControls = () => {
             <div className="absolute top-0 left-12 flex items-center space-x-2">
               <Button
                 variant="secondary"
-                className="relative aspect-square p-0 h-10"
+                className="relative aspect-square p-0 h-8"
                 data-tooltip-id="media-player-tooltip"
                 data-tooltip-content={t("cancel")}
                 onClick={() => {
@@ -696,7 +696,7 @@ export const MediaPlayerControls = () => {
               </Button>
               <Button
                 variant="default"
-                className="relative aspect-square p-0 h-10"
+                className="relative aspect-square p-0 h-8"
                 data-tooltip-id="media-player-tooltip"
                 data-tooltip-content={t("save")}
                 onClick={() => {

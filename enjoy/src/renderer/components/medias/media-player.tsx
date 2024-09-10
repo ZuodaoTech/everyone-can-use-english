@@ -41,7 +41,6 @@ const MAX_ZOOM_RATIO = 4.0;
 export const MediaPlayer = () => {
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const {
-    layout,
     media,
     currentTime,
     setRef,
@@ -139,13 +138,13 @@ export const MediaPlayer = () => {
 
   useEffect(() => {
     calContainerWidth();
-  }, [layout.width]);
+  }, []);
 
   return (
-    <div className="flex space-x-4 media-player-wrapper">
+    <div className="flex media-player-wrapper border rounded-lg">
       <div
         data-testid="media-player-container"
-        className="flex-1 border rounded-xl shadow-lg relative media-player-container"
+        className="flex-1 relative media-player-container"
       >
         <div ref={ref} />
         <div className="absolute right-2 top-1">
@@ -156,12 +155,12 @@ export const MediaPlayer = () => {
           </span>
         </div>
       </div>
-      <div className="flex flex-col justify-around space-y-1.5">
+      <div className="flex flex-col border-l">
         <Button
-          variant={`${zoomRatio === fitZoomRatio ? "secondary" : "outline"}`}
+          variant={`${zoomRatio === fitZoomRatio ? "secondary" : "ghost"}`}
           data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("zoomToFit")}
-          className="relative aspect-square rounded-full p-0 h-8"
+          className="relative p-0 w-8 h-6 rounded-none rounded-tr-lg"
           onClick={() => {
             if (zoomRatio == fitZoomRatio) {
               setZoomRatio(1.0);
@@ -174,10 +173,10 @@ export const MediaPlayer = () => {
         </Button>
 
         <Button
-          variant={`${zoomRatio > 1.0 ? "secondary" : "outline"}`}
+          variant={`${zoomRatio > 1.0 ? "secondary" : "ghost"}`}
           data-tooltip-id="media-player-tooltip"
           data-tooltip-content={t("zoomIn")}
-          className="relative aspect-square rounded-full p-0 h-8"
+          className="relative aspect-square rounded-none p-0 w-8 h-6"
           onClick={() => {
             if (zoomRatio < MAX_ZOOM_RATIO) {
               const nextZoomRatio = ZOOM_RATIO_OPTIONS.find(
@@ -190,93 +189,82 @@ export const MediaPlayer = () => {
           <ZoomInIcon className="w-4 h-4" />
         </Button>
 
-        {
-          layout.name === "lg" && (
-            <>
-              <Button
-                variant={`${zoomRatio < 1.0 ? "secondary" : "outline"}`}
-                data-tooltip-id="media-player-tooltip"
-                data-tooltip-content={t("zoomOut")}
-                className="relative aspect-square rounded-full p-0 h-8"
-                onClick={() => {
-                  if (zoomRatio > MIN_ZOOM_RATIO) {
-                    const nextZoomRatio = ZOOM_RATIO_OPTIONS.reverse().find(
-                      (rate) => rate < zoomRatio
-                    );
-                    setZoomRatio(nextZoomRatio || MIN_ZOOM_RATIO);
-                  }
-                }}
-              >
-                <ZoomOutIcon className="w-4 h-4" />
-              </Button>
+        <Button
+          variant={`${zoomRatio < 1.0 ? "secondary" : "ghost"}`}
+          data-tooltip-id="media-player-tooltip"
+          data-tooltip-content={t("zoomOut")}
+          className="relative aspect-square rounded-none p-0 w-8 h-6"
+          onClick={() => {
+            if (zoomRatio > MIN_ZOOM_RATIO) {
+              const nextZoomRatio = ZOOM_RATIO_OPTIONS.reverse().find(
+                (rate) => rate < zoomRatio
+              );
+              setZoomRatio(nextZoomRatio || MIN_ZOOM_RATIO);
+            }
+          }}
+        >
+          <ZoomOutIcon className="w-4 h-4" />
+        </Button>
 
-              <Button
-                variant={`${displayInlineCaption ? "secondary" : "outline"}`}
-                data-tooltip-id="media-player-tooltip"
-                data-tooltip-content={t("inlineCaption")}
-                className="relative aspect-square rounded-full p-0 h-8"
-                onClick={() => {
-                  setDisplayInlineCaption(!displayInlineCaption);
-                  if (pitchChart) {
-                    pitchChart.options.scales.x.display = !displayInlineCaption;
-                    pitchChart.update();
-                  }
-                }}
-              >
-                <SpellCheckIcon className="w-4 h-4" />
-              </Button>
-            </>
-          )
-        }
+        <Button
+          variant={`${displayInlineCaption ? "secondary" : "ghost"}`}
+          data-tooltip-id="media-player-tooltip"
+          data-tooltip-content={t("inlineCaption")}
+          className="relative aspect-square rounded-none p-0 w-8 h-6"
+          onClick={() => {
+            setDisplayInlineCaption(!displayInlineCaption);
+            if (pitchChart) {
+              pitchChart.options.scales.x.display = !displayInlineCaption;
+              pitchChart.update();
+            }
+          }}
+        >
+          <SpellCheckIcon className="w-4 h-4" />
+        </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
               data-tooltip-id="media-player-tooltip"
               data-tooltip-content={t("more")}
-              className="rounded-full w-8 h-8 p-0"
+              className="rounded-none rounded-br-lg w-8 h-6 p-0"
             >
               <MoreVerticalIcon className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent>
-            {
-              layout.name === "sm" && (
-                <>
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={() => {
-                      if (zoomRatio > MIN_ZOOM_RATIO) {
-                        const nextZoomRatio = ZOOM_RATIO_OPTIONS.reverse().find(
-                          (rate) => rate < zoomRatio
-                        );
-                        setZoomRatio(nextZoomRatio || MIN_ZOOM_RATIO);
-                      }
-                    }}
-                  >
-                    <ZoomOutIcon className="w-4 h-4 mr-4" />
-                    <span>{t("zoomOut")}</span>
-                  </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => {
+                if (zoomRatio > MIN_ZOOM_RATIO) {
+                  const nextZoomRatio = ZOOM_RATIO_OPTIONS.reverse().find(
+                    (rate) => rate < zoomRatio
+                  );
+                  setZoomRatio(nextZoomRatio || MIN_ZOOM_RATIO);
+                }
+              }}
+            >
+              <ZoomOutIcon className="w-4 h-4 mr-4" />
+              <span>{t("zoomOut")}</span>
+            </DropdownMenuItem>
 
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={() => {
-                      setDisplayInlineCaption(!displayInlineCaption);
-                      if (pitchChart) {
-                        pitchChart.options.scales.x.display = !displayInlineCaption;
-                        pitchChart.update();
-                      }
-                    }}
-                  >
-                    <SpellCheckIcon className="w-4 h-4 mr-4" />
-                    <span>{t("inlineCaption")}</span>
-                  </DropdownMenuItem>
-                </>
-              )
-            }
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => {
+                setDisplayInlineCaption(!displayInlineCaption);
+                if (pitchChart) {
+                  pitchChart.options.scales.x.display = !displayInlineCaption;
+                  pitchChart.update();
+                }
+              }}
+            >
+              <SpellCheckIcon className="w-4 h-4 mr-4" />
+              <span>{t("inlineCaption")}</span>
+            </DropdownMenuItem>
+
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={() => {
