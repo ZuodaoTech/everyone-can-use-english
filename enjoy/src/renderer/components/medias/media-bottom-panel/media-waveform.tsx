@@ -39,7 +39,7 @@ const ZOOM_RATIO_OPTIONS = [
 const MIN_ZOOM_RATIO = 0.25;
 const MAX_ZOOM_RATIO = 4.0;
 
-export const MediaPlayer = (props: { layout?: number[] }) => {
+export const MediaWaveform = (props: { layout?: number[] }) => {
   const { layout } = props;
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const {
@@ -55,7 +55,6 @@ export const MediaPlayer = (props: { layout?: number[] }) => {
   const [displayInlineCaption, setDisplayInlineCaption] =
     useState<boolean>(true);
   const [isSharing, setIsSharing] = useState(false);
-  const [width, setWidth] = useState<number>();
   const [size, setSize] = useState<{ width: number; height: number }>();
 
   const ref = useRef(null);

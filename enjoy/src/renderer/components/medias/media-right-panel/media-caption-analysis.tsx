@@ -9,7 +9,7 @@ import { LoaderIcon } from "lucide-react";
 import { md5 } from "js-md5";
 import Markdown from "react-markdown";
 
-export function MediaTabContentAnalysis(props: { text: string }) {
+export function MediaCaptionAnalysis(props: { text: string }) {
   const { text } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [analyzing, setAnalyzing] = useState<boolean>(false);

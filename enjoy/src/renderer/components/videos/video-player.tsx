@@ -6,7 +6,7 @@ import {
   MediaPlayerControls,
   MediaLeftPanel,
   MediaCurrentRecording,
-  MediaPlayer,
+  MediaWaveform,
   LoaderSpin,
 } from "@renderer/components";
 import {
@@ -67,7 +67,7 @@ export const VideoPlayer = (props: {
           <div className="flex flex-col h-full">
             <div className="flex-1 grid grid-rows-2 gap-4">
               <MediaCurrentRecording />
-              <MediaPlayer />
+              <MediaWaveform />
             </div>
 
             <MediaPlayerControls />

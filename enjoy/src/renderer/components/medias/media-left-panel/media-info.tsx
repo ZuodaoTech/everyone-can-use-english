@@ -9,7 +9,7 @@ import { Button, toast } from "@renderer/components/ui";
 import { useAiCommand } from "@renderer/hooks";
 import { LoaderIcon } from "lucide-react";
 
-export const MediaInfoPanel = () => {
+export const MediaInfo = () => {
   const { media, transcription } = useContext(MediaShadowProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { summarizeTopic } = useAiCommand();

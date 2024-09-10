@@ -1,6 +1,6 @@
 import {
   MediaCurrentRecording,
-  MediaPlayer,
+  MediaWaveform,
   MediaPlayerControls,
 } from "@renderer/components";
 
@@ -14,7 +14,7 @@ export const MediaBottomPanel = (props: { layout?: number[] }) => {
           <MediaCurrentRecording />
         </div>
         <div className="flex-1 overflow-hidden p-4">
-          <MediaPlayer layout={layout} />
+          <MediaWaveform layout={layout} />
         </div>
       </div>
 

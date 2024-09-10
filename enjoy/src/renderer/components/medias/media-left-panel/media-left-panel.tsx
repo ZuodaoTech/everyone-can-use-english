@@ -3,7 +3,7 @@ import { MediaShadowProviderContext } from "@renderer/context";
 import {
   MediaProvider,
   MediaTranscription,
-  MediaInfoPanel,
+  MediaInfo,
   MediaRecordings,
 } from "@renderer/components";
 import {
@@ -76,7 +76,7 @@ export const MediaLeftPanel = () => {
           <MediaTranscription display={tab === "transcription"} />
         </TabsContent>
         <TabsContent value="info">
-          <MediaInfoPanel />
+          <MediaInfo />
         </TabsContent>
       </ScrollArea>
     </Tabs>

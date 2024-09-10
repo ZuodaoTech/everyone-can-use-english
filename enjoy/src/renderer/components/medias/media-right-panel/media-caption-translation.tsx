@@ -19,7 +19,7 @@ import {
 /*
  * Translation tab content.
  */
-export function MediaTabContentTranslation(props: {
+export function MediaCaptionTranslation(props: {
   caption: TimelineEntry;
   selectedIndices: number[];
 }) {
