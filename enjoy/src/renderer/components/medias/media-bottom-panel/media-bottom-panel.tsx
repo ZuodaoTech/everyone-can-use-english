@@ -4,9 +4,7 @@ import {
   MediaPlayerControls,
 } from "@renderer/components";
 
-export const MediaBottomPanel = (props: { layout?: number[] }) => {
-  const { layout } = props;
-
+export const MediaBottomPanel = () => {
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 flex flex-col pt-2 overflow-hidden">

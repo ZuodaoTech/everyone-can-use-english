@@ -5,7 +5,7 @@ import {
   MediaShadowProviderContext,
 } from "@renderer/context";
 import { RecordingDetail } from "@renderer/components";
-import { renderPitchContour } from "@renderer/lib/utils";
+import { cn, renderPitchContour } from "@renderer/lib/utils";
 import { extractFrequencies } from "@/utils";
 import WaveSurfer from "wavesurfer.js";
 import Regions from "wavesurfer.js/dist/plugins/regions";
@@ -460,6 +460,16 @@ export const MediaCurrentRecording = () => {
     setDetailIsOpen(!detailIsOpen);
   });
 
+  useHotkeys(
+    currentHotkeys.Compare,
+    () => {
+      toggleCompare();
+    },
+    {
+      preventDefault: true,
+    }
+  );
+
   const Actions = [
     {
       id: "recording-play-or-pause-button",
@@ -480,7 +490,7 @@ export const MediaCurrentRecording = () => {
       },
     },
     {
-      id: "recording-record-button",
+      id: "recording-record-button-wrapper",
       name: "record",
       label: t("record"),
       icon: MediaRecordButton,
@@ -554,46 +564,49 @@ export const MediaCurrentRecording = () => {
           {Math.floor(recordingTime / 60)}:
           {String(recordingTime % 60).padStart(2, "0")}
         </span>
-        <Button
-          data-tooltip-id="chat-input-tooltip"
-          data-tooltip-content={t("cancel")}
-          onClick={cancelRecording}
-          className="rounded-full shadow w-8 h-8 bg-red-500 hover:bg-red-600"
-          variant="secondary"
-          size="icon"
-        >
-          <XIcon fill="white" className="w-4 h-4 text-white" />
-        </Button>
-        <Button
-          onClick={togglePauseResume}
-          className="rounded-full shadow w-8 h-8"
-          size="icon"
-        >
-          {isPaused ? (
-            <PlayIcon
-              data-tooltip-id="chat-input-tooltip"
-              data-tooltip-content={t("continue")}
-              fill="white"
-              className="w-4 h-4"
-            />
-          ) : (
-            <PauseIcon
-              data-tooltip-id="chat-input-tooltip"
-              data-tooltip-content={t("pause")}
-              fill="white"
-              className="w-4 h-4"
-            />
-          )}
-        </Button>
-        <Button
-          data-tooltip-id="chat-input-tooltip"
-          data-tooltip-content={t("finish")}
-          onClick={stopRecording}
-          className="rounded-full bg-green-500 hover:bg-green-600 shadow w-8 h-8"
-          size="icon"
-        >
-          <CheckIcon className="w-4 h-4 text-white" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            data-tooltip-id="chat-input-tooltip"
+            data-tooltip-content={t("cancel")}
+            onClick={cancelRecording}
+            className="rounded-full shadow w-8 h-8 bg-red-500 hover:bg-red-600"
+            variant="secondary"
+            size="icon"
+          >
+            <XIcon fill="white" className="w-4 h-4 text-white" />
+          </Button>
+          <Button
+            onClick={togglePauseResume}
+            className="rounded-full shadow w-8 h-8"
+            size="icon"
+          >
+            {isPaused ? (
+              <PlayIcon
+                data-tooltip-id="chat-input-tooltip"
+                data-tooltip-content={t("continue")}
+                fill="white"
+                className="w-4 h-4"
+              />
+            ) : (
+              <PauseIcon
+                data-tooltip-id="chat-input-tooltip"
+                data-tooltip-content={t("pause")}
+                fill="white"
+                className="w-4 h-4"
+              />
+            )}
+          </Button>
+          <Button
+            id="media-record-button"
+            data-tooltip-id="chat-input-tooltip"
+            data-tooltip-content={t("finish")}
+            onClick={stopRecording}
+            className="rounded-full bg-green-500 hover:bg-green-600 shadow w-8 h-8"
+            size="icon"
+          >
+            <CheckIcon className="w-4 h-4 text-white" />
+          </Button>
+        </div>
       </div>
     );
   }
@@ -654,13 +667,14 @@ export const MediaCurrentRecording = () => {
         {Actions.slice(0, actionButtonsCount).map((action) => (
           <Button
             key={action.name}
+            id={action.id}
             variant={action.variant as any}
             data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={action.label}
             className="relative p-0 w-full h-full rounded-none"
             onClick={action.onClick}
           >
-            <action.icon className={`w-4 h-4 ${action.iconClassName || ""}`} />
+            <action.icon className={`w-4 h-4 ${cn(action.iconClassName)}`} />
           </Button>
         ))}
 
@@ -681,11 +695,14 @@ export const MediaCurrentRecording = () => {
             <DropdownMenuContent>
               {Actions.slice(actionButtonsCount).map((action) => (
                 <DropdownMenuItem
+                  id={action.id}
                   key={action.name}
                   className="cursor-pointer"
                   onClick={action.onClick}
                 >
-                  <action.icon className="w-4 h-4 mr-4" />
+                  <action.icon
+                    className={`${cn(action.iconClassName)} w-4 h-4 mr-4`}
+                  />
                   <span>{action.label}</span>
                 </DropdownMenuItem>
               ))}
