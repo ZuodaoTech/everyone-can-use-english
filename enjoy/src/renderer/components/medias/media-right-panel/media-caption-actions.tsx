@@ -153,7 +153,7 @@ export const MediaCaptionActions = (props: {
         <Button
           size="icon"
           variant={fbtOpen ? "secondary" : "outline"}
-          className="rounded-full w-8 h-8 p-0 shadow-lg"
+          className="rounded-full w-8 h-8 p-0 shadow-lg z-30"
         >
           {fbtOpen ? (
             <XIcon className="w-4 h-4" />

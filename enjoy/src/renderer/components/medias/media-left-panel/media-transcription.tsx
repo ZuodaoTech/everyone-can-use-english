@@ -179,7 +179,7 @@ export const MediaTranscription = (props: { display?: boolean }) => {
           <div
             key={index}
             id={`segment-${index}`}
-            className={`py-2 px-4 cursor-pointer hover:bg-yellow-400/10 ${
+            className={`py-1.5 px-4 cursor-pointer hover:bg-yellow-400/10 ${
               currentSegmentIndex === index ? "bg-yellow-400/25" : ""
             }`}
             onClick={() => {
@@ -204,7 +204,7 @@ export const MediaTranscription = (props: { display?: boolean }) => {
               </div>
             </div>
 
-            <Sentence sentence={sentence.text} />
+            <Sentence className="font-serif" sentence={sentence.text} />
           </div>
         )
       )}

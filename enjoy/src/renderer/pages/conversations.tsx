@@ -13,10 +13,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@renderer/components/ui";
-import {
-  ConversationCard,
-  ConversationForm,
-} from "@renderer/components";
+import { ConversationCard, ConversationForm } from "@renderer/components";
 import { useState, useEffect, useContext, useReducer } from "react";
 import { ChevronLeftIcon, LoaderIcon } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -92,7 +89,7 @@ export default () => {
       .findAll({
         order: [["updatedAt", "DESC"]],
         limit,
-        offset: conversations.length,
+        offset: conversations?.length || 0,
       })
       .then((_conversations) => {
         if (_conversations.length === 0) {

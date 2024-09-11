@@ -13,8 +13,8 @@ export default () => {
 
   return (
     <>
-      <div className="h-full relative">
-        <div className="flex space-x-1 items-center h-14 px-4 xl:px-8">
+      <div className="h-screen flex flex-col relative">
+        <div className="flex space-x-1 items-center h-12 px-4">
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
             <ChevronLeftIcon className="w-5 h-5" />
           </Button>
