@@ -37,21 +37,28 @@ import {
   Share2Icon,
   GaugeCircleIcon,
   ChevronDownIcon,
-  MoreVerticalIcon,
+  MoreHorizontalIcon,
   TextCursorInputIcon,
   MicIcon,
   SquareIcon,
   DownloadIcon,
+  XIcon,
+  CheckIcon,
 } from "lucide-react";
 import { t } from "i18next";
 import { formatDuration } from "@renderer/lib/utils";
 import { useHotkeys } from "react-hotkeys-hook";
 import { LiveAudioVisualizer } from "react-audio-visualize";
+import debounce from "lodash/debounce";
 
+const ACTION_BUTTON_HEIGHT = 35;
 export const MediaCurrentRecording = () => {
   const {
     isRecording,
     isPaused,
+    cancelRecording,
+    togglePauseResume,
+    stopRecording,
     recordingTime,
     mediaRecorder,
     currentRecording,
@@ -78,7 +85,8 @@ export const MediaCurrentRecording = () => {
 
   const [frequencies, setFrequencies] = useState<number[]>([]);
   const [peaks, setPeaks] = useState<number[]>([]);
-  const [width, setWidth] = useState<number>();
+  const [size, setSize] = useState<{ width: number; height: number }>();
+  const [actionButtonsCount, setActionButtonsCount] = useState(0);
 
   const ref = useRef(null);
 
@@ -255,14 +263,30 @@ export const MediaCurrentRecording = () => {
       });
   };
 
-  const calContainerWidth = () => {
-    const w = document
-      .querySelector(".media-recording-wrapper")
+  const calContainerSize = () => {
+    console.log("calContainerSize");
+    const width = ref?.current
+      ?.querySelector(".media-recording-container")
       ?.getBoundingClientRect()?.width;
-    if (!w) return;
+    const height = ref?.current
+      ?.closest(".media-recording-wrapper")
+      ?.getBoundingClientRect()?.height;
 
-    setWidth(w - 48);
+    console.log(width, height);
+    if (!width || !height) return;
+
+    setSize({ width, height });
+    if (player) {
+      player.setOptions({
+        height: height - 10,
+      });
+    }
+
+    console.log(height, height / ACTION_BUTTON_HEIGHT);
+    setActionButtonsCount(Math.floor(height / ACTION_BUTTON_HEIGHT));
   };
+
+  const debouncedCalContainerSize = debounce(calContainerSize, 100);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -271,9 +295,9 @@ export const MediaCurrentRecording = () => {
 
     const height = ref.current.getBoundingClientRect().height;
     const ws = WaveSurfer.create({
-      container: ref.current,
+      container: ref.current.querySelector(".waveform-container"),
       url: currentRecording.src,
-      height,
+      height: height - 10,
       barWidth: 2,
       cursorWidth: 1,
       autoCenter: true,
@@ -408,19 +432,21 @@ export const MediaCurrentRecording = () => {
   ]);
 
   useEffect(() => {
-    if (!width) return;
+    if (!ref?.current) return;
+    if (!player) return;
 
-    const container: HTMLDivElement = document.querySelector(
-      ".media-recording-container"
-    );
-    if (!container) return;
+    console.log("resize observer");
+    const observer = new ResizeObserver(() => {
+      debouncedCalContainerSize();
+    });
+    observer.observe(ref.current);
+    EnjoyApp.window.onResize(debouncedCalContainerSize);
 
-    container.style.width = `${width}px`;
-  }, [width, currentRecording, isRecording]);
-
-  useEffect(() => {
-    calContainerWidth();
-  }, [currentRecording, isRecording]);
+    return () => {
+      EnjoyApp.window.removeListeners();
+      observer.disconnect();
+    };
+  }, [ref, player]);
 
   useHotkeys(currentHotkeys.PlayOrPauseRecording, () => {
     const button = document.getElementById("recording-play-or-pause-button");
@@ -441,31 +467,140 @@ export const MediaCurrentRecording = () => {
     setDetailIsOpen(!detailIsOpen);
   });
 
+  const Actions = [
+    {
+      id: "recording-play-or-pause-button",
+      name: "playOrPause",
+      label: t("playRecording"),
+      icon: player?.isPlaying() ? PauseIcon : PlayIcon,
+      variant: "default",
+      onClick: () => {
+        const region = regions
+          ?.getRegions()
+          ?.find((r) => r.id.startsWith("recording-voice-region"));
+
+        if (region) {
+          region.play();
+        } else {
+          player?.playPause();
+        }
+      },
+    },
+    {
+      id: "recording-record-button",
+      name: "record",
+      label: t("record"),
+      icon: MediaRecordButton,
+      variant: "ghost",
+      onClick: () => {},
+    },
+    {
+      id: "media-pronunciation-assessment-button",
+      name: "pronunciationAssessment",
+      label: t("pronunciationAssessment"),
+      icon: GaugeCircleIcon,
+      iconClassName: currentRecording?.pronunciationAssessment
+        ? currentRecording?.pronunciationAssessment.pronunciationScore >= 80
+          ? "text-green-500"
+          : currentRecording?.pronunciationAssessment.pronunciationScore >= 60
+          ? "text-yellow-600"
+          : "text-red-500"
+        : "",
+      variant: detailIsOpen ? "secondary" : "ghost",
+      onClick: () => setDetailIsOpen(!detailIsOpen),
+    },
+    {
+      id: "media-compare-button",
+      name: "compare",
+      label: t("compare"),
+      icon: GitCompareIcon,
+      variant: isComparing ? "secondary" : "ghost",
+      onClick: toggleCompare,
+    },
+    {
+      id: "media-select-region-button",
+      name: "selectRegion",
+      label: t("selectRegion"),
+      icon: TextCursorInputIcon,
+      variant: isSelectingRegion ? "secondary" : "ghost",
+      onClick: () => setIsSelectingRegion(!isSelectingRegion),
+    },
+    {
+      id: "media-share-button",
+      name: "share",
+      label: t("share"),
+      icon: Share2Icon,
+      variant: isSharing ? "secondary" : "ghost",
+      onClick: () => setIsSharing(true),
+    },
+    {
+      id: "media-download-button",
+      name: "download",
+      label: t("download"),
+      icon: DownloadIcon,
+      variant: "ghost",
+      onClick: handleDownload,
+    },
+  ];
+
   if (isRecording || isPaused) {
     return (
-      <div className="h-full w-full flex items-center space-x-4">
-        <div className="flex-1 h-full relative">
-          <div className="w-full h-full flex justify-center items-center gap-4">
-            <LiveAudioVisualizer
-              mediaRecorder={mediaRecorder}
-              barWidth={2}
-              gap={2}
-              width={480}
-              height="100%"
-              fftSize={512}
-              maxDecibels={-10}
-              minDecibels={-80}
-              smoothingTimeConstant={0.4}
+      <div className="w-full h-full flex justify-center items-center gap-4 border rounded-xl shadow">
+        <LiveAudioVisualizer
+          mediaRecorder={mediaRecorder}
+          barWidth={2}
+          gap={2}
+          width={480}
+          height="100%"
+          fftSize={512}
+          maxDecibels={-10}
+          minDecibels={-80}
+          smoothingTimeConstant={0.4}
+        />
+        <span className="serif text-muted-foreground text-sm">
+          {Math.floor(recordingTime / 60)}:
+          {String(recordingTime % 60).padStart(2, "0")}
+        </span>
+        <Button
+          data-tooltip-id="chat-input-tooltip"
+          data-tooltip-content={t("cancel")}
+          onClick={cancelRecording}
+          className="rounded-full shadow w-8 h-8 bg-red-500 hover:bg-red-600"
+          variant="secondary"
+          size="icon"
+        >
+          <XIcon fill="white" className="w-4 h-4 text-white" />
+        </Button>
+        <Button
+          onClick={togglePauseResume}
+          className="rounded-full shadow w-8 h-8"
+          size="icon"
+        >
+          {isPaused ? (
+            <PlayIcon
+              data-tooltip-id="chat-input-tooltip"
+              data-tooltip-content={t("continue")}
+              fill="white"
+              className="w-4 h-4"
             />
-            <span className="serif text-muted-foreground text-sm">
-              {Math.floor(recordingTime / 60)}:
-              {String(recordingTime % 60).padStart(2, "0")}
-            </span>
-          </div>
-        </div>
-        <div className="h-full flex flex-col justify-start space-y-1.5">
-          <MediaRecordButton />
-        </div>
+          ) : (
+            <PauseIcon
+              data-tooltip-id="chat-input-tooltip"
+              data-tooltip-content={t("pause")}
+              fill="white"
+              className="w-4 h-4"
+            />
+          )}
+        </Button>
+        <Button
+          data-tooltip-id="chat-input-tooltip"
+          data-tooltip-content={t("finish")}
+          onClick={stopRecording}
+          className="rounded-full bg-green-500 hover:bg-green-600 shadow w-8 h-8"
+          size="icon"
+        >
+          <CheckIcon className="w-4 h-4 text-white" />
+        </Button>
       </div>
     );
   }
@@ -475,7 +610,9 @@ export const MediaCurrentRecording = () => {
       <div className="h-full w-full flex items-center justify-center border rounded-xl shadow">
         <div className="m-auto">
           <div className="flex justify-center items-center mb-2">
-            <MediaRecordButton />
+            <div className="w-8 aspect-square rounded-full overflow-hidden">
+              <MediaRecordButton />
+            </div>
           </div>
           <div
             className=""
@@ -490,9 +627,18 @@ export const MediaCurrentRecording = () => {
     );
 
   return (
-    <div className="flex space-x-4 media-recording-wrapper">
-      <div className="border rounded-xl shadow-lg flex-1 relative media-recording-container">
-        <div className="w-full" ref={ref}></div>
+    <div
+      ref={ref}
+      className="h-full flex media-recording-wrapper border rounded-xl shadow overflow-hidden"
+    >
+      <div className="flex-1 relative media-recording-container">
+        <div
+          style={{
+            width: `${size?.width}px`,
+            height: `${size?.height}px`,
+          }}
+          className="waveform-container"
+        ></div>
 
         <div className="absolute right-2 top-1">
           <span className="text-sm">{formatDuration(currentTime || 0)}</span>
@@ -505,144 +651,54 @@ export const MediaCurrentRecording = () => {
         </div>
       </div>
 
-      <div className="flex flex-col justify-around space-y-1.5">
-        <Button
-          variant="default"
-          size="icon"
-          id="recording-play-or-pause-button"
-          data-tooltip-id="media-shadow-tooltip"
-          data-tooltip-content={t("playRecording")}
-          className="rounded-full w-8 h-8 p-0"
-          onClick={() => {
-            const region = regions
-              ?.getRegions()
-              ?.find((r) => r.id.startsWith("recording-voice-region"));
+      <div
+        className={`grid grid-rows-${
+          actionButtonsCount < Actions.length
+            ? actionButtonsCount + 1
+            : Actions.length
+        } w-10 border-l rounded-r-lg`}
+      >
+        {Actions.slice(0, actionButtonsCount).map((action) => (
+          <Button
+            key={action.name}
+            variant={action.variant as any}
+            data-tooltip-id="media-shadow-tooltip"
+            data-tooltip-content={action.label}
+            className="relative p-0 w-full h-full rounded-none"
+            onClick={action.onClick}
+          >
+            <action.icon className={`w-4 h-4 ${action.iconClassName || ""}`} />
+          </Button>
+        ))}
 
-            if (region) {
-              region.play();
-            } else {
-              player?.playPause();
-            }
-          }}
-        >
-          {player?.isPlaying() ? (
-            <PauseIcon className="w-4 h-4" />
-          ) : (
-            <PlayIcon className="w-4 h-4" />
-          )}
-        </Button>
-
-        <MediaRecordButton />
-
-        <Button
-          variant={detailIsOpen ? "secondary" : "outline"}
-          size="icon"
-          id="media-pronunciation-assessment-button"
-          data-tooltip-id="media-shadow-tooltip"
-          data-tooltip-content={t("pronunciationAssessment")}
-          className="rounded-full w-8 h-8 p-0"
-          onClick={() => setDetailIsOpen(true)}
-        >
-          <GaugeCircleIcon
-            className={`w-4 h-4
-                    ${
-                      currentRecording.pronunciationAssessment
-                        ? currentRecording.pronunciationAssessment
-                            .pronunciationScore >= 80
-                          ? "text-green-500"
-                          : currentRecording.pronunciationAssessment
-                              .pronunciationScore >= 60
-                          ? "text-yellow-600"
-                          : "text-red-500"
-                        : ""
-                    }
-                    `}
-          />
-        </Button>
-
-        <Button
-          variant={isComparing ? "secondary" : "outline"}
-          size="icon"
-          id="media-compare-button"
-          data-tooltip-id="media-shadow-tooltip"
-          data-tooltip-content={t("compare")}
-          className="rounded-full w-8 h-8 p-0"
-          onClick={toggleCompare}
-        >
-          <GitCompareIcon className="w-4 h-4" />
-        </Button>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              data-tooltip-id="media-shadow-tooltip"
-              data-tooltip-content={t("more")}
-              className="rounded-full w-8 h-8 p-0"
-            >
-              <MoreVerticalIcon className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent>
-            <>
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={() => setDetailIsOpen(true)}
+        {actionButtonsCount < Actions.length && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                data-tooltip-id="media-shadow-tooltip"
+                data-tooltip-content={t("more")}
+                className="rounded-none w-full h-full p-0"
               >
-                <GaugeCircleIcon
-                  className={`w-4 h-4 mr-4
-                    ${
-                      currentRecording.pronunciationAssessment
-                        ? currentRecording.pronunciationAssessment
-                            .pronunciationScore >= 80
-                          ? "text-green-500"
-                          : currentRecording.pronunciationAssessment
-                              .pronunciationScore >= 60
-                          ? "text-yellow-600"
-                          : "text-red-500"
-                        : ""
-                    }
-                    `}
-                />
-                <span>{t("pronunciationAssessment")}</span>
-              </DropdownMenuItem>
+                <MoreHorizontalIcon className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
 
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={toggleCompare}
-              >
-                <GitCompareIcon className="w-4 h-4 mr-4" />
-                <span>{t("compare")}</span>
-              </DropdownMenuItem>
-            </>
-
-            <DropdownMenuItem
-              className="cursor-pointer"
-              data-tooltip-content={t("selectRegion")}
-              onClick={() => setIsSelectingRegion(!isSelectingRegion)}
-            >
-              <TextCursorInputIcon className="w-4 h-4 mr-4" />
-              <span>{t("selectRegion")}</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => setIsSharing(true)}
-            >
-              <Share2Icon className="w-4 h-4 mr-4" />
-              <span>{t("share")}</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={handleDownload}
-            >
-              <DownloadIcon className="w-4 h-4 mr-4" />
-              <span>{t("download")}</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <DropdownMenuContent>
+              {Actions.slice(actionButtonsCount).map((action) => (
+                <DropdownMenuItem
+                  key={action.name}
+                  className="cursor-pointer"
+                  onClick={action.onClick}
+                >
+                  <action.icon className="w-4 h-4 mr-4" />
+                  <span>{action.label}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
 
       <AlertDialog open={isSharing} onOpenChange={setIsSharing}>
@@ -723,7 +779,7 @@ export const MediaRecordButton = () => {
       data-tooltip-content={
         isRecording ? t("stopRecording") : t("startRecording")
       }
-      className="aspect-square p-0 h-8 rounded-full bg-red-500 hover:bg-red-500/90"
+      className="p-0 h-full w-full rounded-none bg-red-500 hover:bg-red-500/90"
     >
       {isRecording ? (
         <SquareIcon fill="white" className="w-4 h-4 text-white" />

@@ -74,6 +74,7 @@ type MediaShadowContextType = {
   // Recordings
   startRecording: () => void;
   stopRecording: () => void;
+  cancelRecording: () => void;
   togglePauseResume: () => void;
   recordingBlob: Blob;
   isRecording: boolean;
@@ -135,6 +136,7 @@ export const MediaShadowProvider = ({
 
   const [currentRecording, setCurrentRecording] = useState<RecordingType>(null);
   const [recordingType, setRecordingType] = useState<string>("segment");
+  const [cancelingRecording, setCancelingRecording] = useState(false);
 
   const [transcriptionDraft, setTranscriptionDraft] =
     useState<TranscriptionType["result"]>();
@@ -147,6 +149,10 @@ export const MediaShadowProvider = ({
     transcribingOutput,
     abortGenerateTranscription,
   } = useTranscriptions(media);
+
+  const cancelRecording = () => {
+    setCancelingRecording(true);
+  };
 
   const {
     recordings,
@@ -407,7 +413,11 @@ export const MediaShadowProvider = ({
     );
   };
 
-  const createRecording = async (blob: Blob) => {
+  const onRecorded = async (blob: Blob) => {
+    if (cancelingRecording) {
+      setCancelingRecording(false);
+      return;
+    }
     if (!blob) return;
     if (!media) return;
     if (!transcription?.result?.timeline) return;
@@ -595,8 +605,14 @@ export const MediaShadowProvider = ({
    * create recording when recordingBlob is updated
    */
   useEffect(() => {
-    createRecording(recordingBlob);
+    onRecorded(recordingBlob);
   }, [recordingBlob]);
+
+  useEffect(() => {
+    if (cancelingRecording) {
+      stopRecording();
+    }
+  }, [cancelingRecording]);
 
   /**
    * auto stop recording when recording time is over
@@ -647,6 +663,7 @@ export const MediaShadowProvider = ({
           setTranscriptionDraft,
           startRecording,
           stopRecording,
+          cancelRecording,
           togglePauseResume,
           recordingBlob,
           isRecording,

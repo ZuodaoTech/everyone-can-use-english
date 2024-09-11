@@ -242,7 +242,10 @@ export const MediaWaveform = () => {
         className="flex-1 relative media-player-container overflow-hidden"
       >
         <div
-          style={{ width: `${size?.width}px`, height: `${size?.height}px` }}
+          style={{
+            width: `${size?.width - 39}px`,
+            height: `${size?.height}px`,
+          }}
           className="waveform-container"
         />
         <div className="absolute right-2 top-1">
