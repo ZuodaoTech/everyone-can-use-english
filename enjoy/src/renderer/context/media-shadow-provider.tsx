@@ -211,8 +211,10 @@ export const MediaShadowProvider = ({
     if (!waveformContainerRef?.current) return;
 
     const height =
-      waveformContainerRef.current.getBoundingClientRect().height - 10;
-    const container = document.querySelector(".waveform-container");
+      waveformContainerRef.current.getBoundingClientRect().height - 10; // -10 to leave space for scrollbar
+    const container = waveformContainerRef.current.querySelector(
+      ".waveform-container"
+    );
     if (!container) return;
 
     const ws = WaveSurfer.create({

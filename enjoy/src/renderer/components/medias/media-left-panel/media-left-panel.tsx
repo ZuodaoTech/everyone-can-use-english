@@ -65,8 +65,10 @@ export const MediaLeftPanel = () => {
             <MediaProvider />
           </div>
         </TabsContent>
-        <TabsContent value="recordings">
-          <MediaRecordings />
+        <TabsContent forceMount={true} value="recordings">
+          <div className={`${tab === "recordings" ? "block" : "hidden"}`}>
+            <MediaRecordings />
+          </div>
         </TabsContent>
         <TabsContent value="transcription">
           <MediaTranscription display={tab === "transcription"} />

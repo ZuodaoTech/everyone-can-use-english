@@ -243,7 +243,7 @@ export const MediaWaveform = () => {
       >
         <div
           style={{
-            width: `${size?.width - 39}px`,
+            width: `${size?.width - 40}px`, // -40 for action buttons
             height: `${size?.height}px`,
           }}
           className="waveform-container"

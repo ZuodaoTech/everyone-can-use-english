@@ -264,26 +264,20 @@ export const MediaCurrentRecording = () => {
   };
 
   const calContainerSize = () => {
-    console.log("calContainerSize");
-    const width = ref?.current
-      ?.querySelector(".media-recording-container")
-      ?.getBoundingClientRect()?.width;
-    const height = ref?.current
+    const size = ref?.current
       ?.closest(".media-recording-wrapper")
-      ?.getBoundingClientRect()?.height;
+      ?.getBoundingClientRect();
 
-    console.log(width, height);
-    if (!width || !height) return;
+    if (!size) return;
 
-    setSize({ width, height });
+    setSize(size);
     if (player) {
       player.setOptions({
-        height: height - 10,
+        height: size.height - 10, // -10 to leave space for scrollbar
       });
     }
 
-    console.log(height, height / ACTION_BUTTON_HEIGHT);
-    setActionButtonsCount(Math.floor(height / ACTION_BUTTON_HEIGHT));
+    setActionButtonsCount(Math.floor(size.height / ACTION_BUTTON_HEIGHT));
   };
 
   const debouncedCalContainerSize = debounce(calContainerSize, 100);
@@ -293,11 +287,11 @@ export const MediaCurrentRecording = () => {
     if (isRecording) return;
     if (!currentRecording?.src) return;
 
-    const height = ref.current.getBoundingClientRect().height;
+    const height = ref.current.getBoundingClientRect().height - 10; // -10 to leave space for scrollbar
     const ws = WaveSurfer.create({
       container: ref.current.querySelector(".waveform-container"),
       url: currentRecording.src,
-      height: height - 10,
+      height,
       barWidth: 2,
       cursorWidth: 1,
       autoCenter: true,
@@ -435,7 +429,6 @@ export const MediaCurrentRecording = () => {
     if (!ref?.current) return;
     if (!player) return;
 
-    console.log("resize observer");
     const observer = new ResizeObserver(() => {
       debouncedCalContainerSize();
     });
@@ -634,7 +627,7 @@ export const MediaCurrentRecording = () => {
       <div className="flex-1 relative media-recording-container">
         <div
           style={{
-            width: `${size?.width}px`,
+            width: `${size?.width - 40}px`, // -40 for action buttons
             height: `${size?.height}px`,
           }}
           className="waveform-container"
