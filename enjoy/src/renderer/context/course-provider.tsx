@@ -9,7 +9,7 @@ import {
   toast,
 } from "@renderer/components/ui";
 import {
-  MediaPlayerProvider,
+  MediaShadowProvider,
   AppSettingsProviderContext,
 } from "@renderer/context";
 import { ChevronDownIcon } from "lucide-react";
@@ -61,7 +61,7 @@ export const CourseProvider = ({
         setShadowing,
       }}
     >
-      <MediaPlayerProvider>
+      <MediaShadowProvider>
         {children}
         <Sheet
           modal={false}
@@ -72,12 +72,12 @@ export const CourseProvider = ({
         >
           <SheetContent
             side="bottom"
-            className="h-screen p-0"
+            className="h-screen p-0 flex flex-col"
             displayClose={false}
             onPointerDownOutside={(event) => event.preventDefault()}
             onInteractOutside={(event) => event.preventDefault()}
           >
-            <SheetHeader className="flex items-center justify-center h-14">
+            <SheetHeader className="flex items-center justify-center h-12">
               <SheetTitle className="sr-only">Shadow</SheetTitle>
               <SheetDescription className="sr-only"></SheetDescription>
               <SheetClose>
@@ -88,7 +88,7 @@ export const CourseProvider = ({
             <AudioPlayer id={shadowing?.id} />
           </SheetContent>
         </Sheet>
-      </MediaPlayerProvider>
+      </MediaShadowProvider>
     </CourseProviderContext.Provider>
   );
 };

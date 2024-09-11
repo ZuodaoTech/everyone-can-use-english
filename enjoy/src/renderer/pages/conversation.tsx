@@ -17,7 +17,7 @@ import { t } from "i18next";
 import {
   DbProviderContext,
   AppSettingsProviderContext,
-  MediaPlayerProvider,
+  MediaShadowProvider,
 } from "@renderer/context";
 import { messagesReducer } from "@renderer/reducers";
 import { v4 as uuidv4 } from "uuid";
@@ -268,7 +268,7 @@ export default () => {
           </Sheet>
         </div>
 
-        <MediaPlayerProvider>
+        <MediaShadowProvider>
           <ScrollArea ref={containerRef} className="px-4 flex-1">
             <div className="messages flex flex-col-reverse gap-6 my-6">
               <div className="w-full h-24"></div>
@@ -315,7 +315,7 @@ export default () => {
               )}
             </div>
           </ScrollArea>
-        </MediaPlayerProvider>
+        </MediaShadowProvider>
 
         <div className="bg-background px-4 absolute w-full bottom-0 left-0 z-50">
           <div className="focus-within:bg-background pr-4 py-2 flex items-end space-x-4 rounded-lg shadow-lg border scrollbar">

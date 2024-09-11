@@ -2,10 +2,10 @@ import { useEffect, useContext, useRef, useState } from "react";
 import {
   AppSettingsProviderContext,
   HotKeysSettingsProviderContext,
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
 } from "@renderer/context";
 import { RecordingDetail } from "@renderer/components";
-import { renderPitchContour } from "@renderer/lib/utils";
+import { cn, renderPitchContour } from "@renderer/lib/utils";
 import { extractFrequencies } from "@/utils";
 import WaveSurfer from "wavesurfer.js";
 import Regions from "wavesurfer.js/dist/plugins/regions";
@@ -37,22 +37,28 @@ import {
   Share2Icon,
   GaugeCircleIcon,
   ChevronDownIcon,
-  MoreVerticalIcon,
+  MoreHorizontalIcon,
   TextCursorInputIcon,
   MicIcon,
   SquareIcon,
   DownloadIcon,
+  XIcon,
+  CheckIcon,
 } from "lucide-react";
 import { t } from "i18next";
 import { formatDuration } from "@renderer/lib/utils";
 import { useHotkeys } from "react-hotkeys-hook";
 import { LiveAudioVisualizer } from "react-audio-visualize";
+import debounce from "lodash/debounce";
 
+const ACTION_BUTTON_HEIGHT = 35;
 export const MediaCurrentRecording = () => {
   const {
-    layout,
     isRecording,
     isPaused,
+    cancelRecording,
+    togglePauseResume,
+    stopRecording,
     recordingTime,
     mediaRecorder,
     currentRecording,
@@ -65,7 +71,7 @@ export const MediaCurrentRecording = () => {
     currentSegment,
     createSegment,
     currentTime: mediaCurrentTime,
-  } = useContext(MediaPlayerProviderContext);
+  } = useContext(MediaShadowProviderContext);
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
   const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
   const [player, setPlayer] = useState(null);
@@ -79,7 +85,8 @@ export const MediaCurrentRecording = () => {
 
   const [frequencies, setFrequencies] = useState<number[]>([]);
   const [peaks, setPeaks] = useState<number[]>([]);
-  const [width, setWidth] = useState<number>();
+  const [size, setSize] = useState<{ width: number; height: number }>();
+  const [actionButtonsCount, setActionButtonsCount] = useState(0);
 
   const ref = useRef(null);
 
@@ -256,25 +263,35 @@ export const MediaCurrentRecording = () => {
       });
   };
 
-  const calContainerWidth = () => {
-    const w = document
-      .querySelector(".media-recording-wrapper")
-      ?.getBoundingClientRect()?.width;
-    if (!w) return;
+  const calContainerSize = () => {
+    const size = ref?.current
+      ?.closest(".media-recording-wrapper")
+      ?.getBoundingClientRect();
 
-    setWidth(w - 48);
+    if (!size) return;
+
+    setSize(size);
+    if (player) {
+      player.setOptions({
+        height: size.height - 10, // -10 to leave space for scrollbar
+      });
+    }
+
+    setActionButtonsCount(Math.floor(size.height / ACTION_BUTTON_HEIGHT));
   };
+
+  const debouncedCalContainerSize = debounce(calContainerSize, 100);
 
   useEffect(() => {
     if (!ref.current) return;
     if (isRecording) return;
     if (!currentRecording?.src) return;
-    if (!layout?.playerHeight) return;
 
+    const height = ref.current.getBoundingClientRect().height - 10; // -10 to leave space for scrollbar
     const ws = WaveSurfer.create({
-      container: ref.current,
+      container: ref.current.querySelector(".waveform-container"),
       url: currentRecording.src,
-      height: layout.playerHeight,
+      height,
       barWidth: 2,
       cursorWidth: 1,
       autoCenter: true,
@@ -320,7 +337,7 @@ export const MediaCurrentRecording = () => {
     return () => {
       ws?.destroy();
     };
-  }, [ref, currentRecording, isRecording, layout?.playerHeight]);
+  }, [ref, currentRecording, isRecording]);
 
   useEffect(() => {
     setCurrentTime(0);
@@ -409,19 +426,20 @@ export const MediaCurrentRecording = () => {
   ]);
 
   useEffect(() => {
-    if (!width) return;
+    if (!ref?.current) return;
+    if (!player) return;
 
-    const container: HTMLDivElement = document.querySelector(
-      ".media-recording-container"
-    );
-    if (!container) return;
+    const observer = new ResizeObserver(() => {
+      debouncedCalContainerSize();
+    });
+    observer.observe(ref.current);
+    EnjoyApp.window.onResize(debouncedCalContainerSize);
 
-    container.style.width = `${width}px`;
-  }, [width, currentRecording, isRecording]);
-
-  useEffect(() => {
-    calContainerWidth();
-  }, [currentRecording, isRecording, layout?.width]);
+    return () => {
+      EnjoyApp.window.removeListeners();
+      observer.disconnect();
+    };
+  }, [ref, player]);
 
   useHotkeys(currentHotkeys.PlayOrPauseRecording, () => {
     const button = document.getElementById("recording-play-or-pause-button");
@@ -442,30 +460,152 @@ export const MediaCurrentRecording = () => {
     setDetailIsOpen(!detailIsOpen);
   });
 
+  useHotkeys(
+    currentHotkeys.Compare,
+    () => {
+      toggleCompare();
+    },
+    {
+      preventDefault: true,
+    }
+  );
+
+  const Actions = [
+    {
+      id: "recording-record-button-wrapper",
+      name: "record",
+      label: t("record"),
+      icon: MediaRecordButton,
+      active: isRecording,
+      onClick: () => {},
+    },
+    {
+      id: "recording-play-or-pause-button",
+      name: "playOrPause",
+      label: t("playRecording"),
+      icon: player?.isPlaying() ? PauseIcon : PlayIcon,
+      active: player?.isPlaying(),
+      onClick: () => {
+        const region = regions
+          ?.getRegions()
+          ?.find((r) => r.id.startsWith("recording-voice-region"));
+
+        if (region) {
+          region.play();
+        } else {
+          player?.playPause();
+        }
+      },
+    },
+    {
+      id: "media-pronunciation-assessment-button",
+      name: "pronunciationAssessment",
+      label: t("pronunciationAssessment"),
+      icon: GaugeCircleIcon,
+      active: detailIsOpen,
+      iconClassName: currentRecording?.pronunciationAssessment
+        ? currentRecording?.pronunciationAssessment.pronunciationScore >= 80
+          ? "text-green-500"
+          : currentRecording?.pronunciationAssessment.pronunciationScore >= 60
+          ? "text-yellow-600"
+          : "text-red-500"
+        : "",
+      onClick: () => setDetailIsOpen(!detailIsOpen),
+    },
+    {
+      id: "media-compare-button",
+      name: "compare",
+      label: t("compare"),
+      icon: GitCompareIcon,
+      active: isComparing,
+      onClick: toggleCompare,
+    },
+    {
+      id: "media-select-region-button",
+      name: "selectRegion",
+      label: t("selectRegion"),
+      icon: TextCursorInputIcon,
+      active: isSelectingRegion,
+      onClick: () => setIsSelectingRegion(!isSelectingRegion),
+    },
+    {
+      id: "media-share-button",
+      name: "share",
+      label: t("share"),
+      icon: Share2Icon,
+      active: isSharing,
+      onClick: () => setIsSharing(true),
+    },
+    {
+      id: "media-download-button",
+      name: "download",
+      label: t("download"),
+      icon: DownloadIcon,
+      active: false,
+      onClick: handleDownload,
+    },
+  ];
+
   if (isRecording || isPaused) {
     return (
-      <div className="h-full w-full flex items-center space-x-4">
-        <div className="flex-1 h-full border rounded-xl shadow-lg relative">
-          <div className="w-full h-full flex justify-center items-center gap-4">
-            <LiveAudioVisualizer
-              mediaRecorder={mediaRecorder}
-              barWidth={2}
-              gap={2}
-              width={480}
-              height="100%"
-              fftSize={512}
-              maxDecibels={-10}
-              minDecibels={-80}
-              smoothingTimeConstant={0.4}
-            />
-            <span className="serif text-muted-foreground text-sm">
-              {Math.floor(recordingTime / 60)}:
-              {String(recordingTime % 60).padStart(2, "0")}
-            </span>
-          </div>
-        </div>
-        <div className="h-full flex flex-col justify-start space-y-1.5">
-          <MediaRecordButton />
+      <div className="w-full h-full flex justify-center items-center gap-4 border rounded-xl shadow">
+        <LiveAudioVisualizer
+          mediaRecorder={mediaRecorder}
+          barWidth={2}
+          gap={2}
+          width={480}
+          height="100%"
+          fftSize={512}
+          maxDecibels={-10}
+          minDecibels={-80}
+          smoothingTimeConstant={0.4}
+        />
+        <span className="serif text-muted-foreground text-sm">
+          {Math.floor(recordingTime / 60)}:
+          {String(recordingTime % 60).padStart(2, "0")}
+        </span>
+        <div className="flex items-center gap-2">
+          <Button
+            data-tooltip-id="chat-input-tooltip"
+            data-tooltip-content={t("cancel")}
+            onClick={cancelRecording}
+            className="rounded-full shadow w-8 h-8 bg-red-500 hover:bg-red-600"
+            variant="secondary"
+            size="icon"
+          >
+            <XIcon fill="white" className="w-4 h-4 text-white" />
+          </Button>
+          <Button
+            onClick={togglePauseResume}
+            className="rounded-full shadow w-8 h-8"
+            size="icon"
+          >
+            {isPaused ? (
+              <PlayIcon
+                data-tooltip-id="chat-input-tooltip"
+                data-tooltip-content={t("continue")}
+                fill="white"
+                className="w-4 h-4"
+              />
+            ) : (
+              <PauseIcon
+                data-tooltip-id="chat-input-tooltip"
+                data-tooltip-content={t("pause")}
+                fill="white"
+                className="w-4 h-4"
+              />
+            )}
+          </Button>
+          <Button
+            id="media-record-button"
+            data-tooltip-id="chat-input-tooltip"
+            data-tooltip-content={t("finish")}
+            onClick={stopRecording}
+            className="rounded-full bg-green-500 hover:bg-green-600 shadow w-8 h-8"
+            size="icon"
+          >
+            <CheckIcon className="w-4 h-4 text-white" />
+          </Button>
         </div>
       </div>
     );
@@ -473,10 +613,15 @@ export const MediaCurrentRecording = () => {
 
   if (!currentRecording?.src)
     return (
-      <div className="h-full w-full flex items-center space-x-4">
-        <div className="flex-1 h-full border rounded-xl shadow-lg flex items-start">
+      <div className="h-full w-full flex items-center justify-center border rounded-xl shadow">
+        <div className="m-auto">
+          <div className="flex justify-center items-center mb-2">
+            <div className="w-8 aspect-square rounded-full overflow-hidden">
+              <MediaRecordButton />
+            </div>
+          </div>
           <div
-            className="m-auto"
+            className=""
             dangerouslySetInnerHTML={{
               __html: t("noRecordingForThisSegmentYet", {
                 key: currentHotkeys.StartOrStopRecording?.toUpperCase(),
@@ -484,17 +629,22 @@ export const MediaCurrentRecording = () => {
             }}
           ></div>
         </div>
-
-        <div className="h-full flex flex-col justify-start space-y-1.5">
-          <MediaRecordButton />
-        </div>
       </div>
     );
 
   return (
-    <div className="flex space-x-4 media-recording-wrapper">
-      <div className="border rounded-xl shadow-lg flex-1 relative media-recording-container">
-        <div className="w-full" ref={ref}></div>
+    <div
+      ref={ref}
+      className="h-full flex media-recording-wrapper border rounded-xl shadow overflow-hidden"
+    >
+      <div className="flex-1 relative media-recording-container">
+        <div
+          style={{
+            width: `${size?.width - 40}px`, // -40 for action buttons
+            height: `${size?.height}px`,
+          }}
+          className="waveform-container"
+        ></div>
 
         <div className="absolute right-2 top-1">
           <span className="text-sm">{formatDuration(currentTime || 0)}</span>
@@ -507,149 +657,60 @@ export const MediaCurrentRecording = () => {
         </div>
       </div>
 
-      <div className="flex flex-col justify-around space-y-1.5">
-        <Button
-          variant="default"
-          size="icon"
-          id="recording-play-or-pause-button"
-          data-tooltip-id="media-player-tooltip"
-          data-tooltip-content={t("playRecording")}
-          className="rounded-full w-8 h-8 p-0"
-          onClick={() => {
-            const region = regions
-              ?.getRegions()
-              ?.find((r) => r.id.startsWith("recording-voice-region"));
+      <div
+        className={`grid grid-rows-${
+          actionButtonsCount < Actions.length
+            ? actionButtonsCount + 1
+            : Actions.length
+        } w-10 border-l rounded-r-lg`}
+      >
+        {Actions.slice(0, actionButtonsCount).map((action) => (
+          <Button
+            key={action.name}
+            id={action.id}
+            variant={action.active ? "secondary" : "ghost"}
+            data-tooltip-id="media-shadow-tooltip"
+            data-tooltip-content={action.label}
+            className="relative p-0 w-full h-full rounded-none"
+            onClick={action.onClick}
+          >
+            <action.icon className={`w-4 h-4 ${cn(action.iconClassName)}`} />
+          </Button>
+        ))}
 
-            if (region) {
-              region.play();
-            } else {
-              player?.playPause();
-            }
-          }}
-        >
-          {player?.isPlaying() ? (
-            <PauseIcon className="w-4 h-4" />
-          ) : (
-            <PlayIcon className="w-4 h-4" />
-          )}
-        </Button>
+        {actionButtonsCount < Actions.length && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                data-tooltip-id="media-shadow-tooltip"
+                data-tooltip-content={t("more")}
+                className="rounded-none w-full h-full p-0"
+              >
+                <MoreHorizontalIcon className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
 
-        <MediaRecordButton />
-
-        <Button
-          variant={detailIsOpen ? "secondary" : "outline"}
-          size="icon"
-          id="media-pronunciation-assessment-button"
-          data-tooltip-id="media-player-tooltip"
-          data-tooltip-content={t("pronunciationAssessment")}
-          className={
-            layout?.name === "sm" ? "hidden" : "rounded-full w-8 h-8 p-0"
-          }
-          onClick={() => setDetailIsOpen(true)}
-        >
-          <GaugeCircleIcon
-            className={`w-4 h-4
-                    ${
-                      currentRecording.pronunciationAssessment
-                        ? currentRecording.pronunciationAssessment
-                            .pronunciationScore >= 80
-                          ? "text-green-500"
-                          : currentRecording.pronunciationAssessment
-                              .pronunciationScore >= 60
-                          ? "text-yellow-600"
-                          : "text-red-500"
-                        : ""
-                    }
-                    `}
-          />
-        </Button>
-
-        <Button
-          variant={isComparing ? "secondary" : "outline"}
-          size="icon"
-          id="media-compare-button"
-          data-tooltip-id="media-player-tooltip"
-          data-tooltip-content={t("compare")}
-          className={
-            layout?.name === "sm" ? "hidden" : "rounded-full w-8 h-8 p-0"
-          }
-          onClick={toggleCompare}
-        >
-          <GitCompareIcon className="w-4 h-4" />
-        </Button>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              data-tooltip-id="media-player-tooltip"
-              data-tooltip-content={t("more")}
-              className="rounded-full w-8 h-8 p-0"
-            >
-              <MoreVerticalIcon className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent>
-            {layout?.name === "sm" && (
-              <>
+            <DropdownMenuContent>
+              {Actions.slice(actionButtonsCount).map((action) => (
                 <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => setDetailIsOpen(true)}
+                  id={action.id}
+                  key={action.name}
+                  className={`cursor-pointer ${
+                    action.active ? "bg-muted" : ""
+                  }`}
+                  onClick={action.onClick}
                 >
-                  <GaugeCircleIcon
-                    className={`w-4 h-4 mr-4
-                    ${
-                      currentRecording.pronunciationAssessment
-                        ? currentRecording.pronunciationAssessment
-                            .pronunciationScore >= 80
-                          ? "text-green-500"
-                          : currentRecording.pronunciationAssessment
-                              .pronunciationScore >= 60
-                          ? "text-yellow-600"
-                          : "text-red-500"
-                        : ""
-                    }
-                    `}
+                  <action.icon
+                    className={`${cn(action.iconClassName)} w-4 h-4 mr-4`}
                   />
-                  <span>{t("pronunciationAssessment")}</span>
+                  <span>{action.label}</span>
                 </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={toggleCompare}
-                >
-                  <GitCompareIcon className="w-4 h-4 mr-4" />
-                  <span>{t("compare")}</span>
-                </DropdownMenuItem>
-              </>
-            )}
-            <DropdownMenuItem
-              className="cursor-pointer"
-              data-tooltip-content={t("selectRegion")}
-              onClick={() => setIsSelectingRegion(!isSelectingRegion)}
-            >
-              <TextCursorInputIcon className="w-4 h-4 mr-4" />
-              <span>{t("selectRegion")}</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => setIsSharing(true)}
-            >
-              <Share2Icon className="w-4 h-4 mr-4" />
-              <span>{t("share")}</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={handleDownload}
-            >
-              <DownloadIcon className="w-4 h-4 mr-4" />
-              <span>{t("download")}</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
 
       <AlertDialog open={isSharing} onOpenChange={setIsSharing}>
@@ -694,7 +755,7 @@ export const MediaCurrentRecording = () => {
 
 export const MediaRecordButton = () => {
   const { media, isRecording, startRecording, stopRecording } = useContext(
-    MediaPlayerProviderContext
+    MediaShadowProviderContext
   );
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [access, setAccess] = useState(true);
@@ -726,11 +787,11 @@ export const MediaRecordButton = () => {
         }
       }}
       id="media-record-button"
-      data-tooltip-id="media-player-tooltip"
+      data-tooltip-id="media-shadow-tooltip"
       data-tooltip-content={
         isRecording ? t("stopRecording") : t("startRecording")
       }
-      className="aspect-square p-0 h-8 rounded-full bg-red-500 hover:bg-red-500/90"
+      className="p-0 h-full w-full rounded-none bg-red-500 hover:bg-red-500/90"
     >
       {isRecording ? (
         <SquareIcon fill="white" className="w-4 h-4 text-white" />

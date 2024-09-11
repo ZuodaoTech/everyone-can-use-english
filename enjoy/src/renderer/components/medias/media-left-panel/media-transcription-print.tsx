@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Button, toast } from "@renderer/components/ui";
 import { t } from "i18next";
 import {
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
   AppSettingsProviderContext,
 } from "@/renderer/context";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
@@ -10,7 +10,7 @@ import { convertWordIpaToNormal } from "@/utils";
 import template from "./transcription.template.html?raw";
 
 export const MediaTranscriptionPrint = () => {
-  const { media, transcription } = useContext(MediaPlayerProviderContext);
+  const { media, transcription } = useContext(MediaShadowProviderContext);
   const { EnjoyApp, learningLanguage, ipaMappings } = useContext(
     AppSettingsProviderContext
   );

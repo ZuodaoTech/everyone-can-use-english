@@ -3,7 +3,7 @@ import {
   VideoCard,
   VideosTable,
   VideoEditForm,
-  AddMediaButton,
+  MediaAddButton,
 } from "@renderer/components";
 import { t } from "i18next";
 import {
@@ -225,7 +225,7 @@ export const VideosComponent = () => {
               placeholder={t("search")}
               onChange={(e) => setQuery(e.target.value)}
             />
-            <AddMediaButton type="Video" />
+            <MediaAddButton type="Video" />
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="secondary">{t("cleanUp")}</Button>

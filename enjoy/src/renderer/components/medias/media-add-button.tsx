@@ -20,7 +20,7 @@ import {
   DbProviderContext,
 } from "@renderer/context";
 
-export const AddMediaButton = (props: { type?: "Audio" | "Video" }) => {
+export const MediaAddButton = (props: { type?: "Audio" | "Video" }) => {
   const { type = "Audio" } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);

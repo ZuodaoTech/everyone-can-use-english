@@ -1,7 +1,7 @@
 import { useEffect, useState, useReducer, useContext } from "react";
 import {
   AudioCard,
-  AddMediaButton,
+  MediaAddButton,
   AudiosTable,
   AudioEditForm,
 } from "@renderer/components";
@@ -228,7 +228,7 @@ export const AudiosComponent = () => {
               onChange={(e) => setQuery(e.target.value)}
             />
 
-            <AddMediaButton type="Audio" />
+            <MediaAddButton type="Audio" />
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="secondary">{t("cleanUp")}</Button>

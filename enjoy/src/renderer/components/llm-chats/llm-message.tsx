@@ -213,11 +213,11 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
             </div>
           </div>
           <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-background border rounded-lg shadow-sm max-w-full">
-            <MarkdownWrapper className="select-text prose dark:prose-invert">
+            <MarkdownWrapper className="select-text max-w-full">
               {llmMessage.response}
             </MarkdownWrapper>
             {translation && (
-              <MarkdownWrapper className="select-text prose dark:prose-invert">
+              <MarkdownWrapper className="select-text max-w-full">
                 {translation}
               </MarkdownWrapper>
             )}

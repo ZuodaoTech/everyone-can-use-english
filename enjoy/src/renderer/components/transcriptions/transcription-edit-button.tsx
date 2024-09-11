@@ -1,4 +1,4 @@
-import { MediaPlayerProviderContext } from "@renderer/context";
+import { MediaShadowProviderContext } from "@renderer/context";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,7 +30,7 @@ export const TranscriptionEditButton = (props: {
   children?: React.ReactNode;
 }) => {
   const { media, transcription, generateTranscription } = useContext(
-    MediaPlayerProviderContext
+    MediaShadowProviderContext
   );
   const [open, setOpen] = useState(false);
   const [submiting, setSubmiting] = useState(false);

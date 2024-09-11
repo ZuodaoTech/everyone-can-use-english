@@ -23,25 +23,14 @@ import { SttEngineOptionEnum } from "@/types/enums";
 const ONE_MINUTE = 60;
 const TEN_MINUTES = 10 * ONE_MINUTE;
 
-type MediaPlayerContextType = {
-  layout: {
-    name: string;
-    width: number;
-    height: number;
-    wrapper: string;
-    upperWrapper: string;
-    lowerWrapper: string;
-    playerWrapper: string;
-    panelWrapper: string;
-    playerHeight: number;
-  };
+type MediaShadowContextType = {
   media: AudioType | VideoType;
   setMedia: (media: AudioType | VideoType) => void;
   setMediaProvider: (mediaProvider: HTMLAudioElement | null) => void;
   waveform: WaveFormDataType;
   // wavesurfer
   wavesurfer: WaveSurfer;
-  setRef: (ref: any) => void;
+  setWaveformContainerRef: (ref: any) => void;
   decoded: boolean;
   decodeError: string;
   setDecodeError: (error: string) => void;
@@ -85,6 +74,7 @@ type MediaPlayerContextType = {
   // Recordings
   startRecording: () => void;
   stopRecording: () => void;
+  cancelRecording: () => void;
   togglePauseResume: () => void;
   recordingBlob: Blob;
   isRecording: boolean;
@@ -109,31 +99,10 @@ type MediaPlayerContextType = {
   setCachedSegmentIndex: (index: number) => void;
 };
 
-export const MediaPlayerProviderContext =
-  createContext<MediaPlayerContextType>(null);
+export const MediaShadowProviderContext =
+  createContext<MediaShadowContextType>(null);
 
-const LAYOUT = {
-  sm: {
-    name: "sm",
-    wrapper: "h-[calc(100vh-3.5rem)]",
-    upperWrapper: "h-[calc(100vh-27.5rem)] min-h-64",
-    lowerWrapper: "h-[23rem]",
-    playerWrapper: "h-[9rem] mb-2",
-    panelWrapper: "h-16 w-full z-10 sticky bottom-0",
-    playerHeight: 128,
-  },
-  lg: {
-    name: "lg",
-    wrapper: "h-[calc(100vh-3.5rem)]",
-    upperWrapper: "h-[calc(100vh-37.5rem)]",
-    lowerWrapper: "h-[33rem]",
-    panelWrapper: "h-20 w-full z-10 sticky bottom-0",
-    playerWrapper: "h-[13rem] mb-4",
-    playerHeight: 192,
-  },
-};
-
-export const MediaPlayerProvider = ({
+export const MediaShadowProvider = ({
   children,
 }: {
   children: React.ReactNode;
@@ -142,18 +111,6 @@ export const MediaPlayerProvider = ({
   const { EnjoyApp, learningLanguage, recorderConfig } = useContext(
     AppSettingsProviderContext
   );
-
-  const [layout, setLayout] = useState<{
-    name: string;
-    width: number;
-    height: number;
-    wrapper: string;
-    upperWrapper: string;
-    lowerWrapper: string;
-    playerWrapper: string;
-    panelWrapper: string;
-    playerHeight: number;
-  }>();
 
   const [media, setMedia] = useState<AudioType | VideoType>(null);
   const [mediaProvider, setMediaProvider] = useState<HTMLAudioElement | null>(
@@ -167,9 +124,9 @@ export const MediaPlayerProvider = ({
   const [editingRegion, setEditingRegion] = useState<boolean>(false);
   const [pitchChart, setPitchChart] = useState<Chart>(null);
 
-  const [ref, setRef] = useState(null);
+  const [waveformContainerRef, setWaveformContainerRef] = useState(null);
 
-  // Player state
+  //  Player state
   const [decoded, setDecoded] = useState<boolean>(false);
   const [decodeError, setDecodeError] = useState<string>(null);
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -179,6 +136,7 @@ export const MediaPlayerProvider = ({
 
   const [currentRecording, setCurrentRecording] = useState<RecordingType>(null);
   const [recordingType, setRecordingType] = useState<string>("segment");
+  const [cancelingRecording, setCancelingRecording] = useState(false);
 
   const [transcriptionDraft, setTranscriptionDraft] =
     useState<TranscriptionType["result"]>();
@@ -191,6 +149,10 @@ export const MediaPlayerProvider = ({
     transcribingOutput,
     abortGenerateTranscription,
   } = useTranscriptions(media);
+
+  const cancelRecording = () => {
+    setCancelingRecording(true);
+  };
 
   const {
     recordings,
@@ -244,14 +206,20 @@ export const MediaPlayerProvider = ({
   });
 
   const initializeWavesurfer = async () => {
-    if (!layout?.playerHeight) return;
     if (!media) return;
     if (!mediaProvider) return;
-    if (!ref?.current) return;
+    if (!waveformContainerRef?.current) return;
+
+    const height =
+      waveformContainerRef.current.getBoundingClientRect().height - 10; // -10 to leave space for scrollbar
+    const container = waveformContainerRef.current.querySelector(
+      ".waveform-container"
+    );
+    if (!container) return;
 
     const ws = WaveSurfer.create({
-      container: ref.current,
-      height: layout.playerHeight,
+      container: container as HTMLElement,
+      height,
       waveColor: "#eaeaea",
       progressColor: "#c0d6df",
       cursorColor: "#ff0054",
@@ -290,6 +258,7 @@ export const MediaPlayerProvider = ({
     if (!region) return;
     if (!waveform?.frequencies?.length) return;
     if (!wavesurfer) return;
+    if (!waveformContainerRef?.current) return;
 
     const caption = transcription?.result?.timeline?.[currentSegmentIndex];
     if (!caption) return;
@@ -304,6 +273,8 @@ export const MediaPlayerProvider = ({
     );
 
     const wrapper = (wavesurfer as any).renderer.getWrapper();
+    if (!wrapper) return;
+
     // remove existing pitch contour
     if (repaint) {
       wrapper
@@ -315,6 +286,7 @@ export const MediaPlayerProvider = ({
 
     // calculate offset and width
     const wrapperWidth = wrapper.getBoundingClientRect().width;
+    const height = waveformContainerRef.current.getBoundingClientRect().height;
     const offsetLeft = (region.start / duration) * wrapperWidth;
     const width = ((region.end - region.start) / duration) * wrapperWidth;
 
@@ -324,7 +296,7 @@ export const MediaPlayerProvider = ({
     const canvasId = options?.canvasId || `pitch-contour-${region.id}-canvas`;
     canvas.id = canvasId;
     canvas.style.width = `${width}px`;
-    canvas.style.height = `${layout.playerHeight}px`;
+    canvas.style.height = `${height}px`;
     pitchContourWidthContainer.appendChild(canvas);
 
     pitchContourWidthContainer.style.position = "absolute";
@@ -332,7 +304,7 @@ export const MediaPlayerProvider = ({
     pitchContourWidthContainer.style.left = "0";
 
     pitchContourWidthContainer.style.width = `${width}px`;
-    pitchContourWidthContainer.style.height = `${layout.playerHeight}px`;
+    pitchContourWidthContainer.style.height = `${height}px`;
     pitchContourWidthContainer.style.marginLeft = `${offsetLeft}px`;
     pitchContourWidthContainer.classList.add(
       "pitch-contour",
@@ -446,25 +418,11 @@ export const MediaPlayerProvider = ({
     );
   };
 
-  const calculateHeight = () => {
-    if (window.innerHeight <= 1080) {
-      setLayout({
-        ...LAYOUT.sm,
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    } else {
-      setLayout({
-        ...LAYOUT.lg,
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
+  const onRecorded = async (blob: Blob) => {
+    if (cancelingRecording) {
+      setCancelingRecording(false);
+      return;
     }
-  };
-
-  const deboundeCalculateHeight = debounce(calculateHeight, 100);
-
-  const createRecording = async (blob: Blob) => {
     if (!blob) return;
     if (!media) return;
     if (!transcription?.result?.timeline) return;
@@ -555,12 +513,13 @@ export const MediaPlayerProvider = ({
    * update fitZoomRatio when currentSegmentIndex is updated
    */
   useEffect(() => {
-    if (!ref?.current) return;
+    if (!waveformContainerRef?.current) return;
     if (!wavesurfer) return;
 
     if (!activeRegion) return;
 
-    const containerWidth = ref.current.getBoundingClientRect().width;
+    const containerWidth =
+      waveformContainerRef.current.getBoundingClientRect().width;
     const duration = activeRegion.end - activeRegion.start;
     if (activeRegion.id.startsWith("word-region")) {
       setFitZoomRatio(containerWidth / 3 / duration / minPxPerSec);
@@ -571,7 +530,7 @@ export const MediaPlayerProvider = ({
     return () => {
       setFitZoomRatio(1.0);
     };
-  }, [ref, wavesurfer, activeRegion]);
+  }, [waveformContainerRef, wavesurfer, activeRegion]);
 
   /*
    * Zoom chart when zoomRatio update
@@ -628,7 +587,7 @@ export const MediaPlayerProvider = ({
       setDecoded(false);
       setDecodeError(null);
     };
-  }, [media?.src, ref?.current, mediaProvider, layout?.playerHeight]);
+  }, [media?.src, waveformContainerRef?.current, mediaProvider]);
 
   /* cache last segment index */
   useEffect(() => {
@@ -639,18 +598,10 @@ export const MediaPlayerProvider = ({
   }, [currentSegmentIndex]);
 
   /*
-   * Update layout when window is resized
    * Abort transcription when component is unmounted
    */
   useEffect(() => {
-    calculateHeight();
-
-    EnjoyApp.window.onResize(() => {
-      deboundeCalculateHeight();
-    });
-
     return () => {
-      EnjoyApp.window.removeListeners();
       abortGenerateTranscription();
     };
   }, []);
@@ -659,8 +610,14 @@ export const MediaPlayerProvider = ({
    * create recording when recordingBlob is updated
    */
   useEffect(() => {
-    createRecording(recordingBlob);
+    onRecorded(recordingBlob);
   }, [recordingBlob]);
+
+  useEffect(() => {
+    if (cancelingRecording) {
+      stopRecording();
+    }
+  }, [cancelingRecording]);
 
   /**
    * auto stop recording when recording time is over
@@ -677,14 +634,13 @@ export const MediaPlayerProvider = ({
 
   return (
     <>
-      <MediaPlayerProviderContext.Provider
+      <MediaShadowProviderContext.Provider
         value={{
-          layout,
           media,
           setMedia,
           setMediaProvider,
           wavesurfer,
-          setRef,
+          setWaveformContainerRef,
           decoded,
           decodeError,
           setDecodeError,
@@ -712,6 +668,7 @@ export const MediaPlayerProvider = ({
           setTranscriptionDraft,
           startRecording,
           stopRecording,
+          cancelRecording,
           togglePauseResume,
           recordingBlob,
           isRecording,
@@ -735,8 +692,8 @@ export const MediaPlayerProvider = ({
         }}
       >
         {children}
-      </MediaPlayerProviderContext.Provider>
-      <Tooltip className="z-10" id="media-player-tooltip" />
+      </MediaShadowProviderContext.Provider>
+      <Tooltip className="z-10" id="media-shadow-tooltip" />
     </>
   );
 };

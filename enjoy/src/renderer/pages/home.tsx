@@ -22,12 +22,14 @@ export default () => {
   const { webApi } = useContext(AppSettingsProviderContext);
 
   useEffect(() => {
+    if (!webApi) return;
+
     webApi.config("ytb_channels").then((channels) => {
       if (!channels) return;
 
       setChannels(channels);
     });
-  }, []);
+  }, [webApi]);
 
   return (
     <div className="relative">

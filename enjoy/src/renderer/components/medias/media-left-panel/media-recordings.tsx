@@ -19,7 +19,7 @@ import {
 import {
   AppSettingsProviderContext,
   HotKeysSettingsProviderContext,
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
 } from "@renderer/context";
 import {
   GaugeCircleIcon,
@@ -45,7 +45,7 @@ export const MediaRecordings = () => {
     currentSegmentIndex,
     transcription,
     media,
-  } = useContext(MediaPlayerProviderContext);
+  } = useContext(MediaShadowProviderContext);
 
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [selectedRecording, setSelectedRecording] = useState(null);

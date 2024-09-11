@@ -1,15 +1,7 @@
 import { useEffect, useContext } from "react";
-import { MediaPlayerProviderContext } from "@renderer/context";
-import {
-  MediaLoadingModal,
-  MediaCaption,
-  MediaPlayerControls,
-  MediaTabs,
-  MediaCurrentRecording,
-  MediaPlayer,
-  LoaderSpin,
-} from "@renderer/components";
+import { MediaShadowProviderContext } from "@renderer/context";
 import { useAudio } from "@renderer/hooks";
+import { MediaShadowPlayer } from "@renderer/components";
 
 export const AudioPlayer = (props: {
   id?: string;
@@ -17,13 +9,8 @@ export const AudioPlayer = (props: {
   segmentIndex?: number;
 }) => {
   const { id, md5, segmentIndex } = props;
-  const {
-    media,
-    setMedia,
-    layout,
-    setCurrentSegmentIndex,
-    getCachedSegmentIndex,
-  } = useContext(MediaPlayerProviderContext);
+  const { media, setMedia, setCurrentSegmentIndex, getCachedSegmentIndex } =
+    useContext(MediaShadowProviderContext);
 
   const { audio } = useAudio({ id, md5 });
 
@@ -46,38 +33,10 @@ export const AudioPlayer = (props: {
   }, [media?.id]);
 
   if (!audio) return null;
-  if (!layout) return <LoaderSpin />;
 
   return (
-    <div data-testid="audio-player" className={layout.wrapper}>
-      <div className={`${layout.upperWrapper} mb-4`}>
-        <div className="grid grid-cols-5 xl:grid-cols-3 gap-3 xl:gap-6 px-3 xl:px-6 h-full">
-          <div
-            className={`col-span-2 xl:col-span-1 rounded-lg border shadow-lg ${layout.upperWrapper}`}
-          >
-            <MediaTabs />
-          </div>
-          <div className={`col-span-3 xl:col-span-2 ${layout.upperWrapper}`}>
-            <MediaCaption />
-          </div>
-        </div>
-      </div>
-
-      <div className={`flex flex-col`}>
-        <div className={`${layout.playerWrapper} py-2 px-3 xl:px-6`}>
-          <MediaCurrentRecording />
-        </div>
-
-        <div className={`${layout.playerWrapper} py-2 px-3 xl:px-6`}>
-          <MediaPlayer />
-        </div>
-
-        <div className={`${layout.panelWrapper} bg-background shadow-xl`}>
-          <MediaPlayerControls />
-        </div>
-      </div>
-
-      <MediaLoadingModal />
+    <div className="h-full" data-testid="audio-player">
+      <MediaShadowPlayer />
     </div>
   );
 };

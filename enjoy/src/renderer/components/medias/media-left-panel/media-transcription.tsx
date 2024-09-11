@@ -2,7 +2,7 @@ import { useEffect, useContext, useRef, useState } from "react";
 import {
   AppSettingsProviderContext,
   DbProviderContext,
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
 } from "@renderer/context";
 import { t } from "i18next";
 import {
@@ -43,7 +43,7 @@ export const MediaTranscription = (props: { display?: boolean }) => {
     transcription,
     transcribing,
     transcribingProgress,
-  } = useContext(MediaPlayerProviderContext);
+  } = useContext(MediaShadowProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
 
@@ -109,7 +109,7 @@ export const MediaTranscription = (props: { display?: boolean }) => {
 
   return (
     <div ref={containerRef} data-testid="media-transcription-result">
-      <div className="px-4 py-1 bg-background">
+      <div className="px-4 py-0.5 bg-background">
         <div className="flex items-cener justify-between">
           <div className="flex items-center space-x-2">
             {transcribing || transcription.state === "processing" ? (
@@ -179,7 +179,7 @@ export const MediaTranscription = (props: { display?: boolean }) => {
           <div
             key={index}
             id={`segment-${index}`}
-            className={`py-2 px-4 cursor-pointer hover:bg-yellow-400/10 ${
+            className={`py-1.5 px-4 cursor-pointer hover:bg-yellow-400/10 ${
               currentSegmentIndex === index ? "bg-yellow-400/25" : ""
             }`}
             onClick={() => {
@@ -204,7 +204,7 @@ export const MediaTranscription = (props: { display?: boolean }) => {
               </div>
             </div>
 
-            <Sentence sentence={sentence.text} />
+            <Sentence className="font-serif" sentence={sentence.text} />
           </div>
         )
       )}

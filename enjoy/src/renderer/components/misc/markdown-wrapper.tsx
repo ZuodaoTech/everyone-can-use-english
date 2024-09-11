@@ -1,6 +1,7 @@
 import Markdown from "react-markdown";
 import { visitParents } from "unist-util-visit-parents";
 import { Sentence } from "@renderer/components";
+import { cn } from "@renderer/lib/utils";
 
 function rehypeWrapText() {
   return function wrapTextTransform(tree: any) {
@@ -27,7 +28,7 @@ export const MarkdownWrapper = ({
 }) => {
   return (
     <Markdown
-      className={className}
+      className={cn("prose dark:prose-invert", className)}
       rehypePlugins={[rehypeWrapText]}
       components={{
         a({ node, children, ...props }) {

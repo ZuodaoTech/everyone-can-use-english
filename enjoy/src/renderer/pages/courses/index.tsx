@@ -32,6 +32,7 @@ const CoursesList = () => {
 
   const fetchCourses = async () => {
     if (loading) return;
+    if (!webApi) return;
 
     webApi
       .courses({ page: nextPage, language: learningLanguage })

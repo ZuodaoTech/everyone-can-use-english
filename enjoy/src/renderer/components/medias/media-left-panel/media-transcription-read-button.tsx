@@ -1,6 +1,6 @@
 import {
   AppSettingsProviderContext,
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
 } from "@renderer/context";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -45,7 +45,7 @@ import {
 import { useRecordings } from "@renderer/hooks";
 import { formatDateTime } from "@renderer/lib/utils";
 import {
-  Caption,
+  MediaCaption,
   RecordingDetail,
   WavesurferPlayer,
 } from "@renderer/components";
@@ -56,7 +56,7 @@ export const MediaTranscriptionReadButton = (props: {
 }) => {
   const [open, setOpen] = useState(false);
   const { media, transcription, setRecordingType } = useContext(
-    MediaPlayerProviderContext
+    MediaShadowProviderContext
   );
 
   useEffect(() => {
@@ -94,7 +94,7 @@ export const MediaTranscriptionReadButton = (props: {
                       <span className="text-sm text-muted-foreground min-w-max leading-8">
                         #{index + 1}
                       </span>
-                      <Caption
+                      <MediaCaption
                         caption={sentence}
                         currentSegmentIndex={index}
                         displayIpa={true}
@@ -118,7 +118,7 @@ export const MediaTranscriptionReadButton = (props: {
 const TranscriptionRecordingsList = () => {
   const [deleting, setDeleting] = useState<RecordingType>(null);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { media } = useContext(MediaPlayerProviderContext);
+  const { media } = useContext(MediaShadowProviderContext);
   const [assessing, setAssessing] = useState<RecordingType>();
 
   const handleDelete = () => {
@@ -294,7 +294,7 @@ const RecorderButton = () => {
     stopRecording,
     mediaRecorder,
     recordingTime,
-  } = useContext(MediaPlayerProviderContext);
+  } = useContext(MediaShadowProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [access, setAccess] = useState<boolean>(false);
 

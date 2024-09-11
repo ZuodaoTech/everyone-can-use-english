@@ -51,6 +51,7 @@ export const ChatInput = () => {
     isPaused,
     askAgent,
     onCreateMessage,
+    shadowing,
   } = useContext(ChatSessionProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -96,6 +97,7 @@ export const ChatInput = () => {
   useHotkeys(
     currentHotkeys.StartOrStopRecording,
     () => {
+      if (shadowing) return;
       if (isRecording) {
         stopRecording();
       } else {
@@ -107,9 +109,16 @@ export const ChatInput = () => {
     }
   );
 
-  useHotkeys(currentHotkeys.PlayNextSegment, () => askAgent(), {
-    preventDefault: true,
-  });
+  useHotkeys(
+    currentHotkeys.PlayNextSegment,
+    () => {
+      if (shadowing) return;
+      askAgent();
+    },
+    {
+      preventDefault: true,
+    }
+  );
 
   if (isRecording) {
     return (

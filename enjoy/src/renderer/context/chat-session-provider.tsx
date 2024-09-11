@@ -4,7 +4,7 @@ import { useAudioRecorder } from "react-audio-voice-recorder";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
-  MediaPlayerProvider,
+  MediaShadowProvider,
 } from "@renderer/context";
 import {
   AlertDialog,
@@ -348,7 +348,7 @@ export const ChatSessionProvider = ({
         onUpdateMessage,
       }}
     >
-      <MediaPlayerProvider>
+      <MediaShadowProvider>
         {children}
 
         <AlertDialog
@@ -384,12 +384,12 @@ export const ChatSessionProvider = ({
         >
           <SheetContent
             side="bottom"
-            className="h-screen p-0"
+            className="h-screen p-0 flex flex-col"
             displayClose={false}
             onPointerDownOutside={(event) => event.preventDefault()}
             onInteractOutside={(event) => event.preventDefault()}
           >
-            <SheetHeader className="flex items-center justify-center h-14">
+            <SheetHeader className="flex items-center justify-center h-12">
               <SheetTitle className="sr-only">Shadow</SheetTitle>
               <SheetDescription className="sr-only"></SheetDescription>
               <SheetClose>
@@ -428,7 +428,7 @@ export const ChatSessionProvider = ({
             )}
           </SheetContent>
         </Sheet>
-      </MediaPlayerProvider>
+      </MediaShadowProvider>
     </ChatSessionProviderContext.Provider>
   );
 };

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import {
   AppSettingsProviderContext,
-  MediaPlayerProviderContext,
+  MediaShadowProviderContext,
   DictProviderContext,
 } from "@renderer/context";
 import { TabsContent, Separator } from "@renderer/components/ui";
@@ -19,7 +19,7 @@ import {
 /*
  * Translation tab content.
  */
-export function MediaTabContentTranslation(props: {
+export function MediaCaptionTranslation(props: {
   caption: TimelineEntry;
   selectedIndices: number[];
 }) {
@@ -44,7 +44,7 @@ const SelectedWords = (props: {
   const { selectedIndices, caption } = props;
 
   const { currentDictValue } = useContext(DictProviderContext);
-  const { transcription } = useContext(MediaPlayerProviderContext);
+  const { transcription } = useContext(MediaShadowProviderContext);
   const { learningLanguage, ipaMappings } = useContext(
     AppSettingsProviderContext
   );
