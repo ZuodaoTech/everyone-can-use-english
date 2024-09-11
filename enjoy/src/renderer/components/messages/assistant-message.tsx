@@ -297,12 +297,12 @@ export const AssistantMessageComponent = (props: {
         <SheetContent
           aria-describedby={undefined}
           side="bottom"
-          className="h-screen p-0"
+          className="h-screen p-0 flex flex-col"
           displayClose={false}
           onPointerDownOutside={(event) => event.preventDefault()}
           onInteractOutside={(event) => event.preventDefault()}
         >
-          <SheetHeader className="flex items-center justify-center h-14">
+          <SheetHeader className="flex items-center justify-center h-12">
             <SheetTitle className="sr-only">{t("shadow")}</SheetTitle>
             <SheetClose>
               <ChevronDownIcon />

@@ -258,6 +258,7 @@ export const MediaShadowProvider = ({
     if (!region) return;
     if (!waveform?.frequencies?.length) return;
     if (!wavesurfer) return;
+    if (!waveformContainerRef?.current) return;
 
     const caption = transcription?.result?.timeline?.[currentSegmentIndex];
     if (!caption) return;
@@ -272,6 +273,8 @@ export const MediaShadowProvider = ({
     );
 
     const wrapper = (wavesurfer as any).renderer.getWrapper();
+    if (!wrapper) return;
+
     // remove existing pitch contour
     if (repaint) {
       wrapper
