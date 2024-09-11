@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { MediaShadowProviderContext } from "@renderer/context";
 import {
   AlertDialog,
@@ -32,10 +32,6 @@ export const MediaLoadingModal = () => {
     transcribingOutput,
     generateTranscription,
   } = useContext(MediaShadowProviderContext);
-
-  useEffect(() => {
-    console.log("decoded", decoded);
-  }, [decoded]);
 
   return (
     <AlertDialog open={!decoded || !Boolean(transcription?.result?.timeline)}>

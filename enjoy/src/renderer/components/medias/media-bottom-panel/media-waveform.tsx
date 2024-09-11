@@ -38,10 +38,9 @@ const ZOOM_RATIO_OPTIONS = [
 ];
 const MIN_ZOOM_RATIO = 0.25;
 const MAX_ZOOM_RATIO = 4.0;
-const ACTION_BUTTON_HEIGHT = 30;
+const ACTION_BUTTON_HEIGHT = 35;
 
-export const MediaWaveform = (props: { layout?: number[] }) => {
-  const { layout } = props;
+export const MediaWaveform = () => {
   const { EnjoyApp, webApi } = useContext(AppSettingsProviderContext);
   const {
     media,
@@ -103,7 +102,6 @@ export const MediaWaveform = (props: { layout?: number[] }) => {
     }
 
     setActionButtonsCount(Math.floor(size.height / ACTION_BUTTON_HEIGHT));
-    console.log("actionButtonsCount", actionButtonsCount);
   };
 
   const debouncedCalContainerSize = debounce(calContainerSize, 100);

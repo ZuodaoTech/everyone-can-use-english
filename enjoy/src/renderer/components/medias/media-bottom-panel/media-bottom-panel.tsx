@@ -14,7 +14,7 @@ export const MediaBottomPanel = (props: { layout?: number[] }) => {
           <MediaCurrentRecording />
         </div>
         <div className="flex-1 overflow-hidden px-4 py-2">
-          <MediaWaveform layout={layout} />
+          <MediaWaveform />
         </div>
       </div>
 

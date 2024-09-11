@@ -200,12 +200,6 @@ export const MediaShadowProvider = ({
   });
 
   const initializeWavesurfer = async () => {
-    console.log(
-      "initializeWavesurfer",
-      media,
-      mediaProvider,
-      waveformContainerRef
-    );
     if (!media) return;
     if (!mediaProvider) return;
     if (!waveformContainerRef?.current) return;
