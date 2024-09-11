@@ -94,12 +94,21 @@ export default withMermaid(
             link: "/sounds-of-american-english/0-intro",
             collapsed: true,
             items: [
-              {
-                text: "1. 音素音标",
-                link: "/sounds-of-american-english/1-phonemes",
+              { text: "1. 基础",
+                link: "/sounds-of-american-english/1-basics",
+                items: [
+                  {
+                    text: "1.1. 音素音标",
+                    link: "/sounds-of-american-english/1.1-phonemes",
+                  },
+                  {
+                    text: "1.2. 英文字母",
+                    link: "/sounds-of-american-english/1.2-alphabets",
+                  },                  
+                ]
               },
               {
-                text: "2. 发声器官",
+                    text: "2. 发声器官",
                 link: "/sounds-of-american-english/2-articulators",
               },
               {
