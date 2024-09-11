@@ -60,8 +60,10 @@ export const MediaLeftPanel = () => {
       </TabsList>
 
       <ScrollArea className="flex-1 relative">
-        <TabsContent value="provider">
-          <MediaProvider />
+        <TabsContent forceMount={true} value="provider">
+          <div className={`${tab === "provider" ? "block" : "hidden"}`}>
+            <MediaProvider />
+          </div>
         </TabsContent>
         <TabsContent value="recordings">
           <MediaRecordings />

@@ -35,7 +35,7 @@ export const VideoPlayer = (props: {
   if (!video) return null;
 
   return (
-    <div data-testid="video-player">
+    <div className="h-full" data-testid="video-player">
       <MediaShadowPlayer />
     </div>
   );

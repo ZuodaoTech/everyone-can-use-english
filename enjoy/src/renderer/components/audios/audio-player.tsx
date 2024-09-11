@@ -35,7 +35,7 @@ export const AudioPlayer = (props: {
   if (!audio) return null;
 
   return (
-    <div data-testid="audio-player">
+    <div className="h-full" data-testid="audio-player">
       <MediaShadowPlayer />
     </div>
   );
