@@ -28,11 +28,7 @@ export const MediaLeftPanel = () => {
   if (!media) return null;
 
   return (
-    <Tabs
-      value={tab}
-      onValueChange={(value) => setTab(value)}
-      className="h-full flex flex-col"
-    >
+    <Tabs value={tab} onValueChange={setTab} className="h-full flex flex-col">
       <TabsList
         className={`grid gap-4 rounded-none w-full px-4 ${
           media?.mediaType === "Video" ? "grid-cols-4" : "grid-cols-3"
@@ -64,10 +60,8 @@ export const MediaLeftPanel = () => {
       </TabsList>
 
       <ScrollArea className="flex-1 relative">
-        <TabsContent forceMount={true} value="provider">
-          <div className={`${tab === "provider" ? "block" : "hidden"}`}>
-            <MediaProvider />
-          </div>
+        <TabsContent value="provider">
+          <MediaProvider />
         </TabsContent>
         <TabsContent value="recordings">
           <MediaRecordings />

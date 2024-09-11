@@ -200,6 +200,12 @@ export const MediaShadowProvider = ({
   });
 
   const initializeWavesurfer = async () => {
+    console.log(
+      "initializeWavesurfer",
+      media,
+      mediaProvider,
+      waveformContainerRef
+    );
     if (!media) return;
     if (!mediaProvider) return;
     if (!waveformContainerRef?.current) return;
@@ -671,7 +677,7 @@ export const MediaShadowProvider = ({
       >
         {children}
       </MediaShadowProviderContext.Provider>
-      <Tooltip className="z-10" id="media-player-tooltip" />
+      <Tooltip className="z-10" id="media-shadow-tooltip" />
     </>
   );
 };

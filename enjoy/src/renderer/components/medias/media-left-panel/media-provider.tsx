@@ -63,7 +63,7 @@ export const MediaProvider = () => {
   if (!media?.src) return null;
 
   return (
-    <div className="px-2 py-4" data-testid="media-player">
+    <div className="px-2 py-4">
       <VidstackMediaPlayer
         ref={player}
         className="my-auto"

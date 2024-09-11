@@ -174,7 +174,7 @@ export const MediaWaveform = (props: { layout?: number[] }) => {
       <div className="flex flex-col border-l">
         <Button
           variant={`${zoomRatio === fitZoomRatio ? "secondary" : "ghost"}`}
-          data-tooltip-id="media-player-tooltip"
+          data-tooltip-id="media-shadow-tooltip"
           data-tooltip-content={t("zoomToFit")}
           className="relative p-0 w-8 h-6 rounded-none rounded-tr-lg"
           onClick={() => {
@@ -190,7 +190,7 @@ export const MediaWaveform = (props: { layout?: number[] }) => {
 
         <Button
           variant={`${zoomRatio > 1.0 ? "secondary" : "ghost"}`}
-          data-tooltip-id="media-player-tooltip"
+          data-tooltip-id="media-shadow-tooltip"
           data-tooltip-content={t("zoomIn")}
           className="relative aspect-square rounded-none p-0 w-8 h-6"
           onClick={() => {
@@ -207,7 +207,7 @@ export const MediaWaveform = (props: { layout?: number[] }) => {
 
         <Button
           variant={`${zoomRatio < 1.0 ? "secondary" : "ghost"}`}
-          data-tooltip-id="media-player-tooltip"
+          data-tooltip-id="media-shadow-tooltip"
           data-tooltip-content={t("zoomOut")}
           className="relative aspect-square rounded-none p-0 w-8 h-6"
           onClick={() => {
@@ -224,7 +224,7 @@ export const MediaWaveform = (props: { layout?: number[] }) => {
 
         <Button
           variant={`${displayInlineCaption ? "secondary" : "ghost"}`}
-          data-tooltip-id="media-player-tooltip"
+          data-tooltip-id="media-shadow-tooltip"
           data-tooltip-content={t("inlineCaption")}
           className="relative aspect-square rounded-none p-0 w-8 h-6"
           onClick={() => {
@@ -243,7 +243,7 @@ export const MediaWaveform = (props: { layout?: number[] }) => {
             <Button
               variant="ghost"
               size="icon"
-              data-tooltip-id="media-player-tooltip"
+              data-tooltip-id="media-shadow-tooltip"
               data-tooltip-content={t("more")}
               className="rounded-none rounded-br-lg w-8 h-6 p-0"
             >

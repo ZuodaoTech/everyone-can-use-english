@@ -529,7 +529,7 @@ export const MediaPlayerControls = () => {
           <PopoverTrigger asChild>
             <Button
               variant={`${playbackRate == 1.0 ? "ghost" : "secondary"}`}
-              data-tooltip-id="media-player-tooltip"
+              data-tooltip-id="media-shadow-tooltip"
               data-tooltip-content={t("playbackSpeed")}
               className="relative aspect-square p-0 h-8"
             >
@@ -572,7 +572,7 @@ export const MediaPlayerControls = () => {
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              data-tooltip-id="media-player-tooltip"
+              data-tooltip-id="media-shadow-tooltip"
               data-tooltip-content={t("switchPlayMode")}
               className="aspect-square p-0 h-8"
             >
@@ -611,7 +611,7 @@ export const MediaPlayerControls = () => {
           size="lg"
           onClick={onPrev}
           id="media-play-previous-button"
-          data-tooltip-id="media-player-tooltip"
+          data-tooltip-id="media-shadow-tooltip"
           data-tooltip-content={t("playPreviousSegment")}
           className="aspect-square p-0 h-8"
         >
@@ -623,7 +623,7 @@ export const MediaPlayerControls = () => {
             variant="default"
             onClick={debouncedPlayOrPause}
             id="media-play-or-pause-button"
-            data-tooltip-id="media-player-tooltip"
+            data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("pause")}
             className="aspect-square p-0 h-10 rounded-full"
           >
@@ -634,7 +634,7 @@ export const MediaPlayerControls = () => {
             variant="default"
             onClick={debouncedPlayOrPause}
             id="media-play-or-pause-button"
-            data-tooltip-id="media-player-tooltip"
+            data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("play")}
             className="aspect-square p-0 h-10 rounded-full"
           >
@@ -647,7 +647,7 @@ export const MediaPlayerControls = () => {
           size="lg"
           onClick={onNext}
           id="media-play-next-button"
-          data-tooltip-id="media-player-tooltip"
+          data-tooltip-id="media-shadow-tooltip"
           data-tooltip-content={t("playNextSegment")}
           className="aspect-square p-0 h-8"
         >
@@ -657,7 +657,7 @@ export const MediaPlayerControls = () => {
         <Button
           variant={grouping ? "secondary" : "ghost"}
           size="icon"
-          data-tooltip-id="media-player-tooltip"
+          data-tooltip-id="media-shadow-tooltip"
           data-tooltip-content={t("autoGroup")}
           className="relative aspect-square p-0 h-8"
           onClick={() => setGrouping(!grouping)}
@@ -668,7 +668,7 @@ export const MediaPlayerControls = () => {
         <div className="relative">
           <Button
             variant={`${editingRegion ? "secondary" : "ghost"}`}
-            data-tooltip-id="media-player-tooltip"
+            data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={
               editingRegion ? t("dragRegionBorderToEdit") : t("editRegion")
             }
@@ -685,7 +685,7 @@ export const MediaPlayerControls = () => {
               <Button
                 variant="secondary"
                 className="relative aspect-square p-0 h-8"
-                data-tooltip-id="media-player-tooltip"
+                data-tooltip-id="media-shadow-tooltip"
                 data-tooltip-content={t("cancel")}
                 onClick={() => {
                   setEditingRegion(false);
@@ -697,7 +697,7 @@ export const MediaPlayerControls = () => {
               <Button
                 variant="default"
                 className="relative aspect-square p-0 h-8"
-                data-tooltip-id="media-player-tooltip"
+                data-tooltip-id="media-shadow-tooltip"
                 data-tooltip-content={t("save")}
                 onClick={() => {
                   if (!transcriptionDraft) return;

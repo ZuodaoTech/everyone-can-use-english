@@ -121,7 +121,7 @@ const AIButton = (props: {
       title={tooltip}
       trigger={
         <Button
-          data-tooltip-id="media-player-tooltip"
+          data-tooltip-id="media-shadow-tooltip"
           data-tooltip-content={tooltip}
           variant="outline"
           size="sm"

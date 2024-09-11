@@ -171,7 +171,7 @@ export const MediaCaptionActions = (props: {
             variant={displayIpa ? "secondary" : "outline"}
             size="icon"
             className="rounded-full w-8 h-8 p-0"
-            data-tooltip-id="media-player-tooltip"
+            data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("displayIpa")}
             onClick={() => setDisplayIpa(!displayIpa)}
           >
@@ -182,7 +182,7 @@ export const MediaCaptionActions = (props: {
             variant={displayNotes ? "secondary" : "outline"}
             size="icon"
             className="rounded-full w-8 h-8 p-0"
-            data-tooltip-id="media-player-tooltip"
+            data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("displayNotes")}
             onClick={() => setDisplayNotes(!displayNotes)}
           >
@@ -193,7 +193,7 @@ export const MediaCaptionActions = (props: {
             prompt={caption.text as string}
             trigger={
               <Button
-                data-tooltip-id="media-player-tooltip"
+                data-tooltip-id="media-shadow-tooltip"
                 data-tooltip-content={t("sendToAIAssistant")}
                 variant="outline"
                 size="sm"
@@ -208,7 +208,7 @@ export const MediaCaptionActions = (props: {
             variant="outline"
             size="icon"
             className="rounded-full w-8 h-8 p-0"
-            data-tooltip-id="media-player-tooltip"
+            data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("copyText")}
             onClick={() => {
               if (displayIpa) {
@@ -243,7 +243,7 @@ export const MediaCaptionActions = (props: {
               <CheckIcon className="w-4 h-4 text-green-500" />
             ) : (
               <CopyIcon
-                data-tooltip-id="media-player-tooltip"
+                data-tooltip-id="media-shadow-tooltip"
                 data-tooltip-content={t("copyText")}
                 className="w-4 h-4"
               />
@@ -254,7 +254,7 @@ export const MediaCaptionActions = (props: {
             variant="outline"
             size="icon"
             className="rounded-full w-8 h-8 p-0"
-            data-tooltip-id="media-player-tooltip"
+            data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("downloadSegment")}
             onClick={handleDownload}
           >

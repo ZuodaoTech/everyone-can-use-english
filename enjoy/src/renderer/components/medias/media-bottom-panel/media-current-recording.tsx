@@ -444,7 +444,7 @@ export const MediaCurrentRecording = () => {
   if (isRecording || isPaused) {
     return (
       <div className="h-full w-full flex items-center space-x-4">
-        <div className="flex-1 h-full border rounded-xl shadow-lg relative">
+        <div className="flex-1 h-full relative">
           <div className="w-full h-full flex justify-center items-center gap-4">
             <LiveAudioVisualizer
               mediaRecorder={mediaRecorder}
@@ -511,7 +511,7 @@ export const MediaCurrentRecording = () => {
           variant="default"
           size="icon"
           id="recording-play-or-pause-button"
-          data-tooltip-id="media-player-tooltip"
+          data-tooltip-id="media-shadow-tooltip"
           data-tooltip-content={t("playRecording")}
           className="rounded-full w-8 h-8 p-0"
           onClick={() => {
@@ -539,7 +539,7 @@ export const MediaCurrentRecording = () => {
           variant={detailIsOpen ? "secondary" : "outline"}
           size="icon"
           id="media-pronunciation-assessment-button"
-          data-tooltip-id="media-player-tooltip"
+          data-tooltip-id="media-shadow-tooltip"
           data-tooltip-content={t("pronunciationAssessment")}
           className="rounded-full w-8 h-8 p-0"
           onClick={() => setDetailIsOpen(true)}
@@ -565,7 +565,7 @@ export const MediaCurrentRecording = () => {
           variant={isComparing ? "secondary" : "outline"}
           size="icon"
           id="media-compare-button"
-          data-tooltip-id="media-player-tooltip"
+          data-tooltip-id="media-shadow-tooltip"
           data-tooltip-content={t("compare")}
           className="rounded-full w-8 h-8 p-0"
           onClick={toggleCompare}
@@ -578,7 +578,7 @@ export const MediaCurrentRecording = () => {
             <Button
               variant="outline"
               size="icon"
-              data-tooltip-id="media-player-tooltip"
+              data-tooltip-id="media-shadow-tooltip"
               data-tooltip-content={t("more")}
               className="rounded-full w-8 h-8 p-0"
             >
@@ -720,7 +720,7 @@ export const MediaRecordButton = () => {
         }
       }}
       id="media-record-button"
-      data-tooltip-id="media-player-tooltip"
+      data-tooltip-id="media-shadow-tooltip"
       data-tooltip-content={
         isRecording ? t("stopRecording") : t("startRecording")
       }
