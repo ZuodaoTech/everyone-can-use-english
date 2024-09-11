@@ -472,11 +472,19 @@ export const MediaCurrentRecording = () => {
 
   const Actions = [
     {
+      id: "recording-record-button-wrapper",
+      name: "record",
+      label: t("record"),
+      icon: MediaRecordButton,
+      active: isRecording,
+      onClick: () => {},
+    },
+    {
       id: "recording-play-or-pause-button",
       name: "playOrPause",
       label: t("playRecording"),
       icon: player?.isPlaying() ? PauseIcon : PlayIcon,
-      variant: "default",
+      active: player?.isPlaying(),
       onClick: () => {
         const region = regions
           ?.getRegions()
@@ -490,18 +498,11 @@ export const MediaCurrentRecording = () => {
       },
     },
     {
-      id: "recording-record-button-wrapper",
-      name: "record",
-      label: t("record"),
-      icon: MediaRecordButton,
-      variant: "ghost",
-      onClick: () => {},
-    },
-    {
       id: "media-pronunciation-assessment-button",
       name: "pronunciationAssessment",
       label: t("pronunciationAssessment"),
       icon: GaugeCircleIcon,
+      active: detailIsOpen,
       iconClassName: currentRecording?.pronunciationAssessment
         ? currentRecording?.pronunciationAssessment.pronunciationScore >= 80
           ? "text-green-500"
@@ -509,7 +510,6 @@ export const MediaCurrentRecording = () => {
           ? "text-yellow-600"
           : "text-red-500"
         : "",
-      variant: detailIsOpen ? "secondary" : "ghost",
       onClick: () => setDetailIsOpen(!detailIsOpen),
     },
     {
@@ -517,7 +517,7 @@ export const MediaCurrentRecording = () => {
       name: "compare",
       label: t("compare"),
       icon: GitCompareIcon,
-      variant: isComparing ? "secondary" : "ghost",
+      active: isComparing,
       onClick: toggleCompare,
     },
     {
@@ -525,7 +525,7 @@ export const MediaCurrentRecording = () => {
       name: "selectRegion",
       label: t("selectRegion"),
       icon: TextCursorInputIcon,
-      variant: isSelectingRegion ? "secondary" : "ghost",
+      active: isSelectingRegion,
       onClick: () => setIsSelectingRegion(!isSelectingRegion),
     },
     {
@@ -533,7 +533,7 @@ export const MediaCurrentRecording = () => {
       name: "share",
       label: t("share"),
       icon: Share2Icon,
-      variant: isSharing ? "secondary" : "ghost",
+      active: isSharing,
       onClick: () => setIsSharing(true),
     },
     {
@@ -541,7 +541,7 @@ export const MediaCurrentRecording = () => {
       name: "download",
       label: t("download"),
       icon: DownloadIcon,
-      variant: "ghost",
+      active: false,
       onClick: handleDownload,
     },
   ];
@@ -668,7 +668,7 @@ export const MediaCurrentRecording = () => {
           <Button
             key={action.name}
             id={action.id}
-            variant={action.variant as any}
+            variant={action.active ? "secondary" : "ghost"}
             data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={action.label}
             className="relative p-0 w-full h-full rounded-none"
@@ -697,7 +697,9 @@ export const MediaCurrentRecording = () => {
                 <DropdownMenuItem
                   id={action.id}
                   key={action.name}
-                  className="cursor-pointer"
+                  className={`cursor-pointer ${
+                    action.active ? "bg-muted" : ""
+                  }`}
                   onClick={action.onClick}
                 >
                   <action.icon
