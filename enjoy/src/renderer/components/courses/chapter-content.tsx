@@ -83,15 +83,19 @@ export const ChapterContent = (props: {
           )}
         </div>
       </div>
-      <div className="select-text prose dark:prose-invert prose-em:font-bold prose-em:text-red-700 mx-auto">
+      <div className="select-text max-w-full prose dark:prose-invert prose-em:font-bold prose-em:text-red-700">
         <h2>
           {chapter.sequence}. {chapter?.title}
         </h2>
-        <MarkdownWrapper>{chapter?.content}</MarkdownWrapper>
+        <MarkdownWrapper className="max-w-full">
+          {chapter?.content}
+        </MarkdownWrapper>
         {translation && (
           <details>
             <summary>{t("translation")}</summary>
-            <MarkdownWrapper>{translation.content}</MarkdownWrapper>
+            <MarkdownWrapper className="max-w-full">
+              {translation.content}
+            </MarkdownWrapper>
           </details>
         )}
 

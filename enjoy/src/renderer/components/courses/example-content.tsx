@@ -145,11 +145,15 @@ export const ExampleContent = (props: {
 
   return (
     <div className="flex flex-col gap-2 px-4 py-2 bg-background border rounded-lg shadow-sm w-full">
-      <MarkdownWrapper>{example.content}</MarkdownWrapper>
+      <MarkdownWrapper className="max-w-full">
+        {example.content}
+      </MarkdownWrapper>
       {translation && (
         <details>
           <summary>{t("translation")}</summary>
-          <MarkdownWrapper>{translation.content}</MarkdownWrapper>
+          <MarkdownWrapper className="max-w-full">
+            {translation.content}
+          </MarkdownWrapper>
         </details>
       )}
       <WavesurferPlayer id={example.id} src={example.audioUrl} />
