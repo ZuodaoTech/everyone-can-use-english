@@ -28,7 +28,7 @@ import {
   MinimizeIcon,
   ZoomInIcon,
   ZoomOutIcon,
-  MoreVerticalIcon,
+  MoreHorizontalIcon,
   DownloadIcon,
 } from "lucide-react";
 import debounce from "lodash/debounce";
@@ -38,6 +38,7 @@ const ZOOM_RATIO_OPTIONS = [
 ];
 const MIN_ZOOM_RATIO = 0.25;
 const MAX_ZOOM_RATIO = 4.0;
+const ACTION_BUTTON_HEIGHT = 30;
 
 export const MediaWaveform = (props: { layout?: number[] }) => {
   const { layout } = props;
@@ -56,6 +57,7 @@ export const MediaWaveform = (props: { layout?: number[] }) => {
     useState<boolean>(true);
   const [isSharing, setIsSharing] = useState(false);
   const [size, setSize] = useState<{ width: number; height: number }>();
+  const [actionButtonsCount, setActionButtonsCount] = useState(0);
 
   const ref = useRef(null);
 
@@ -99,6 +101,9 @@ export const MediaWaveform = (props: { layout?: number[] }) => {
         height: size.height - 10,
       });
     }
+
+    setActionButtonsCount(Math.floor(size.height / ACTION_BUTTON_HEIGHT));
+    console.log("actionButtonsCount", actionButtonsCount);
   };
 
   const debouncedCalContainerSize = debounce(calContainerSize, 100);
@@ -149,12 +154,91 @@ export const MediaWaveform = (props: { layout?: number[] }) => {
     };
   }, [ref, wavesurfer]);
 
-  useEffect(() => {
-    // debouncedCalContainerSize();
-  }, [layout]);
+  const Actions = [
+    {
+      name: "zoomToFit",
+      label: t("zoomToFit"),
+      icon: MinimizeIcon,
+      active: zoomRatio == fitZoomRatio,
+      onClick: () => {
+        if (zoomRatio == fitZoomRatio) {
+          setZoomRatio(1.0);
+        } else {
+          setZoomRatio(fitZoomRatio);
+        }
+      },
+    },
+    {
+      name: "zoomIn",
+      label: t("zoomIn"),
+      icon: ZoomInIcon,
+      active: zoomRatio > 1.0,
+      onClick: () => {
+        if (zoomRatio < MAX_ZOOM_RATIO) {
+          const nextZoomRatio = ZOOM_RATIO_OPTIONS.find(
+            (rate) => rate > zoomRatio
+          );
+          setZoomRatio(nextZoomRatio || MAX_ZOOM_RATIO);
+        }
+      },
+    },
+    {
+      name: "zoomOut",
+      label: t("zoomOut"),
+      icon: ZoomOutIcon,
+      active: zoomRatio < 1.0,
+      onClick: () => {
+        if (zoomRatio > MIN_ZOOM_RATIO) {
+          const nextZoomRatio = ZOOM_RATIO_OPTIONS.reverse().find(
+            (rate) => rate < zoomRatio
+          );
+          setZoomRatio(nextZoomRatio || MIN_ZOOM_RATIO);
+        }
+      },
+    },
+    {
+      name: "inlineCaption",
+      label: t("inlineCaption"),
+      icon: SpellCheckIcon,
+      active: displayInlineCaption,
+      onClick: () => {
+        setDisplayInlineCaption(!displayInlineCaption);
+        if (pitchChart) {
+          pitchChart.options.scales.x.display = !displayInlineCaption;
+          pitchChart.update();
+        }
+      },
+    },
+    {
+      name: "autoCenter",
+      label: t("autoCenter"),
+      icon: GalleryHorizontalIcon,
+      active: wavesurfer?.options?.autoCenter,
+      onClick: () => {
+        wavesurfer.setOptions({
+          autoCenter: !wavesurfer?.options?.autoCenter,
+        });
+      },
+    },
+    {
+      name: "share",
+      label: t("share"),
+      icon: Share2Icon,
+      onClick: () => setIsSharing(true),
+    },
+    {
+      name: "download",
+      label: t("download"),
+      icon: DownloadIcon,
+      onClick: handleDownload,
+    },
+  ];
 
   return (
-    <div ref={ref} className="flex h-full media-player-wrapper">
+    <div
+      ref={ref}
+      className="flex h-full media-player-wrapper border rounded-lg shadow"
+    >
       <div
         data-testid="media-player-container"
         className="flex-1 relative media-player-container overflow-hidden"
@@ -171,145 +255,54 @@ export const MediaWaveform = (props: { layout?: number[] }) => {
           </span>
         </div>
       </div>
-      <div className="flex flex-col border-l">
-        <Button
-          variant={`${zoomRatio === fitZoomRatio ? "secondary" : "ghost"}`}
-          data-tooltip-id="media-shadow-tooltip"
-          data-tooltip-content={t("zoomToFit")}
-          className="relative p-0 w-8 h-6 rounded-none rounded-tr-lg"
-          onClick={() => {
-            if (zoomRatio == fitZoomRatio) {
-              setZoomRatio(1.0);
-            } else {
-              setZoomRatio(fitZoomRatio);
-            }
-          }}
-        >
-          <MinimizeIcon className="w-4 h-4" />
-        </Button>
+      <div
+        className={`grid grid-rows-${
+          actionButtonsCount < Actions.length
+            ? actionButtonsCount + 1
+            : Actions.length
+        } w-10 border-l rounded-r-lg`}
+      >
+        {Actions.slice(0, actionButtonsCount).map((action) => (
+          <Button
+            key={action.name}
+            variant={`${action.active ? "secondary" : "ghost"}`}
+            data-tooltip-id="media-shadow-tooltip"
+            data-tooltip-content={action.label}
+            className="relative p-0 w-full h-full rounded-none"
+            onClick={action.onClick}
+          >
+            <action.icon className="w-4 h-4" />
+          </Button>
+        ))}
 
-        <Button
-          variant={`${zoomRatio > 1.0 ? "secondary" : "ghost"}`}
-          data-tooltip-id="media-shadow-tooltip"
-          data-tooltip-content={t("zoomIn")}
-          className="relative aspect-square rounded-none p-0 w-8 h-6"
-          onClick={() => {
-            if (zoomRatio < MAX_ZOOM_RATIO) {
-              const nextZoomRatio = ZOOM_RATIO_OPTIONS.find(
-                (rate) => rate > zoomRatio
-              );
-              setZoomRatio(nextZoomRatio || MAX_ZOOM_RATIO);
-            }
-          }}
-        >
-          <ZoomInIcon className="w-4 h-4" />
-        </Button>
+        {actionButtonsCount < Actions.length && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                data-tooltip-id="media-shadow-tooltip"
+                data-tooltip-content={t("more")}
+                className="relative p-0 w-full h-full rounded-none"
+              >
+                <MoreHorizontalIcon className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
 
-        <Button
-          variant={`${zoomRatio < 1.0 ? "secondary" : "ghost"}`}
-          data-tooltip-id="media-shadow-tooltip"
-          data-tooltip-content={t("zoomOut")}
-          className="relative aspect-square rounded-none p-0 w-8 h-6"
-          onClick={() => {
-            if (zoomRatio > MIN_ZOOM_RATIO) {
-              const nextZoomRatio = ZOOM_RATIO_OPTIONS.reverse().find(
-                (rate) => rate < zoomRatio
-              );
-              setZoomRatio(nextZoomRatio || MIN_ZOOM_RATIO);
-            }
-          }}
-        >
-          <ZoomOutIcon className="w-4 h-4" />
-        </Button>
-
-        <Button
-          variant={`${displayInlineCaption ? "secondary" : "ghost"}`}
-          data-tooltip-id="media-shadow-tooltip"
-          data-tooltip-content={t("inlineCaption")}
-          className="relative aspect-square rounded-none p-0 w-8 h-6"
-          onClick={() => {
-            setDisplayInlineCaption(!displayInlineCaption);
-            if (pitchChart) {
-              pitchChart.options.scales.x.display = !displayInlineCaption;
-              pitchChart.update();
-            }
-          }}
-        >
-          <SpellCheckIcon className="w-4 h-4" />
-        </Button>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              data-tooltip-id="media-shadow-tooltip"
-              data-tooltip-content={t("more")}
-              className="rounded-none rounded-br-lg w-8 h-6 p-0"
-            >
-              <MoreVerticalIcon className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent>
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => {
-                if (zoomRatio > MIN_ZOOM_RATIO) {
-                  const nextZoomRatio = ZOOM_RATIO_OPTIONS.reverse().find(
-                    (rate) => rate < zoomRatio
-                  );
-                  setZoomRatio(nextZoomRatio || MIN_ZOOM_RATIO);
-                }
-              }}
-            >
-              <ZoomOutIcon className="w-4 h-4 mr-4" />
-              <span>{t("zoomOut")}</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => {
-                setDisplayInlineCaption(!displayInlineCaption);
-                if (pitchChart) {
-                  pitchChart.options.scales.x.display = !displayInlineCaption;
-                  pitchChart.update();
-                }
-              }}
-            >
-              <SpellCheckIcon className="w-4 h-4 mr-4" />
-              <span>{t("inlineCaption")}</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => {
-                wavesurfer.setOptions({
-                  autoCenter: !wavesurfer?.options?.autoCenter,
-                });
-              }}
-            >
-              <GalleryHorizontalIcon className="w-4 h-4 mr-4" />
-              <span>{t("autoCenter")}</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => setIsSharing(true)}
-            >
-              <Share2Icon className="w-4 h-4 mr-4" />
-              <span>{t("share")}</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={handleDownload}
-            >
-              <DownloadIcon className="w-4 h-4 mr-4" />
-              <span>{t("download")}</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <DropdownMenuContent>
+              {Actions.slice(actionButtonsCount).map((action) => (
+                <DropdownMenuItem
+                  key={action.name}
+                  className="cursor-pointer"
+                  onClick={action.onClick}
+                >
+                  <action.icon className="w-4 h-4 mr-2" />
+                  {action.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
 
         <AlertDialog open={isSharing} onOpenChange={setIsSharing}>
           <AlertDialogContent>

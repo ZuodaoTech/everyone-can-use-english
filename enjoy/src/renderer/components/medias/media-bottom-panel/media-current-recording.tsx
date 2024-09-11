@@ -472,20 +472,19 @@ export const MediaCurrentRecording = () => {
 
   if (!currentRecording?.src)
     return (
-      <div className="h-full w-full flex items-center space-x-4">
-        <div className="flex-1 h-full border rounded-xl shadow-lg flex items-start">
+      <div className="h-full w-full flex items-center justify-center border rounded-xl shadow">
+        <div className="m-auto">
+          <div className="flex justify-center items-center mb-2">
+            <MediaRecordButton />
+          </div>
           <div
-            className="m-auto"
+            className=""
             dangerouslySetInnerHTML={{
               __html: t("noRecordingForThisSegmentYet", {
                 key: currentHotkeys.StartOrStopRecording?.toUpperCase(),
               }),
             }}
           ></div>
-        </div>
-
-        <div className="h-full flex flex-col justify-start space-y-1.5">
-          <MediaRecordButton />
         </div>
       </div>
     );
