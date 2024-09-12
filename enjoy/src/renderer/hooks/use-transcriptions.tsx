@@ -19,7 +19,9 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const [transcribingProgress, setTranscribingProgress] = useState<number>(0);
   const [transcribing, setTranscribing] = useState<boolean>(false);
   const [transcribingOutput, setTranscribingOutput] = useState<string>("");
-  const [service, setService] = useState<SttEngineOptionEnum | "upload">(sttEngine);
+  const [service, setService] = useState<SttEngineOptionEnum | "upload">(
+    sttEngine
+  );
 
   const onTransactionUpdate = (event: CustomEvent) => {
     if (!transcription) return;

@@ -95,7 +95,7 @@ export const TranscriptionsList = (props: {
             <TableHead>ID</TableHead>
             <TableHead>{t("model")}</TableHead>
             <TableHead>{t("language")}</TableHead>
-            <TableHead>{t("date")}</TableHead>
+            <TableHead>{t("downloads")}</TableHead>
             <TableHead>{t("actions")}</TableHead>
           </TableRow>
         </TableHeader>
@@ -113,7 +113,7 @@ export const TranscriptionsList = (props: {
                 <span className="text-sm">{tr.language || "-"}</span>
               </TableCell>
               <TableCell>
-                <span className="text-xs">{formatDateTime(tr.createdAt)}</span>
+                <span className="text-xs">{tr.downloadsCount}</span>
               </TableCell>
               <TableCell>
                 {transcription?.id === tr.id ? (
