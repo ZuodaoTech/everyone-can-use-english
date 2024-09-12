@@ -148,6 +148,12 @@ type EnjoyAppType = {
   camdict: {
     lookup: (word: string) => Promise<CamdictWordType | null>;
   };
+  mdict: {
+    remove: (mdict: MDict) => Promise<void>;
+    getResource: (key: string, mdict: MDict) => Promise<string | null>;
+    lookup: (word: string, mdict: MDict) => Promise<string | null>;
+    import: (pathes: string[]) => Promise<MDict>;
+  };
   dict: {
     getDicts: () => Promise<Dict[]>;
     remove: (dict: Dict) => Promise<void>;

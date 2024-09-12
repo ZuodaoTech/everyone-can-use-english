@@ -57,7 +57,7 @@ export const InstalledDictList = function () {
       ))}
 
       {installedDicts.map((item) => (
-        <InstalledDictItem key={item.name} dict={item} />
+        <InstalledDictItem key={item.value} dict={item} />
       ))}
     </>
   );
@@ -79,14 +79,14 @@ const DecompressDictItem = function ({ task }: { task: DecompressTask }) {
   );
 };
 
-const InstalledDictItem = function ({ dict }: { dict: Dict }) {
+const InstalledDictItem = function ({ dict }: { dict: DictItem }) {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { settings, setDefault, reload, remove, removed } =
+  const { settings, setDefault, reload, remove } =
     useContext(DictProviderContext);
   const [removing, setRemoving] = useState(false);
 
   useEffect(() => {
-    if (settings.removing?.find((v) => v === dict.name)) {
+    if (settings.removing?.find((v) => v === dict.value)) {
       handleRemove();
     }
   }, []);
@@ -113,9 +113,7 @@ const InstalledDictItem = function ({ dict }: { dict: Dict }) {
     setRemoving(true);
 
     try {
-      remove(dict);
-      await EnjoyApp.dict.remove(dict);
-      removed(dict);
+      await remove(dict);
       toast.success(t("dictRemoved"));
     } catch (err) {
       toast.error(err.message);
@@ -135,64 +133,62 @@ const InstalledDictItem = function ({ dict }: { dict: Dict }) {
       );
     }
 
-    if (dict.state === "installed") {
-      return (
-        <div className="hidden group-hover:inline-flex ">
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                size="sm"
-                variant="secondary"
-                className="text-destructive mr-2"
-              >
-                {t("remove")}
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>{t("removeDictTitle")}</AlertDialogTitle>
-                <AlertDialogDescription>
-                  {t("removeDictDescription")}
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-                <AlertDialogAction asChild>
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    className="text-destructive mr-2"
-                    onClick={handleRemove}
-                  >
-                    {t("remove")}
-                  </Button>
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+    return (
+      <div className="hidden group-hover:inline-flex ">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              size="sm"
+              variant="secondary"
+              className="text-destructive mr-2"
+            >
+              {t("remove")}
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t("removeDictTitle")}</AlertDialogTitle>
+              <AlertDialogDescription>
+                {t("removeDictDescription")}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+              <AlertDialogAction asChild>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  className="text-destructive mr-2"
+                  onClick={handleRemove}
+                >
+                  {t("remove")}
+                </Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
-          {settings.default === dict.name ? (
-            <Button size="sm" variant="secondary" onClick={handleRemoveDefault}>
-              {t("removeDefault")}
-            </Button>
-          ) : (
-            <Button size="sm" variant="secondary" onClick={handleSetDefault}>
-              {t("setDefault")}
-            </Button>
-          )}
-        </div>
-      );
-    }
+        {settings.default === dict.value ? (
+          <Button size="sm" variant="secondary" onClick={handleRemoveDefault}>
+            {t("removeDefault")}
+          </Button>
+        ) : (
+          <Button size="sm" variant="secondary" onClick={handleSetDefault}>
+            {t("setDefault")}
+          </Button>
+        )}
+      </div>
+    );
   }
 
   return (
     <div
-      key={dict.name}
+      key={dict.value}
       className="flex justify-between items-center group cursor-pointer"
     >
       <div className="flex items-center text-sm text-left h-8 hover:opacity-80">
-        <span className="mr-2">{dict.title}</span>
-        {settings.default === dict.name && (
+        <span className="mr-2">{dict.text}</span>
+        {settings.default === dict.value && (
           <span className="text-indigo bg-secondary text-xs py-1 px-2 rounded">
             {t("default")}
           </span>

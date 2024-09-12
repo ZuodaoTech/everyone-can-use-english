@@ -23,6 +23,7 @@ import url from "url";
 import echogarden from "./echogarden";
 import camdict from "./camdict";
 import dict from "./dict";
+import mdict from "./mdict";
 import decompresser from "./decompresser";
 import { UserSetting } from "@main/db/models";
 
@@ -53,6 +54,7 @@ main.init = async () => {
 
   camdict.registerIpcHandlers();
   dict.registerIpcHandlers();
+  mdict.registerIpcHandlers();
 
   // Prepare Settings
   settings.registerIpcHandlers();

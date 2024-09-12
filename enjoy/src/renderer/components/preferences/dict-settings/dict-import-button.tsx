@@ -16,7 +16,7 @@ import { t } from "i18next";
 import { LoaderIcon } from "lucide-react";
 
 export const DictImportButton = () => {
-  const { reload } = useContext(DictProviderContext);
+  const { reload, importMDict } = useContext(DictProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -49,8 +49,21 @@ export const DictImportButton = () => {
   const handleOriginDictImport = async () => {
     const pathes = await EnjoyApp.dialog.showOpenDialog({
       title: t("selectMdictFileOrDirTitle"),
-      properties: ["multiSelections", "openFile", "openDirectory"],
+      properties: ["multiSelections", "openFile"],
     });
+
+    if (!pathes[0]) return;
+    setLoading(true);
+
+    try {
+      const mdict = await EnjoyApp.mdict.import(pathes);
+      await importMDict(mdict);
+      setOpen(false);
+    } catch (err) {
+      toast.error(err.message);
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -97,7 +110,7 @@ export const DictImportButton = () => {
               </Button>
             </div>
 
-            {/* <div className="flex items-center justify-between py-4">
+            <div className="flex items-center justify-between py-4">
               <div className="mr-4">
                 <div className="mb-2">{t("importMdictFile")}</div>
                 <div className="text-xs text-muted-foreground mb-2">
@@ -106,9 +119,9 @@ export const DictImportButton = () => {
               </div>
 
               <Button size="sm" onClick={handleOriginDictImport}>
-                {t("selectDir")}
+                {t("selectFile")}
               </Button>
-            </div> */}
+            </div>
           </div>
         )}
       </DialogContent>

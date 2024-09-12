@@ -32,8 +32,7 @@ export function DictLookupResult({
 }) {
   const { colorScheme } = useContext(ThemeProviderContext);
   const initialContent = `<!DOCTYPE html><html class=${colorScheme}><head></head><body></body></html>`;
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { currentDict } = useContext(DictProviderContext);
+  const { currentDict, lookup } = useContext(DictProviderContext);
   const [definition, setDefinition] = useState("");
   const [looking, setLooking] = useState(false);
   const [notFound, setNotFound] = useState(false);
@@ -42,11 +41,11 @@ export function DictLookupResult({
 
   useEffect(() => {
     if (currentDict && word) {
-      lookup();
+      handleLookup();
     }
   }, [currentDict, word]);
 
-  async function lookup() {
+  async function handleLookup() {
     revoke();
     setLooking(true);
 
@@ -56,8 +55,7 @@ export function DictLookupResult({
 
     const _word = word.trim().indexOf(" ") > -1 ? word : word.toLowerCase();
 
-    EnjoyApp.dict
-      .lookup(_word, currentDict)
+    lookup(_word, currentDict)
       .then((result) => {
         if (!result) {
           setNotFound(true);
@@ -134,8 +132,7 @@ export const DictLookupResultInner = ({
   onJump?: (v: string) => void;
   onResize?: (v: number) => void;
 }) => {
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { currentDict } = useContext(DictProviderContext);
+  const { currentDict, getResource } = useContext(DictProviderContext);
   const { document: innerDocument } = useFrame();
   const [html, setHtml] = useState("");
   const [hash, setHash] = useState("");
@@ -178,7 +175,7 @@ export const DictLookupResultInner = ({
   };
 
   const handleReadResource = async (key: string) => {
-    return EnjoyApp.dict.getResource(key, currentDict);
+    return getResource(key, currentDict);
   };
 
   const normalizer = new DictDefinitionNormalizer({

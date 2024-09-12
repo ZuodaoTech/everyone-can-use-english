@@ -1667,6 +1667,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@divisey/js-mdict@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@divisey/js-mdict@npm:5.0.0"
+  dependencies:
+    "@xmldom/xmldom": "npm:^0.8.6"
+    bl: "npm:^2.2.1"
+    buffer-to-arraybuffer: "npm:0.0.6"
+    lemmatizer: "npm:0.0.1"
+    levenshtein-edit-distance: "npm:^3.0.1"
+    read-chunk: "npm:^3.2.0"
+  checksum: 10c0/7c6ee53bd5b160d918b236cbb411cddb363b68b54496f1f7d24cd29e1cb33c3a9075b90cbfb075563fb14865f973d85e753486ee3f0705f3c1e643a97c2780e4
+  languageName: node
+  linkType: hard
+
 "@docsearch/css@npm:3.6.1, @docsearch/css@npm:^3.6.1":
   version: 3.6.1
   resolution: "@docsearch/css@npm:3.6.1"
@@ -9175,7 +9189,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xmldom/xmldom@npm:^0.8.8":
+"@xmldom/xmldom@npm:^0.8.6, @xmldom/xmldom@npm:^0.8.8":
   version: 0.8.10
   resolution: "@xmldom/xmldom@npm:0.8.10"
   checksum: 10c0/c7647c442502720182b0d65b17d45d2d95317c1c8c497626fe524bda79b4fb768a9aa4fae2da919f308e7abcff7d67c058b102a9d641097e9a57f0b80187851f
@@ -9966,6 +9980,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bl@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "bl@npm:2.2.1"
+  dependencies:
+    readable-stream: "npm:^2.3.5"
+    safe-buffer: "npm:^5.1.1"
+  checksum: 10c0/37481260f1661755253b6205fcdd64b6d852147aaf61628947d2193fcdb78e625ee061dae0094ac16e7c7f10b12c90110fb2b08826815d47a28f9628bebb5a8f
+  languageName: node
+  linkType: hard
+
 "bl@npm:^4.0.3, bl@npm:^4.1.0":
   version: 4.1.0
   resolution: "bl@npm:4.1.0"
@@ -10117,6 +10141,13 @@ __metadata:
   dependencies:
     buffer-indexof: "npm:~0.0.0"
   checksum: 10c0/59280260d41c3871d227cd605343fc48a3ae3b3a7b799f3fec9a94e7275e040bdffcd84c3ae4a8e68de7f8232dee495f8d1c410b1466fc4be265d2d3410c8f75
+  languageName: node
+  linkType: hard
+
+"buffer-to-arraybuffer@npm:0.0.6":
+  version: 0.0.6
+  resolution: "buffer-to-arraybuffer@npm:0.0.6"
+  checksum: 10c0/fcfca8c9e1c465c33a22173f1e981aa564a7669c8098153b0c35f80a2b479243751e249468a89c197e2b19198da0c7fd1af27bc03b2af59fea5e9602ea811ccd
   languageName: node
   linkType: hard
 
@@ -12751,6 +12782,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"en-inflectors@npm:^1.0.11, en-inflectors@npm:^1.0.7":
+  version: 1.0.12
+  resolution: "en-inflectors@npm:1.0.12"
+  dependencies:
+    en-stemmer: "npm:^1.0.2"
+  checksum: 10c0/c399cee8e9d03879730f91e2f20f0c9c4efd01b1bd4f8e713c04862a61b5e383c07c2a7e4e3633bcb3bfe987e0f680fd9c6cb83435082751ac7faa2b31639c97
+  languageName: node
+  linkType: hard
+
+"en-lexicon@npm:^1.0.10":
+  version: 1.0.11
+  resolution: "en-lexicon@npm:1.0.11"
+  dependencies:
+    en-inflectors: "npm:^1.0.7"
+  checksum: 10c0/6356feab9a9043e1c94e58988ab047a1afae0d291c5f98fe7ddf119408a9f50ebfa9e7cd790e0e970cff3fc49c0baedd546b0891cee532e9b47916bb3c0c4794
+  languageName: node
+  linkType: hard
+
+"en-stemmer@npm:^1.0.2, en-stemmer@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "en-stemmer@npm:1.0.3"
+  checksum: 10c0/f82a4d7ed3bb3e5f28c0b7722092038d068980e001a1ae0d79697180a984b05030d2e4acc2ce89b451183936f3a9bde7ea8b4195d8b31e3ed8643599f6902951
+  languageName: node
+  linkType: hard
+
 "encode-utf8@npm:^1.0.3":
   version: 1.0.3
   resolution: "encode-utf8@npm:1.0.3"
@@ -12808,6 +12864,7 @@ __metadata:
   resolution: "enjoy@workspace:enjoy"
   dependencies:
     "@andrkrn/ffprobe-static": "npm:^5.2.0"
+    "@divisey/js-mdict": "npm:^5.0.0"
     "@electron-forge/cli": "npm:^7.4.0"
     "@electron-forge/maker-deb": "npm:^7.4.0"
     "@electron-forge/maker-dmg": "npm:^7.4.0"
@@ -17117,6 +17174,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lemmatizer@npm:0.0.1":
+  version: 0.0.1
+  resolution: "lemmatizer@npm:0.0.1"
+  dependencies:
+    en-inflectors: "npm:^1.0.11"
+    en-lexicon: "npm:^1.0.10"
+    en-stemmer: "npm:^1.0.3"
+  checksum: 10c0/7a9741ea1c915878c3c266b099c1b25b27063ba55e9076a6a3e50dd7b9d4f058a0475c1a32dfc3b87541fe4b349e20ea8f7be5f52d8454490230f89447d90ae8
+  languageName: node
+  linkType: hard
+
+"levenshtein-edit-distance@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "levenshtein-edit-distance@npm:3.0.1"
+  bin:
+    levenshtein-edit-distance: cli.js
+  checksum: 10c0/7d443d4f76bc89d2ccea49ebb6e32d0fa9a003c3511a21d5749d9af17b5bbcf92b9c2f513662535093bae465101bdfb1e7f1f067de4d3f8f9c1fab1b480728ff
+  languageName: node
+  linkType: hard
+
 "levn@npm:^0.4.1":
   version: 0.4.1
   resolution: "levn@npm:0.4.1"
@@ -19844,7 +19921,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p-try@npm:^2.0.0":
+"p-try@npm:^2.0.0, p-try@npm:^2.1.0":
   version: 2.2.0
   resolution: "p-try@npm:2.2.0"
   checksum: 10c0/c36c19907734c904b16994e6535b02c36c2224d433e01a2f1ab777237f4d86e6289fd5fd464850491e940379d4606ed850c03e0f9ab600b0ebddb511312e177f
@@ -20323,6 +20400,13 @@ __metadata:
   version: 2.3.0
   resolution: "pify@npm:2.3.0"
   checksum: 10c0/551ff8ab830b1052633f59cb8adc9ae8407a436e06b4a9718bcb27dc5844b83d535c3a8512b388b6062af65a98c49bdc0dd523d8b2617b188f7c8fee457158dc
+  languageName: node
+  linkType: hard
+
+"pify@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "pify@npm:4.0.1"
+  checksum: 10c0/6f9d404b0d47a965437403c9b90eca8bb2536407f03de165940e62e72c8c8b75adda5516c6b9b23675a5877cc0bcac6bdfb0ef0e39414cd2476d5495da40e7cf
   languageName: node
   linkType: hard
 
@@ -21580,6 +21664,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"read-chunk@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "read-chunk@npm:3.2.0"
+  dependencies:
+    pify: "npm:^4.0.1"
+    with-open-file: "npm:^0.1.6"
+  checksum: 10c0/cf62522dc85a96d54f1e0886cadcdfdd491bdcd250408695c8d63cea2eae5b1a31da8317c9a58a095ee9b15c67e84e0bed1a917c820bcccf1c74749a9fcad797
+  languageName: node
+  linkType: hard
+
 "read-pkg-up@npm:^2.0.0":
   version: 2.0.0
   resolution: "read-pkg-up@npm:2.0.0"
@@ -21624,7 +21718,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^2.0.2, readable-stream@npm:^2.0.5, readable-stream@npm:~2.3.6":
+"readable-stream@npm:^2.0.2, readable-stream@npm:^2.0.5, readable-stream@npm:^2.3.5, readable-stream@npm:~2.3.6":
   version: 2.3.8
   resolution: "readable-stream@npm:2.3.8"
   dependencies:
@@ -22181,7 +22275,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"safe-buffer@npm:5.2.1, safe-buffer@npm:^5.0.1, safe-buffer@npm:^5.1.0, safe-buffer@npm:~5.2.0":
+"safe-buffer@npm:5.2.1, safe-buffer@npm:^5.0.1, safe-buffer@npm:^5.1.0, safe-buffer@npm:^5.1.1, safe-buffer@npm:~5.2.0":
   version: 5.2.1
   resolution: "safe-buffer@npm:5.2.1"
   checksum: 10c0/6501914237c0a86e9675d4e51d89ca3c21ffd6a31642efeba25ad65720bce6921c9e7e974e5be91a786b25aa058b5303285d3c15dbabf983a919f5f630d349f3
@@ -25359,6 +25453,17 @@ __metadata:
   dependencies:
     string-width: "npm:^1.0.2 || 2 || 3 || 4"
   checksum: 10c0/1d9c2a3e36dfb09832f38e2e699c367ef190f96b82c71f809bc0822c306f5379df87bab47bed27ea99106d86447e50eb972d3c516c2f95782807a9d082fbea95
+  languageName: node
+  linkType: hard
+
+"with-open-file@npm:^0.1.6":
+  version: 0.1.7
+  resolution: "with-open-file@npm:0.1.7"
+  dependencies:
+    p-finally: "npm:^1.0.0"
+    p-try: "npm:^2.1.0"
+    pify: "npm:^4.0.1"
+  checksum: 10c0/28a0c67718f0b9f14669636d5a69fa66bc87a4bdbc5913a245b68f0cbd0c96a3f83559147d647dc30332f3eee76688924654587cc58e4d5b944ef04155f9fe36
   languageName: node
   linkType: hard
 

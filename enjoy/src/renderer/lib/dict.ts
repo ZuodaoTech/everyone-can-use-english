@@ -29,6 +29,8 @@ export class DictDefinitionNormalizer {
   }
 
   async createUrl(mime: string, data: string) {
+    if (!data) return "";
+
     const resp = await fetch(`data:${mime};base64,${data}`);
     const blob = await resp.blob();
     const url = URL.createObjectURL(blob);
@@ -61,7 +63,13 @@ export class DictDefinitionNormalizer {
         .toArray()
         .map(async (link) => {
           const $link = this.$(link);
-          const data = await this.onReadResource($link.attr("href"));
+          const href = $link.attr("href");
+
+          if (href.startsWith("/assets/styles")) {
+            return;
+          }
+
+          const data = await this.onReadResource(href);
           const url = await this.createUrl(MIME["css"], data);
 
           $link.replaceWith(
