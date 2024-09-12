@@ -1,10 +1,10 @@
 // https://vitepress.dev/guide/custom-theme
-import { h } from 'vue'
-import type { Theme } from 'vitepress'
-import DefaultTheme from 'vitepress/theme'
-import SpeakWord from './components/SpeakWord.vue'
-import MyLayout from './layouts/index.vue'
-import './style.scss'
+import { h } from "vue";
+import type { Theme } from "vitepress";
+import DefaultTheme from "vitepress/theme";
+import SpeakWord from "./components/SpeakWord.vue";
+import MyLayout from "./layouts/index.vue";
+import "./style.scss";
 
 export default {
   extends: DefaultTheme,
@@ -16,6 +16,6 @@ export default {
   // },
   enhanceApp({ app, router, siteData }) {
     // ...
-    app.component('SpeakWord', SpeakWord)
-  }
-} satisfies Theme
+    app.component("SpeakWord", SpeakWord);
+  },
+} satisfies Theme;
