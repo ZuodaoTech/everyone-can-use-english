@@ -9,6 +9,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "1000-hours@workspace:1000-hours"
   dependencies:
+    cheerio: "npm:^1.0.0"
     markdown-it-footnote: "npm:^4.0.0"
     markdown-it-ins: "npm:^4.0.0"
     markdown-it-mark: "npm:^4.0.0"
@@ -17,6 +18,7 @@ __metadata:
     markdown-it-sup: "npm:^2.0.0"
     mermaid: "npm:^11.2.0"
     sass: "npm:^1.78.0"
+    swiper: "npm:^11.1.12"
     vitepress: "npm:^1.3.4"
     vitepress-plugin-mermaid: "npm:^2.0.16"
     vue: "npm:^3.5.4"
@@ -23057,6 +23059,13 @@ __metadata:
   bin:
     svgo: ./bin/svgo
   checksum: 10c0/a6badbd3d1d6dbb177f872787699ab34320b990d12e20798ecae915f0008796a0f3c69164f1485c9def399e0ce0a5683eb4a8045e51a5e1c364bb13a0d9f79e1
+  languageName: node
+  linkType: hard
+
+"swiper@npm:^11.1.12":
+  version: 11.1.12
+  resolution: "swiper@npm:11.1.12"
+  checksum: 10c0/0d8047dbbf79c35f3515d12c77dc5f82d911add0b7e4ca74a8d351cb572c3a327adc3b10ac10f11571205b8071037537edcb81763808a60e4b6d0a81efebc851
   languageName: node
   linkType: hard
 

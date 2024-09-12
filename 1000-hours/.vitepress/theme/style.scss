@@ -71,19 +71,20 @@
   --vp-c-danger-3: var(--vp-c-red-3);
   --vp-c-danger-soft: var(--vp-c-red-soft);
 
-  --vp-font-family-base: 'SF Pro SC','SF Pro Text','SF Pro Icons','PingFang SC','Helvetica Neue', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Helvetica, Arial, sans-serif;
-  --vp-font-family-mono: 'Sauce Code Pro', 'Source Code Pro', 'Courier New', monospace;
+  --vp-font-family-base: "SF Pro SC", "SF Pro Text", "SF Pro Icons",
+    "PingFang SC", "Helvetica Neue", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Helvetica, Arial, sans-serif;
+  --vp-font-family-mono: "Sauce Code Pro", "Source Code Pro", "Courier New",
+    monospace;
 
   --vp-c-text-strong: rgb(63 86 99);
   --vp-c-text-em: rgb(91, 4, 17);
-
 }
 
 .dark {
   --vp-c-text-strong: rgb(138, 183, 209);
   --vp-c-text-em: rgb(187, 121, 131);
 }
-
 
 body {
   font-size: 16px;
@@ -156,15 +157,14 @@ body {
   --docsearch-primary-color: var(--vp-c-brand-1) !important;
 }
 
-
 .vp-doc {
-
-  p img, p video {
+  p img,
+  p video {
     margin: 0 auto;
     align-self: center;
   }
 
-  blockquote > p{
+  blockquote > p {
     font-size: 16px;
   }
 
@@ -172,12 +172,14 @@ body {
     font-size: 16px;
   }
 
-  strong, b {
+  strong,
+  b {
     color: var(--vp-c-text-strong);
     font-weight: bold;
   }
 
-  em, i {
+  em,
+  i {
     color: var(--vp-c-text-em);
   }
 
@@ -190,7 +192,6 @@ body {
     margin: auto 1px -4px;
   }
 
-
   sup {
     vertical-align: top;
     position: relative;
@@ -199,7 +200,8 @@ body {
 
   // @TODO 回头撤销对 code 的字体设置，因为 CharisSIL 不是等宽
   code {
-    font-family: "SauceCodePro Nerd Font Mono", "CharisSIL", "DejaVu Sans Mono", "Courier New", monospace;
+    font-family: "SauceCodePro Nerd Font Mono", "CharisSIL", "DejaVu Sans Mono",
+      "Courier New", monospace;
   }
 
   span.pho {
@@ -212,7 +214,8 @@ body {
     // font-size: 100%;
     color: var(--vp-code-color);
     &.alt {
-      &::before, &::after {
+      &::before,
+      &::after {
         content: "/";
         display: inline-block;
         width: 0.5em;
@@ -227,13 +230,52 @@ audio {
   margin-top: -0.2em;
 }
 
-video, img {
+video,
+img {
   width: 95%;
 }
 
-span.not-display {display: none;}
+span.not-display {
+  display: none;
+}
 
-.two-column ol, .two-column ul {
+.two-column ol,
+.two-column ul {
   column-count: 2;
   column-gap: 2em;
+}
+
+.carousel {
+  swiper-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .carousel-inner {
+    swiper-slide {
+      align-self: center;
+    }
+  }
+
+  .swiper-thumb {
+    padding: 10px 0;
+
+    swiper-slide {
+      width: 25%;
+      height: 100%;
+      opacity: 0.4;
+      cursor: pointer;
+    }
+
+    .swiper-slide-thumb-active {
+      opacity: 1;
+    }
+  }
 }

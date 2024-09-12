@@ -5,6 +5,7 @@ import sup from "markdown-it-sup";
 import sub from "markdown-it-sub";
 import mark from "markdown-it-mark";
 import ins from "markdown-it-ins";
+import carousel from "./lib/markdown-it-carousel";
 
 // import markdownit from 'markdown-it'
 
@@ -94,7 +95,8 @@ export default withMermaid(
             link: "/sounds-of-american-english/0-intro",
             collapsed: true,
             items: [
-              { text: "1. 基础",
+              {
+                text: "1. 基础",
                 link: "/sounds-of-american-english/1-basics",
                 items: [
                   {
@@ -104,11 +106,11 @@ export default withMermaid(
                   {
                     text: "1.2. 英文字母",
                     link: "/sounds-of-american-english/1.2-alphabets",
-                  },                  
-                ]
+                  },
+                ],
               },
               {
-                    text: "2. 发声器官",
+                text: "2. 发声器官",
                 link: "/sounds-of-american-english/2-articulators",
               },
               {
@@ -149,7 +151,7 @@ export default withMermaid(
                         text: "3.1.7. aɪ... oʊ",
                         link: "/sounds-of-american-english/3.1.7-aɪ",
                       },
-                    ]
+                    ],
                   },
                   {
                     text: "3.2. 辅音",
@@ -207,7 +209,7 @@ export default withMermaid(
                       {
                         text: "3.2.13. w, j",
                         link: "/sounds-of-american-english/3.2.13-wj",
-                      },                    
+                      },
                       {
                         text: "3.2.14. h",
                         link: "/sounds-of-american-english/3.2.14-h",
@@ -272,7 +274,7 @@ export default withMermaid(
                     text: "6.4. 常见词根词缀",
                     link: "/sounds-of-american-english/6.4-parts-of-words",
                   },
-                ]
+                ],
               },
               {
                 text: "7. 从此之后",
@@ -423,8 +425,8 @@ export default withMermaid(
                   },
                 ],
               },
-            ]
-          }
+            ],
+          },
         ],
 
         "/enjoy-app/": [
@@ -482,7 +484,6 @@ export default withMermaid(
             link: "/intro",
           },
         ],
-
       },
 
       socialLinks: [
@@ -494,7 +495,7 @@ export default withMermaid(
     },
 
     sitemap: {
-      hostname: 'https://1000h.org'
+      hostname: "https://1000h.org",
     },
 
     lastUpdated: true,
@@ -509,10 +510,11 @@ export default withMermaid(
         md.use(sup);
         md.use(mark);
         md.use(ins);
+        md.use(carousel);
       },
       toc: {
-        level: [1, 2, 3]
-      }
+        level: [1, 2, 3],
+      },
     },
   })
 );

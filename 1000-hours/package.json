@@ -17,5 +17,9 @@
     "dev": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "swiper": "^11.1.12"
   }
 }
