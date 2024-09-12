@@ -66,7 +66,7 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
         text: dict.title,
         value: dict.name,
       }));
-    const _mdicts = settings.mdicts.map((mdict) => ({
+    const _mdicts = (settings.mdicts || []).map((mdict) => ({
       type: "mdict" as DictType,
       text: mdict.title,
       value: mdict.hash,
