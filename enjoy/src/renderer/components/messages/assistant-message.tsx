@@ -302,7 +302,7 @@ export const AssistantMessageComponent = (props: {
           onPointerDownOutside={(event) => event.preventDefault()}
           onInteractOutside={(event) => event.preventDefault()}
         >
-          <SheetHeader className="flex items-center justify-center h-12">
+          <SheetHeader className="flex items-center justify-center">
             <SheetTitle className="sr-only">{t("shadow")}</SheetTitle>
             <SheetClose>
               <ChevronDownIcon />
