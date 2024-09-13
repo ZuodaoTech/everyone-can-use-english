@@ -762,6 +762,7 @@
   "dictSettings": "词典设置",
   "dictSettingsShort": "词典设置",
   "importDict": "导入词典",
+  "failedToImportDict": "导入词典失败: {{error}}",
   "dictRemoved": "成功删除词典",
   "interrupted": "已中断",
   "paused": "已暂停",

@@ -7,7 +7,7 @@ import { Mdict as MdictReader } from "@divisey/js-mdict";
 import { hashFile } from "@/main/utils";
 import settings from "./settings";
 
-const logger = log.scope("dict");
+const logger = log.scope("mdict");
 
 export class MDictHandler {
   private cache = new LRUCache({ max: 20 });
@@ -26,6 +26,7 @@ export class MDictHandler {
   }
 
   async import(pathes: string[]) {
+    logger.info("Importing mdict: ", pathes);
     const mdxs = pathes.filter((_path) => _path.match(/\.mdx$/));
     const mdds = pathes.filter((_path) => _path.match(/\.mdd$/));
 

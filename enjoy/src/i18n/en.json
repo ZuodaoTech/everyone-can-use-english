@@ -762,6 +762,7 @@
   "dictSettings": "Dictionaries Settings",
   "dictSettingsShort": "Dictionaries",
   "importDict": "Import Dictionary",
+  "failedToImportDict": "Failed to import dictionary: {{error}}",
   "dictRemoved": "Dictionary removed successfully",
   "interrupted": "Interrupted",
   "paused": "Paused",

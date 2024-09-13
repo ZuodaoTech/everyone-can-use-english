@@ -39,7 +39,7 @@ export const DictImportButton = () => {
       await EnjoyApp.dict.import(pathes[0]);
       setOpen(false);
     } catch (err) {
-      toast.error(err.message);
+      toast.error(t("failedToImportDict", { error: err.message }));
     }
 
     setLoading(false);
@@ -60,7 +60,7 @@ export const DictImportButton = () => {
       await importMDict(mdict);
       setOpen(false);
     } catch (err) {
-      toast.error(err.message);
+      toast.error(t("failedToImportDict", { error: err.message }));
     }
 
     setLoading(false);

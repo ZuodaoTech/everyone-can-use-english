@@ -112,7 +112,11 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchSettings = async () => {
     return EnjoyApp.userSettings.get(UserSettingKeyEnum.DICTS).then((res) => {
-      res && setSettings(res);
+      if (res) {
+        setSettings({ ...initialState.settings, ...res });
+      } else {
+        setSettings(initialState.settings);
+      }
     });
   };
 
