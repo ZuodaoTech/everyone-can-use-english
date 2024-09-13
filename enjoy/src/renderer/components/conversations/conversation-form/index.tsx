@@ -265,24 +265,33 @@ export const ConversationForm = (props: {
     if (!language) {
       configuration.tts.language === learningLanguage;
     }
+    if (!ttsEngine) {
+      configuration.tts.engine = "openai";
+    }
+    if (!configuration.tts.model) {
+      configuration.tts.model = "openai/tts-1";
+    }
+
     if (ttsEngine === "openai") {
       const options = ttsProviders["openai"].voices;
       if (!options.includes(voice)) {
-        throw new Error(t("pleaseSelectTtsVoice"));
+        configuration.tts.voice = options[0];
       }
     }
     if (ttsEngine === "enjoyai") {
       const model = configuration.tts.model.split("/")[0];
       const options = ttsProviders.enjoyai.voices[model];
       if (model === "openai" && !options.includes(voice)) {
-        throw new Error(t("pleaseSelectTtsVoice"));
+        configuration.tts.voice = options[0];
       } else if (
         model === "azure" &&
         options.findIndex(
           (o: any) => o.language === language && o.value === voice
         ) < 0
       ) {
-        throw new Error(t("pleaseSelectTtsVoice"));
+        configuration.tts.voice = options.find(
+          (o: any) => o.language === language
+        )?.value;
       }
     }
 

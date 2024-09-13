@@ -13,8 +13,6 @@ import {
   SelectContent,
   SelectItem,
 } from "@renderer/components/ui";
-import { useContext } from "react";
-import { AppSettingsProviderContext } from "@renderer/context";
 import { LANGUAGES } from "@/constants";
 
 export const ConversationFormTTS = (props: {
@@ -22,7 +20,6 @@ export const ConversationFormTTS = (props: {
   ttsProviders: any;
 }) => {
   const { form, ttsProviders } = props;
-  const { learningLanguage } = useContext(AppSettingsProviderContext);
 
   return (
     <>
