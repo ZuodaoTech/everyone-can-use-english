@@ -56,16 +56,23 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
 
       const transcriptionOnline = await findTranscriptionOnline();
       if (transcriptionOnline && !tr.result["timeline"]) {
-        await EnjoyApp.transcriptions.update(tr.id, {
-          state: "finished",
-          result: transcriptionOnline.result,
-          engine: transcriptionOnline.engine,
-          model: transcriptionOnline.model,
-          language: transcriptionOnline.language || media.language,
-        });
-        toast.success(t("downloadedTranscriptionFromCloud"));
-        setTranscription(transcriptionOnline);
-        return transcriptionOnline;
+        return EnjoyApp.transcriptions
+          .update(tr.id, {
+            state: "finished",
+            result: transcriptionOnline.result,
+            engine: transcriptionOnline.engine,
+            model: transcriptionOnline.model,
+            language: transcriptionOnline.language || media.language,
+          })
+          .then(() => {
+            toast.success(t("downloadedTranscriptionFromCloud"));
+            setTranscription(transcriptionOnline);
+            return transcriptionOnline;
+          })
+          .catch((err) => {
+            console.error(err);
+            return tr;
+          });
       } else {
         setTranscription(tr);
         return tr;
