@@ -251,6 +251,26 @@ span.not-display {
     height: 100%;
   }
 
+  swiper-container::part(button-prev),
+  swiper-container::part(button-next) {
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 0.5rem;
+    border-radius: 4px;
+    transform: scale(0.8);
+  }
+  swiper-container::part(button-prev) {
+    left: 0;
+    margin-left: -6px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  swiper-container::part(button-next) {
+    right: 0;
+    margin-right: -6px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
   swiper-slide img {
     display: block;
     width: 100%;
