@@ -12,7 +12,6 @@ import {
   toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import { formatDateTime } from "@renderer/lib/utils";
 import {
   CheckCircleIcon,
   ChevronLeftIcon,
@@ -93,10 +92,10 @@ export const TranscriptionsList = (props: {
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
-            <TableHead>{t("model")}</TableHead>
-            <TableHead>{t("language")}</TableHead>
-            <TableHead>{t("date")}</TableHead>
-            <TableHead>{t("actions")}</TableHead>
+            <TableHead className="capitalize">{t("model")}</TableHead>
+            <TableHead className="capitalize">{t("language")}</TableHead>
+            <TableHead className="capitalize">{t("downloads")}</TableHead>
+            <TableHead className="capitalize">{t("actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -113,7 +112,7 @@ export const TranscriptionsList = (props: {
                 <span className="text-sm">{tr.language || "-"}</span>
               </TableCell>
               <TableCell>
-                <span className="text-xs">{formatDateTime(tr.createdAt)}</span>
+                <span className="text-xs">{tr.downloadsCount}</span>
               </TableCell>
               <TableCell>
                 {transcription?.id === tr.id ? (

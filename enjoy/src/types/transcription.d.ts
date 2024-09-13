@@ -8,6 +8,8 @@ type TranscriptionType = {
   model: string;
   language?: string;
   result: AlignmentResult & { original?: string };
+  md5?: string;
+  downloadsCount?: number;
   createdAt: string;
   updatedAt: string;
 };

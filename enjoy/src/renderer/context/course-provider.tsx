@@ -77,7 +77,7 @@ export const CourseProvider = ({
             onPointerDownOutside={(event) => event.preventDefault()}
             onInteractOutside={(event) => event.preventDefault()}
           >
-            <SheetHeader className="flex items-center justify-center h-12">
+            <SheetHeader className="flex items-center justify-center">
               <SheetTitle className="sr-only">Shadow</SheetTitle>
               <SheetDescription className="sr-only"></SheetDescription>
               <SheetClose>

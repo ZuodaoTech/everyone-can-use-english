@@ -791,5 +791,6 @@
   "exportRecordingsConfirmation": "Select the highest score of the recordings of each segment to export as a single file.",
   "exportRecordingsSuccess": "Export recordings successfully",
   "upgrade": "Upgrade",
-  "upgradeNotice": "Enjoy App v{{version}} is available. Please upgrade to the latest version."
+  "upgradeNotice": "Enjoy App v{{version}} is available. Please upgrade to the latest version.",
+  "downloadedTranscriptionFromCloud": "Downloaded transcription from cloud"
 }
