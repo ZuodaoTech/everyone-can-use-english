@@ -111,18 +111,20 @@ const SelectedWords = (props: {
 
       <Separator className="my-4" />
 
-      {currentDictValue === "cambridge" ? (
-        <CamdictLookupResult word={word} />
-      ) : currentDictValue === "ai" ? (
-        <AiLookupResult
-          word={word}
-          context={caption.text}
-          sourceId={transcription.targetId}
-          sourceType={transcription.targetType}
-        />
-      ) : (
-        <DictLookupResult word={word} autoHeight={true} />
-      )}
+      <div className="rounded-lg overflow-hidden mr-10">
+        {currentDictValue === "cambridge" ? (
+          <CamdictLookupResult word={word} />
+        ) : currentDictValue === "ai" ? (
+          <AiLookupResult
+            word={word}
+            context={caption.text}
+            sourceId={transcription.targetId}
+            sourceType={transcription.targetType}
+          />
+        ) : (
+          <DictLookupResult word={word} autoHeight={true} />
+        )}
+      </div>
     </>
   );
 };
