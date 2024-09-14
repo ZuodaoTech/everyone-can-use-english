@@ -13,7 +13,7 @@ import { STORAGE_WORKER_ENDPOINT } from "@/constants";
 import { Button } from "@/renderer/components/ui";
 
 export const NetworkState = () => {
-  const { apiUrl, EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { apiUrl, EnjoyApp, proxy } = useContext(AppSettingsProviderContext);
   const [refreshing, setRefreshing] = useState(false);
   const apiStateRef = useRef(null);
   const storeageStateRef = useRef(null);
@@ -83,6 +83,10 @@ export const NetworkState = () => {
       text: `${duration}ms`,
     };
   }
+
+  useEffect(() => {
+    handleRefresh();
+  }, [proxy]);
 
   return (
     <div className="py-4">
@@ -156,11 +160,13 @@ const NetworkStateItem = React.forwardRef(function (
       setColor(color);
       setText(text);
       setConnected(true);
+      setConnectError(false);
     } catch (error) {
       setConnectError(true);
       setConnected(false);
+    } finally {
+      setConnecting(false);
     }
-    setConnecting(false);
   }
 
   return (
