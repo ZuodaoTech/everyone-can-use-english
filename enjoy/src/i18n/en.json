@@ -775,7 +775,7 @@
   "removeDictTitle": "Are you sure you want to delete this dictionary? ",
   "removeDictDescription": "It will delete the dictionary file from your local computer and you will have to download it again next time.",
   "downloadingDict": "Downloading",
-  "removeDefault": "No longer as Default",
+  "removeDefault": "Cancel default",
   "selectAdaptionDictTitle": "Select adapted dictionary",
   "selectMdictFileOrDirTitle": "Select dict files (.mdx and optional .mdd) or folder",
   "dictImportSlowTip": "Checking...(It may take longer if the dictionary file is large.)",

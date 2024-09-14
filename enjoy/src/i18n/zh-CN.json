@@ -775,7 +775,7 @@
   "removeDictTitle": "你确定要删除词典吗？",
   "removeDictDescription": "此操作将会从本地删除词典文件，下次安装需要重新下载",
   "downloadingDict": "正在下载",
-  "removeDefault": "不再设置为默认",
+  "removeDefault": "取消默认",
   "selectAdaptionDictTitle": "选择预先适配的词典文件",
   "selectMdictFileOrDirTitle": "选择词典文件 (.mdx 和可选的 .mdd 文件) or 文件夹",
   "dictImportSlowTip": "正在检查...（词典文件较大时可能需要的时间比较长）",
