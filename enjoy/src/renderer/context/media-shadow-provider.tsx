@@ -473,7 +473,9 @@ export const MediaShadowProvider = ({
     setCurrentTime(0);
 
     const subscriptions = [
-      wavesurfer.on("timeupdate", (time: number) => setCurrentTime(time)),
+      wavesurfer.on("timeupdate", (time: number) =>
+        setCurrentTime(parseFloat(time.toFixed(2)))
+      ),
       wavesurfer.on("decode", () => {
         const peaks: Float32Array = wavesurfer
           .getDecodedData()
