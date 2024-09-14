@@ -214,6 +214,7 @@
   "databaseError": "数据库错误 {{url}}",
   "somethingWentWrong": "出错了",
   "actions": "操作",
+  "downloads": "下载次数",
   "info": "通知",
   "success": "操作成功",
   "warning": "警告",

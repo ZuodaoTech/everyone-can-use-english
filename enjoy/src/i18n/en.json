@@ -214,6 +214,7 @@
   "databaseError": "Failed to connect to database {{url}}",
   "somethingWentWrong": "Something went wrong",
   "actions": "actions",
+  "downloads": "downloads",
   "info": "Info",
   "success": "Success",
   "warning": "Warning",
