@@ -45,7 +45,17 @@ function buildPlayButton(parent, accent, gender, url) {
   btnEl.classList.add(accent);
   btnEl.classList.add(gender);
   btnEl.addEventListener('click', () => {
-    audioEl.play();
+    if (window._playing_audio) {
+      window._audio_ele.pause();
+      window._audio_ele.load();
+    }
+    window._playing_audio = true;
+    window._audio_ele = audioEl;
+    window._audio_ele.play();
+    window._audio_ele.addEventListener('ended', () => {
+      window._playing_audio = false;
+      window._audio_ele = null;
+    })
   })
   // btnEl.append(labelEl)
   btnEl.append(emojiEl)
@@ -99,26 +109,6 @@ function convertToInlineComponent(el) {
       }
       ctrlEl.append(ctrlPartEl);
     }
-    // const ctrlPartEl = document.createElement('div')
-    // ctrlPartEl.classList.add('ctrl-part')
-    // if (dataAudioUs) {
-    //   buildPlayButton(ctrlPartEl, 'us', dataAudioUs)
-    // }
-    // ctrlEl.append(ctrlPartEl);
-
-    // const ctrlPartEl2 = document.createElement('div')
-    // ctrlPartEl2.classList.add('ctrl-part')
-    // if (dataAudioUk) {
-    //   buildPlayButton(ctrlPartEl2, 'uk', dataAudioUk)
-    // }
-    // ctrlEl.append(ctrlPartEl2);
-
-    // const ctrlPartEl3 = document.createElement('div')
-    // ctrlPartEl3.classList.add('ctrl-part')
-    // if (dataAudioOther) {
-    //   buildPlayButton(ctrlPartEl3, 'other', dataAudioOther)
-    // }
-    // ctrlEl.append(ctrlPartEl3);
 
     canEl.append(ctrlEl)
   }
