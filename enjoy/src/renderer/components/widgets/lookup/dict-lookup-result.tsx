@@ -188,7 +188,8 @@ export const DictLookupResultInner = ({
     setHtml(html);
   }
 
-  async function handlePlayAudio(audio: Element) {
+  async function handlePlayAudio(e: Event, audio: Element) {
+    e.preventDefault();
     const href = audio.getAttribute("data-source");
     const data = await handleReadResource(href);
     const ext: string = getExtension(href, "wav");
@@ -198,7 +199,8 @@ export const DictLookupResultInner = ({
     _audio.play();
   }
 
-  function handleJump(el: Element) {
+  function handleJump(e: Event, el: Element) {
+    e.preventDefault();
     const word = el.getAttribute("data-word");
     const hash = el.getAttribute("data-hash");
     onJump?.(word);
@@ -219,12 +221,12 @@ export const DictLookupResultInner = ({
     if (!audios.length) return;
 
     audios.forEach((audio: Element) => {
-      audio.addEventListener("click", () => handlePlayAudio(audio));
+      audio.addEventListener("click", (e) => handlePlayAudio(e, audio));
     });
 
     return () => {
       audios.forEach((audio: Element) => {
-        audio.removeEventListener("click", () => handlePlayAudio(audio));
+        audio.removeEventListener("click", (e) => handlePlayAudio(e, audio));
       });
     };
   };
@@ -234,12 +236,12 @@ export const DictLookupResultInner = ({
     if (!links.length) return;
 
     links.forEach((el: Element) => {
-      el.addEventListener("click", () => handleJump(el));
+      el.addEventListener("click", (e) => handleJump(e, el));
     });
 
     return () => {
       links.forEach((el: Element) => {
-        el.removeEventListener("click", () => handleJump(el));
+        el.removeEventListener("click", (e) => handleJump(e, el));
       });
     };
   };
