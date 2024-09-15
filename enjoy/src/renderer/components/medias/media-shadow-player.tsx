@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   MediaLoadingModal,
   MediaRightPanel,
@@ -10,15 +9,14 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@renderer/components/ui";
-import { useDebounce } from "@uidotdev/usehooks";
 
 export const MediaShadowPlayer = () => {
-  const [layout, setLayout] = useState<number[]>();
-  const debouncedLayout = useDebounce(layout, 100);
-
   return (
     <>
-      <ResizablePanelGroup direction="vertical" onLayout={setLayout}>
+      <ResizablePanelGroup
+        autoSaveId="media-shadow-player-layout"
+        direction="vertical"
+      >
         <ResizablePanel defaultSize={60} minSize={50}>
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel defaultSize={40} minSize={20}>
@@ -33,7 +31,7 @@ export const MediaShadowPlayer = () => {
         <ResizableHandle />
 
         <ResizablePanel minSize={20}>
-          <MediaBottomPanel layout={debouncedLayout} />
+          <MediaBottomPanel />
         </ResizablePanel>
       </ResizablePanelGroup>
       <MediaLoadingModal />
