@@ -48,14 +48,14 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         targetType: media.mediaType,
       });
 
-      if (tr.result && !tr.result["timeline"]) {
+      if (!tr?.result?.timeline) {
         tr.result = {
           originalText: tr.result?.originalText,
         };
       }
 
       const transcriptionOnline = await findTranscriptionOnline();
-      if (transcriptionOnline && !tr.result["timeline"]) {
+      if (transcriptionOnline && !tr?.result?.timeline) {
         return EnjoyApp.transcriptions
           .update(tr.id, {
             state: "finished",
