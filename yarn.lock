@@ -37,7 +37,7 @@ __metadata:
     sass: "npm:^1.78.0"
     tailwindcss: "npm:^3.4.11"
     vue: "npm:^3.5.4"
-    vue-router: "npm:^4.4.4"
+    vue-router: "npm:^4.4.5"
   languageName: unknown
   linkType: soft
 
@@ -24794,7 +24794,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-router@npm:^4.4.3, vue-router@npm:^4.4.4":
+"vue-router@npm:^4.4.3":
   version: 4.4.4
   resolution: "vue-router@npm:4.4.4"
   dependencies:
@@ -24802,6 +24802,17 @@ __metadata:
   peerDependencies:
     vue: ^3.2.0
   checksum: 10c0/aceb25a66602b0771b86caacf62aa9a21dfec678865aac30c0c2f73622b3049c97909b2609467f0053f6dc4230332eeff05c9823d18d3ffdd5915c7c4ca83e98
+  languageName: node
+  linkType: hard
+
+"vue-router@npm:^4.4.5":
+  version: 4.4.5
+  resolution: "vue-router@npm:4.4.5"
+  dependencies:
+    "@vue/devtools-api": "npm:^6.6.4"
+  peerDependencies:
+    vue: ^3.2.0
+  checksum: 10c0/97764fa57f3338559645e6b86c5001b313bacd753bcacf01ca17770d78794fa564d9c9bd24e9b99104e31d7e484d7c30844099300ec923e0c05d45e27111c0e7
   languageName: node
   linkType: hard
 
