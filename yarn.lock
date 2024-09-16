@@ -12849,7 +12849,7 @@ __metadata:
     react-hotkeys-hook: "npm:^4.5.1"
     react-i18next: "npm:^15.0.1"
     react-markdown: "npm:^9.0.1"
-    react-resizable-panels: "npm:^2.1.2"
+    react-resizable-panels: "npm:^2.1.3"
     react-router-dom: "npm:^6.26.2"
     react-shadow-root: "npm:^6.2.0"
     react-tooltip: "npm:^5.28.0"
@@ -21194,13 +21194,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-resizable-panels@npm:^2.1.2":
-  version: 2.1.2
-  resolution: "react-resizable-panels@npm:2.1.2"
+"react-resizable-panels@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "react-resizable-panels@npm:2.1.3"
   peerDependencies:
     react: ^16.14.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.14.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/f532915f45a45e1fcd524249d114ff56b8e3f6a4b0c21509c6635fd23b12a1d68a72dab7be22d2944e904b42ae6e026f7a46749d025b5bbd454be88bbb5319db
+  checksum: 10c0/65257545a935f8bd664b234659bb72535f37ba3ff2a1f09e4063315a8a4651604a6dc3da73b80895d6f15f2c52f9ca5c3e0affa3e1db7aa77b8b430df221bc68
   languageName: node
   linkType: hard
 
