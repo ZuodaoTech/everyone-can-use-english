@@ -3,10 +3,10 @@ import {
   AISettingsProviderContext,
 } from "@renderer/context";
 import { useContext } from "react";
-import { ChatMessageHistory, BufferMemory } from "langchain/memory/index";
+import { ChatMessageHistory, BufferMemory } from "langchain/memory";
 import { ConversationChain } from "langchain/chains";
 import { ChatOpenAI } from "@langchain/openai";
-import { ChatOllama } from "@langchain/community/chat_models/ollama";
+import { ChatOllama } from "@langchain/ollama";
 import {
   ChatPromptTemplate,
   MessagesPlaceholder,
