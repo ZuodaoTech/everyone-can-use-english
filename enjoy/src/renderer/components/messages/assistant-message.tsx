@@ -183,7 +183,7 @@ export const AssistantMessageComponent = (props: {
 
         {configuration.type === "gpt" && (
           <MarkdownWrapper
-            className="message-content select-text prose dark:prose-invert"
+            className="message-content select-text prose dark:prose-invert max-w-full"
             data-source-type="Message"
             data-source-id={message.id}
           >

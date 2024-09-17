@@ -19,7 +19,11 @@ import {
   DropdownMenuSeparator,
   toast,
 } from "@renderer/components/ui";
-import { SpeechPlayer, ConversationShortcuts } from "@renderer/components";
+import {
+  SpeechPlayer,
+  ConversationShortcuts,
+  MarkdownWrapper,
+} from "@renderer/components";
 import { useContext, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import {
@@ -93,22 +97,9 @@ export const UserMessageComponent = (props: {
         </Avatar>
       </div>
       <div className="flex flex-col gap-2 px-4 py-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full mb-2">
-        <Markdown
-          className="select-text prose dark:prose-invert"
-          components={{
-            a({ node, children, ...props }) {
-              try {
-                new URL(props.href ?? "");
-                props.target = "_blank";
-                props.rel = "noopener noreferrer";
-              } catch (e) {}
-
-              return <a {...props}>{children}</a>;
-            },
-          }}
-        >
+        <MarkdownWrapper className="message-content select-text prose dark:prose-invert max-w-full">
           {message.content}
-        </Markdown>
+        </MarkdownWrapper>
 
         {Boolean(speech) && <SpeechPlayer speech={speech} />}
 
