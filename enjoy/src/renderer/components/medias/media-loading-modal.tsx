@@ -51,31 +51,6 @@ const LoadingContent = () => {
     transcribingOutput,
     generateTranscription,
   } = useContext(MediaShadowProviderContext);
-  // Decode error
-  if (decodeError) {
-    return (
-      <>
-        <div className="mb-4 flex items-center space-x-4">
-          <div className="w-4 h-4">
-            <CircleAlertIcon className="text-destructive w-4 h-4" />
-          </div>
-          <div className="select-text">
-            <div className="mb-2">{decodeError}</div>
-            <div className="text-sm text-muted-foreground">
-              {t("failedToDecodeWaveform")}:{" "}
-              <span className="break-all ">{media?.src}</span>
-            </div>
-          </div>
-        </div>
-        <AlertDialogFooter>
-          <Button variant="secondary" onClick={() => navigate(-1)}>
-            {t("cancel")}
-          </Button>
-        </AlertDialogFooter>
-      </>
-    );
-  }
-
   if (decoded) {
     // Decoded and transcription created but not ready
     if (transcription && !transcription.result?.timeline) {
@@ -116,6 +91,29 @@ const LoadingContent = () => {
         </div>
       );
     }
+    // Decode error
+  } else if (decodeError) {
+    return (
+      <>
+        <div className="mb-4 flex items-center space-x-4">
+          <div className="w-4 h-4">
+            <CircleAlertIcon className="text-destructive w-4 h-4" />
+          </div>
+          <div className="select-text">
+            <div className="mb-2">{decodeError}</div>
+            <div className="text-sm text-muted-foreground">
+              {t("failedToDecodeWaveform")}:{" "}
+              <span className="break-all ">{media?.src}</span>
+            </div>
+          </div>
+        </div>
+        <AlertDialogFooter>
+          <Button variant="secondary" onClick={() => navigate(-1)}>
+            {t("cancel")}
+          </Button>
+        </AlertDialogFooter>
+      </>
+    );
   } else {
     return (
       <>
