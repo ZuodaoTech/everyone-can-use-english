@@ -69,6 +69,9 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
           });
           setTranscription(transcriptionOnline);
           toast.success(t("downloadedTranscriptionFromCloud"));
+          if (transcribing) {
+            abortGenerateTranscription();
+          }
           return transcriptionOnline;
         } else {
           setTranscription(tr);
