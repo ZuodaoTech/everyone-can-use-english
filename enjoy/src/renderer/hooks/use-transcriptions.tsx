@@ -21,6 +21,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const { transcribe, output } = useTranscribe();
   const [transcribingProgress, setTranscribingProgress] = useState<number>(0);
   const [transcribing, setTranscribing] = useState<boolean>(false);
+  const [creating, setCreating] = useState<boolean>(false);
   const [transcribingOutput, setTranscribingOutput] = useState<string>("");
   const [service, setService] = useState<SttEngineOptionEnum | "upload">(
     sttEngine
@@ -42,40 +43,45 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
     async (): Promise<TranscriptionType | void> => {
       if (!media) return;
       if (transcription?.targetId === media.id) return;
+      if (creating) return;
 
-      const tr = await EnjoyApp.transcriptions.findOrCreate({
-        targetId: media.id,
-        targetType: media.mediaType,
-      });
+      try {
+        setCreating(true);
+        const tr = await EnjoyApp.transcriptions.findOrCreate({
+          targetId: media.id,
+          targetType: media.mediaType,
+        });
 
-      if (!tr?.result?.timeline) {
-        tr.result = {
-          originalText: tr.result?.originalText,
-        };
-      }
+        if (!tr?.result?.timeline) {
+          tr.result = {
+            originalText: tr.result?.originalText,
+          };
+        }
 
-      const transcriptionOnline = await findTranscriptionOnline();
-      if (transcriptionOnline && !tr?.result?.timeline) {
-        return EnjoyApp.transcriptions
-          .update(tr.id, {
+        const transcriptionOnline = await findTranscriptionOnline();
+        if (transcriptionOnline && !tr?.result?.timeline) {
+          await EnjoyApp.transcriptions.update(tr.id, {
             state: "finished",
             result: transcriptionOnline.result,
             engine: transcriptionOnline.engine,
             model: transcriptionOnline.model,
             language: transcriptionOnline.language || media.language,
-          })
-          .then(() => {
-            toast.success(t("downloadedTranscriptionFromCloud"));
-            setTranscription(transcriptionOnline);
-            return transcriptionOnline;
-          })
-          .catch((err) => {
-            console.error(err);
-            return tr;
           });
-      } else {
-        setTranscription(tr);
-        return tr;
+          setTranscription(transcriptionOnline);
+          toast.success(t("downloadedTranscriptionFromCloud"));
+          if (transcribing) {
+            abortGenerateTranscription();
+          }
+          return transcriptionOnline;
+        } else {
+          setTranscription(tr);
+          return tr;
+        }
+      } catch (err) {
+        console.error(err);
+        return null;
+      } finally {
+        setCreating(false);
       }
     };
 
