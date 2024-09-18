@@ -67,6 +67,16 @@ export class ChatMember extends Model<ChatMember> {
   agent: ChatAgent;
 
   @Column(DataType.VIRTUAL)
+  get name(): string {
+    if (this.userType === "User") {
+      return this.user.name;
+    } else if (this.userType === "Agent") {
+      return this.agent.name;
+    }
+    return "";
+  }
+
+  @Column(DataType.VIRTUAL)
   get user(): {
     name: string;
     avatarUrl: string;
