@@ -43,6 +43,7 @@ type ChatMemberType = {
     introduction?: string;
     [key: string]: any;
   };
+  name: string;
   agent?: ChatAgentType;
   user?: UserType;
 };

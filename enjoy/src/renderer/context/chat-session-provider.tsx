@@ -203,6 +203,7 @@ export const ChatSessionProvider = ({
       const chain = prompt.pipe(llm);
 
       setSubmitting(true);
+      const lastChatMessage = chatMessages[chatMessages.length - 1];
       const reply = await chain.invoke({
         name: member.agent.name,
         agent_prompt: member.agent.config.prompt || "",
@@ -219,6 +220,7 @@ export const ChatSessionProvider = ({
           })
           .join("\n"),
         history: chatMessages
+          .slice(0, chatMessages.length - 1)
           .map(
             (message) =>
               `- ${(message.member.user || message.member.agent).name}: ${
@@ -226,7 +228,10 @@ export const ChatSessionProvider = ({
               }(${dayjs(message.createdAt).fromNow()})`
           )
           .join("\n"),
-        input: chatMessages.length > 0 ? "Continue" : "Start the conversation",
+        input:
+          (lastChatMessage
+            ? `${lastChatMessage.member.name}: ${lastChatMessage.content}\n`
+            : "") + `${member.agent.name}:`,
       });
 
       // the reply may contain the member's name like "Agent: xxx". We need to remove it.
