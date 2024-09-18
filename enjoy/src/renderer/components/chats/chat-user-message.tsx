@@ -385,7 +385,7 @@ const ChatUserMessageActions = (props: {
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <div className="p-4 font-serif border-t">
+              <div className="p-4 font-serif border-t max-h-96 overflow-y-auto">
                 <MarkdownWrapper className="select-text prose dark:prose-invert">
                   {refinement}
                 </MarkdownWrapper>
