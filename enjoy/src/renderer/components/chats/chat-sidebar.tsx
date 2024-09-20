@@ -70,7 +70,6 @@ export const ChatSidebar = () => {
 
       await createChat({
         name: "Making Friends",
-        language: "en-US",
         topic: "Improving speaking skills and American culture.",
         members: [
           {

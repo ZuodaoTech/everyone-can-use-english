@@ -36,9 +36,8 @@ export class ChatAgent extends Model<ChatAgent> {
   @Column(DataType.STRING)
   introduction: string;
 
-  @AllowNull(false)
   @Column(DataType.STRING)
-  language: string;
+  source: string;
 
   @Column(DataType.JSON)
   config: any;
@@ -59,38 +58,8 @@ export class ChatAgent extends Model<ChatAgent> {
   }
 
   @Column(DataType.VIRTUAL)
-  get engine(): string {
-    return this.getDataValue("config")?.engine;
-  }
-
-  @Column(DataType.VIRTUAL)
-  get model(): string {
-    return this.getDataValue("config")?.model;
-  }
-
-  @Column(DataType.VIRTUAL)
   get prompt(): string {
     return this.getDataValue("config")?.prompt;
-  }
-
-  @Column(DataType.VIRTUAL)
-  get temperature(): number {
-    return this.getDataValue("config")?.temperature;
-  }
-
-  @Column(DataType.VIRTUAL)
-  get ttsEngine(): string {
-    return this.getDataValue("config")?.ttsEngine;
-  }
-
-  @Column(DataType.VIRTUAL)
-  get ttsModel(): string {
-    return this.getDataValue("config")?.ttsModel;
-  }
-
-  @Column(DataType.VIRTUAL)
-  get ttsVoice(): string {
-    return this.getDataValue("config")?.ttsVoice;
   }
 
   @AfterCreate
@@ -122,5 +91,41 @@ export class ChatAgent extends Model<ChatAgent> {
   @BeforeDestroy
   static destroyMembers(chatAgent: ChatAgent) {
     ChatMember.destroy({ where: { userId: chatAgent.id } });
+  }
+
+  static async migrateConfigToChatMember() {
+    logger.info("Migrating config to chat member");
+    const chatAgents = await ChatAgent.findAll({
+      include: [ChatMember],
+    });
+    for (const chatAgent of chatAgents) {
+      if (!chatAgent.config.engine) return;
+
+      const tx = await ChatAgent.sequelize.transaction();
+      logger.info("Migrating from chat agent", chatAgent.id);
+      chatAgent.members.forEach(async (member) => {
+        logger.info("Migrating to chat member", member.id);
+        member.config = {
+          ...member.config,
+          gpt: {
+            engine: chatAgent.config.engine,
+            model: chatAgent.config.model,
+            temperature: chatAgent.config.temperature,
+          },
+          tts: {
+            engine: chatAgent.config.ttsEngine,
+            model: chatAgent.config.ttsModel,
+            voice: chatAgent.config.ttsVoice,
+          },
+        };
+
+        await member.save({ transaction: tx });
+      });
+      chatAgent.config = {
+        prompt: chatAgent.config.prompt,
+      };
+      await chatAgent.save({ transaction: tx });
+      await tx.commit();
+    }
   }
 }

@@ -48,7 +48,6 @@ export const ChatForm = (props: {
   onSave: (data: {
     name: string;
     topic: string;
-    language: string;
     members: Array<Partial<ChatMemberType>>;
     config: any;
   }) => void;
@@ -65,7 +64,6 @@ export const ChatForm = (props: {
   const chatFormSchema = z.object({
     name: z.string().min(1),
     topic: z.string(),
-    language: z.string(),
     config: z.object({
       sttEngine: z.string(),
     }),
@@ -89,14 +87,12 @@ export const ChatForm = (props: {
       ? {
           name: chat.name,
           topic: chat.topic,
-          language: chat.language,
           config: chat.config,
           members: [...chat.members],
         }
       : {
           name: t("newChat"),
           topic: "Casual Chat.",
-          language: learningLanguage,
           config: {
             sttEngine,
           },
@@ -113,11 +109,10 @@ export const ChatForm = (props: {
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    const { name, topic, language, members, config } = data;
+    const { name, topic, members, config } = data;
     return onSave({
       name,
       topic,
-      language,
       members,
       config,
     });
@@ -135,37 +130,6 @@ export const ChatForm = (props: {
               <FormItem>
                 <FormLabel>{t("models.chat.name")}</FormLabel>
                 <Input {...field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="language"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("models.chat.language")}</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="text-xs">
-                    <SelectValue>
-                      {
-                        LANGUAGES.find((lang) => lang.code === field.value)
-                          ?.name
-                      }
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {LANGUAGES.map((lang) => (
-                      <SelectItem
-                        className="text-xs"
-                        value={lang.code}
-                        key={lang.code}
-                      >
-                        {lang.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -256,60 +220,54 @@ export const ChatForm = (props: {
                       </div>
                       <CheckCircleIcon className="absolute top-2 right-2 w-4 h-4 text-green-500" />
                     </div>
-                    {chatAgents
-                      .filter((a) => a.language === form.watch("language"))
-                      .map((chatAgent) => (
-                        <div
-                          key={chatAgent.id}
-                          className={`flex items-center space-x-1 px-2 py-1 rounded-lg w-full overflow-hidden relative cursor-pointer border hover:shadow ${
-                            editingMember?.userId === chatAgent.id
-                              ? "border-blue-500 bg-background"
-                              : ""
-                          }`}
-                          onClick={() => {
-                            const member = field.value.find(
-                              (m) => m.userId === chatAgent.id
-                            );
-                            if (editingMember?.userId === chatAgent.id) {
-                              setEditingMember(null);
-                            } else {
-                              setEditingMember(
-                                member || {
-                                  userId: chatAgent.id,
-                                  userType: "Agent",
-                                  config: {},
-                                }
-                              );
-                            }
-                          }}
-                        >
-                          <Avatar className="w-12 h-12">
-                            <img
-                              src={chatAgent.avatarUrl}
-                              alt={chatAgent.name}
-                            />
-                            <AvatarFallback>{chatAgent.name[0]}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <div className="text-sm line-clamp-1">
-                              {chatAgent.name}
-                            </div>
-                            <div className="text-xs text-muted-foreground line-clamp-1">
-                              {chatAgent.introduction}
-                            </div>
-                          </div>
-                          {field.value.findIndex(
+                    {chatAgents.map((chatAgent) => (
+                      <div
+                        key={chatAgent.id}
+                        className={`flex items-center space-x-1 px-2 py-1 rounded-lg w-full overflow-hidden relative cursor-pointer border hover:shadow ${
+                          editingMember?.userId === chatAgent.id
+                            ? "border-blue-500 bg-background"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          const member = field.value.find(
                             (m) => m.userId === chatAgent.id
-                          ) > -1 && (
-                            <CheckCircleIcon className="absolute top-2 right-2 w-4 h-4 text-green-500" />
-                          )}
+                          );
+                          if (editingMember?.userId === chatAgent.id) {
+                            setEditingMember(null);
+                          } else {
+                            setEditingMember(
+                              member || {
+                                userId: chatAgent.id,
+                                userType: "Agent",
+                                config: {},
+                              }
+                            );
+                          }
+                        }}
+                      >
+                        <Avatar className="w-12 h-12">
+                          <img src={chatAgent.avatarUrl} alt={chatAgent.name} />
+                          <AvatarFallback>{chatAgent.name[0]}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="text-sm line-clamp-1">
+                            {chatAgent.name}
+                          </div>
+                          <div className="text-xs text-muted-foreground line-clamp-1">
+                            {chatAgent.introduction}
+                          </div>
                         </div>
-                      ))}
+                        {field.value.findIndex(
+                          (m) => m.userId === chatAgent.id
+                        ) > -1 && (
+                          <CheckCircleIcon className="absolute top-2 right-2 w-4 h-4 text-green-500" />
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </ScrollArea>
                 {editingMember && (
                   <MemberForm
-                    language={form.watch("language")}
                     topic={form.watch("topic")}
                     members={form.watch("members")}
                     member={editingMember}
@@ -389,7 +347,6 @@ export const ChatForm = (props: {
 };
 
 const MemberForm = (props: {
-  language: string;
   topic: string;
   members: Array<Partial<ChatMemberType>>;
   member: Partial<ChatMemberType>;
@@ -399,7 +356,6 @@ const MemberForm = (props: {
   onConfigChange?: (config: ChatMemberType["config"]) => void;
 }) => {
   const {
-    language,
     topic,
     members,
     member,
@@ -418,7 +374,6 @@ const MemberForm = (props: {
           name: chatAgent.name,
           agent_prompt: chatAgent.config.prompt,
           agent_chat_prompt: member.config.chatPrompt,
-          language,
           topic,
           members: members
             .map((m) => {

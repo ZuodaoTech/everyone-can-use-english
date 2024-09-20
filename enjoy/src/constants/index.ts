@@ -62,13 +62,10 @@ export const CHAT_SYSTEM_PROMPT_TEMPLATE = `You are {name}.
 {agent_prompt}
 {agent_chat_prompt}
 
-[Rules must be followed]
-1. Always reply in {language}.
-2. Reply in your personality style and talk in casual way.
-3. Reply what you would say only, do not include any other format.
-
-[Chat Topic]
-{topic}
+[Guidelines]
+1. Stay in character: Always act according to your defined role.
+2. Be helpful and polite: Provide assistance to the best of your abilities.
+3. Respect context: Pay attention to the current context of the conversation.
 
 [Chat Members]
 {members}

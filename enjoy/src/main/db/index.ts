@@ -179,6 +179,9 @@ db.connect = async () => {
     // migrate settings
     await UserSetting.migrateFromSettings();
 
+    // migrate chat agents
+    await ChatAgent.migrateConfigToChatMember();
+
     // initialize i18n
     const language = (await UserSetting.get(
       UserSettingKeyEnum.LANGUAGE
@@ -189,7 +192,6 @@ db.connect = async () => {
     await sequelize.query("VACUUM");
 
     // register handlers
-
     for (const handler of handlers) {
       handler.register();
     }

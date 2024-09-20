@@ -95,9 +95,8 @@ export const ChatSessionProvider = ({
   children: React.ReactNode;
   chat: ChatType;
 }) => {
-  const { EnjoyApp, user, apiUrl, recorderConfig } = useContext(
-    AppSettingsProviderContext
-  );
+  const { EnjoyApp, user, apiUrl, recorderConfig, learningLanguage } =
+    useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
   const [submitting, setSubmitting] = useState(false);
   const [shadowing, setShadowing] = useState<AudioType>(null);
@@ -158,7 +157,7 @@ export const ChatSessionProvider = ({
     try {
       setSubmitting(true);
       const { transcript, url } = await transcribe(blob, {
-        language: chat.language,
+        language: learningLanguage,
         service: chat.config.sttEngine,
         align: false,
       });
@@ -195,7 +194,7 @@ export const ChatSessionProvider = ({
     }
 
     try {
-      const llm = buildLlm(member.agent);
+      const llm = buildLlm(member);
       const prompt = ChatPromptTemplate.fromMessages([
         ["system", CHAT_SYSTEM_PROMPT_TEMPLATE],
         ["user", "{input}"],
@@ -208,7 +207,6 @@ export const ChatSessionProvider = ({
         name: member.agent.name,
         agent_prompt: member.agent.config.prompt || "",
         agent_chat_prompt: member.config.prompt || "",
-        language: chat.language,
         topic: chat.topic,
         members: chat.members
           .map((m) => {
@@ -260,8 +258,12 @@ export const ChatSessionProvider = ({
     }
   };
 
-  const buildLlm = (agent: ChatAgentType) => {
-    const { engine, model, temperature } = agent.config;
+  const buildLlm = (member: ChatMemberType) => {
+    const {
+      engine = "enjoyai",
+      model = "gpt-4o",
+      temperature = 0.5,
+    } = member.config.gpt;
 
     if (engine === "enjoyai") {
       return new ChatOpenAI({

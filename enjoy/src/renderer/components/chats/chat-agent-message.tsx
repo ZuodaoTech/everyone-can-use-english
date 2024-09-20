@@ -95,9 +95,9 @@ export const ChatAgentMessage = (props: {
       sourceId: chatMessage.id,
       text: chatMessage.content,
       configuration: {
-        engine: chatMessage.member.agent.config.ttsEngine,
-        model: chatMessage.member.agent.config.ttsModel,
-        voice: chatMessage.member.agent.config.ttsVoice,
+        engine: chatMessage.member.config.tts?.engine,
+        model: chatMessage.member.config.tts?.model,
+        voice: chatMessage.member.config.tts?.voice,
       },
     })
       .then((speech) => {

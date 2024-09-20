@@ -165,7 +165,7 @@ const ChatUserMessageActions = (props: {
   const { refine } = useAiCommand();
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const {
     chatMessages,
     startRecording,
@@ -176,7 +176,6 @@ const ChatUserMessageActions = (props: {
     onDeleteMessage,
     submitting,
   } = useContext(ChatSessionProviderContext);
-  const { currentChat } = useContext(ChatProviderContext);
 
   const handleRefine = async (params?: { reload?: boolean }) => {
     if (refining) return;
@@ -194,7 +193,7 @@ const ChatUserMessageActions = (props: {
 
         const context = `I'm chatting in a chatroom. The previous messages are as follows:\n\n${buildChatHistory()}`;
         const result = await refine(chatMessage.content, {
-          learningLanguage: currentChat.language,
+          learningLanguage,
           context,
         });
         EnjoyApp.cacheObjects.set(cacheKey, result);

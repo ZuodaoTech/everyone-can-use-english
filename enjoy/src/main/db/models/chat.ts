@@ -55,10 +55,6 @@ export class Chat extends Model<Chat> {
   @Column(DataType.TEXT)
   topic: string;
 
-  @AllowNull(false)
-  @Column(DataType.STRING)
-  language: string;
-
   @Column(DataType.TEXT)
   digest: string;
 

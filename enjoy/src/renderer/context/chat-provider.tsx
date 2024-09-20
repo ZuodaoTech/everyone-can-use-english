@@ -8,7 +8,6 @@ type ChatProviderState = {
   fetchChats: (query?: string) => Promise<void>;
   createChat: (data: {
     name: string;
-    language: string;
     topic: string;
     members: Array<{
       userId?: string;
@@ -26,7 +25,6 @@ type ChatProviderState = {
     id: string,
     data: {
       name: string;
-      language: string;
       topic: string;
       members: Array<{
         userId?: string;
