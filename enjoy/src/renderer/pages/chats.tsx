@@ -11,6 +11,7 @@ export default function Chats() {
     <ChatProvider>
       <ResizablePanelGroup direction="horizontal" className="h-screen">
         <ResizablePanel
+          className="bg-muted/30"
           collapsible={true}
           defaultSize={20}
           minSize={15}

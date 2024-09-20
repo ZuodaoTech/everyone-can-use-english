@@ -1,12 +1,6 @@
-import {
-  Avatar,
-  AvatarFallback,
-  Button,
-  Input,
-  ScrollArea,
-} from "@renderer/components/ui";
-import { ChatAgentCard, ChatAgentForm } from "@renderer/components";
-import { PlusCircleIcon } from "lucide-react";
+import { Button, Input } from "@renderer/components/ui";
+import { ChatAgentCard } from "@renderer/components";
+import { PlusIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { t } from "i18next";
 import { useDebounce } from "@uidotdev/usehooks";
@@ -23,16 +17,16 @@ export const ChatAgents = () => {
   }, [debouncedQuery]);
 
   return (
-    <div className="overflow-hidden h-full relative p-3">
-      <div className="sticky flex items-center space-x-2 mb-4">
+    <div className="overflow-hidden h-full relative py-2 px-1">
+      <div className="sticky flex items-center space-x-2 py-2 px-1">
         <Input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          className="rounded-full"
+          className="rounded h-8 text-xs"
           placeholder={t("search")}
         />
-        <Button className="w-8 h-8" variant="ghost" size="icon">
-          <PlusCircleIcon className="w-5 h-5" />
+        <Button className="w-8 h-8 p-0" variant="ghost" size="icon">
+          <PlusIcon className="w-4 h-4" />
         </Button>
       </div>
       {chatAgents.length === 0 && (

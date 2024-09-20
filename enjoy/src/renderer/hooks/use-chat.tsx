@@ -18,7 +18,6 @@ export const useChat = (chatAgentId: string) => {
     EnjoyApp.chats
       .findAll({ query, chatAgentId })
       .then((data) => {
-        console.log(data);
         dispatchChats({ type: "set", records: data });
       })
       .catch((error) => {

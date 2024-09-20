@@ -205,7 +205,7 @@ export const ChatInput = () => {
           disabled={submitting}
           placeholder={t("pressEnterToSend")}
           data-testid="chat-input"
-          className="leading-6 bg-muted h-9 text-muted-foreground rounded-lg text-base px-3 py-1 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none min-h-[2.25rem] max-h-[70vh] scrollbar-thin !overflow-x-hidden"
+          className="bg-muted/50 h-8 text-muted-foreground rounded-lg text-sm leading-7 px-3 py-1 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none min-h-[2.25rem] max-h-[70vh] scrollbar-thin !overflow-x-hidden"
         />
         <Button
           ref={submitRef}

@@ -1,5 +1,4 @@
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
-import { Avatar, AvatarFallback } from "@renderer/components/ui";
 import { UsersRoundIcon } from "lucide-react";
 
 export const ChatCard = (props: {
@@ -11,8 +10,8 @@ export const ChatCard = (props: {
   return (
     <div
       key={chat.id}
-      className={`flex items-center space-x-2 rounded-lg p-2 hover:bg-muted cursor-pointer ${
-        selected ? "bg-muted" : ""
+      className={`flex items-center space-x-2 rounded-lg px-2 py-1 hover:bg-muted/50 cursor-pointer ${
+        selected ? "bg-muted/50" : ""
       }`}
       onClick={() => onSelect(chat)}
     >
@@ -21,7 +20,7 @@ export const ChatCard = (props: {
       ) : (
         <ChatBubbleIcon className="w-4 h-4" />
       )}
-      <div className="flex-1 text-sm line-clamp-1">{chat.name}</div>
+      <div className="flex-1 text-sm font-serif line-clamp-1">{chat.name}</div>
     </div>
   );
 };
