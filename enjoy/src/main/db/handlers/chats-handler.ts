@@ -11,17 +11,37 @@ const logger = log.scope("db/handlers/chats-handler");
 class ChatsHandler {
   private async findAll(
     _event: IpcMainEvent,
-    options: FindOptions<Attributes<Chat>> & { query?: string }
+    options: FindOptions<Attributes<Chat>> & {
+      query?: string;
+      chatAgentId?: string;
+    }
   ) {
-    const { query, where = {} } = options || {};
+    const { query, where = {}, chatAgentId } = options || {};
     delete options.query;
     delete options.where;
+    delete options.chatAgentId;
 
     if (query) {
       (where as any).name = {
         [Op.like]: `%${query}%`,
       };
     }
+
+    let chatIds;
+    if (chatAgentId) {
+      const chatMembers = await ChatMember.findAll({
+        where: {
+          userId: chatAgentId,
+          userType: "Agent",
+        },
+      });
+      chatIds = chatMembers.map((member) => member.chatId);
+
+      (where as any)["id"] = {
+        [Op.in]: chatIds,
+      };
+    }
+
     const chats = await Chat.findAll({
       order: [["updatedAt", "DESC"]],
       where,

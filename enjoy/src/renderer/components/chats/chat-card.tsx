@@ -1,4 +1,6 @@
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { Avatar, AvatarFallback } from "@renderer/components/ui";
+import { UsersRoundIcon } from "lucide-react";
 
 export const ChatCard = (props: {
   chat: ChatType;
@@ -9,24 +11,17 @@ export const ChatCard = (props: {
   return (
     <div
       key={chat.id}
-      className={`rounded-lg border py-2 px-4 hover:bg-background cursor-pointer ${
-        selected ? "bg-background" : ""
+      className={`flex items-center space-x-2 rounded-lg p-2 hover:bg-muted cursor-pointer ${
+        selected ? "bg-muted" : ""
       }`}
       onClick={() => onSelect(chat)}
     >
-      <div className="text-sm line-clamp-1 mb-2">
-        {chat.name}({chat.membersCount})
-      </div>
-      <div className="flex items-center -space-x-2 justify-end">
-        {(chat.members || []).slice(0, 5).map((member) => (
-          <Avatar key={member.id} className="w-6 h-6 border bg-background">
-            <img src={(member.agent || member.user).avatarUrl} />
-            <AvatarFallback>
-              {(member.agent || member.user).name[0]}
-            </AvatarFallback>
-          </Avatar>
-        ))}
-      </div>
+      {chat.membersCount > 2 ? (
+        <UsersRoundIcon className="w-4 h-4" />
+      ) : (
+        <ChatBubbleIcon className="w-4 h-4" />
+      )}
+      <div className="flex-1 text-sm line-clamp-1">{chat.name}</div>
     </div>
   );
 };

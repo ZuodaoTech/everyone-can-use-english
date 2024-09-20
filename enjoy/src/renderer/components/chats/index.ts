@@ -8,4 +8,5 @@ export * from "./chat-message";
 export * from "./chat-agent-message";
 export * from "./chat-user-message";
 export * from "./chat-messages";
-export * from "./chat-sidebar";
+export * from "./chat-list";
+export * from "./chat-agent-card";

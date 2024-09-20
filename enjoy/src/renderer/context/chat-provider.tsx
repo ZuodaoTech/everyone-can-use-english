@@ -5,6 +5,8 @@ type ChatProviderState = {
   chats: ChatType[];
   currentChat: ChatType;
   setCurrentChat: (chat: ChatType) => void;
+  currentChatAgent: ChatAgentType;
+  setCurrentChatAgent: (chatAgent: ChatAgentType) => void;
   fetchChats: (query?: string) => Promise<void>;
   createChat: (data: {
     name: string;
@@ -56,6 +58,8 @@ const initialState: ChatProviderState = {
   chats: [],
   currentChat: null,
   setCurrentChat: () => null,
+  currentChatAgent: null,
+  setCurrentChatAgent: () => null,
   fetchChats: () => null,
   createChat: () => null,
   updateChat: () => null,
@@ -72,7 +76,10 @@ export const ChatProviderContext =
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentChat, setCurrentChat] = useState<ChatType>(null);
-  const { chats, fetchChats, createChat, updateChat, destroyChat } = useChat();
+  const [currentChatAgent, setCurrentChatAgent] = useState<ChatAgentType>(null);
+  const { chats, fetchChats, createChat, updateChat, destroyChat } = useChat(
+    currentChatAgent?.id
+  );
   const {
     chatAgents,
     fetchChatAgents,
@@ -85,6 +92,10 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setCurrentChat(chats[0]);
   }, [chats]);
 
+  useEffect(() => {
+    setCurrentChatAgent(chatAgents[0]);
+  }, [chatAgents]);
+
   return (
     <ChatProviderContext.Provider
       value={{
@@ -93,6 +104,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         currentChat,
         setCurrentChat,
         chatAgents,
+        currentChatAgent,
+        setCurrentChatAgent,
         createChat,
         updateChat,
         destroyChat,

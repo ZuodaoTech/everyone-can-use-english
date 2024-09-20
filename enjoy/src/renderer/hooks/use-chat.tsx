@@ -7,15 +7,18 @@ import { toast } from "@renderer/components/ui";
 import { t } from "i18next";
 import { chatsReducer } from "@renderer/reducers";
 
-export const useChat = () => {
+export const useChat = (chatAgentId: string) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [chats, dispatchChats] = useReducer(chatsReducer, []);
 
   const fetchChats = async (query?: string) => {
+    if (!chatAgentId) return;
+
     EnjoyApp.chats
-      .findAll({ query })
+      .findAll({ query, chatAgentId })
       .then((data) => {
+        console.log(data);
         dispatchChats({ type: "set", records: data });
       })
       .catch((error) => {
@@ -106,13 +109,16 @@ export const useChat = () => {
   };
 
   useEffect(() => {
-    fetchChats();
     addDblistener(onChatUpdate);
 
     return () => {
       removeDbListener(onChatUpdate);
     };
   }, []);
+
+  useEffect(() => {
+    fetchChats();
+  }, [chatAgentId]);
 
   return {
     chats,

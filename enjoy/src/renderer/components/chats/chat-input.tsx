@@ -309,7 +309,7 @@ const ChatSuggestionButton = (props: {
   const { chatSuggestion } = useAiCommand();
 
   const context = `I'm ${
-    currentChat.members.find((member) => member.user).user.name
+    currentChat.members.find((member) => member.user)?.user?.name
   }.
   
   [Chat Topic]
