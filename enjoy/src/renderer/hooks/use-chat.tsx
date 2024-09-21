@@ -25,24 +25,7 @@ export const useChat = (chatAgentId: string) => {
       });
   };
 
-  const createChat = (data: {
-    name: string;
-    language: string;
-    topic: string;
-    members: Array<{
-      userId?: string;
-      userType?: "User" | "Agent";
-      config?: {
-        prompt?: string;
-        introduction?: string;
-        gpt: GptConfigType;
-        tts: TtsConfigType;
-      };
-    }>;
-    config: {
-      sttEngine: string;
-    };
-  }) => {
+  const createChat = (data: ChatDtoType) => {
     return EnjoyApp.chats
       .create(data)
       .then((chat) => {
@@ -54,25 +37,7 @@ export const useChat = (chatAgentId: string) => {
       });
   };
 
-  const updateChat = (
-    id: string,
-    data: {
-      name: string;
-      language: string;
-      topic: string;
-      members: Array<{
-        userId?: string;
-        userType?: "User" | "Agent";
-        prompt?: string;
-        introduction?: string;
-        gpt: GptConfigType;
-        tts: TtsConfigType;
-      }>;
-      config: {
-        sttEngine: string;
-      };
-    }
-  ) => {
+  const updateChat = (id: string, data: ChatDtoType) => {
     return EnjoyApp.chats
       .update(id, data)
       .then((chat) => {

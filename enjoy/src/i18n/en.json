@@ -138,14 +138,11 @@
       "name": "Name",
       "introduction": "Introduction",
       "language": "Language",
-      "prompt": "Prompt",
-      "engine": "AI Engine",
-      "model": "AI Model",
-      "temperature": "Temperature",
-      "temperatureDescription": "The higher the temperature, the more creative the result",
-      "ttsEngine": "TTS Engine",
-      "ttsModel": "TTS Model",
-      "ttsVoice": "TTS Voice"
+      "prompt": "Prompt"
+    },
+    "chatMember": {
+      "prompt": "Extra Prompt",
+      "promptDescription": "The extra prompt will be added to the system prompt of the chat agent. It is useful when you want to customize the chat agent's behavior in this specific chat."
     },
     "chat": {
       "notFound": "Chat not found",
@@ -156,7 +153,9 @@
       "language": "Language",
       "topic": "Topic",
       "members": "Members",
-      "memberConfig": "Member Configuration"
+      "basicSettings": "Basic Settings",
+      "memberSettings": "Member Settings",
+      "advancedSettings": "Advanced Settings"
     }
   },
   "sidebar": {
@@ -794,5 +793,27 @@
   "exportRecordingsSuccess": "Export recordings successfully",
   "upgrade": "Upgrade",
   "upgradeNotice": "Enjoy App v{{version}} is available. Please upgrade to the latest version.",
-  "downloadedTranscriptionFromCloud": "Downloaded transcription from cloud"
+  "downloadedTranscriptionFromCloud": "Downloaded transcription from cloud",
+  "gpt": {
+    "engine": "AI engine",
+    "model": "AI model",
+    "temperature": "Temperature",
+    "temperatureDescription": "The higher the value, the more creative the generated text, otherwise it is more stable",
+    "maxTokens": "Max Tokens",
+    "maxTokensDescription": "The maximum number of tokens consumed per interaction, -1 means no limit",
+    "presencePenalty": "Presence Penalty",
+    "presencePenaltyDescription": "-2.0 ~ 2.0, the higher the value, the more likely to expand to new topics",
+    "frequencyPenalty": "Frequency Penalty",
+    "frequencyPenaltyDescription": "-2.0 ~ 2.0, the higher the value, the more likely to reduce repetition",
+    "historyBufferSize": "History Buffer Size",
+    "historyBufferSizeDescription": "The more context, the more coherent the generated text, the more resources consumed",
+    "numberOfChoices": "Number of Choices",
+    "numberOfChoicesDescription": "When greater than 1, it will generate multiple versions of text each time"
+  },
+  "tts": {
+    "engine": "TTS 引擎",
+    "model": "TTS Model",
+    "voice": "TTS Voice",
+    "language": "TTS Language"
+  }
 }

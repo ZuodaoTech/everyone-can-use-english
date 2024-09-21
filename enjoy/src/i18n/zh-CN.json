@@ -138,14 +138,11 @@
       "name": "角色名称",
       "introduction": "角色介绍",
       "language": "语言",
-      "prompt": "提示语",
-      "engine": "AI 引擎",
-      "model": "AI 模型",
-      "temperature": "随机性",
-      "temperatureDescription": "值越高，生成的文本越具创造性，反之则越稳定",
-      "ttsEngine": "TTS 引擎",
-      "ttsModel": "TTS 模型",
-      "ttsVoice": "TTS 音色"
+      "prompt": "提示语"
+    },
+    "chatMember": {
+      "prompt": "额外提示语",
+      "promptDescription": "额外提示将添加到角色的系统提示中。当您希望在额外定义角色在当前聊天中的行为时，这非常有用。"
     },
     "chat": {
       "notFound": "未找到聊天",
@@ -156,7 +153,9 @@
       "language": "语言",
       "topic": "话题",
       "members": "成员",
-      "memberConfig": "成员配置"
+      "basicSettings": "基础设置",
+      "memberSettings": "成员设置",
+      "advancedSettings": "高级设置"
     }
   },
   "sidebar": {
@@ -794,5 +793,27 @@
   "exportRecordingsSuccess": "导出录音成功",
   "upgrade": "升级",
   "upgradeNotice": "Enjoy App v{{version}} 已发布。请升级到最新版本。",
-  "downloadedTranscriptionFromCloud": "从云端下载了语音文本"
+  "downloadedTranscriptionFromCloud": "从云端下载了语音文本",
+  "gpt": {
+    "engine": "AI 引擎",
+    "model": "AI 模型",
+    "temperature": "随机性",
+    "temperatureDescription": "值越高，生成的文本越具创造性，反之则越稳定",
+    "maxTokens": "最大 Token 数",
+    "maxTokensDescription": "单次交互消耗的最大 Token 数，-1 表示无限制",
+    "presencePenalty": "存在惩罚",
+    "presencePenaltyDescription": "-2.0 ~ 2.0， 值越大，越有可能扩展到新的话题",
+    "frequencyPenalty": "频率惩罚",
+    "frequencyPenaltyDescription": "-2.0 ~ 2.0， 值越大，越有可能降低重复性",
+    "historyBufferSize": "历史消息数量",
+    "historyBufferSizeDescription": "上下文越多，生成的文本越具连贯性，消耗的资源也越多",
+    "numberOfChoices": "生成版本数量",
+    "numberOfChoicesDescription": "大于 1 时，将每次生成多版本的文本"
+  },
+  "tts": {
+    "engine": "TTS 引擎",
+    "model": "TTS 模型",
+    "voice": "TTS 音色",
+    "language": "TTS 语言"
+  }
 }

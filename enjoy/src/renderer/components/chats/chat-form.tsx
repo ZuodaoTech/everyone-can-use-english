@@ -79,8 +79,8 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
   const [members, setMembers] = useState<
     Array<{
       agent: ChatAgentType;
-      userId?: string;
-      userType?: "User" | "Agent";
+      userId: string;
+      userType: "User" | "Agent";
       config: {
         language: string;
         prompt?: string;
@@ -89,20 +89,22 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
       };
     }>
   >(
-    (chat?.members || [buildMember(currentChatAgent)])
-      .filter((member) => member.userType === "Agent")
-      .map((member) => ({
-        agent: member.agent,
-        userId: member.userId,
-        userType: member.userType,
-        name: member.name,
-        config: {
-          prompt: member.config.prompt,
-          language: member.config.language,
-          gpt: member.config.gpt as GptConfigType,
-          tts: member.config.tts as TtsConfigType,
-        },
-      })) || []
+    (
+      chat?.members?.filter((member) => member.userType === "Agent") || [
+        buildMember(currentChatAgent),
+      ]
+    ).map((member) => ({
+      agent: member.agent,
+      userId: member.userId,
+      userType: member.userType,
+      name: member.name,
+      config: {
+        prompt: member.config.prompt,
+        language: member.config.language,
+        gpt: member.config.gpt as GptConfigType,
+        tts: member.config.tts as TtsConfigType,
+      },
+    })) || []
   );
 
   const chatFormSchema = z.object({
@@ -110,6 +112,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
     topic: z.string(),
     config: z.object({
       sttEngine: z.string().default(sttEngine),
+      prompt: z.string().optional(),
     }),
   });
 
@@ -125,6 +128,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
           name: t("newChat"),
           config: {
             sttEngine,
+            prompt: "",
           },
         },
   });
@@ -138,6 +142,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
         members,
         config: {
           sttEngine: config.sttEngine,
+          prompt: config.prompt,
         },
       }).then(() => onFinish());
     } else {
@@ -147,6 +152,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
         members,
         config: {
           sttEngine: config.sttEngine,
+          prompt: config.prompt,
         },
       }).then(() => onFinish());
     }
@@ -157,9 +163,15 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
       <form onSubmit={onSubmit}>
         <Tabs defaultValue="basic" className="mb-6">
           <TabsList className="w-full grid grid-cols-3 mb-4">
-            <TabsTrigger value="basic">{t("basic")}</TabsTrigger>
-            <TabsTrigger value="advanced">{t("advanced")}</TabsTrigger>
-            <TabsTrigger value="members">{t("members")}</TabsTrigger>
+            <TabsTrigger value="basic">
+              {t("models.chat.basicSettings")}
+            </TabsTrigger>
+            <TabsTrigger value="advanced">
+              {t("models.chat.advancedSettings")}
+            </TabsTrigger>
+            <TabsTrigger value="members">
+              {t("models.chat.memberSettings")}
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="basic">
             <FormField
@@ -175,6 +187,17 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
             />
           </TabsContent>
           <TabsContent value="advanced">
+            <FormField
+              control={form.control}
+              name="topic"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("models.chat.topic")}</FormLabel>
+                  <Textarea {...field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="config.sttEngine"
@@ -231,7 +254,23 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
                 <TabsContent key={member.userId} value={member.userId}>
                   <ChatMemberForm
                     member={member}
-                    onSave={(data) => console.log(data)}
+                    onSave={(data) => {
+                      setMembers(
+                        members.map((m) =>
+                          m.userId === data.userId ? { ...m, ...data } : m
+                        ) as {
+                          agent: ChatAgentType;
+                          userId: string;
+                          userType: "User" | "Agent";
+                          config: {
+                            language: string;
+                            prompt?: string;
+                            gpt: GptConfigType;
+                            tts: TtsConfigType;
+                          };
+                        }[]
+                      );
+                    }}
                   />
                 </TabsContent>
               ))}
@@ -247,7 +286,6 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
                   {t("delete")}
                 </Button>
               </AlertDialogTrigger>
-
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>{t("deleteChat")}</AlertDialogTitle>

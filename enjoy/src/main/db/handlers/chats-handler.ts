@@ -67,26 +67,7 @@ class ChatsHandler {
     return chat.toJSON();
   }
 
-  private async create(
-    _event: IpcMainEvent,
-    data: {
-      name: string;
-      topic: string;
-      config: {
-        sttEngine: string;
-      };
-      members: Array<{
-        userId: string;
-        userType: string;
-        config: {
-          language: string;
-          prompt?: string;
-          gpt?: GptConfigType;
-          tts?: TtsConfigType;
-        };
-      }>;
-    }
-  ) {
+  private async create(_event: IpcMainEvent, data: ChatDtoType) {
     const { members, ...chatData } = data;
     if (!members || members.length === 0) {
       throw new Error(t("models.chats.membersRequired"));
@@ -132,27 +113,7 @@ class ChatsHandler {
     return chat.toJSON();
   }
 
-  private async update(
-    _event: IpcMainEvent,
-    id: string,
-    data: {
-      name: string;
-      topic: string;
-      config: {
-        sttEngine: string;
-      };
-      members: Array<{
-        userId: string;
-        userType: string;
-        config: {
-          language: string;
-          prompt?: string;
-          gpt?: GptConfigType;
-          tts?: TtsConfigType;
-        };
-      }>;
-    }
-  ) {
+  private async update(_event: IpcMainEvent, id: string, data: ChatDtoType) {
     const { members, ...chatData } = data;
     if (!members || members.length === 0) {
       throw new Error(t("models.chats.membersRequired"));

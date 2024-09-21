@@ -8,43 +8,8 @@ type ChatProviderState = {
   currentChatAgent: ChatAgentType;
   setCurrentChatAgent: (chatAgent: ChatAgentType) => void;
   fetchChats: (query?: string) => Promise<void>;
-  createChat: (data: {
-    name: string;
-    topic: string;
-    config: {
-      sttEngine: string;
-    };
-    members: Array<{
-      userId?: string;
-      userType?: "User" | "Agent";
-      config?: {
-        prompt?: string;
-        introduction?: string;
-        gpt?: GptConfigType;
-        tts?: TtsConfigType;
-      };
-    }>;
-  }) => Promise<void>;
-  updateChat: (
-    id: string,
-    data: {
-      name: string;
-      topic: string;
-      config: {
-        sttEngine: string;
-      };
-      members: Array<{
-        userId?: string;
-        userType?: "User" | "Agent";
-        config?: {
-          prompt?: string;
-          introduction?: string;
-          gpt?: GptConfigType;
-          tts?: TtsConfigType;
-        };
-      }>;
-    }
-  ) => Promise<void>;
+  createChat: (data: ChatDtoType) => Promise<void>;
+  updateChat: (id: string, data: ChatDtoType) => Promise<void>;
   destroyChat: (id: string) => Promise<void>;
   chatAgents: ChatAgentType[];
   fetchChatAgents: (query?: string) => Promise<void>;

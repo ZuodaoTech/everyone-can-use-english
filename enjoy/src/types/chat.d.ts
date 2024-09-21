@@ -62,7 +62,6 @@ type GptConfigType = {
   model: string;
   temperature?: number;
   maxTokens?: number;
-  topP?: number;
   frequencyPenalty?: number;
   presencePenalty?: number;
   numberOfChoices?: number;
@@ -76,4 +75,27 @@ type TtsConfigType = {
   language: string;
   voice: string;
   [key: string]: any;
+};
+
+type ChatDtoType = {
+  name: string;
+  topic: string;
+  config: {
+    sttEngine: string;
+    prompt?: string;
+  };
+  members: Array<ChatMemberDtoType>;
+};
+
+type ChatMemberDtoType = {
+  userId?: string;
+  userType?: "User" | "Agent";
+  config?: {
+    prompt?: string;
+    introduction?: string;
+    language?: string;
+    gpt?: GptConfigType;
+    tts?: TtsConfigType;
+    [key: string]: any;
+  };
 };

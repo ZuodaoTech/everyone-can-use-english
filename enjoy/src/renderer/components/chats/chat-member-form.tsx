@@ -33,7 +33,7 @@ export const ChatMemberForm = (props: {
   onSave: (data: Partial<ChatMemberType>) => void;
 }) => {
   const { member, onSave } = props;
-  const { user, learningLanguage } = useContext(AppSettingsProviderContext);
+  const { learningLanguage } = useContext(AppSettingsProviderContext);
   const { gptProviders, ttsProviders } = useContext(AISettingsProviderContext);
   const chatMemberFormSchema = z.object({
     userId: z.string(),
@@ -49,30 +49,7 @@ export const ChatMemberForm = (props: {
 
   const form = useForm<z.infer<typeof chatMemberFormSchema>>({
     resolver: zodResolver(chatMemberFormSchema),
-    values: member.id
-      ? {
-          ...member,
-          config: {
-            language: learningLanguage,
-            ...member.config,
-          },
-        }
-      : {
-          config: {
-            prompt: "",
-            language: learningLanguage,
-            gpt: {
-              engine: "openai",
-              model: "gpt-4o",
-            },
-            tts: {
-              engine: "openai",
-              model: "tts-1",
-            },
-            ...member.config,
-          },
-          ...member,
-        },
+    values: member,
   });
 
   const onSubmit = form.handleSubmit(
@@ -87,20 +64,10 @@ export const ChatMemberForm = (props: {
         <div className="space-y-4">
           <FormField
             control={form.control}
-            name="config.prompt"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("prompt")}</FormLabel>
-                <Textarea required className="max-h-48" {...field} />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="config.gpt.engine"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("models.chatAgent.engine")}</FormLabel>
+                <FormLabel>{t("gpt.engine")}</FormLabel>
                 <Select
                   required
                   onValueChange={field.onChange}
@@ -131,7 +98,7 @@ export const ChatMemberForm = (props: {
             name="config.gpt.model"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("models.chatAgent.model")}</FormLabel>
+                <FormLabel>{t("gpt.model")}</FormLabel>
                 <Select
                   required
                   onValueChange={field.onChange}
@@ -163,7 +130,7 @@ export const ChatMemberForm = (props: {
             name="config.gpt.temperature"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("models.chatAgent.temperature")}</FormLabel>
+                <FormLabel>{t("gpt.temperature")}</FormLabel>
                 <div className="flex items-center space-x-1">
                   <Slider
                     className="flex-1"
@@ -176,7 +143,7 @@ export const ChatMemberForm = (props: {
                   <span>{field.value as number}</span>
                 </div>
                 <FormDescription>
-                  {t("models.chatAgent.temperatureDescription")}
+                  {t("gpt.temperatureDescription")}
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -188,7 +155,7 @@ export const ChatMemberForm = (props: {
             name="config.tts.engine"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("models.chatAgent.ttsEngine")}</FormLabel>
+                <FormLabel>{t("tts.engine")}</FormLabel>
                 <Select
                   required
                   onValueChange={field.onChange}
@@ -217,7 +184,7 @@ export const ChatMemberForm = (props: {
             name="config.tts.model"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("models.chatAgent.ttsModel")}</FormLabel>
+                <FormLabel>{t("tts.model")}</FormLabel>
                 <Select
                   required
                   onValueChange={field.onChange}
@@ -249,7 +216,7 @@ export const ChatMemberForm = (props: {
             name="config.tts.language"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("models.chatAgent.language")}</FormLabel>
+                <FormLabel>{t("tts.language")}</FormLabel>
                 <Select
                   required
                   defaultValue={learningLanguage}
@@ -286,7 +253,7 @@ export const ChatMemberForm = (props: {
             name="config.tts.voice"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("models.chatAgent.ttsVoice")}</FormLabel>
+                <FormLabel>{t("tts.voice")}</FormLabel>
                 <Select
                   required
                   onValueChange={field.onChange}
@@ -329,6 +296,16 @@ export const ChatMemberForm = (props: {
                   </SelectContent>
                 </Select>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="config.prompt"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("models.chatMember.prompt")}</FormLabel>
+                <Textarea required className="max-h-48" {...field} />
               </FormItem>
             )}
           />
