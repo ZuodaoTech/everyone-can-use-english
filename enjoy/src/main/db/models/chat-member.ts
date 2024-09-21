@@ -67,36 +67,6 @@ export class ChatMember extends Model<ChatMember> {
   agent: ChatAgent;
 
   @Column(DataType.VIRTUAL)
-  get ttsConfig(): {
-    engine: string;
-    model: string;
-    voice: string;
-  } {
-    return (
-      this.config.tts || {
-        engine: "enjoyai",
-        model: "openai/tts-1",
-        voice: "alloy",
-      }
-    );
-  }
-
-  @Column(DataType.VIRTUAL)
-  get gptConfig(): {
-    engine: string;
-    model: string;
-    temperature: number;
-  } {
-    return (
-      this.config.gpt || {
-        engine: "enjoyai",
-        model: "gpt-4o",
-        temperature: 0.5,
-      }
-    );
-  }
-
-  @Column(DataType.VIRTUAL)
   get name(): string {
     if (this.userType === "User") {
       return this.user.name;
@@ -123,7 +93,7 @@ export class ChatMember extends Model<ChatMember> {
 
       return user;
     } else {
-      return null;
+      return this.agent;
     }
   }
 

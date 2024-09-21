@@ -42,53 +42,54 @@ import { ChatMemberForm } from "./chat-member-form";
 
 export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
   const { chat, onFinish } = props;
-  const { sttEngine } = useContext(AISettingsProviderContext);
-  const { user } = useContext(AppSettingsProviderContext);
+  const { sttEngine, currentGptEngine } = useContext(AISettingsProviderContext);
+  const { learningLanguage } = useContext(AppSettingsProviderContext);
   const { currentChatAgent, createChat, updateChat, destroyChat } =
     useContext(ChatProviderContext);
+  const buildMember = (agent: ChatAgentType): Partial<ChatMemberType> => {
+    return {
+      agent,
+      userId: agent.id,
+      userType: "Agent",
+      name: agent.name,
+      config: {
+        language: learningLanguage,
+        gpt: {
+          engine: currentGptEngine.name,
+          model: currentGptEngine.models.default,
+          temperature: 0.5,
+        },
+        tts:
+          currentGptEngine.name === "enjoyai"
+            ? {
+                engine: "enjoyai",
+                model: "tts-1",
+                language: learningLanguage,
+                voice: "alloy",
+              }
+            : {
+                engine: "openai",
+                model: "openai/tts-1",
+                language: learningLanguage,
+                voice: "alloy",
+              },
+      },
+    };
+  };
   const [members, setMembers] = useState<
     Array<{
       agent: ChatAgentType;
       userId?: string;
       userType?: "User" | "Agent";
       config: {
+        language: string;
         prompt?: string;
-        introduction?: string;
         gpt?: GptConfigType;
         tts?: TtsConfigType;
       };
     }>
   >(
-    (
-      chat?.members || [
-        {
-          userId: user.id.toString(),
-          userType: "User",
-          name: user.name,
-          config: {},
-        },
-        {
-          agent: currentChatAgent,
-          userId: currentChatAgent.id,
-          userType: "Agent",
-          name: currentChatAgent.name,
-          config: {
-            prompt: "",
-            gpt: {
-              engine: "enjoyai",
-              model: "gpt-4o",
-              temperature: 0.5,
-            },
-            tts: {
-              engine: "enjoyai",
-              model: "openai/tts-1",
-              language: "en-US",
-              voice: "alloy",
-            },
-          },
-        },
-      ]
-    )
+    (chat?.members || [buildMember(currentChatAgent)])
       .filter((member) => member.userType === "Agent")
       .map((member) => ({
         agent: member.agent,
@@ -97,6 +98,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
         name: member.name,
         config: {
           prompt: member.config.prompt,
+          language: member.config.language,
           gpt: member.config.gpt as GptConfigType,
           tts: member.config.tts as TtsConfigType,
         },

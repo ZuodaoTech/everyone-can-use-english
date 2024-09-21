@@ -71,7 +71,6 @@ class ChatsHandler {
     _event: IpcMainEvent,
     data: {
       name: string;
-      language: string;
       topic: string;
       config: {
         sttEngine: string;
@@ -79,9 +78,11 @@ class ChatsHandler {
       members: Array<{
         userId: string;
         userType: string;
-        config?: {
+        config: {
+          language: string;
           prompt?: string;
-          introduction?: string;
+          gpt?: GptConfigType;
+          tts?: TtsConfigType;
         };
       }>;
     }
@@ -100,6 +101,19 @@ class ChatsHandler {
     const chat = await Chat.create(chatData, {
       transaction,
     });
+    if (members.findIndex((m) => m.userType === "User") < 0) {
+      members.push({
+        userId: (
+          await UserSetting.get(UserSettingKeyEnum.PROFILE)
+        ).id.toString(),
+        userType: "User",
+        config: {
+          language: (
+            await UserSetting.get(UserSettingKeyEnum.NATIVE_LANGUAGE)
+          ).toString(),
+        },
+      });
+    }
     for (const member of members) {
       await ChatMember.create(
         {
@@ -123,7 +137,6 @@ class ChatsHandler {
     id: string,
     data: {
       name: string;
-      language: string;
       topic: string;
       config: {
         sttEngine: string;
@@ -132,8 +145,10 @@ class ChatsHandler {
         userId: string;
         userType: string;
         config: {
+          language: string;
           prompt?: string;
-          introduction?: string;
+          gpt?: GptConfigType;
+          tts?: TtsConfigType;
         };
       }>;
     }
@@ -155,7 +170,7 @@ class ChatsHandler {
     // Remove members
     for (const member of chat.members) {
       if (member.userType === "User") continue;
-      if (!members.find((m) => m.userId === member.userId)) {
+      if (members.findIndex((m) => m.userId === member.userId) < 0) {
         await member.destroy({ transaction });
       }
     }

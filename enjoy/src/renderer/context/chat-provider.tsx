@@ -11,6 +11,9 @@ type ChatProviderState = {
   createChat: (data: {
     name: string;
     topic: string;
+    config: {
+      sttEngine: string;
+    };
     members: Array<{
       userId?: string;
       userType?: "User" | "Agent";
@@ -21,15 +24,15 @@ type ChatProviderState = {
         tts?: TtsConfigType;
       };
     }>;
-    config: {
-      sttEngine: string;
-    };
   }) => Promise<void>;
   updateChat: (
     id: string,
     data: {
       name: string;
       topic: string;
+      config: {
+        sttEngine: string;
+      };
       members: Array<{
         userId?: string;
         userType?: "User" | "Agent";
@@ -40,9 +43,6 @@ type ChatProviderState = {
           tts?: TtsConfigType;
         };
       }>;
-      config: {
-        sttEngine: string;
-      };
     }
   ) => Promise<void>;
   destroyChat: (id: string) => Promise<void>;

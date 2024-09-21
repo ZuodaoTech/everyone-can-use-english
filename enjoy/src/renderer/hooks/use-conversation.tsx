@@ -21,7 +21,7 @@ export const useConversation = () => {
   const { EnjoyApp, webApi, user, apiUrl, learningLanguage } = useContext(
     AppSettingsProviderContext
   );
-  const { openai, currentEngine } = useContext(AISettingsProviderContext);
+  const { openai, currentGptEngine } = useContext(AISettingsProviderContext);
 
   const pickLlm = (conversation: ConversationType) => {
     const {
@@ -247,7 +247,7 @@ export const useConversation = () => {
   const openaiTTS = async (params: Partial<SpeechType>) => {
     const { configuration } = params;
     const {
-      engine = currentEngine.name,
+      engine = currentGptEngine.name,
       model = "tts-1",
       voice = "alloy",
       baseUrl,

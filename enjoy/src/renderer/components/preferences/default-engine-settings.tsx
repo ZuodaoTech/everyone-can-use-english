@@ -24,7 +24,7 @@ import { useContext, useEffect, useState } from "react";
 import { GPT_PROVIDERS } from "@renderer/components";
 
 export const DefaultEngineSettings = () => {
-  const { currentEngine, setGptEngine, openai } = useContext(
+  const { currentGptEngine, setGptEngine, openai } = useContext(
     AISettingsProviderContext
   );
   const { webApi } = useContext(AppSettingsProviderContext);
@@ -47,8 +47,8 @@ export const DefaultEngineSettings = () => {
   const form = useForm<z.infer<typeof gptEngineSchema>>({
     resolver: zodResolver(gptEngineSchema),
     values: {
-      name: currentEngine.name as "enjoyai" | "openai",
-      models: currentEngine.models || {},
+      name: currentGptEngine.name as "enjoyai" | "openai",
+      models: currentGptEngine.models || {},
     },
   });
 

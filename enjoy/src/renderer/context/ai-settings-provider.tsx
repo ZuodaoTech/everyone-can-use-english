@@ -15,7 +15,7 @@ type AISettingsProviderState = {
   openai?: LlmProviderType;
   setOpenai?: (config: LlmProviderType) => void;
   setGptEngine?: (engine: GptEngineSettingType) => void;
-  currentEngine?: GptEngineSettingType;
+  currentGptEngine?: GptEngineSettingType;
   gptProviders?: typeof GPT_PROVIDERS;
   ttsProviders?: typeof TTS_PROVIDERS;
 };
@@ -182,7 +182,7 @@ export const AISettingsProvider = ({
               setGptEngine(engine);
             });
         },
-        currentEngine:
+        currentGptEngine:
           gptEngine.name === "openai"
             ? Object.assign(gptEngine, {
                 key: openai.key,
