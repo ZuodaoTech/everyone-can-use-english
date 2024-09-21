@@ -11,10 +11,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-  Avatar,
-  AvatarFallback,
   Button,
-  Checkbox,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Form,
   FormDescription,
   FormField,
@@ -22,42 +22,59 @@ import {
   FormLabel,
   FormMessage,
   Input,
-  Label,
-  ScrollArea,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   Textarea,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useContext, useState } from "react";
-import { CheckCircleIcon } from "lucide-react";
 import {
   AISettingsProviderContext,
-  AppSettingsProviderContext,
   ChatProviderContext,
 } from "@renderer/context";
-import { CHAT_SYSTEM_PROMPT_TEMPLATE, LANGUAGES } from "@/constants";
-import Mustache from "mustache";
 import { SttEngineOptionEnum } from "@/types/enums";
+import { ChatMemberForm } from "./chat-member-form";
 
-export const ChatForm = (props: {
-  chat?: ChatType;
-  onDestroy?: () => void;
-  onCancel?: () => void;
-  onFinish?: () => void;
-}) => {
+export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
   const { chat, onFinish } = props;
-  const { user, learningLanguage, nativeLanguage } = useContext(
-    AppSettingsProviderContext
-  );
   const { sttEngine } = useContext(AISettingsProviderContext);
-  const { chatAgents, createChat, updateChat, destroyChat } =
+  const { createChat, updateChat, destroyChat } =
     useContext(ChatProviderContext);
-  const [editingMember, setEditingMember] =
-    useState<Partial<ChatMemberType> | null>();
+  const [members, setMembers] = useState<
+    Array<{
+      agent: ChatAgentType;
+      userId?: string;
+      userType?: "User" | "Agent";
+      config: {
+        prompt?: string;
+        introduction?: string;
+        gpt: GptConfigType;
+        tts: TtsConfigType;
+      };
+    }>
+  >(
+    (chat?.members || [])
+      .filter((member) => member.userType === "Agent")
+      .map((member) => ({
+        agent: member.agent,
+        userId: member.userId,
+        userType: member.userType,
+        name: member.name,
+        config: {
+          prompt: member.config.prompt,
+          introduction: member.config.introduction,
+          gpt: member.config.gpt as GptConfigType,
+          tts: member.config.tts as TtsConfigType,
+        },
+      })) || []
+  );
 
   const chatFormSchema = z.object({
     name: z.string().min(1),
@@ -65,65 +82,31 @@ export const ChatForm = (props: {
     config: z.object({
       sttEngine: z.string().default(sttEngine),
     }),
-    members: z
-      .array(
-        z.object({
-          userId: z.string(),
-          userType: z.enum(["User", "Agent"]).default("Agent"),
-          config: z.object({
-            prompt: z.string().optional(),
-            introduction: z.string().optional(),
-            gpt: z.object({} as GptConfigType),
-            tts: z.object({} as TtsConfigType),
-          }),
-        })
-      )
-      .min(2),
   });
 
   const form = useForm<z.infer<typeof chatFormSchema>>({
     resolver: zodResolver(chatFormSchema),
-    values: chat
+    values: chat?.id
       ? {
           name: chat.name,
           topic: chat.topic,
           config: chat.config,
-          members: [...chat.members],
         }
       : {
           name: t("newChat"),
-          topic: "Casual Chat.",
           config: {
             sttEngine,
           },
-          members: [
-            {
-              userId: user.id.toString(),
-              userType: "User",
-              config: {
-                introduction: `I am ${nativeLanguage} speaker learning ${learningLanguage}.`,
-              },
-            },
-          ],
         },
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    const { name, topic, members, config } = data;
+    const { name, topic, config } = data;
     if (chat?.id) {
       updateChat(chat.id, {
         name,
         topic,
-        members: members.map((member) => ({
-          userId: member.userId,
-          userType: member.userType,
-          config: {
-            prompt: member.config.prompt,
-            introduction: member.config.introduction,
-            gpt: member.config.gpt as GptConfigType,
-            tts: member.config.tts as TtsConfigType,
-          },
-        })),
+        members,
         config: {
           sttEngine: config.sttEngine,
         },
@@ -132,16 +115,7 @@ export const ChatForm = (props: {
       createChat({
         name,
         topic,
-        members: members.map((member) => ({
-          userId: member.userId,
-          userType: member.userType,
-          config: {
-            prompt: member.config.prompt,
-            introduction: member.config.introduction,
-            gpt: member.config.gpt as GptConfigType,
-            tts: member.config.tts as TtsConfigType,
-          },
-        })),
+        members,
         config: {
           sttEngine: config.sttEngine,
         },
@@ -153,72 +127,90 @@ export const ChatForm = (props: {
     <Form {...form}>
       <form onSubmit={onSubmit} className="">
         <div className="mb-6">{chat?.id ? t("editChat") : t("newChat")}</div>
-        <div className="space-y-4 mb-6">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("models.chat.name")}</FormLabel>
-                <Input {...field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="topic"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("models.chat.topic")}</FormLabel>
-                <Textarea className="max-h-96" {...field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="config.sttEngine"
-            render={({ field }) => (
-              <FormItem className="grid w-full items-center">
-                <FormLabel>{t("sttAiService")}</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={SttEngineOptionEnum.LOCAL}>
-                      {t("local")}
-                    </SelectItem>
-                    <SelectItem value={SttEngineOptionEnum.ENJOY_AZURE}>
-                      {t("enjoyAzure")}
-                    </SelectItem>
-                    <SelectItem value={SttEngineOptionEnum.ENJOY_CLOUDFLARE}>
-                      {t("enjoyCloudflare")}
-                    </SelectItem>
-                    <SelectItem value={SttEngineOptionEnum.OPENAI}>
-                      {t("openai")}
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>
-                  {form.watch("config.sttEngine") ===
-                    SttEngineOptionEnum.LOCAL &&
-                    t("localSpeechToTextDescription")}
-                  {form.watch("config.sttEngine") ===
-                    SttEngineOptionEnum.ENJOY_AZURE &&
-                    t("enjoyAzureSpeechToTextDescription")}
-                  {form.watch("config.sttEngine") ===
-                    SttEngineOptionEnum.ENJOY_CLOUDFLARE &&
-                    t("enjoyCloudflareSpeechToTextDescription")}
-                  {form.watch("config.sttEngine") ===
-                    SttEngineOptionEnum.OPENAI &&
-                    t("openaiSpeechToTextDescription")}
-                </FormDescription>
-              </FormItem>
-            )}
-          />
-        </div>
+        <Tabs defaultValue="basic" className="mb-6">
+          <TabsList className="w-full grid grid-cols-3 mb-4">
+            <TabsTrigger value="basic">{t("basic")}</TabsTrigger>
+            <TabsTrigger value="advanced">{t("advanced")}</TabsTrigger>
+            <TabsTrigger value="members">{t("members")}</TabsTrigger>
+          </TabsList>
+          <TabsContent value="basic">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("models.chat.name")}</FormLabel>
+                  <Input {...field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </TabsContent>
+          <TabsContent value="advanced">
+            <FormField
+              control={form.control}
+              name="config.sttEngine"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("sttAiService")}</FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={SttEngineOptionEnum.LOCAL}>
+                        {t("local")}
+                      </SelectItem>
+                      <SelectItem value={SttEngineOptionEnum.ENJOY_AZURE}>
+                        {t("enjoyAzure")}
+                      </SelectItem>
+                      <SelectItem value={SttEngineOptionEnum.ENJOY_CLOUDFLARE}>
+                        {t("enjoyCloudflare")}
+                      </SelectItem>
+                      <SelectItem value={SttEngineOptionEnum.OPENAI}>
+                        {t("openai")}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    {form.watch("config.sttEngine") ===
+                      SttEngineOptionEnum.LOCAL &&
+                      t("localSpeechToTextDescription")}
+                    {form.watch("config.sttEngine") ===
+                      SttEngineOptionEnum.ENJOY_AZURE &&
+                      t("enjoyAzureSpeechToTextDescription")}
+                    {form.watch("config.sttEngine") ===
+                      SttEngineOptionEnum.ENJOY_CLOUDFLARE &&
+                      t("enjoyCloudflareSpeechToTextDescription")}
+                    {form.watch("config.sttEngine") ===
+                      SttEngineOptionEnum.OPENAI &&
+                      t("openaiSpeechToTextDescription")}
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+          </TabsContent>
+          <TabsContent value="members">
+            <Tabs defaultValue={members[0]?.userId}>
+              <TabsList>
+                {members.map((member) => (
+                  <TabsTrigger value={member.userId}>
+                    {member.agent.name}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              {members.map((member) => (
+                <TabsContent key={member.userId} value={member.userId}>
+                  <ChatMemberForm
+                    member={member}
+                    onSave={(data) => console.log(data)}
+                  />
+                </TabsContent>
+              ))}
+            </Tabs>
+          </TabsContent>
+        </Tabs>
+
         <div className="flex items-center space-x-4">
           {chat?.id && (
             <AlertDialog>

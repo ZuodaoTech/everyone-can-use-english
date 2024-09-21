@@ -2,19 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-  Avatar,
-  AvatarFallback,
-  Button,
-  Checkbox,
   Form,
   FormControl,
   FormDescription,
@@ -22,9 +9,6 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
-  Label,
-  ScrollArea,
   Select,
   SelectContent,
   SelectItem,
@@ -35,7 +19,6 @@ import {
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useContext, useState } from "react";
-import { CheckCircleIcon } from "lucide-react";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
@@ -47,11 +30,9 @@ import { SttEngineOptionEnum } from "@/types/enums";
 
 export const ChatMemberForm = (props: {
   member: Partial<ChatMemberType>;
-  chatAgent: ChatAgentType;
-  members: ChatMemberType[];
   onSave: (data: Partial<ChatMemberType>) => void;
 }) => {
-  const { member, members, onSave, chatAgent } = props;
+  const { member, onSave } = props;
   const { user, learningLanguage } = useContext(AppSettingsProviderContext);
   const { gptProviders, ttsProviders } = useContext(AISettingsProviderContext);
   const chatMemberFormSchema = z.object({
@@ -71,8 +52,6 @@ export const ChatMemberForm = (props: {
     values: member.id
       ? { ...member }
       : {
-          userId: chatAgent.id,
-          userType: "Agent",
           config: {
             prompt: "",
             gpt: {
@@ -85,6 +64,7 @@ export const ChatMemberForm = (props: {
             },
             ...member.config,
           },
+          ...member,
         },
   });
 
@@ -319,7 +299,7 @@ export const ChatMemberForm = (props: {
                           ]
                         : ttsProviders[
                             form.watch("config.tts.engine") as string
-                          ].voices) || []
+                          ]?.voices) || []
                     ).map((voice: any) => {
                       if (typeof voice === "string") {
                         return (

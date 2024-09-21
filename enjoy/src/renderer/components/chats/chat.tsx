@@ -38,22 +38,12 @@ export const Chat = () => {
               <SettingsIcon className="w-5 h-5" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-screen-md h-5/6">
+          <DialogContent className="max-w-screen-sm max-h-[70%] overflow-y-auto">
             <DialogTitle className="sr-only"></DialogTitle>
             <ScrollArea className="h-full px-4">
               <ChatForm
                 chat={currentChat}
-                chatAgents={chatAgents}
-                onSave={(data) =>
-                  updateChat(currentChat.id, data).then(() =>
-                    setDisplayChatForm(false)
-                  )
-                }
-                onDestroy={() =>
-                  destroyChat(currentChat.id).then(() =>
-                    setDisplayChatForm(false)
-                  )
-                }
+                onFinish={() => setDisplayChatForm(false)}
               />
             </ScrollArea>
           </DialogContent>
