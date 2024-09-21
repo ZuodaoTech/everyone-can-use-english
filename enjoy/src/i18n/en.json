@@ -142,7 +142,10 @@
     },
     "chatMember": {
       "prompt": "Extra Prompt",
-      "promptDescription": "The extra prompt will be added to the system prompt of the chat agent. It is useful when you want to customize the chat agent's behavior in this specific chat."
+      "promptDescription": "The extra prompt will be added to the system prompt of the chat agent. It is useful when you want to customize the chat agent's behavior in this specific chat.",
+      "gptSettings": "GPT Settings",
+      "ttsSettings": "TTS Settings",
+      "moreSettings": "More Settings"
     },
     "chat": {
       "notFound": "Chat not found",
@@ -155,9 +158,9 @@
       "members": "Members",
       "prompt": "Extra Prompt",
       "promptDescription": "The prompt will be added to the system prompt of all chat agents in this chat. It is useful when you want to customize the chat agent's behavior in this specific chat.",
-      "basicSettings": "Basic Settings",
-      "memberSettings": "Member Settings",
-      "advancedSettings": "Advanced Settings"
+      "chatSettings": "Chat Settings",
+      "moreSettings": "More Settings",
+      "memberSettings": "Member Settings"
     }
   },
   "sidebar": {

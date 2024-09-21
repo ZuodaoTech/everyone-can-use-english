@@ -12,6 +12,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Form,
   FormDescription,
   FormField,
@@ -39,6 +42,7 @@ import {
 } from "@renderer/context";
 import { SttEngineOptionEnum } from "@/types/enums";
 import { ChatMemberForm } from "./chat-member-form";
+import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
 export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
   const { chat, onFinish } = props;
@@ -46,6 +50,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
     AISettingsProviderContext
   );
   const { learningLanguage } = useContext(AppSettingsProviderContext);
+  const [isMoreSettingsOpen, setIsMoreSettingsOpen] = useState(false);
   const { currentChatAgent, createChat, updateChat, destroyChat } =
     useContext(ChatProviderContext);
   const buildMember = (agent: ChatAgentType): Partial<ChatMemberType> => {
@@ -156,88 +161,112 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
     <Form {...form}>
       <form onSubmit={onSubmit}>
         <Tabs defaultValue="basic" className="mb-6">
-          <TabsList className="w-full grid grid-cols-3 mb-4">
+          <TabsList className="w-full grid grid-cols-2 mb-4">
             <TabsTrigger value="basic">
-              {t("models.chat.basicSettings")}
-            </TabsTrigger>
-            <TabsTrigger value="advanced">
-              {t("models.chat.advancedSettings")}
+              {t("models.chat.chatSettings")}
             </TabsTrigger>
             <TabsTrigger value="members">
               {t("models.chat.memberSettings")}
             </TabsTrigger>
           </TabsList>
+
           <TabsContent value="basic">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("models.chat.name")}</FormLabel>
-                  <Input {...field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="space-y-4 px-2 mb-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("models.chat.name")}</FormLabel>
+                    <Input {...field} />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Collapsible open={isMoreSettingsOpen}>
+              <CollapsibleTrigger asChild>
+                <Button
+                  type="button"
+                  variant="link"
+                  className="w-full justify-center text-muted-foreground"
+                  size="sm"
+                  onClick={() => setIsMoreSettingsOpen(!isMoreSettingsOpen)}
+                >
+                  {t("models.chat.moreSettings")}
+                  {isMoreSettingsOpen ? (
+                    <ChevronUpIcon className="w-4 h-4 ml-2" />
+                  ) : (
+                    <ChevronDownIcon className="w-4 h-4 ml-2" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="space-y-4 px-2">
+                <FormField
+                  control={form.control}
+                  name="config.sttEngine"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("sttAiService")}</FormLabel>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value={SttEngineOptionEnum.LOCAL}>
+                            {t("local")}
+                          </SelectItem>
+                          <SelectItem value={SttEngineOptionEnum.ENJOY_AZURE}>
+                            {t("enjoyAzure")}
+                          </SelectItem>
+                          <SelectItem
+                            value={SttEngineOptionEnum.ENJOY_CLOUDFLARE}
+                          >
+                            {t("enjoyCloudflare")}
+                          </SelectItem>
+                          <SelectItem value={SttEngineOptionEnum.OPENAI}>
+                            {t("openai")}
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        {form.watch("config.sttEngine") ===
+                          SttEngineOptionEnum.LOCAL &&
+                          t("localSpeechToTextDescription")}
+                        {form.watch("config.sttEngine") ===
+                          SttEngineOptionEnum.ENJOY_AZURE &&
+                          t("enjoyAzureSpeechToTextDescription")}
+                        {form.watch("config.sttEngine") ===
+                          SttEngineOptionEnum.ENJOY_CLOUDFLARE &&
+                          t("enjoyCloudflareSpeechToTextDescription")}
+                        {form.watch("config.sttEngine") ===
+                          SttEngineOptionEnum.OPENAI &&
+                          t("openaiSpeechToTextDescription")}
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="config.prompt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("models.chat.prompt")}</FormLabel>
+                      <Textarea {...field} />
+                      <FormDescription>
+                        {t("models.chat.promptDescription")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CollapsibleContent>
+            </Collapsible>
           </TabsContent>
-          <TabsContent value="advanced">
-            <FormField
-              control={form.control}
-              name="config.sttEngine"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("sttAiService")}</FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value={SttEngineOptionEnum.LOCAL}>
-                        {t("local")}
-                      </SelectItem>
-                      <SelectItem value={SttEngineOptionEnum.ENJOY_AZURE}>
-                        {t("enjoyAzure")}
-                      </SelectItem>
-                      <SelectItem value={SttEngineOptionEnum.ENJOY_CLOUDFLARE}>
-                        {t("enjoyCloudflare")}
-                      </SelectItem>
-                      <SelectItem value={SttEngineOptionEnum.OPENAI}>
-                        {t("openai")}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormDescription>
-                    {form.watch("config.sttEngine") ===
-                      SttEngineOptionEnum.LOCAL &&
-                      t("localSpeechToTextDescription")}
-                    {form.watch("config.sttEngine") ===
-                      SttEngineOptionEnum.ENJOY_AZURE &&
-                      t("enjoyAzureSpeechToTextDescription")}
-                    {form.watch("config.sttEngine") ===
-                      SttEngineOptionEnum.ENJOY_CLOUDFLARE &&
-                      t("enjoyCloudflareSpeechToTextDescription")}
-                    {form.watch("config.sttEngine") ===
-                      SttEngineOptionEnum.OPENAI &&
-                      t("openaiSpeechToTextDescription")}
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="config.prompt"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("models.chat.prompt")}</FormLabel>
-                  <Textarea {...field} />
-                  <FormDescription>
-                    {t("models.chat.promptDescription")}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </TabsContent>
+
           <TabsContent value="members">
             <Tabs defaultValue={members[0]?.userId}>
               <TabsList>
