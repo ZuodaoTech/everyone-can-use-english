@@ -17,6 +17,8 @@ type ChatProviderState = {
       config?: {
         prompt?: string;
         introduction?: string;
+        gpt?: GptConfigType;
+        tts?: TtsConfigType;
       };
     }>;
     config: {
@@ -34,6 +36,8 @@ type ChatProviderState = {
         config?: {
           prompt?: string;
           introduction?: string;
+          gpt?: GptConfigType;
+          tts?: TtsConfigType;
         };
       }>;
       config: {

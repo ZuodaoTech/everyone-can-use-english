@@ -7,32 +7,21 @@ import {
   AlertDialogFooter,
   AlertDialogTitle,
   Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useContext, useState } from "react";
 import { ChatProviderContext } from "@renderer/context";
-import { ChatCard } from "@renderer/components";
+import { ChatAgentForm, ChatCard, ChatForm } from "@renderer/components";
 import { PlusIcon } from "lucide-react";
 
 export const ChatList = () => {
-  const { chats, currentChat, setCurrentChat, destroyChat } =
+  const { chats, currentChat, setCurrentChat, destroyChat, createChat } =
     useContext(ChatProviderContext);
   const [deletingChat, setDeletingChat] = useState<ChatType>(null);
-
-  if (chats.length === 0) {
-    return (
-      <>
-        <div className="text-center my-4">
-          <span className="text-sm text-muted-foreground">{t("noData")}</span>
-        </div>
-        <div className="flex items-center justify-center">
-          <Button onClick={() => {}} variant="default" size="sm">
-            {t("quickStart")}
-          </Button>
-        </div>
-      </>
-    );
-  }
+  const [creatingChat, setCreatingChat] = useState<boolean>(false);
 
   return (
     <>
@@ -41,6 +30,7 @@ export const ChatList = () => {
           className="w-full mb-1 p-1 justify-start items-center"
           variant="ghost"
           size="sm"
+          onClick={() => setCreatingChat(true)}
         >
           <PlusIcon className="w-4 h-4 mr-1" />
           <span className="text-xs font-semibold capitalize">
@@ -52,6 +42,11 @@ export const ChatList = () => {
             {t("recents")}
           </span>
         </div>
+        {chats.length === 0 && (
+          <div className="text-center my-4">
+            <span className="text-sm text-muted-foreground">{t("noData")}</span>
+          </div>
+        )}
         <div className="grid gap-1">
           {chats.map((chat) => (
             <ChatCard
@@ -89,6 +84,12 @@ export const ChatList = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <Dialog open={creatingChat} onOpenChange={setCreatingChat}>
+        <DialogContent className="max-w-screen-md max-h-full overflow-auto">
+          <DialogTitle className="sr-only"></DialogTitle>
+          <ChatForm chat={null} onFinish={() => setCreatingChat(false)} />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

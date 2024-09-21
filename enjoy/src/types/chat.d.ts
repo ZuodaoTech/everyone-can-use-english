@@ -58,7 +58,7 @@ type ChatMessageType = {
 };
 
 type GptConfigType = {
-  engine: "enjoyai" | "openai";
+  engine: string;
   model: string;
   temperature?: number;
   maxTokens?: number;
@@ -71,7 +71,7 @@ type GptConfigType = {
 };
 
 type TtsConfigType = {
-  engine: "enjoyai" | "openai";
+  engine: string;
   model: string;
   language: string;
   voice: string;

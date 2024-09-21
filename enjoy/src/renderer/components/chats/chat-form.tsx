@@ -37,6 +37,7 @@ import { CheckCircleIcon } from "lucide-react";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
+  ChatProviderContext,
 } from "@renderer/context";
 import { CHAT_SYSTEM_PROMPT_TEMPLATE, LANGUAGES } from "@/constants";
 import Mustache from "mustache";
@@ -44,20 +45,17 @@ import { SttEngineOptionEnum } from "@/types/enums";
 
 export const ChatForm = (props: {
   chat?: ChatType;
-  chatAgents: ChatAgentType[];
-  onSave: (data: {
-    name: string;
-    topic: string;
-    members: Array<Partial<ChatMemberType>>;
-    config: any;
-  }) => void;
   onDestroy?: () => void;
+  onCancel?: () => void;
+  onFinish?: () => void;
 }) => {
-  const { chat, chatAgents, onSave, onDestroy } = props;
+  const { chat, onFinish } = props;
   const { user, learningLanguage, nativeLanguage } = useContext(
     AppSettingsProviderContext
   );
   const { sttEngine } = useContext(AISettingsProviderContext);
+  const { chatAgents, createChat, updateChat, destroyChat } =
+    useContext(ChatProviderContext);
   const [editingMember, setEditingMember] =
     useState<Partial<ChatMemberType> | null>();
 
@@ -65,7 +63,7 @@ export const ChatForm = (props: {
     name: z.string().min(1),
     topic: z.string(),
     config: z.object({
-      sttEngine: z.string(),
+      sttEngine: z.string().default(sttEngine),
     }),
     members: z
       .array(
@@ -75,6 +73,8 @@ export const ChatForm = (props: {
           config: z.object({
             prompt: z.string().optional(),
             introduction: z.string().optional(),
+            gpt: z.object({} as GptConfigType),
+            tts: z.object({} as TtsConfigType),
           }),
         })
       )
@@ -110,12 +110,43 @@ export const ChatForm = (props: {
 
   const onSubmit = form.handleSubmit((data) => {
     const { name, topic, members, config } = data;
-    return onSave({
-      name,
-      topic,
-      members,
-      config,
-    });
+    if (chat?.id) {
+      updateChat(chat.id, {
+        name,
+        topic,
+        members: members.map((member) => ({
+          userId: member.userId,
+          userType: member.userType,
+          config: {
+            prompt: member.config.prompt,
+            introduction: member.config.introduction,
+            gpt: member.config.gpt as GptConfigType,
+            tts: member.config.tts as TtsConfigType,
+          },
+        })),
+        config: {
+          sttEngine: config.sttEngine,
+        },
+      }).then(() => onFinish());
+    } else {
+      createChat({
+        name,
+        topic,
+        members: members.map((member) => ({
+          userId: member.userId,
+          userType: member.userType,
+          config: {
+            prompt: member.config.prompt,
+            introduction: member.config.introduction,
+            gpt: member.config.gpt as GptConfigType,
+            tts: member.config.tts as TtsConfigType,
+          },
+        })),
+        config: {
+          sttEngine: config.sttEngine,
+        },
+      }).then(() => onFinish());
+    }
   });
 
   return (
@@ -187,129 +218,6 @@ export const ChatForm = (props: {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="members"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  {t("models.chat.members")}({field.value.length})
-                </FormLabel>
-                <ScrollArea className="w-full h-36 rounded-lg p-2 bg-muted">
-                  <div className="grid grid-cols-3 gap-3">
-                    <div
-                      className={`flex items-center space-x-1 px-2 py-1 rounded-lg w-full overflow-hidden relative hover:shadow border cursor-pointer ${
-                        editingMember?.userType === "User"
-                          ? "border-blue-500 bg-background"
-                          : ""
-                      }`}
-                      onClick={() => {
-                        const member = field.value.find(
-                          (m) => m.userType === "User"
-                        );
-
-                        setEditingMember(member);
-                      }}
-                    >
-                      <Avatar className="w-10 h-10">
-                        <img src={user.avatarUrl} alt={user.name} />
-                        <AvatarFallback>{user.name[0]}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="text-sm line-clamp-1">{user.name}</div>
-                      </div>
-                      <CheckCircleIcon className="absolute top-2 right-2 w-4 h-4 text-green-500" />
-                    </div>
-                    {chatAgents.map((chatAgent) => (
-                      <div
-                        key={chatAgent.id}
-                        className={`flex items-center space-x-1 px-2 py-1 rounded-lg w-full overflow-hidden relative cursor-pointer border hover:shadow ${
-                          editingMember?.userId === chatAgent.id
-                            ? "border-blue-500 bg-background"
-                            : ""
-                        }`}
-                        onClick={() => {
-                          const member = field.value.find(
-                            (m) => m.userId === chatAgent.id
-                          );
-                          if (editingMember?.userId === chatAgent.id) {
-                            setEditingMember(null);
-                          } else {
-                            setEditingMember(
-                              member || {
-                                userId: chatAgent.id,
-                                userType: "Agent",
-                                config: {},
-                              }
-                            );
-                          }
-                        }}
-                      >
-                        <Avatar className="w-12 h-12">
-                          <img src={chatAgent.avatarUrl} alt={chatAgent.name} />
-                          <AvatarFallback>{chatAgent.name[0]}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <div className="text-sm line-clamp-1">
-                            {chatAgent.name}
-                          </div>
-                          <div className="text-xs text-muted-foreground line-clamp-1">
-                            {chatAgent.introduction}
-                          </div>
-                        </div>
-                        {field.value.findIndex(
-                          (m) => m.userId === chatAgent.id
-                        ) > -1 && (
-                          <CheckCircleIcon className="absolute top-2 right-2 w-4 h-4 text-green-500" />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </ScrollArea>
-                {editingMember && (
-                  <MemberForm
-                    topic={form.watch("topic")}
-                    members={form.watch("members")}
-                    member={editingMember}
-                    chatAgents={chatAgents}
-                    checked={
-                      field.value.findIndex(
-                        (m) => m.userId === editingMember.userId
-                      ) > -1
-                    }
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        field.onChange([
-                          ...field.value,
-                          {
-                            ...editingMember,
-                            prompt: "",
-                          },
-                        ]);
-                      } else {
-                        field.onChange(
-                          field.value.filter(
-                            (m) => m.userId !== editingMember.userId
-                          )
-                        );
-                      }
-                    }}
-                    onConfigChange={(config) => {
-                      editingMember.config = config;
-                      setEditingMember({ ...editingMember });
-
-                      field.onChange(
-                        field.value.map((m) =>
-                          m.userId === editingMember.userId ? editingMember : m
-                        )
-                      );
-                    }}
-                  />
-                )}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
         </div>
         <div className="flex items-center space-x-4">
           {chat?.id && (
@@ -331,7 +239,9 @@ export const ChatForm = (props: {
                   <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
                   <AlertDialogAction
                     className="bg-destructive hover:bg-destructive-hover"
-                    onClick={onDestroy}
+                    onClick={() => {
+                      destroyChat(chat.id).then(() => onFinish());
+                    }}
                   >
                     {t("delete")}
                   </AlertDialogAction>
@@ -344,133 +254,4 @@ export const ChatForm = (props: {
       </form>
     </Form>
   );
-};
-
-const MemberForm = (props: {
-  topic: string;
-  members: Array<Partial<ChatMemberType>>;
-  member: Partial<ChatMemberType>;
-  chatAgents: ChatAgentType[];
-  checked: boolean;
-  onCheckedChange: (checked: boolean) => void;
-  onConfigChange?: (config: ChatMemberType["config"]) => void;
-}) => {
-  const {
-    topic,
-    members,
-    member,
-    chatAgents,
-    checked,
-    onCheckedChange,
-    onConfigChange,
-  } = props;
-  const { user } = useContext(AppSettingsProviderContext);
-  const chatAgent = chatAgents.find((a) => a.id === member.userId);
-
-  const fullPrompt = chatAgent
-    ? Mustache.render(
-        CHAT_SYSTEM_PROMPT_TEMPLATE,
-        {
-          name: chatAgent.name,
-          agent_prompt: chatAgent.config.prompt,
-          agent_chat_prompt: member.config.chatPrompt,
-          topic,
-          members: members
-            .map((m) => {
-              if (m.userType === "User") {
-                return `- ${user.name} (${m.config.introduction})`;
-              } else {
-                const agent = chatAgents.find((a) => a.id === m.userId);
-                if (!agent) return "";
-                return `- ${agent.name} (${agent.introduction})`;
-              }
-            })
-            .join("\n"),
-          history: "...",
-        },
-        {},
-        ["{", "}"]
-      )
-    : "";
-
-  if (member.userType === "User") {
-    return (
-      <>
-        <Label>{t("models.chat.memberConfig")}</Label>
-        <div className="p-4 border rounded-lg">
-          <div className="flex items-center space-x-2 mb-2">
-            <Avatar className="w-12 h-12">
-              <img src={user.avatarUrl} />
-              <AvatarFallback>{user.name[0]}</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <div className="text-sm line-clamp-1">{user.name}</div>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2 mb-2">
-            <Checkbox checked={true} disabled id="member" />
-            <Label htmlFor="member">{t("addToChat")}</Label>
-          </div>
-          <div className="space-y-2">
-            <Label>{t("introduction")}</Label>
-            <Textarea
-              value={member.config.introduction}
-              onChange={(event) => {
-                const introduction = event.target.value;
-                onConfigChange({ ...member.config, introduction });
-              }}
-              placeholder={t("introduceYourself")}
-            />
-          </div>
-        </div>
-      </>
-    );
-  } else if (chatAgent) {
-    return (
-      <>
-        <Label>{t("models.chat.memberConfig")}</Label>
-        <div className="p-4 border space-y-4 rounded-lg">
-          <div className="flex items-center space-x-2 mb-2">
-            <Avatar className="w-12 h-12">
-              <img src={chatAgent.avatarUrl} />
-              <AvatarFallback>{chatAgent.name[0]}</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <div className="text-sm line-clamp-1">{chatAgent.name}</div>
-              <div className="text-xs text-muted-foreground line-clamp-1">
-                {chatAgent.introduction}
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2 mb-2">
-            <Checkbox
-              checked={checked}
-              onCheckedChange={onCheckedChange}
-              id="member"
-            />
-            <Label htmlFor="member">{t("addToChat")}</Label>
-          </div>
-          {checked && (
-            <>
-              <div className="space-y-2">
-                <Label>{t("prompt")}</Label>
-                <Textarea
-                  value={member.config.prompt}
-                  onChange={(event) => {
-                    const prompt = event.target.value;
-                    onConfigChange({ ...member.config, prompt });
-                  }}
-                  placeholder={t("extraPromptForChat")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>{t("promptPreview")}</Label>
-                <Textarea className="min-h-36" disabled value={fullPrompt} />
-              </div>
-            </>
-          )}
-        </div>
-      </>
-    );
-  }
 };

@@ -42,7 +42,7 @@ export const ChatAgentForm = (props: {
 
   const onSubmit = form.handleSubmit((data) => {
     const { name, introduction, ...config } = data;
-    onSave({
+    return onSave({
       name,
       introduction,
       config,

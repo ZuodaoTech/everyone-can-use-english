@@ -32,6 +32,7 @@ export const ChatAgents = () => {
   const [deletingChatAgent, setDeletingChatAgent] =
     useState<ChatAgentType>(null);
   const [editingChatAgent, setEditingChatAgent] = useState<ChatAgentType>(null);
+  const [creatingChatAgent, setCreatingChatAgent] = useState<boolean>(false);
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
 
@@ -49,7 +50,12 @@ export const ChatAgents = () => {
             className="rounded h-8 text-xs"
             placeholder={t("search")}
           />
-          <Button className="w-8 h-8 p-0" variant="ghost" size="icon">
+          <Button
+            className="w-8 h-8 p-0"
+            variant="ghost"
+            size="icon"
+            onClick={() => setCreatingChatAgent(true)}
+          >
             <PlusIcon className="w-4 h-4" />
           </Button>
         </div>
@@ -114,6 +120,18 @@ export const ChatAgents = () => {
               }
             }}
             onCancel={() => setEditingChatAgent(null)}
+          />
+        </DialogContent>
+      </Dialog>
+      <Dialog open={creatingChatAgent} onOpenChange={setCreatingChatAgent}>
+        <DialogContent className="max-w-screen-md max-h-full overflow-auto">
+          <DialogTitle className="sr-only"></DialogTitle>
+          <ChatAgentForm
+            agent={null}
+            onSave={(data) =>
+              createChatAgent(data).then(() => setCreatingChatAgent(false))
+            }
+            onCancel={() => setCreatingChatAgent(false)}
           />
         </DialogContent>
       </Dialog>

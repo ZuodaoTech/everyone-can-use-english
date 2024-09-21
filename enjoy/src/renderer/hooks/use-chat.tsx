@@ -35,6 +35,8 @@ export const useChat = (chatAgentId: string) => {
       config?: {
         prompt?: string;
         introduction?: string;
+        gpt: GptConfigType;
+        tts: TtsConfigType;
       };
     }>;
     config: {
@@ -63,6 +65,8 @@ export const useChat = (chatAgentId: string) => {
         userType?: "User" | "Agent";
         prompt?: string;
         introduction?: string;
+        gpt: GptConfigType;
+        tts: TtsConfigType;
       }>;
       config: {
         sttEngine: string;
