@@ -55,7 +55,6 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
       userType: "ChatAgent",
       name: agent.name,
       config: {
-        language: learningLanguage,
         gpt: {
           engine: currentGptEngine.name,
           model: currentGptEngine.models.default,
@@ -76,7 +75,6 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
       userId: string;
       userType: "User" | "ChatAgent";
       config: {
-        language: string;
         prompt?: string;
         gpt?: GptConfigType;
         tts?: TtsConfigType;
@@ -94,9 +92,11 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
       name: member.name,
       config: {
         prompt: member.config.prompt,
-        language: member.config.language,
         gpt: member.config.gpt as GptConfigType,
-        tts: member.config.tts as TtsConfigType,
+        tts: {
+          language: member.config.tts?.language || learningLanguage,
+          ...member.config.tts,
+        } as TtsConfigType,
       },
     })) || []
   );
@@ -242,7 +242,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
             <Tabs defaultValue={members[0]?.userId}>
               <TabsList>
                 {members.map((member) => (
-                  <TabsTrigger value={member.userId}>
+                  <TabsTrigger key={member.userId} value={member.userId}>
                     {member.agent.name}
                   </TabsTrigger>
                 ))}

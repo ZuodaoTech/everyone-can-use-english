@@ -41,7 +41,6 @@ export const ChatMemberForm = (props: {
     config: z.object({
       prompt: z.string().optional(),
       introduction: z.string().optional(),
-      language: z.string().optional(),
       gpt: z.object({} as GptConfigType),
       tts: z.object({} as TtsConfigType),
     }),
