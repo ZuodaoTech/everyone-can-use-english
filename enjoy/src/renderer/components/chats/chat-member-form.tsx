@@ -50,10 +50,17 @@ export const ChatMemberForm = (props: {
   const form = useForm<z.infer<typeof chatMemberFormSchema>>({
     resolver: zodResolver(chatMemberFormSchema),
     values: member.id
-      ? { ...member }
+      ? {
+          ...member,
+          config: {
+            language: learningLanguage,
+            ...member.config,
+          },
+        }
       : {
           config: {
             prompt: "",
+            language: learningLanguage,
             gpt: {
               engine: "openai",
               model: "gpt-4o",
@@ -136,13 +143,14 @@ export const ChatMemberForm = (props: {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {(gptProviders[field.value as string]?.models || []).map(
-                      (option: string) => (
-                        <SelectItem key={option} value={option}>
-                          {option}
-                        </SelectItem>
-                      )
-                    )}
+                    {(
+                      gptProviders[form.watch("config.gpt.engine") as string]
+                        ?.models || []
+                    ).map((option: string) => (
+                      <SelectItem key={option} value={option}>
+                        {option}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -221,13 +229,14 @@ export const ChatMemberForm = (props: {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {(ttsProviders[field.value as string]?.models || []).map(
-                      (model: string) => (
-                        <SelectItem key={model} value={model}>
-                          {model}
-                        </SelectItem>
-                      )
-                    )}
+                    {(
+                      ttsProviders[form.watch("config.tts.engine") as string]
+                        ?.models || []
+                    ).map((model: string) => (
+                      <SelectItem key={model} value={model}>
+                        {model}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />

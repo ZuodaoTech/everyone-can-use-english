@@ -9,6 +9,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
 } from "@renderer/components/ui";
 import { t } from "i18next";
@@ -85,8 +86,11 @@ export const ChatList = () => {
         </AlertDialogContent>
       </AlertDialog>
       <Dialog open={creatingChat} onOpenChange={setCreatingChat}>
-        <DialogContent className="max-w-screen-md max-h-full overflow-auto">
-          <DialogTitle className="sr-only"></DialogTitle>
+        <DialogContent className="max-w-screen-sm max-h-[70%] overflow-y-auto">
+          <DialogTitle>{t("newChat")}</DialogTitle>
+          <DialogDescription className="sr-only">
+            Create a new chat
+          </DialogDescription>
           <ChatForm chat={null} onFinish={() => setCreatingChat(false)} />
         </DialogContent>
       </Dialog>

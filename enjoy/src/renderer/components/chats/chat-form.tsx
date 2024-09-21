@@ -12,9 +12,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
   Form,
   FormDescription,
   FormField,
@@ -37,6 +34,7 @@ import { t } from "i18next";
 import { useContext, useState } from "react";
 import {
   AISettingsProviderContext,
+  AppSettingsProviderContext,
   ChatProviderContext,
 } from "@renderer/context";
 import { SttEngineOptionEnum } from "@/types/enums";
@@ -45,7 +43,8 @@ import { ChatMemberForm } from "./chat-member-form";
 export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
   const { chat, onFinish } = props;
   const { sttEngine } = useContext(AISettingsProviderContext);
-  const { createChat, updateChat, destroyChat } =
+  const { user } = useContext(AppSettingsProviderContext);
+  const { currentChatAgent, createChat, updateChat, destroyChat } =
     useContext(ChatProviderContext);
   const [members, setMembers] = useState<
     Array<{
@@ -55,12 +54,41 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
       config: {
         prompt?: string;
         introduction?: string;
-        gpt: GptConfigType;
-        tts: TtsConfigType;
+        gpt?: GptConfigType;
+        tts?: TtsConfigType;
       };
     }>
   >(
-    (chat?.members || [])
+    (
+      chat?.members || [
+        {
+          userId: user.id.toString(),
+          userType: "User",
+          name: user.name,
+          config: {},
+        },
+        {
+          agent: currentChatAgent,
+          userId: currentChatAgent.id,
+          userType: "Agent",
+          name: currentChatAgent.name,
+          config: {
+            prompt: "",
+            gpt: {
+              engine: "enjoyai",
+              model: "gpt-4o",
+              temperature: 0.5,
+            },
+            tts: {
+              engine: "enjoyai",
+              model: "openai/tts-1",
+              language: "en-US",
+              voice: "alloy",
+            },
+          },
+        },
+      ]
+    )
       .filter((member) => member.userType === "Agent")
       .map((member) => ({
         agent: member.agent,
@@ -69,7 +97,6 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
         name: member.name,
         config: {
           prompt: member.config.prompt,
-          introduction: member.config.introduction,
           gpt: member.config.gpt as GptConfigType,
           tts: member.config.tts as TtsConfigType,
         },
@@ -125,8 +152,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="">
-        <div className="mb-6">{chat?.id ? t("editChat") : t("newChat")}</div>
+      <form onSubmit={onSubmit}>
         <Tabs defaultValue="basic" className="mb-6">
           <TabsList className="w-full grid grid-cols-3 mb-4">
             <TabsTrigger value="basic">{t("basic")}</TabsTrigger>
@@ -211,7 +237,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
           </TabsContent>
         </Tabs>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 w-full">
           {chat?.id && (
             <AlertDialog>
               <AlertDialogTrigger asChild>

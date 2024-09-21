@@ -3,6 +3,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
   ScrollArea,
@@ -39,7 +40,10 @@ export const Chat = () => {
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-screen-sm max-h-[70%] overflow-y-auto">
-            <DialogTitle className="sr-only"></DialogTitle>
+            <DialogTitle>{t("editChat")}</DialogTitle>
+            <DialogDescription className="sr-only">
+              Edit chat settings
+            </DialogDescription>
             <ScrollArea className="h-full px-4">
               <ChatForm
                 chat={currentChat}
