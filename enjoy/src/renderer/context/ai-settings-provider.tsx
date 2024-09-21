@@ -16,6 +16,7 @@ type AISettingsProviderState = {
   setOpenai?: (config: LlmProviderType) => void;
   setGptEngine?: (engine: GptEngineSettingType) => void;
   currentGptEngine?: GptEngineSettingType;
+  currentTtsEngine?: TtsEngineSettingType;
   gptProviders?: typeof GPT_PROVIDERS;
   ttsProviders?: typeof TTS_PROVIDERS;
 };
@@ -41,9 +42,8 @@ export const AISettingsProvider = ({
   const [sttEngine, setSttEngine] = useState<SttEngineOptionEnum>(
     SttEngineOptionEnum.ENJOY_AZURE
   );
-  const { EnjoyApp, libraryPath, user, apiUrl, webApi } = useContext(
-    AppSettingsProviderContext
-  );
+  const { EnjoyApp, libraryPath, user, apiUrl, webApi, learningLanguage } =
+    useContext(AppSettingsProviderContext);
   const [gptProviders, setGptProviders] = useState<any>(GPT_PROVIDERS);
   const [ttsProviders, setTtsProviders] = useState<any>(TTS_PROVIDERS);
   const db = useContext(DbProviderContext);
@@ -192,6 +192,18 @@ export const AISettingsProvider = ({
                 key: user?.accessToken,
                 baseUrl: `${apiUrl}/api/ai`,
               }),
+        currentTtsEngine:
+          gptEngine.name === "openai"
+            ? {
+                name: "openai",
+                model: "tts-1",
+                voice: "alloy",
+              }
+            : {
+                name: "enjoyai",
+                model: "openai/tts-1",
+                voice: "alloy",
+              },
         openai,
         setOpenai: (config: LlmProviderType) => handleSetOpenai(config),
         whisperConfig,

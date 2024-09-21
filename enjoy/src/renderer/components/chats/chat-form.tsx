@@ -42,7 +42,9 @@ import { ChatMemberForm } from "./chat-member-form";
 
 export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
   const { chat, onFinish } = props;
-  const { sttEngine, currentGptEngine } = useContext(AISettingsProviderContext);
+  const { sttEngine, currentGptEngine, currentTtsEngine } = useContext(
+    AISettingsProviderContext
+  );
   const { learningLanguage } = useContext(AppSettingsProviderContext);
   const { currentChatAgent, createChat, updateChat, destroyChat } =
     useContext(ChatProviderContext);
@@ -59,20 +61,12 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
           model: currentGptEngine.models.default,
           temperature: 0.5,
         },
-        tts:
-          currentGptEngine.name === "enjoyai"
-            ? {
-                engine: "enjoyai",
-                model: "tts-1",
-                language: learningLanguage,
-                voice: "alloy",
-              }
-            : {
-                engine: "openai",
-                model: "openai/tts-1",
-                language: learningLanguage,
-                voice: "alloy",
-              },
+        tts: {
+          engine: currentTtsEngine.name,
+          model: currentTtsEngine.model,
+          voice: currentTtsEngine.voice,
+          language: learningLanguage,
+        },
       },
     };
   };
