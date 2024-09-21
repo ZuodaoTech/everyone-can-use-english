@@ -1,12 +1,21 @@
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@renderer/components/ui";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
-import { UsersRoundIcon } from "lucide-react";
+import { EllipsisIcon, UsersRoundIcon } from "lucide-react";
+import { t } from "i18next";
 
 export const ChatCard = (props: {
   chat: ChatType;
-  selected?: boolean;
+  selected: boolean;
   onSelect: (chat: ChatType) => void;
+  onDelete: (chat: ChatType) => void;
 }) => {
-  const { chat, selected = false, onSelect } = props;
+  const { chat, selected = false, onSelect, onDelete } = props;
   return (
     <div
       key={chat.id}
@@ -21,6 +30,18 @@ export const ChatCard = (props: {
         <ChatBubbleIcon className="w-4 h-4" />
       )}
       <div className="flex-1 text-sm font-serif line-clamp-1">{chat.name}</div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className="h-4">
+            <EllipsisIcon className="w-4 h-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onClick={() => onDelete(chat)}>
+            <span className="text-destructive">{t("delete")}</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };
