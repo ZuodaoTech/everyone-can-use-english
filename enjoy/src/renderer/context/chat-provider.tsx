@@ -8,7 +8,7 @@ type ChatProviderState = {
   currentChatAgent: ChatAgentType;
   setCurrentChatAgent: (chatAgent: ChatAgentType) => void;
   fetchChats: (query?: string) => Promise<void>;
-  createChat: (data: ChatDtoType) => Promise<void>;
+  createChat: (data: ChatDtoType) => Promise<void | ChatType>;
   updateChat: (id: string, data: ChatDtoType) => Promise<void>;
   destroyChat: (id: string) => Promise<void>;
   chatAgents: ChatAgentType[];

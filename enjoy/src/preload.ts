@@ -681,6 +681,20 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       return ipcRenderer.invoke("chat-agents-destroy", id);
     },
   },
+  chatMembers: {
+    findAll: (params: any) => {
+      return ipcRenderer.invoke("chat-agents-find-all", params);
+    },
+    create: (params: any) => {
+      return ipcRenderer.invoke("chat-members-create", params);
+    },
+    update: (params: any) => {
+      return ipcRenderer.invoke("chat-members-update", params);
+    },
+    destroy: (params: any) => {
+      return ipcRenderer.invoke("chat-members-destroy", params);
+    },
+  },
   chatMessages: {
     findAll: (params: {
       chatSessionId: string;

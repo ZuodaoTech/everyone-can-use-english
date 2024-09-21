@@ -14,15 +14,56 @@ import {
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useContext, useState } from "react";
-import { ChatProviderContext } from "@renderer/context";
+import {
+  AISettingsProviderContext,
+  AppSettingsProviderContext,
+  ChatProviderContext,
+} from "@renderer/context";
 import { ChatAgentForm, ChatCard, ChatForm } from "@renderer/components";
 import { PlusIcon } from "lucide-react";
 
 export const ChatList = () => {
   const { chats, currentChat, setCurrentChat, destroyChat, createChat } =
     useContext(ChatProviderContext);
+  const { sttEngine, currentGptEngine, currentTtsEngine } = useContext(
+    AISettingsProviderContext
+  );
+  const { learningLanguage } = useContext(AppSettingsProviderContext);
+  const { currentChatAgent } = useContext(ChatProviderContext);
   const [deletingChat, setDeletingChat] = useState<ChatType>(null);
-  const [creatingChat, setCreatingChat] = useState<boolean>(false);
+
+  const handleCreateChat = () => {
+    createChat({
+      name: t("newChat"),
+      topic: "",
+      config: {
+        sttEngine: sttEngine,
+      },
+      members: [
+        {
+          userId: currentChatAgent.id,
+          userType: "ChatAgent",
+          config: {
+            gpt: {
+              engine: currentGptEngine.name,
+              model: currentGptEngine.models.default,
+              temperature: 0.5,
+            },
+            tts: {
+              engine: currentTtsEngine.name,
+              model: currentTtsEngine.model,
+              voice: currentTtsEngine.voice,
+              language: learningLanguage,
+            },
+          },
+        },
+      ],
+    }).then((chat) => {
+      if (chat) {
+        setCurrentChat(chat);
+      }
+    });
+  };
 
   return (
     <>
@@ -31,7 +72,7 @@ export const ChatList = () => {
           className="w-full mb-1 p-1 justify-start items-center"
           variant="ghost"
           size="sm"
-          onClick={() => setCreatingChat(true)}
+          onClick={handleCreateChat}
         >
           <PlusIcon className="w-4 h-4 mr-1" />
           <span className="text-xs font-semibold capitalize">
@@ -85,15 +126,6 @@ export const ChatList = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <Dialog open={creatingChat} onOpenChange={setCreatingChat}>
-        <DialogContent className="max-w-screen-sm max-h-[70%] overflow-y-auto">
-          <DialogTitle>{t("newChat")}</DialogTitle>
-          <DialogDescription className="sr-only">
-            Create a new chat
-          </DialogDescription>
-          <ChatForm chat={null} onFinish={() => setCreatingChat(false)} />
-        </DialogContent>
-      </Dialog>
     </>
   );
 };

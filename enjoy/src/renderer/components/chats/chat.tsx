@@ -11,12 +11,11 @@ import {
 import { t } from "i18next";
 import { ChatProviderContext, ChatSessionProvider } from "@renderer/context";
 import { useContext, useState } from "react";
-import { ChatForm, ChatInput, ChatMessages } from "@renderer/components";
+import { ChatInput, ChatMessages, ChatSettings } from "@renderer/components";
 import { Tooltip } from "react-tooltip";
 
 export const Chat = () => {
-  const { currentChat, chatAgents, updateChat, destroyChat } =
-    useContext(ChatProviderContext);
+  const { currentChat } = useContext(ChatProviderContext);
   const [displayChatForm, setDisplayChatForm] = useState(false);
 
   if (!currentChat) {
@@ -45,7 +44,7 @@ export const Chat = () => {
               Edit chat settings
             </DialogDescription>
             <ScrollArea className="h-full px-4">
-              <ChatForm
+              <ChatSettings
                 chat={currentChat}
                 onFinish={() => setDisplayChatForm(false)}
               />

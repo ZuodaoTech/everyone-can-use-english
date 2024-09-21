@@ -31,6 +31,7 @@ export const useChat = (chatAgentId: string) => {
       .then((chat) => {
         toast.success(t("models.chat.created"));
         dispatchChats({ type: "append", record: chat });
+        return chat;
       })
       .catch((error) => {
         toast.error(error.message);

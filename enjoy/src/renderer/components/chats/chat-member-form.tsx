@@ -6,6 +6,16 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  Button,
   Form,
   FormControl,
   FormDescription,
@@ -22,7 +32,7 @@ import {
   Textarea,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
@@ -30,15 +40,33 @@ import {
 } from "@renderer/context";
 import { CHAT_SYSTEM_PROMPT_TEMPLATE, LANGUAGES } from "@/constants";
 import Mustache from "mustache";
-import { SttEngineOptionEnum } from "@/types/enums";
 
-export const ChatMemberForm = (props: {
-  member: Partial<ChatMemberType>;
-  onSave: (data: Partial<ChatMemberType>) => void;
-}) => {
-  const { member, onSave } = props;
-  const { learningLanguage } = useContext(AppSettingsProviderContext);
-  const { gptProviders, ttsProviders } = useContext(AISettingsProviderContext);
+export const ChatMemberForm = (props: { member: Partial<ChatMemberType> }) => {
+  const { member } = props;
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
+  const { gptProviders, ttsProviders, currentGptEngine, currentTtsEngine } =
+    useContext(AISettingsProviderContext);
+  const buildMember = (agent: ChatAgentType): Partial<ChatMemberType> => {
+    return {
+      agent,
+      userId: agent.id,
+      userType: "ChatAgent",
+      name: agent.name,
+      config: {
+        gpt: {
+          engine: currentGptEngine.name,
+          model: currentGptEngine.models.default,
+          temperature: 0.5,
+        },
+        tts: {
+          engine: currentTtsEngine.name,
+          model: currentTtsEngine.model,
+          voice: currentTtsEngine.voice,
+          language: learningLanguage,
+        },
+      },
+    };
+  };
   const chatMemberFormSchema = z.object({
     userId: z.string(),
     userType: z.enum(["User", "ChatAgent"]).default("ChatAgent"),
@@ -57,13 +85,17 @@ export const ChatMemberForm = (props: {
 
   const onSubmit = form.handleSubmit(
     (data: z.infer<typeof chatMemberFormSchema>) => {
-      onSave(data as Partial<ChatMemberType>);
+      if (member?.id) {
+        EnjoyApp.chatMembers.update(member.id, data);
+      } else {
+        EnjoyApp.chatMembers.create(data);
+      }
     }
   );
 
   return (
     <Form {...form}>
-      <form onChange={onSubmit} onSubmit={onSubmit}>
+      <form onSubmit={onSubmit}>
         <Accordion defaultValue="gpt" type="single" collapsible>
           <AccordionItem value="gpt">
             <AccordionTrigger className="text-muted-foreground">
@@ -343,6 +375,38 @@ export const ChatMemberForm = (props: {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+
+        <div className="flex items-center justify-end space-x-4 w-full">
+          {member?.id && (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button className="text-destructive" variant="secondary">
+                  {t("delete")}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t("deleteChatMember")}</AlertDialogTitle>
+                </AlertDialogHeader>
+                <AlertDialogDescription>
+                  {t("deleteChatMemberConfirmation")}
+                </AlertDialogDescription>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                  <AlertDialogAction
+                    className="bg-destructive hover:bg-destructive-hover"
+                    onClick={() => {
+                      EnjoyApp.chatMembers.destroy(member.id);
+                    }}
+                  >
+                    {t("delete")}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
+          <Button type="submit">{t("save")}</Button>
+        </div>
       </form>
     </Form>
   );

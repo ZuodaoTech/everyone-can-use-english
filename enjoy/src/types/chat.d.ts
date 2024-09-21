@@ -84,10 +84,11 @@ type ChatDtoType = {
     sttEngine: string;
     prompt?: string;
   };
-  members: Array<ChatMemberDtoType>;
+  members?: Array<ChatMemberDtoType>;
 };
 
 type ChatMemberDtoType = {
+  chatId?: string;
   userId?: string;
   userType?: "User" | "ChatAgent";
   config?: {
