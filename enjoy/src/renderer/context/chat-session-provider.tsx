@@ -183,7 +183,7 @@ export const ChatSessionProvider = ({
     if (!member) {
       const members = chat.members.filter(
         (member) =>
-          member.userType === "Agent" &&
+          member.userType === "ChatAgent" &&
           member.id !== chatMessages[chatMessages.length - 1]?.member?.id
       );
       member = members[Math.floor(Math.random() * members.length)];
@@ -232,7 +232,7 @@ export const ChatSessionProvider = ({
             : "") + `${member.agent.name}:`,
       });
 
-      // the reply may contain the member's name like "Agent: xxx". We need to remove it.
+      // the reply may contain the member's name like "ChatAgent: xxx". We need to remove it.
       const content = reply.content
         .toString()
         .replace(new RegExp(`^(${member.agent.name}):`), "")

@@ -32,7 +32,7 @@ class ChatsHandler {
       const chatMembers = await ChatMember.findAll({
         where: {
           userId: chatAgentId,
-          userType: "Agent",
+          userType: "ChatAgent",
         },
       });
       chatIds = chatMembers.map((member) => member.chatId);

@@ -37,7 +37,7 @@ export const ChatMemberForm = (props: {
   const { gptProviders, ttsProviders } = useContext(AISettingsProviderContext);
   const chatMemberFormSchema = z.object({
     userId: z.string(),
-    userType: z.enum(["User", "Agent"]).default("Agent"),
+    userType: z.enum(["User", "ChatAgent"]).default("ChatAgent"),
     config: z.object({
       prompt: z.string().optional(),
       introduction: z.string().optional(),
@@ -306,6 +306,10 @@ export const ChatMemberForm = (props: {
               <FormItem>
                 <FormLabel>{t("models.chatMember.prompt")}</FormLabel>
                 <Textarea required className="max-h-48" {...field} />
+                <FormDescription>
+                  {t("models.chatMember.promptDescription")}
+                </FormDescription>
+                <FormMessage />
               </FormItem>
             )}
           />

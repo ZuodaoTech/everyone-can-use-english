@@ -32,7 +32,7 @@ type ChatMemberType = {
   chatId: string;
   userId: string;
   name: string;
-  userType: "Agent" | "User";
+  userType: "ChatAgent" | "User";
   config: {
     prompt?: string;
     introduction?: string;
@@ -89,7 +89,7 @@ type ChatDtoType = {
 
 type ChatMemberDtoType = {
   userId?: string;
-  userType?: "User" | "Agent";
+  userType?: "User" | "ChatAgent";
   config?: {
     prompt?: string;
     introduction?: string;

@@ -142,7 +142,7 @@
     },
     "chatMember": {
       "prompt": "额外提示语",
-      "promptDescription": "额外提示将添加到角色的系统提示中。当您希望在额外定义角色在当前聊天中的行为时，这非常有用。"
+      "promptDescription": "额外提示将添加到角色的系统提示中。当您希望在该聊天中约束当前角色的行为时，这非常有用。"
     },
     "chat": {
       "notFound": "未找到聊天",
@@ -153,6 +153,8 @@
       "language": "语言",
       "topic": "话题",
       "members": "成员",
+      "prompt": "额外提示语",
+      "promptDescription": "额外提示将添加到所有聊天角色的系统提示中。当您希望在该聊天中约束角色的行为时，这非常有用。",
       "basicSettings": "基础设置",
       "memberSettings": "成员设置",
       "advancedSettings": "高级设置"

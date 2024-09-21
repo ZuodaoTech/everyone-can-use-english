@@ -105,19 +105,22 @@ export class ChatAgent extends Model<ChatAgent> {
       logger.info("Migrating from chat agent", chatAgent.id);
       chatAgent.members.forEach(async (member) => {
         logger.info("Migrating to chat member", member.id);
-        member.config = {
-          ...member.config,
-          gpt: {
-            engine: chatAgent.config.engine,
-            model: chatAgent.config.model,
-            temperature: chatAgent.config.temperature,
-          },
-          tts: {
-            engine: chatAgent.config.ttsEngine,
-            model: chatAgent.config.ttsModel,
-            voice: chatAgent.config.ttsVoice,
-          },
-        };
+        if (member.userType === "Agent") {
+          member.userType = "ChatAgent";
+          member.config = {
+            ...member.config,
+            gpt: {
+              engine: chatAgent.config.engine,
+              model: chatAgent.config.model,
+              temperature: chatAgent.config.temperature,
+            },
+            tts: {
+              engine: chatAgent.config.ttsEngine,
+              model: chatAgent.config.ttsModel,
+              voice: chatAgent.config.ttsVoice,
+            },
+          };
+        }
 
         await member.save({ transaction: tx });
       });

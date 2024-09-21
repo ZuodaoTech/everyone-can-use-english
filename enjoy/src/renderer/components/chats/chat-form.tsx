@@ -52,7 +52,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
     return {
       agent,
       userId: agent.id,
-      userType: "Agent",
+      userType: "ChatAgent",
       name: agent.name,
       config: {
         language: learningLanguage,
@@ -74,7 +74,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
     Array<{
       agent: ChatAgentType;
       userId: string;
-      userType: "User" | "Agent";
+      userType: "User" | "ChatAgent";
       config: {
         language: string;
         prompt?: string;
@@ -84,7 +84,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
     }>
   >(
     (
-      chat?.members?.filter((member) => member.userType === "Agent") || [
+      chat?.members?.filter((member) => member.userType === "ChatAgent") || [
         buildMember(currentChatAgent),
       ]
     ).map((member) => ({
@@ -183,17 +183,6 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
           <TabsContent value="advanced">
             <FormField
               control={form.control}
-              name="topic"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("models.chat.topic")}</FormLabel>
-                  <Textarea {...field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="config.sttEngine"
               render={({ field }) => (
                 <FormItem>
@@ -234,6 +223,20 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="config.prompt"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("models.chat.prompt")}</FormLabel>
+                  <Textarea {...field} />
+                  <FormDescription>
+                    {t("models.chat.promptDescription")}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </TabsContent>
           <TabsContent value="members">
             <Tabs defaultValue={members[0]?.userId}>
@@ -255,7 +258,7 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
                         ) as {
                           agent: ChatAgentType;
                           userId: string;
-                          userType: "User" | "Agent";
+                          userType: "User" | "ChatAgent";
                           config: {
                             language: string;
                             prompt?: string;
