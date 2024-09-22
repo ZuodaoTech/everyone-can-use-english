@@ -12,7 +12,7 @@ import {
   HasMany,
   Scopes,
   BeforeDestroy,
-  BeforeSave,
+  BeforeUpdate,
 } from "sequelize-typescript";
 import log from "@main/logger";
 import { ChatAgent, ChatMember, ChatMessage } from "@main/db/models";
@@ -118,7 +118,7 @@ export class Chat extends Model<Chat> {
     });
   }
 
-  @BeforeSave
+  @BeforeUpdate
   static async setupChatType(chat: Chat) {
     const members = await ChatMember.findAll({ where: { chatId: chat.id } });
     if (members.length < 2) {

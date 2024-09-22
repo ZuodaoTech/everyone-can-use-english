@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useChatMessage, useTranscribe } from "@renderer/hooks";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import {
-  AISettingsProviderContext,
   AppSettingsProviderContext,
   MediaShadowProvider,
 } from "@renderer/context";
@@ -88,9 +87,9 @@ export const ChatSessionProvider = ({
   children: React.ReactNode;
   chat: ChatType;
 }) => {
-  const { EnjoyApp, user, apiUrl, recorderConfig, learningLanguage } =
-    useContext(AppSettingsProviderContext);
-  const { openai } = useContext(AISettingsProviderContext);
+  const { EnjoyApp, recorderConfig, learningLanguage } = useContext(
+    AppSettingsProviderContext
+  );
   const [submitting, setSubmitting] = useState(false);
   const [shadowing, setShadowing] = useState<AudioType>(null);
   const [assessing, setAssessing] = useState<RecordingType>(null);
