@@ -12,9 +12,12 @@ export const ChatSettings = (props: {
   onFinish?: () => void;
 }) => {
   const { chat, onFinish } = props;
+  const agentMembers = chat.members.filter(
+    (member) => member.userType === "ChatAgent"
+  );
 
   return (
-    <Tabs defaultValue="basic" className="mb-6">
+    <Tabs defaultValue="chat" className="mb-6">
       <TabsList className="w-full grid grid-cols-2 mb-4">
         <TabsTrigger value="chat">{t("models.chat.chatSettings")}</TabsTrigger>
         <TabsTrigger value="members">
@@ -27,15 +30,15 @@ export const ChatSettings = (props: {
       </TabsContent>
 
       <TabsContent value="members">
-        <Tabs defaultValue={chat.members[0].userId}>
+        <Tabs defaultValue={agentMembers[0].userId}>
           <TabsList>
-            {chat.members.map((member) => (
+            {agentMembers.map((member) => (
               <TabsTrigger key={member.userId} value={member.userId}>
                 {member.agent.name}
               </TabsTrigger>
             ))}
           </TabsList>
-          {chat.members.map((member) => (
+          {agentMembers.map((member) => (
             <TabsContent key={member.userId} value={member.userId}>
               <ChatMemberForm member={member} />
             </TabsContent>

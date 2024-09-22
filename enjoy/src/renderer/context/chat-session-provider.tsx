@@ -262,7 +262,11 @@ export const ChatSessionProvider = ({
     const {
       engine = "enjoyai",
       model = "gpt-4o",
-      temperature = 0.5,
+      temperature,
+      maxTokens,
+      frequencyPenalty,
+      presencePenalty,
+      numberOfChoices,
     } = member.config.gpt;
 
     if (engine === "enjoyai") {
@@ -274,6 +278,10 @@ export const ChatSessionProvider = ({
         maxRetries: 0,
         modelName: model,
         temperature,
+        maxTokens,
+        frequencyPenalty,
+        presencePenalty,
+        n: numberOfChoices,
       });
     } else if (engine === "openai") {
       return new ChatOpenAI({
@@ -284,6 +292,10 @@ export const ChatSessionProvider = ({
         maxRetries: 0,
         modelName: model,
         temperature,
+        maxTokens,
+        frequencyPenalty,
+        presencePenalty,
+        n: numberOfChoices,
       });
     }
   };

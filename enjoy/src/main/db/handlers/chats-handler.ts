@@ -74,75 +74,27 @@ class ChatsHandler {
     }
 
     const transaction = await db.connection.transaction();
-    if (!chatData.config?.sttEngine) {
-      chatData.config.sttEngine = (await UserSetting.get(
-        UserSettingKeyEnum.STT_ENGINE
-      )) as string;
-    }
-    const chat = await Chat.create(chatData, {
-      transaction,
-    });
-    if (members.findIndex((m) => m.userType === "User") < 0) {
-      members.push({
-        userId: (
-          await UserSetting.get(UserSettingKeyEnum.PROFILE)
-        ).id.toString(),
-        userType: "User",
-        config: {
-          language: (
-            await UserSetting.get(UserSettingKeyEnum.NATIVE_LANGUAGE)
-          ).toString(),
-        },
-      });
-    }
-    for (const member of members) {
-      await ChatMember.create(
-        {
-          chatId: chat.id,
-          ...member,
-        },
-        {
-          include: [Chat],
-          transaction,
-        }
-      );
-    }
-    await transaction.commit();
-    await chat.reload();
-
-    return chat.toJSON();
-  }
-
-  private async update(_event: IpcMainEvent, id: string, data: ChatDtoType) {
-    const { members, ...chatData } = data;
-    if (!members || members.length === 0) {
-      throw new Error(t("models.chats.membersRequired"));
-    }
-    const chat = await Chat.findOne({
-      where: { id },
-    });
-    if (!chat) {
-      throw new Error(t("models.chats.notFound"));
-    }
-
-    const transaction = await db.connection.transaction();
-    await chat.update(chatData, { transaction });
-
-    // Remove members
-    for (const member of chat.members) {
-      if (member.userType === "User") continue;
-      if (members.findIndex((m) => m.userId === member.userId) < 0) {
-        await member.destroy({ transaction });
+    try {
+      if (!chatData.config?.sttEngine) {
+        chatData.config.sttEngine = (await UserSetting.get(
+          UserSettingKeyEnum.STT_ENGINE
+        )) as string;
       }
-    }
-
-    // Add or update members
-    for (const member of members) {
-      const chatMember = chat.members.find((m) => m.userId === member.userId);
-
-      if (chatMember) {
-        await chatMember.update(member, { transaction });
-      } else {
+      const chat = await Chat.create(chatData, {
+        transaction,
+      });
+      if (members.findIndex((m) => m.userType === "User") < 0) {
+        members.push({
+          userId: (
+            await UserSetting.get(UserSettingKeyEnum.PROFILE)
+          ).id.toString(),
+          userType: "User",
+          config: {
+            language: await UserSetting.get(UserSettingKeyEnum.NATIVE_LANGUAGE),
+          },
+        });
+      }
+      for (const member of members) {
         await ChatMember.create(
           {
             chatId: chat.id,
@@ -154,8 +106,32 @@ class ChatsHandler {
           }
         );
       }
+      await transaction.commit();
+      await chat.reload();
+      return chat.toJSON();
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
+
+  private async update(_event: IpcMainEvent, id: string, data: ChatDtoType) {
+    const chat = await Chat.findOne({
+      where: { id },
+    });
+    if (!chat) {
+      throw new Error(t("models.chats.notFound"));
     }
 
+    const transaction = await db.connection.transaction();
+    await chat.update(
+      {
+        name: data.name,
+        topic: data.topic,
+        config: data.config,
+      },
+      { transaction }
+    );
     await transaction.commit();
     await chat.reload({
       include: [

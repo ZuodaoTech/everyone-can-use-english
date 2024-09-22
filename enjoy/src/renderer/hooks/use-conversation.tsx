@@ -98,7 +98,7 @@ export const useConversation = () => {
         if (message.role === "user") {
           chatMessageHistory.addUserMessage(message.content);
         } else if (message.role === "assistant") {
-          chatMessageHistory.addAIChatMessage(message.content);
+          chatMessageHistory.addAIMessage(message.content);
         }
       });
 

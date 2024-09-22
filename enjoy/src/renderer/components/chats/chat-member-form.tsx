@@ -96,7 +96,12 @@ export const ChatMemberForm = (props: { member: Partial<ChatMemberType> }) => {
   return (
     <Form {...form}>
       <form onSubmit={onSubmit}>
-        <Accordion defaultValue="gpt" type="single" collapsible>
+        <Accordion
+          defaultValue="gpt"
+          type="single"
+          collapsible
+          className="mb-6"
+        >
           <AccordionItem value="gpt">
             <AccordionTrigger className="text-muted-foreground">
               {t("models.chatMember.gptSettings")}
