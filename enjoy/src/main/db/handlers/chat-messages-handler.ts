@@ -89,40 +89,46 @@ class ChatMessagesHandler {
 
     const transaction = await ChatMessage.sequelize.transaction();
 
-    // update content
-    await message.update({ ...data }, { transaction });
+    try {
+      // update content
+      await message.update({ ...data }, { transaction });
 
-    if (recordingUrl) {
-      // destroy existing recording
-      await message.recording?.destroy({ transaction });
+      if (recordingUrl) {
+        // destroy existing recording
+        await message.recording?.destroy({ transaction });
 
-      // create new recording
-      const filePath = enjoyUrlToPath(recordingUrl);
-      const blob = fs.readFileSync(filePath);
-      const recording = await Recording.createFromBlob(
-        {
-          type: "audio/wav",
-          arrayBuffer: blob,
-        },
-        {
-          targetType: "ChatMessage",
-          targetId: message.id,
-          referenceText: message.content,
-        },
-        transaction
-      );
-      message.recording = recording;
-    } else if (message.recording) {
-      message.recording.update(
-        {
-          referenceText: message.content,
-        },
-        { transaction }
-      );
+        // create new recording
+        const filePath = enjoyUrlToPath(recordingUrl);
+        const blob = fs.readFileSync(filePath);
+        const recording = await Recording.createFromBlob(
+          {
+            type: "audio/wav",
+            arrayBuffer: blob,
+          },
+          {
+            targetType: "ChatMessage",
+            targetId: message.id,
+            referenceText: message.content,
+          },
+          transaction
+        );
+        message.recording = recording;
+      } else if (message.recording) {
+        await message.recording.update(
+          {
+            referenceText: message.content,
+          },
+          { transaction }
+        );
+      }
+      await transaction.commit();
+
+      return (await message.reload()).toJSON();
+    } catch (error) {
+      await transaction.rollback();
+      logger.error(error);
+      throw error;
     }
-    await transaction.commit();
-
-    return (await message.reload()).toJSON();
   }
 
   private async destroy(_event: IpcMainEvent, id: string) {

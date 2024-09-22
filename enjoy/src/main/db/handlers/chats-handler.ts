@@ -123,30 +123,30 @@ class ChatsHandler {
       throw new Error(t("models.chats.notFound"));
     }
 
-    const transaction = await db.connection.transaction();
-    await chat.update(
-      {
+    try {
+      await chat.update({
         name: data.name,
         topic: data.topic,
         config: data.config,
-      },
-      { transaction }
-    );
-    await transaction.commit();
-    await chat.reload({
-      include: [
-        {
-          association: Chat.associations.members,
-          include: [
-            {
-              association: ChatMember.associations.agent,
-            },
-          ],
-        },
-      ],
-    });
+      });
+      await chat.reload({
+        include: [
+          {
+            association: Chat.associations.members,
+            include: [
+              {
+                association: ChatMember.associations.agent,
+              },
+            ],
+          },
+        ],
+      });
 
-    return chat.toJSON();
+      return chat.toJSON();
+    } catch (error) {
+      logger.error(error);
+      throw error;
+    }
   }
 
   private async destroy(_event: IpcMainEvent, id: string) {
