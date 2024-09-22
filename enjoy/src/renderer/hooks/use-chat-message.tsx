@@ -14,6 +14,11 @@ import {
 import { BufferMemory, ChatMessageHistory } from "langchain/memory";
 import { ConversationChain } from "langchain/chains";
 import { LLMResult } from "@langchain/core/outputs";
+import { CHAT_SYSTEM_PROMPT_TEMPLATE } from "@/constants";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 export const useChatMessage = (chat: ChatType) => {
   const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
@@ -112,20 +117,27 @@ export const useChatMessage = (chat: ChatType) => {
     }
   };
 
-  const askAgent = (member: ChatMemberType) => {
+  const invokeAgent = async (member: ChatMemberType) => {
     if (chat.type === "conversation") {
-      askAgentInConversation(member);
+      return askAgentInConversation(member);
     } else if (chat.type === "group") {
-      askAgentInGroup(member);
+      return askAgentInGroup(member);
     }
   };
 
   const askAgentInConversation = async (member: ChatMemberType) => {
+    const pendingMessage = chatMessages.find(
+      (m) => m.member.user && m.state === "pending"
+    );
+    if (!pendingMessage) return;
+
     const llm = buildLlm(member);
-    const messages = await fetchChatMessageHistory();
+    const historyBufferSize = member.config.gpt.historyBufferSize || 10;
+    const messages = chatMessages
+      .filter((m) => m.state === "completed")
+      .slice(-historyBufferSize);
     const chatHistory = new ChatMessageHistory();
-    const lastMessage = messages[messages.length - 1];
-    messages.slice(0, -1).forEach((message) => {
+    messages.forEach((message) => {
       if (message.member.userType === "User") {
         chatHistory.addUserMessage(message.content);
       } else if (message.member.userType === "ChatAgent") {
@@ -150,17 +162,85 @@ export const useChatMessage = (chat: ChatType) => {
       verbose: true,
     });
     let response: LLMResult["generations"][0] = [];
-    await chain.call({ input: lastMessage.content }, [
+    await chain.call({ input: pendingMessage.content }, [
       {
         handleLLMEnd: async (output) => {
           response = output.generations[0];
         },
       },
     ]);
+    for (const r of response) {
+      const reply = await EnjoyApp.chatMessages.create({
+        chatId: chat.id,
+        memberId: member.id,
+        content: r.text,
+        state: "completed",
+      });
+      dispatchChatMessages({ type: "append", record: reply });
+    }
+    onUpdateMessage(pendingMessage.id, { state: "completed" });
   };
 
-  const askAgentInGroup = (member: ChatMemberType) => {
+  const askAgentInGroup = async (member: ChatMemberType) => {
+    const pendingMessage = chatMessages.find(
+      (m) => m.member.user && m.state === "pending"
+    );
+
     const llm = buildLlm(member);
+    const prompt = ChatPromptTemplate.fromMessages([
+      ["system", CHAT_SYSTEM_PROMPT_TEMPLATE],
+      ["user", "{input}"],
+    ]);
+    const chain = prompt.pipe(llm);
+
+    const lastChatMessage = chatMessages[chatMessages.length - 1];
+    const reply = await chain.invoke({
+      name: member.agent.name,
+      agent_prompt: member.agent.config.prompt || "",
+      agent_chat_prompt: member.config.prompt || "",
+      topic: chat.topic,
+      members: chat.members
+        .map((m) => {
+          if (m.user) {
+            return `- ${m.user.name} (${m.config.introduction})`;
+          } else if (m.agent) {
+            return `- ${m.agent.name} (${m.agent.introduction})`;
+          }
+        })
+        .join("\n"),
+      history: chatMessages
+        .slice(0, chatMessages.length - 1)
+        .map(
+          (message) =>
+            `- ${(message.member.user || message.member.agent).name}: ${
+              message.content
+            }(${dayjs(message.createdAt).fromNow()})`
+        )
+        .join("\n"),
+      input:
+        (lastChatMessage
+          ? `${lastChatMessage.member.name}: ${lastChatMessage.content}\n`
+          : "") + `${member.agent.name}:`,
+    });
+
+    // the reply may contain the member's name like "ChatAgent: xxx". We need to remove it.
+    const content = reply.content
+      .toString()
+      .replace(new RegExp(`^(${member.agent.name}):`), "")
+      .trim();
+
+    const message = await EnjoyApp.chatMessages.create({
+      chatId: chat.id,
+      memberId: member.id,
+      content,
+      state: "completed",
+    });
+    dispatchChatMessages({ type: "append", record: message });
+    if (pendingMessage) {
+      onUpdateMessage(pendingMessage.id, { state: "completed" });
+    }
+
+    return message;
   };
 
   const buildLlm = (member: ChatMemberType) => {
@@ -205,20 +285,6 @@ export const useChatMessage = (chat: ChatType) => {
     }
   };
 
-  const fetchChatMessageHistory = async () => {
-    let limit = chat.config.gpt.historyBufferSize;
-    if (!limit || limit < 0) {
-      limit = 0;
-    }
-    const messages: ChatMessageType[] = await EnjoyApp.chatMessages.findAll({
-      where: { chatId: chat.id },
-      order: [["createdAt", "DESC"]],
-      limit,
-    });
-
-    return messages.reverse();
-  };
-
   useEffect(() => {
     if (!chat) return;
 
@@ -236,5 +302,6 @@ export const useChatMessage = (chat: ChatType) => {
     onCreateUserMessage,
     onUpdateMessage,
     onDeleteMessage,
+    invokeAgent,
   };
 };

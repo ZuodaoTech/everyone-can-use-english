@@ -12,6 +12,7 @@ import {
   HasMany,
   Scopes,
   BeforeDestroy,
+  BeforeSave,
 } from "sequelize-typescript";
 import log from "@main/logger";
 import { ChatAgent, ChatMember, ChatMessage } from "@main/db/models";
@@ -47,6 +48,9 @@ export class Chat extends Model<Chat> {
   @Default(DataType.UUIDV4)
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;
+
+  @Column(DataType.STRING)
+  type: "conversation" | "group";
 
   @AllowNull(false)
   @Column(DataType.STRING)
@@ -112,6 +116,18 @@ export class Chat extends Model<Chat> {
       action: action,
       record: chat.toJSON(),
     });
+  }
+
+  @BeforeSave
+  static async setupChatType(chat: Chat) {
+    const members = await ChatMember.findAll({ where: { chatId: chat.id } });
+    if (members.length < 2) {
+      throw new Error("Chat must have at least two members");
+    } else if (members.length > 2) {
+      chat.type = "group";
+    } else {
+      chat.type = "conversation";
+    }
   }
 
   @BeforeDestroy

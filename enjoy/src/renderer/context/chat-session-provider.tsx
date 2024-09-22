@@ -24,15 +24,8 @@ import {
   toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import { ChatOpenAI } from "@langchain/openai";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChevronDownIcon } from "lucide-react";
 import { AudioPlayer, RecordingDetail } from "@renderer/components";
-import { CHAT_SYSTEM_PROMPT_TEMPLATE } from "@/constants";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-
-dayjs.extend(relativeTime);
 
 type ChatSessionProviderState = {
   chatMessages: ChatMessageType[];
@@ -107,6 +100,7 @@ export const ChatSessionProvider = ({
     onCreateUserMessage,
     onUpdateMessage,
     onDeleteMessage,
+    invokeAgent,
   } = useChatMessage(chat);
   const [deletingMessage, setDeletingMessage] = useState<string>(null);
   const [cancelingRecording, setCancelingRecording] = useState(false);
@@ -161,7 +155,7 @@ export const ChatSessionProvider = ({
         service: chat.config.sttEngine,
         align: false,
       });
-      return onCreateMessage(transcript, url).finally(() =>
+      return onCreateUserMessage(transcript, url).finally(() =>
         setSubmitting(false)
       );
     } catch (error) {
@@ -171,14 +165,6 @@ export const ChatSessionProvider = ({
   };
 
   const askAgent = async (member?: ChatMemberType) => {
-    // check if there is a pending message
-    const pendingMessage = chatMessages.find(
-      (m) => m.member.user && m.state === "pending"
-    );
-    if (pendingMessage) {
-      onUpdateMessage(pendingMessage.id, { state: "completed" });
-    }
-
     // pick an random agent
     if (!member) {
       const members = chat.members.filter(
@@ -193,111 +179,8 @@ export const ChatSessionProvider = ({
       return toast.warning(t("itsYourTurn"));
     }
 
-    try {
-      const llm = buildLlm(member);
-      const prompt = ChatPromptTemplate.fromMessages([
-        ["system", CHAT_SYSTEM_PROMPT_TEMPLATE],
-        ["user", "{input}"],
-      ]);
-      const chain = prompt.pipe(llm);
-
-      setSubmitting(true);
-      const lastChatMessage = chatMessages[chatMessages.length - 1];
-      const reply = await chain.invoke({
-        name: member.agent.name,
-        agent_prompt: member.agent.config.prompt || "",
-        agent_chat_prompt: member.config.prompt || "",
-        topic: chat.topic,
-        members: chat.members
-          .map((m) => {
-            if (m.user) {
-              return `- ${m.user.name} (${m.config.introduction})`;
-            } else if (m.agent) {
-              return `- ${m.agent.name} (${m.agent.introduction})`;
-            }
-          })
-          .join("\n"),
-        history: chatMessages
-          .slice(0, chatMessages.length - 1)
-          .map(
-            (message) =>
-              `- ${(message.member.user || message.member.agent).name}: ${
-                message.content
-              }(${dayjs(message.createdAt).fromNow()})`
-          )
-          .join("\n"),
-        input:
-          (lastChatMessage
-            ? `${lastChatMessage.member.name}: ${lastChatMessage.content}\n`
-            : "") + `${member.agent.name}:`,
-      });
-
-      // the reply may contain the member's name like "ChatAgent: xxx". We need to remove it.
-      const content = reply.content
-        .toString()
-        .replace(new RegExp(`^(${member.agent.name}):`), "")
-        .trim();
-
-      return EnjoyApp.chatMessages
-        .create({
-          chatId: chat.id,
-          memberId: member.id,
-          content,
-          state: "completed",
-        })
-        .then((message) =>
-          dispatchChatMessages({ type: "append", record: message })
-        )
-        .catch((error) => {
-          toast.error(error.message);
-        })
-        .finally(() => setSubmitting(false));
-    } catch (err) {
-      setSubmitting(false);
-      toast.error(err.message);
-    }
-  };
-
-  const buildLlm = (member: ChatMemberType) => {
-    const {
-      engine = "enjoyai",
-      model = "gpt-4o",
-      temperature,
-      maxTokens,
-      frequencyPenalty,
-      presencePenalty,
-      numberOfChoices,
-    } = member.config.gpt;
-
-    if (engine === "enjoyai") {
-      return new ChatOpenAI({
-        openAIApiKey: user.accessToken,
-        configuration: {
-          baseURL: `${apiUrl}/api/ai`,
-        },
-        maxRetries: 0,
-        modelName: model,
-        temperature,
-        maxTokens,
-        frequencyPenalty,
-        presencePenalty,
-        n: numberOfChoices,
-      });
-    } else if (engine === "openai") {
-      return new ChatOpenAI({
-        openAIApiKey: openai.key,
-        configuration: {
-          baseURL: openai.baseUrl,
-        },
-        maxRetries: 0,
-        modelName: model,
-        temperature,
-        maxTokens,
-        frequencyPenalty,
-        presencePenalty,
-        n: numberOfChoices,
-      });
-    }
+    setSubmitting(true);
+    return invokeAgent(member).finally(() => setSubmitting(false));
   };
 
   const onAssess = (assessment: PronunciationAssessmentType) => {
