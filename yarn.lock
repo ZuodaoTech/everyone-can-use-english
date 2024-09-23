@@ -3132,9 +3132,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/community@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "@langchain/community@npm:0.3.0"
+"@langchain/community@npm:^0.3.2":
+  version: 0.3.2
+  resolution: "@langchain/community@npm:0.3.2"
   dependencies:
     "@langchain/openai": "npm:>=0.2.0 <0.4.0"
     binary-extensions: "npm:^2.2.0"
@@ -3142,7 +3142,7 @@ __metadata:
     flat: "npm:^5.0.2"
     js-yaml: "npm:^4.1.0"
     langchain: "npm:>=0.2.3 <0.4.0"
-    langsmith: "npm:~0.1.30"
+    langsmith: "npm:~0.1.56"
     uuid: "npm:^10.0.0"
     zod: "npm:^3.22.3"
     zod-to-json-schema: "npm:^3.22.5"
@@ -3512,7 +3512,7 @@ __metadata:
       optional: true
     youtubei.js:
       optional: true
-  checksum: 10c0/6195f74ba4ce6a9565a81a59013f631e74aa2bfb3e705933e9b320fc70d2bfc10b0d17e47170f53497549a29f8f4aba061482f0980f15cc47953493e4c285a9a
+  checksum: 10c0/5d6979e37d363254f2b91637a90427158170b3af6e3fdbd029f344b79a28cc9c1868d5a59c2528264feb0ed4df9977c0d3cf81c13a5734de60411ce3406d8d00
   languageName: node
   linkType: hard
 
@@ -12930,7 +12930,7 @@ __metadata:
     "@electron-forge/publisher-s3": "npm:^7.4.0"
     "@electron/fuses": "npm:^1.8.0"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@langchain/community": "npm:^0.3.0"
+    "@langchain/community": "npm:^0.3.2"
     "@langchain/core": "npm:^0.3.1"
     "@langchain/ollama": "npm:^0.1.0"
     "@mozilla/readability": "npm:^0.5.0"
@@ -16858,9 +16858,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"langsmith@npm:~0.1.30":
-  version: 0.1.55
-  resolution: "langsmith@npm:0.1.55"
+"langsmith@npm:~0.1.56":
+  version: 0.1.59
+  resolution: "langsmith@npm:0.1.59"
   dependencies:
     "@types/uuid": "npm:^10.0.0"
     commander: "npm:^10.0.1"
@@ -16869,17 +16869,11 @@ __metadata:
     semver: "npm:^7.6.3"
     uuid: "npm:^10.0.0"
   peerDependencies:
-    "@langchain/core": "*"
-    langchain: "*"
     openai: "*"
   peerDependenciesMeta:
-    "@langchain/core":
-      optional: true
-    langchain:
-      optional: true
     openai:
       optional: true
-  checksum: 10c0/d49ef23e7f916a099f3e01ef833de01575aa41131e96d045e8b43cfb1e3c5df0cbb2af7678b707693242f9fe429ed86ba5da6518d5033a598526a5f0744e710f
+  checksum: 10c0/3fdddb06e734ca0b55c80dfea8ea3e72ea892891317ae8ee86768ead2928dd8edae67769f1039703cd3e969d9261830cfbd377e6ff7134fc536f47b2274e6dc6
   languageName: node
   linkType: hard
 
