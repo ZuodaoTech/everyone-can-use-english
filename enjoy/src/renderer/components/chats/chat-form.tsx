@@ -27,30 +27,39 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Switch,
   Textarea,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useContext, useState } from "react";
 import {
   AISettingsProviderContext,
+  AppSettingsProviderContext,
   ChatProviderContext,
 } from "@renderer/context";
 import { SttEngineOptionEnum } from "@/types/enums";
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon, RefreshCwIcon } from "lucide-react";
+import { useAiCommand } from "@/renderer/hooks";
+import { cn } from "@/renderer/lib/utils";
 
-export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
+export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
   const { chat, onFinish } = props;
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { sttEngine } = useContext(AISettingsProviderContext);
+  const { summarizeTopic } = useAiCommand();
   const [isMoreSettingsOpen, setIsMoreSettingsOpen] = useState(false);
   const { createChat, updateChat, destroyChat } =
     useContext(ChatProviderContext);
-
+  const [isGeneratingTopic, setIsGeneratingTopic] = useState(false);
   const chatFormSchema = z.object({
     name: z.string().min(1),
     topic: z.string(),
     config: z.object({
       sttEngine: z.string().default(sttEngine),
       prompt: z.string().optional(),
+      enableChatAssistant: z.boolean().default(false),
+      enableAutoTts: z.boolean().default(false),
     }),
   });
 
@@ -67,6 +76,8 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
           config: {
             sttEngine,
             prompt: "",
+            enableChatAssistant: true,
+            enableAutoTts: true,
           },
         },
   });
@@ -80,6 +91,8 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
         config: {
           sttEngine: config.sttEngine,
           prompt: config.prompt,
+          enableChatAssistant: config.enableChatAssistant,
+          enableAutoTts: config.enableAutoTts,
         },
       }).then(() => onFinish());
     } else {
@@ -89,10 +102,34 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
         config: {
           sttEngine: config.sttEngine,
           prompt: config.prompt,
+          enableChatAssistant: config.enableChatAssistant,
+          enableAutoTts: config.enableAutoTts,
         },
       }).then(() => onFinish());
     }
   });
+
+  const generateTopic = async () => {
+    setIsGeneratingTopic(true);
+    try {
+      const messages = await EnjoyApp.chatMessages.findAll({
+        where: { chatId: chat.id },
+        limit: 2,
+        order: [["createdAt", "ASC"]],
+      });
+      if (messages.length < 1) {
+        toast.warning(t("chatNotStartedYet"));
+        return;
+      }
+      const content = messages.map((m) => m.content).join("\n");
+
+      return await summarizeTopic(content);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsGeneratingTopic(false);
+    }
+  };
 
   return (
     <Form {...form}>
@@ -104,7 +141,69 @@ export const ChatForm = (props: { chat?: ChatType; onFinish?: () => void }) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chat.name")}</FormLabel>
-                <Input {...field} />
+                <div className="flex items-center space-x-2 justify-between">
+                  <Input className="flex-1" {...field} />
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    disabled={isGeneratingTopic}
+                    data-tooltip-id="chat-tooltip"
+                    data-tooltip-content={t("models.chat.generateTopic")}
+                    onClick={async () => {
+                      if (isGeneratingTopic) return;
+                      const topic = await generateTopic();
+                      if (!topic) return;
+
+                      field.onChange(topic);
+                    }}
+                  >
+                    <RefreshCwIcon
+                      className={cn(
+                        "w-4 h-4",
+                        isGeneratingTopic && "animate-spin"
+                      )}
+                    />
+                  </Button>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="config.enableChatAssistant"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center space-x-2">
+                  <FormLabel>{t("models.chat.enableChatAssistant")}</FormLabel>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </div>
+                <FormDescription>
+                  {t("models.chat.enableChatAssistantDescription")}
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="config.enableAutoTts"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center space-x-2">
+                  <FormLabel>{t("models.chat.enableAutoTts")}</FormLabel>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </div>
+                <FormDescription>
+                  {t("models.chat.enableAutoTtsDescription")}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

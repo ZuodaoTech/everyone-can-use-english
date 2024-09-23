@@ -56,8 +56,8 @@ export const Chat = () => {
         <ChatMessages />
         <div className="absolute bottom-0 w-full min-h-16 py-3 z-10 bg-background flex items-center border-t shadow-lg">
           <ChatInput />
-          <Tooltip id="chat-input-tooltip" />
         </div>
+        <Tooltip id="chat-tooltip" />
       </ChatSessionProvider>
     </ScrollArea>
   );

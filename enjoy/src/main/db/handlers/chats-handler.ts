@@ -80,9 +80,15 @@ class ChatsHandler {
           UserSettingKeyEnum.STT_ENGINE
         )) as string;
       }
-      const chat = await Chat.create(chatData, {
-        transaction,
-      });
+      const chat = await Chat.create(
+        {
+          type: "conversation",
+          ...chatData,
+        },
+        {
+          transaction,
+        }
+      );
       if (members.findIndex((m) => m.userType === "User") < 0) {
         members.push({
           userId: (

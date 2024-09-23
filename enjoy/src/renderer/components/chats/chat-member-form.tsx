@@ -38,12 +38,9 @@ import { useContext } from "react";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
-  ChatSessionProviderContext,
 } from "@renderer/context";
 import { LANGUAGES } from "@/constants";
 import Mustache from "mustache";
-import Markdown from "react-markdown";
-import { MarkdownWrapper } from "../misc";
 
 export const ChatMemberForm = (props: {
   chat: ChatType;

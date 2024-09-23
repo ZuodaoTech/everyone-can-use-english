@@ -14,7 +14,6 @@ export const ChatSettings = (props: {
 }) => {
   const { chat, onFinish } = props;
   const { chatMembers } = useChatMember(chat.id);
-  console.log(chatMembers);
   const agentMembers = chatMembers.filter(
     (member) => member.userType === "ChatAgent"
   );

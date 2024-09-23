@@ -5,6 +5,9 @@ type ChatType = {
   topic?: string;
   config: {
     sttEngine: SttEngineOptionEnum;
+    prompt?: string;
+    enableChatAssistant?: boolean;
+    enableAutoTts?: boolean;
     [key: string]: any;
   };
   digest?: string;
@@ -83,6 +86,8 @@ type ChatDtoType = {
   config: {
     sttEngine: string;
     prompt?: string;
+    enableChatAssistant?: boolean;
+    enableAutoTts?: boolean;
   };
   members?: Array<ChatMemberDtoType>;
 };
