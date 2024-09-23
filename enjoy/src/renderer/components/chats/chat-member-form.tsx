@@ -23,6 +23,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  Input,
   Select,
   SelectContent,
   SelectItem,
@@ -255,6 +256,132 @@ export const ChatMemberForm = (props: {
                     </div>
                     <FormDescription>
                       {t("gpt.temperatureDescription")}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="config.gpt.historyBufferSize"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("gpt.historyBufferSize")}</FormLabel>
+                    <div className="flex items-center space-x-1">
+                      <Slider
+                        className="flex-1"
+                        onValueChange={(value) => field.onChange(value[0])}
+                        defaultValue={[10]}
+                        value={[field.value as number]}
+                        min={0}
+                        max={100}
+                        step={1}
+                      />
+                      <span>{field.value as number}</span>
+                    </div>
+                    <FormDescription>
+                      {t("gpt.historyBufferSizeDescription")}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="config.gpt.maxTokens"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("gpt.maxTokens")}</FormLabel>
+                    <Input
+                      type="number"
+                      min="-1"
+                      defaultValue={-1}
+                      value={field.value}
+                      onChange={(event) => {
+                        if (!event.target.value) return;
+                        field.onChange(parseInt(event.target.value));
+                      }}
+                    />
+                    <FormDescription>
+                      {t("gpt.maxTokensDescription")}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="config.gpt.presencePenalty"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("gpt.presencePenalty")}</FormLabel>
+                    <div className="flex items-center space-x-1">
+                      <Slider
+                        className="flex-1"
+                        onValueChange={(value) => field.onChange(value[0])}
+                        defaultValue={[1]}
+                        value={[field.value as number]}
+                        min={-2}
+                        max={2}
+                        step={0.1}
+                      />
+                      <span>{field.value as number}</span>
+                    </div>
+                    <FormDescription>
+                      {t("gpt.presencePenaltyDescription")}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="config.gpt.frequencyPenalty"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("gpt.frequencyPenalty")}</FormLabel>
+                    <div className="flex items-center space-x-1">
+                      <Slider
+                        className="flex-1"
+                        onValueChange={(value) => field.onChange(value[0])}
+                        defaultValue={[1]}
+                        value={[field.value as number]}
+                        min={-2}
+                        max={2}
+                        step={0.1}
+                      />
+                      <span>{field.value as number}</span>
+                    </div>
+                    <FormDescription>
+                      {t("gpt.frequencyPenaltyDescription")}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="config.gpt.numberOfChoices"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("gpt.numberOfChoices")}</FormLabel>
+                    <Input
+                      type="number"
+                      min="1"
+                      step="1.0"
+                      defaultValue={1}
+                      value={field.value}
+                      onChange={(event) => {
+                        field.onChange(
+                          event.target.value
+                            ? parseInt(event.target.value)
+                            : 1.0
+                        );
+                      }}
+                    />
+                    <FormDescription>
+                      {t("gpt.numberOfChoicesDescription")}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

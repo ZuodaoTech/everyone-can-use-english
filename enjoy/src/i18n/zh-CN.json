@@ -143,8 +143,8 @@
     "chatMember": {
       "prompt": "额外提示语",
       "promptDescription": "额外提示将添加到角色的系统提示中。当您希望在该聊天中约束当前角色的行为时，这非常有用。",
-      "gptSettings": "GPT 设置",
-      "ttsSettings": "TTS 设置",
+      "gptSettings": "LLM 设置",
+      "ttsSettings": "语音设置",
       "moreSettings": "更多设置"
     },
     "chat": {
@@ -816,9 +816,9 @@
     "numberOfChoicesDescription": "大于 1 时，将每次生成多版本的文本"
   },
   "tts": {
-    "engine": "TTS 引擎",
-    "model": "TTS 模型",
-    "voice": "TTS 音色",
+    "engine": "语音引擎",
+    "model": "语音模型",
+    "voice": "语音音色",
     "language": "TTS 语言"
   },
   "chatMemberUpdated": "聊天成员更新成功",

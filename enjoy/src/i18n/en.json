@@ -143,8 +143,8 @@
     "chatMember": {
       "prompt": "Extra Prompt",
       "promptDescription": "The extra prompt will be added to the system prompt of the chat agent. It is useful when you want to customize the chat agent's behavior in this specific chat.",
-      "gptSettings": "GPT Settings",
-      "ttsSettings": "TTS Settings",
+      "gptSettings": "LLM Settings",
+      "ttsSettings": "Text to Speech",
       "moreSettings": "More Settings"
     },
     "chat": {
