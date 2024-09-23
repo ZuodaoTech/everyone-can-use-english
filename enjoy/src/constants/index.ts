@@ -58,20 +58,12 @@ export const NOT_SUPPORT_JSON_FORMAT_MODELS = [
   "gpt-4-32k",
 ];
 
-export const CHAT_SYSTEM_PROMPT_TEMPLATE = `You are {name}. 
-{agent_prompt}
-{agent_chat_prompt}
-
-[Guidelines]
-1. Stay in character: Always act according to your defined role.
-2. Be helpful and polite: Provide assistance to the best of your abilities.
-3. Respect context: Pay attention to the current context of the conversation.
-
-[Chat Members]
-{members}
+export const CHAT_GROUP_PROMPT_TEMPLATE = `You are {name} in this chat. You should always stay in character.
 
 [Chat History]
 {history}
+
+{name}:
 `;
 
 export const AGENT_FIXTURE_AVA = {

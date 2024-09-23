@@ -70,7 +70,7 @@ export class ChatMember extends Model<ChatMember> {
   get name(): string {
     if (this.userType === "User") {
       return this.user.name;
-    } else if (this.userType === "Agent") {
+    } else if (this.userType === "ChatAgent") {
       return this.agent.name;
     }
     return "";

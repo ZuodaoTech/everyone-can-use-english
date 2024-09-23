@@ -27,6 +27,7 @@ import { ChevronDownIcon } from "lucide-react";
 import { AudioPlayer, RecordingDetail } from "@renderer/components";
 
 type ChatSessionProviderState = {
+  chat: ChatType;
   chatMessages: ChatMessageType[];
   dispatchChatMessages: React.Dispatch<any>;
   submitting: boolean;
@@ -56,6 +57,7 @@ type ChatSessionProviderState = {
 };
 
 const initialState: ChatSessionProviderState = {
+  chat: null,
   chatMessages: [],
   dispatchChatMessages: () => null,
   submitting: false,
@@ -228,6 +230,7 @@ export const ChatSessionProvider = ({
   return (
     <ChatSessionProviderContext.Provider
       value={{
+        chat,
         chatMessages,
         dispatchChatMessages,
         submitting,

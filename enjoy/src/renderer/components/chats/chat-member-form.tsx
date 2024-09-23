@@ -37,19 +37,36 @@ import { useContext } from "react";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
-  ChatProviderContext,
+  ChatSessionProviderContext,
 } from "@renderer/context";
-import { CHAT_SYSTEM_PROMPT_TEMPLATE, LANGUAGES } from "@/constants";
+import { LANGUAGES } from "@/constants";
 import Mustache from "mustache";
+import Markdown from "react-markdown";
+import { MarkdownWrapper } from "../misc";
 
 export const ChatMemberForm = (props: {
+  chat: ChatType;
   member: Partial<ChatMemberType>;
   onFinish?: () => void;
 }) => {
-  const { member, onFinish } = props;
+  const { member, onFinish, chat } = props;
   const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const { gptProviders, ttsProviders, currentGptEngine, currentTtsEngine } =
     useContext(AISettingsProviderContext);
+
+  const buildFullPrompt = (prompt: string) => {
+    return Mustache.render(
+      `{{{agent_prompt}}}
+      {{{chat_prompt}}}
+      {{{member_prompt}}}`,
+      {
+        agent_prompt: member.agent.prompt,
+        chat_prompt: chat.config.prompt,
+        member_prompt: prompt,
+      }
+    ).trim();
+  };
+
   const buildMember = (agent: ChatAgentType): Partial<ChatMemberType> => {
     return {
       agent,
@@ -421,6 +438,14 @@ export const ChatMemberForm = (props: {
                       {t("models.chatMember.promptDescription")}
                     </FormDescription>
                     <FormMessage />
+                    <div className="text-sm text-muted-foreground mb-2">
+                      {t("promptPreview")}:
+                    </div>
+                    <div className="text-muted-foreground bg-muted px-4 py-2 rounded-md">
+                      <div className="font-serif select-text text-sm whitespace-pre-line">
+                        {buildFullPrompt(form.watch("config.prompt"))}
+                      </div>
+                    </div>
                   </FormItem>
                 )}
               />

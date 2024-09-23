@@ -44,7 +44,7 @@ export const ChatSettings = (props: {
             </TabsList>
             {agentMembers.map((member) => (
               <TabsContent key={member.userId} value={member.userId}>
-                <ChatMemberForm member={member} />
+                <ChatMemberForm chat={chat} member={member} />
               </TabsContent>
             ))}
           </Tabs>

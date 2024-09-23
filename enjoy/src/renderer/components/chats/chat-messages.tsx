@@ -13,7 +13,7 @@ import {
 import { t } from "i18next";
 
 export const ChatMessages = () => {
-  const { chatMessages } = useContext(ChatSessionProviderContext);
+  const { chatMessages, chat } = useContext(ChatSessionProviderContext);
   const lastMessage = chatMessages[chatMessages.length - 1];
   const [editingChatMember, setEditingChatMember] =
     useState<ChatMemberType>(null);
@@ -40,6 +40,7 @@ export const ChatMessages = () => {
             Edit chat member
           </DialogDescription>
           <ChatMemberForm
+            chat={chat}
             member={editingChatMember}
             onFinish={() => setEditingChatMember(null)}
           />

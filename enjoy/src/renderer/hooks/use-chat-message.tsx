@@ -14,9 +14,10 @@ import {
 import { BufferMemory, ChatMessageHistory } from "langchain/memory";
 import { ConversationChain } from "langchain/chains";
 import { LLMResult } from "@langchain/core/outputs";
-import { CHAT_SYSTEM_PROMPT_TEMPLATE } from "@/constants";
+import { CHAT_GROUP_PROMPT_TEMPLATE } from "@/constants";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Mustache from "mustache";
 
 dayjs.extend(relativeTime);
 
@@ -151,7 +152,7 @@ export const useChatMessage = (chat: ChatType) => {
       returnMessages: true,
     });
     const prompt = ChatPromptTemplate.fromMessages([
-      ["system" as MessageRoleEnum, member.agent.prompt],
+      ["system" as MessageRoleEnum, buildSystemPrompt(member)],
       new MessagesPlaceholder("history"),
       ["human", "{input}"],
     ]);
@@ -188,39 +189,24 @@ export const useChatMessage = (chat: ChatType) => {
 
     const llm = buildLlm(member);
     const prompt = ChatPromptTemplate.fromMessages([
-      ["system", CHAT_SYSTEM_PROMPT_TEMPLATE],
-      ["user", "{input}"],
+      ["system", buildSystemPrompt(member)],
+      ["user", CHAT_GROUP_PROMPT_TEMPLATE],
     ]);
     const chain = prompt.pipe(llm);
+    const historyBufferSize = member.config.gpt.historyBufferSize || 10;
+    const history = chatMessages
+      .slice(-historyBufferSize)
+      .map(
+        (message) =>
+          `- ${message.member.name}: ${message.content}(${dayjs(
+            message.createdAt
+          ).fromNow()})`
+      )
+      .join("\n");
 
-    const lastChatMessage = chatMessages[chatMessages.length - 1];
     const reply = await chain.invoke({
       name: member.agent.name,
-      agent_prompt: member.agent.config.prompt || "",
-      agent_chat_prompt: member.config.prompt || "",
-      topic: chat.topic,
-      members: chat.members
-        .map((m) => {
-          if (m.user) {
-            return `- ${m.user.name} (${m.config.introduction})`;
-          } else if (m.agent) {
-            return `- ${m.agent.name} (${m.agent.introduction})`;
-          }
-        })
-        .join("\n"),
-      history: chatMessages
-        .slice(0, chatMessages.length - 1)
-        .map(
-          (message) =>
-            `- ${(message.member.user || message.member.agent).name}: ${
-              message.content
-            }(${dayjs(message.createdAt).fromNow()})`
-        )
-        .join("\n"),
-      input:
-        (lastChatMessage
-          ? `${lastChatMessage.member.name}: ${lastChatMessage.content}\n`
-          : "") + `${member.agent.name}:`,
+      history,
     });
 
     // the reply may contain the member's name like "ChatAgent: xxx". We need to remove it.
@@ -283,6 +269,19 @@ export const useChatMessage = (chat: ChatType) => {
         n: numberOfChoices,
       });
     }
+  };
+
+  const buildSystemPrompt = (member: ChatMemberType) => {
+    return Mustache.render(
+      `{{{agent_prompt}}}
+      {{{chat_prompt}}}
+      {{{member_prompt}}}`,
+      {
+        agent_prompt: member.agent.prompt,
+        chat_prompt: chat.config.prompt,
+        member_prompt: member.config.prompt,
+      }
+    );
   };
 
   useEffect(() => {
