@@ -207,7 +207,12 @@ export const ChatAgentMessage = (props: {
             {agent.name}
           </AvatarFallback>
         </Avatar>
-        <div className="text-sm text-muted-foreground">{agent.name}</div>
+        <div>
+          <div className="text-sm">{agent.name}</div>
+          <div className="italic text-xs text-muted-foreground/50">
+            {chatMessage.member.config.gpt?.model || "AI"}
+          </div>
+        </div>
       </div>
       <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-muted/15 rounded-lg shadow-sm w-full max-w-prose">
         {Boolean(chatMessage.speech) ? (
