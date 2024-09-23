@@ -2019,12 +2019,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron-forge/publisher-github@npm:^7.4.0":
-  version: 7.4.0
-  resolution: "@electron-forge/publisher-github@npm:7.4.0"
+"@electron-forge/publisher-base@npm:7.5.0":
+  version: 7.5.0
+  resolution: "@electron-forge/publisher-base@npm:7.5.0"
   dependencies:
-    "@electron-forge/publisher-base": "npm:7.4.0"
-    "@electron-forge/shared-types": "npm:7.4.0"
+    "@electron-forge/shared-types": "npm:7.5.0"
+  checksum: 10c0/bc545bc2f9b970b0609fd8a77f601f703f1ddd529c5411a7c20aae1748e01c884083b9954b8f21d611001dd7c0e390eed67a8c2ddcaa8d0870900e3e20feddd2
+  languageName: node
+  linkType: hard
+
+"@electron-forge/publisher-github@npm:^7.5.0":
+  version: 7.5.0
+  resolution: "@electron-forge/publisher-github@npm:7.5.0"
+  dependencies:
+    "@electron-forge/publisher-base": "npm:7.5.0"
+    "@electron-forge/shared-types": "npm:7.5.0"
     "@octokit/core": "npm:^3.2.4"
     "@octokit/plugin-retry": "npm:^3.0.9"
     "@octokit/request-error": "npm:^2.0.5"
@@ -2035,7 +2044,7 @@ __metadata:
     fs-extra: "npm:^10.0.0"
     log-symbols: "npm:^4.0.0"
     mime-types: "npm:^2.1.25"
-  checksum: 10c0/e9806306ec41f81f8615826e8660707a7dc5dd8a32b90dc7315c7435e8c9d634e5829b6359f84a6aad41b469adad9f28acbadf2d98b3b4a5a7ef6245c27b7c87
+  checksum: 10c0/a5e7bef8790b9cc0ef6c17f30e71a2500275a4735a8dfdfe84d2fc48a34d242f1fcb4a656c371be161fc5f811fa5480414160bf9362ecd8cb126e6490291a7e8
   languageName: node
   linkType: hard
 
@@ -2073,6 +2082,18 @@ __metadata:
     "@electron/rebuild": "npm:^3.2.10"
     listr2: "npm:^7.0.2"
   checksum: 10c0/d763726ac66de00a268f42c4362e5a25b66518273b3cf5d1dee2e8479b9ad97c3b8f812ee56c62169af86e2c2613a473c6859fd5d2903915b5a8e47e2183b070
+  languageName: node
+  linkType: hard
+
+"@electron-forge/shared-types@npm:7.5.0":
+  version: 7.5.0
+  resolution: "@electron-forge/shared-types@npm:7.5.0"
+  dependencies:
+    "@electron-forge/tracer": "npm:7.5.0"
+    "@electron/packager": "npm:^18.3.5"
+    "@electron/rebuild": "npm:^3.2.10"
+    listr2: "npm:^7.0.2"
+  checksum: 10c0/5d9303630c14c52ccf1cb8af20e850be41695d36f581e2f3930ecb7284091aab12110eeb8c9db6f2a880fefcfee09970424ea898166f0d52d019369fd593dbdb
   languageName: node
   linkType: hard
 
@@ -2139,6 +2160,15 @@ __metadata:
   dependencies:
     chrome-trace-event: "npm:^1.0.3"
   checksum: 10c0/53150c28d5a568ee2ac544db86d63b440e179775e51c447df89d9b23ab3f190ab9ec2786cb2a22fd72229e1768d5127fe71c983ee193bda87c13ae4395612277
+  languageName: node
+  linkType: hard
+
+"@electron-forge/tracer@npm:7.5.0":
+  version: 7.5.0
+  resolution: "@electron-forge/tracer@npm:7.5.0"
+  dependencies:
+    chrome-trace-event: "npm:^1.0.3"
+  checksum: 10c0/463b96b446ab2e213366b7b8b663e21a5c73975a2f64c8f3af8592c70e912df6924f7b711bc6db81fab8a7c9e25b42ab67852391ab3eac517c46c9f648c00543
   languageName: node
   linkType: hard
 
@@ -2248,7 +2278,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron/packager@npm:^18.3.1":
+"@electron/packager@npm:^18.3.1, @electron/packager@npm:^18.3.5":
   version: 18.3.5
   resolution: "@electron/packager@npm:18.3.5"
   dependencies:
@@ -12926,7 +12956,7 @@ __metadata:
     "@electron-forge/plugin-auto-unpack-natives": "npm:^7.4.0"
     "@electron-forge/plugin-fuses": "npm:^7.4.0"
     "@electron-forge/plugin-vite": "npm:^7.4.0"
-    "@electron-forge/publisher-github": "npm:^7.4.0"
+    "@electron-forge/publisher-github": "npm:^7.5.0"
     "@electron-forge/publisher-s3": "npm:^7.4.0"
     "@electron/fuses": "npm:^1.8.0"
     "@hookform/resolvers": "npm:^3.9.0"
