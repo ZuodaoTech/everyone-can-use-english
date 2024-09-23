@@ -8,8 +8,9 @@ import {
 export const ChatMessage = (props: {
   chatMessage: ChatMessageType;
   isLastMessage: boolean;
+  onEditChatMember: (chatMember: ChatMemberType) => void;
 }) => {
-  const { chatMessage, isLastMessage } = props;
+  const { chatMessage, isLastMessage, onEditChatMember } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { dispatchChatMessages } = useContext(ChatSessionProviderContext);
 
@@ -36,6 +37,7 @@ export const ChatMessage = (props: {
       <ChatAgentMessage
         chatMessage={props.chatMessage}
         isLastMessage={isLastMessage}
+        onEditChatMember={onEditChatMember}
       />
     );
   }

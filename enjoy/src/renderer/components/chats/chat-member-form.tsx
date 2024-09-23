@@ -42,8 +42,11 @@ import {
 import { CHAT_SYSTEM_PROMPT_TEMPLATE, LANGUAGES } from "@/constants";
 import Mustache from "mustache";
 
-export const ChatMemberForm = (props: { member: Partial<ChatMemberType> }) => {
-  const { member } = props;
+export const ChatMemberForm = (props: {
+  member: Partial<ChatMemberType>;
+  onFinish?: () => void;
+}) => {
+  const { member, onFinish } = props;
   const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const { gptProviders, ttsProviders, currentGptEngine, currentTtsEngine } =
     useContext(AISettingsProviderContext);
@@ -101,16 +104,42 @@ export const ChatMemberForm = (props: { member: Partial<ChatMemberType> }) => {
   const onSubmit = form.handleSubmit(
     (data: z.infer<typeof chatMemberFormSchema>) => {
       if (member?.id) {
-        EnjoyApp.chatMembers.update(member.id, data).then(() => {
-          toast.success(t("chatMemberUpdated"));
-        });
+        EnjoyApp.chatMembers
+          .update(member.id, data)
+          .then(() => {
+            toast.success(t("chatMemberUpdated"));
+            onFinish?.();
+          })
+          .catch((error) => {
+            toast.error(error.message);
+          });
       } else {
-        EnjoyApp.chatMembers.create(data).then(() => {
-          toast.success(t("chatMemberAdded"));
-        });
+        EnjoyApp.chatMembers
+          .create(data)
+          .then(() => {
+            toast.success(t("chatMemberAdded"));
+            onFinish?.();
+          })
+          .catch((error) => {
+            toast.error(error.message);
+          });
       }
     }
   );
+
+  const handleDelete = () => {
+    EnjoyApp.chatMembers
+      .destroy(member.id)
+      .then(() => {
+        toast.success(t("chatMemberDeleted"));
+        onFinish?.();
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
+  if (!member) return null;
 
   return (
     <Form {...form}>
@@ -418,9 +447,7 @@ export const ChatMemberForm = (props: { member: Partial<ChatMemberType> }) => {
                   <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
                   <AlertDialogAction
                     className="bg-destructive hover:bg-destructive-hover"
-                    onClick={() => {
-                      EnjoyApp.chatMembers.destroy(member.id);
-                    }}
+                    onClick={handleDelete}
                   >
                     {t("delete")}
                   </AlertDialogAction>

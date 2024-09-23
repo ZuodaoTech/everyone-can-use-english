@@ -43,8 +43,9 @@ import { md5 } from "js-md5";
 export const ChatAgentMessage = (props: {
   chatMessage: ChatMessageType;
   isLastMessage: boolean;
+  onEditChatMember: (chatMember: ChatMemberType) => void;
 }) => {
-  const { chatMessage, isLastMessage } = props;
+  const { chatMessage, isLastMessage, onEditChatMember } = props;
   const { dispatchChatMessages, setShadowing, onDeleteMessage } = useContext(
     ChatSessionProviderContext
   );
@@ -196,7 +197,10 @@ export const ChatAgentMessage = (props: {
 
   return (
     <div ref={ref} className="mb-6">
-      <div className="flex items-center space-x-2 mb-2">
+      <div
+        className="flex items-center space-x-2 mb-2 cursor-pointer"
+        onClick={() => onEditChatMember(chatMessage.member)}
+      >
         <Avatar className="w-8 h-8 bg-background avatar">
           <AvatarImage src={agent.avatarUrl}></AvatarImage>
           <AvatarFallback className="bg-background">
