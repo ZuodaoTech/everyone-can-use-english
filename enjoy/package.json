@@ -41,7 +41,7 @@
     "@electron-forge/plugin-vite": "^7.4.0",
     "@electron-forge/publisher-github": "^7.4.0",
     "@electron/fuses": "^1.8.0",
-    "@playwright/test": "^1.47.1",
+    "@playwright/test": "^1.47.2",
     "@tailwindcss/typography": "^0.5.15",
     "@types/ahoy.js": "^0.4.2",
     "@types/autosize": "^4.0.3",
