@@ -12,3 +12,4 @@ export * from "./use-segments";
 export * from "./use-transcribe";
 export * from "./use-transcriptions";
 export * from "./use-video";
+export * from "./use-chat-member";

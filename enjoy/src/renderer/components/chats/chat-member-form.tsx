@@ -30,6 +30,7 @@ import {
   SelectValue,
   Slider,
   Textarea,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useContext } from "react";
@@ -73,8 +74,22 @@ export const ChatMemberForm = (props: { member: Partial<ChatMemberType> }) => {
     config: z.object({
       prompt: z.string().optional(),
       introduction: z.string().optional(),
-      gpt: z.object({} as GptConfigType),
-      tts: z.object({} as TtsConfigType),
+      gpt: z.object({
+        engine: z.string(),
+        model: z.string(),
+        temperature: z.number(),
+        maxTokens: z.number().optional(),
+        frequencyPenalty: z.number().optional(),
+        presencePenalty: z.number().optional(),
+        numberOfChoices: z.number().optional(),
+        historyBufferSize: z.number().optional(),
+      }),
+      tts: z.object({
+        engine: z.string(),
+        model: z.string(),
+        voice: z.string(),
+        language: z.string(),
+      }),
     }),
   });
 
@@ -86,9 +101,13 @@ export const ChatMemberForm = (props: { member: Partial<ChatMemberType> }) => {
   const onSubmit = form.handleSubmit(
     (data: z.infer<typeof chatMemberFormSchema>) => {
       if (member?.id) {
-        EnjoyApp.chatMembers.update(member.id, data);
+        EnjoyApp.chatMembers.update(member.id, data).then(() => {
+          toast.success(t("chatMemberUpdated"));
+        });
       } else {
-        EnjoyApp.chatMembers.create(data);
+        EnjoyApp.chatMembers.create(data).then(() => {
+          toast.success(t("chatMemberAdded"));
+        });
       }
     }
   );
@@ -273,7 +292,6 @@ export const ChatMemberForm = (props: { member: Partial<ChatMemberType> }) => {
                     <FormLabel>{t("tts.language")}</FormLabel>
                     <Select
                       required
-                      defaultValue={learningLanguage}
                       value={field.value as string}
                       onValueChange={field.onChange}
                     >
@@ -369,7 +387,7 @@ export const ChatMemberForm = (props: { member: Partial<ChatMemberType> }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("models.chatMember.prompt")}</FormLabel>
-                    <Textarea required className="max-h-48" {...field} />
+                    <Textarea className="max-h-48" {...field} />
                     <FormDescription>
                       {t("models.chatMember.promptDescription")}
                     </FormDescription>

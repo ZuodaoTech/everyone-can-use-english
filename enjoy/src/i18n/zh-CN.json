@@ -820,5 +820,8 @@
     "model": "TTS 模型",
     "voice": "TTS 音色",
     "language": "TTS 语言"
-  }
+  },
+  "chatMemberUpdated": "聊天成员更新成功",
+  "chatMemberRemoved": "聊天成员删除成功",
+  "chatMemberAdded": "聊天成员添加成功"
 }

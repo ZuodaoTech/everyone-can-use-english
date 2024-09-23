@@ -6,13 +6,16 @@ import {
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { ChatMemberForm, ChatForm } from "@renderer/components";
+import { useChatMember } from "@renderer/hooks";
 
 export const ChatSettings = (props: {
   chat: ChatType;
   onFinish?: () => void;
 }) => {
   const { chat, onFinish } = props;
-  const agentMembers = chat.members.filter(
+  const { chatMembers } = useChatMember(chat.id);
+  console.log(chatMembers);
+  const agentMembers = chatMembers.filter(
     (member) => member.userType === "ChatAgent"
   );
 
@@ -30,20 +33,26 @@ export const ChatSettings = (props: {
       </TabsContent>
 
       <TabsContent value="members">
-        <Tabs defaultValue={agentMembers[0].userId}>
-          <TabsList>
+        {agentMembers.length > 0 ? (
+          <Tabs defaultValue={agentMembers[0]?.userId}>
+            <TabsList>
+              {agentMembers.map((member) => (
+                <TabsTrigger key={member.userId} value={member.userId}>
+                  {member.agent.name}
+                </TabsTrigger>
+              ))}
+            </TabsList>
             {agentMembers.map((member) => (
-              <TabsTrigger key={member.userId} value={member.userId}>
-                {member.agent.name}
-              </TabsTrigger>
+              <TabsContent key={member.userId} value={member.userId}>
+                <ChatMemberForm member={member} />
+              </TabsContent>
             ))}
-          </TabsList>
-          {agentMembers.map((member) => (
-            <TabsContent key={member.userId} value={member.userId}>
-              <ChatMemberForm member={member} />
-            </TabsContent>
-          ))}
-        </Tabs>
+          </Tabs>
+        ) : (
+          <div className="text-muted-foreground py-4 text-center">
+            {t("noData")}
+          </div>
+        )}
       </TabsContent>
     </Tabs>
   );

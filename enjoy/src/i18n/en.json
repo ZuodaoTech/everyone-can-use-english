@@ -820,5 +820,8 @@
     "model": "TTS Model",
     "voice": "TTS Voice",
     "language": "TTS Language"
-  }
+  },
+  "chatMemberUpdated": "Chat member updated successfully",
+  "chatMemberRemoved": "Chat member removed successfully",
+  "chatMemberAdded": "Chat member added successfully"
 }
