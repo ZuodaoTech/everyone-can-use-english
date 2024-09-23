@@ -83,7 +83,7 @@
     "ts-node": "^10.9.2",
     "tslib": "^2.7.0",
     "typescript": "^5.6.2",
-    "vite": "^5.4.5",
+    "vite": "^5.4.7",
     "vite-plugin-static-copy": "^1.0.6",
     "zx": "^8.1.6"
   },
