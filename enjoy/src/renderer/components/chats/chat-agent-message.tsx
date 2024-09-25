@@ -43,10 +43,10 @@ import { md5 } from "js-md5";
 
 export const ChatAgentMessage = (props: {
   chatMessage: ChatMessageType;
-  isLastMessage: boolean;
+  isLastMessage?: boolean;
   onEditChatMember: (chatMember: ChatMemberType) => void;
 }) => {
-  const { chatMessage, isLastMessage, onEditChatMember } = props;
+  const { chatMessage, onEditChatMember } = props;
   const { chat, dispatchChatMessages, setShadowing, onDeleteMessage } =
     useContext(ChatSessionProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -60,9 +60,7 @@ export const ChatAgentMessage = (props: {
   const [translation, setTranslation] = useState<string>();
   const [translating, setTranslating] = useState<boolean>(false);
   const { translate, summarizeTopic } = useAiCommand();
-  const [displayContent, setDisplayContent] = useState(
-    !isLastMessage || !chat.config?.enableAutoTts
-  );
+  const [displayContent, setDisplayContent] = useState(false);
   const [displayPlayer, setDisplayPlayer] = useState(false);
 
   const handleTranslate = async () => {
