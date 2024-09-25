@@ -6,7 +6,7 @@ import {
   PauseIcon,
   PlayIcon,
   StepForwardIcon,
-  TextIcon,
+  TypeIcon,
   WandIcon,
   XIcon,
 } from "lucide-react";
@@ -225,27 +225,32 @@ export const ChatInput = () => {
             <ArrowUpIcon className="w-6 h-6" />
           )}
         </Button>
-        <ChatSuggestionButton asChild>
+        {currentChat.config.enableChatAssistant && (
+          <ChatSuggestionButton asChild>
+            <Button
+              data-tooltip-id="chat-tooltip"
+              data-tooltip-content={t("suggestion")}
+              variant="ghost"
+              size="icon"
+            >
+              <WandIcon className="w-6 h-6" />
+            </Button>
+          </ChatSuggestionButton>
+        )}
+
+        {currentChat.type === "group" && (
           <Button
             data-tooltip-id="chat-tooltip"
-            data-tooltip-content={t("suggestion")}
+            data-tooltip-content={t("continue")}
+            disabled={submitting}
+            onClick={() => askAgent()}
+            className=""
             variant="ghost"
             size="icon"
           >
-            <WandIcon className="w-6 h-6" />
+            <StepForwardIcon className="w-6 h-6" />
           </Button>
-        </ChatSuggestionButton>
-        <Button
-          data-tooltip-id="chat-tooltip"
-          data-tooltip-content={t("continue")}
-          disabled={submitting}
-          onClick={() => askAgent()}
-          className=""
-          variant="ghost"
-          size="icon"
-        >
-          <StepForwardIcon className="w-6 h-6" />
-        </Button>
+        )}
       </div>
     );
   }
@@ -261,7 +266,7 @@ export const ChatInput = () => {
         variant="secondary"
         size="icon"
       >
-        <TextIcon className="w-4 h-4" />
+        <TypeIcon className="w-4 h-4" />
       </Button>
       <Button
         data-tooltip-id="chat-tooltip"
@@ -277,7 +282,7 @@ export const ChatInput = () => {
           <MicIcon className="w-6 h-6" />
         )}
       </Button>
-      <ChatSuggestionButton />
+      {currentChat.config.enableChatAssistant && <ChatSuggestionButton />}
       <Button
         data-tooltip-id="chat-tooltip"
         data-tooltip-content={t("continue")}

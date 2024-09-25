@@ -1,7 +1,4 @@
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
   Button,
   Collapsible,
   CollapsibleContent,
@@ -33,7 +30,7 @@ import {
   InfoIcon,
   LoaderIcon,
   MicIcon,
-  MoreVerticalIcon,
+  MoreHorizontalIcon,
   SparklesIcon,
   Volume2Icon,
 } from "lucide-react";
@@ -370,7 +367,7 @@ const ChatUserMessageActions = (props: {
             </>
           )}
           <DropdownMenuTrigger>
-            <MoreVerticalIcon className="w-4 h-4" />
+            <MoreHorizontalIcon className="w-4 h-4" />
           </DropdownMenuTrigger>
         </div>
         <DropdownMenuContent>

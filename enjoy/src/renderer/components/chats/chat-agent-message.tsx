@@ -27,8 +27,9 @@ import {
   LanguagesIcon,
   LoaderIcon,
   MicIcon,
-  MoreVerticalIcon,
+  MoreHorizontalIcon,
   RotateCcwIcon,
+  SpeechIcon,
   Volume2Icon,
 } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -46,9 +47,8 @@ export const ChatAgentMessage = (props: {
   onEditChatMember: (chatMember: ChatMemberType) => void;
 }) => {
   const { chatMessage, isLastMessage, onEditChatMember } = props;
-  const { dispatchChatMessages, setShadowing, onDeleteMessage } = useContext(
-    ChatSessionProviderContext
-  );
+  const { chat, dispatchChatMessages, setShadowing, onDeleteMessage } =
+    useContext(ChatSessionProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { agent } = chatMessage.member || {};
   const ref = useRef<HTMLDivElement>(null);
@@ -60,7 +60,9 @@ export const ChatAgentMessage = (props: {
   const [translation, setTranslation] = useState<string>();
   const [translating, setTranslating] = useState<boolean>(false);
   const { translate, summarizeTopic } = useAiCommand();
-  const [displayContent, setDisplayContent] = useState(!isLastMessage);
+  const [displayContent, setDisplayContent] = useState(
+    !isLastMessage || !chat.config?.enableAutoTts
+  );
   const [displayPlayer, setDisplayPlayer] = useState(false);
 
   const handleTranslate = async () => {
@@ -189,8 +191,9 @@ export const ChatAgentMessage = (props: {
 
   useEffect(() => {
     if (chatMessage?.speech) return;
-
-    createSpeech();
+    if (chat.config.enableAutoTts) {
+      createSpeech();
+    }
   }, [chatMessage]);
 
   if (!agent) return;
@@ -215,7 +218,7 @@ export const ChatAgentMessage = (props: {
         </div>
       </div>
       <div className="flex flex-col gap-2 px-4 py-2 mb-2 rounded-lg border w-full max-w-prose">
-        {Boolean(chatMessage.speech) ? (
+        {Boolean(chatMessage.speech?.id) ? (
           <>
             {displayPlayer ? (
               <WavesurferPlayer
@@ -233,28 +236,21 @@ export const ChatAgentMessage = (props: {
                 <Volume2Icon className="w-5 h-5" />
               </Button>
             )}
-            {displayContent && (
-              <>
-                <MarkdownWrapper className="select-text prose dark:prose-invert">
-                  {chatMessage.content}
-                </MarkdownWrapper>
-                {translation && (
-                  <MarkdownWrapper className="select-text prose dark:prose-invert">
-                    {translation}
-                  </MarkdownWrapper>
-                )}
-              </>
+          </>
+        ) : (
+          speeching && <LoaderSpin />
+        )}
+        {displayContent && (
+          <>
+            <MarkdownWrapper className="select-text prose dark:prose-invert">
+              {chatMessage.content}
+            </MarkdownWrapper>
+            {translation && (
+              <MarkdownWrapper className="select-text prose dark:prose-invert">
+                {translation}
+              </MarkdownWrapper>
             )}
           </>
-        ) : speeching ? (
-          <LoaderSpin />
-        ) : (
-          <div className="flex justify-center">
-            <Button onClick={createSpeech}>
-              <RotateCcwIcon className="w-4 h-4 mr-2" />
-              {t("retry")}
-            </Button>
-          </div>
         )}
         <DropdownMenu>
           <div className="flex items-center space-x-4">
@@ -274,6 +270,14 @@ export const ChatAgentMessage = (props: {
                   className="w-4 h-4 cursor-pointer"
                 />
               ))}
+            {!Boolean(chatMessage.speech) && (
+              <SpeechIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("textToSpeech")}
+                onClick={createSpeech}
+                className="w-4 h-4 cursor-pointer"
+              />
+            )}
             {displayContent ? (
               <EyeOffIcon
                 data-tooltip-id="global-tooltip"
@@ -343,7 +347,7 @@ export const ChatAgentMessage = (props: {
             )}
 
             <DropdownMenuTrigger>
-              <MoreVerticalIcon className="w-4 h-4" />
+              <MoreHorizontalIcon className="w-4 h-4" />
             </DropdownMenuTrigger>
           </div>
 
