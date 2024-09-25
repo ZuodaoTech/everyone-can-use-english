@@ -29,7 +29,7 @@ export const ChatCard = (props: {
       ) : (
         <ChatBubbleIcon className="w-4 h-4" />
       )}
-      <div className="flex-1 text-sm font-serif line-clamp-1">{chat.name}</div>
+      <div className="flex-1 text-sm font-serif line-clamp-1">{chat.title}</div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="h-4">

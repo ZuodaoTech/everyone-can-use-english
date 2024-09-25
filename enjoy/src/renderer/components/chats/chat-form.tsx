@@ -53,8 +53,7 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
     useContext(ChatProviderContext);
   const [isGeneratingTopic, setIsGeneratingTopic] = useState(false);
   const chatFormSchema = z.object({
-    name: z.string().min(1),
-    topic: z.string(),
+    title: z.string().min(1),
     config: z.object({
       sttEngine: z.string().default(sttEngine),
       prompt: z.string().optional(),
@@ -67,12 +66,11 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
     resolver: zodResolver(chatFormSchema),
     values: chat?.id
       ? {
-          name: chat.name,
-          topic: chat.topic,
+          title: chat.title,
           config: chat.config,
         }
       : {
-          name: t("newChat"),
+          title: t("newChat"),
           config: {
             sttEngine,
             prompt: "",
@@ -83,11 +81,10 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    const { name, topic, config } = data;
+    const { title, config } = data;
     if (chat?.id) {
       updateChat(chat.id, {
-        name,
-        topic,
+        title,
         config: {
           sttEngine: config.sttEngine,
           prompt: config.prompt,
@@ -97,8 +94,7 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
       }).then(() => onFinish());
     } else {
       createChat({
-        name,
-        topic,
+        title,
         config: {
           sttEngine: config.sttEngine,
           prompt: config.prompt,
@@ -137,7 +133,7 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
         <div className="space-y-4 px-2 mb-6">
           <FormField
             control={form.control}
-            name="name"
+            name="title"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chat.name")}</FormLabel>

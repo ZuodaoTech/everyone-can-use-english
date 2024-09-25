@@ -1,5 +1,8 @@
 import { SettingsIcon } from "lucide-react";
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   Button,
   Dialog,
   DialogContent,
@@ -28,10 +31,18 @@ export const Chat = () => {
 
   return (
     <ScrollArea className="h-screen relative">
-      <div className="h-12 border-b px-4 shadow flex items-center justify-center sticky top-0 z-10 bg-background mb-4">
-        <span>
-          {currentChat.name}({currentChat.membersCount})
-        </span>
+      <div className="h-12 border-b px-4 shadow flex items-center justify-center space-x-2 sticky top-0 z-10 bg-background mb-4">
+        <div className="flex items-center -space-x-2">
+          {currentChat.members
+            .filter((member) => member.agent)
+            .map((member) => (
+              <Avatar key={member.id} className="w-8 h-8">
+                <AvatarImage src={member.agent?.avatarUrl} />
+                <AvatarFallback>{member.agent?.name}</AvatarFallback>
+              </Avatar>
+            ))}
+        </div>
+        <span>{currentChat.title}</span>
         <Dialog open={displayChatForm} onOpenChange={setDisplayChatForm}>
           <DialogTrigger asChild>
             <Button variant="ghost" size="icon" className="absolute right-4">

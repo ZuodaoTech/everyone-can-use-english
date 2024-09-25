@@ -1,8 +1,7 @@
 type ChatType = {
   id: string;
   type: "conversation" | "group";
-  name: string;
-  topic?: string;
+  title: string;
   config: {
     sttEngine: SttEngineOptionEnum;
     prompt?: string;
@@ -81,8 +80,7 @@ type TtsConfigType = {
 };
 
 type ChatDtoType = {
-  name: string;
-  topic: string;
+  title: string;
   config: {
     sttEngine: string;
     prompt?: string;

@@ -54,10 +54,7 @@ export class Chat extends Model<Chat> {
 
   @AllowNull(false)
   @Column(DataType.STRING)
-  name: string;
-
-  @Column(DataType.TEXT)
-  topic: string;
+  title: string;
 
   @Column(DataType.TEXT)
   digest: string;

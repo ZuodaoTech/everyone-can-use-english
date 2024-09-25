@@ -67,6 +67,9 @@ export class ChatMessage extends Model<ChatMessage> {
   @Column(DataType.UUID)
   memberId: string;
 
+  @Column(DataType.JSON)
+  mentions: string[];
+
   @Column(DataType.TEXT)
   content: string;
 

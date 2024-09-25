@@ -20,7 +20,7 @@ import {
   AppSettingsProviderContext,
   ChatProviderContext,
 } from "@renderer/context";
-import { ChatAgentForm, ChatCard, ChatForm } from "@renderer/components";
+import { ChatCard } from "@renderer/components";
 import { PlusIcon } from "lucide-react";
 
 export const ChatList = () => {
@@ -38,8 +38,7 @@ export const ChatList = () => {
       return;
     }
     createChat({
-      name: t("newChat"),
-      topic: "",
+      title: t("newChat"),
       config: {
         sttEngine: sttEngine,
       },
