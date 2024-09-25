@@ -1,10 +1,10 @@
 import {
+  ArrowUpIcon,
   CheckIcon,
   LoaderIcon,
   MicIcon,
   PauseIcon,
   PlayIcon,
-  SendIcon,
   StepForwardIcon,
   TextIcon,
   WandIcon,
@@ -212,7 +212,7 @@ export const ChatInput = () => {
           data-tooltip-id="chat-tooltip"
           data-tooltip-content={t("send")}
           onClick={() =>
-            onCreateMessage({ content }, { onSuccess: () => setContent("") })
+            onCreateMessage(content, { onSuccess: () => setContent("") })
           }
           disabled={submitting || !content}
           className=""
@@ -222,7 +222,7 @@ export const ChatInput = () => {
           {submitting ? (
             <LoaderIcon className="w-6 h-6 animate-spin" />
           ) : (
-            <SendIcon className="w-6 h-6" />
+            <ArrowUpIcon className="w-6 h-6" />
           )}
         </Button>
         <ChatSuggestionButton asChild>
@@ -411,13 +411,12 @@ const ChatSuggestionButton = (props: {
                         size="icon"
                         className="rounded-full w-6 h-6"
                         onClick={() =>
-                          onCreateMessage(
-                            { content: suggestion.text },
-                            { onSuccess: () => setOpen(false) }
-                          )
+                          onCreateMessage(suggestion.text, {
+                            onSuccess: () => setOpen(false),
+                          })
                         }
                       >
-                        <SendIcon className="w-3 h-3" />
+                        <ArrowUpIcon className="w-3 h-3" />
                       </Button>
                     </div>
                   </div>

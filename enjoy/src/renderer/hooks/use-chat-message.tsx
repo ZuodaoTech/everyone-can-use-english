@@ -56,9 +56,10 @@ export const useChatMessage = (chat: ChatType) => {
         state: "pending",
         recordingUrl,
       })
-      .then((message) =>
-        dispatchChatMessages({ type: "append", record: message })
-      )
+      .then((message) => {
+        dispatchChatMessages({ type: "append", record: message });
+        return message;
+      })
       .catch((error) => {
         toast.error(error.message);
       });
@@ -266,6 +267,8 @@ export const useChatMessage = (chat: ChatType) => {
         presencePenalty,
         n: numberOfChoices,
       });
+    } else {
+      throw new Error(t("aiEngineNotSupported"));
     }
   };
 

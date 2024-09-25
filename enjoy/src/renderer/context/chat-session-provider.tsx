@@ -47,14 +47,10 @@ type ChatSessionProviderState = {
   setAssessing: (recording: RecordingType) => void;
   onDeleteMessage?: (id: string) => void;
   onCreateMessage?: (
-    params: {
-      content: string;
-      recordingUrl?: string;
-    },
+    content: string,
     options: {
       onSuccess?: (message: ChatMessageType) => void;
       onError?: (error: Error) => void;
-      onFinally?: () => void;
     }
   ) => Promise<ChatMessageType | void>;
   onUpdateMessage?: (
@@ -142,25 +138,29 @@ export const ChatSessionProvider = ({
   };
 
   const onCreateMessage = async (
-    params: {
-      content: string;
-      recordingUrl?: string;
-    },
+    content: string,
     options: {
       onSuccess?: (message: ChatMessageType) => void;
       onError?: (error: Error) => void;
-      onFinally?: () => void;
     } = {}
   ) => {
-    const { content, recordingUrl } = params;
-    const { onSuccess, onError, onFinally } = options;
+    const { onSuccess, onError } = options;
     if (submitting) return;
 
     setSubmitting(true);
-    onCreateUserMessage(content, recordingUrl).finally(() => {
-      setSubmitting(false);
-      onFinally?.();
-    });
+    onCreateUserMessage(content)
+      .then((message) => {
+        if (message) {
+          onSuccess?.(message);
+        }
+      })
+      .catch((error) => {
+        toast.error(error.message);
+        onError?.(error);
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
   };
 
   const onRecorded = async (blob: Blob) => {

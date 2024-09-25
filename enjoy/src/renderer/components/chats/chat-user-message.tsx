@@ -40,7 +40,6 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 import {
   AppSettingsProviderContext,
-  ChatProviderContext,
   ChatSessionProviderContext,
 } from "@renderer/context";
 import { useAiCommand } from "@renderer/hooks";
@@ -67,12 +66,19 @@ export const ChatUserMessage = (props: {
     }
   }, [ref]);
 
+  useEffect(() => {
+    if (!isLastMessage) return;
+    if (chatMessage.state === "pending") {
+      askAgent();
+    }
+  }, [chatMessage.state, isLastMessage]);
+
   return (
     <div ref={ref} className="mb-6">
       <div className="flex justify-end">
         <div className="w-full max-w-prose">
           <div
-            className={`flex flex-col gap-2 p-4 mb-2  rounded-lg shadow-sm w-full ${
+            className={`flex flex-col gap-2 px-3 py-2 mb-2 rounded-lg shadow-sm w-full ${
               chatMessage.state === "pending"
                 ? "bg-sky-500/30 border-sky-500"
                 : "bg-muted"
@@ -143,7 +149,7 @@ export const ChatUserMessage = (props: {
               setContent={setContent}
               setEditing={setEditing}
             />
-            {chatMessage.state === "pending" && (
+            {chatMessage.state === "pending" && !submitting && (
               <div className="flex justify-end items-center space-x-2">
                 <InfoIcon
                   data-tooltip-id="chat-tooltip"
