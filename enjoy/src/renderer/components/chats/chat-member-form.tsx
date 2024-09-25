@@ -557,7 +557,11 @@ export const ChatMemberForm = (props: {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("models.chatMember.prompt")}</FormLabel>
-                    <Textarea className="max-h-48" {...field} />
+                    <Textarea
+                      placeholder={t("models.chatMember.promptPlaceholder")}
+                      className="max-h-48"
+                      {...field}
+                    />
                     <FormDescription>
                       {t("models.chatMember.promptDescription")}
                     </FormDescription>

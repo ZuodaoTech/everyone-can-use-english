@@ -143,6 +143,7 @@
     "chatMember": {
       "prompt": "额外提示语",
       "promptDescription": "额外提示将添加到角色的系统提示中。当您希望在该聊天中约束当前角色的行为时，这非常有用。",
+      "promptPlaceholder": "例如：请尽可能使用简单句，每次回复不要超过 10 个句子。",
       "gptSettings": "LLM 设置",
       "ttsSettings": "语音设置",
       "moreSettings": "更多设置"
@@ -156,7 +157,15 @@
       "language": "语言",
       "topic": "话题",
       "members": "成员",
+      "enableChatAssistant": "启用聊天助手",
+      "enableChatAssistantDescription": "启用后，您可以使用“建议”或“润色”来帮助您聊天。",
+      "enableAutoTts": "启用自动 TTS",
+      "enableAutoTtsDescription": "启用后，所有回复将自动转换为语音。",
+      "generateTopic": "生成话题",
+      "sttAiServicePlaceholder": "请选择",
+      "sttAiServiceDescription": "选择服务将您的语音转录为文本。",
       "prompt": "额外提示语",
+      "promptPlaceholder": "例如：你们正在讨论如何学习英语，请不要偏移话题。",
       "promptDescription": "额外提示将添加到所有聊天角色的系统提示中。当您希望在该聊天中约束角色的行为时，这非常有用。",
       "chatSettings": "聊天设置",
       "moreSettings": "更多设置",

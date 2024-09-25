@@ -235,7 +235,9 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
                   <FormLabel>{t("sttAiService")}</FormLabel>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger>
-                      <SelectValue />
+                      <SelectValue
+                        placeholder={t("models.chat.sttAiServicePlaceholder")}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value={SttEngineOptionEnum.LOCAL}>
@@ -252,6 +254,9 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
                       </SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormDescription>
+                    {t("models.chat.sttAiServiceDescription")}
+                  </FormDescription>
                   <FormDescription>
                     {form.watch("config.sttEngine") ===
                       SttEngineOptionEnum.LOCAL &&
@@ -275,7 +280,10 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t("models.chat.prompt")}</FormLabel>
-                  <Textarea {...field} />
+                  <Textarea
+                    {...field}
+                    placeholder={t("models.chat.promptPlaceholder")}
+                  />
                   <FormDescription>
                     {t("models.chat.promptDescription")}
                   </FormDescription>
