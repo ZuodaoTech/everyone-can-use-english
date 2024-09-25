@@ -840,5 +840,6 @@
   "chatMemberUpdated": "聊天成员更新成功",
   "chatMemberRemoved": "聊天成员删除成功",
   "chatMemberAdded": "聊天成员添加成功",
-  "confirmBeforeSending": "您可以重新录音、修改文字内容，确认无误后点击发送"
+  "confirmBeforeSending": "您可以重新录音、修改文字内容，确认无误后点击发送",
+  "chatNoContentYet": "聊天还没有内容"
 }

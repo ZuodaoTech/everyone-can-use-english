@@ -14,7 +14,8 @@ import {
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
-import { ChatMember } from "@main/db/models";
+import { ChatMember, UserSetting } from "@main/db/models";
+import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/types/enums";
 
 const logger = log.scope("db/models/chat-agent");
 @Table({
@@ -102,6 +103,9 @@ export class ChatAgent extends Model<ChatAgent> {
       if (!chatAgent.config.engine) return;
 
       const tx = await ChatAgent.sequelize.transaction();
+      const learningLanguage = await UserSetting.get(
+        UserSettingKeyEnum.LEARNING_LANGUAGE
+      );
       logger.info("Migrating from chat agent", chatAgent.id);
       chatAgent.members.forEach(async (member) => {
         logger.info("Migrating to chat member", member.id);
@@ -113,10 +117,15 @@ export class ChatAgent extends Model<ChatAgent> {
               engine: chatAgent.config.engine,
               model: chatAgent.config.model,
               temperature: chatAgent.config.temperature,
+              historyBufferSize: 10,
+              presencePenalty: 0,
+              frequencyPenalty: 0,
+              numberOfChoices: 1,
             },
             tts: {
               engine: chatAgent.config.ttsEngine,
               model: chatAgent.config.ttsModel,
+              language: learningLanguage,
               voice: chatAgent.config.ttsVoice,
             },
           };

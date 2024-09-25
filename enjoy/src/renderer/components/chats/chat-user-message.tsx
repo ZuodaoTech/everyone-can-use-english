@@ -55,7 +55,7 @@ export const ChatUserMessage = (props: {
   const { onUpdateMessage, askAgent, submitting } = useContext(
     ChatSessionProviderContext
   );
-  const [displayPlayer, setDisplayPlayer] = useState(isLastMessage);
+  const [displayPlayer, setDisplayPlayer] = useState(false);
 
   useEffect(() => {
     if (ref.current) {

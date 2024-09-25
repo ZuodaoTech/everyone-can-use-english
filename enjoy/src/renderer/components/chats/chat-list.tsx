@@ -7,11 +7,6 @@ import {
   AlertDialogFooter,
   AlertDialogTitle,
   Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useContext, useState } from "react";
@@ -51,6 +46,10 @@ export const ChatList = () => {
               engine: currentGptEngine.name,
               model: currentGptEngine.models.default,
               temperature: 0.5,
+              historyBufferSize: 10,
+              presencePenalty: 0,
+              frequencyPenalty: 0,
+              numberOfChoices: 1,
             },
             tts: {
               engine: currentTtsEngine.name,

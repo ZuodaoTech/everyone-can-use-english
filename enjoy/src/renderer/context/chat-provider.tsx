@@ -58,10 +58,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   } = useChatAgent();
 
   useEffect(() => {
+    if (currentChat) return;
+
     setCurrentChat(chats[0]);
   }, [chats]);
 
   useEffect(() => {
+    if (currentChatAgent) return;
+
     setCurrentChatAgent(chatAgents[0]);
   }, [chatAgents]);
 

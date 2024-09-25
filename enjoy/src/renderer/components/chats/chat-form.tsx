@@ -114,7 +114,7 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
         order: [["createdAt", "ASC"]],
       });
       if (messages.length < 1) {
-        toast.warning(t("chatNotStartedYet"));
+        toast.warning(t("chatNoContentYet"));
         return;
       }
       const content = messages.map((m) => m.content).join("\n");

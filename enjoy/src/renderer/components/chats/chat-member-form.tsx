@@ -96,7 +96,7 @@ export const ChatMemberForm = (props: {
         engine: z.string(),
         model: z.string(),
         temperature: z.number(),
-        maxTokens: z.number().optional(),
+        maxCompletionTokens: z.number().optional(),
         frequencyPenalty: z.number().optional(),
         presencePenalty: z.number().optional(),
         numberOfChoices: z.number().optional(),
@@ -269,7 +269,6 @@ export const ChatMemberForm = (props: {
                       <Slider
                         className="flex-1"
                         onValueChange={(value) => field.onChange(value[0])}
-                        defaultValue={[10]}
                         value={[field.value as number]}
                         min={0}
                         max={100}
@@ -286,14 +285,13 @@ export const ChatMemberForm = (props: {
               />
               <FormField
                 control={form.control}
-                name="config.gpt.maxTokens"
+                name="config.gpt.maxCompletionTokens"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("gpt.maxTokens")}</FormLabel>
+                    <FormLabel>{t("gpt.maxCompletionTokens")}</FormLabel>
                     <Input
                       type="number"
                       min="-1"
-                      defaultValue={-1}
                       value={field.value}
                       onChange={(event) => {
                         if (!event.target.value) return;
@@ -317,7 +315,6 @@ export const ChatMemberForm = (props: {
                       <Slider
                         className="flex-1"
                         onValueChange={(value) => field.onChange(value[0])}
-                        defaultValue={[1]}
                         value={[field.value as number]}
                         min={-2}
                         max={2}
@@ -342,7 +339,6 @@ export const ChatMemberForm = (props: {
                       <Slider
                         className="flex-1"
                         onValueChange={(value) => field.onChange(value[0])}
-                        defaultValue={[1]}
                         value={[field.value as number]}
                         min={-2}
                         max={2}
@@ -367,7 +363,6 @@ export const ChatMemberForm = (props: {
                       type="number"
                       min="1"
                       step="1.0"
-                      defaultValue={1}
                       value={field.value}
                       onChange={(event) => {
                         field.onChange(
@@ -499,7 +494,6 @@ export const ChatMemberForm = (props: {
                     <Select
                       required
                       onValueChange={field.onChange}
-                      defaultValue={field.value as string}
                       value={field.value as string}
                     >
                       <FormControl>
