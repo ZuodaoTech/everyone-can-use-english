@@ -18,6 +18,7 @@ import { CHAT_GROUP_PROMPT_TEMPLATE } from "@/constants";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Mustache from "mustache";
+import { t } from "i18next";
 
 dayjs.extend(relativeTime);
 
@@ -47,34 +48,23 @@ export const useChatMessage = (chat: ChatType) => {
   const onCreateUserMessage = (content: string, recordingUrl?: string) => {
     if (!content) return;
 
-    const pendingMessage = chatMessages.find(
-      (m) => m.member.userType === "User" && m.state === "pending"
-    );
-
-    if (pendingMessage) {
-      return EnjoyApp.chatMessages.update(pendingMessage.id, {
+    return EnjoyApp.chatMessages
+      .create({
+        chatId: chat.id,
+        memberId: chat.members.find((m) => m.userType === "User").id,
         content,
+        state: "pending",
         recordingUrl,
+      })
+      .then((message) =>
+        dispatchChatMessages({ type: "append", record: message })
+      )
+      .catch((error) => {
+        toast.error(error.message);
       });
-    } else {
-      return EnjoyApp.chatMessages
-        .create({
-          chatId: chat.id,
-          memberId: chat.members.find((m) => m.userType === "User").id,
-          content,
-          state: "pending",
-          recordingUrl,
-        })
-        .then((message) =>
-          dispatchChatMessages({ type: "append", record: message })
-        )
-        .catch((error) => {
-          toast.error(error.message);
-        });
-    }
   };
 
-  const onUpdateMessage = (id: string, data: Partial<ChatMessageType>) => {
+  const onUpdateMessage = (id: string, data: ChatMessageDtoType) => {
     return EnjoyApp.chatMessages.update(id, data);
   };
 
@@ -241,6 +231,10 @@ export const useChatMessage = (chat: ChatType) => {
     } = member.config.gpt;
 
     if (engine === "enjoyai") {
+      if (!user.accessToken) {
+        throw new Error(t("authorizationExpired"));
+      }
+
       return new ChatOpenAI({
         openAIApiKey: user.accessToken,
         configuration: {
@@ -255,6 +249,10 @@ export const useChatMessage = (chat: ChatType) => {
         n: numberOfChoices,
       });
     } else if (engine === "openai") {
+      if (!openai.key) {
+        throw new Error(t("openaiKeyRequired"));
+      }
+
       return new ChatOpenAI({
         openAIApiKey: openai.key,
         configuration: {

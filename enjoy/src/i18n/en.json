@@ -440,6 +440,7 @@
   "reloadIsNeededAfterChanged": "Reload is needed after changed",
   "defaultAiEngine": "Default AI engine",
   "aiEngine": "AI engine",
+  "aiEngineNotSupported": "AI engine not supported",
   "defaultAiModel": "Default AI model",
   "lookupAiModel": "AI Lookup",
   "translateAiModel": "AI Translate",
@@ -449,7 +450,7 @@
   "enjoyAiEngineTips": "Use EnjoyAI as default AI engine. It is a paid service.",
   "openaiKeySaved": "OpenAI key saved",
   "openaiConfigSaved": "OpenAI config saved",
-  "openaiKeyRequired": "OpenAI key required",
+  "openaiKeyRequired": "OpenAI key required, please set it in settings",
   "baseUrl": "baseURL",
   "customModels": "Custom models",
   "customModelsDescription": "Customize your LLM models. Split by comma.",
@@ -723,6 +724,7 @@
   "editChat": "Edit chat",
   "newChat": "New chat",
   "addChat": "Add chat",
+  "recents": "Recents",
   "agentsManagement": "Agents management",
   "newAgent": "New agent",
   "editAgent": "Edit agent",
@@ -837,5 +839,6 @@
   },
   "chatMemberUpdated": "Chat member updated successfully",
   "chatMemberRemoved": "Chat member removed successfully",
-  "chatMemberAdded": "Chat member added successfully"
+  "chatMemberAdded": "Chat member added successfully",
+  "confirmBeforeSending": "You can re-record, modify the text content, and click send after confirming there are no errors."
 }

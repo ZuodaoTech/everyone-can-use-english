@@ -56,7 +56,7 @@ export const ChatInput = () => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
-  const [inputMode, setInputMode] = useState<"text" | "audio">("audio");
+  const [inputMode, setInputMode] = useState<"text" | "audio">("text");
   const [content, setContent] = useState("");
   const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
 
@@ -211,7 +211,9 @@ export const ChatInput = () => {
           ref={submitRef}
           data-tooltip-id="chat-tooltip"
           data-tooltip-content={t("send")}
-          onClick={() => onCreateMessage(content).then(() => setContent(""))}
+          onClick={() =>
+            onCreateMessage({ content }, { onSuccess: () => setContent("") })
+          }
           disabled={submitting || !content}
           className=""
           variant="ghost"
@@ -409,8 +411,9 @@ const ChatSuggestionButton = (props: {
                         size="icon"
                         className="rounded-full w-6 h-6"
                         onClick={() =>
-                          onCreateMessage(suggestion.text).finally(() =>
-                            setOpen(false)
+                          onCreateMessage(
+                            { content: suggestion.text },
+                            { onSuccess: () => setOpen(false) }
                           )
                         }
                       >

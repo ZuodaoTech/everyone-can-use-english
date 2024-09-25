@@ -30,6 +30,7 @@ import {
   EditIcon,
   ForwardIcon,
   GaugeCircleIcon,
+  InfoIcon,
   LoaderIcon,
   MicIcon,
   MoreVerticalIcon,
@@ -55,7 +56,9 @@ export const ChatUserMessage = (props: {
   const ref = useRef<HTMLDivElement>(null);
   const [editing, setEditing] = useState<boolean>(false);
   const [content, setContent] = useState<string>(chatMessage.content);
-  const { onUpdateMessage } = useContext(ChatSessionProviderContext);
+  const { onUpdateMessage, askAgent, submitting } = useContext(
+    ChatSessionProviderContext
+  );
   const [displayPlayer, setDisplayPlayer] = useState(isLastMessage);
 
   useEffect(() => {
@@ -66,87 +69,102 @@ export const ChatUserMessage = (props: {
 
   return (
     <div ref={ref} className="mb-6">
-      <div className="flex items-center space-x-2 justify-end mb-2">
-        <div className="text-sm text-muted-foreground">
-          {chatMessage.member.user.name}
-        </div>
-        <Avatar className="w-8 h-8 bg-background avatar">
-          <AvatarImage src={chatMessage.member.user.avatarUrl}></AvatarImage>
-          <AvatarFallback className="bg-background">
-            {chatMessage.member.user.name}
-          </AvatarFallback>
-        </Avatar>
-      </div>
       <div className="flex justify-end">
-        <div className="flex flex-col gap-2 p-4 mb-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full max-w-prose">
-          {recording &&
-            (displayPlayer ? (
-              <>
-                <WavesurferPlayer
-                  id={recording.id}
-                  src={recording.src}
-                  autoplay={true}
-                />
-                {recording?.pronunciationAssessment && (
-                  <div className="flex justify-end">
-                    <PronunciationAssessmentScoreDetail
-                      assessment={recording.pronunciationAssessment}
-                    />
-                  </div>
-                )}
-              </>
-            ) : (
-              <Button
-                onClick={() => setDisplayPlayer(true)}
-                className="w-8 h-8"
-                variant="ghost"
-                size="icon"
-              >
-                <Volume2Icon className="w-5 h-5" />
-              </Button>
-            ))}
-          {editing ? (
-            <div className="">
-              <Textarea
-                className="bg-background mb-2"
-                value={content}
-                onChange={(event) => setContent(event.target.value)}
-              />
-              <div className="flex justify-end space-x-4">
+        <div className="w-full max-w-prose">
+          <div
+            className={`flex flex-col gap-2 p-4 mb-2  rounded-lg shadow-sm w-full ${
+              chatMessage.state === "pending"
+                ? "bg-sky-500/30 border-sky-500"
+                : "bg-muted"
+            }`}
+          >
+            {recording &&
+              (displayPlayer ? (
+                <>
+                  <WavesurferPlayer
+                    id={recording.id}
+                    src={recording.src}
+                    autoplay={true}
+                  />
+                  {recording?.pronunciationAssessment && (
+                    <div className="flex justify-end">
+                      <PronunciationAssessmentScoreDetail
+                        assessment={recording.pronunciationAssessment}
+                      />
+                    </div>
+                  )}
+                </>
+              ) : (
                 <Button
-                  onClick={() => setEditing(false)}
-                  variant="secondary"
-                  size="sm"
+                  onClick={() => setDisplayPlayer(true)}
+                  className="w-8 h-8"
+                  variant="ghost"
+                  size="icon"
                 >
-                  {t("cancel")}
+                  <Volume2Icon className="w-5 h-5" />
                 </Button>
+              ))}
+            {editing ? (
+              <div className="">
+                <Textarea
+                  className="bg-background mb-2"
+                  value={content}
+                  onChange={(event) => setContent(event.target.value)}
+                />
+                <div className="flex justify-end space-x-4">
+                  <Button
+                    onClick={() => setEditing(false)}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    {t("cancel")}
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      onUpdateMessage(chatMessage.id, { content }).finally(() =>
+                        setEditing(false)
+                      )
+                    }
+                    variant="default"
+                    size="sm"
+                  >
+                    {t("save")}
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <MarkdownWrapper className="select-text prose dark:prose-invert">
+                {chatMessage.content}
+              </MarkdownWrapper>
+            )}
+
+            <ChatUserMessageActions
+              chatMessage={chatMessage}
+              setContent={setContent}
+              setEditing={setEditing}
+            />
+            {chatMessage.state === "pending" && (
+              <div className="flex justify-end items-center space-x-2">
+                <InfoIcon
+                  data-tooltip-id="chat-tooltip"
+                  data-tooltip-content={t("confirmBeforeSending")}
+                  className="w-4 h-4 text-yellow-600"
+                />
                 <Button
-                  onClick={() =>
-                    onUpdateMessage(chatMessage.id, { content }).finally(() =>
-                      setEditing(false)
-                    )
-                  }
+                  disabled={submitting}
+                  onClick={() => askAgent()}
                   variant="default"
                   size="sm"
                 >
-                  {t("save")}
+                  {t("send")}
                 </Button>
               </div>
-            </div>
-          ) : (
-            <MarkdownWrapper className="select-text prose dark:prose-invert">
-              {chatMessage.content}
-            </MarkdownWrapper>
-          )}
-          <ChatUserMessageActions
-            chatMessage={chatMessage}
-            setContent={setContent}
-            setEditing={setEditing}
-          />
+            )}
+          </div>
+          <div className="flex justify-end text-xs text-muted-foreground timestamp">
+            {formatDateTime(chatMessage.createdAt)}
+          </div>
         </div>
-      </div>
-      <div className="flex justify-end text-xs text-muted-foreground timestamp">
-        {formatDateTime(chatMessage.createdAt)}
       </div>
     </div>
   );
@@ -260,19 +278,18 @@ const ChatUserMessageActions = (props: {
         <div className="flex items-center justify-end space-x-4">
           {chatMessage.state === "pending" && (
             <>
-              {submitting ? (
-                <LoaderIcon className="w-4 h-4 animate-spin" />
-              ) : (
-                <EditIcon
-                  data-tooltip-id="global-tooltip"
-                  data-tooltip-content={t("edit")}
-                  className="w-4 h-4 cursor-pointer"
-                  onClick={() => {
-                    setContent(chatMessage.content);
-                    setEditing(true);
-                  }}
-                />
-              )}
+              <EditIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("edit")}
+                className={`w-4 h-4 ${
+                  submitting ? "cursor-not-allowed" : "cursor-pointer"
+                }`}
+                onClick={() => {
+                  if (submitting) return;
+                  setContent(chatMessage.content);
+                  setEditing(true);
+                }}
+              />
               {isPaused || isRecording || submitting ? (
                 <LoaderIcon className="w-4 h-4 animate-spin" />
               ) : (
@@ -306,41 +323,45 @@ const ChatUserMessageActions = (props: {
               onClick={() => handleRefine()}
             />
           )}
-          {copied ? (
-            <CheckIcon className="w-4 h-4 text-green-500" />
-          ) : (
-            <CopyIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("copyText")}
-              className="w-4 h-4 cursor-pointer"
-              onClick={() => {
-                copyToClipboard(chatMessage.content);
-                setCopied(true);
-                setTimeout(() => {
-                  setCopied(false);
-                }, 3000);
-              }}
-            />
-          )}
-          <ConversationShortcuts
-            prompt={chatMessage.content}
-            excludedIds={[]}
-            trigger={
-              <ForwardIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("forward")}
-                className="w-4 h-4 cursor-pointer"
+          {chatMessage.state === "completed" && (
+            <>
+              {copied ? (
+                <CheckIcon className="w-4 h-4 text-green-500" />
+              ) : (
+                <CopyIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("copyText")}
+                  className="w-4 h-4 cursor-pointer"
+                  onClick={() => {
+                    copyToClipboard(chatMessage.content);
+                    setCopied(true);
+                    setTimeout(() => {
+                      setCopied(false);
+                    }, 3000);
+                  }}
+                />
+              )}
+              <ConversationShortcuts
+                prompt={chatMessage.content}
+                excludedIds={[]}
+                trigger={
+                  <ForwardIcon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("forward")}
+                    className="w-4 h-4 cursor-pointer"
+                  />
+                }
               />
-            }
-          />
-          {Boolean(chatMessage.recording) && (
-            <DownloadIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("download")}
-              data-testid="chat-message-download-recording"
-              onClick={handleDownload}
-              className="w-4 h-4 cursor-pointer"
-            />
+              {Boolean(chatMessage.recording) && (
+                <DownloadIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("download")}
+                  data-testid="chat-message-download-recording"
+                  onClick={handleDownload}
+                  className="w-4 h-4 cursor-pointer"
+                />
+              )}
+            </>
           )}
           <DropdownMenuTrigger>
             <MoreVerticalIcon className="w-4 h-4" />

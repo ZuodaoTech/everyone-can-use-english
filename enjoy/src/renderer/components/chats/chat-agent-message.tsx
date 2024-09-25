@@ -214,7 +214,7 @@ export const ChatAgentMessage = (props: {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-4 px-4 py-2 mb-2 bg-muted/15 rounded-lg shadow-sm w-full max-w-prose">
+      <div className="flex flex-col gap-4 px-4 py-2 mb-2 rounded-lg border w-full max-w-prose">
         {Boolean(chatMessage.speech) ? (
           <>
             {displayPlayer ? (

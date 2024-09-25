@@ -105,3 +105,9 @@ type ChatMemberDtoType = {
     [key: string]: any;
   };
 };
+
+type ChatMessageDtoType = {
+  state?: "pending" | "completed";
+  content?: string;
+  recordingUrl?: string;
+};

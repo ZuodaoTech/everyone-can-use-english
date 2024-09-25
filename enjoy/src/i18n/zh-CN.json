@@ -440,6 +440,7 @@
   "reloadIsNeededAfterChanged": "更改后需要重新加载",
   "defaultAiEngine": "默认 AI 引擎",
   "aiEngine": "AI 引擎",
+  "aiEngineNotSupported": "AI 引擎不支持",
   "defaultAiModel": "默认 AI 模型",
   "lookupAiModel": "智能词典模型",
   "translateAiModel": "智能翻译模型",
@@ -449,7 +450,7 @@
   "enjoyAiEngineTips": "使用 EnjoyAI 作为默认 AI 引擎，收费服务。",
   "openaiKeySaved": "OpenAI 密钥已保存",
   "openaiConfigSaved": "OpenAI 配置已保存",
-  "openaiKeyRequired": "未配置 OpenAI 密钥",
+  "openaiKeyRequired": "未配置 OpenAI 密钥，请在设置中配置",
   "baseUrl": "接口地址",
   "customModels": "自定义模型",
   "customModelsDescription": "自定义模型，设置多个模型时用英文逗号隔开",
@@ -723,6 +724,7 @@
   "editChat": "编辑聊天",
   "newChat": "新聊天",
   "addChat": "添加聊天",
+  "recents": "最近聊天",
   "agentsManagement": "角色管理",
   "newAgent": "新角色",
   "editAgent": "编辑角色",
@@ -837,5 +839,6 @@
   },
   "chatMemberUpdated": "聊天成员更新成功",
   "chatMemberRemoved": "聊天成员删除成功",
-  "chatMemberAdded": "聊天成员添加成功"
+  "chatMemberAdded": "聊天成员添加成功",
+  "confirmBeforeSending": "您可以重新录音、修改文字内容，确认无误后点击发送"
 }

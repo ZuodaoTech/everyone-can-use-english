@@ -40,15 +40,22 @@ type ChatSessionProviderState = {
   recordingTime: number;
   mediaRecorder: MediaRecorder;
   recordingBlob: Blob;
-  askAgent: () => Promise<any>;
+  askAgent: (member?: ChatMemberType) => Promise<any>;
   shadowing: AudioType;
   setShadowing: (audio: AudioType) => void;
   assessing: RecordingType;
   setAssessing: (recording: RecordingType) => void;
   onDeleteMessage?: (id: string) => void;
   onCreateMessage?: (
-    content: string,
-    recordingUrl?: string
+    params: {
+      content: string;
+      recordingUrl?: string;
+    },
+    options: {
+      onSuccess?: (message: ChatMessageType) => void;
+      onError?: (error: Error) => void;
+      onFinally?: () => void;
+    }
   ) => Promise<ChatMessageType | void>;
   onUpdateMessage?: (
     id: string,
@@ -134,13 +141,26 @@ export const ChatSessionProvider = ({
     });
   };
 
-  const onCreateMessage = async (content: string, recordingUrl?: string) => {
+  const onCreateMessage = async (
+    params: {
+      content: string;
+      recordingUrl?: string;
+    },
+    options: {
+      onSuccess?: (message: ChatMessageType) => void;
+      onError?: (error: Error) => void;
+      onFinally?: () => void;
+    } = {}
+  ) => {
+    const { content, recordingUrl } = params;
+    const { onSuccess, onError, onFinally } = options;
     if (submitting) return;
 
     setSubmitting(true);
-    return onCreateUserMessage(content, recordingUrl).finally(() =>
-      setSubmitting(false)
-    );
+    onCreateUserMessage(content, recordingUrl).finally(() => {
+      setSubmitting(false);
+      onFinally?.();
+    });
   };
 
   const onRecorded = async (blob: Blob) => {
@@ -150,6 +170,10 @@ export const ChatSessionProvider = ({
     }
     if (submitting) return;
 
+    const pendingMessage = chatMessages.find(
+      (m) => m.member.userType === "User" && m.state === "pending"
+    );
+
     try {
       setSubmitting(true);
       const { transcript, url } = await transcribe(blob, {
@@ -157,11 +181,18 @@ export const ChatSessionProvider = ({
         service: chat.config.sttEngine,
         align: false,
       });
-      return onCreateUserMessage(transcript, url).finally(() =>
-        setSubmitting(false)
-      );
+
+      if (pendingMessage) {
+        await onUpdateMessage(pendingMessage.id, {
+          content: transcript,
+          recordingUrl: url,
+        });
+      } else {
+        await onCreateUserMessage(transcript, url);
+      }
     } catch (error) {
       toast.error(error.message);
+    } finally {
       setSubmitting(false);
     }
   };
@@ -182,7 +213,11 @@ export const ChatSessionProvider = ({
     }
 
     setSubmitting(true);
-    return invokeAgent(member).finally(() => setSubmitting(false));
+    return invokeAgent(member)
+      .catch((error) => {
+        toast.error(error.message);
+      })
+      .finally(() => setSubmitting(false));
   };
 
   const onAssess = (assessment: PronunciationAssessmentType) => {
