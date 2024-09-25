@@ -293,16 +293,16 @@ const ChatUserMessageActions = (props: {
                   setEditing(true);
                 }}
               />
-              {isPaused || isRecording || submitting ? (
-                <LoaderIcon className="w-4 h-4 animate-spin" />
-              ) : (
-                <MicIcon
-                  data-tooltip-id="global-tooltip"
-                  data-tooltip-content={t("reRecord")}
-                  className="w-4 h-4 cursor-pointer"
-                  onClick={startRecording}
-                />
-              )}
+              <MicIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("reRecord")}
+                className={`w-4 h-4 ${
+                  submitting || isPaused || isRecording
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer"
+                }`}
+                onClick={startRecording}
+              />
             </>
           )}
           {chatMessage.recording &&

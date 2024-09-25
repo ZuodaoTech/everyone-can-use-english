@@ -122,7 +122,7 @@ export const ChatInput = () => {
 
   if (isRecording) {
     return (
-      <div className="w-full flex justify-center">
+      <div className="z-10 w-full flex justify-center">
         <div className="flex items-center space-x-2">
           <LiveAudioVisualizer
             mediaRecorder={mediaRecorder}
@@ -186,7 +186,7 @@ export const ChatInput = () => {
 
   if (inputMode === "text") {
     return (
-      <div className="w-full flex items-end gap-2 px-2">
+      <div className="z-10 w-full flex items-end gap-2 px-2 py-2 bg-muted mx-4 rounded-3xl shadow-lg">
         <Button
           data-tooltip-id="chat-tooltip"
           data-tooltip-content={t("audioInput")}
@@ -205,7 +205,7 @@ export const ChatInput = () => {
           disabled={submitting}
           placeholder={t("pressEnterToSend")}
           data-testid="chat-input"
-          className="bg-muted/50 h-8 text-muted-foreground rounded-lg text-sm leading-7 px-3 py-1 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none min-h-[2.25rem] max-h-[70vh] scrollbar-thin !overflow-x-hidden"
+          className="flex-1 h-8 text-muted-foreground rounded-lg text-sm leading-7 px-0 py-1 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none min-h-[2.25rem] max-h-[70vh] scrollbar-thin !overflow-x-hidden"
         />
         <Button
           ref={submitRef}
@@ -215,8 +215,8 @@ export const ChatInput = () => {
             onCreateMessage(content, { onSuccess: () => setContent("") })
           }
           disabled={submitting || !content}
-          className=""
-          variant="ghost"
+          className="rounded-full shadow w-8 h-8"
+          variant="default"
           size="icon"
         >
           {submitting ? (
@@ -230,6 +230,7 @@ export const ChatInput = () => {
             <Button
               data-tooltip-id="chat-tooltip"
               data-tooltip-content={t("suggestion")}
+              className="rounded-full w-8 h-8"
               variant="ghost"
               size="icon"
             >
@@ -262,7 +263,7 @@ export const ChatInput = () => {
         data-tooltip-content={t("textInput")}
         disabled={submitting}
         onClick={() => setInputMode("text")}
-        className="rounded-full shadow w-8 h-8"
+        className="rounded-full shadow-lg w-8 h-8"
         variant="secondary"
         size="icon"
       >
@@ -273,7 +274,7 @@ export const ChatInput = () => {
         data-tooltip-content={t("record")}
         disabled={submitting}
         onClick={startRecording}
-        className="rounded-full shadow w-10 h-10"
+        className="rounded-full shadow-lg w-10 h-10"
         size="icon"
       >
         {submitting ? (
@@ -288,7 +289,7 @@ export const ChatInput = () => {
         data-tooltip-content={t("continue")}
         disabled={submitting}
         onClick={() => askAgent()}
-        className="absolute right-4 rounded-full shadow w-8 h-8"
+        className="rounded-full shadow-lg w-8 h-8"
         variant="default"
         size="icon"
       >
@@ -389,7 +390,7 @@ const ChatSuggestionButton = (props: {
           <Button
             data-tooltip-id="chat-tooltip"
             data-tooltip-content={t("suggestion")}
-            className="rounded-full shadow w-8 h-8"
+            className="rounded-full shadow-lg w-8 h-8"
             variant="secondary"
             size="icon"
           >
