@@ -5,6 +5,7 @@ import {
   Avatar,
   Button,
   Form,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -78,6 +79,9 @@ export const ChatAgentForm = (props: {
                   required
                   {...field}
                 />
+                <FormDescription>
+                  {t("models.chatAgent.nameDescription")}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -95,6 +99,9 @@ export const ChatAgentForm = (props: {
                   className="max-h-36"
                   {...field}
                 />
+                <FormDescription>
+                  {t("models.chatAgent.introductionDescription")}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -112,6 +119,9 @@ export const ChatAgentForm = (props: {
                   className="min-h-36 max-h-64"
                   {...field}
                 />
+                <FormDescription>
+                  {t("models.chatAgent.promptDescription")}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

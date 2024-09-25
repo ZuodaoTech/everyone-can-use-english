@@ -137,10 +137,13 @@
       "deleted": "角色删除成功",
       "name": "角色名称",
       "namePlaceholder": "Enjoy 助手",
+      "nameDescription": "帮助你识别这个角色",
       "introduction": "角色介绍",
-      "introductionPlaceholder": "问我任何问题。",
+      "introductionPlaceholder": "问我任何问题",
+      "introductionDescription": "简短介绍这个角色（不会包含在提示语中）",
       "prompt": "提示语",
-      "promptPlaceholder": "你是我的 AI 助手，请回答我任何问题。"
+      "promptPlaceholder": "你是我的 AI 助手，请回答我任何问题。",
+      "promptDescription": "角色定义"
     },
     "chatMember": {
       "prompt": "额外提示语",

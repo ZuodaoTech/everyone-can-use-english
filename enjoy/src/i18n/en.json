@@ -137,10 +137,13 @@
       "deleted": "Chat agent deleted",
       "name": "Name",
       "namePlaceholder": "Enjoy Assistant",
+      "nameDescription": "Help you to identify this chat agent",
       "introduction": "Introduction",
-      "introductionPlaceholder": "Ask me anything.",
+      "introductionPlaceholder": "Ask me anything",
+      "introductionDescription": "Introduce this chat agent shortly (Will not included in the prompt)",
       "prompt": "Prompt",
-      "promptPlaceholder": "You are my AI assistant, please answer my any questions."
+      "promptPlaceholder": "You are my AI assistant, please answer my any questions.",
+      "promptDescription": "The role definition (prompt) of the chat agent"
     },
     "chatMember": {
       "prompt": "Extra Prompt",
