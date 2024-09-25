@@ -21,6 +21,7 @@ class ChatMembersHandler {
 
   private async create(_event: IpcMainEvent, member: ChatMemberDtoType) {
     const chatMember = await ChatMember.create(member);
+    await chatMember.reload();
     return chatMember.toJSON();
   }
 

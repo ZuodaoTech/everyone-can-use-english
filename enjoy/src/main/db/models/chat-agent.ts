@@ -16,6 +16,7 @@ import mainWindow from "@main/window";
 import log from "@main/logger";
 import { ChatMember, UserSetting } from "@main/db/models";
 import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/types/enums";
+import { DEFAULT_GPT_CONFIG } from "@/constants";
 
 const logger = log.scope("db/models/chat-agent");
 @Table({
@@ -114,13 +115,10 @@ export class ChatAgent extends Model<ChatAgent> {
           member.config = {
             ...member.config,
             gpt: {
+              ...DEFAULT_GPT_CONFIG,
               engine: chatAgent.config.engine,
               model: chatAgent.config.model,
               temperature: chatAgent.config.temperature,
-              historyBufferSize: 10,
-              presencePenalty: 0,
-              frequencyPenalty: 0,
-              numberOfChoices: 1,
             },
             tts: {
               engine: chatAgent.config.ttsEngine,

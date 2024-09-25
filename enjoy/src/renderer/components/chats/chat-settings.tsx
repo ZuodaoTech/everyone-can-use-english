@@ -1,22 +1,85 @@
 import {
+  Avatar,
+  AvatarFallback,
+  Button,
+  Input,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import { ChatMemberForm, ChatForm } from "@renderer/components";
+import { ChatMemberForm, ChatForm, ChatAgentCard } from "@renderer/components";
 import { useChatMember } from "@renderer/hooks";
+import { PlusIcon } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
+import { useDebounce } from "@uidotdev/usehooks";
+import {
+  AISettingsProviderContext,
+  AppSettingsProviderContext,
+} from "@/renderer/context";
+import { DEFAULT_GPT_CONFIG } from "@/constants";
 
 export const ChatSettings = (props: {
   chat: ChatType;
   onFinish?: () => void;
 }) => {
   const { chat, onFinish } = props;
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
+  const { currentGptEngine, currentTtsEngine } = useContext(
+    AISettingsProviderContext
+  );
   const { chatMembers } = useChatMember(chat.id);
+  const [query, setQuery] = useState("");
+  const [chatAgents, setChatAgents] = useState<ChatAgentType[]>([]);
+  const debouncedQuery = useDebounce(query, 500);
   const agentMembers = chatMembers.filter(
     (member) => member.userType === "ChatAgent"
   );
+
+  const handleAddAgentMember = (chatAgent: ChatAgentType) => {
+    EnjoyApp.chatMembers
+      .create({
+        chatId: chat.id,
+        userId: chatAgent.id,
+        userType: "ChatAgent",
+        config: {
+          gpt: {
+            ...DEFAULT_GPT_CONFIG,
+            engine: currentGptEngine.name,
+            model: currentGptEngine.models.default,
+          },
+          tts: {
+            engine: currentTtsEngine.name,
+            model: currentTtsEngine.model,
+            voice: currentTtsEngine.voice,
+            language: learningLanguage,
+          },
+        },
+      })
+      .then(() => {
+        toast.success(t("models.chatMember.created"));
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
+  const fetchChatAgents = async (query?: string) => {
+    EnjoyApp.chatAgents
+      .findAll({ query })
+      .then((data) => {
+        setChatAgents(data);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
+  useEffect(() => {
+    fetchChatAgents(debouncedQuery);
+  }, [debouncedQuery]);
 
   return (
     <Tabs defaultValue="chat" className="mb-6">
@@ -40,12 +103,73 @@ export const ChatSettings = (props: {
                   {member.agent.name}
                 </TabsTrigger>
               ))}
+              <TabsTrigger value="new">
+                <PlusIcon className="w-4 h-4" />
+                {t("add")}
+              </TabsTrigger>
             </TabsList>
             {agentMembers.map((member) => (
               <TabsContent key={member.userId} value={member.userId}>
                 <ChatMemberForm chat={chat} member={member} />
               </TabsContent>
             ))}
+            <TabsContent value="new">
+              <div className="overflow-hidden h-full relative py-2 px-1">
+                <div className="mb-4">
+                  <Input
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    className="rounded h-8 text-xs"
+                    placeholder={t("search")}
+                  />
+                </div>
+                {chatAgents.length === 0 && (
+                  <div className="text-center my-4">
+                    <span className="text-sm text-muted-foreground">
+                      {t("noData")}
+                    </span>
+                  </div>
+                )}
+                <div className="grid gap-2">
+                  {chatAgents.map((chatAgent) => (
+                    <div
+                      key={chatAgent.id}
+                      className="flex items-center justify-between"
+                      onClick={() => {}}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <Avatar className="w-8 h-8">
+                          <img src={chatAgent.avatarUrl} alt={chatAgent.name} />
+                          <AvatarFallback>{chatAgent.name[0]}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="text-sm line-clamp-1">
+                            {chatAgent.name}
+                          </div>
+                          <div className="text-xs text-muted-foreground line-clamp-1">
+                            {chatAgent.introduction}
+                          </div>
+                        </div>
+                      </div>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => {
+                          handleAddAgentMember(chatAgent);
+                        }}
+                        disabled={
+                          agentMembers.findIndex(
+                            (member) => member.userId === chatAgent.id
+                          ) > -1
+                        }
+                      >
+                        {t("addToChat")}
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </TabsContent>
           </Tabs>
         ) : (
           <div className="text-muted-foreground py-4 text-center">

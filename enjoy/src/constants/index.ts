@@ -66,6 +66,16 @@ export const CHAT_GROUP_PROMPT_TEMPLATE = `You are {name} in this chat. You shou
 {name}:
 `;
 
+export const DEFAULT_GPT_CONFIG = {
+  model: "gpt-4o",
+  engine: "enjoyai",
+  temperature: 0.8,
+  historyBufferSize: 10,
+  presencePenalty: 0,
+  frequencyPenalty: 0,
+  numberOfChoices: 1,
+};
+
 export const AGENT_FIXTURE_AVA = {
   name: "Ava",
   introduction: "I'm Ava, your English speaking teacher.",

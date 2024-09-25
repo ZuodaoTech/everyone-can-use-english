@@ -151,7 +151,9 @@
       "promptPlaceholder": "例如：请尽可能使用简单句，每次回复不要超过 10 个句子。",
       "gptSettings": "LLM 设置",
       "ttsSettings": "语音设置",
-      "moreSettings": "更多设置"
+      "moreSettings": "更多设置",
+      "added": "成员添加成功",
+      "removed": "成员删除成功"
     },
     "chat": {
       "notFound": "未找到聊天",

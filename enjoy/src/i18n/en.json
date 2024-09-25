@@ -151,7 +151,9 @@
       "promptPlaceholder": "For example: please use simple sentences as much as possible, and reply no more than 10 sentences at a time.",
       "gptSettings": "LLM Settings",
       "ttsSettings": "Text to Speech",
-      "moreSettings": "More Settings"
+      "moreSettings": "More Settings",
+      "added": "Chat member added",
+      "removed": "Chat member removed"
     },
     "chat": {
       "notFound": "Chat not found",

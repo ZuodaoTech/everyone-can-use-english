@@ -17,6 +17,7 @@ import {
 } from "@renderer/context";
 import { ChatCard } from "@renderer/components";
 import { PlusIcon } from "lucide-react";
+import { DEFAULT_GPT_CONFIG } from "@/constants";
 
 export const ChatList = () => {
   const { chats, currentChat, setCurrentChat, destroyChat, createChat } =
@@ -43,13 +44,9 @@ export const ChatList = () => {
           userType: "ChatAgent",
           config: {
             gpt: {
+              ...DEFAULT_GPT_CONFIG,
               engine: currentGptEngine.name,
               model: currentGptEngine.models.default,
-              temperature: 0.5,
-              historyBufferSize: 10,
-              presencePenalty: 0,
-              frequencyPenalty: 0,
-              numberOfChoices: 1,
             },
             tts: {
               engine: currentTtsEngine.name,

@@ -48,9 +48,8 @@ export const ChatMemberForm = (props: {
   onFinish?: () => void;
 }) => {
   const { member, onFinish, chat } = props;
-  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
-  const { gptProviders, ttsProviders, currentGptEngine, currentTtsEngine } =
-    useContext(AISettingsProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { gptProviders, ttsProviders } = useContext(AISettingsProviderContext);
 
   const buildFullPrompt = (prompt: string) => {
     return Mustache.render(
@@ -65,27 +64,6 @@ export const ChatMemberForm = (props: {
     ).trim();
   };
 
-  const buildMember = (agent: ChatAgentType): Partial<ChatMemberType> => {
-    return {
-      agent,
-      userId: agent.id,
-      userType: "ChatAgent",
-      name: agent.name,
-      config: {
-        gpt: {
-          engine: currentGptEngine.name,
-          model: currentGptEngine.models.default,
-          temperature: 0.5,
-        },
-        tts: {
-          engine: currentTtsEngine.name,
-          model: currentTtsEngine.model,
-          voice: currentTtsEngine.voice,
-          language: learningLanguage,
-        },
-      },
-    };
-  };
   const chatMemberFormSchema = z.object({
     userId: z.string(),
     userType: z.enum(["User", "ChatAgent"]).default("ChatAgent"),
