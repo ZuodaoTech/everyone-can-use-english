@@ -136,9 +136,11 @@
       "updated": "角色更新成功",
       "deleted": "角色删除成功",
       "name": "角色名称",
+      "namePlaceholder": "Enjoy 助手",
       "introduction": "角色介绍",
-      "language": "语言",
-      "prompt": "提示语"
+      "introductionPlaceholder": "问我任何问题。",
+      "prompt": "提示语",
+      "promptPlaceholder": "你是我的 AI 助手，请回答我任何问题。"
     },
     "chatMember": {
       "prompt": "额外提示语",

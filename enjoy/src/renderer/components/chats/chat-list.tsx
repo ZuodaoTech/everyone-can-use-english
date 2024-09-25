@@ -11,6 +11,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogTitle,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useContext, useState } from "react";
@@ -33,6 +34,9 @@ export const ChatList = () => {
   const [deletingChat, setDeletingChat] = useState<ChatType>(null);
 
   const handleCreateChat = () => {
+    if (!currentChatAgent) {
+      return;
+    }
     createChat({
       name: t("newChat"),
       topic: "",
@@ -72,6 +76,7 @@ export const ChatList = () => {
           className="w-full mb-1 p-1 justify-start items-center"
           variant="ghost"
           size="sm"
+          disabled={!currentChatAgent}
           onClick={handleCreateChat}
         >
           <PlusIcon className="w-4 h-4 mr-1" />

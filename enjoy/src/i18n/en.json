@@ -136,9 +136,11 @@
       "updated": "Chat agent updated",
       "deleted": "Chat agent deleted",
       "name": "Name",
+      "namePlaceholder": "Enjoy Assistant",
       "introduction": "Introduction",
-      "language": "Language",
-      "prompt": "Prompt"
+      "introductionPlaceholder": "Ask me anything.",
+      "prompt": "Prompt",
+      "promptPlaceholder": "You are my AI assistant, please answer my any questions."
     },
     "chatMember": {
       "prompt": "Extra Prompt",

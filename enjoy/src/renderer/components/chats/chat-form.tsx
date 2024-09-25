@@ -209,7 +209,7 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
             )}
           />
         </div>
-        <Collapsible open={isMoreSettingsOpen}>
+        <Collapsible open={isMoreSettingsOpen} className="mb-6">
           <CollapsibleTrigger asChild>
             <Button
               type="button"

@@ -34,9 +34,9 @@ export const ChatAgentForm = (props: {
   const form = useForm<z.infer<typeof agentFormSchema>>({
     resolver: zodResolver(agentFormSchema),
     values: agent || {
-      name: "",
-      introduction: "",
-      prompt: "",
+      name: t("models.chatAgent.namePlaceholder"),
+      introduction: t("models.chatAgent.introductionPlaceholder"),
+      prompt: t("models.chatAgent.promptPlaceholder"),
     },
   });
 
@@ -73,7 +73,11 @@ export const ChatAgentForm = (props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chatAgent.name")}</FormLabel>
-                <Input required {...field} />
+                <Input
+                  placeholder={t("models.chatAgent.namePlaceholder")}
+                  required
+                  {...field}
+                />
                 <FormMessage />
               </FormItem>
             )}
@@ -85,7 +89,12 @@ export const ChatAgentForm = (props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chatAgent.introduction")}</FormLabel>
-                <Textarea required className="max-h-36" {...field} />
+                <Textarea
+                  placeholder={t("models.chatAgent.introductionPlaceholder")}
+                  required
+                  className="max-h-36"
+                  {...field}
+                />
                 <FormMessage />
               </FormItem>
             )}
@@ -97,7 +106,12 @@ export const ChatAgentForm = (props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chatAgent.prompt")}</FormLabel>
-                <Textarea required className="min-h-36 max-h-64" {...field} />
+                <Textarea
+                  placeholder={t("models.chatAgent.promptPlaceholder")}
+                  required
+                  className="min-h-36 max-h-64"
+                  {...field}
+                />
                 <FormMessage />
               </FormItem>
             )}
