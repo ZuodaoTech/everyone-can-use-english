@@ -16,6 +16,7 @@ import {
 import log from "@main/logger";
 import settings from "@main/settings";
 import { Chat, ChatAgent, ChatMessage } from "@main/db/models";
+import mainWindow from "@main/window";
 
 const logger = log.scope("db/models/chat-member");
 @Table({
@@ -69,9 +70,9 @@ export class ChatMember extends Model<ChatMember> {
   @Column(DataType.VIRTUAL)
   get name(): string {
     if (this.userType === "User") {
-      return this.user.name;
+      return this.user?.name;
     } else if (this.userType === "ChatAgent") {
-      return this.agent.name;
+      return this.agent?.name;
     }
     return "";
   }
@@ -109,5 +110,39 @@ export class ChatMember extends Model<ChatMember> {
   @BeforeDestroy
   static async destroyMessages(member: ChatMember) {
     ChatMessage.destroy({ where: { memberId: member.id } });
+  }
+
+  @AfterCreate
+  static notifyForCreate(member: ChatMember) {
+    this.notify(member, "create");
+  }
+
+  @AfterUpdate
+  static notifyForUpdate(member: ChatMember) {
+    this.notify(member, "update");
+  }
+
+  @AfterDestroy
+  static notifyForDestroy(member: ChatMember) {
+    this.notify(member, "destroy");
+  }
+
+  static async notify(
+    member: ChatMember,
+    action: "create" | "update" | "destroy"
+  ) {
+    if (!mainWindow.win) return;
+
+    let record = member.toJSON();
+    if (action !== "destroy") {
+      // reload to ensure the association is loaded in defaultScope
+      record = (await member.reload())?.toJSON();
+    }
+    mainWindow.win.webContents.send("db-on-transaction", {
+      model: "ChatMember",
+      id: member.id,
+      action,
+      record,
+    });
   }
 }

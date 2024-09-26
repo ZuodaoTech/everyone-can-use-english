@@ -153,7 +153,9 @@
       "ttsSettings": "语音设置",
       "moreSettings": "更多设置",
       "added": "成员添加成功",
-      "removed": "成员删除成功"
+      "removed": "成员删除成功",
+      "notFound": "未找到成员",
+      "atLeastOneAgent": "聊天至少需要 1 个角色参与"
     },
     "chat": {
       "notFound": "未找到聊天",
@@ -227,7 +229,7 @@
   "displayNotes": "显示笔记",
   "downloadSegment": "下载选段",
   "detail": "详情",
-  "remove": "删除",
+  "remove": "移除",
   "share": "分享",
   "forward": "转发",
   "loadMore": "加载更多",
@@ -840,8 +842,10 @@
     "language": "TTS 语言"
   },
   "chatMemberUpdated": "聊天成员更新成功",
-  "chatMemberRemoved": "聊天成员删除成功",
+  "chatMemberRemoved": "聊天成员移除成功",
   "chatMemberAdded": "聊天成员添加成功",
   "confirmBeforeSending": "您可以重新录音、修改文字内容，确认无误后点击发送",
-  "chatNoContentYet": "聊天还没有内容"
+  "chatNoContentYet": "聊天还没有内容",
+  "removeChatMember": "移除群成员",
+  "removeChatMemberConfirmation": "您确定要将此成员移出群聊吗？"
 }

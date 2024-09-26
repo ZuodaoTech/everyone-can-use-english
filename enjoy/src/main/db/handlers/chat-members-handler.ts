@@ -47,8 +47,11 @@ class ChatMembersHandler {
     const chatMembers = await ChatMember.findAll({
       where: { chatId: chatMember.chatId },
     });
-    if (chatMembers.length <= 2) {
-      throw new Error(t("models.chatMember.lastMember"));
+    if (
+      chatMembers.filter((member) => member.userType === "ChatAgent").length <=
+      1
+    ) {
+      throw new Error(t("models.chatMember.atLeastOneAgent"));
     }
 
     await chatMember.destroy();

@@ -153,7 +153,9 @@
       "ttsSettings": "Text to Speech",
       "moreSettings": "More Settings",
       "added": "Chat member added",
-      "removed": "Chat member removed"
+      "removed": "Chat member removed",
+      "notFound": "Chat member not found",
+      "atLeastOneAgent": "The chat must have at least 1 agent."
     },
     "chat": {
       "notFound": "Chat not found",
@@ -843,5 +845,7 @@
   "chatMemberRemoved": "Chat member removed successfully",
   "chatMemberAdded": "Chat member added successfully",
   "confirmBeforeSending": "You can re-record, modify the text content, and click send after confirming there are no errors.",
-  "chatNoContentYet": "Chat has no content yet."
+  "chatNoContentYet": "Chat has no content yet.",
+  "removeChatMember": "Remove member",
+  "removeChatMemberConfirmation": "Are you sure to remove this member from the chat?"
 }

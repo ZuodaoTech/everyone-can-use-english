@@ -46,8 +46,9 @@ export const ChatMemberForm = (props: {
   chat: ChatType;
   member: Partial<ChatMemberType>;
   onFinish?: () => void;
+  onDelete?: () => void;
 }) => {
-  const { member, onFinish, chat } = props;
+  const { member, onFinish, chat, onDelete } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { gptProviders, ttsProviders } = useContext(AISettingsProviderContext);
 
@@ -120,12 +121,14 @@ export const ChatMemberForm = (props: {
     }
   );
 
-  const handleDelete = () => {
+  const handleRemove = () => {
+    if (!member.id) return;
+
     EnjoyApp.chatMembers
       .destroy(member.id)
       .then(() => {
-        toast.success(t("chatMemberDeleted"));
-        onFinish?.();
+        toast.success(t("chatMemberRemoved"));
+        onDelete?.();
       })
       .catch((error) => {
         toast.error(error.message);
@@ -558,23 +561,23 @@ export const ChatMemberForm = (props: {
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button className="text-destructive" variant="secondary">
-                  {t("delete")}
+                  {t("remove")}
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>{t("deleteChatMember")}</AlertDialogTitle>
+                  <AlertDialogTitle>{t("removeChatMember")}</AlertDialogTitle>
                 </AlertDialogHeader>
                 <AlertDialogDescription>
-                  {t("deleteChatMemberConfirmation")}
+                  {t("removeChatMemberConfirmation")}
                 </AlertDialogDescription>
                 <AlertDialogFooter>
                   <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
                   <AlertDialogAction
                     className="bg-destructive hover:bg-destructive-hover"
-                    onClick={handleDelete}
+                    onClick={handleRemove}
                   >
-                    {t("delete")}
+                    {t("remove")}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>

@@ -1,43 +1,36 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer } from "react";
 import {
   AppSettingsProviderContext,
   DbProviderContext,
 } from "@renderer/context";
+import { chatMembersReducer } from "@renderer/reducers";
 
 export const useChatMember = (chatId: string) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
-  const [chatMembers, setChatMembers] = useState<ChatMemberType[]>([]);
+  const [chatMembers, dispatchChatMembers] = useReducer(chatMembersReducer, []);
 
   const fetchChatMembers = async () => {
     return EnjoyApp.chatMembers.findAll({ where: { chatId } }).then((data) => {
-      setChatMembers(data);
+      dispatchChatMembers({ type: "set", records: data });
     });
   };
 
   const onChatMemberRecordUpdate = (event: CustomEvent) => {
-    const { model, action, record } = event.detail || {};
+    const { model, id, action, record } = event.detail || {};
     if (model !== "ChatMember") return;
     switch (action) {
       case "update": {
-        setChatMembers((prev) => {
-          return prev.map((m) => {
-            if (m.id === record.id) {
-              return record;
-            }
-            return m;
-          });
-        });
+        dispatchChatMembers({ type: "update", record });
+        break;
       }
       case "destroy": {
-        setChatMembers((prev) => {
-          return prev.filter((m) => m.id !== record.id);
-        });
+        dispatchChatMembers({ type: "remove", record: { id } });
+        break;
       }
       case "create": {
-        setChatMembers((prev) => {
-          return [...prev, record];
-        });
+        dispatchChatMembers({ type: "append", record });
+        break;
       }
     }
   };
@@ -49,7 +42,7 @@ export const useChatMember = (chatId: string) => {
     addDblistener(onChatMemberRecordUpdate);
 
     return () => {
-      setChatMembers([]);
+      dispatchChatMembers({ type: "set", records: [] });
       removeDbListener(onChatMemberRecordUpdate);
     };
   }, [chatId]);

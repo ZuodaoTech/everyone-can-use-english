@@ -7,3 +7,4 @@ export * from "./messages-reducer";
 export * from "./llm-messages-reducer";
 export * from "./recordings-reducer";
 export * from "./videos-reducer";
+export * from "./chat-members-reducer";

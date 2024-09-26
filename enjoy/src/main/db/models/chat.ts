@@ -107,11 +107,16 @@ export class Chat extends Model<Chat> {
   static async notify(chat: Chat, action: "create" | "update" | "destroy") {
     if (!mainWindow.win) return;
 
+    let record = chat.toJSON();
+    if (action !== "destroy") {
+      // reload to ensure the association is loaded in defaultScope
+      record = (await chat.reload())?.toJSON();
+    }
     mainWindow.win.webContents.send("db-on-transaction", {
       model: "Chat",
       id: chat.id,
-      action: action,
-      record: chat.toJSON(),
+      action,
+      record,
     });
   }
 

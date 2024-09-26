@@ -15,7 +15,7 @@ import {
 import mainWindow from "@main/window";
 import log from "@main/logger";
 import { ChatMember, UserSetting } from "@main/db/models";
-import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/types/enums";
+import { UserSettingKeyEnum } from "@/types/enums";
 import { DEFAULT_GPT_CONFIG } from "@/constants";
 
 const logger = log.scope("db/models/chat-agent");
