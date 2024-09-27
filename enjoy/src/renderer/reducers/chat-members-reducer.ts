@@ -2,8 +2,8 @@ export const chatMembersReducer = (
   chatMembers: ChatMemberType[],
   action: {
     type: "append" | "prepend" | "update" | "remove" | "set";
-    record?: Partial<ChatMemberType>;
-    records?: Partial<ChatMemberType>[];
+    record?: ChatMemberType;
+    records?: ChatMemberType[];
   }
 ) => {
   switch (action.type) {

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useChatMessage, useTranscribe } from "@renderer/hooks";
+import { useChatMember, useChatMessage, useTranscribe } from "@renderer/hooks";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import {
   AppSettingsProviderContext,
@@ -29,6 +29,7 @@ import { AudioPlayer, RecordingDetail } from "@renderer/components";
 type ChatSessionProviderState = {
   chat: ChatType;
   chatMessages: ChatMessageType[];
+  chatMembers: ChatMemberType[];
   dispatchChatMessages: React.Dispatch<any>;
   submitting: boolean;
   startRecording: () => void;
@@ -62,6 +63,7 @@ type ChatSessionProviderState = {
 const initialState: ChatSessionProviderState = {
   chat: null,
   chatMessages: [],
+  chatMembers: [],
   dispatchChatMessages: () => null,
   submitting: false,
   startRecording: () => null,
@@ -123,6 +125,7 @@ export const ChatSessionProvider = ({
     toast.error(exception.message);
   });
 
+  const { chatMembers } = useChatMember(chat.id);
   const { transcribe } = useTranscribe();
 
   const cancelRecording = () => {
@@ -267,6 +270,7 @@ export const ChatSessionProvider = ({
       value={{
         chat,
         chatMessages,
+        chatMembers,
         dispatchChatMessages,
         submitting,
         startRecording,

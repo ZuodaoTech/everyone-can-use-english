@@ -47,10 +47,14 @@ export const ChatAgentMessage = (props: {
   onEditChatMember: (chatMember: ChatMemberType) => void;
 }) => {
   const { chatMessage, onEditChatMember } = props;
-  const { chat, dispatchChatMessages, setShadowing, onDeleteMessage } =
-    useContext(ChatSessionProviderContext);
+  const {
+    chat,
+    dispatchChatMessages,
+    setShadowing,
+    onDeleteMessage,
+    chatMembers,
+  } = useContext(ChatSessionProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { agent } = chatMessage.member || {};
   const ref = useRef<HTMLDivElement>(null);
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
@@ -60,8 +64,13 @@ export const ChatAgentMessage = (props: {
   const [translation, setTranslation] = useState<string>();
   const [translating, setTranslating] = useState<boolean>(false);
   const { translate, summarizeTopic } = useAiCommand();
-  const [displayContent, setDisplayContent] = useState(false);
+  const [displayContent, setDisplayContent] = useState(
+    !chat.config.enableAutoTts
+  );
   const [displayPlayer, setDisplayPlayer] = useState(false);
+  const chatMember = chatMembers.find(
+    (member) => member.id === chatMessage.member.id
+  );
 
   const handleTranslate = async () => {
     if (translating) return;
@@ -194,24 +203,24 @@ export const ChatAgentMessage = (props: {
     }
   }, [chatMessage]);
 
-  if (!agent) return;
+  if (!chatMember) return;
 
   return (
     <div ref={ref} className="mb-6">
       <div
         className="flex items-center space-x-2 mb-2 cursor-pointer"
-        onClick={() => onEditChatMember(chatMessage.member)}
+        onClick={() => onEditChatMember(chatMember)}
       >
         <Avatar className="w-8 h-8 bg-background avatar">
-          <AvatarImage src={agent.avatarUrl}></AvatarImage>
+          <AvatarImage src={chatMember.agent.avatarUrl}></AvatarImage>
           <AvatarFallback className="bg-background">
-            {agent.name}
+            {chatMember.name}
           </AvatarFallback>
         </Avatar>
         <div>
-          <div className="text-sm">{agent.name}</div>
+          <div className="text-sm">{chatMember.name}</div>
           <div className="italic text-xs text-muted-foreground/50">
-            {chatMessage.member.config.gpt?.model || "AI"}
+            {chatMember.agent.config.gpt?.model || "AI"}
           </div>
         </div>
       </div>

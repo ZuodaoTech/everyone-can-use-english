@@ -25,7 +25,10 @@ export const useChatMember = (chatId: string) => {
         break;
       }
       case "destroy": {
-        dispatchChatMembers({ type: "remove", record: { id } });
+        dispatchChatMembers({
+          type: "remove",
+          record: { id } as ChatMemberType,
+        });
         break;
       }
       case "create": {
