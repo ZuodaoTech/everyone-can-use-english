@@ -28,7 +28,6 @@ import {
   LoaderIcon,
   MicIcon,
   MoreHorizontalIcon,
-  RotateCcwIcon,
   SpeechIcon,
   Volume2Icon,
 } from "lucide-react";

@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Mustache from "mustache";
 import { t } from "i18next";
+import { useAiCommand } from "@renderer/hooks";
 
 dayjs.extend(relativeTime);
 
@@ -30,6 +31,7 @@ export const useChatMessage = (chat: ChatType) => {
     chatMessagesReducer,
     []
   );
+  const { summarizeTopic } = useAiCommand();
 
   const fetchChatMessages = async (query?: string) => {
     if (!chat?.id) return;
@@ -285,6 +287,14 @@ export const useChatMessage = (chat: ChatType) => {
     );
   };
 
+  const updateChatName = async () => {
+    if (chatMessages.length !== 2) return;
+
+    const content = chatMessages.map((m) => m.content).join("\n");
+    const name = await summarizeTopic(content);
+    EnjoyApp.chats.update(chat.id, { title: name });
+  };
+
   useEffect(() => {
     if (!chat) return;
 
@@ -294,6 +304,12 @@ export const useChatMessage = (chat: ChatType) => {
       removeDbListener(onChatMessageRecordUpdate);
     };
   }, [chat]);
+
+  useEffect(() => {
+    if (chatMessages.length === 2) {
+      updateChatName();
+    }
+  }, [chatMessages]);
 
   return {
     chatMessages,
