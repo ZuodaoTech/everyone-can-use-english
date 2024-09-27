@@ -292,7 +292,7 @@ export const useChatMessage = (chat: ChatType) => {
 
     const content = chatMessages.map((m) => m.content).join("\n");
     const name = await summarizeTopic(content);
-    EnjoyApp.chats.update(chat.id, { title: name });
+    EnjoyApp.chats.update(chat.id, { name });
   };
 
   useEffect(() => {
@@ -307,7 +307,7 @@ export const useChatMessage = (chat: ChatType) => {
 
   useEffect(() => {
     // Automatically update the chat name
-    if (chat.title === t("newChat") && chatMessages.length === 2) {
+    if (chat.name === t("newChat") && chatMessages.length === 2) {
       updateChatName();
     }
   }, [chatMessages]);

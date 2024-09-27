@@ -34,7 +34,7 @@ export const ChatList = () => {
       return;
     }
     createChat({
-      title: t("newChat"),
+      name: t("newChat"),
       config: {
         sttEngine: sttEngine,
       },

@@ -42,7 +42,7 @@ export const Chat = () => {
               </Avatar>
             ))}
         </div>
-        <span>{currentChat.title}</span>
+        <span>{currentChat.name}</span>
         <Dialog open={displayChatForm} onOpenChange={setDisplayChatForm}>
           <DialogTrigger asChild>
             <Button variant="ghost" size="icon" className="absolute right-4">

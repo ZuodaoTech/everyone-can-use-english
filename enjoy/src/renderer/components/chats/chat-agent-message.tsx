@@ -134,20 +134,20 @@ export const ChatAgentMessage = (props: {
 
     if (!audio) {
       setResourcing(true);
-      let title =
+      let name =
         speech.text.length > 20
           ? speech.text.substring(0, 17).trim() + "..."
           : speech.text;
 
       try {
-        title = await summarizeTopic(speech.text);
+        name = await summarizeTopic(speech.text);
       } catch (e) {
         console.warn(e);
       }
 
       EnjoyApp.audios
         .create(speech.filePath, {
-          name: title,
+          name,
           originalText: speech.text,
         })
         .then((audio) => setShadowing(audio))

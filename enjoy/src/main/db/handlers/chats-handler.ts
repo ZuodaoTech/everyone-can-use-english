@@ -22,7 +22,7 @@ class ChatsHandler {
     delete options.chatAgentId;
 
     if (query) {
-      (where as any).title = {
+      (where as any).name = {
         [Op.like]: `%${query}%`,
       };
     }
@@ -131,7 +131,7 @@ class ChatsHandler {
 
     try {
       await chat.update({
-        title: data.title,
+        name: data.name,
         config: data.config,
       });
       await chat.reload({

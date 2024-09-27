@@ -53,7 +53,7 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
     useContext(ChatProviderContext);
   const [isGeneratingTopic, setIsGeneratingTopic] = useState(false);
   const chatFormSchema = z.object({
-    title: z.string().min(1),
+    name: z.string().min(1),
     config: z.object({
       sttEngine: z.string().default(sttEngine),
       prompt: z.string().optional(),
@@ -66,11 +66,11 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
     resolver: zodResolver(chatFormSchema),
     values: chat?.id
       ? {
-          title: chat.title,
+          name: chat.name,
           config: chat.config,
         }
       : {
-          title: t("newChat"),
+          name: t("newChat"),
           config: {
             sttEngine,
             prompt: "",
@@ -81,10 +81,10 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    const { title, config } = data;
+    const { name, config } = data;
     if (chat?.id) {
       updateChat(chat.id, {
-        title,
+        name,
         config: {
           sttEngine: config.sttEngine,
           prompt: config.prompt,
@@ -94,7 +94,7 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
       }).then(() => onFinish());
     } else {
       createChat({
-        title,
+        name,
         config: {
           sttEngine: config.sttEngine,
           prompt: config.prompt,
@@ -133,7 +133,7 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
         <div className="space-y-4 px-2 mb-6">
           <FormField
             control={form.control}
-            name="title"
+            name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chat.name")}</FormLabel>
