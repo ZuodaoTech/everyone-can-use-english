@@ -12,6 +12,7 @@ import {
   FormMessage,
   Input,
   Textarea,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 
@@ -43,14 +44,16 @@ export const ChatAgentForm = (props: {
 
   const onSubmit = form.handleSubmit((data) => {
     const { name, introduction, ...config } = data;
-    return onSave({
-      name,
-      introduction,
-      config,
-    }).then(() => {
-      if (agent?.id) return;
+    try {
+      onSave({
+        name,
+        introduction,
+        config,
+      });
       form.reset();
-    });
+    } catch (error) {
+      toast.error(error.message);
+    }
   });
 
   return (

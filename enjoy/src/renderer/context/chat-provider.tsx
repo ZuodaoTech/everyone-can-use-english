@@ -58,9 +58,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   } = useChatAgent();
 
   useEffect(() => {
-    if (currentChat) return;
-
-    setCurrentChat(chats[0]);
+    if (
+      !currentChat ||
+      chats.findIndex((chat) => chat.id === currentChat.id) === -1
+    ) {
+      setCurrentChat(chats[0]);
+    }
   }, [chats]);
 
   useEffect(() => {

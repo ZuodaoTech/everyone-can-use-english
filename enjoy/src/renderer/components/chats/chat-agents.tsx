@@ -128,9 +128,13 @@ export const ChatAgents = () => {
           <DialogTitle className="sr-only"></DialogTitle>
           <ChatAgentForm
             agent={null}
-            onSave={(data) =>
-              createChatAgent(data).then(() => setCreatingChatAgent(false))
-            }
+            onSave={async (data) => {
+              const chatAgent = await createChatAgent(data);
+              if (chatAgent) {
+                setCurrentChatAgent(chatAgent);
+              }
+              setCreatingChatAgent(false);
+            }}
             onCancel={() => setCreatingChatAgent(false)}
           />
         </DialogContent>
