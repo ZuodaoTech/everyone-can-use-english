@@ -147,6 +147,7 @@ class ChatsHandler {
         ],
       });
 
+      await chat.reload();
       return chat.toJSON();
     } catch (error) {
       logger.error(error);

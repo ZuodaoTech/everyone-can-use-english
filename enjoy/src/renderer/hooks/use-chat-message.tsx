@@ -306,7 +306,8 @@ export const useChatMessage = (chat: ChatType) => {
   }, [chat]);
 
   useEffect(() => {
-    if (chatMessages.length === 2) {
+    // Automatically update the chat name
+    if (chat.title === t("newChat") && chatMessages.length === 2) {
       updateChatName();
     }
   }, [chatMessages]);
