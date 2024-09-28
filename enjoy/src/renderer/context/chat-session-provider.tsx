@@ -32,6 +32,7 @@ type ChatSessionProviderState = {
   chatMembers: ChatMemberType[];
   dispatchChatMessages: React.Dispatch<any>;
   submitting: boolean;
+  asking: ChatMemberType;
   startRecording: () => void;
   stopRecording: () => void;
   cancelRecording: () => void;
@@ -66,6 +67,7 @@ const initialState: ChatSessionProviderState = {
   chatMembers: [],
   dispatchChatMessages: () => null,
   submitting: false,
+  asking: null,
   startRecording: () => null,
   stopRecording: () => null,
   cancelRecording: () => null,
@@ -99,6 +101,7 @@ export const ChatSessionProvider = ({
   );
   const [submitting, setSubmitting] = useState(false);
   const [shadowing, setShadowing] = useState<AudioType>(null);
+  const [asking, setAsking] = useState<ChatMemberType>(null);
   const [assessing, setAssessing] = useState<RecordingType>(null);
   const {
     chatMessages,
@@ -216,11 +219,15 @@ export const ChatSessionProvider = ({
     }
 
     setSubmitting(true);
+    setAsking(member);
     return invokeAgent(member)
       .catch((error) => {
         toast.error(error.message);
       })
-      .finally(() => setSubmitting(false));
+      .finally(() => {
+        setSubmitting(false);
+        setAsking(null);
+      });
   };
 
   const onAssess = (assessment: PronunciationAssessmentType) => {
@@ -273,6 +280,7 @@ export const ChatSessionProvider = ({
         chatMembers,
         dispatchChatMessages,
         submitting,
+        asking,
         startRecording,
         stopRecording,
         cancelRecording,

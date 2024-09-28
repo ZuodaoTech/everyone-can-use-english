@@ -1,15 +1,18 @@
 import { ChatSessionProviderContext } from "@renderer/context";
-import { ChatMemberForm, ChatMessage } from "@renderer/components";
-import { useContext, useState } from "react";
+import { ChatMemberForm, ChatMessage, LoaderSpin } from "@renderer/components";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogDescription,
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
 } from "@renderer/components/ui";
 
 export const ChatMessages = () => {
-  const { chatMessages, chat } = useContext(ChatSessionProviderContext);
+  const { chatMessages, chat, asking } = useContext(ChatSessionProviderContext);
   const lastMessage = chatMessages[chatMessages.length - 1];
   const [editingChatMember, setEditingChatMember] =
     useState<ChatMemberType>(null);
@@ -25,6 +28,7 @@ export const ChatMessages = () => {
             onEditChatMember={setEditingChatMember}
           />
         ))}
+        {asking && <ChatAgentMessageLoading chatMember={asking} />}
       </div>
       <Dialog
         open={!!editingChatMember}
@@ -43,5 +47,40 @@ export const ChatMessages = () => {
         </DialogContent>
       </Dialog>
     </>
+  );
+};
+
+const ChatAgentMessageLoading = (props: { chatMember: ChatMemberType }) => {
+  const { chatMember } = props;
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [ref]);
+
+  return (
+    <div ref={ref} className="mb-6">
+      <div className="mb-2 flex">
+        <div className="flex items-center space-x-2 cursor-pointer">
+          <Avatar className="w-8 h-8 bg-background avatar">
+            <AvatarImage src={chatMember.agent.avatarUrl}></AvatarImage>
+            <AvatarFallback className="bg-background">
+              {chatMember.name}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <div className="text-sm">{chatMember.name}</div>
+            <div className="italic text-xs text-muted-foreground/50">
+              {chatMember.config.gpt?.model || "AI"}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="px-4 py-2 mb-2 rounded-lg border w-full max-w-prose">
+        <LoaderSpin />
+      </div>
+    </div>
   );
 };
