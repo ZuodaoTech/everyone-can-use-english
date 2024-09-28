@@ -685,6 +685,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     findAll: (params: any) => {
       return ipcRenderer.invoke("chat-members-find-all", params);
     },
+    findOne: (params: any) => {
+      return ipcRenderer.invoke("chat-members-find-one", params);
+    },
     create: (params: any) => {
       return ipcRenderer.invoke("chat-members-create", params);
     },

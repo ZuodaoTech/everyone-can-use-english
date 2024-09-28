@@ -389,6 +389,7 @@ type EnjoyAppType = {
   };
   chatMembers: {
     findAll: (params: any) => Promise<ChatMemberType[]>;
+    findOne: (params: any) => Promise<ChatMemberType>;
     create: (params: any) => Promise<ChatMemberType>;
     update: (id: string, params: any) => Promise<ChatMemberType>;
     destroy: (id: string) => Promise<void>;

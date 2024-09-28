@@ -19,6 +19,16 @@ class ChatMembersHandler {
     return chatMembers.map((member) => member.toJSON());
   }
 
+  private async findOne(
+    _event: IpcMainEvent,
+    options: FindOptions<Attributes<ChatMember>>
+  ) {
+    const chatMember = await ChatMember.findOne({
+      ...options,
+    });
+    return chatMember?.toJSON();
+  }
+
   private async create(_event: IpcMainEvent, member: ChatMemberDtoType) {
     const chatMember = await ChatMember.create(member);
     await chatMember.reload();
@@ -60,6 +70,7 @@ class ChatMembersHandler {
 
   register() {
     ipcMain.handle("chat-members-find-all", this.findAll);
+    ipcMain.handle("chat-members-find-one", this.findOne);
     ipcMain.handle("chat-members-create", this.create);
     ipcMain.handle("chat-members-update", this.update);
     ipcMain.handle("chat-members-destroy", this.destroy);
@@ -67,6 +78,7 @@ class ChatMembersHandler {
 
   unregister() {
     ipcMain.removeHandler("chat-members-find-all");
+    ipcMain.removeHandler("chat-members-find-one");
     ipcMain.removeHandler("chat-members-create");
     ipcMain.removeHandler("chat-members-update");
     ipcMain.removeHandler("chat-members-destroy");

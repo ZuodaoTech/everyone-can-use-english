@@ -220,7 +220,7 @@ export const ChatSessionProvider = ({
 
     setSubmitting(true);
     setAsking(member);
-    return invokeAgent(member)
+    return invokeAgent(member.id)
       .catch((error) => {
         toast.error(error.message);
       })
