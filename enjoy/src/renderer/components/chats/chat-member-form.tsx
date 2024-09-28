@@ -280,7 +280,7 @@ export const ChatMemberForm = (props: {
                       }}
                     />
                     <FormDescription>
-                      {t("gpt.maxTokensDescription")}
+                      {t("gpt.maxCompletionTokensDescription")}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

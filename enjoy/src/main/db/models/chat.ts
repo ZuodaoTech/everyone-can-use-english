@@ -107,16 +107,24 @@ export class Chat extends Model<Chat> {
   static async notify(chat: Chat, action: "create" | "update" | "destroy") {
     if (!mainWindow.win) return;
 
-    let record = chat.toJSON();
-    if (action !== "destroy") {
-      // reload to ensure the association is loaded in defaultScope
-      record = (await chat.reload())?.toJSON();
+    if (
+      action !== "destroy" &&
+      (!chat.members || !chat.members.some((m) => m.agent))
+    ) {
+      chat.members = await ChatMember.findAll({
+        where: { chatId: chat.id },
+        include: [
+          {
+            association: "agent",
+          },
+        ],
+      });
     }
     mainWindow.win.webContents.send("db-on-transaction", {
       model: "Chat",
       id: chat.id,
       action,
-      record,
+      record: chat.toJSON(),
     });
   }
 

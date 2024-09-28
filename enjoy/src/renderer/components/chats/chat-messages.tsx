@@ -3,14 +3,10 @@ import { ChatMemberForm, ChatMessage } from "@renderer/components";
 import { useContext, useState } from "react";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogTitle,
   DialogDescription,
-  Button,
-  ScrollArea,
 } from "@renderer/components/ui";
-import { t } from "i18next";
 
 export const ChatMessages = () => {
   const { chatMessages, chat } = useContext(ChatSessionProviderContext);

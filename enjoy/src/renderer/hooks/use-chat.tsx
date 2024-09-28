@@ -42,7 +42,6 @@ export const useChat = (chatAgentId: string) => {
     return EnjoyApp.chats
       .update(id, data)
       .then((chat) => {
-        console.log(chat);
         dispatchChats({ type: "update", record: chat });
         toast.success(t("models.chat.updated"));
       })

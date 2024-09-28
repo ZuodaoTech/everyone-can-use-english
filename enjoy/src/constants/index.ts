@@ -71,6 +71,7 @@ export const DEFAULT_GPT_CONFIG = {
   engine: "enjoyai",
   temperature: 0.8,
   historyBufferSize: 10,
+  maxCompletionTokens: -1,
   presencePenalty: 0,
   frequencyPenalty: 0,
   numberOfChoices: 1,

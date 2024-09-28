@@ -302,6 +302,7 @@ export const useChatMessage = (chat: ChatType) => {
     fetchChatMessages();
     return () => {
       removeDbListener(onChatMessageRecordUpdate);
+      dispatchChatMessages({ type: "set", records: [] });
     };
   }, [chat]);
 

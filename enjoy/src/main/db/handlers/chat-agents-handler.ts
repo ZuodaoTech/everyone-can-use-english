@@ -21,7 +21,7 @@ class ChatAgentsHandler {
       };
     }
     const agents = await ChatAgent.findAll({
-      order: [["name", "ASC"]],
+      order: [["updatedAt", "DESC"]],
       where,
       ...options,
     });

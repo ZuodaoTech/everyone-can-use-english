@@ -103,8 +103,13 @@ export class ChatMember extends Model<ChatMember> {
   @AfterDestroy
   static async updateChats(member: ChatMember) {
     const chat = await Chat.findByPk(member.chatId);
-    if (!chat) return;
-    await chat.update({ updatedAt: new Date() });
+    if (chat) {
+      await chat.update({ updatedAt: new Date() });
+    }
+    const agent = await ChatAgent.findByPk(member.userId);
+    if (agent) {
+      await agent.update({ updatedAt: new Date() });
+    }
   }
 
   @BeforeDestroy
@@ -133,16 +138,15 @@ export class ChatMember extends Model<ChatMember> {
   ) {
     if (!mainWindow.win) return;
 
-    let record = member.toJSON();
-    if (action !== "destroy") {
+    if (action !== "destroy" && !member.agent) {
       // reload to ensure the association is loaded in defaultScope
-      record = (await member.reload())?.toJSON();
+      member.agent = await ChatAgent.findByPk(member.userId);
     }
     mainWindow.win.webContents.send("db-on-transaction", {
       model: "ChatMember",
       id: member.id,
       action,
-      record,
+      record: member.toJSON(),
     });
   }
 }
