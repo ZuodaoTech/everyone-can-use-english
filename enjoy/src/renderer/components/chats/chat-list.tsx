@@ -9,28 +9,40 @@ import {
   Button,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
-  ChatProviderContext,
 } from "@renderer/context";
 import { ChatCard } from "@renderer/components";
 import { PlusIcon } from "lucide-react";
 import { DEFAULT_GPT_CONFIG } from "@/constants";
+import { useChat } from "@renderer/hooks";
 
-export const ChatList = () => {
-  const { chats, currentChat, setCurrentChat, destroyChat, createChat } =
-    useContext(ChatProviderContext);
+export const ChatList = (props: {
+  chatAgent: ChatAgentType;
+  currentChat: ChatType;
+  setCurrentChat: (chat: ChatType) => void;
+}) => {
+  const { chatAgent, currentChat, setCurrentChat } = props;
+  const { chats, createChat, destroyChat } = useChat(chatAgent?.id);
   const { sttEngine, currentGptEngine, currentTtsEngine } = useContext(
     AISettingsProviderContext
   );
   const { learningLanguage } = useContext(AppSettingsProviderContext);
-  const { currentChatAgent } = useContext(ChatProviderContext);
   const [deletingChat, setDeletingChat] = useState<ChatType>(null);
 
+  useEffect(() => {
+    if (
+      !currentChat ||
+      chats.findIndex((chat) => chat.id === currentChat.id) === -1
+    ) {
+      setCurrentChat(chats[0]);
+    }
+  }, [chats]);
+
   const handleCreateChat = () => {
-    if (!currentChatAgent) {
+    if (!chatAgent) {
       return;
     }
     createChat({
@@ -40,7 +52,7 @@ export const ChatList = () => {
       },
       members: [
         {
-          userId: currentChatAgent.id,
+          userId: chatAgent.id,
           userType: "ChatAgent",
           config: {
             gpt: {
@@ -71,7 +83,7 @@ export const ChatList = () => {
           className="w-full mb-1 p-1 justify-start items-center"
           variant="ghost"
           size="sm"
-          disabled={!currentChatAgent}
+          disabled={!chatAgent}
           onClick={handleCreateChat}
         >
           <PlusIcon className="w-4 h-4 mr-1" />

@@ -109,3 +109,12 @@ type ChatMessageDtoType = {
   content?: string;
   recordingUrl?: string;
 };
+
+type ChatAgentDtoType = {
+  name: string;
+  introduction: string;
+  source?: string;
+  config: {
+    [key: string]: any;
+  };
+};

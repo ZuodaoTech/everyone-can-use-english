@@ -12,16 +12,16 @@ import {
   ScrollArea,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import { ChatProviderContext, ChatSessionProvider } from "@renderer/context";
-import { useContext, useState } from "react";
+import { ChatSessionProvider } from "@renderer/context";
+import { useState } from "react";
 import { ChatInput, ChatMessages, ChatSettings } from "@renderer/components";
 import { Tooltip } from "react-tooltip";
 
-export const Chat = () => {
-  const { currentChat } = useContext(ChatProviderContext);
+export const Chat = (props: { chat: ChatType }) => {
+  const { chat } = props;
   const [displayChatForm, setDisplayChatForm] = useState(false);
 
-  if (!currentChat) {
+  if (!chat) {
     return (
       <div className="flex items-center justify-center h-screen">
         <span className="text-muted-foreground">{t("noChatSelected")}</span>
@@ -33,7 +33,7 @@ export const Chat = () => {
     <ScrollArea className="h-screen relative">
       <div className="h-12 border-b px-4 shadow flex items-center justify-center space-x-2 sticky top-0 z-10 bg-background mb-4">
         <div className="flex items-center -space-x-2">
-          {currentChat.members
+          {chat.members
             .filter((member) => member.agent)
             .map((member) => (
               <Avatar key={member.id} className="w-8 h-8">
@@ -42,7 +42,7 @@ export const Chat = () => {
               </Avatar>
             ))}
         </div>
-        <span>{currentChat.name}</span>
+        <span>{chat.name}</span>
         <Dialog open={displayChatForm} onOpenChange={setDisplayChatForm}>
           <DialogTrigger asChild>
             <Button variant="ghost" size="icon" className="absolute right-4">
@@ -56,19 +56,19 @@ export const Chat = () => {
             </DialogDescription>
             <ScrollArea className="h-full px-4">
               <ChatSettings
-                chat={currentChat}
+                chat={chat}
                 onFinish={() => setDisplayChatForm(false)}
               />
             </ScrollArea>
           </DialogContent>
         </Dialog>
       </div>
-      <ChatSessionProvider chat={currentChat}>
+      <ChatSessionProvider chat={chat}>
         <div className="w-full max-w-screen-md mx-auto">
           <ChatMessages />
           <div className="h-16" />
           <div className="absolute w-full max-w-screen-md bottom-0 min-h-16 pb-3 flex items-center">
-            <ChatInput />
+            <ChatInput chat={chat} />
           </div>
         </div>
         <Tooltip id="chat-tooltip" />

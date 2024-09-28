@@ -25,7 +25,6 @@ import { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import {
   AppSettingsProviderContext,
-  ChatProviderContext,
   ChatSessionProviderContext,
   HotKeysSettingsProviderContext,
 } from "@renderer/context";
@@ -37,8 +36,8 @@ import { formatDateTime } from "@renderer/lib/utils";
 import { md5 } from "js-md5";
 import { useHotkeys } from "react-hotkeys-hook";
 
-export const ChatInput = () => {
-  const { currentChat } = useContext(ChatProviderContext);
+export const ChatInput = (props: { chat: ChatType }) => {
+  const { chat } = props;
   const {
     submitting,
     startRecording,
@@ -82,7 +81,7 @@ export const ChatInput = () => {
 
   useEffect(() => {
     EnjoyApp.cacheObjects
-      .get(`chat-input-mode-${currentChat.id}`)
+      .get(`chat-input-mode-${chat.id}`)
       .then((cachedInputMode) => {
         if (cachedInputMode) {
           setInputMode(cachedInputMode as typeof inputMode);
@@ -91,7 +90,7 @@ export const ChatInput = () => {
   }, []);
 
   useEffect(() => {
-    EnjoyApp.cacheObjects.set(`chat-input-mode-${currentChat.id}`, inputMode);
+    EnjoyApp.cacheObjects.set(`chat-input-mode-${chat.id}`, inputMode);
   }, [inputMode]);
 
   useHotkeys(
@@ -225,8 +224,8 @@ export const ChatInput = () => {
             <ArrowUpIcon className="w-6 h-6" />
           )}
         </Button>
-        {currentChat.config.enableChatAssistant && (
-          <ChatSuggestionButton asChild>
+        {chat.config.enableChatAssistant && (
+          <ChatSuggestionButton chat={chat} asChild>
             <Button
               data-tooltip-id="chat-tooltip"
               data-tooltip-content={t("suggestion")}
@@ -239,7 +238,7 @@ export const ChatInput = () => {
           </ChatSuggestionButton>
         )}
 
-        {currentChat.type === "group" && (
+        {chat.type === "group" && (
           <Button
             data-tooltip-id="chat-tooltip"
             data-tooltip-content={t("continue")}
@@ -283,7 +282,7 @@ export const ChatInput = () => {
           <MicIcon className="w-6 h-6" />
         )}
       </Button>
-      {currentChat.config.enableChatAssistant && <ChatSuggestionButton />}
+      {chat.config.enableChatAssistant && <ChatSuggestionButton chat={chat} />}
       <Button
         data-tooltip-id="chat-tooltip"
         data-tooltip-content={t("continue")}
@@ -300,10 +299,11 @@ export const ChatInput = () => {
 };
 
 const ChatSuggestionButton = (props: {
+  chat: ChatType;
   asChild?: boolean;
   children?: ReactElement;
 }) => {
-  const { currentChat } = useContext(ChatProviderContext);
+  const { chat } = props;
   const { chatMessages, onCreateMessage } = useContext(
     ChatSessionProviderContext
   );
@@ -317,11 +317,11 @@ const ChatSuggestionButton = (props: {
   const { chatSuggestion } = useAiCommand();
 
   const context = `I'm ${
-    currentChat.members.find((member) => member.user)?.user?.name
+    chat.members.find((member) => member.user)?.user?.name
   }.
 
   [Chat Members]
-  ${currentChat.members.map((m) => {
+  ${chat.members.map((m) => {
     if (m.user) {
       return `- ${m.user.name} (${m.config.introduction})[It's me]`;
     } else if (m.agent) {

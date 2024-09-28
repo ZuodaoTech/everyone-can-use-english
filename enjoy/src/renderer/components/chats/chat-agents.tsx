@@ -14,27 +14,35 @@ import {
 } from "@renderer/components/ui";
 import { ChatAgentCard, ChatAgentForm } from "@renderer/components";
 import { PlusIcon } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { t } from "i18next";
 import { useDebounce } from "@uidotdev/usehooks";
-import { ChatProviderContext } from "@renderer/context";
+import { useChatAgent } from "@renderer/hooks";
 
-export const ChatAgents = () => {
+export const ChatAgents = (props: {
+  currentChatAgent: ChatAgentType;
+  setCurrentChatAgent: (chatAgent: ChatAgentType) => void;
+}) => {
+  const { currentChatAgent, setCurrentChatAgent } = props;
   const {
     chatAgents,
     fetchChatAgents,
-    currentChatAgent,
-    setCurrentChatAgent,
-    destroyChatAgent,
     updateChatAgent,
     createChatAgent,
-  } = useContext(ChatProviderContext);
+    destroyChatAgent,
+  } = useChatAgent();
   const [deletingChatAgent, setDeletingChatAgent] =
     useState<ChatAgentType>(null);
   const [editingChatAgent, setEditingChatAgent] = useState<ChatAgentType>(null);
   const [creatingChatAgent, setCreatingChatAgent] = useState<boolean>(false);
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
+
+  useEffect(() => {
+    if (currentChatAgent) return;
+
+    setCurrentChatAgent(chatAgents[0]);
+  }, [chatAgents]);
 
   useEffect(() => {
     fetchChatAgents(debouncedQuery);

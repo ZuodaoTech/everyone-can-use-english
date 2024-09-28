@@ -49,8 +49,6 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
   const { sttEngine } = useContext(AISettingsProviderContext);
   const { summarizeTopic } = useAiCommand();
   const [isMoreSettingsOpen, setIsMoreSettingsOpen] = useState(false);
-  const { createChat, updateChat, destroyChat } =
-    useContext(ChatProviderContext);
   const [isGeneratingTopic, setIsGeneratingTopic] = useState(false);
   const chatFormSchema = z.object({
     name: z.string().min(1),
@@ -82,8 +80,8 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
 
   const onSubmit = form.handleSubmit((data) => {
     const { name, config } = data;
-    if (chat?.id) {
-      updateChat(chat.id, {
+    EnjoyApp.chats
+      .create({
         name,
         config: {
           sttEngine: config.sttEngine,
@@ -91,19 +89,27 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
           enableChatAssistant: config.enableChatAssistant,
           enableAutoTts: config.enableAutoTts,
         },
-      }).then(() => onFinish());
-    } else {
-      createChat({
-        name,
-        config: {
-          sttEngine: config.sttEngine,
-          prompt: config.prompt,
-          enableChatAssistant: config.enableChatAssistant,
-          enableAutoTts: config.enableAutoTts,
-        },
-      }).then(() => onFinish());
-    }
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      })
+      .then(() => {
+        toast.success(t("models.chat.created"));
+        onFinish();
+      });
   });
+
+  const handleDeleteChat = () => {
+    EnjoyApp.chats
+      .destroy(chat.id)
+      .then(() => {
+        toast.success(t("models.chat.deleted"));
+        onFinish();
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
 
   const generateTopic = async () => {
     setIsGeneratingTopic(true);
@@ -309,9 +315,7 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
                   <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
                   <AlertDialogAction
                     className="bg-destructive hover:bg-destructive-hover"
-                    onClick={() => {
-                      destroyChat(chat.id).then(() => onFinish());
-                    }}
+                    onClick={handleDeleteChat}
                   >
                     {t("delete")}
                   </AlertDialogAction>
