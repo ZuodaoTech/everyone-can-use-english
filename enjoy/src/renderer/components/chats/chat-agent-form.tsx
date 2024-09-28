@@ -18,11 +18,7 @@ import { t } from "i18next";
 
 export const ChatAgentForm = (props: {
   agent?: ChatAgentType;
-  onSave: (data: {
-    name: string;
-    introduction: string;
-    config: any;
-  }) => Promise<any>;
+  onSave: (data: { name: string; introduction: string; config: any }) => void;
   onCancel: () => void;
 }) => {
   const { agent, onSave, onCancel } = props;

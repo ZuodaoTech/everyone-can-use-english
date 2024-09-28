@@ -36,7 +36,6 @@ import { useContext, useState } from "react";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
-  ChatProviderContext,
 } from "@renderer/context";
 import { SttEngineOptionEnum } from "@/types/enums";
 import { ChevronDownIcon, ChevronUpIcon, RefreshCwIcon } from "lucide-react";
@@ -81,7 +80,7 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
   const onSubmit = form.handleSubmit((data) => {
     const { name, config } = data;
     EnjoyApp.chats
-      .create({
+      .update(chat.id, {
         name,
         config: {
           sttEngine: config.sttEngine,
@@ -94,7 +93,7 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
         toast.error(error.message);
       })
       .then(() => {
-        toast.success(t("models.chat.created"));
+        toast.success(t("models.chat.updated"));
         onFinish();
       });
   });

@@ -120,11 +120,11 @@ export const ChatAgents = (props: {
             agent={editingChatAgent}
             onSave={(data) => {
               if (editingChatAgent) {
-                return updateChatAgent(editingChatAgent.id, data);
+                updateChatAgent(editingChatAgent.id, data).then(() => {
+                  setEditingChatAgent(null);
+                });
               } else {
-                return createChatAgent(data).then(() =>
-                  setEditingChatAgent(null)
-                );
+                createChatAgent(data).then(() => setEditingChatAgent(null));
               }
             }}
             onCancel={() => setEditingChatAgent(null)}
