@@ -12,4 +12,3 @@ export * from "./chat-list";
 export * from "./chat-agent-card";
 export * from "./chat-settings";
 export * from "./chat-member-form";
-export * from "./chat-agent-forwarder";

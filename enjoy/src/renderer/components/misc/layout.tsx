@@ -44,15 +44,15 @@ export const Layout = () => {
     return (
       <ResizablePanelGroup
         direction="horizontal"
-        className="h-screen"
+        className="h-screen w-full"
         data-testid="layout-home"
       >
         <ResizablePanel minSize={50}>
           <div className="flex flex-start">
             <Sidebar />
-            <ScrollArea className="flex-1 border-l overflow-x-hidden h-screen">
+            <div className="flex-1 border-l overflow-x-hidden overflow-y-auto h-screen">
               <Outlet />
-            </ScrollArea>
+            </div>
           </div>
         </ResizablePanel>
         {display && (
@@ -60,7 +60,7 @@ export const Layout = () => {
             <ResizableHandle />
             <ResizablePanel
               collapsible={true}
-              defaultSize={15}
+              defaultSize={20}
               maxSize={50}
               minSize={15}
               onCollapse={() => setDisplay(false)}

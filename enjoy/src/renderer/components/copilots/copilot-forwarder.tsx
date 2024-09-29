@@ -8,12 +8,19 @@ import {
   DialogTitle,
   DialogClose,
 } from "@renderer/components/ui";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  CopilotProviderContext,
+} from "@renderer/context";
 import { ForwardIcon } from "lucide-react";
 import { t } from "i18next";
 
-export const ChatAgentForwarder = (props: { trigger?: React.ReactNode }) => {
+export const CopilotForwarder = (props: {
+  prompt: string;
+  trigger?: React.ReactNode;
+}) => {
   const [open, setOpen] = useState(false);
+  const { prompt, trigger } = props;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -26,23 +33,39 @@ export const ChatAgentForwarder = (props: { trigger?: React.ReactNode }) => {
           />
         )}
       </DialogTrigger>
-      {open && <ChatAgentForwarderContent onClose={() => setOpen(false)} />}
+      <DialogContent>
+        {open && <CopilotForwarderContent onClose={() => setOpen(false)} />}
+      </DialogContent>
     </Dialog>
   );
 };
 
-const ChatAgentForwarderContent = (props: { onClose: () => void }) => {
+const CopilotForwarderContent = (props: { onClose: () => void }) => {
   const { onClose } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [chatAgents, setChatAgents] = useState<ChatAgentType[]>([]);
+  const { setDisplay } = useContext(CopilotProviderContext);
 
   const fetchChatAgents = () => {
     EnjoyApp.chatAgents.findAll({}).then(setChatAgents);
+  };
+
+  const handleForward = (chatAgentId: string) => {
+    setDisplay(true);
+    onClose();
   };
 
   useEffect(() => {
     fetchChatAgents();
   }, []);
 
-  return <div>ChatAgentForwarderContent</div>;
+  return (
+    <div>
+      {chatAgents.map((chatAgent) => (
+        <div key={chatAgent.id} onClick={() => handleForward(chatAgent.id)}>
+          {chatAgent.name}
+        </div>
+      ))}
+    </div>
+  );
 };

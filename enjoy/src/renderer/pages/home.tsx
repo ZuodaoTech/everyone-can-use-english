@@ -32,7 +32,7 @@ export default () => {
   }, [webApi]);
 
   return (
-    <div className="relative">
+    <div className="w-full relative">
       <AuthorizationStatusBar />
       <UpgradeNotice />
       <div className="max-w-5xl mx-auto px-4 py-6 lg:px-8">

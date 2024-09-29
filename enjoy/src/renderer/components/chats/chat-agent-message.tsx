@@ -14,6 +14,7 @@ import {
   LoaderSpin,
   MarkdownWrapper,
   WavesurferPlayer,
+  CopilotForwarder,
 } from "@renderer/components";
 import { formatDateTime } from "@renderer/lib/utils";
 import { t } from "i18next";
@@ -333,9 +334,8 @@ export const ChatAgentMessage = (props: {
                 }}
               />
             )}
-            <ConversationShortcuts
+            <CopilotForwarder
               prompt={chatMessage.content}
-              excludedIds={[]}
               trigger={
                 <ForwardIcon
                   data-tooltip-id="global-tooltip"
