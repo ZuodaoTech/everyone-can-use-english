@@ -19,7 +19,7 @@ import {
 export const Layout = () => {
   const { initialized } = useContext(AppSettingsProviderContext);
   const db = useContext(DbProviderContext);
-  const { display, setDisplay } = useContext(CopilotProviderContext);
+  const { active, setActive } = useContext(CopilotProviderContext);
 
   if (!initialized) {
     return (
@@ -55,15 +55,15 @@ export const Layout = () => {
             </div>
           </div>
         </ResizablePanel>
-        {display && (
+        {active && (
           <>
             <ResizableHandle />
             <ResizablePanel
               collapsible={true}
-              defaultSize={20}
+              defaultSize={30}
               maxSize={50}
               minSize={15}
-              onCollapse={() => setDisplay(false)}
+              onCollapse={() => setActive(false)}
             >
               <div className="h-screen">
                 <Copilot />

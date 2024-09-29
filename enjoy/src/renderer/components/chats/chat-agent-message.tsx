@@ -209,7 +209,7 @@ export const ChatAgentMessage = (props: {
     <div ref={ref} className="mb-6">
       <div className="mb-2 flex">
         <div
-          className="flex items-center space-x-2 cursor-pointer"
+          className="flex items-center space-x-1 cursor-pointer"
           onClick={() => onEditChatMember(chatMember)}
         >
           <Avatar className="w-8 h-8 bg-background avatar">
@@ -219,14 +219,14 @@ export const ChatAgentMessage = (props: {
             </AvatarFallback>
           </Avatar>
           <div>
-            <div className="text-sm">{chatMember.name}</div>
-            <div className="italic text-xs text-muted-foreground/50">
+            <div className="text-xs">{chatMember.name}</div>
+            <div className="italic text-xxs text-muted-foreground/50">
               {chatMember.config.gpt?.model || "AI"}
             </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-2 px-4 py-2 mb-2 rounded-lg border w-full max-w-prose">
+      <div className="flex flex-col gap-2 px-3 py-2 mb-2 rounded-lg border w-full max-w-prose">
         {Boolean(chatMessage.speech?.id) ? (
           <>
             {displayPlayer ? (

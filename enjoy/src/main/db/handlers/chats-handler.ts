@@ -60,7 +60,10 @@ class ChatsHandler {
       where: WhereOptions<Attributes<Chat>>;
     }
   ) {
-    const chat = await Chat.findOne(options);
+    const chat = await Chat.findOne({
+      order: [["updatedAt", "DESC"]],
+      ...options,
+    });
     if (!chat) {
       return null;
     }

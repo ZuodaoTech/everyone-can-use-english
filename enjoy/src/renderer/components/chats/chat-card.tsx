@@ -12,16 +12,23 @@ import { t } from "i18next";
 export const ChatCard = (props: {
   chat: ChatType;
   selected: boolean;
+  disabled?: boolean;
   onSelect: (chat: ChatType) => void;
   onDelete: (chat: ChatType) => void;
 }) => {
-  const { chat, selected = false, onSelect, onDelete } = props;
+  const {
+    chat,
+    selected = false,
+    disabled = false,
+    onSelect,
+    onDelete,
+  } = props;
   return (
     <div
       key={chat.id}
       className={`flex items-center space-x-2 rounded-lg px-2 py-1 hover:bg-muted/50 cursor-pointer ${
         selected ? "bg-muted/50" : ""
-      }`}
+      } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       onClick={() => onSelect(chat)}
     >
       {chat.membersCount > 2 ? (

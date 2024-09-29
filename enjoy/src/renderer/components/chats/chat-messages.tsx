@@ -19,7 +19,7 @@ export const ChatMessages = () => {
 
   return (
     <>
-      <div className="flex-1 space-y-4 px-4 mb-4">
+      <div className="flex-1 space-y-2 px-4 mb-4">
         {chatMessages.map((message) => (
           <ChatMessage
             key={message.id}
