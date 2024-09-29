@@ -1,7 +1,9 @@
 import { createContext, useEffect, useState } from "react";
 import { useChat, useChatAgent } from "@renderer/hooks";
 
-type ChatProviderState = {
+type CopilotProviderState = {
+  display: boolean;
+  setDisplay: (display: boolean) => void;
   chats: ChatType[];
   currentChat: ChatType;
   setCurrentChat: (chat: ChatType) => void;
@@ -23,7 +25,9 @@ type ChatProviderState = {
   destroyChatAgent: (id: string) => Promise<void>;
 };
 
-const initialState: ChatProviderState = {
+const initialState: CopilotProviderState = {
+  display: false,
+  setDisplay: () => null,
   chats: [],
   currentChat: null,
   setCurrentChat: () => null,
@@ -40,10 +44,15 @@ const initialState: ChatProviderState = {
   destroyChatAgent: () => null,
 };
 
-export const ChatProviderContext =
-  createContext<ChatProviderState>(initialState);
+export const CopilotProviderContext =
+  createContext<CopilotProviderState>(initialState);
 
-export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
+export const CopilotProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [display, setDisplay] = useState(false);
   const [currentChat, setCurrentChat] = useState<ChatType>(null);
   const [currentChatAgent, setCurrentChatAgent] = useState<ChatAgentType>(null);
   const { chats, fetchChats, createChat, updateChat, destroyChat } = useChat(
@@ -73,8 +82,10 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   }, [chatAgents]);
 
   return (
-    <ChatProviderContext.Provider
+    <CopilotProviderContext.Provider
       value={{
+        display,
+        setDisplay,
         chats,
         fetchChats,
         currentChat,
@@ -92,6 +103,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       }}
     >
       {children}
-    </ChatProviderContext.Provider>
+    </CopilotProviderContext.Provider>
   );
 };

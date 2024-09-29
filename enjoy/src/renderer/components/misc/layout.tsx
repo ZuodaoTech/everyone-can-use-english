@@ -2,16 +2,24 @@ import { Sidebar } from "./sidebar";
 import { Outlet, Link } from "react-router-dom";
 import {
   AppSettingsProviderContext,
+  CopilotProviderContext,
   DbProviderContext,
 } from "@renderer/context";
 import { useContext } from "react";
 import { Button } from "@renderer/components/ui/button";
-import { DbState } from "@renderer/components";
+import { DbState, Copilot } from "@renderer/components";
 import { t } from "i18next";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+  ScrollArea,
+} from "@renderer/components/ui";
 
 export const Layout = () => {
   const { initialized } = useContext(AppSettingsProviderContext);
   const db = useContext(DbProviderContext);
+  const { display, setDisplay } = useContext(CopilotProviderContext);
 
   if (!initialized) {
     return (
@@ -34,14 +42,36 @@ export const Layout = () => {
     );
   } else if (db.state === "connected") {
     return (
-      <div className="min-h-screen" data-testid="layout-home">
-        <div className="flex flex-start">
-          <Sidebar />
-          <div className="flex-1 border-l overflow-x-hidden">
-            <Outlet />
+      <ResizablePanelGroup
+        direction="horizontal"
+        className="h-screen"
+        data-testid="layout-home"
+      >
+        <ResizablePanel minSize={50}>
+          <div className="flex flex-start">
+            <Sidebar />
+            <ScrollArea className="flex-1 border-l overflow-x-hidden h-screen">
+              <Outlet />
+            </ScrollArea>
           </div>
-        </div>
-      </div>
+        </ResizablePanel>
+        {display && (
+          <>
+            <ResizableHandle />
+            <ResizablePanel
+              collapsible={true}
+              defaultSize={15}
+              maxSize={50}
+              minSize={15}
+              onCollapse={() => setDisplay(false)}
+            >
+              <div className="h-screen">
+                <Copilot />
+              </div>
+            </ResizablePanel>
+          </>
+        )}
+      </ResizablePanelGroup>
     );
   } else {
     return (

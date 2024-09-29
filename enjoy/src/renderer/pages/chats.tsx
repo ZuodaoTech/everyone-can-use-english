@@ -1,5 +1,4 @@
 import { Chat, ChatAgents, ChatList } from "@renderer/components";
-import { ChatProvider } from "@renderer/context";
 import {
   ResizableHandle,
   ResizablePanel,
