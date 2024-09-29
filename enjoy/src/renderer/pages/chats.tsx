@@ -4,12 +4,33 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@renderer/components/ui";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { CopilotProviderContext } from "@renderer/context";
 
 export default function Chats() {
   const [currentChat, setCurrentChat] = useState<ChatType | null>(null);
   const [currentChatAgent, setCurrentChatAgent] =
     useState<ChatAgentType | null>(null);
+  const { currentChat: copilotCurrentChat, setOccupiedChat } = useContext(
+    CopilotProviderContext
+  );
+
+  // Do not open the same chat in copilot and main window
+  const handleSelectChat = (chat: ChatType) => {
+    if (copilotCurrentChat?.id === chat.id) return;
+    setCurrentChat(chat);
+  };
+
+  // set occupied chat when current chat changes
+  useEffect(() => {
+    if (currentChat) {
+      setOccupiedChat(currentChat);
+    }
+
+    return () => {
+      setOccupiedChat(null);
+    };
+  }, [currentChat]);
 
   return (
     <ResizablePanelGroup direction="horizontal" className="h-screen">
@@ -32,7 +53,7 @@ export default function Chats() {
             <ChatList
               chatAgent={currentChatAgent}
               currentChat={currentChat}
-              setCurrentChat={setCurrentChat}
+              setCurrentChat={handleSelectChat}
             />
           </ResizablePanel>
         </ResizablePanelGroup>

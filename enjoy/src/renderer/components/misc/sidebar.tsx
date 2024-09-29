@@ -51,7 +51,7 @@ export const Sidebar = () => {
   const location = useLocation();
   const activeTab = location.pathname;
   const { EnjoyApp, cable } = useContext(AppSettingsProviderContext);
-  const { display, setDisplay } = useContext(CopilotProviderContext);
+  const { active, setActive } = useContext(CopilotProviderContext);
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
@@ -96,7 +96,7 @@ export const Sidebar = () => {
             <img
               src="./assets/logo-light.svg"
               className="w-8 h-8 cursor-pointer"
-              onClick={() => setDisplay(!display)}
+              onClick={() => setActive(!active)}
             />
             <span
               className={`text-xl font-semibold text-[#4797F5] ${

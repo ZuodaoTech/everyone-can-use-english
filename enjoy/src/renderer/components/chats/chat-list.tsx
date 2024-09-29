@@ -13,6 +13,7 @@ import { useContext, useEffect, useState } from "react";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
+  CopilotProviderContext,
 } from "@renderer/context";
 import { ChatCard } from "@renderer/components";
 import { PlusIcon } from "lucide-react";
@@ -30,6 +31,9 @@ export const ChatList = (props: {
     AISettingsProviderContext
   );
   const { learningLanguage } = useContext(AppSettingsProviderContext);
+  const { currentChat: copilotCurrentChat } = useContext(
+    CopilotProviderContext
+  );
   const [deletingChat, setDeletingChat] = useState<ChatType>(null);
 
   useEffect(() => {
@@ -37,7 +41,12 @@ export const ChatList = (props: {
       !currentChat ||
       chats.findIndex((chat) => chat.id === currentChat.id) === -1
     ) {
-      setCurrentChat(chats[0]);
+      const chat = chats.find((chat) => chat.id !== copilotCurrentChat?.id);
+      if (chat) {
+        setCurrentChat(chat);
+      } else {
+        handleCreateChat();
+      }
     }
   }, [chats]);
 

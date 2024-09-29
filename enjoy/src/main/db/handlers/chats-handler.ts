@@ -57,9 +57,17 @@ class ChatsHandler {
   private async findOne(
     _event: IpcMainEvent,
     options: FindOptions<Attributes<Chat>> & {
-      where: WhereOptions<Attributes<Chat>>;
+      not: WhereOptions<Attributes<Chat>>;
     }
   ) {
+    const { not } = options;
+    if (not) {
+      options.where = {
+        ...options.where,
+        [Op.not]: not,
+      };
+      delete options.not;
+    }
     const chat = await Chat.findOne({
       order: [["updatedAt", "DESC"]],
       ...options,
