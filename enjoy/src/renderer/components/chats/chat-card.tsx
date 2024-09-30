@@ -14,7 +14,7 @@ export const ChatCard = (props: {
   selected: boolean;
   disabled?: boolean;
   onSelect: (chat: ChatType) => void;
-  onDelete: (chat: ChatType) => void;
+  onDelete?: (chat: ChatType) => void;
 }) => {
   const {
     chat,
@@ -37,18 +37,20 @@ export const ChatCard = (props: {
         <ChatBubbleIcon className="w-4 h-4" />
       )}
       <div className="flex-1 text-sm font-serif line-clamp-1">{chat.name}</div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="h-4">
-            <EllipsisIcon className="w-4 h-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => onDelete(chat)}>
-            <span className="text-destructive">{t("delete")}</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {onDelete && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-4">
+              <EllipsisIcon className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={() => onDelete(chat)}>
+              <span className="text-destructive">{t("delete")}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </div>
   );
 };

@@ -10,6 +10,9 @@ import {
   DialogTrigger,
   ScrollArea,
   toast,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from "@renderer/components/ui";
 import {
   ChevronDownIcon,
@@ -18,7 +21,7 @@ import {
   SettingsIcon,
 } from "lucide-react";
 import { useContext, useState } from "react";
-import { ChatSettings } from "@renderer/components";
+import { ChatSettings, CopilotChats } from "@renderer/components";
 import { t } from "i18next";
 import {
   AppSettingsProviderContext,
@@ -27,6 +30,7 @@ import {
 
 export const CopilotHeader = () => {
   const [displayChatForm, setDisplayChatForm] = useState(false);
+  const [displayChats, setDisplayChats] = useState(false);
   const { currentChat, setCurrentChat, buildAgentMember, active, setActive } =
     useContext(CopilotProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -58,9 +62,16 @@ export const CopilotHeader = () => {
   return (
     <div className="h-10 border-b px-3 shadow flex items-center justify-between space-x-2 sticky top-0 z-10 bg-background mb-4">
       <div className="flex items-center space-x-1 line-clamp-1">
-        <Button variant="ghost" size="icon" className="w-6 h-6">
-          <ChevronDownIcon className="w-4 h-4" />
-        </Button>
+        <Popover open={displayChats} onOpenChange={setDisplayChats}>
+          <PopoverTrigger asChild>
+            <Button variant="ghost" size="icon" className="w-6 h-6">
+              <ChevronDownIcon className="w-4 h-4" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <CopilotChats onCancel={() => setDisplayChats(false)} />
+          </PopoverContent>
+        </Popover>
         <div className="flex items-center -space-x-2">
           {currentChat?.members
             .filter((member) => member.agent)
