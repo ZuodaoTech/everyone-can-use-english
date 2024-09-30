@@ -70,7 +70,7 @@ export const ChatMemberForm = (props: {
     userType: z.enum(["User", "ChatAgent"]).default("ChatAgent"),
     config: z.object({
       prompt: z.string().optional(),
-      introduction: z.string().optional(),
+      description: z.string().optional(),
       gpt: z.object({
         engine: z.string(),
         model: z.string(),

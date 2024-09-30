@@ -83,7 +83,7 @@ export const CopilotProvider = ({
 
     return await EnjoyApp.chatAgents.create({
       name: t("models.chatAgent.namePlaceholder"),
-      introduction: t("models.chatAgent.introductionPlaceholder"),
+      description: t("models.chatAgent.descriptionPlaceholder"),
       prompt: t("models.chatAgent.promptPlaceholder"),
     });
   };

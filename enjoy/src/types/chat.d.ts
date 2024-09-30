@@ -21,7 +21,7 @@ type ChatAgentType = {
   id: string;
   name: string;
   avatarUrl: string;
-  introduction: string;
+  description: string;
   source?: string;
   prompt?: string;
   config: {
@@ -37,7 +37,7 @@ type ChatMemberType = {
   userType: "ChatAgent" | "User";
   config: {
     prompt?: string;
-    introduction?: string;
+    description?: string;
     gpt?: GptConfigType;
     tts?: TtsConfigType;
     [key: string]: any;
@@ -96,7 +96,7 @@ type ChatMemberDtoType = {
   userType?: "User" | "ChatAgent";
   config?: {
     prompt?: string;
-    introduction?: string;
+    description?: string;
     language?: string;
     gpt?: GptConfigType;
     tts?: TtsConfigType;
@@ -112,7 +112,7 @@ type ChatMessageDtoType = {
 
 type ChatAgentDtoType = {
   name: string;
-  introduction: string;
+  description: string;
   source?: string;
   config: {
     [key: string]: any;

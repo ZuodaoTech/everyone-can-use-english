@@ -323,9 +323,9 @@ const ChatSuggestionButton = (props: {
   [Chat Members]
   ${chat.members.map((m) => {
     if (m.user) {
-      return `- ${m.user.name} (${m.config.introduction})[It's me]`;
+      return `- ${m.user.name} (${m.config.description})[It's me]`;
     } else if (m.agent) {
-      return `- ${m.agent.name} (${m.agent.introduction})`;
+      return `- ${m.agent.name} (${m.agent.description})`;
     }
   })}
 

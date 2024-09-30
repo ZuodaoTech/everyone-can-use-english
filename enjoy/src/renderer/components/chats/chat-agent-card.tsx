@@ -33,7 +33,7 @@ export const ChatAgentCard = (props: {
       <div className="flex-1">
         <div className="text-sm line-clamp-1">{chatAgent.name}</div>
         <div className="text-xs text-muted-foreground line-clamp-1">
-          {chatAgent.introduction}
+          {chatAgent.description}
         </div>
       </div>
       <DropdownMenu>

@@ -36,7 +36,7 @@ export class ChatAgent extends Model<ChatAgent> {
   name: string;
 
   @Column(DataType.STRING)
-  introduction: string;
+  description: string;
 
   @Column(DataType.STRING)
   source: string;

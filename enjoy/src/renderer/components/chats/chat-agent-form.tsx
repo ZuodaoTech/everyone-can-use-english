@@ -18,14 +18,14 @@ import { t } from "i18next";
 
 export const ChatAgentForm = (props: {
   agent?: ChatAgentType;
-  onSave: (data: { name: string; introduction: string; config: any }) => void;
+  onSave: (data: { name: string; description: string; config: any }) => void;
   onCancel: () => void;
 }) => {
   const { agent, onSave, onCancel } = props;
 
   const agentFormSchema = z.object({
     name: z.string().min(1),
-    introduction: z.string().min(1),
+    description: z.string().min(1),
     prompt: z.string(),
   });
 
@@ -33,17 +33,17 @@ export const ChatAgentForm = (props: {
     resolver: zodResolver(agentFormSchema),
     values: agent || {
       name: t("models.chatAgent.namePlaceholder"),
-      introduction: t("models.chatAgent.introductionPlaceholder"),
+      description: t("models.chatAgent.descriptionPlaceholder"),
       prompt: t("models.chatAgent.promptPlaceholder"),
     },
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    const { name, introduction, ...config } = data;
+    const { name, description, ...config } = data;
     try {
       onSave({
         name,
-        introduction,
+        description,
         config,
       });
       form.reset();
@@ -88,18 +88,18 @@ export const ChatAgentForm = (props: {
 
           <FormField
             control={form.control}
-            name="introduction"
+            name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("models.chatAgent.introduction")}</FormLabel>
+                <FormLabel>{t("models.chatAgent.description")}</FormLabel>
                 <Textarea
-                  placeholder={t("models.chatAgent.introductionPlaceholder")}
+                  placeholder={t("models.chatAgent.descriptionPlaceholder")}
                   required
                   className="max-h-36"
                   {...field}
                 />
                 <FormDescription>
-                  {t("models.chatAgent.introductionDescription")}
+                  {t("models.chatAgent.descriptionDescription")}
                 </FormDescription>
                 <FormMessage />
               </FormItem>

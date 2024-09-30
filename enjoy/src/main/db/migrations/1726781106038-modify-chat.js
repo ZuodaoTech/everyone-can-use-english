@@ -22,6 +22,12 @@ async function up({ context: queryInterface }) {
     allowNull: true,
   });
 
+  await queryInterface.renameColumn(
+    "chat_agents",
+    "introduction",
+    "description"
+  );
+
   await queryInterface.addColumn("chat_agents", "source", {
     type: DataTypes.STRING,
     allowNull: true,
@@ -60,6 +66,12 @@ async function down({ context: queryInterface }) {
     type: DataTypes.STRING,
     allowNull: true,
   });
+
+  await queryInterface.renameColumn(
+    "chat_agents",
+    "description",
+    "introduction"
+  );
 
   await queryInterface.removeColumn("chat_agents", "source", {
     type: DataTypes.STRING,

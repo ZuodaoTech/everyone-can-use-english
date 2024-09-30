@@ -138,9 +138,9 @@
       "name": "Name",
       "namePlaceholder": "Enjoy Assistant",
       "nameDescription": "Help you to identify this chat agent",
-      "introduction": "Introduction",
-      "introductionPlaceholder": "Ask me anything",
-      "introductionDescription": "Introduce this chat agent shortly (Will not included in the prompt)",
+      "description": "Description",
+      "descriptionPlaceholder": "Ask me anything",
+      "descriptionDescription": "Describe this chat agent shortly (Will not included in the prompt)",
       "prompt": "Prompt",
       "promptPlaceholder": "You are my AI assistant, please answer my any questions.",
       "promptDescription": "The role definition (prompt) of the chat agent"

@@ -79,7 +79,7 @@ export const DEFAULT_GPT_CONFIG = {
 
 export const AGENT_FIXTURE_AVA = {
   name: "Ava",
-  introduction: "I'm Ava, your English speaking teacher.",
+  description: "I'm Ava, your English speaking teacher.",
   language: "en-US",
   config: {
     engine: "enjoyai",
@@ -95,7 +95,7 @@ export const AGENT_FIXTURE_AVA = {
 
 export const AGENT_FIXTURE_ANDREW = {
   name: "Andrew",
-  introduction: "I'm Andrew, your American friend.",
+  description: "I'm Andrew, your American friend.",
   language: "en-US",
   config: {
     engine: "enjoyai",
