@@ -3,8 +3,12 @@ import { t } from "i18next";
 import { ChatSessionProvider } from "@renderer/context";
 import { ChatHeader, ChatInput, ChatMessages } from "@renderer/components";
 
-export const Chat = (props: { chat: ChatType }) => {
-  const { chat } = props;
+export const Chat = (props: {
+  chat: ChatType;
+  sidePanelCollapsed: boolean;
+  toggleSidePanel: () => void;
+}) => {
+  const { chat, sidePanelCollapsed, toggleSidePanel } = props;
 
   if (!chat) {
     return (
@@ -16,7 +20,11 @@ export const Chat = (props: { chat: ChatType }) => {
 
   return (
     <ScrollArea className="h-screen relative">
-      <ChatHeader chat={chat} />
+      <ChatHeader
+        chat={chat}
+        sidePanelCollapsed={sidePanelCollapsed}
+        toggleSidePanel={toggleSidePanel}
+      />
       <ChatSessionProvider chat={chat}>
         <div className="w-full max-w-screen-md mx-auto">
           <ChatMessages />

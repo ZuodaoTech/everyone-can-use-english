@@ -14,6 +14,7 @@ export default function Chats() {
   const { currentChat: copilotCurrentChat, setOccupiedChat } = useContext(
     CopilotProviderContext
   );
+  const [sidePanelCollapsed, setSidePanelCollapsed] = useState(false);
 
   // Do not open the same chat in copilot and main window
   const handleSelectChat = (chat: ChatType) => {
@@ -34,33 +35,42 @@ export default function Chats() {
 
   return (
     <ResizablePanelGroup direction="horizontal" className="h-screen">
-      <ResizablePanel
-        className="bg-muted/30"
-        collapsible={true}
-        defaultSize={20}
-        minSize={15}
-        maxSize={50}
-      >
-        <ResizablePanelGroup direction="vertical">
-          <ResizablePanel defaultSize={50} minSize={30}>
-            <ChatAgents
-              currentChatAgent={currentChatAgent}
-              setCurrentChatAgent={setCurrentChatAgent}
-            />
+      {!sidePanelCollapsed && (
+        <>
+          <ResizablePanel
+            className="bg-muted/30"
+            collapsible={true}
+            defaultSize={20}
+            minSize={15}
+            maxSize={50}
+            onCollapse={() => setSidePanelCollapsed(true)}
+          >
+            <ResizablePanelGroup direction="vertical">
+              <ResizablePanel defaultSize={50} minSize={30}>
+                <ChatAgents
+                  currentChatAgent={currentChatAgent}
+                  setCurrentChatAgent={setCurrentChatAgent}
+                />
+              </ResizablePanel>
+              <ResizableHandle />
+              <ResizablePanel minSize={30}>
+                <ChatList
+                  chatAgent={currentChatAgent}
+                  currentChat={currentChat}
+                  setCurrentChat={handleSelectChat}
+                />
+              </ResizablePanel>
+            </ResizablePanelGroup>
           </ResizablePanel>
           <ResizableHandle />
-          <ResizablePanel minSize={30}>
-            <ChatList
-              chatAgent={currentChatAgent}
-              currentChat={currentChat}
-              setCurrentChat={handleSelectChat}
-            />
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </ResizablePanel>
-      <ResizableHandle />
+        </>
+      )}
       <ResizablePanel minSize={50}>
-        <Chat chat={currentChat} />
+        <Chat
+          chat={currentChat}
+          sidePanelCollapsed={sidePanelCollapsed}
+          toggleSidePanel={() => setSidePanelCollapsed(!sidePanelCollapsed)}
+        />
       </ResizablePanel>
     </ResizablePanelGroup>
   );

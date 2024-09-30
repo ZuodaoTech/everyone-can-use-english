@@ -33,8 +33,8 @@ import {
   SpeechIcon,
   GraduationCapIcon,
   MessagesSquareIcon,
-  PanelRightCloseIcon,
-  PanelRightOpenIcon,
+  PanelLeftOpenIcon,
+  PanelLeftCloseIcon,
 } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import { t } from "i18next";
@@ -335,9 +335,9 @@ export const Sidebar = () => {
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? (
-              <PanelRightOpenIcon className="h-5 w-5" />
+              <PanelLeftCloseIcon className="h-5 w-5" />
             ) : (
-              <PanelRightCloseIcon className="h-5 w-5" />
+              <PanelLeftOpenIcon className="h-5 w-5" />
             )}
             {isOpen && <span className="ml-2"> {t("sidebar.collapse")} </span>}
           </Button>

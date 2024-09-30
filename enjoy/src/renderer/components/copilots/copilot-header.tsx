@@ -12,8 +12,8 @@ import {
   toast,
 } from "@renderer/components/ui";
 import {
-  ArrowRightToLineIcon,
   ChevronDownIcon,
+  ChevronsRightIcon,
   PlusIcon,
   SettingsIcon,
 } from "lucide-react";
@@ -109,7 +109,7 @@ export const CopilotHeader = () => {
           className="w-6 h-6"
           onClick={() => setActive(!active)}
         >
-          <ArrowRightToLineIcon className="w-5 h-5" />
+          <ChevronsRightIcon className="w-5 h-5" />
         </Button>
       </div>
     </div>

@@ -41,7 +41,9 @@ export const ChatList = (props: {
   useEffect(() => {
     if (
       !currentChat ||
-      chats.findIndex((chat) => chat.id === currentChat.id) === -1
+      currentChat.members.findIndex(
+        (member) => member.userId === chatAgent?.id
+      ) === -1
     ) {
       const chat = chats.find((chat) => chat.id !== copilotCurrentChat?.id);
       if (chat) {
