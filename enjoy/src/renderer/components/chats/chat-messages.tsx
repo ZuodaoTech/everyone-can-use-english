@@ -29,7 +29,7 @@ export const ChatMessages = () => {
               <div className="mb-2 flex">
                 <ChatAgentAvatar chatMember={member} onClick={() => {}} />
               </div>
-              <div className="px-4 py-2 mb-2 rounded-lg border w-full max-w-prose">
+              <div className="py-2 mb-2 rounded-lg w-full">
                 <div className="text-sm">{member.agent?.description}</div>
               </div>
             </div>
@@ -87,7 +87,7 @@ const ChatAgentMessageLoading = (props: {
       <div className="mb-2 flex">
         <ChatAgentAvatar chatMember={chatMember} onClick={onClick} />
       </div>
-      <div className="px-4 py-2 mb-2 rounded-lg border w-full max-w-prose">
+      <div className="py-2 mb-2 rounded-lg w-full">
         <LoaderSpin />
       </div>
     </div>

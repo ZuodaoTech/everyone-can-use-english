@@ -49,7 +49,6 @@ export const CopilotChats = (props: { onCancel?: () => void }) => {
           selected={currentChat?.id === chat.id}
           disabled={occupiedChat?.id === chat.id}
           onSelect={(chat) => {
-            console.log("occupiedChat", occupiedChat);
             if (occupiedChat?.id === chat.id) {
               return;
             }

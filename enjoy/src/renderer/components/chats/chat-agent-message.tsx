@@ -233,7 +233,7 @@ export const ChatAgentMessage = (props: {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-2 px-3 py-2 mb-2 rounded-lg border w-full max-w-prose">
+      <div className="flex flex-col gap-2 py-2 mb-2 rounded-lg w-full">
         {Boolean(chatMessage.speech?.id) ? (
           <>
             {displayPlayer ? (
@@ -258,11 +258,11 @@ export const ChatAgentMessage = (props: {
         )}
         {displayContent && (
           <>
-            <MarkdownWrapper className="select-text prose dark:prose-invert">
+            <MarkdownWrapper className="select-text prose dark:prose-invert max-w-full">
               {chatMessage.content}
             </MarkdownWrapper>
             {translation && (
-              <MarkdownWrapper className="select-text prose dark:prose-invert">
+              <MarkdownWrapper className="select-text prose dark:prose-invert max-w-full">
                 {translation}
               </MarkdownWrapper>
             )}
