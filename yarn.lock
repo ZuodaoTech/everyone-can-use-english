@@ -3119,9 +3119,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/community@npm:^0.3.2":
-  version: 0.3.2
-  resolution: "@langchain/community@npm:0.3.2"
+"@langchain/community@npm:^0.3.3":
+  version: 0.3.3
+  resolution: "@langchain/community@npm:0.3.3"
   dependencies:
     "@langchain/openai": "npm:>=0.2.0 <0.4.0"
     binary-extensions: "npm:^2.2.0"
@@ -3184,7 +3184,7 @@ __metadata:
     "@tensorflow-models/universal-sentence-encoder": "*"
     "@tensorflow/tfjs-converter": "*"
     "@tensorflow/tfjs-core": "*"
-    "@upstash/ratelimit": ^1.1.3
+    "@upstash/ratelimit": ^1.1.3 || ^2.0.3
     "@upstash/redis": ^1.20.6
     "@upstash/vector": ^1.1.1
     "@vercel/kv": ^0.2.3
@@ -3499,7 +3499,7 @@ __metadata:
       optional: true
     youtubei.js:
       optional: true
-  checksum: 10c0/5d6979e37d363254f2b91637a90427158170b3af6e3fdbd029f344b79a28cc9c1868d5a59c2528264feb0ed4df9977c0d3cf81c13a5734de60411ce3406d8d00
+  checksum: 10c0/9480f0e1ab809743d87b33724a758e8fd3a01f57c16bc1990855243de6a25811c7b5b760962936f2a995443edf5cae6a27e7a3f3f2df5c30c169b2a13f2e29c9
   languageName: node
   linkType: hard
 
@@ -12739,7 +12739,7 @@ __metadata:
     "@electron-forge/publisher-s3": "npm:^7.5.0"
     "@electron/fuses": "npm:^1.8.0"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@langchain/community": "npm:^0.3.2"
+    "@langchain/community": "npm:^0.3.3"
     "@langchain/core": "npm:^0.3.3"
     "@langchain/ollama": "npm:^0.1.0"
     "@mozilla/readability": "npm:^0.5.0"
