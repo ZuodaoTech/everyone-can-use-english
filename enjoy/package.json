@@ -169,7 +169,7 @@
     "postcss": "^8.4.47",
     "proxy-agent": "^6.4.0",
     "react": "^18.3.1",
-    "react-activity-calendar": "^2.5.2",
+    "react-activity-calendar": "^2.5.3",
     "react-audio-visualize": "^1.2.0",
     "react-audio-voice-recorder": "^2.2.0",
     "react-dom": "^18.3.1",

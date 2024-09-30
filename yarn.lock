@@ -12851,7 +12851,7 @@ __metadata:
     prop-types: "npm:^15.8.1"
     proxy-agent: "npm:^6.4.0"
     react: "npm:^18.3.1"
-    react-activity-calendar: "npm:^2.5.2"
+    react-activity-calendar: "npm:^2.5.3"
     react-audio-visualize: "npm:^1.2.0"
     react-audio-voice-recorder: "npm:^2.2.0"
     react-dom: "npm:^18.3.1"
@@ -20884,9 +20884,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-activity-calendar@npm:^2.5.2":
-  version: 2.5.2
-  resolution: "react-activity-calendar@npm:2.5.2"
+"react-activity-calendar@npm:^2.5.3":
+  version: 2.5.3
+  resolution: "react-activity-calendar@npm:2.5.3"
   dependencies:
     "@types/chroma-js": "npm:^2.4.3"
     chroma-js: "npm:^3.1.1"
@@ -20894,7 +20894,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 10c0/364a0260791a3bd10a19b0c7b39c9a4978b4ab484d108e83c98c950580ad8cfc493f6783ebaf36b24742f6f418c93de5c4a7b5852589b34092ec11267daa845a
+  checksum: 10c0/2b26a756c3cfacfffcf0633292de360368bd51cf876ffcc5663a826b3e09c9eee106507bdbc5320885c91eac041f1b5ce107eb5abc792afdec29119fec6cd3aa
   languageName: node
   linkType: hard
 
