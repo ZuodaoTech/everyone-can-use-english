@@ -20,7 +20,7 @@ __metadata:
     sass: "npm:^1.79.3"
     swiper: "npm:^11.1.14"
     vitepress: "npm:^1.3.4"
-    vitepress-plugin-mermaid: "npm:^2.0.16"
+    vitepress-plugin-mermaid: "npm:^2.0.17"
     vue: "npm:^3.5.8"
   languageName: unknown
   linkType: soft
@@ -24484,18 +24484,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitepress-plugin-mermaid@npm:^2.0.16":
-  version: 2.0.16
-  resolution: "vitepress-plugin-mermaid@npm:2.0.16"
+"vitepress-plugin-mermaid@npm:^2.0.17":
+  version: 2.0.17
+  resolution: "vitepress-plugin-mermaid@npm:2.0.17"
   dependencies:
     "@mermaid-js/mermaid-mindmap": "npm:^9.3.0"
   peerDependencies:
-    mermaid: 10
+    mermaid: 10 || 11
     vitepress: ^1.0.0 || ^1.0.0-alpha
   dependenciesMeta:
     "@mermaid-js/mermaid-mindmap":
       optional: true
-  checksum: 10c0/626c3d404e937368a2b0f30d571c407b61c049da44101d02243bd09d3d8ac0c9d1d8b7ccfad8d37f1ee8e9e7c1165c299ab94a8b37f7468c58bfe5b9ea130000
+  checksum: 10c0/706ea493dcad091d20a7964e0287b9ae2144bcdb9a85b3d925480b2512e51a92fe3e59d51bce9afddd0b607c021bbc30eb22fafafc4319ea29f0666121d73f48
   languageName: node
   linkType: hard
 
