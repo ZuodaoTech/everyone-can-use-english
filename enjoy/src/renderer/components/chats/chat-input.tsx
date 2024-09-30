@@ -139,7 +139,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
             {String(recordingTime % 60).padStart(2, "0")}
           </span>
           <Button
-            data-tooltip-id="chat-tooltip"
+            data-tooltip-id={`${chat.id}-tooltip`}
             data-tooltip-content={t("cancel")}
             onClick={cancelRecording}
             className="rounded-full shadow w-8 h-8 bg-red-500 hover:bg-red-600"
@@ -155,14 +155,14 @@ export const ChatInput = (props: { chat: ChatType }) => {
           >
             {isPaused ? (
               <PlayIcon
-                data-tooltip-id="chat-tooltip"
+                data-tooltip-id={`${chat.id}-tooltip`}
                 data-tooltip-content={t("continue")}
                 fill="white"
                 className="w-4 h-4"
               />
             ) : (
               <PauseIcon
-                data-tooltip-id="chat-tooltip"
+                data-tooltip-id={`${chat.id}-tooltip`}
                 data-tooltip-content={t("pause")}
                 fill="white"
                 className="w-4 h-4"
@@ -170,7 +170,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
             )}
           </Button>
           <Button
-            data-tooltip-id="chat-tooltip"
+            data-tooltip-id={`${chat.id}-tooltip`}
             data-tooltip-content={t("finish")}
             onClick={stopRecording}
             className="rounded-full bg-green-500 hover:bg-green-600 shadow w-8 h-8"
@@ -187,7 +187,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
     return (
       <div className="z-10 w-full flex items-end gap-2 px-2 py-2 bg-muted mx-4 rounded-3xl shadow-lg">
         <Button
-          data-tooltip-id="chat-tooltip"
+          data-tooltip-id={`${chat.id}-tooltip`}
           data-tooltip-content={t("audioInput")}
           disabled={submitting}
           onClick={() => setInputMode("audio")}
@@ -208,7 +208,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
         />
         <Button
           ref={submitRef}
-          data-tooltip-id="chat-tooltip"
+          data-tooltip-id={`${chat.id}-tooltip`}
           data-tooltip-content={t("send")}
           onClick={() =>
             onCreateMessage(content, { onSuccess: () => setContent("") })
@@ -227,7 +227,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
         {chat.config.enableChatAssistant && (
           <ChatSuggestionButton chat={chat} asChild>
             <Button
-              data-tooltip-id="chat-tooltip"
+              data-tooltip-id={`${chat.id}-tooltip`}
               data-tooltip-content={t("suggestion")}
               className="rounded-full w-8 h-8"
               variant="ghost"
@@ -240,7 +240,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
 
         {chat.type === "group" && (
           <Button
-            data-tooltip-id="chat-tooltip"
+            data-tooltip-id={`${chat.id}-tooltip`}
             data-tooltip-content={t("continue")}
             disabled={submitting}
             onClick={() => askAgent()}
@@ -258,7 +258,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
   return (
     <div className="w-full flex items-center gap-4 justify-center relative">
       <Button
-        data-tooltip-id="chat-tooltip"
+        data-tooltip-id={`${chat.id}-tooltip`}
         data-tooltip-content={t("textInput")}
         disabled={submitting}
         onClick={() => setInputMode("text")}
@@ -269,7 +269,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
         <TypeIcon className="w-4 h-4" />
       </Button>
       <Button
-        data-tooltip-id="chat-tooltip"
+        data-tooltip-id={`${chat.id}-tooltip`}
         data-tooltip-content={t("record")}
         disabled={submitting}
         onClick={startRecording}
@@ -284,7 +284,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
       </Button>
       {chat.config.enableChatAssistant && <ChatSuggestionButton chat={chat} />}
       <Button
-        data-tooltip-id="chat-tooltip"
+        data-tooltip-id={`${chat.id}-tooltip`}
         data-tooltip-content={t("continue")}
         disabled={submitting}
         onClick={() => askAgent()}
@@ -385,7 +385,7 @@ const ChatSuggestionButton = (props: {
           { ...props.children }
         ) : (
           <Button
-            data-tooltip-id="chat-tooltip"
+            data-tooltip-id={`${chat.id}-tooltip`}
             data-tooltip-content={t("suggestion")}
             className="rounded-full shadow-lg w-8 h-8"
             variant="secondary"

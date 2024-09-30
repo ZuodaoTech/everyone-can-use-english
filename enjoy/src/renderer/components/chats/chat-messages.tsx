@@ -30,7 +30,7 @@ export const ChatMessages = () => {
                 <ChatAgentAvatar chatMember={member} onClick={() => {}} />
               </div>
               <div className="px-4 py-2 mb-2 rounded-lg border w-full max-w-prose">
-                <div className="text-sm">{member.agent.description}</div>
+                <div className="text-sm">{member.agent?.description}</div>
               </div>
             </div>
           ))}
@@ -99,6 +99,8 @@ const ChatAgentAvatar = (props: {
   onClick: () => void;
 }) => {
   const { chatMember, onClick } = props;
+  if (!chatMember.agent) return null;
+
   return (
     <div
       className="flex items-center space-x-2 cursor-pointer"

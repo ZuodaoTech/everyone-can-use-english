@@ -1,14 +1,7 @@
 import { ScrollArea } from "@renderer/components/ui";
 import { t } from "i18next";
 import { ChatSessionProvider } from "@renderer/context";
-import { useState } from "react";
-import {
-  ChatHeader,
-  ChatInput,
-  ChatMessages,
-  ChatSettings,
-} from "@renderer/components";
-import { Tooltip } from "react-tooltip";
+import { ChatHeader, ChatInput, ChatMessages } from "@renderer/components";
 
 export const Chat = (props: { chat: ChatType }) => {
   const { chat } = props;
@@ -32,7 +25,6 @@ export const Chat = (props: { chat: ChatType }) => {
             <ChatInput chat={chat} />
           </div>
         </div>
-        <Tooltip id="chat-tooltip" />
       </ChatSessionProvider>
     </ScrollArea>
   );

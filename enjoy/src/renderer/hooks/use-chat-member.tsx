@@ -19,6 +19,8 @@ export const useChatMember = (chatId: string) => {
   const onChatMemberRecordUpdate = (event: CustomEvent) => {
     const { model, id, action, record } = event.detail || {};
     if (model !== "ChatMember") return;
+    if (record.chatId !== chatId) return;
+
     switch (action) {
       case "update": {
         dispatchChatMembers({ type: "update", record });

@@ -25,6 +25,7 @@ import {
 import { t } from "i18next";
 import { ChevronDownIcon } from "lucide-react";
 import { AudioPlayer, RecordingDetail } from "@renderer/components";
+import { Tooltip } from "react-tooltip";
 
 type ChatSessionProviderState = {
   chat: ChatType;
@@ -381,6 +382,7 @@ export const ChatSessionProvider = ({
           </SheetContent>
         </Sheet>
       </MediaShadowProvider>
+      <Tooltip id={`${chat.id}-tooltip`} />
     </ChatSessionProviderContext.Provider>
   );
 };

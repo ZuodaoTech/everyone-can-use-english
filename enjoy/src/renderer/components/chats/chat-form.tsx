@@ -149,7 +149,7 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
                     size="icon"
                     variant="ghost"
                     disabled={isGeneratingTopic}
-                    data-tooltip-id="chat-tooltip"
+                    data-tooltip-id="global-tooltip"
                     data-tooltip-content={t("models.chat.generateTopic")}
                     onClick={async () => {
                       if (isGeneratingTopic) return;

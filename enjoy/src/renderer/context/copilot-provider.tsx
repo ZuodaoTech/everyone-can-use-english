@@ -52,12 +52,14 @@ export const CopilotProvider = ({
       chat = await EnjoyApp.chats.findOne({
         where: { id: cachedChatId },
       });
-    } else {
+    } else if (occupiedChat) {
       chat = await EnjoyApp.chats.findOne({
         not: {
-          id: occupiedChat?.id,
+          id: occupiedChat.id,
         },
       });
+    } else {
+      chat = await EnjoyApp.chats.findOne({});
     }
 
     if (chat && chat.id !== occupiedChat?.id) {

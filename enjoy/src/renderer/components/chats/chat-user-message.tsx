@@ -149,7 +149,7 @@ export const ChatUserMessage = (props: {
             {chatMessage.state === "pending" && !submitting && (
               <div className="flex justify-end items-center space-x-2">
                 <InfoIcon
-                  data-tooltip-id="chat-tooltip"
+                  data-tooltip-id={`${chatMessage.chatId}-tooltip`}
                   data-tooltip-content={t("confirmBeforeSending")}
                   className="w-4 h-4 text-yellow-600"
                 />
