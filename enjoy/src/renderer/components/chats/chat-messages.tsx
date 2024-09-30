@@ -12,7 +12,9 @@ import {
 } from "@renderer/components/ui";
 
 export const ChatMessages = () => {
-  const { chatMessages, chat, asking } = useContext(ChatSessionProviderContext);
+  const { chatMessages, chat, asking, chatMembers } = useContext(
+    ChatSessionProviderContext
+  );
   const lastMessage = chatMessages[chatMessages.length - 1];
   const [editingChatMember, setEditingChatMember] =
     useState<ChatMemberType>(null);
@@ -20,6 +22,18 @@ export const ChatMessages = () => {
   return (
     <>
       <div className="flex-1 space-y-2 px-4 mb-4">
+        {chatMembers
+          .filter((member) => member.userType === "ChatAgent")
+          .map((member) => (
+            <div key={member.id} className="mb-6">
+              <div className="mb-2 flex">
+                <ChatAgentAvatar chatMember={member} onClick={() => {}} />
+              </div>
+              <div className="px-4 py-2 mb-2 rounded-lg border w-full max-w-prose">
+                <div className="text-sm">{member.agent.introduction}</div>
+              </div>
+            </div>
+          ))}
         {chatMessages.map((message) => (
           <ChatMessage
             key={message.id}
@@ -28,7 +42,12 @@ export const ChatMessages = () => {
             onEditChatMember={setEditingChatMember}
           />
         ))}
-        {asking && <ChatAgentMessageLoading chatMember={asking} />}
+        {asking && (
+          <ChatAgentMessageLoading
+            chatMember={asking}
+            onClick={() => setEditingChatMember(asking)}
+          />
+        )}
       </div>
       <Dialog
         open={!!editingChatMember}
@@ -50,8 +69,11 @@ export const ChatMessages = () => {
   );
 };
 
-const ChatAgentMessageLoading = (props: { chatMember: ChatMemberType }) => {
-  const { chatMember } = props;
+const ChatAgentMessageLoading = (props: {
+  chatMember: ChatMemberType;
+  onClick: () => void;
+}) => {
+  const { chatMember, onClick } = props;
   const ref = useRef(null);
 
   useEffect(() => {
@@ -63,23 +85,36 @@ const ChatAgentMessageLoading = (props: { chatMember: ChatMemberType }) => {
   return (
     <div ref={ref} className="mb-6">
       <div className="mb-2 flex">
-        <div className="flex items-center space-x-2 cursor-pointer">
-          <Avatar className="w-8 h-8 bg-background avatar">
-            <AvatarImage src={chatMember.agent.avatarUrl}></AvatarImage>
-            <AvatarFallback className="bg-background">
-              {chatMember.name}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <div className="text-sm">{chatMember.name}</div>
-            <div className="italic text-xs text-muted-foreground/50">
-              {chatMember.config.gpt?.model || "AI"}
-            </div>
-          </div>
-        </div>
+        <ChatAgentAvatar chatMember={chatMember} onClick={onClick} />
       </div>
       <div className="px-4 py-2 mb-2 rounded-lg border w-full max-w-prose">
         <LoaderSpin />
+      </div>
+    </div>
+  );
+};
+
+const ChatAgentAvatar = (props: {
+  chatMember: ChatMemberType;
+  onClick: () => void;
+}) => {
+  const { chatMember, onClick } = props;
+  return (
+    <div
+      className="flex items-center space-x-2 cursor-pointer"
+      onClick={onClick}
+    >
+      <Avatar className="w-8 h-8 bg-background avatar">
+        <AvatarImage src={chatMember.agent.avatarUrl}></AvatarImage>
+        <AvatarFallback className="bg-background">
+          {chatMember.name}
+        </AvatarFallback>
+      </Avatar>
+      <div>
+        <div className="text-sm">{chatMember.name}</div>
+        <div className="italic text-xs text-muted-foreground/50">
+          {chatMember.config.gpt?.model || "AI"}
+        </div>
       </div>
     </div>
   );
