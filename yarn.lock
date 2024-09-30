@@ -8194,7 +8194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:>=20, @types/node@npm:^22.6.1":
+"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:>=20":
   version: 22.6.1
   resolution: "@types/node@npm:22.6.1"
   dependencies:
@@ -8225,6 +8225,15 @@ __metadata:
   dependencies:
     undici-types: "npm:~6.19.2"
   checksum: 10c0/a3bd104b4061451625ed3b320c88e01e1261d41dbcaa7248d376f60a1a831e1cbc4362eef5be3445ccc1ea2d0a9178fc1ddd5e55a4f5df571dce78e5d91375a8
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.7.4":
+  version: 22.7.4
+  resolution: "@types/node@npm:22.7.4"
+  dependencies:
+    undici-types: "npm:~6.19.2"
+  checksum: 10c0/c22bf54515c78ff3170142c1e718b90e2a0003419dc2d55f79c9c9362edd590a6ab1450deb09ff6e1b32d1b4698da407930b16285e8be3a009ea6cd2695cac01
   languageName: node
   linkType: hard
 
@@ -12783,7 +12792,7 @@ __metadata:
     "@types/lodash": "npm:^4.17.9"
     "@types/mark.js": "npm:^8.11.12"
     "@types/mustache": "npm:^4.2.5"
-    "@types/node": "npm:^22.6.1"
+    "@types/node": "npm:^22.7.4"
     "@types/prop-types": "npm:^15.7.13"
     "@types/rails__actioncable": "npm:^6.1.11"
     "@types/react": "npm:^18.3.8"
