@@ -46,13 +46,14 @@ export const ChatAgentMessage = (props: {
   isLastMessage?: boolean;
   onEditChatMember: (chatMember: ChatMemberType) => void;
 }) => {
-  const { chatMessage, onEditChatMember } = props;
+  const { chatMessage, onEditChatMember, isLastMessage } = props;
   const {
     chat,
     dispatchChatMessages,
     setShadowing,
     onDeleteMessage,
     chatMembers,
+    askAgent,
   } = useContext(ChatSessionProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const ref = useRef<HTMLDivElement>(null);
@@ -202,6 +203,12 @@ export const ChatAgentMessage = (props: {
       createSpeech();
     }
   }, [chatMessage]);
+
+  useEffect(() => {
+    if (isLastMessage) {
+      askAgent();
+    }
+  }, []);
 
   if (!chatMember) return;
 

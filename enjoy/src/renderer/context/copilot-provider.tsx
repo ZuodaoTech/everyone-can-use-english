@@ -121,8 +121,6 @@ export const CopilotProvider = ({
   useEffect(() => {
     if (currentChat) {
       EnjoyApp.cacheObjects.set(CACHE_KEY, currentChat.id);
-    } else {
-      findOrCreateChat();
     }
   }, [currentChat]);
 

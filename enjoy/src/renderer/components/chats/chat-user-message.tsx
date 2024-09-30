@@ -65,10 +65,11 @@ export const ChatUserMessage = (props: {
 
   useEffect(() => {
     if (!isLastMessage) return;
-    if (chatMessage.state === "pending") {
-      askAgent();
-    }
-  }, [chatMessage.state, isLastMessage]);
+    // If the message is from recording, wait for user to confirm before asking agent
+    if (chatMessage.recording) return;
+
+    askAgent();
+  }, []);
 
   return (
     <div ref={ref}>

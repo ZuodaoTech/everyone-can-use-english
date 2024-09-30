@@ -112,7 +112,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
     currentHotkeys.PlayNextSegment,
     () => {
       if (shadowing) return;
-      askAgent();
+      askAgent({ force: true });
     },
     {
       preventDefault: true,
@@ -243,7 +243,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
             data-tooltip-id={`${chat.id}-tooltip`}
             data-tooltip-content={t("continue")}
             disabled={submitting}
-            onClick={() => askAgent()}
+            onClick={() => askAgent({ force: true })}
             className=""
             variant="ghost"
             size="icon"
@@ -283,17 +283,19 @@ export const ChatInput = (props: { chat: ChatType }) => {
         )}
       </Button>
       {chat.config.enableChatAssistant && <ChatSuggestionButton chat={chat} />}
-      <Button
-        data-tooltip-id={`${chat.id}-tooltip`}
-        data-tooltip-content={t("continue")}
-        disabled={submitting}
-        onClick={() => askAgent()}
-        className="rounded-full shadow-lg w-8 h-8"
-        variant="default"
-        size="icon"
-      >
-        <StepForwardIcon className="w-4 h-4" />
-      </Button>
+      {chat.type === "group" && (
+        <Button
+          data-tooltip-id={`${chat.id}-tooltip`}
+          data-tooltip-content={t("continue")}
+          disabled={submitting}
+          onClick={() => askAgent({ force: true })}
+          className="rounded-full shadow-lg w-8 h-8"
+          variant="default"
+          size="icon"
+        >
+          <StepForwardIcon className="w-4 h-4" />
+        </Button>
+      )}
     </div>
   );
 };

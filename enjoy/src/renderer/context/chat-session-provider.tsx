@@ -43,7 +43,10 @@ type ChatSessionProviderState = {
   recordingTime: number;
   mediaRecorder: MediaRecorder;
   recordingBlob: Blob;
-  askAgent: (member?: ChatMemberType) => Promise<any>;
+  askAgent: (options?: {
+    member?: ChatMemberType;
+    force?: boolean;
+  }) => Promise<any>;
   shadowing: AudioType;
   setShadowing: (audio: AudioType) => void;
   assessing: RecordingType;
@@ -204,31 +207,67 @@ export const ChatSessionProvider = ({
     }
   };
 
-  const askAgent = async (member?: ChatMemberType) => {
-    // pick an random agent
+  const askAgent = async (options?: {
+    member?: ChatMemberType;
+    force?: boolean;
+  }) => {
+    if (submitting) return;
+    if (asking) return;
+
+    let { member, force = false } = options || {};
+
     if (!member) {
-      const members = chat.members.filter(
-        (member) =>
-          member.userType === "ChatAgent" &&
-          member.id !== chatMessages[chatMessages.length - 1]?.member?.id
+      member = pickNextAgentMember();
+    }
+
+    // In a group chat, agents may talk to each other.
+    if (!member && force && chat.members.length > 1) {
+      member = chat.members.find(
+        (m) =>
+          m.userType === "ChatAgent" &&
+          m.id !== chatMessages[chatMessages.length - 1]?.member?.id
       );
-      member = members[Math.floor(Math.random() * members.length)];
     }
 
     if (!member) {
-      return toast.warning(t("itsYourTurn"));
+      return;
     }
 
     setSubmitting(true);
     setAsking(member);
-    return invokeAgent(member.id)
-      .catch((error) => {
-        toast.error(error.message);
-      })
-      .finally(() => {
-        setSubmitting(false);
-        setAsking(null);
-      });
+    try {
+      await invokeAgent(member.id);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setSubmitting(false);
+      setAsking(null);
+    }
+  };
+
+  const pickNextAgentMember = () => {
+    const members = chat.members.filter(
+      (member) => member.userType === "ChatAgent"
+    );
+    let currentIndex = chatMessages.length - 1;
+    const spokeMembers = new Set();
+
+    while (currentIndex >= 0) {
+      const message = chatMessages[currentIndex];
+      if (spokeMembers.has(message.member.id)) {
+        break;
+      }
+      if (message.member.userType === "User") {
+        break;
+      }
+      spokeMembers.add(message.member.id);
+      currentIndex--;
+    }
+
+    // pick a member that has not spoken yet
+    const nextMember = members.find((member) => !spokeMembers.has(member.id));
+
+    return nextMember;
   };
 
   const onAssess = (assessment: PronunciationAssessmentType) => {
