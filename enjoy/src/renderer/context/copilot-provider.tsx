@@ -13,6 +13,7 @@ type CopilotProviderState = {
   setCurrentChat: (chat: ChatType) => void;
   occupiedChat: ChatType | null;
   setOccupiedChat: (chat: ChatType | null) => void;
+  buildAgentMember: (agent: ChatAgentType) => ChatMemberDtoType;
 };
 
 const initialState: CopilotProviderState = {
@@ -22,6 +23,7 @@ const initialState: CopilotProviderState = {
   setCurrentChat: () => null,
   occupiedChat: null,
   setOccupiedChat: () => null,
+  buildAgentMember: () => null,
 };
 
 export const CopilotProviderContext =
@@ -67,23 +69,7 @@ export const CopilotProvider = ({
         config: {
           sttEngine,
         },
-        members: [
-          {
-            userId: agent.id,
-            userType: "ChatAgent",
-            gpt: {
-              ...DEFAULT_GPT_CONFIG,
-              engine: currentGptEngine.name,
-              model: currentGptEngine.models.default,
-            },
-            tts: {
-              engine: currentTtsEngine.name,
-              model: currentTtsEngine.model,
-              voice: currentTtsEngine.voice,
-              language: learningLanguage,
-            },
-          },
-        ],
+        members: [buildAgentMember(agent)],
       });
       setCurrentChat(chat);
     }
@@ -102,6 +88,26 @@ export const CopilotProvider = ({
     });
   };
 
+  const buildAgentMember = (agent: ChatAgentType): ChatMemberDtoType => {
+    return {
+      userId: agent.id,
+      userType: "ChatAgent",
+      config: {
+        gpt: {
+          ...DEFAULT_GPT_CONFIG,
+          engine: currentGptEngine.name,
+          model: currentGptEngine.models.default,
+        },
+        tts: {
+          engine: currentTtsEngine.name,
+          model: currentTtsEngine.model,
+          voice: currentTtsEngine.voice,
+          language: learningLanguage,
+        },
+      },
+    };
+  };
+
   useEffect(() => {
     if (active) {
       findOrCreateChat();
@@ -113,6 +119,8 @@ export const CopilotProvider = ({
   useEffect(() => {
     if (currentChat) {
       EnjoyApp.cacheObjects.set(CACHE_KEY, currentChat.id);
+    } else {
+      findOrCreateChat();
     }
   }, [currentChat]);
 
@@ -125,6 +133,7 @@ export const CopilotProvider = ({
         setCurrentChat,
         occupiedChat,
         setOccupiedChat,
+        buildAgentMember,
       }}
     >
       {children}

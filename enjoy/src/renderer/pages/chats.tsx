@@ -17,7 +17,7 @@ export default function Chats() {
 
   // Do not open the same chat in copilot and main window
   const handleSelectChat = (chat: ChatType) => {
-    if (copilotCurrentChat?.id === chat.id) return;
+    if (chat && copilotCurrentChat?.id === chat.id) return;
     setCurrentChat(chat);
   };
 

@@ -7,6 +7,7 @@ import {
   AlertDialogFooter,
   AlertDialogTitle,
   Button,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
@@ -31,9 +32,10 @@ export const ChatList = (props: {
     AISettingsProviderContext
   );
   const { learningLanguage } = useContext(AppSettingsProviderContext);
-  const { currentChat: copilotCurrentChat } = useContext(
-    CopilotProviderContext
-  );
+  const {
+    currentChat: copilotCurrentChat,
+    setCurrentChat: setCopilotCurrentChat,
+  } = useContext(CopilotProviderContext);
   const [deletingChat, setDeletingChat] = useState<ChatType>(null);
 
   useEffect(() => {
@@ -83,6 +85,22 @@ export const ChatList = (props: {
         setCurrentChat(chat);
       }
     });
+  };
+
+  const handleDeleteChat = async () => {
+    if (!deletingChat) return;
+    try {
+      await destroyChat(deletingChat.id);
+      if (deletingChat.id === currentChat?.id) {
+        setCurrentChat(null);
+      }
+      if (deletingChat.id === copilotCurrentChat?.id) {
+        setCopilotCurrentChat(null);
+      }
+      setDeletingChat(null);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -137,10 +155,7 @@ export const ChatList = (props: {
             </AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive hover:bg-destructive-hover"
-              onClick={() => {
-                destroyChat(deletingChat.id);
-                setDeletingChat(null);
-              }}
+              onClick={handleDeleteChat}
             >
               {t("delete")}
             </AlertDialogAction>

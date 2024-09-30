@@ -1,25 +1,17 @@
-import { SettingsIcon } from "lucide-react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-  ScrollArea,
-} from "@renderer/components/ui";
+import { ScrollArea } from "@renderer/components/ui";
 import { t } from "i18next";
 import { ChatSessionProvider } from "@renderer/context";
 import { useState } from "react";
-import { ChatInput, ChatMessages, ChatSettings } from "@renderer/components";
+import {
+  ChatHeader,
+  ChatInput,
+  ChatMessages,
+  ChatSettings,
+} from "@renderer/components";
 import { Tooltip } from "react-tooltip";
 
 export const Chat = (props: { chat: ChatType }) => {
   const { chat } = props;
-  const [displayChatForm, setDisplayChatForm] = useState(false);
 
   if (!chat) {
     return (
@@ -31,38 +23,7 @@ export const Chat = (props: { chat: ChatType }) => {
 
   return (
     <ScrollArea className="h-screen relative">
-      <div className="h-12 border-b px-4 shadow flex items-center justify-center space-x-2 sticky top-0 z-10 bg-background mb-4">
-        <div className="flex items-center -space-x-2">
-          {chat.members
-            .filter((member) => member.agent)
-            .map((member) => (
-              <Avatar key={member.id} className="w-8 h-8">
-                <AvatarImage src={member.agent?.avatarUrl} />
-                <AvatarFallback>{member.agent?.name}</AvatarFallback>
-              </Avatar>
-            ))}
-        </div>
-        <span>{chat.name}</span>
-        <Dialog open={displayChatForm} onOpenChange={setDisplayChatForm}>
-          <DialogTrigger asChild>
-            <Button variant="ghost" size="icon" className="absolute right-4">
-              <SettingsIcon className="w-5 h-5" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-screen-sm max-h-[70%] overflow-y-auto">
-            <DialogTitle>{t("editChat")}</DialogTitle>
-            <DialogDescription className="sr-only">
-              Edit chat settings
-            </DialogDescription>
-            <ScrollArea className="h-full px-4">
-              <ChatSettings
-                chat={chat}
-                onFinish={() => setDisplayChatForm(false)}
-              />
-            </ScrollArea>
-          </DialogContent>
-        </Dialog>
-      </div>
+      <ChatHeader chat={chat} />
       <ChatSessionProvider chat={chat}>
         <div className="w-full max-w-screen-md mx-auto">
           <ChatMessages />

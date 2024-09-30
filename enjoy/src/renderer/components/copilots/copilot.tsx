@@ -2,7 +2,7 @@ import { ChatSessionProvider, CopilotProviderContext } from "@renderer/context";
 import { useContext } from "react";
 import { Button, ScrollArea } from "@renderer/components/ui";
 import { t } from "i18next";
-import { ChatMessages, ChatInput } from "@renderer/components";
+import { ChatMessages, ChatInput, CopilotHeader } from "@renderer/components";
 import { Tooltip } from "react-tooltip";
 
 export const Copilot = () => {
@@ -20,9 +20,7 @@ export const Copilot = () => {
 
   return (
     <ScrollArea className="h-screen relative">
-      <div className="h-12 sticky top-0 mb-2 shadow-sm flex items-center z-10 bg-background px-4">
-        <div className="text-sm text-muted-foreground">{currentChat.name}</div>
-      </div>
+      <CopilotHeader />
       <ChatSessionProvider chat={currentChat}>
         <div className="w-full max-w-screen-md mx-auto">
           <ChatMessages />
