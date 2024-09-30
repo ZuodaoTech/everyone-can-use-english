@@ -21,11 +21,11 @@ export const ChatMessages = () => {
 
   return (
     <>
-      <div className="flex-1 space-y-2 px-4 mb-4">
+      <div className="flex-1 space-y-6 px-4 mb-4">
         {chatMembers
           .filter((member) => member.userType === "ChatAgent")
           .map((member) => (
-            <div key={member.id} className="mb-6">
+            <div key={member.id}>
               <div className="mb-2 flex">
                 <ChatAgentAvatar chatMember={member} onClick={() => {}} />
               </div>

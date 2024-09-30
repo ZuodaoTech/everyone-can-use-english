@@ -206,7 +206,7 @@ export const ChatAgentMessage = (props: {
   if (!chatMember) return;
 
   return (
-    <div ref={ref} className="mb-6">
+    <div ref={ref}>
       <div className="mb-2 flex">
         <div
           className="flex items-center space-x-1 cursor-pointer"

@@ -71,7 +71,7 @@ export const ChatUserMessage = (props: {
   }, [chatMessage.state, isLastMessage]);
 
   return (
-    <div ref={ref} className="mb-6">
+    <div ref={ref}>
       <div className="flex justify-end">
         <div className="w-full max-w-prose">
           <div
