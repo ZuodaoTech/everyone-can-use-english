@@ -84,6 +84,34 @@ class ChatsHandler {
       throw new Error(t("models.chats.membersRequired"));
     }
 
+    const chatAgents = await ChatAgent.findAll({
+      where: {
+        id: {
+          [Op.in]: members.map((m) => m.userId),
+        },
+      },
+    });
+
+    if (chatAgents.length !== members.length) {
+      throw new Error(t("models.chats.invalidMembers"));
+    }
+
+    let type: "CONVERSATION" | "GROUP" | "TTS" | "STT";
+    if (chatAgents.length === 1 && chatAgents[0].type === "TTS") {
+      type = "TTS";
+    } else if (chatAgents.length === 1 && chatAgents[0].type === "STT") {
+      type = "STT";
+    } else if (chatAgents.length === 1 && chatAgents[0].type === "GPT") {
+      type = "CONVERSATION";
+    } else if (
+      chatAgents.length > 1 &&
+      chatAgents.every((agent) => agent.type === "GPT")
+    ) {
+      type = "GROUP";
+    } else {
+      throw new Error(t("models.chats.invalidMembers"));
+    }
+
     const transaction = await db.connection.transaction();
     try {
       if (!chatData.config?.sttEngine) {
@@ -93,7 +121,7 @@ class ChatsHandler {
       }
       const chat = await Chat.create(
         {
-          type: "CONVERSATION",
+          type,
           ...chatData,
         },
         {

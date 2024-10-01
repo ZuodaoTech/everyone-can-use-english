@@ -1,7 +1,6 @@
 import { ipcMain, IpcMainEvent } from "electron";
-import { ChatMember } from "@main/db/models";
-import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
-import downloader from "@main/downloader";
+import { Chat, ChatAgent, ChatMember } from "@main/db/models";
+import { FindOptions, Attributes } from "sequelize";
 import log from "@main/logger";
 import { t } from "i18next";
 
@@ -30,6 +29,30 @@ class ChatMembersHandler {
   }
 
   private async create(_event: IpcMainEvent, member: ChatMemberDtoType) {
+    const chat = await Chat.findOne({
+      where: { id: member.chatId },
+    });
+
+    if (!chat) {
+      throw new Error(t("models.chats.notFound"));
+    }
+
+    if (["TTS", "STT"].includes(chat.type)) {
+      throw new Error(t("models.chatMembers.cannotAddMemberToThisChat"));
+    }
+
+    const chatAgent = await ChatAgent.findOne({
+      where: { id: member.userId },
+    });
+
+    if (!chatAgent) {
+      throw new Error(t("models.chatAgents.notFound"));
+    }
+
+    if (chatAgent.type !== "GPT") {
+      throw new Error(t("models.chatMembers.onlyGPTAgentCanBeAddedToThisChat"));
+    }
+
     const chatMember = await ChatMember.create(member);
     await chatMember.reload();
     return chatMember.toJSON();
