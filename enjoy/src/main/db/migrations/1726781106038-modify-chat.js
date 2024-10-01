@@ -49,9 +49,19 @@ async function up({ context: queryInterface }) {
     allowNull: true,
   });
 
+  await queryInterface.addColumn("chat_messages", "role", {
+    type: DataTypes.STRING,
+    allowNull: true,
+  });
+
   await queryInterface.addColumn("chat_messages", "mentions", {
     type: DataTypes.JSON,
     defaultValue: [],
+    allowNull: true,
+  });
+
+  await queryInterface.changeColumn("chat_messages", "member_id", {
+    type: DataTypes.UUID,
     allowNull: true,
   });
 }
@@ -109,6 +119,16 @@ async function down({ context: queryInterface }) {
     type: DataTypes.JSON,
     defaultValue: [],
     allowNull: true,
+  });
+
+  await queryInterface.removeColumn("chat_messages", "role", {
+    type: DataTypes.STRING,
+    allowNull: false,
+  });
+
+  await queryInterface.changeColumn("chat_messages", "member_id", {
+    type: DataTypes.UUID,
+    allowNull: false,
   });
 }
 

@@ -14,7 +14,7 @@ import {
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
-import { ChatMember, UserSetting } from "@main/db/models";
+import { Chat, ChatMember, ChatMessage, UserSetting } from "@main/db/models";
 import { UserSettingKeyEnum } from "@/types/enums";
 import { DEFAULT_GPT_CONFIG } from "@/constants";
 
@@ -108,8 +108,14 @@ export class ChatAgent extends Model<ChatAgent> {
         UserSettingKeyEnum.LEARNING_LANGUAGE
       );
       logger.info("Migrating from chat agent", chatAgent.id);
-      chatAgent.members.forEach(async (member) => {
+      for (const member of chatAgent.members) {
         logger.info("Migrating to chat member", member.id);
+        const chatMessages = await ChatMessage.findAll({
+          where: {
+            memberId: member.id,
+          },
+        });
+
         if (member.userType === "Agent") {
           member.userType = "ChatAgent";
           member.config = {
@@ -127,17 +133,68 @@ export class ChatAgent extends Model<ChatAgent> {
               voice: chatAgent.config.ttsVoice,
             },
           };
-        }
+          for (const chatMessage of chatMessages) {
+            await chatMessage.update(
+              {
+                role: "AGENT",
+              },
+              {
+                transaction: tx,
+                hooks: false,
+              }
+            );
+          }
 
-        await member.save({ transaction: tx });
-      });
-      chatAgent.type = "GPT";
-      chatAgent.avatarUrl = `https://api.dicebear.com/9.x/thumbs/svg?seed=${chatAgent.name}`;
-      chatAgent.config = {
-        prompt: chatAgent.config.prompt,
-      };
-      await chatAgent.save({ transaction: tx });
+          await member.save({ transaction: tx, hooks: false });
+        }
+      }
+      await chatAgent.update(
+        {
+          type: "GPT",
+          avatarUrl: `https://api.dicebear.com/9.x/thumbs/svg?seed=${chatAgent.name}`,
+          config: {
+            prompt: chatAgent.config.prompt,
+          },
+        },
+        {
+          transaction: tx,
+        }
+      );
       await tx.commit();
     }
+
+    const members = await ChatMember.findAll({
+      where: {
+        userType: "User",
+      },
+    });
+    const tx = await ChatAgent.sequelize.transaction();
+    for (const member of members) {
+      const chatMessages = await ChatMessage.findAll({
+        where: {
+          memberId: member.id,
+        },
+      });
+      for (const chatMessage of chatMessages) {
+        await chatMessage.update(
+          {
+            role: "USER",
+            memberId: null,
+          },
+          {
+            transaction: tx,
+            hooks: false,
+          }
+        );
+      }
+      await member.destroy({ transaction: tx, hooks: false });
+    }
+    await tx.commit();
+
+    Chat.findAll().then((chats) => {
+      for (const chat of chats) {
+        chat.update({ updatedAt: new Date() });
+      }
+    });
   }
 }

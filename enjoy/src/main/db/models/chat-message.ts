@@ -63,9 +63,12 @@ export class ChatMessage extends Model<ChatMessage> {
   @Column(DataType.UUID)
   chatId: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
+  @Column(DataType.STRING)
+  role: "AGENT" | "USER";
+
   @Column(DataType.UUID)
-  memberId: string;
+  memberId: string | null;
 
   @Column(DataType.JSON)
   mentions: string[];

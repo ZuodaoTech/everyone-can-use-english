@@ -13,6 +13,7 @@ import {
   Scopes,
   BeforeDestroy,
   BeforeUpdate,
+  BeforeSave,
 } from "sequelize-typescript";
 import log from "@main/logger";
 import { ChatAgent, ChatMember, ChatMessage } from "@main/db/models";
@@ -128,11 +129,12 @@ export class Chat extends Model<Chat> {
     });
   }
 
-  @BeforeUpdate
+  @BeforeSave
   static async setupChatType(chat: Chat) {
     const members = await ChatMember.findAll({
-      where: { chatId: chat.id, userType: "ChatAgent" },
+      where: { chatId: chat.id },
     });
+
     if (members.length < 1) {
       throw new Error("Chat must have at least one agent");
     } else if (members.length > 1) {
