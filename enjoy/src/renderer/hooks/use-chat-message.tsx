@@ -192,11 +192,14 @@ export const useChatMessage = (chat: ChatType) => {
     const historyBufferSize = member.config.gpt.historyBufferSize || 10;
     const history = chatMessages
       .slice(-historyBufferSize)
-      .map(
-        (message) =>
-          `- ${message.member.name}: ${message.content}(${dayjs(
-            message.createdAt
-          ).fromNow()})`
+      .map((message) =>
+        message.role === "AGENT"
+          ? `- ${message.member.name}: ${message.content}(${dayjs(
+              message.createdAt
+            ).fromNow()})`
+          : `- ${user.name}: ${message.content}(${dayjs(
+              message.createdAt
+            ).fromNow()})`
       )
       .join("\n");
 
