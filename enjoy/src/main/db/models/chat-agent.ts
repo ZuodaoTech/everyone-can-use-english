@@ -31,12 +31,18 @@ export class ChatAgent extends Model<ChatAgent> {
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;
 
+  @Column(DataType.STRING)
+  type: string;
+
   @AllowNull(false)
   @Column(DataType.STRING)
   name: string;
 
   @Column(DataType.STRING)
   description: string;
+
+  @Column(DataType.STRING)
+  avatarUrl: string;
 
   @Column(DataType.STRING)
   source: string;
@@ -51,13 +57,6 @@ export class ChatAgent extends Model<ChatAgent> {
     hooks: true,
   })
   members: ChatMember[];
-
-  @Column(DataType.VIRTUAL)
-  get avatarUrl(): string {
-    return `https://api.dicebear.com/9.x/thumbs/svg?seed=${this.getDataValue(
-      "name"
-    )}`;
-  }
 
   @Column(DataType.VIRTUAL)
   get prompt(): string {
@@ -95,6 +94,7 @@ export class ChatAgent extends Model<ChatAgent> {
     ChatMember.destroy({ where: { userId: chatAgent.id } });
   }
 
+  // Migrate old data structure before v0.6.0 to new data structure
   static async migrateConfigToChatMember() {
     logger.info("Migrating config to chat member");
     const chatAgents = await ChatAgent.findAll({
@@ -131,6 +131,8 @@ export class ChatAgent extends Model<ChatAgent> {
 
         await member.save({ transaction: tx });
       });
+      chatAgent.type = "GPT";
+      chatAgent.avatarUrl = `https://api.dicebear.com/9.x/thumbs/svg?seed=${chatAgent.name}`;
       chatAgent.config = {
         prompt: chatAgent.config.prompt,
       };

@@ -11,6 +11,8 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  Select,
+  SelectItem,
   Textarea,
   toast,
 } from "@renderer/components/ui";
@@ -18,12 +20,13 @@ import { t } from "i18next";
 
 export const ChatAgentForm = (props: {
   agent?: ChatAgentType;
-  onSave: (data: { name: string; description: string; config: any }) => void;
+  onSave: (data: ChatAgentDtoType) => void;
   onCancel: () => void;
 }) => {
   const { agent, onSave, onCancel } = props;
 
   const agentFormSchema = z.object({
+    type: z.enum(["GPT", "TTS", "STT"]),
     name: z.string().min(1),
     description: z.string().min(1),
     prompt: z.string(),
@@ -32,6 +35,7 @@ export const ChatAgentForm = (props: {
   const form = useForm<z.infer<typeof agentFormSchema>>({
     resolver: zodResolver(agentFormSchema),
     values: agent || {
+      type: "GPT",
       name: t("models.chatAgent.namePlaceholder"),
       description: t("models.chatAgent.descriptionPlaceholder"),
       prompt: t("models.chatAgent.promptPlaceholder"),
@@ -39,9 +43,11 @@ export const ChatAgentForm = (props: {
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    const { name, description, ...config } = data;
+    const { type, name, description, ...config } = data;
     try {
       onSave({
+        type,
+        avatarUrl: `https://api.dicebear.com/9.x/thumbs/svg?seed=${name}`,
         name,
         description,
         config,
@@ -67,6 +73,36 @@ export const ChatAgentForm = (props: {
               />
             </Avatar>
           )}
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("models.chatAgent.type")}</FormLabel>
+                <Select {...field}>
+                  <SelectItem value="GPT">GPT</SelectItem>
+                  <SelectItem value="TTS">TTS</SelectItem>
+                  <SelectItem value="STT">STT</SelectItem>
+                </Select>
+                {form.watch("type") === "GPT" && (
+                  <FormDescription>
+                    {t("models.chatAgent.typeGptDescription")}
+                  </FormDescription>
+                )}
+                {form.watch("type") === "TTS" && (
+                  <FormDescription>
+                    {t("models.chatAgent.typeTtsDescription")}
+                  </FormDescription>
+                )}
+                {form.watch("type") === "STT" && (
+                  <FormDescription>
+                    {t("models.chatAgent.typeSttDescription")}
+                  </FormDescription>
+                )}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="name"

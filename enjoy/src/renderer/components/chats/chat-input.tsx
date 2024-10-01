@@ -238,7 +238,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
           </ChatSuggestionButton>
         )}
 
-        {chat.type === "group" && (
+        {chat.type === "GROUP" && (
           <Button
             data-tooltip-id={`${chat.id}-tooltip`}
             data-tooltip-content={t("continue")}
@@ -283,7 +283,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
         )}
       </Button>
       {chat.config.enableChatAssistant && <ChatSuggestionButton chat={chat} />}
-      {chat.type === "group" && (
+      {chat.type === "GROUP" && (
         <Button
           data-tooltip-id={`${chat.id}-tooltip`}
           data-tooltip-content={t("continue")}

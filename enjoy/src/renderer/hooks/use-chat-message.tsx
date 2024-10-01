@@ -115,9 +115,9 @@ export const useChatMessage = (chat: ChatType) => {
     const member = await EnjoyApp.chatMembers.findOne({
       where: { id: memberId },
     });
-    if (chat.type === "conversation") {
+    if (chat.type === "CONVERSATION") {
       return askAgentInConversation(member);
-    } else if (chat.type === "group") {
+    } else if (chat.type === "GROUP") {
       return askAgentInGroup(member);
     }
   };

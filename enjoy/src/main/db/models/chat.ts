@@ -50,7 +50,7 @@ export class Chat extends Model<Chat> {
   id: string;
 
   @Column(DataType.STRING)
-  type: "conversation" | "group";
+  type: "CONVERSATION" | "GROUP" | "TTS" | "STT";
 
   @AllowNull(false)
   @Column(DataType.STRING)
@@ -130,13 +130,36 @@ export class Chat extends Model<Chat> {
 
   @BeforeUpdate
   static async setupChatType(chat: Chat) {
-    const members = await ChatMember.findAll({ where: { chatId: chat.id } });
-    if (members.length < 2) {
-      throw new Error("Chat must have at least two members");
-    } else if (members.length > 2) {
-      chat.type = "group";
+    const members = await ChatMember.findAll({
+      where: { chatId: chat.id, userType: "ChatAgent" },
+    });
+    if (members.length < 1) {
+      throw new Error("Chat must have at least one agent");
+    } else if (members.length > 1) {
+      // For group chat, all members must be GPT agent
+      if (members.some((m) => m.agent?.type !== "GPT")) {
+        throw new Error("Group chat must have only GPT agents");
+      }
+      chat.type = "GROUP";
     } else {
-      chat.type = "conversation";
+      const agent = members[0].agent;
+      if (!agent) {
+        throw new Error("Chat must have at least one agent");
+      }
+
+      switch (agent.type) {
+        case "GPT":
+          chat.type = "CONVERSATION";
+          break;
+        case "TTS":
+          chat.type = "TTS";
+          break;
+        case "STT":
+          chat.type = "STT";
+          break;
+        default:
+          throw new Error("Invalid agent type");
+      }
     }
   }
 

@@ -93,24 +93,13 @@ class ChatsHandler {
       }
       const chat = await Chat.create(
         {
-          type: "conversation",
+          type: "CONVERSATION",
           ...chatData,
         },
         {
           transaction,
         }
       );
-      if (members.findIndex((m) => m.userType === "User") < 0) {
-        members.push({
-          userId: (
-            await UserSetting.get(UserSettingKeyEnum.PROFILE)
-          ).id.toString(),
-          userType: "User",
-          config: {
-            language: await UserSetting.get(UserSettingKeyEnum.NATIVE_LANGUAGE),
-          },
-        });
-      }
       for (const member of members) {
         await ChatMember.create(
           {

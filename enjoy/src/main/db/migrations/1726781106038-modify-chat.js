@@ -28,6 +28,16 @@ async function up({ context: queryInterface }) {
     "description"
   );
 
+  await queryInterface.addColumn("chat_agents", "type", {
+    type: DataTypes.STRING,
+    allowNull: false,
+  });
+
+  await queryInterface.addColumn("chat_agents", "avatarUrl", {
+    type: DataTypes.STRING,
+    allowNull: true,
+  });
+
   await queryInterface.addColumn("chat_agents", "source", {
     type: DataTypes.STRING,
     allowNull: true,
@@ -72,6 +82,16 @@ async function down({ context: queryInterface }) {
     "description",
     "introduction"
   );
+
+  await queryInterface.removeColumn("chat_agents", "type", {
+    type: DataTypes.STRING,
+    allowNull: false,
+  });
+
+  await queryInterface.removeColumn("chat_agents", "avatarUrl", {
+    type: DataTypes.STRING,
+    allowNull: true,
+  });
 
   await queryInterface.removeColumn("chat_agents", "source", {
     type: DataTypes.STRING,
