@@ -6,7 +6,7 @@ async function up({ context: queryInterface }) {
     allowNull: true,
   });
 
-  await queryInterface.addColumn("chats", "contextBreaks", {
+  await queryInterface.addColumn("chats", "context_breaks", {
     type: DataTypes.JSON,
     defaultValue: [],
     allowNull: true,
@@ -31,9 +31,10 @@ async function up({ context: queryInterface }) {
   await queryInterface.addColumn("chat_agents", "type", {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: "GPT",
   });
 
-  await queryInterface.addColumn("chat_agents", "avatarUrl", {
+  await queryInterface.addColumn("chat_agents", "avatar_url", {
     type: DataTypes.STRING,
     allowNull: true,
   });
@@ -61,7 +62,7 @@ async function down({ context: queryInterface }) {
     allowNull: true,
   });
 
-  await queryInterface.removeColumn("chats", "contextBreaks", {
+  await queryInterface.removeColumn("chats", "context_breaks", {
     type: DataTypes.JSON,
     defaultValue: [],
     allowNull: true,
@@ -86,9 +87,10 @@ async function down({ context: queryInterface }) {
   await queryInterface.removeColumn("chat_agents", "type", {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: "GPT",
   });
 
-  await queryInterface.removeColumn("chat_agents", "avatarUrl", {
+  await queryInterface.removeColumn("chat_agents", "avatar_url", {
     type: DataTypes.STRING,
     allowNull: true,
   });

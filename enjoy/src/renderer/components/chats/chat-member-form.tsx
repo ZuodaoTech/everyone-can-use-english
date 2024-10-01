@@ -17,30 +17,19 @@ import {
   AlertDialogTrigger,
   Button,
   Form,
-  FormControl,
   FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Slider,
   Textarea,
   toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useContext } from "react";
-import {
-  AISettingsProviderContext,
-  AppSettingsProviderContext,
-} from "@renderer/context";
-import { LANGUAGES } from "@/constants";
+import { AppSettingsProviderContext } from "@renderer/context";
 import Mustache from "mustache";
+import { ChatGPTForm, ChatTTSForm } from "@renderer/components";
 
 export const ChatMemberForm = (props: {
   chat: ChatType;
@@ -50,7 +39,6 @@ export const ChatMemberForm = (props: {
 }) => {
   const { member, onFinish, chat, onDelete } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { gptProviders, ttsProviders } = useContext(AISettingsProviderContext);
 
   const buildFullPrompt = (prompt: string) => {
     return Mustache.render(
@@ -151,215 +139,7 @@ export const ChatMemberForm = (props: {
               {t("models.chatMember.gptSettings")}
             </AccordionTrigger>
             <AccordionContent className="space-y-4 px-2">
-              <FormField
-                control={form.control}
-                name="config.gpt.engine"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("gpt.engine")}</FormLabel>
-                    <Select
-                      required
-                      onValueChange={field.onChange}
-                      value={field.value as string}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("selectAiEngine")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {Object.keys(gptProviders).map((key) => (
-                          <SelectItem key={key} value={key}>
-                            {gptProviders[key].name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      {gptProviders[field.value as string]?.description}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="config.gpt.model"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("gpt.model")}</FormLabel>
-                    <Select
-                      required
-                      onValueChange={field.onChange}
-                      value={field.value as string}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("selectAiModel")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {(
-                          gptProviders[
-                            form.watch("config.gpt.engine") as string
-                          ]?.models || []
-                        ).map((option: string) => (
-                          <SelectItem key={option} value={option}>
-                            {option}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="config.gpt.temperature"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("gpt.temperature")}</FormLabel>
-                    <div className="flex items-center space-x-1">
-                      <Slider
-                        className="flex-1"
-                        onValueChange={(value) => field.onChange(value[0])}
-                        value={[field.value as number]}
-                        min={0}
-                        max={1}
-                        step={0.1}
-                      />
-                      <span>{field.value as number}</span>
-                    </div>
-                    <FormDescription>
-                      {t("gpt.temperatureDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="config.gpt.historyBufferSize"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("gpt.historyBufferSize")}</FormLabel>
-                    <div className="flex items-center space-x-1">
-                      <Slider
-                        className="flex-1"
-                        onValueChange={(value) => field.onChange(value[0])}
-                        value={[field.value as number]}
-                        min={0}
-                        max={100}
-                        step={1}
-                      />
-                      <span>{field.value as number}</span>
-                    </div>
-                    <FormDescription>
-                      {t("gpt.historyBufferSizeDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="config.gpt.maxCompletionTokens"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("gpt.maxCompletionTokens")}</FormLabel>
-                    <Input
-                      type="number"
-                      min="-1"
-                      value={field.value}
-                      onChange={(event) => {
-                        if (!event.target.value) return;
-                        field.onChange(parseInt(event.target.value));
-                      }}
-                    />
-                    <FormDescription>
-                      {t("gpt.maxCompletionTokensDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="config.gpt.presencePenalty"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("gpt.presencePenalty")}</FormLabel>
-                    <div className="flex items-center space-x-1">
-                      <Slider
-                        className="flex-1"
-                        onValueChange={(value) => field.onChange(value[0])}
-                        value={[field.value as number]}
-                        min={-2}
-                        max={2}
-                        step={0.1}
-                      />
-                      <span>{field.value as number}</span>
-                    </div>
-                    <FormDescription>
-                      {t("gpt.presencePenaltyDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="config.gpt.frequencyPenalty"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("gpt.frequencyPenalty")}</FormLabel>
-                    <div className="flex items-center space-x-1">
-                      <Slider
-                        className="flex-1"
-                        onValueChange={(value) => field.onChange(value[0])}
-                        value={[field.value as number]}
-                        min={-2}
-                        max={2}
-                        step={0.1}
-                      />
-                      <span>{field.value as number}</span>
-                    </div>
-                    <FormDescription>
-                      {t("gpt.frequencyPenaltyDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="config.gpt.numberOfChoices"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("gpt.numberOfChoices")}</FormLabel>
-                    <Input
-                      type="number"
-                      min="1"
-                      step="1.0"
-                      value={field.value}
-                      onChange={(event) => {
-                        field.onChange(
-                          event.target.value
-                            ? parseInt(event.target.value)
-                            : 1.0
-                        );
-                      }}
-                    />
-                    <FormDescription>
-                      {t("gpt.numberOfChoicesDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <ChatGPTForm form={form} />
             </AccordionContent>
           </AccordionItem>
 
@@ -368,156 +148,7 @@ export const ChatMemberForm = (props: {
               {t("models.chatMember.ttsSettings")}
             </AccordionTrigger>
             <AccordionContent className="space-y-4 px-2">
-              <FormField
-                control={form.control}
-                name="config.tts.engine"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("tts.engine")}</FormLabel>
-                    <Select
-                      required
-                      onValueChange={field.onChange}
-                      value={field.value as string}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("selectTtsEngine")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {Object.keys(ttsProviders).map((key) => (
-                          <SelectItem key={key} value={key}>
-                            {ttsProviders[key].name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="config.tts.model"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("tts.model")}</FormLabel>
-                    <Select
-                      required
-                      onValueChange={field.onChange}
-                      value={field.value as string}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("selectTtsModel")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {(
-                          ttsProviders[
-                            form.watch("config.tts.engine") as string
-                          ]?.models || []
-                        ).map((model: string) => (
-                          <SelectItem key={model} value={model}>
-                            {model}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="config.tts.language"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("tts.language")}</FormLabel>
-                    <Select
-                      required
-                      value={field.value as string}
-                      onValueChange={field.onChange}
-                    >
-                      <SelectTrigger className="text-xs">
-                        <SelectValue>
-                          {
-                            LANGUAGES.find((lang) => lang.code === field.value)
-                              ?.name
-                          }
-                        </SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {LANGUAGES.map((lang) => (
-                          <SelectItem
-                            className="text-xs"
-                            value={lang.code}
-                            key={lang.code}
-                          >
-                            {lang.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="config.tts.voice"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("tts.voice")}</FormLabel>
-                    <Select
-                      required
-                      onValueChange={field.onChange}
-                      value={field.value as string}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("selectTtsVoice")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {(
-                          (form.watch("config.tts.engine") === "enjoyai"
-                            ? ttsProviders.enjoyai.voices[
-                                (
-                                  form.watch("config.tts.model") as string
-                                )?.split("/")?.[0]
-                              ]
-                            : ttsProviders[
-                                form.watch("config.tts.engine") as string
-                              ]?.voices) || []
-                        ).map((voice: any) => {
-                          if (typeof voice === "string") {
-                            return (
-                              <SelectItem key={voice} value={voice}>
-                                <span className="capitalize">{voice}</span>
-                              </SelectItem>
-                            );
-                          } else if (
-                            voice.language === form.watch("config.tts.language")
-                          ) {
-                            return (
-                              <SelectItem key={voice.value} value={voice.value}>
-                                <span className="capitalize">
-                                  {voice.label}
-                                </span>
-                              </SelectItem>
-                            );
-                          }
-                        })}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <ChatTTSForm form={form} />
             </AccordionContent>
           </AccordionItem>
 

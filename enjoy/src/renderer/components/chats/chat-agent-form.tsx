@@ -5,6 +5,7 @@ import {
   Avatar,
   Button,
   Form,
+  FormControl,
   FormDescription,
   FormField,
   FormItem,
@@ -12,11 +13,15 @@ import {
   FormMessage,
   Input,
   Select,
+  SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
   Textarea,
   toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
+import { ChatTTSForm } from "@renderer/components";
 
 export const ChatAgentForm = (props: {
   agent?: ChatAgentType;
@@ -29,21 +34,30 @@ export const ChatAgentForm = (props: {
     type: z.enum(["GPT", "TTS", "STT"]),
     name: z.string().min(1),
     description: z.string().min(1),
-    prompt: z.string(),
+    config: z.object({
+      prompt: z.string().optional(),
+      tts: z
+        .object({
+          engine: z.string().optional(),
+          model: z.string().optional(),
+          language: z.string().optional(),
+          voice: z.string().optional(),
+        })
+        .optional(),
+    }),
   });
 
   const form = useForm<z.infer<typeof agentFormSchema>>({
     resolver: zodResolver(agentFormSchema),
     values: agent || {
       type: "GPT",
-      name: t("models.chatAgent.namePlaceholder"),
-      description: t("models.chatAgent.descriptionPlaceholder"),
-      prompt: t("models.chatAgent.promptPlaceholder"),
+      name: "",
+      description: "",
     },
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    const { type, name, description, ...config } = data;
+    const { type, name, description, config } = data;
     try {
       onSave({
         type,
@@ -79,10 +93,21 @@ export const ChatAgentForm = (props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chatAgent.type")}</FormLabel>
-                <Select {...field}>
-                  <SelectItem value="GPT">GPT</SelectItem>
-                  <SelectItem value="TTS">TTS</SelectItem>
-                  <SelectItem value="STT">STT</SelectItem>
+                <Select
+                  required
+                  onValueChange={field.onChange}
+                  value={field.value as string}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder={t("models.chatAgent.type")} />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="GPT">GPT</SelectItem>
+                    <SelectItem value="TTS">TTS</SelectItem>
+                    <SelectItem value="STT">STT</SelectItem>
+                  </SelectContent>
                 </Select>
                 {form.watch("type") === "GPT" && (
                   <FormDescription>
@@ -142,25 +167,29 @@ export const ChatAgentForm = (props: {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="prompt"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("models.chatAgent.prompt")}</FormLabel>
-                <Textarea
-                  placeholder={t("models.chatAgent.promptPlaceholder")}
-                  required
-                  className="min-h-36 max-h-64"
-                  {...field}
-                />
-                <FormDescription>
-                  {t("models.chatAgent.promptDescription")}
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {form.watch("type") === "GPT" && (
+            <FormField
+              control={form.control}
+              name="config.prompt"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("models.chatAgent.prompt")}</FormLabel>
+                  <Textarea
+                    placeholder={t("models.chatAgent.promptPlaceholder")}
+                    required
+                    className="min-h-36 max-h-64"
+                    {...field}
+                  />
+                  <FormDescription>
+                    {t("models.chatAgent.promptDescription")}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          {form.watch("type") === "TTS" && <ChatTTSForm form={form} />}
         </div>
         <div className="flex items-center justify-end space-x-4">
           <Button type="button" variant="ghost" onClick={onCancel}>

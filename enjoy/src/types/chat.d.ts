@@ -81,6 +81,7 @@ type TtsConfigType = {
 };
 
 type ChatDtoType = {
+  type?: "CONVERSATION" | "GROUP" | "TTS" | "STT";
   name: string;
   config: {
     sttEngine: string;
@@ -92,10 +93,10 @@ type ChatDtoType = {
 };
 
 type ChatMemberDtoType = {
-  chatId?: string;
-  userId?: string;
-  userType?: "ChatAgent";
-  config?: {
+  chatId: string;
+  userId: string;
+  userType: "ChatAgent";
+  config: {
     prompt?: string;
     description?: string;
     language?: string;
