@@ -38,6 +38,8 @@ export default function Chats() {
       {!sidePanelCollapsed && (
         <>
           <ResizablePanel
+            order={1}
+            id="chat-side-panel"
             className="bg-muted/30"
             collapsible={true}
             defaultSize={20}
@@ -65,7 +67,7 @@ export default function Chats() {
           <ResizableHandle />
         </>
       )}
-      <ResizablePanel minSize={50}>
+      <ResizablePanel id="chat-session-panel" order={2} minSize={50}>
         <Chat
           chat={currentChat}
           sidePanelCollapsed={sidePanelCollapsed}

@@ -47,7 +47,7 @@ export const Layout = () => {
         className="h-screen w-full"
         data-testid="layout-home"
       >
-        <ResizablePanel minSize={50}>
+        <ResizablePanel id="main-panel" order={1} minSize={50}>
           <div className="flex flex-start">
             <Sidebar />
             <div className="flex-1 border-l overflow-x-hidden overflow-y-auto h-screen">
@@ -59,6 +59,8 @@ export const Layout = () => {
           <>
             <ResizableHandle />
             <ResizablePanel
+              id="copilot-panel"
+              order={2}
               collapsible={true}
               defaultSize={30}
               maxSize={50}
