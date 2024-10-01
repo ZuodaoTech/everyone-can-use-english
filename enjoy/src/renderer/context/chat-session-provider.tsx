@@ -181,7 +181,7 @@ export const ChatSessionProvider = ({
     if (submitting) return;
 
     const pendingMessage = chatMessages.find(
-      (m) => m.member.userType === "User" && m.state === "pending"
+      (m) => m.role === "USER" && m.state === "pending"
     );
 
     try {
@@ -246,18 +246,16 @@ export const ChatSessionProvider = ({
   };
 
   const pickNextAgentMember = () => {
-    const members = chat.members.filter(
-      (member) => member.userType === "ChatAgent"
-    );
+    const members = chat.members;
     let currentIndex = chatMessages.length - 1;
     const spokeMembers = new Set();
 
     while (currentIndex >= 0) {
       const message = chatMessages[currentIndex];
-      if (spokeMembers.has(message.member.id)) {
+      if (message.role === "AGENT" && spokeMembers.has(message.member?.id)) {
         break;
       }
-      if (message.member.userType === "User") {
+      if (message.role === "USER") {
         break;
       }
       spokeMembers.add(message.member.id);

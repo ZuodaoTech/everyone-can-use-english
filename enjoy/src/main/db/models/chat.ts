@@ -131,6 +131,10 @@ export class Chat extends Model<Chat> {
 
   @BeforeSave
   static async setupChatType(chat: Chat) {
+    if (chat.isNewRecord && chat.type) {
+      return;
+    }
+
     const members = await ChatMember.findAll({
       where: { chatId: chat.id },
     });

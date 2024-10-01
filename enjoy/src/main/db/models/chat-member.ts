@@ -69,33 +69,7 @@ export class ChatMember extends Model<ChatMember> {
 
   @Column(DataType.VIRTUAL)
   get name(): string {
-    if (this.userType === "User") {
-      return this.user?.name;
-    } else if (this.userType === "ChatAgent") {
-      return this.agent?.name;
-    }
-    return "";
-  }
-
-  @Column(DataType.VIRTUAL)
-  get user(): {
-    name: string;
-    avatarUrl: string;
-  } {
-    if (this.userType === "User") {
-      const user = settings.getSync("user") as {
-        name: string;
-        avatarUrl: string;
-      };
-
-      if (!user.avatarUrl) {
-        user.avatarUrl = `https://api.dicebear.com/9.x/thumbs/svg?seed=${user.name}`;
-      }
-
-      return user;
-    } else {
-      return this.agent;
-    }
+    return this.agent?.name;
   }
 
   @AfterCreate

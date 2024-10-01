@@ -12,6 +12,7 @@ import {
   AllowNull,
   Scopes,
   HasOne,
+  BeforeSave,
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
@@ -110,6 +111,23 @@ export class ChatMessage extends Model<ChatMessage> {
     },
   })
   speech: Speech;
+
+  @BeforeSave
+  static async setupRole(chatMessage: ChatMessage) {
+    if (chatMessage.memberId) {
+      chatMessage.role = "AGENT";
+    } else {
+      chatMessage.role = "USER";
+    }
+  }
+
+  @AfterCreate
+  static async updateChat(chatMessage: ChatMessage) {
+    const chat = await Chat.findByPk(chatMessage.chatId);
+    if (chat) {
+      await chat.update({ updatedAt: new Date() });
+    }
+  }
 
   @AfterCreate
   static async notifyForCreate(chatMessage: ChatMessage) {

@@ -53,8 +53,8 @@ export const useChatMessage = (chat: ChatType) => {
     return EnjoyApp.chatMessages
       .create({
         chatId: chat.id,
-        memberId: chat.members.find((m) => m.userType === "User").id,
         content,
+        role: "USER",
         state: "pending",
         recordingUrl,
       })
@@ -124,7 +124,7 @@ export const useChatMessage = (chat: ChatType) => {
 
   const askAgentInConversation = async (member: ChatMemberType) => {
     const pendingMessage = chatMessages.find(
-      (m) => m.member.user && m.state === "pending"
+      (m) => m.role === "USER" && m.state === "pending"
     );
     if (!pendingMessage) return;
 
@@ -135,9 +135,9 @@ export const useChatMessage = (chat: ChatType) => {
       .slice(-historyBufferSize);
     const chatHistory = new ChatMessageHistory();
     messages.forEach((message) => {
-      if (message.member.userType === "User") {
+      if (message.role === "USER") {
         chatHistory.addUserMessage(message.content);
-      } else if (message.member.userType === "ChatAgent") {
+      } else if (message.role === "AGENT") {
         chatHistory.addAIMessage(message.content);
       }
     });
@@ -180,7 +180,7 @@ export const useChatMessage = (chat: ChatType) => {
 
   const askAgentInGroup = async (member: ChatMemberType) => {
     const pendingMessage = chatMessages.find(
-      (m) => m.member.user && m.state === "pending"
+      (m) => m.role === "USER" && m.state === "pending"
     );
 
     const llm = buildLlm(member);

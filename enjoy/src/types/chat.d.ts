@@ -43,13 +43,13 @@ type ChatMemberType = {
     tts?: TtsConfigType;
     [key: string]: any;
   };
-  agent?: ChatAgentType;
-  user?: UserType;
+  agent: ChatAgentType;
 };
 
 type ChatMessageType = {
   id: string;
-  memberId: string;
+  role: "USER" | "AGENT";
+  memberId: string | null;
   chatId: string;
   content: string;
   state: "pending" | "completed";
@@ -93,7 +93,6 @@ type ChatDtoType = {
 };
 
 type ChatMemberDtoType = {
-  chatId: string;
   userId: string;
   userType: "ChatAgent";
   config: {

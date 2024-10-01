@@ -25,14 +25,14 @@ export const ChatMessage = (props: {
     }
   }, [chatMessage]);
 
-  if (chatMessage.member?.userType === "User") {
+  if (chatMessage.role === "USER") {
     return (
       <ChatUserMessage
         chatMessage={props.chatMessage}
         isLastMessage={isLastMessage}
       />
     );
-  } else if (props.chatMessage.member?.userType === "ChatAgent") {
+  } else if (props.chatMessage.role === "AGENT") {
     return (
       <ChatAgentMessage
         chatMessage={props.chatMessage}

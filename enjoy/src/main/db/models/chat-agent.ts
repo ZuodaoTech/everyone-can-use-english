@@ -11,6 +11,7 @@ import {
   AllowNull,
   BeforeDestroy,
   HasMany,
+  BeforeSave,
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
@@ -87,6 +88,13 @@ export class ChatAgent extends Model<ChatAgent> {
       action: action,
       record: chatAgent.toJSON(),
     });
+  }
+
+  @BeforeSave
+  static setupDefaultAvatar(chatAgent: ChatAgent) {
+    if (!chatAgent.avatarUrl) {
+      chatAgent.avatarUrl = `https://api.dicebear.com/9.x/thumbs/svg?seed=${chatAgent.name}`;
+    }
   }
 
   @BeforeDestroy

@@ -64,6 +64,10 @@ async function up({ context: queryInterface }) {
     type: DataTypes.UUID,
     allowNull: true,
   });
+
+  await queryInterface.addIndex("chat_members", ["chat_id", "user_id"], {
+    unique: true,
+  });
 }
 
 async function down({ context: queryInterface }) {
@@ -130,6 +134,8 @@ async function down({ context: queryInterface }) {
     type: DataTypes.UUID,
     allowNull: false,
   });
+
+  await queryInterface.removeIndex("chat_members", ["chat_id", "user_id"]);
 }
 
 export { up, down };
