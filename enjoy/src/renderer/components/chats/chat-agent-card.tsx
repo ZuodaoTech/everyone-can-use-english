@@ -14,8 +14,8 @@ export const ChatAgentCard = (props: {
   chatAgent: ChatAgentType;
   selected: boolean;
   onSelect: (chatAgent: ChatAgentType) => void;
-  onEdit: (chatAgent: ChatAgentType) => void;
-  onDelete: (chatAgent: ChatAgentType) => void;
+  onEdit?: (chatAgent: ChatAgentType) => void;
+  onDelete?: (chatAgent: ChatAgentType) => void;
 }) => {
   const { chatAgent, selected = false, onSelect, onEdit, onDelete } = props;
 
@@ -36,21 +36,27 @@ export const ChatAgentCard = (props: {
           {chatAgent.description}
         </div>
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <EllipsisIcon className="w-4 h-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => onEdit(chatAgent)}>
-            <span>{t("edit")}</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onDelete(chatAgent)}>
-            <span className="text-destructive">{t("delete")}</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {(onEdit || onDelete) && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <EllipsisIcon className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {onEdit && (
+              <DropdownMenuItem onClick={() => onEdit(chatAgent)}>
+                <span>{t("edit")}</span>
+              </DropdownMenuItem>
+            )}
+            {onDelete && (
+              <DropdownMenuItem onClick={() => onDelete(chatAgent)}>
+                <span className="text-destructive">{t("delete")}</span>
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </div>
   );
 };

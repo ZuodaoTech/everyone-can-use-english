@@ -21,43 +21,19 @@ import {
   SettingsIcon,
 } from "lucide-react";
 import { useContext, useState } from "react";
-import { ChatSettings, CopilotChats } from "@renderer/components";
-import { t } from "i18next";
 import {
-  AppSettingsProviderContext,
-  CopilotProviderContext,
-} from "@renderer/context";
+  ChatSettings,
+  CopilotChatAgents,
+  CopilotChats,
+} from "@renderer/components";
+import { t } from "i18next";
+import { CopilotProviderContext } from "@renderer/context";
 
 export const CopilotHeader = () => {
   const [displayChatForm, setDisplayChatForm] = useState(false);
   const [displayChats, setDisplayChats] = useState(false);
-  const { currentChat, setCurrentChat, buildAgentMember, active, setActive } =
-    useContext(CopilotProviderContext);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-
-  const handleNewChat = async () => {
-    const agent = currentChat?.members.find(
-      (member) => member.userType === "ChatAgent"
-    )?.agent;
-    if (!agent) {
-      return;
-    }
-
-    EnjoyApp.chats
-      .create({
-        name: t("newChat"),
-        config: {
-          sttEngine: currentChat?.config.sttEngine,
-        },
-        members: [buildAgentMember(agent)],
-      })
-      .then((newChat) => {
-        setCurrentChat(newChat);
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  };
+  const [displayChatAgents, setDisplayChatAgents] = useState(false);
+  const { currentChat, active, setActive } = useContext(CopilotProviderContext);
 
   return (
     <div className="h-10 border-b px-3 shadow flex items-center justify-between space-x-2 sticky top-0 z-10 bg-background mb-4">
@@ -85,14 +61,16 @@ export const CopilotHeader = () => {
         <span className="text-sm">{currentChat?.name}</span>
       </div>
       <div className="flex items-center space-x-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="w-6 h-6"
-          onClick={handleNewChat}
-        >
-          <PlusIcon className="w-5 h-5" />
-        </Button>
+        <Popover open={displayChatAgents} onOpenChange={setDisplayChatAgents}>
+          <PopoverTrigger asChild>
+            <Button variant="ghost" size="icon" className="w-6 h-6">
+              <PlusIcon className="w-5 h-5" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <CopilotChatAgents onCancel={() => setDisplayChatAgents(false)} />
+          </PopoverContent>
+        </Popover>
         {currentChat && (
           <Dialog open={displayChatForm} onOpenChange={setDisplayChatForm}>
             <DialogTrigger asChild>
