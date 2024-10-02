@@ -171,129 +171,148 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="config.enableChatAssistant"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex items-center space-x-2">
-                  <FormLabel>{t("models.chat.enableChatAssistant")}</FormLabel>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </div>
-                <FormDescription>
-                  {t("models.chat.enableChatAssistantDescription")}
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="config.enableAutoTts"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex items-center space-x-2">
-                  <FormLabel>{t("models.chat.enableAutoTts")}</FormLabel>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </div>
-                <FormDescription>
-                  {t("models.chat.enableAutoTtsDescription")}
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <Collapsible open={isMoreSettingsOpen} className="mb-6">
-          <CollapsibleTrigger asChild>
-            <Button
-              type="button"
-              variant="link"
-              className="w-full justify-center text-muted-foreground"
-              size="sm"
-              onClick={() => setIsMoreSettingsOpen(!isMoreSettingsOpen)}
-            >
-              {t("models.chat.moreSettings")}
-              {isMoreSettingsOpen ? (
-                <ChevronUpIcon className="w-4 h-4 ml-2" />
-              ) : (
-                <ChevronDownIcon className="w-4 h-4 ml-2" />
-              )}
-            </Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-4 px-2">
-            <FormField
-              control={form.control}
-              name="config.sttEngine"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("sttAiService")}</FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue
-                        placeholder={t("models.chat.sttAiServicePlaceholder")}
+
+          {["CONVERSATION", "GROUP"].includes(chat.type) && (
+            <>
+              <FormField
+                control={form.control}
+                name="config.enableChatAssistant"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-2">
+                      <FormLabel>
+                        {t("models.chat.enableChatAssistant")}
+                      </FormLabel>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
                       />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value={SttEngineOptionEnum.LOCAL}>
-                        {t("local")}
-                      </SelectItem>
-                      <SelectItem value={SttEngineOptionEnum.ENJOY_AZURE}>
-                        {t("enjoyAzure")}
-                      </SelectItem>
-                      <SelectItem value={SttEngineOptionEnum.ENJOY_CLOUDFLARE}>
-                        {t("enjoyCloudflare")}
-                      </SelectItem>
-                      <SelectItem value={SttEngineOptionEnum.OPENAI}>
-                        {t("openai")}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormDescription>
-                    {t("models.chat.sttAiServiceDescription")}
-                  </FormDescription>
-                  <FormDescription>
-                    {form.watch("config.sttEngine") ===
-                      SttEngineOptionEnum.LOCAL &&
-                      t("localSpeechToTextDescription")}
-                    {form.watch("config.sttEngine") ===
-                      SttEngineOptionEnum.ENJOY_AZURE &&
-                      t("enjoyAzureSpeechToTextDescription")}
-                    {form.watch("config.sttEngine") ===
-                      SttEngineOptionEnum.ENJOY_CLOUDFLARE &&
-                      t("enjoyCloudflareSpeechToTextDescription")}
-                    {form.watch("config.sttEngine") ===
-                      SttEngineOptionEnum.OPENAI &&
-                      t("openaiSpeechToTextDescription")}
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="config.prompt"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("models.chat.prompt")}</FormLabel>
-                  <Textarea
-                    {...field}
-                    placeholder={t("models.chat.promptPlaceholder")}
-                  />
-                  <FormDescription>
-                    {t("models.chat.promptDescription")}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </CollapsibleContent>
-        </Collapsible>
+                    </div>
+                    <FormDescription>
+                      {t("models.chat.enableChatAssistantDescription")}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="config.enableAutoTts"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-2">
+                      <FormLabel>{t("models.chat.enableAutoTts")}</FormLabel>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </div>
+                    <FormDescription>
+                      {t("models.chat.enableAutoTtsDescription")}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
+        </div>
+
+        {["CONVERSATION", "GROUP"].includes(chat.type) && (
+          <>
+            <Collapsible open={isMoreSettingsOpen} className="mb-6">
+              <CollapsibleTrigger asChild>
+                <Button
+                  type="button"
+                  variant="link"
+                  className="w-full justify-center text-muted-foreground"
+                  size="sm"
+                  onClick={() => setIsMoreSettingsOpen(!isMoreSettingsOpen)}
+                >
+                  {t("models.chat.moreSettings")}
+                  {isMoreSettingsOpen ? (
+                    <ChevronUpIcon className="w-4 h-4 ml-2" />
+                  ) : (
+                    <ChevronDownIcon className="w-4 h-4 ml-2" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="space-y-4 px-2">
+                <FormField
+                  control={form.control}
+                  name="config.sttEngine"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("sttAiService")}</FormLabel>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={t(
+                              "models.chat.sttAiServicePlaceholder"
+                            )}
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value={SttEngineOptionEnum.LOCAL}>
+                            {t("local")}
+                          </SelectItem>
+                          <SelectItem value={SttEngineOptionEnum.ENJOY_AZURE}>
+                            {t("enjoyAzure")}
+                          </SelectItem>
+                          <SelectItem
+                            value={SttEngineOptionEnum.ENJOY_CLOUDFLARE}
+                          >
+                            {t("enjoyCloudflare")}
+                          </SelectItem>
+                          <SelectItem value={SttEngineOptionEnum.OPENAI}>
+                            {t("openai")}
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        {t("models.chat.sttAiServiceDescription")}
+                      </FormDescription>
+                      <FormDescription>
+                        {form.watch("config.sttEngine") ===
+                          SttEngineOptionEnum.LOCAL &&
+                          t("localSpeechToTextDescription")}
+                        {form.watch("config.sttEngine") ===
+                          SttEngineOptionEnum.ENJOY_AZURE &&
+                          t("enjoyAzureSpeechToTextDescription")}
+                        {form.watch("config.sttEngine") ===
+                          SttEngineOptionEnum.ENJOY_CLOUDFLARE &&
+                          t("enjoyCloudflareSpeechToTextDescription")}
+                        {form.watch("config.sttEngine") ===
+                          SttEngineOptionEnum.OPENAI &&
+                          t("openaiSpeechToTextDescription")}
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="config.prompt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("models.chat.prompt")}</FormLabel>
+                      <Textarea
+                        {...field}
+                        placeholder={t("models.chat.promptPlaceholder")}
+                      />
+                      <FormDescription>
+                        {t("models.chat.promptDescription")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CollapsibleContent>
+            </Collapsible>
+          </>
+        )}
 
         <div className="flex items-center justify-end space-x-4 w-full">
           {chat?.id && (

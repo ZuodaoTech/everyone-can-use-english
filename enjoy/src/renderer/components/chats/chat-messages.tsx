@@ -115,7 +115,7 @@ const ChatAgentAvatar = (props: {
         <div className="italic text-xs text-muted-foreground/50">
           {chatMember.agent.type === "GPT" && chatMember.config.gpt?.model}
           {chatMember.agent.type === "TTS" &&
-            `${chatMember.agent.config.tts?.voice}(${chatMember.agent.config.tts?.model})`}
+            chatMember.agent.config.tts?.voice}
         </div>
       </div>
     </div>

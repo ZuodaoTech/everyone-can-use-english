@@ -35,7 +35,10 @@ export const ChatSettings = (props: {
     <Tabs defaultValue="chat" className="mb-6">
       <TabsList className="w-full grid grid-cols-2 mb-4">
         <TabsTrigger value="chat">{t("models.chat.chatSettings")}</TabsTrigger>
-        <TabsTrigger value="members">
+        <TabsTrigger
+          disabled={!["CONVERSATION", "GROUP"].includes(chat.type)}
+          value="members"
+        >
           {t("models.chat.memberSettings")}
         </TabsTrigger>
       </TabsList>
@@ -44,15 +47,17 @@ export const ChatSettings = (props: {
         <ChatForm chat={chat} onFinish={onFinish} />
       </TabsContent>
 
-      <TabsContent value="members">
-        {agentMembers.length > 0 ? (
-          <ChatMemberSetting chat={chat} agentMembers={agentMembers} />
-        ) : (
-          <div className="text-muted-foreground py-4 text-center">
-            {t("noData")}
-          </div>
-        )}
-      </TabsContent>
+      {["CONVERSATION", "GROUP"].includes(chat.type) && (
+        <TabsContent value="members">
+          {agentMembers.length > 0 ? (
+            <ChatMemberSetting chat={chat} agentMembers={agentMembers} />
+          ) : (
+            <div className="text-muted-foreground py-4 text-center">
+              {t("noData")}
+            </div>
+          )}
+        </TabsContent>
+      )}
     </Tabs>
   );
 };

@@ -66,7 +66,7 @@ export const ChatAgentMessage = (props: {
   const [translating, setTranslating] = useState<boolean>(false);
   const { translate, summarizeTopic } = useAiCommand();
   const [displayContent, setDisplayContent] = useState(
-    !chat.config.enableAutoTts
+    !(chat.type === "TTS" || chat.config.enableAutoTts)
   );
   const [displayPlayer, setDisplayPlayer] = useState(false);
   const chatMember = chatMembers.find(
@@ -105,11 +105,10 @@ export const ChatAgentMessage = (props: {
       sourceType: "ChatMessage",
       sourceId: chatMessage.id,
       text: chatMessage.content,
-      configuration: {
-        engine: chatMessage.member.config.tts?.engine,
-        model: chatMessage.member.config.tts?.model,
-        voice: chatMessage.member.config.tts?.voice,
-      },
+      configuration:
+        chatMessage.member.agent.type === "TTS"
+          ? chatMessage.member.agent.config.tts
+          : chatMessage.member.config.tts,
     })
       .then((speech) => {
         dispatchChatMessages({
@@ -199,7 +198,7 @@ export const ChatAgentMessage = (props: {
 
   useEffect(() => {
     if (chatMessage?.speech) return;
-    if (chat.config.enableAutoTts) {
+    if (chat.type === "TTS" || chat.config.enableAutoTts) {
       createSpeech();
     }
   }, [chatMessage]);
@@ -227,8 +226,10 @@ export const ChatAgentMessage = (props: {
           </Avatar>
           <div>
             <div className="text-xs">{chatMember.name}</div>
-            <div className="italic text-xxs text-muted-foreground/50">
-              {chatMember.config.gpt?.model || "AI"}
+            <div className="italic text-xs text-muted-foreground/50">
+              {chatMember.agent.type === "TTS" &&
+                chatMember.agent.config.tts?.voice}
+              {chatMember.agent.type === "GPT" && chatMember.config.gpt?.model}
             </div>
           </div>
         </div>

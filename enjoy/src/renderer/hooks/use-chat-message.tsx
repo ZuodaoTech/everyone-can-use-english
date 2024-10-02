@@ -119,6 +119,8 @@ export const useChatMessage = (chat: ChatType) => {
       return askAgentInConversation(member);
     } else if (chat.type === "GROUP") {
       return askAgentInGroup(member);
+    } else if (chat.type === "TTS") {
+      return askAgentInTts(member);
     }
   };
 
@@ -224,6 +226,24 @@ export const useChatMessage = (chat: ChatType) => {
     if (pendingMessage) {
       onUpdateMessage(pendingMessage.id, { state: "completed" });
     }
+
+    return message;
+  };
+
+  const askAgentInTts = async (member: ChatMemberType) => {
+    const pendingMessage = chatMessages.find(
+      (m) => m.role === "USER" && m.state === "pending"
+    );
+    if (!pendingMessage) return;
+
+    const message = await EnjoyApp.chatMessages.create({
+      chatId: chat.id,
+      memberId: member.id,
+      content: pendingMessage.content,
+      state: "completed",
+    });
+    dispatchChatMessages({ type: "append", record: message });
+    onUpdateMessage(pendingMessage.id, { state: "completed" });
 
     return message;
   };
