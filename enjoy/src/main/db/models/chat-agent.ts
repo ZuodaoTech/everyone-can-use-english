@@ -93,7 +93,9 @@ export class ChatAgent extends Model<ChatAgent> {
   @BeforeSave
   static setupDefaultAvatar(chatAgent: ChatAgent) {
     if (!chatAgent.avatarUrl) {
-      chatAgent.avatarUrl = `https://api.dicebear.com/9.x/thumbs/svg?seed=${chatAgent.name}`;
+      chatAgent.avatarUrl = `https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(
+        chatAgent.name
+      )}`;
     }
   }
 

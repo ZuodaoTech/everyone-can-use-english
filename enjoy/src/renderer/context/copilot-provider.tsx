@@ -91,22 +91,34 @@ export const CopilotProvider = ({
   };
 
   const buildAgentMember = (agent: ChatAgentType): ChatMemberDtoType => {
+    const config =
+      agent.type === "TTS"
+        ? {
+            tts: {
+              engine: currentTtsEngine.name,
+              model: currentTtsEngine.model,
+              voice: currentTtsEngine.voice,
+              language: learningLanguage,
+              ...agent.config.tts,
+            },
+          }
+        : {
+            gpt: {
+              ...DEFAULT_GPT_CONFIG,
+              engine: currentGptEngine.name,
+              model: currentGptEngine.models.default,
+            },
+            tts: {
+              engine: currentTtsEngine.name,
+              model: currentTtsEngine.model,
+              voice: currentTtsEngine.voice,
+              language: learningLanguage,
+            },
+          };
     return {
       userId: agent.id,
       userType: "ChatAgent",
-      config: {
-        gpt: {
-          ...DEFAULT_GPT_CONFIG,
-          engine: currentGptEngine.name,
-          model: currentGptEngine.models.default,
-        },
-        tts: {
-          engine: currentTtsEngine.name,
-          model: currentTtsEngine.model,
-          voice: currentTtsEngine.voice,
-          language: learningLanguage,
-        },
-      },
+      config,
     };
   };
 

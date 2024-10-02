@@ -63,25 +63,7 @@ export const ChatList = (props: {
       config: {
         sttEngine: sttEngine,
       },
-      members: [
-        {
-          userId: chatAgent.id,
-          userType: "ChatAgent",
-          config: {
-            gpt: {
-              ...DEFAULT_GPT_CONFIG,
-              engine: currentGptEngine.name,
-              model: currentGptEngine.models.default,
-            },
-            tts: {
-              engine: currentTtsEngine.name,
-              model: currentTtsEngine.model,
-              voice: currentTtsEngine.voice,
-              language: learningLanguage,
-            },
-          },
-        },
-      ],
+      members: [buildAgentMember(chatAgent)],
     }).then((chat) => {
       if (chat) {
         setCurrentChat(chat);
@@ -103,6 +85,38 @@ export const ChatList = (props: {
     } catch (error) {
       toast.error(error.message);
     }
+  };
+
+  const buildAgentMember = (agent: ChatAgentType): ChatMemberDtoType => {
+    const config =
+      agent.type === "TTS"
+        ? {
+            tts: {
+              engine: currentTtsEngine.name,
+              model: currentTtsEngine.model,
+              voice: currentTtsEngine.voice,
+              language: learningLanguage,
+              ...agent.config.tts,
+            },
+          }
+        : {
+            gpt: {
+              ...DEFAULT_GPT_CONFIG,
+              engine: currentGptEngine.name,
+              model: currentGptEngine.models.default,
+            },
+            tts: {
+              engine: currentTtsEngine.name,
+              model: currentTtsEngine.model,
+              voice: currentTtsEngine.voice,
+              language: learningLanguage,
+            },
+          };
+    return {
+      userId: agent.id,
+      userType: "ChatAgent",
+      config,
+    };
   };
 
   return (
