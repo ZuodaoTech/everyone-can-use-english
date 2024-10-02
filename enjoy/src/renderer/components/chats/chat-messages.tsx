@@ -22,18 +22,16 @@ export const ChatMessages = () => {
   return (
     <>
       <div className="flex-1 space-y-6 px-4 mb-4">
-        {chatMembers
-          .filter((member) => member.userType === "ChatAgent")
-          .map((member) => (
-            <div key={member.id}>
-              <div className="mb-2 flex">
-                <ChatAgentAvatar chatMember={member} onClick={() => {}} />
-              </div>
-              <div className="py-2 mb-2 rounded-lg w-full">
-                <div className="text-sm">{member.agent?.description}</div>
-              </div>
+        {chatMembers.map((member) => (
+          <div key={member.id}>
+            <div className="mb-2 flex">
+              <ChatAgentAvatar chatMember={member} onClick={() => {}} />
             </div>
-          ))}
+            <div className="py-2 mb-2 rounded-lg w-full">
+              <div className="text-sm">{member.agent?.description}</div>
+            </div>
+          </div>
+        ))}
         {chatMessages.map((message) => (
           <ChatMessage
             key={message.id}
@@ -115,7 +113,9 @@ const ChatAgentAvatar = (props: {
       <div>
         <div className="text-sm">{chatMember.name}</div>
         <div className="italic text-xs text-muted-foreground/50">
-          {chatMember.config.gpt?.model || "AI"}
+          {chatMember.agent.type === "GPT" && chatMember.config.gpt?.model}
+          {chatMember.agent.type === "TTS" &&
+            `${chatMember.agent.config.tts?.voice}(${chatMember.agent.config.tts?.model})`}
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import {
   Avatar,
   AvatarFallback,
+  Badge,
   Button,
   DropdownMenu,
   DropdownMenuContent,
@@ -31,7 +32,12 @@ export const ChatAgentCard = (props: {
         <AvatarFallback>{chatAgent.name[0]}</AvatarFallback>
       </Avatar>
       <div className="flex-1">
-        <div className="text-sm line-clamp-1">{chatAgent.name}</div>
+        <div className="flex items-center justify-between space-x-1 line-clamp-1 w-full">
+          <div className="text-sm flex-1 line-clamp-1">{chatAgent.name}</div>
+          <Badge className="text-xs px-1" variant="secondary">
+            {chatAgent.type}
+          </Badge>
+        </div>
         <div className="text-xs text-muted-foreground line-clamp-1">
           {chatAgent.description}
         </div>

@@ -58,7 +58,7 @@ export const CopilotHeader = () => {
               </Avatar>
             ))}
         </div>
-        <span className="text-sm">{currentChat?.name}</span>
+        <span className="text-sm line-clamp-1">{currentChat?.name}</span>
       </div>
       <div className="flex items-center space-x-2">
         <Popover open={displayChatAgents} onOpenChange={setDisplayChatAgents}>

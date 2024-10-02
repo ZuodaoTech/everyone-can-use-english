@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@renderer/components/ui";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
-import { EllipsisIcon, UsersRoundIcon } from "lucide-react";
+import { EllipsisIcon, SpeechIcon, UsersRoundIcon } from "lucide-react";
 import { t } from "i18next";
 
 export const ChatCard = (props: {
@@ -31,11 +31,9 @@ export const ChatCard = (props: {
       } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       onClick={() => onSelect(chat)}
     >
-      {chat.membersCount > 2 ? (
-        <UsersRoundIcon className="w-4 h-4" />
-      ) : (
-        <ChatBubbleIcon className="w-4 h-4" />
-      )}
+      {chat.type === "GROUP" && <ChatBubbleIcon className="w-4 h-4" />}
+      {chat.type === "CONVERSATION" && <UsersRoundIcon className="w-4 h-4" />}
+      {chat.type === "TTS" && <SpeechIcon className="w-4 h-4" />}
       <div className="flex-1 text-sm font-serif line-clamp-1">{chat.name}</div>
       {onDelete && (
         <DropdownMenu>
