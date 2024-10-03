@@ -118,15 +118,6 @@ export const ChatAgents = (props: {
           <DialogTitle className="sr-only"></DialogTitle>
           <ChatAgentForm
             agent={editingChatAgent}
-            onSave={(data) => {
-              if (editingChatAgent) {
-                updateChatAgent(editingChatAgent.id, data).then(() => {
-                  setEditingChatAgent(null);
-                });
-              } else {
-                createChatAgent(data).then(() => setEditingChatAgent(null));
-              }
-            }}
             onCancel={() => setEditingChatAgent(null)}
           />
         </DialogContent>
@@ -136,13 +127,6 @@ export const ChatAgents = (props: {
           <DialogTitle className="sr-only"></DialogTitle>
           <ChatAgentForm
             agent={null}
-            onSave={async (data) => {
-              const chatAgent = await createChatAgent(data);
-              if (chatAgent) {
-                setCurrentChatAgent(chatAgent);
-              }
-              setCreatingChatAgent(false);
-            }}
             onCancel={() => setCreatingChatAgent(false)}
           />
         </DialogContent>

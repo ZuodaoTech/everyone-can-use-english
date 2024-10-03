@@ -22,14 +22,19 @@ import {
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { ChatTTSForm } from "@renderer/components";
+import {
+  AISettingsProviderContext,
+  AppSettingsProviderContext,
+} from "@renderer/context";
+import { useContext } from "react";
 
 export const ChatAgentForm = (props: {
   agent?: ChatAgentType;
-  onSave: (data: ChatAgentDtoType) => void;
   onCancel: () => void;
 }) => {
-  const { agent, onSave, onCancel } = props;
-
+  const { agent, onCancel } = props;
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
+  const { currentTtsEngine } = useContext(AISettingsProviderContext);
   const agentFormSchema = z.object({
     type: z.enum(["GPT", "TTS", "STT"]),
     name: z.string().min(1),
@@ -58,17 +63,47 @@ export const ChatAgentForm = (props: {
 
   const onSubmit = form.handleSubmit((data) => {
     const { type, name, description, config } = data;
-    try {
-      onSave({
-        type,
-        avatarUrl: `https://api.dicebear.com/9.x/thumbs/svg?seed=${name}`,
-        name,
-        description,
-        config,
-      });
-      form.reset();
-    } catch (error) {
-      toast.error(error.message);
+    if (type === "TTS") {
+      config.tts = {
+        engine: config.tts?.engine || currentTtsEngine.name,
+        model: config.tts?.model || currentTtsEngine.model,
+        language: config.tts?.language || learningLanguage,
+        voice: config.tts?.voice || currentTtsEngine.voice,
+      };
+    }
+
+    if (agent?.id) {
+      EnjoyApp.chatAgents
+        .update(agent.id, {
+          type,
+          name,
+          description,
+          config,
+        })
+        .then(() => {
+          toast.success(t("models.chatAgent.updated"));
+          form.reset();
+          onCancel();
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
+    } else {
+      EnjoyApp.chatAgents
+        .create({
+          type,
+          name,
+          description,
+          config,
+        })
+        .then(() => {
+          toast.success(t("models.chatAgent.created"));
+          form.reset();
+          onCancel();
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
     }
   });
 
@@ -80,7 +115,7 @@ export const ChatAgentForm = (props: {
           {form.watch("name") && (
             <Avatar className="w-12 h-12 border">
               <img
-                src={`https://api.dicebear.com/9.x/thumbs/svg?seed=${form.watch(
+                src={`https://api.dicebear.com/9.x/shapes/svg?seed=${form.watch(
                   "name"
                 )}`}
                 alt={form.watch("name")}
@@ -106,7 +141,6 @@ export const ChatAgentForm = (props: {
                   <SelectContent>
                     <SelectItem value="GPT">GPT</SelectItem>
                     <SelectItem value="TTS">TTS</SelectItem>
-                    <SelectItem value="STT">STT</SelectItem>
                   </SelectContent>
                 </Select>
                 {form.watch("type") === "GPT" && (
@@ -117,11 +151,6 @@ export const ChatAgentForm = (props: {
                 {form.watch("type") === "TTS" && (
                   <FormDescription>
                     {t("models.chatAgent.typeTtsDescription")}
-                  </FormDescription>
-                )}
-                {form.watch("type") === "STT" && (
-                  <FormDescription>
-                    {t("models.chatAgent.typeSttDescription")}
                   </FormDescription>
                 )}
                 <FormMessage />

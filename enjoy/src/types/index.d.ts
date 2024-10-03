@@ -197,6 +197,7 @@ type TtsEngineSettingType = {
   name: string;
   model: string;
   voice: string;
+  language?: string;
   baseUrl?: string;
   key?: string;
 };

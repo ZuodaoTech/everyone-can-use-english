@@ -198,11 +198,13 @@ export const AISettingsProvider = ({
                 name: "openai",
                 model: "tts-1",
                 voice: "alloy",
+                language: learningLanguage,
               }
             : {
                 name: "enjoyai",
                 model: "openai/tts-1",
                 voice: "alloy",
+                language: learningLanguage,
               },
         openai,
         setOpenai: (config: LlmProviderType) => handleSetOpenai(config),
