@@ -27,13 +27,24 @@ import {
   CopilotChats,
 } from "@renderer/components";
 import { t } from "i18next";
-import { CopilotProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  CopilotProviderContext,
+} from "@renderer/context";
 
 export const CopilotHeader = () => {
   const [displayChatForm, setDisplayChatForm] = useState(false);
   const [displayChats, setDisplayChats] = useState(false);
   const [displayChatAgents, setDisplayChatAgents] = useState(false);
-  const { currentChat, active, setActive } = useContext(CopilotProviderContext);
+  const {
+    currentChat,
+    active,
+    setActive,
+    occupiedChat,
+    setCurrentChat,
+    buildAgentMember,
+  } = useContext(CopilotProviderContext);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
   return (
     <div className="h-10 border-b px-3 shadow flex items-center justify-between space-x-2 sticky top-0 z-10 bg-background mb-4">
@@ -45,7 +56,14 @@ export const CopilotHeader = () => {
             </Button>
           </PopoverTrigger>
           <PopoverContent>
-            <CopilotChats onCancel={() => setDisplayChats(false)} />
+            <CopilotChats
+              onSelect={(chat) => {
+                if (occupiedChat?.id !== chat.id) {
+                  setCurrentChat(chat);
+                }
+                setDisplayChats(false);
+              }}
+            />
           </PopoverContent>
         </Popover>
         <div className="flex items-center -space-x-2">
@@ -68,7 +86,27 @@ export const CopilotHeader = () => {
             </Button>
           </PopoverTrigger>
           <PopoverContent>
-            <CopilotChatAgents onCancel={() => setDisplayChatAgents(false)} />
+            <CopilotChatAgents
+              onSelect={(agent) => {
+                EnjoyApp.chats
+                  .create({
+                    name: t("newChat"),
+                    config: {
+                      sttEngine: currentChat?.config.sttEngine,
+                    },
+                    members: [buildAgentMember(agent)],
+                  })
+                  .then((newChat) => {
+                    setCurrentChat(newChat);
+                  })
+                  .catch((error) => {
+                    toast.error(error.message);
+                  })
+                  .finally(() => {
+                    setDisplayChatAgents(false);
+                  });
+              }}
+            />
           </PopoverContent>
         </Popover>
         {currentChat && (

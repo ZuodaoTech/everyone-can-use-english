@@ -29,7 +29,7 @@ export const ChatCard = (props: {
       className={`flex items-center space-x-2 rounded-lg px-2 py-1 hover:bg-muted/50 cursor-pointer ${
         selected ? "bg-muted/50" : ""
       } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
-      onClick={() => onSelect(chat)}
+      onClick={() => !disabled && onSelect(chat)}
     >
       {chat.type === "GROUP" && <ChatBubbleIcon className="w-4 h-4" />}
       {chat.type === "CONVERSATION" && <UsersRoundIcon className="w-4 h-4" />}

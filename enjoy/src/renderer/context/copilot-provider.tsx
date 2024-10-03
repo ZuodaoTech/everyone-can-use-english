@@ -46,6 +46,8 @@ export const CopilotProvider = ({
   );
 
   const findOrCreateChat = async () => {
+    if (currentChat) return;
+
     const cachedChatId = await EnjoyApp.cacheObjects.get(CACHE_KEY);
     let chat: ChatType;
     if (cachedChatId && cachedChatId !== occupiedChat?.id) {
@@ -131,8 +133,11 @@ export const CopilotProvider = ({
   }, [active]);
 
   useEffect(() => {
-    if (currentChat) {
-      EnjoyApp.cacheObjects.set(CACHE_KEY, currentChat.id);
+    if (!currentChat) return;
+
+    EnjoyApp.cacheObjects.set(CACHE_KEY, currentChat.id);
+    if (!active) {
+      setActive(true);
     }
   }, [currentChat]);
 

@@ -1,20 +1,15 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  AppSettingsProviderContext,
-  CopilotProviderContext,
-} from "@renderer/context";
-import { toast } from "sonner";
+import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import { useDebounce } from "@uidotdev/usehooks";
 import { ChatAgentCard } from "@renderer/components";
 import { Input } from "@renderer/components/ui";
 
-export const CopilotChatAgents = (props: { onCancel: () => void }) => {
-  const { onCancel } = props;
+export const CopilotChatAgents = (props: {
+  onSelect: (agent: ChatAgentType) => void;
+}) => {
+  const { onSelect } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { currentChat, setCurrentChat, buildAgentMember } = useContext(
-    CopilotProviderContext
-  );
   const [chatAgents, setChatAgents] = useState<ChatAgentType[]>([]);
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
@@ -26,28 +21,6 @@ export const CopilotChatAgents = (props: { onCancel: () => void }) => {
       })
       .then((agents) => {
         setChatAgents(agents);
-      });
-  };
-
-  const handleNewChat = async (agent: ChatAgentType) => {
-    if (!agent) {
-      return;
-    }
-
-    EnjoyApp.chats
-      .create({
-        name: t("newChat"),
-        config: {
-          sttEngine: currentChat?.config.sttEngine,
-        },
-        members: [buildAgentMember(agent)],
-      })
-      .then((newChat) => {
-        setCurrentChat(newChat);
-        onCancel?.();
-      })
-      .catch((error) => {
-        toast.error(error.message);
       });
   };
 
@@ -75,7 +48,7 @@ export const CopilotChatAgents = (props: { onCancel: () => void }) => {
           key={agent.id}
           chatAgent={agent}
           selected={false}
-          onSelect={() => handleNewChat(agent)}
+          onSelect={() => onSelect(agent)}
         />
       ))}
     </div>

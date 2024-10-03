@@ -1,19 +1,22 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import {
-  Button,
   Dialog,
   DialogTrigger,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogClose,
+  toast,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
 } from "@renderer/components/ui";
 import {
+  AISettingsProviderContext,
   AppSettingsProviderContext,
   CopilotProviderContext,
 } from "@renderer/context";
 import { ForwardIcon } from "lucide-react";
 import { t } from "i18next";
+import { CopilotChatAgents, CopilotChats } from "@renderer/components";
 
 export const CopilotForwarder = (props: {
   prompt: string;
@@ -25,7 +28,7 @@ export const CopilotForwarder = (props: {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        {props.trigger || (
+        {trigger || (
           <ForwardIcon
             data-tooltip-id="global-tooltip"
             data-tooltip-content={t("forward")}
@@ -34,38 +37,74 @@ export const CopilotForwarder = (props: {
         )}
       </DialogTrigger>
       <DialogContent>
-        {open && <CopilotForwarderContent onClose={() => setOpen(false)} />}
+        {open && (
+          <CopilotForwarderContent
+            prompt={prompt}
+            onClose={() => setOpen(false)}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );
 };
 
-const CopilotForwarderContent = (props: { onClose: () => void }) => {
-  const { onClose } = props;
+const CopilotForwarderContent = (props: {
+  prompt: string;
+  onClose: () => void;
+}) => {
+  const { onClose, prompt } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const [chatAgents, setChatAgents] = useState<ChatAgentType[]>([]);
-  const { setDisplay } = useContext(CopilotProviderContext);
+  const { sttEngine } = useContext(AISettingsProviderContext);
+  const { buildAgentMember } = useContext(CopilotProviderContext);
+  const { setActive, setCurrentChat } = useContext(CopilotProviderContext);
 
-  const fetchChatAgents = () => {
-    EnjoyApp.chatAgents.findAll({}).then(setChatAgents);
+  const handleSelectChatAgent = async (agent: ChatAgentType) => {
+    EnjoyApp.chats
+      .create({
+        name: t("newChat"),
+        config: {
+          sttEngine,
+        },
+        members: [buildAgentMember(agent)],
+      })
+      .then(handleSelectChat)
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
-  const handleForward = (chatAgentId: string) => {
-    setDisplay(true);
-    onClose();
+  const handleSelectChat = async (chat: ChatType) => {
+    console.log("handleSelectChat", chat);
+    EnjoyApp.chatMessages
+      .create({
+        chatId: chat.id,
+        content: prompt,
+        role: "USER",
+        state: "pending",
+      })
+      .then(() => {
+        setCurrentChat(chat);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      })
+      .finally(() => {
+        onClose();
+      });
   };
-
-  useEffect(() => {
-    fetchChatAgents();
-  }, []);
 
   return (
-    <div>
-      {chatAgents.map((chatAgent) => (
-        <div key={chatAgent.id} onClick={() => handleForward(chatAgent.id)}>
-          {chatAgent.name}
-        </div>
-      ))}
-    </div>
+    <Tabs defaultValue="chats">
+      <TabsList className="w-full grid grid-cols-2">
+        <TabsTrigger value="chats">{t("recents")}</TabsTrigger>
+        <TabsTrigger value="agents">{t("agents")}</TabsTrigger>
+      </TabsList>
+      <TabsContent value="chats">
+        <CopilotChats onSelect={handleSelectChat} />
+      </TabsContent>
+      <TabsContent value="agents">
+        <CopilotChatAgents onSelect={handleSelectChatAgent} />
+      </TabsContent>
+    </Tabs>
   );
 };

@@ -48,32 +48,39 @@ class ChatMessagesHandler {
     _event: IpcMainEvent,
     data: Partial<Attributes<ChatMessage>> & { recordingUrl?: string }
   ) {
+    logger.debug("create", data);
     const { recordingUrl } = data;
     delete data.recordingUrl;
 
     const transaction = await ChatMessage.sequelize.transaction();
-    const message = await ChatMessage.create(data);
+    try {
+      const message = await ChatMessage.create(data);
 
-    if (recordingUrl) {
-      // create new recording
-      const filePath = enjoyUrlToPath(recordingUrl);
-      const blob = fs.readFileSync(filePath);
-      const recording = await Recording.createFromBlob(
-        {
-          type: "audio/wav",
-          arrayBuffer: blob,
-        },
-        {
-          targetType: "ChatMessage",
-          targetId: message.id,
-        },
-        transaction
-      );
-      message.recording = recording;
+      if (recordingUrl) {
+        // create new recording
+        const filePath = enjoyUrlToPath(recordingUrl);
+        const blob = fs.readFileSync(filePath);
+        const recording = await Recording.createFromBlob(
+          {
+            type: "audio/wav",
+            arrayBuffer: blob,
+          },
+          {
+            targetType: "ChatMessage",
+            targetId: message.id,
+          },
+          transaction
+        );
+        message.recording = recording;
+      }
+      await transaction.commit();
+
+      return (await message.reload()).toJSON();
+    } catch (error) {
+      await transaction.rollback();
+      logger.error(error);
+      throw error;
     }
-    await transaction.commit();
-
-    return (await message.reload()).toJSON();
   }
 
   private async update(

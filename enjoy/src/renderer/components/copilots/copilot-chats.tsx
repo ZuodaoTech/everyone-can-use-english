@@ -8,13 +8,11 @@ import { Input } from "@renderer/components/ui";
 import { t } from "i18next";
 import { ChatCard } from "@renderer/components";
 
-export const CopilotChats = (props: { onCancel?: () => void }) => {
-  const { onCancel } = props;
+export const CopilotChats = (props: { onSelect: (chat: ChatType) => void }) => {
+  const { onSelect } = props;
   const [chats, setChats] = useState<ChatType[]>([]);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { currentChat, setCurrentChat, occupiedChat } = useContext(
-    CopilotProviderContext
-  );
+  const { currentChat, occupiedChat } = useContext(CopilotProviderContext);
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
 
@@ -48,13 +46,7 @@ export const CopilotChats = (props: { onCancel?: () => void }) => {
           chat={chat}
           selected={currentChat?.id === chat.id}
           disabled={occupiedChat?.id === chat.id}
-          onSelect={(chat) => {
-            if (occupiedChat?.id === chat.id) {
-              return;
-            }
-            setCurrentChat(chat);
-            onCancel?.();
-          }}
+          onSelect={onSelect}
         />
       ))}
     </div>
