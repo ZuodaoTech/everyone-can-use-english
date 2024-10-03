@@ -1,5 +1,13 @@
-import { ChatSessionProviderContext } from "@renderer/context";
-import { ChatMemberForm, ChatMessage, LoaderSpin } from "@renderer/components";
+import {
+  AppSettingsProviderContext,
+  ChatSessionProviderContext,
+} from "@renderer/context";
+import {
+  ChatAgentForm,
+  ChatMemberForm,
+  ChatMessage,
+  LoaderSpin,
+} from "@renderer/components";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
   Dialog,
@@ -9,12 +17,15 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
+  toast,
 } from "@renderer/components/ui";
+import { t } from "i18next";
 
 export const ChatMessages = () => {
   const { chatMessages, chat, asking, chatMembers } = useContext(
     ChatSessionProviderContext
   );
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const lastMessage = chatMessages[chatMessages.length - 1];
   const [editingChatMember, setEditingChatMember] =
     useState<ChatMemberType>(null);
@@ -56,11 +67,30 @@ export const ChatMessages = () => {
           <DialogDescription className="sr-only">
             Edit chat member
           </DialogDescription>
-          <ChatMemberForm
-            chat={chat}
-            member={editingChatMember}
-            onFinish={() => setEditingChatMember(null)}
-          />
+          {editingChatMember?.agent?.type === "GPT" && (
+            <ChatMemberForm
+              chat={chat}
+              member={editingChatMember}
+              onFinish={() => setEditingChatMember(null)}
+            />
+          )}
+          {editingChatMember?.agent?.type === "TTS" && (
+            <ChatAgentForm
+              agent={editingChatMember.agent}
+              onSave={(data) => {
+                EnjoyApp.chatAgents
+                  .update(editingChatMember.agent.id, data)
+                  .then(() => {
+                    toast.success(t("models.chatAgent.updated"));
+                    setEditingChatMember(null);
+                  })
+                  .catch((error) => {
+                    toast.error(error.message);
+                  });
+              }}
+              onCancel={() => setEditingChatMember(null)}
+            />
+          )}
         </DialogContent>
       </Dialog>
     </>

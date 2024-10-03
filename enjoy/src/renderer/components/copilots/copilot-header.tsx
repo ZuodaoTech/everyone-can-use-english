@@ -19,6 +19,8 @@ import {
   ChevronsRightIcon,
   PlusIcon,
   SettingsIcon,
+  SpeechIcon,
+  UsersRoundIcon,
 } from "lucide-react";
 import { useContext, useState } from "react";
 import {
@@ -31,6 +33,7 @@ import {
   AppSettingsProviderContext,
   CopilotProviderContext,
 } from "@renderer/context";
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
 
 export const CopilotHeader = () => {
   const [displayChatForm, setDisplayChatForm] = useState(false);
@@ -66,16 +69,13 @@ export const CopilotHeader = () => {
             />
           </PopoverContent>
         </Popover>
-        <div className="flex items-center -space-x-2">
-          {currentChat?.members
-            .filter((member) => member.agent)
-            .map((member) => (
-              <Avatar key={member.id} className="w-6 h-6">
-                <AvatarImage src={member.agent?.avatarUrl} />
-                <AvatarFallback>{member.agent?.name}</AvatarFallback>
-              </Avatar>
-            ))}
-        </div>
+        {currentChat?.type === "CONVERSATION" && (
+          <ChatBubbleIcon className="w-4 h-4" />
+        )}
+        {currentChat?.type === "GROUP" && (
+          <UsersRoundIcon className="w-4 h-4" />
+        )}
+        {currentChat?.type === "TTS" && <SpeechIcon className="w-4 h-4" />}
         <span className="text-sm line-clamp-1">{currentChat?.name}</span>
       </div>
       <div className="flex items-center space-x-2">

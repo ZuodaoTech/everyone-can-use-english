@@ -31,8 +31,8 @@ export const ChatCard = (props: {
       } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       onClick={() => !disabled && onSelect(chat)}
     >
-      {chat.type === "GROUP" && <ChatBubbleIcon className="w-4 h-4" />}
-      {chat.type === "CONVERSATION" && <UsersRoundIcon className="w-4 h-4" />}
+      {chat.type === "CONVERSATION" && <ChatBubbleIcon className="w-4 h-4" />}
+      {chat.type === "GROUP" && <UsersRoundIcon className="w-4 h-4" />}
       {chat.type === "TTS" && <SpeechIcon className="w-4 h-4" />}
       <div className="flex-1 text-sm font-serif line-clamp-1">{chat.name}</div>
       {onDelete && (

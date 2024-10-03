@@ -14,10 +14,13 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
   SettingsIcon,
+  SpeechIcon,
+  UsersRoundIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { ChatSettings } from "@renderer/components";
 import { t } from "i18next";
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
 
 export const ChatHeader = (props: {
   chat: ChatType;
@@ -41,16 +44,9 @@ export const ChatHeader = (props: {
             <ChevronsLeftIcon className="w-5 h-5" />
           )}
         </Button>
-        <div className="flex items-center -space-x-2">
-          {chat.members
-            .filter((member) => member.agent)
-            .map((member) => (
-              <Avatar key={member.id} className="w-6 h-6">
-                <AvatarImage src={member.agent?.avatarUrl} />
-                <AvatarFallback>{member.agent?.name}</AvatarFallback>
-              </Avatar>
-            ))}
-        </div>
+        {chat.type === "CONVERSATION" && <ChatBubbleIcon className="w-4 h-4" />}
+        {chat.type === "GROUP" && <UsersRoundIcon className="w-4 h-4" />}
+        {chat.type === "TTS" && <SpeechIcon className="w-4 h-4" />}
         <span className="text-sm">{chat.name}</span>
       </div>
       <Dialog open={displayChatForm} onOpenChange={setDisplayChatForm}>
