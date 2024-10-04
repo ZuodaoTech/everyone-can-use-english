@@ -12,12 +12,12 @@ import {
   HasMany,
   Scopes,
   BeforeDestroy,
-  BeforeUpdate,
   BeforeSave,
 } from "sequelize-typescript";
 import log from "@main/logger";
 import { ChatAgent, ChatMember, ChatMessage } from "@main/db/models";
 import mainWindow from "@main/window";
+import { t } from "i18next";
 
 const logger = log.scope("db/models/chat");
 @Table({
@@ -140,17 +140,17 @@ export class Chat extends Model<Chat> {
     });
 
     if (members.length < 1) {
-      throw new Error("Chat must have at least one agent");
+      throw new Error(t("models.chat.atLeastOneAgent"));
     } else if (members.length > 1) {
       // For group chat, all members must be GPT agent
       if (members.some((m) => m.agent?.type !== "GPT")) {
-        throw new Error("Group chat must have only GPT agents");
+        throw new Error(t("models.chat.onlyGPTAgentCanBeAddedToThisChat"));
       }
       chat.type = "GROUP";
     } else {
       const agent = members[0].agent;
       if (!agent) {
-        throw new Error("Chat must have at least one agent");
+        throw new Error(t("models.chat.atLeastOneAgent"));
       }
 
       switch (agent.type) {
@@ -161,7 +161,7 @@ export class Chat extends Model<Chat> {
           chat.type = "TTS";
           break;
         default:
-          throw new Error("Invalid agent type");
+          throw new Error(t("models.chat.invalidAgentType"));
       }
     }
   }

@@ -8,7 +8,7 @@ import {
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { EllipsisIcon, SpeechIcon, UsersRoundIcon } from "lucide-react";
 import { t } from "i18next";
-import { formatDate } from "@/renderer/lib/utils";
+import dayjs from "@renderer/lib/dayjs";
 
 export const ChatCard = (props: {
   chat: ChatType;
@@ -30,7 +30,7 @@ export const ChatCard = (props: {
     <div className="px-2">
       {displayDate && (
         <div className="text-xs text-muted-foreground my-2 capitalize">
-          {formatDate(chat.createdAt)}
+          {dayjs(chat.createdAt).fromNow()}
         </div>
       )}
       <div

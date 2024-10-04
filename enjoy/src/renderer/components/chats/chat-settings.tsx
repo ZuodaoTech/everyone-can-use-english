@@ -1,6 +1,7 @@
 import {
   Avatar,
   AvatarFallback,
+  Badge,
   Button,
   Input,
   Tabs,
@@ -128,7 +129,7 @@ const ChatMemberSetting = (props: {
         ))}
         <TabsTrigger value="new">
           <PlusIcon className="w-4 h-4" />
-          {t("addMember")}
+          <span className="capitalize">{t("addMember")}</span>
         </TabsTrigger>
       </TabsList>
       {agentMembers.map((member) => (
@@ -163,7 +164,7 @@ const ChatMemberSetting = (props: {
             {chatAgents.map((chatAgent) => (
               <div
                 key={chatAgent.id}
-                className="flex items-center justify-between"
+                className="flex items-center justify-between space-x-4"
                 onClick={() => {}}
               >
                 <div className="flex items-center space-x-2">
@@ -172,7 +173,14 @@ const ChatMemberSetting = (props: {
                     <AvatarFallback>{chatAgent.name[0]}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
-                    <div className="text-sm line-clamp-1">{chatAgent.name}</div>
+                    <div className="flex items-center space-x-2 line-clamp-1 w-full">
+                      <div className="text-sm line-clamp-1">
+                        {chatAgent.name}
+                      </div>
+                      <Badge className="text-xs px-1" variant="secondary">
+                        {chatAgent.type}
+                      </Badge>
+                    </div>
                     <div className="text-xs text-muted-foreground line-clamp-1">
                       {chatAgent.description}
                     </div>
@@ -185,12 +193,17 @@ const ChatMemberSetting = (props: {
                     handleAddAgentMember(chatAgent);
                   }}
                   disabled={
+                    chatAgent.type === "TTS" ||
                     agentMembers.findIndex(
                       (member) => member.userId === chatAgent.id
                     ) > -1
                   }
                 >
-                  {t("addToChat")}
+                  {agentMembers.findIndex(
+                    (member) => member.userId === chatAgent.id
+                  ) > -1
+                    ? t("added")
+                    : t("addToChat")}
                 </Button>
               </div>
             ))}

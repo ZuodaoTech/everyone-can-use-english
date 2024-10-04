@@ -83,7 +83,7 @@ export const ChatAgents = (props: {
 
   return (
     <>
-      <div className="overflow-hidden h-full relative py-2 px-1">
+      <div className="overflow-y-auto h-full relative py-2 px-1">
         <div className="sticky flex items-center space-x-2 py-2 px-1">
           <Input
             value={query}

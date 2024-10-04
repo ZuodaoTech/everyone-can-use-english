@@ -159,7 +159,9 @@
       "added": "Chat member added",
       "removed": "Chat member removed",
       "notFound": "Chat member not found",
-      "atLeastOneAgent": "The chat must have at least 1 agent."
+      "atLeastOneAgent": "The chat must have at least 1 agent.",
+      "cannotAddMemberToThisChat": "Cannot add member to this chat",
+      "onlyGPTAgentCanBeAddedToThisChat": "Only GPT agent can be added to this chat"
     },
     "chat": {
       "notFound": "Chat not found",
@@ -182,7 +184,10 @@
       "promptDescription": "The prompt will be added to the system prompt of all chat agents in this chat. It is useful when you want to customize the chat agent's behavior in this specific chat.",
       "chatSettings": "Chat Settings",
       "moreSettings": "More Settings",
-      "memberSettings": "Member Settings"
+      "memberSettings": "Member Settings",
+      "atLeastOneAgent": "The chat must have at least 1 agent.",
+      "onlyGPTAgentCanBeAddedToThisChat": "Only GPT agent can be added to this chat",
+      "invalidAgentType": "Invalid agent type"
     }
   },
   "sidebar": {
@@ -853,5 +858,6 @@
   "removeChatMember": "Remove member",
   "removeChatMemberConfirmation": "Are you sure to remove this member from the chat?",
   "youAreChattingWithThisAgent": "You are chatting with this agent. Please close all chats before deleting.",
-  "addMember": "Add member"
+  "addMember": "Add member",
+  "added": "Added"
 }

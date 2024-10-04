@@ -7,7 +7,7 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { Input } from "@renderer/components/ui";
 import { t } from "i18next";
 import { ChatCard } from "@renderer/components";
-import dayjs from "@renderer/lib/dayjs";
+import { isSameTimeRange } from "@renderer/lib/utils";
 
 export const CopilotChats = (props: { onSelect: (chat: ChatType) => void }) => {
   const { onSelect } = props;
@@ -28,7 +28,7 @@ export const CopilotChats = (props: { onSelect: (chat: ChatType) => void }) => {
 
   return (
     <div className="relative">
-      <div className="sticky py-2 px-1">
+      <div className="py-2 px-1">
         <Input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
@@ -47,7 +47,7 @@ export const CopilotChats = (props: { onSelect: (chat: ChatType) => void }) => {
           chat={chat}
           displayDate={
             index === 0 ||
-            !dayjs(chat.createdAt).isSame(chats[index - 1].createdAt, "day")
+            !isSameTimeRange(chat.createdAt, chats[index - 1].createdAt)
           }
           selected={currentChat?.id === chat.id}
           disabled={occupiedChat?.id === chat.id}

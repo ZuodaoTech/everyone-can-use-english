@@ -58,7 +58,7 @@ export const CopilotHeader = () => {
               <ChevronDownIcon className="w-4 h-4" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent>
+          <PopoverContent className="overflow-y-auto max-h-96">
             <CopilotChats
               onSelect={(chat) => {
                 if (occupiedChat?.id !== chat.id) {
@@ -85,7 +85,7 @@ export const CopilotHeader = () => {
               <PlusIcon className="w-5 h-5" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent>
+          <PopoverContent className="overflow-y-auto max-h-96">
             <CopilotChatAgents
               onSelect={(agent) => {
                 EnjoyApp.chats

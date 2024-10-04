@@ -159,7 +159,9 @@
       "added": "成员添加成功",
       "removed": "成员删除成功",
       "notFound": "未找到成员",
-      "atLeastOneAgent": "聊天至少需要 1 个智能体参与"
+      "atLeastOneAgent": "聊天至少需要 1 个智能体参与",
+      "cannotAddMemberToThisChat": "无法将成员添加到此聊天",
+      "onlyGPTAgentCanBeAddedToThisChat": "只有 GPT 智能体可以添加到此聊天"
     },
     "chat": {
       "notFound": "未找到聊天",
@@ -182,7 +184,10 @@
       "promptDescription": "额外提示将添加到所有聊天智能体的系统提示中。当您希望在该聊天中约束智能体的行为时，这非常有用。",
       "chatSettings": "聊天设置",
       "moreSettings": "更多设置",
-      "memberSettings": "成员设置"
+      "memberSettings": "成员设置",
+      "atLeastOneAgent": "聊天至少需要 1 个智能体参与",
+      "onlyGPTAgentCanBeAddedToThisChat": "只有 GPT 智能体可以添加到此聊天",
+      "invalidAgentType": "无效的智能体类型"
     }
   },
   "sidebar": {
@@ -853,5 +858,6 @@
   "removeChatMember": "移除群成员",
   "removeChatMemberConfirmation": "您确定要将此成员移出群聊吗？",
   "youAreChattingWithThisAgent": "您正在与该智能体聊天。请关闭所有聊天再删除。",
-  "addMember": "增加群成员"
+  "addMember": "增加群成员",
+  "added": "已添加"
 }

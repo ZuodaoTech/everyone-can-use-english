@@ -20,7 +20,7 @@ import { ChatCard } from "@renderer/components";
 import { PlusIcon } from "lucide-react";
 import { DEFAULT_GPT_CONFIG } from "@/constants";
 import { useChat } from "@renderer/hooks";
-import dayjs from "@renderer/lib/dayjs";
+import { isSameTimeRange } from "@renderer/lib/utils";
 
 export const ChatList = (props: {
   chatAgent: ChatAgentType;
@@ -122,7 +122,7 @@ export const ChatList = (props: {
 
   return (
     <>
-      <div className="overflow-hidden h-full py-2 px-1 relative">
+      <div className="overflow-y-auto h-full py-2 px-1 relative">
         <Button
           className="w-full mb-1 p-1 justify-start items-center"
           variant="ghost"
@@ -152,7 +152,7 @@ export const ChatList = (props: {
               chat={chat}
               displayDate={
                 index === 0 ||
-                !dayjs(chat.createdAt).isSame(chats[index - 1].createdAt, "day")
+                !isSameTimeRange(chat.createdAt, chats[index - 1].createdAt)
               }
               selected={currentChat?.id === chat.id}
               onSelect={setCurrentChat}
