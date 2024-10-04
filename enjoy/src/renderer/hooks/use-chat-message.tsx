@@ -191,6 +191,7 @@ export const useChatMessage = (chat: ChatType) => {
     const chain = prompt.pipe(llm);
     const historyBufferSize = member.config.gpt.historyBufferSize || 10;
     const history = chatMessages
+      .filter((m) => m.role === "AGENT" || m.role === "USER")
       .slice(-historyBufferSize)
       .map((message) => {
         return {
