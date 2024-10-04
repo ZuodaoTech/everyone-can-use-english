@@ -247,11 +247,14 @@ export const ChatSessionProvider = ({
 
   const pickNextAgentMember = () => {
     const members = chat.members;
-    let currentIndex = chatMessages.length - 1;
+    const messages = chatMessages.filter(
+      (m) => m.role === "AGENT" || m.role === "USER"
+    );
+    let currentIndex = messages.length - 1;
     const spokeMembers = new Set();
 
     while (currentIndex >= 0) {
-      const message = chatMessages[currentIndex];
+      const message = messages[currentIndex];
       if (message.role === "AGENT" && spokeMembers.has(message.member?.id)) {
         break;
       }

@@ -66,7 +66,7 @@ export class ChatMessage extends Model<ChatMessage> {
 
   @AllowNull(true)
   @Column(DataType.STRING)
-  role: "AGENT" | "USER";
+  role: "AGENT" | "USER" | "SYSTEM";
 
   @Column(DataType.UUID)
   memberId: string | null;
@@ -114,6 +114,8 @@ export class ChatMessage extends Model<ChatMessage> {
 
   @BeforeSave
   static async setupRole(chatMessage: ChatMessage) {
+    if (chatMessage.role) return;
+
     if (chatMessage.memberId) {
       chatMessage.role = "AGENT";
     } else {
@@ -149,6 +151,10 @@ export class ChatMessage extends Model<ChatMessage> {
     action: "create" | "update" | "destroy"
   ) {
     if (!mainWindow.win) return;
+
+    if (action !== "destroy" && !chatMessage.member) {
+      await chatMessage.reload();
+    }
 
     mainWindow.win.webContents.send("db-on-transaction", {
       model: "ChatMessage",

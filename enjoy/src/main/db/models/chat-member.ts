@@ -76,19 +76,41 @@ export class ChatMember extends Model<ChatMember> {
   @AfterUpdate
   @AfterDestroy
   static async updateChats(member: ChatMember) {
-    const chat = await Chat.findByPk(member.chatId);
-    if (chat) {
-      await chat.update({ updatedAt: new Date() });
-    }
     const agent = await ChatAgent.findByPk(member.userId);
     if (agent) {
       await agent.update({ updatedAt: new Date() });
     }
+
+    const chat = await Chat.findByPk(member.chatId);
+    if (chat) {
+      await chat.update({ updatedAt: new Date() });
+    }
+  }
+
+  @AfterCreate
+  static async chatSystemAddedMessage(member: ChatMember) {
+    const chatAgent = await ChatAgent.findByPk(member.userId);
+    ChatMessage.create(
+      {
+        chatId: member.chatId,
+        content: `${chatAgent.name} has joined the chat.`,
+        role: "SYSTEM",
+      },
+      {
+        hooks: false,
+      }
+    );
   }
 
   @BeforeDestroy
   static async destroyMessages(member: ChatMember) {
-    ChatMessage.destroy({ where: { memberId: member.id } });
+    const chatAgent = await ChatAgent.findByPk(member.userId);
+    ChatMessage.create({
+      chatId: member.chatId,
+      content: `${chatAgent.name} has left the chat.`,
+      role: "SYSTEM",
+    });
+    ChatMessage.destroy({ where: { memberId: member.id }, hooks: false });
   }
 
   @AfterCreate

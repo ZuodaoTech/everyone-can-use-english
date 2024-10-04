@@ -1,7 +1,4 @@
-import {
-  AppSettingsProviderContext,
-  ChatSessionProviderContext,
-} from "@renderer/context";
+import { ChatSessionProviderContext } from "@renderer/context";
 import {
   ChatAgentForm,
   ChatMemberForm,
@@ -17,15 +14,12 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-  toast,
 } from "@renderer/components/ui";
-import { t } from "i18next";
 
 export const ChatMessages = () => {
   const { chatMessages, chat, asking, chatMembers } = useContext(
     ChatSessionProviderContext
   );
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const lastMessage = chatMessages[chatMessages.length - 1];
   const [editingChatMember, setEditingChatMember] =
     useState<ChatMemberType>(null);
@@ -33,16 +27,6 @@ export const ChatMessages = () => {
   return (
     <>
       <div className="flex-1 space-y-6 px-4 mb-4">
-        {chatMembers.map((member) => (
-          <div key={member.id}>
-            <div className="mb-2 flex">
-              <ChatAgentAvatar chatMember={member} onClick={() => {}} />
-            </div>
-            <div className="py-2 mb-2 rounded-lg w-full">
-              <div className="text-sm">{member.agent?.description}</div>
-            </div>
-          </div>
-        ))}
         {chatMessages.map((message) => (
           <ChatMessage
             key={message.id}

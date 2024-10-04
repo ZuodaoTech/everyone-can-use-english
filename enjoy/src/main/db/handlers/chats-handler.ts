@@ -96,11 +96,9 @@ class ChatsHandler {
       throw new Error(t("models.chats.invalidMembers"));
     }
 
-    let type: "CONVERSATION" | "GROUP" | "TTS" | "STT";
+    let type: "CONVERSATION" | "GROUP" | "TTS";
     if (chatAgents.length === 1 && chatAgents[0].type === "TTS") {
       type = "TTS";
-    } else if (chatAgents.length === 1 && chatAgents[0].type === "STT") {
-      type = "STT";
     } else if (chatAgents.length === 1 && chatAgents[0].type === "GPT") {
       type = "CONVERSATION";
     } else if (

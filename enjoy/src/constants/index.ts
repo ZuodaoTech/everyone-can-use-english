@@ -58,12 +58,12 @@ export const NOT_SUPPORT_JSON_FORMAT_MODELS = [
   "gpt-4-32k",
 ];
 
-export const CHAT_GROUP_PROMPT_TEMPLATE = `You are {name} in this chat. You should always stay in character.
+export const CHAT_GROUP_PROMPT_TEMPLATE = `You are {name} in this chat. You should reply to everyone in this chat and always stay in character.
 
 [Chat History]
 {history}
 
-{name}:
+Return reply as {name}.
 `;
 
 export const DEFAULT_GPT_CONFIG = {

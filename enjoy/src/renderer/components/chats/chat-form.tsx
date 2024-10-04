@@ -113,16 +113,21 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
   const generateTopic = async () => {
     setIsGeneratingTopic(true);
     try {
-      const messages = await EnjoyApp.chatMessages.findAll({
+      let messages = await EnjoyApp.chatMessages.findAll({
         where: { chatId: chat.id },
-        limit: 2,
         order: [["createdAt", "ASC"]],
       });
+      messages = messages.filter(
+        (m) => m.role === "AGENT" || m.role === "USER"
+      );
       if (messages.length < 1) {
         toast.warning(t("chatNoContentYet"));
         return;
       }
-      const content = messages.map((m) => m.content).join("\n");
+      const content = messages
+        .slice(0, 10)
+        .map((m) => m.content)
+        .join("\n");
 
       return await summarizeTopic(content);
     } catch (error) {

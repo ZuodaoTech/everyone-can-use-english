@@ -58,10 +58,6 @@ export const useChatMessage = (chat: ChatType) => {
         state: "pending",
         recordingUrl,
       })
-      .then((message) => {
-        dispatchChatMessages({ type: "append", record: message });
-        return message;
-      })
       .catch((error) => {
         toast.error(error.message);
       });
@@ -89,6 +85,9 @@ export const useChatMessage = (chat: ChatType) => {
     const { model, action, record } = event.detail;
     if (model === "ChatMessage") {
       switch (action) {
+        case "create":
+          dispatchChatMessages({ type: "append", record });
+          break;
         case "update":
           dispatchChatMessages({ type: "update", record });
           break;
@@ -169,13 +168,12 @@ export const useChatMessage = (chat: ChatType) => {
       },
     ]);
     for (const r of response) {
-      const reply = await EnjoyApp.chatMessages.create({
+      await EnjoyApp.chatMessages.create({
         chatId: chat.id,
         memberId: member.id,
         content: r.text,
         state: "completed",
       });
-      dispatchChatMessages({ type: "append", record: reply });
     }
     onUpdateMessage(pendingMessage.id, { state: "completed" });
   };
@@ -194,15 +192,17 @@ export const useChatMessage = (chat: ChatType) => {
     const historyBufferSize = member.config.gpt.historyBufferSize || 10;
     const history = chatMessages
       .slice(-historyBufferSize)
-      .map((message) =>
-        message.role === "AGENT"
-          ? `- ${message.member.name}: ${message.content}(${dayjs(
-              message.createdAt
-            ).fromNow()})`
-          : `- ${user.name}: ${message.content}(${dayjs(
-              message.createdAt
-            ).fromNow()})`
-      )
+      .map((message) => {
+        return {
+          AGENT: `${member.agent.name}: ${message.content}(${dayjs(
+            message.createdAt
+          ).fromNow()})`,
+          USER: `${user.name}: ${message.content}(${dayjs(
+            message.createdAt
+          ).fromNow()})`,
+          SYSTEM: `(${message.content}, ${dayjs(message.createdAt).fromNow()})`,
+        }[message.role];
+      })
       .join("\n");
 
     const reply = await chain.invoke({
@@ -222,7 +222,6 @@ export const useChatMessage = (chat: ChatType) => {
       content,
       state: "completed",
     });
-    dispatchChatMessages({ type: "append", record: message });
     if (pendingMessage) {
       onUpdateMessage(pendingMessage.id, { state: "completed" });
     }
@@ -242,7 +241,6 @@ export const useChatMessage = (chat: ChatType) => {
       content: pendingMessage.content,
       state: "completed",
     });
-    dispatchChatMessages({ type: "append", record: message });
     onUpdateMessage(pendingMessage.id, { state: "completed" });
 
     return message;
@@ -314,9 +312,13 @@ export const useChatMessage = (chat: ChatType) => {
   };
 
   const updateChatName = async () => {
-    if (chatMessages.length !== 2) return;
+    if (chatMessages.filter((m) => m.role === "AGENT").length < 1) return;
 
-    const content = chatMessages.map((m) => m.content).join("\n");
+    const content = chatMessages
+      .filter((m) => m.role === "AGENT" || m.role === "USER")
+      .slice(0, 10)
+      .map((m) => m.content)
+      .join("\n");
     const name = await summarizeTopic(content);
     EnjoyApp.chats.update(chat.id, { name });
   };
@@ -334,7 +336,10 @@ export const useChatMessage = (chat: ChatType) => {
 
   useEffect(() => {
     // Automatically update the chat name
-    if (chat.name === t("newChat") && chatMessages.length === 2) {
+    if (
+      chat.name === t("newChat") &&
+      chatMessages.filter((m) => m.role === "AGENT").length > 1
+    ) {
       updateChatName();
     }
   }, [chatMessages]);

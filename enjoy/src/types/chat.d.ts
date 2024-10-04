@@ -81,7 +81,7 @@ type TtsConfigType = {
 };
 
 type ChatDtoType = {
-  type?: "CONVERSATION" | "GROUP" | "TTS" | "STT";
+  type?: "CONVERSATION" | "GROUP" | "TTS";
   name: string;
   config: {
     sttEngine: string;
@@ -113,7 +113,7 @@ type ChatMessageDtoType = {
 };
 
 type ChatAgentDtoType = {
-  type: "GPT" | "TTS" | "STT";
+  type: "GPT" | "TTS";
   avatarUrl?: string;
   name: string;
   description?: string;

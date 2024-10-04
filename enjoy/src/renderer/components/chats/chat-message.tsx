@@ -15,7 +15,7 @@ export const ChatMessage = (props: {
   const { dispatchChatMessages } = useContext(ChatSessionProviderContext);
 
   useEffect(() => {
-    if (!chatMessage?.member) {
+    if (chatMessage.role === "AGENT" && !chatMessage?.member) {
       EnjoyApp.chatMessages.findOne({ id: chatMessage.id }).then((message) => {
         dispatchChatMessages({
           type: "update",
@@ -39,6 +39,12 @@ export const ChatMessage = (props: {
         isLastMessage={isLastMessage}
         onEditChatMember={onEditChatMember}
       />
+    );
+  } else if (props.chatMessage.role === "SYSTEM") {
+    return (
+      <div className="text-sm text-muted-foreground text-center">
+        {props.chatMessage.content}
+      </div>
     );
   }
 };
