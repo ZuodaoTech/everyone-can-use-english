@@ -15,3 +15,4 @@ export * from "./chat-member-form";
 export * from "./chat-header";
 export * from "./chat-tts-form";
 export * from "./chat-gpt-form";
+export * from "./chat-suggestion-button";

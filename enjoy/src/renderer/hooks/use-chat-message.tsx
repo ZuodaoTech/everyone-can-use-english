@@ -15,7 +15,7 @@ import { BufferMemory, ChatMessageHistory } from "langchain/memory";
 import { ConversationChain } from "langchain/chains";
 import { LLMResult } from "@langchain/core/outputs";
 import { CHAT_GROUP_PROMPT_TEMPLATE } from "@/constants";
-import dayjs from "dayjs";
+import dayjs from "@renderer/lib/dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Mustache from "mustache";
 import { t } from "i18next";
@@ -194,15 +194,17 @@ export const useChatMessage = (chat: ChatType) => {
       .filter((m) => m.role === "AGENT" || m.role === "USER")
       .slice(-historyBufferSize)
       .map((message) => {
-        return {
-          AGENT: `${member.agent.name}: ${message.content}(${dayjs(
-            message.createdAt
-          ).fromNow()})`,
-          USER: `${user.name}: ${message.content}(${dayjs(
-            message.createdAt
-          ).fromNow()})`,
-          SYSTEM: `(${message.content}, ${dayjs(message.createdAt).fromNow()})`,
-        }[message.role];
+        const timestamp = dayjs(message.createdAt).fromNow();
+        switch (message.role) {
+          case "AGENT":
+            return `${message.member.agent.name}: ${message.content} (${timestamp})`;
+          case "USER":
+            return `${user.name}: ${message.content} (${timestamp})`;
+          case "SYSTEM":
+            return `(${message.content}, ${timestamp})`;
+          default:
+            return "";
+        }
       })
       .join("\n");
 
