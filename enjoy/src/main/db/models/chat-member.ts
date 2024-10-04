@@ -90,16 +90,11 @@ export class ChatMember extends Model<ChatMember> {
   @AfterCreate
   static async chatSystemAddedMessage(member: ChatMember) {
     const chatAgent = await ChatAgent.findByPk(member.userId);
-    ChatMessage.create(
-      {
-        chatId: member.chatId,
-        content: `${chatAgent.name} has joined the chat.`,
-        role: "SYSTEM",
-      },
-      {
-        hooks: false,
-      }
-    );
+    ChatMessage.create({
+      chatId: member.chatId,
+      content: `${chatAgent.name} has joined the chat.`,
+      role: "SYSTEM",
+    });
   }
 
   @BeforeDestroy
