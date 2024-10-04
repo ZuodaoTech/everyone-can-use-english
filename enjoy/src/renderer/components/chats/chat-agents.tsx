@@ -148,7 +148,7 @@ export const ChatAgents = (props: {
           <DialogTitle className="sr-only"></DialogTitle>
           <ChatAgentForm
             agent={editingChatAgent}
-            onCancel={() => setEditingChatAgent(null)}
+            onFinish={() => setEditingChatAgent(null)}
           />
         </DialogContent>
       </Dialog>
@@ -157,7 +157,7 @@ export const ChatAgents = (props: {
           <DialogTitle className="sr-only"></DialogTitle>
           <ChatAgentForm
             agent={null}
-            onCancel={() => setCreatingChatAgent(false)}
+            onFinish={() => setCreatingChatAgent(false)}
           />
         </DialogContent>
       </Dialog>

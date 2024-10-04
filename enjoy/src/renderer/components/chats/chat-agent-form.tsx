@@ -30,9 +30,9 @@ import { useContext } from "react";
 
 export const ChatAgentForm = (props: {
   agent?: ChatAgentType;
-  onCancel: () => void;
+  onFinish: () => void;
 }) => {
-  const { agent, onCancel } = props;
+  const { agent, onFinish } = props;
   const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const { currentTtsEngine } = useContext(AISettingsProviderContext);
   const agentFormSchema = z.object({
@@ -83,7 +83,7 @@ export const ChatAgentForm = (props: {
         .then(() => {
           toast.success(t("models.chatAgent.updated"));
           form.reset();
-          onCancel();
+          onFinish();
         })
         .catch((error) => {
           toast.error(error.message);
@@ -99,7 +99,7 @@ export const ChatAgentForm = (props: {
         .then(() => {
           toast.success(t("models.chatAgent.created"));
           form.reset();
-          onCancel();
+          onFinish();
         })
         .catch((error) => {
           toast.error(error.message);
@@ -115,9 +115,12 @@ export const ChatAgentForm = (props: {
           {form.watch("name") && (
             <Avatar className="w-12 h-12 border">
               <img
-                src={`https://api.dicebear.com/9.x/shapes/svg?seed=${form.watch(
-                  "name"
-                )}`}
+                src={
+                  agent?.avatarUrl ||
+                  `https://api.dicebear.com/9.x/shapes/svg?seed=${form.watch(
+                    "name"
+                  )}`
+                }
                 alt={form.watch("name")}
               />
             </Avatar>
@@ -221,7 +224,7 @@ export const ChatAgentForm = (props: {
           {form.watch("type") === "TTS" && <ChatTTSForm form={form} />}
         </div>
         <div className="flex items-center justify-end space-x-4">
-          <Button type="button" variant="ghost" onClick={onCancel}>
+          <Button type="button" variant="ghost" onClick={onFinish}>
             {t("cancel")}
           </Button>
           <Button type="submit" onClick={onSubmit}>

@@ -77,18 +77,7 @@ export const ChatMessages = () => {
           {editingChatMember?.agent?.type === "TTS" && (
             <ChatAgentForm
               agent={editingChatMember.agent}
-              onSave={(data) => {
-                EnjoyApp.chatAgents
-                  .update(editingChatMember.agent.id, data)
-                  .then(() => {
-                    toast.success(t("models.chatAgent.updated"));
-                    setEditingChatMember(null);
-                  })
-                  .catch((error) => {
-                    toast.error(error.message);
-                  });
-              }}
-              onCancel={() => setEditingChatMember(null)}
+              onFinish={() => setEditingChatMember(null)}
             />
           )}
         </DialogContent>

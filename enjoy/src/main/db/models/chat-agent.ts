@@ -161,7 +161,7 @@ export class ChatAgent extends Model<ChatAgent> {
       await chatAgent.update(
         {
           type: "GPT",
-          avatarUrl: `https://api.dicebear.com/9.x/thumbs/svg?seed=${chatAgent.name}`,
+          avatarUrl: `https://api.dicebear.com/9.x/shapes/svg?seed=${chatAgent.name}`,
           config: {
             prompt: chatAgent.config.prompt,
           },
