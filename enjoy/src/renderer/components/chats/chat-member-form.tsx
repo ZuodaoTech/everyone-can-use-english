@@ -54,6 +54,7 @@ export const ChatMemberForm = (props: {
   };
 
   const chatMemberFormSchema = z.object({
+    chatId: z.string(),
     userId: z.string(),
     userType: z.enum(["User", "ChatAgent"]).default("ChatAgent"),
     config: z.object({
@@ -80,7 +81,10 @@ export const ChatMemberForm = (props: {
 
   const form = useForm<z.infer<typeof chatMemberFormSchema>>({
     resolver: zodResolver(chatMemberFormSchema),
-    values: member,
+    values: {
+      chatId: chat.id,
+      ...member,
+    },
   });
 
   const onSubmit = form.handleSubmit(

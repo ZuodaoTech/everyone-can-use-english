@@ -93,6 +93,7 @@ type ChatDtoType = {
 };
 
 type ChatMemberDtoType = {
+  chatId?: string;
   userId: string;
   userType: "ChatAgent";
   config: {

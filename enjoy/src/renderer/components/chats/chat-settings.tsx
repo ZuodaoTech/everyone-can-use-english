@@ -131,7 +131,7 @@ const ChatMemberSetting = (props: {
         ))}
         <TabsTrigger value="new">
           <PlusIcon className="w-4 h-4" />
-          {t("add")}
+          {t("addMember")}
         </TabsTrigger>
       </TabsList>
       {agentMembers.map((member) => (

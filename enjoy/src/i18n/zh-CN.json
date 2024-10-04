@@ -851,5 +851,7 @@
   "confirmBeforeSending": "您可以重新录音、修改文字内容，确认无误后点击发送",
   "chatNoContentYet": "聊天还没有内容",
   "removeChatMember": "移除群成员",
-  "removeChatMemberConfirmation": "您确定要将此成员移出群聊吗？"
+  "removeChatMemberConfirmation": "您确定要将此成员移出群聊吗？",
+  "youAreChattingWithThisAgent": "您正在与该智能体聊天。请关闭所有聊天再删除。",
+  "addMember": "增加群成员"
 }

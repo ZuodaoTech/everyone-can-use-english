@@ -51,7 +51,7 @@ export class Chat extends Model<Chat> {
   id: string;
 
   @Column(DataType.STRING)
-  type: "CONVERSATION" | "GROUP" | "TTS" | "STT";
+  type: "CONVERSATION" | "GROUP" | "TTS";
 
   @AllowNull(false)
   @Column(DataType.STRING)
@@ -159,9 +159,6 @@ export class Chat extends Model<Chat> {
           break;
         case "TTS":
           chat.type = "TTS";
-          break;
-        case "STT":
-          chat.type = "STT";
           break;
         default:
           throw new Error("Invalid agent type");

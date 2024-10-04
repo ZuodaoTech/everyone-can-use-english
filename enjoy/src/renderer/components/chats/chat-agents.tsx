@@ -11,32 +11,65 @@ import {
   DialogContent,
   DialogTitle,
   Input,
+  toast,
 } from "@renderer/components/ui";
 import { ChatAgentCard, ChatAgentForm } from "@renderer/components";
 import { PlusIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { t } from "i18next";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useChatAgent } from "@renderer/hooks";
+import {
+  AppSettingsProviderContext,
+  CopilotProviderContext,
+} from "@/renderer/context";
 
 export const ChatAgents = (props: {
   currentChatAgent: ChatAgentType;
   setCurrentChatAgent: (chatAgent: ChatAgentType) => void;
 }) => {
   const { currentChatAgent, setCurrentChatAgent } = props;
+  const { chatAgents, fetchChatAgents } = useChatAgent();
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const {
-    chatAgents,
-    fetchChatAgents,
-    updateChatAgent,
-    createChatAgent,
-    destroyChatAgent,
-  } = useChatAgent();
+    occupiedChat,
+    setOccupiedChat,
+    currentChat: copilotCurrentChat,
+    setCurrentChat: setCopilotCurrentChat,
+  } = useContext(CopilotProviderContext);
   const [deletingChatAgent, setDeletingChatAgent] =
     useState<ChatAgentType>(null);
   const [editingChatAgent, setEditingChatAgent] = useState<ChatAgentType>(null);
   const [creatingChatAgent, setCreatingChatAgent] = useState<boolean>(false);
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
+
+  const handleDeleteChatAgent = () => {
+    if (!deletingChatAgent) return;
+
+    const isOccupied = occupiedChat?.members?.some(
+      (member) => member.userId === deletingChatAgent.id
+    );
+
+    const isCopilotCurrent = copilotCurrentChat?.members?.some(
+      (member) => member.userId === deletingChatAgent.id
+    );
+
+    if (isOccupied || isCopilotCurrent) {
+      toast.error(t("youAreChattingWithThisAgent"));
+      return;
+    }
+
+    EnjoyApp.chatAgents
+      .destroy(deletingChatAgent.id)
+      .then(() => {
+        toast.success(t("models.chatAgent.deleted"));
+        setDeletingChatAgent(null);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
 
   useEffect(() => {
     if (currentChatAgent) return;
@@ -100,10 +133,7 @@ export const ChatAgents = (props: {
             </AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive hover:bg-destructive-hover"
-              onClick={() => {
-                destroyChatAgent(deletingChatAgent.id);
-                setDeletingChatAgent(null);
-              }}
+              onClick={handleDeleteChatAgent}
             >
               {t("delete")}
             </AlertDialogAction>

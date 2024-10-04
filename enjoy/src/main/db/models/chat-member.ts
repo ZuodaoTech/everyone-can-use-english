@@ -113,8 +113,7 @@ export class ChatMember extends Model<ChatMember> {
     if (!mainWindow.win) return;
 
     if (action !== "destroy" && !member.agent) {
-      // reload to ensure the association is loaded in defaultScope
-      member.agent = await ChatAgent.findByPk(member.userId);
+      await member.reload();
     }
     mainWindow.win.webContents.send("db-on-transaction", {
       model: "ChatMember",

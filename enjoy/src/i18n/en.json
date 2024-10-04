@@ -851,5 +851,7 @@
   "confirmBeforeSending": "You can re-record, modify the text content, and click send after confirming there are no errors.",
   "chatNoContentYet": "Chat has no content yet.",
   "removeChatMember": "Remove member",
-  "removeChatMemberConfirmation": "Are you sure to remove this member from the chat?"
+  "removeChatMemberConfirmation": "Are you sure to remove this member from the chat?",
+  "youAreChattingWithThisAgent": "You are chatting with this agent. Please close all chats before deleting.",
+  "addMember": "Add member"
 }
