@@ -7,6 +7,7 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { Input } from "@renderer/components/ui";
 import { t } from "i18next";
 import { ChatCard } from "@renderer/components";
+import dayjs from "@renderer/lib/dayjs";
 
 export const CopilotChats = (props: { onSelect: (chat: ChatType) => void }) => {
   const { onSelect } = props;
@@ -40,10 +41,14 @@ export const CopilotChats = (props: { onSelect: (chat: ChatType) => void }) => {
           <span className="text-sm text-muted-foreground">{t("noData")}</span>
         </div>
       )}
-      {chats.map((chat) => (
+      {chats.map((chat, index) => (
         <ChatCard
           key={chat.id}
           chat={chat}
+          displayDate={
+            index === 0 ||
+            !dayjs(chat.createdAt).isSame(chats[index - 1].createdAt, "day")
+          }
           selected={currentChat?.id === chat.id}
           disabled={occupiedChat?.id === chat.id}
           onSelect={onSelect}

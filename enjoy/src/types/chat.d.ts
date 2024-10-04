@@ -48,7 +48,7 @@ type ChatMemberType = {
 
 type ChatMessageType = {
   id: string;
-  role: "USER" | "AGENT";
+  role: "USER" | "AGENT" | "SYSTEM";
   memberId: string | null;
   chatId: string;
   content: string;

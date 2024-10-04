@@ -11,7 +11,7 @@ import {
   toast,
 } from "@renderer/components/ui";
 import {
-  ConversationShortcuts,
+  CopilotForwarder,
   MarkdownWrapper,
   PronunciationAssessmentScoreDetail,
   WavesurferPlayer,
@@ -187,7 +187,9 @@ const ChatUserMessageActions = (props: {
   const { refine } = useAiCommand();
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
-  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage, user } = useContext(
+    AppSettingsProviderContext
+  );
   const {
     chatMessages,
     startRecording,
@@ -233,11 +235,11 @@ const ChatUserMessageActions = (props: {
       (m) => new Date(m.createdAt) < new Date(chatMessage.createdAt)
     );
     return messages
-      .map(
-        (message) =>
-          `${(message.member.user || message.member.agent).name}: ${
-            message.content
-          }`
+      .filter((m) => ["USER", "ASSISTANT"].includes(m.role))
+      .map((message) =>
+        message.role === "USER"
+          ? `${user.name}: ${message.content}`
+          : `${message.member.agent.name}: ${message.content}`
       )
       .join("\n");
   };
@@ -345,9 +347,8 @@ const ChatUserMessageActions = (props: {
                   }}
                 />
               )}
-              <ConversationShortcuts
+              <CopilotForwarder
                 prompt={chatMessage.content}
-                excludedIds={[]}
                 trigger={
                   <ForwardIcon
                     data-tooltip-id="global-tooltip"

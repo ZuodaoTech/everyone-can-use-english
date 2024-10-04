@@ -20,6 +20,7 @@ import { ChatCard } from "@renderer/components";
 import { PlusIcon } from "lucide-react";
 import { DEFAULT_GPT_CONFIG } from "@/constants";
 import { useChat } from "@renderer/hooks";
+import dayjs from "@renderer/lib/dayjs";
 
 export const ChatList = (props: {
   chatAgent: ChatAgentType;
@@ -145,10 +146,14 @@ export const ChatList = (props: {
           </div>
         )}
         <div className="grid gap-1">
-          {chats.map((chat) => (
+          {chats.map((chat, index) => (
             <ChatCard
               key={chat.id}
               chat={chat}
+              displayDate={
+                index === 0 ||
+                !dayjs(chat.createdAt).isSame(chats[index - 1].createdAt, "day")
+              }
               selected={currentChat?.id === chat.id}
               onSelect={setCurrentChat}
               onDelete={setDeletingChat}
