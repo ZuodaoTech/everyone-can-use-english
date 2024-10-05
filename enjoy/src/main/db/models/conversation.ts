@@ -12,10 +12,19 @@ import {
   AllowNull,
   BeforeSave,
 } from "sequelize-typescript";
-import { Message, Speech } from "@main/db/models";
+import {
+  Chat,
+  ChatAgent,
+  ChatMember,
+  ChatMessage,
+  Message,
+  Speech,
+} from "@main/db/models";
 import mainWindow from "@main/window";
 import log from "@main/logger";
 import { t } from "i18next";
+import { Op } from "sequelize";
+import { SttEngineOptionEnum } from "@/types/enums";
 
 const logger = log.scope("db/models/conversation");
 @Table({
@@ -70,6 +79,117 @@ export class Conversation extends Model<Conversation> {
 
   @HasMany(() => Message)
   messages: Message[];
+
+  async migrateToChat() {
+    let agent = await ChatAgent.findOne({
+      where: {
+        config: {
+          [Op.contains]: {
+            prompt: this.configuration.prompt,
+          },
+        },
+      },
+    });
+    if (!agent) {
+      agent = await ChatAgent.create({
+        name: this.name,
+        type: "GPT",
+        description: "Migrated from conversation",
+        config: {
+          prompt: this.configuration.roleDefinition,
+        },
+      });
+    }
+
+    const transaction = await Conversation.sequelize.transaction();
+
+    try {
+      const chat = await Chat.create(
+        {
+          name: this.name,
+          type: "CONVERSATION",
+          config: {
+            stt: SttEngineOptionEnum.ENJOY_AZURE,
+          },
+        },
+        {
+          transaction,
+        }
+      );
+      const chatMember = await ChatMember.create(
+        {
+          chatId: chat.id,
+          userId: agent.id,
+          userType: "ChatAgent",
+          config: {
+            gpt: {
+              model: this.configuration.model,
+              temperature: this.configuration.temperature,
+              maxCompletionTokens: this.configuration.maxTokens,
+              presencePenalty: this.configuration.presencePenalty,
+              frequencyPenalty: this.configuration.frequencyPenalty,
+              historyBufferSize: this.configuration.historyBufferSize,
+              numberOfChoices: this.configuration.numberOfChoices,
+            },
+            tts: {
+              engine: this.configuration.tts.engine,
+              model: this.configuration.tts.model,
+              language: this.configuration.tts.language,
+              voice: this.configuration.tts.voice,
+            },
+          },
+        },
+        {
+          transaction,
+          hooks: false,
+        }
+      );
+
+      const messages = await Message.findAll({
+        where: {
+          conversationId: this.id,
+        },
+        include: [
+          {
+            association: "speeches",
+            model: Speech,
+            where: { sourceType: "Message" },
+            required: false,
+          },
+        ],
+        order: [["createdAt", "ASC"]],
+      });
+
+      for (const message of messages) {
+        const chatMessage = await ChatMessage.create(
+          {
+            chatId: chat.id,
+            content: message.content,
+            role: message.role === "user" ? "USER" : "AGENT",
+            memberId: message.role === "assistant" ? chatMember.id : null,
+          },
+          {
+            transaction,
+            hooks: false,
+          }
+        );
+
+        for (const speech of message.speeches) {
+          await speech.update(
+            {
+              sourceId: chatMessage.id,
+              sourceType: "ChatMessage",
+            },
+            { transaction, hooks: false }
+          );
+        }
+      }
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
 
   @BeforeSave
   static validateConfiguration(conversation: Conversation) {

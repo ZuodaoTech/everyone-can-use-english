@@ -64,7 +64,7 @@ type GptConfigType = {
   engine: string;
   model: string;
   temperature?: number;
-  maxTokens?: number;
+  maxCompletionTokens?: number;
   frequencyPenalty?: number;
   presencePenalty?: number;
   numberOfChoices?: number;
