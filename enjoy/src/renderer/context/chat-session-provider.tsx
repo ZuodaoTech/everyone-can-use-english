@@ -211,7 +211,6 @@ export const ChatSessionProvider = ({
     member?: ChatMemberType;
     force?: boolean;
   }) => {
-    if (submitting) return;
     if (asking) return;
 
     let { member, force = false } = options || {};

@@ -52,7 +52,7 @@ export const ChatUserMessage = (props: {
   const ref = useRef<HTMLDivElement>(null);
   const [editing, setEditing] = useState<boolean>(false);
   const [content, setContent] = useState<string>(chatMessage.content);
-  const { onUpdateMessage, askAgent, submitting } = useContext(
+  const { onUpdateMessage, askAgent, submitting, asking } = useContext(
     ChatSessionProviderContext
   );
   const [displayPlayer, setDisplayPlayer] = useState(false);
@@ -69,7 +69,7 @@ export const ChatUserMessage = (props: {
     if (chatMessage.recording) return;
 
     askAgent();
-  }, []);
+  }, [chatMessage]);
 
   return (
     <div ref={ref}>
@@ -147,7 +147,7 @@ export const ChatUserMessage = (props: {
               setContent={setContent}
               setEditing={setEditing}
             />
-            {chatMessage.state === "pending" && !submitting && (
+            {chatMessage.state === "pending" && !submitting && !asking && (
               <div className="flex justify-end items-center space-x-2">
                 <InfoIcon
                   data-tooltip-id={`${chatMessage.chatId}-tooltip`}
@@ -155,7 +155,7 @@ export const ChatUserMessage = (props: {
                   className="w-4 h-4 text-yellow-600"
                 />
                 <Button
-                  disabled={submitting}
+                  disabled={submitting || Boolean(asking)}
                   onClick={() => askAgent()}
                   variant="default"
                   size="sm"
