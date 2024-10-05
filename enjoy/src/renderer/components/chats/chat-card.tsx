@@ -30,7 +30,7 @@ export const ChatCard = (props: {
     <div className="px-2">
       {displayDate && (
         <div className="text-xs text-muted-foreground my-2 capitalize">
-          {dayjs(chat.createdAt).fromNow()}
+          {dayjs(chat.updatedAt).fromNow()}
         </div>
       )}
       <div

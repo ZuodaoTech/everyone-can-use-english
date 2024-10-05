@@ -1,5 +1,5 @@
 import { ipcMain, IpcMainEvent } from "electron";
-import { ChatMessage, Recording } from "@main/db/models";
+import { Chat, ChatAgent, ChatMessage, Recording } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
 import log from "@main/logger";
 import { enjoyUrlToPath, pathToEnjoyUrl } from "@/main/utils";
@@ -48,7 +48,6 @@ class ChatMessagesHandler {
     _event: IpcMainEvent,
     data: Partial<Attributes<ChatMessage>> & { recordingUrl?: string }
   ) {
-    logger.debug("create", data);
     const { recordingUrl } = data;
     delete data.recordingUrl;
 
@@ -73,6 +72,7 @@ class ChatMessagesHandler {
         );
         message.recording = recording;
       }
+
       await transaction.commit();
 
       return (await message.reload()).toJSON();

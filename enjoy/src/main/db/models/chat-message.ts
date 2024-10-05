@@ -16,7 +16,13 @@ import {
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
-import { Chat, ChatMember, Recording, Speech } from "@main/db/models";
+import {
+  Chat,
+  ChatAgent,
+  ChatMember,
+  Recording,
+  Speech,
+} from "@main/db/models";
 
 const logger = log.scope("db/models/chat-message");
 @Table({
@@ -127,7 +133,20 @@ export class ChatMessage extends Model<ChatMessage> {
   static async updateChat(chatMessage: ChatMessage) {
     const chat = await Chat.findByPk(chatMessage.chatId);
     if (chat) {
-      await chat.update({ updatedAt: new Date() });
+      chat.changed("updatedAt", true);
+      chat.update({ updatedAt: new Date() });
+    }
+
+    const member = await ChatMember.findByPk(chatMessage.memberId, {
+      include: [
+        {
+          association: ChatMember.associations.agent,
+        },
+      ],
+    });
+    if (member?.agent) {
+      member.agent.changed("updatedAt", true);
+      member.agent.update({ updatedAt: new Date() });
     }
   }
 

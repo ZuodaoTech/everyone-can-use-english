@@ -17,10 +17,7 @@ import {
 } from "@renderer/components/ui";
 
 export const ChatMessages = () => {
-  const { chatMessages, chat, asking, chatMembers } = useContext(
-    ChatSessionProviderContext
-  );
-  const lastMessage = chatMessages[chatMessages.length - 1];
+  const { chatMessages, chat, asking } = useContext(ChatSessionProviderContext);
   const [editingChatMember, setEditingChatMember] =
     useState<ChatMemberType>(null);
 
@@ -31,7 +28,9 @@ export const ChatMessages = () => {
           <ChatMessage
             key={message.id}
             chatMessage={message}
-            isLastMessage={lastMessage?.id === message.id}
+            isLastMessage={
+              chatMessages[chatMessages.length - 1]?.id === message.id
+            }
             onEditChatMember={setEditingChatMember}
           />
         ))}

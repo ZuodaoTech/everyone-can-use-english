@@ -47,7 +47,7 @@ export const CopilotChats = (props: { onSelect: (chat: ChatType) => void }) => {
           chat={chat}
           displayDate={
             index === 0 ||
-            !isSameTimeRange(chat.createdAt, chats[index - 1].createdAt)
+            !isSameTimeRange(chat.updatedAt, chats[index - 1].updatedAt)
           }
           selected={currentChat?.id === chat.id}
           disabled={occupiedChat?.id === chat.id}

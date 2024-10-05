@@ -46,9 +46,10 @@ export const ChatAgentMessage = (props: {
   onEditChatMember: (chatMember: ChatMemberType) => void;
 }) => {
   const { chatMessage, onEditChatMember, isLastMessage } = props;
-  const { chat, chatMembers, askAgent } = useContext(
+  const { chat, chatMembers, askAgent, dispatchChatMessages } = useContext(
     ChatSessionProviderContext
   );
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const ref = useRef<HTMLDivElement>(null);
   const [speeching, setSpeeching] = useState(false);
   const [translation, setTranslation] = useState<string>();
@@ -57,7 +58,7 @@ export const ChatAgentMessage = (props: {
   );
   const [displayPlayer, setDisplayPlayer] = useState(false);
   const chatMember = chatMembers.find(
-    (member) => member.id === chatMessage.member.id
+    (member) => member.id === chatMessage.member?.id
   );
 
   useEffect(() => {
@@ -70,7 +71,17 @@ export const ChatAgentMessage = (props: {
     if (isLastMessage) {
       askAgent();
     }
-  }, []);
+  }, [chatMessage]);
+
+  useEffect(() => {
+    if (chatMessage?.member) return;
+    EnjoyApp.chatMessages.findOne({ id: chatMessage.id }).then((message) => {
+      dispatchChatMessages({
+        type: "update",
+        record: message,
+      });
+    });
+  }, [chatMessage]);
 
   if (!chatMember) return;
 
@@ -300,6 +311,7 @@ const ChatAgentMessageActions = (props: {
       createSpeech();
     }
   }, [chatMessage]);
+
   return (
     <DropdownMenu>
       <div className="flex items-center space-x-4">
