@@ -19,12 +19,14 @@ import {
   ChatMessage,
   Message,
   Speech,
+  UserSetting,
 } from "@main/db/models";
 import mainWindow from "@main/window";
 import log from "@main/logger";
 import { t } from "i18next";
 import { Op } from "sequelize";
-import { SttEngineOptionEnum } from "@/types/enums";
+import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/types/enums";
+import { DEFAULT_GPT_CONFIG } from "@/constants";
 
 const logger = log.scope("db/models/conversation");
 @Table({
@@ -81,20 +83,53 @@ export class Conversation extends Model<Conversation> {
   messages: Message[];
 
   async migrateToChat() {
-    const agent = await ChatAgent.create({
+    const source = `conversations://${this.id}`;
+    let agent = await ChatAgent.findOne({
+      where: {
+        source,
+      },
+    });
+
+    if (agent) return;
+
+    const gpt = {
+      engine: this.engine,
+      model: this.configuration.model,
+      temperature: this.configuration.temperature,
+      maxCompletionTokens: this.configuration.maxTokens,
+      presencePenalty: this.configuration.presencePenalty,
+      frequencyPenalty: this.configuration.frequencyPenalty,
+      historyBufferSize: this.configuration.historyBufferSize,
+      numberOfChoices: this.configuration.numberOfChoices,
+    };
+
+    if (!["openai", "enjoyai"].includes(this.engine)) {
+      const defaultGptEngine = await UserSetting.get(
+        UserSettingKeyEnum.GPT_ENGINE
+      );
+      gpt.engine = defaultGptEngine?.name || DEFAULT_GPT_CONFIG.engine;
+      gpt.model = defaultGptEngine?.models?.default || DEFAULT_GPT_CONFIG.model;
+    }
+
+    const tts = {
+      engine: this.configuration.tts.engine,
+      model: this.configuration.tts.model,
+      language: this.configuration.tts.language,
+      voice: this.configuration.tts.voice,
+    };
+
+    agent = await ChatAgent.create({
       name: this.name,
       type: this.configuration.type === "gpt" ? "GPT" : "TTS",
-      description: "Migrated from conversation",
+      source,
+      description: "",
       config:
         this.configuration.type === "gpt"
           ? {
               prompt: this.configuration.roleDefinition,
             }
           : {
-              engine: this.configuration.tts.engine,
-              model: this.configuration.tts.model,
-              language: this.configuration.tts.language,
-              voice: this.configuration.tts.voice,
+              tts,
             },
     });
 
@@ -121,30 +156,11 @@ export class Conversation extends Model<Conversation> {
           config:
             this.configuration.type === "gpt"
               ? {
-                  gpt: {
-                    engine: this.engine,
-                    model: this.configuration.model,
-                    temperature: this.configuration.temperature,
-                    maxCompletionTokens: this.configuration.maxTokens,
-                    presencePenalty: this.configuration.presencePenalty,
-                    frequencyPenalty: this.configuration.frequencyPenalty,
-                    historyBufferSize: this.configuration.historyBufferSize,
-                    numberOfChoices: this.configuration.numberOfChoices,
-                  },
-                  tts: {
-                    engine: this.configuration.tts.engine,
-                    model: this.configuration.tts.model,
-                    language: this.configuration.tts.language,
-                    voice: this.configuration.tts.voice,
-                  },
+                  gpt,
+                  tts,
                 }
               : {
-                  tts: {
-                    engine: this.configuration.tts.engine,
-                    model: this.configuration.tts.model,
-                    language: this.configuration.tts.language,
-                    voice: this.configuration.tts.voice,
-                  },
+                  tts,
                 },
         },
         {
@@ -176,6 +192,8 @@ export class Conversation extends Model<Conversation> {
             role: message.role === "user" ? "USER" : "AGENT",
             state: "completed",
             memberId: message.role === "assistant" ? chatMember.id : null,
+            createdAt: message.createdAt,
+            updatedAt: message.updatedAt,
           },
           {
             transaction,
@@ -186,6 +204,7 @@ export class Conversation extends Model<Conversation> {
       await transaction.commit();
     } catch (error) {
       await transaction.rollback();
+      logger.error(error);
       throw error;
     }
   }
