@@ -113,12 +113,23 @@ class ConversationsHandler {
     });
   }
 
+  private async migrate(_event: IpcMainEvent, id: string) {
+    const conversation = await Conversation.findOne({
+      where: { id },
+    });
+    if (!conversation) {
+      throw new Error(t("models.conversation.notFound"));
+    }
+    await conversation.migrateToChat();
+  }
+
   register() {
     ipcMain.handle("conversations-find-all", this.findAll);
     ipcMain.handle("conversations-find-one", this.findOne);
     ipcMain.handle("conversations-create", this.create);
     ipcMain.handle("conversations-update", this.update);
     ipcMain.handle("conversations-destroy", this.destroy);
+    ipcMain.handle("conversations-migrate", this.migrate);
   }
 
   unregister() {
@@ -127,6 +138,7 @@ class ConversationsHandler {
     ipcMain.removeHandler("conversations-create");
     ipcMain.removeHandler("conversations-update");
     ipcMain.removeHandler("conversations-destroy");
+    ipcMain.removeHandler("conversations-migrate");
   }
 }
 

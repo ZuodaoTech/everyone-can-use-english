@@ -390,6 +390,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     destroy: (id: string) => {
       return ipcRenderer.invoke("conversations-destroy", id);
     },
+    migrate: (id: string) => {
+      return ipcRenderer.invoke("conversations-migrate", id);
+    },
   },
   pronunciationAssessments: {
     findAll: (params: { where?: any; offset?: number; limit?: number }) => {

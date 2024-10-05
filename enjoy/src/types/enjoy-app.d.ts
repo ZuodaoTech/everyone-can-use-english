@@ -236,6 +236,7 @@ type EnjoyAppType = {
     create: (params: any) => Promise<ConversationType>;
     update: (id: string, params: any) => Promise<ConversationType>;
     destroy: (id: string) => Promise<void>;
+    migrate: (id: string) => Promise<void>;
   };
   messages: {
     findAll: (params: any) => Promise<MessageType[]>;
