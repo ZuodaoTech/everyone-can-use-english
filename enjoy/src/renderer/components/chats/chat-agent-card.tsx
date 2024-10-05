@@ -51,12 +51,22 @@ export const ChatAgentCard = (props: {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {onEdit && (
-              <DropdownMenuItem onClick={() => onEdit(chatAgent)}>
+              <DropdownMenuItem
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onEdit(chatAgent);
+                }}
+              >
                 <span>{t("edit")}</span>
               </DropdownMenuItem>
             )}
             {onDelete && (
-              <DropdownMenuItem onClick={() => onDelete(chatAgent)}>
+              <DropdownMenuItem
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onDelete(chatAgent);
+                }}
+              >
                 <span className="text-destructive">{t("delete")}</span>
               </DropdownMenuItem>
             )}

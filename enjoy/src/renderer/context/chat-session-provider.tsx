@@ -260,6 +260,8 @@ export const ChatSessionProvider = ({
       if (message.role === "USER") {
         break;
       }
+      if (!message.member) break;
+
       spokeMembers.add(message.member.id);
       currentIndex--;
     }

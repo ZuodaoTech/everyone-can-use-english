@@ -81,25 +81,22 @@ export class Conversation extends Model<Conversation> {
   messages: Message[];
 
   async migrateToChat() {
-    let agent = await ChatAgent.findOne({
-      where: {
-        config: {
-          [Op.contains]: {
-            prompt: this.configuration.prompt,
-          },
-        },
-      },
+    const agent = await ChatAgent.create({
+      name: this.name,
+      type: this.configuration.type === "gpt" ? "GPT" : "TTS",
+      description: "Migrated from conversation",
+      config:
+        this.configuration.type === "gpt"
+          ? {
+              prompt: this.configuration.roleDefinition,
+            }
+          : {
+              engine: this.configuration.tts.engine,
+              model: this.configuration.tts.model,
+              language: this.configuration.tts.language,
+              voice: this.configuration.tts.voice,
+            },
     });
-    if (!agent) {
-      agent = await ChatAgent.create({
-        name: this.name,
-        type: "GPT",
-        description: "Migrated from conversation",
-        config: {
-          prompt: this.configuration.roleDefinition,
-        },
-      });
-    }
 
     const transaction = await Conversation.sequelize.transaction();
 
@@ -121,23 +118,34 @@ export class Conversation extends Model<Conversation> {
           chatId: chat.id,
           userId: agent.id,
           userType: "ChatAgent",
-          config: {
-            gpt: {
-              model: this.configuration.model,
-              temperature: this.configuration.temperature,
-              maxCompletionTokens: this.configuration.maxTokens,
-              presencePenalty: this.configuration.presencePenalty,
-              frequencyPenalty: this.configuration.frequencyPenalty,
-              historyBufferSize: this.configuration.historyBufferSize,
-              numberOfChoices: this.configuration.numberOfChoices,
-            },
-            tts: {
-              engine: this.configuration.tts.engine,
-              model: this.configuration.tts.model,
-              language: this.configuration.tts.language,
-              voice: this.configuration.tts.voice,
-            },
-          },
+          config:
+            this.configuration.type === "gpt"
+              ? {
+                  gpt: {
+                    engine: this.engine,
+                    model: this.configuration.model,
+                    temperature: this.configuration.temperature,
+                    maxCompletionTokens: this.configuration.maxTokens,
+                    presencePenalty: this.configuration.presencePenalty,
+                    frequencyPenalty: this.configuration.frequencyPenalty,
+                    historyBufferSize: this.configuration.historyBufferSize,
+                    numberOfChoices: this.configuration.numberOfChoices,
+                  },
+                  tts: {
+                    engine: this.configuration.tts.engine,
+                    model: this.configuration.tts.model,
+                    language: this.configuration.tts.language,
+                    voice: this.configuration.tts.voice,
+                  },
+                }
+              : {
+                  tts: {
+                    engine: this.configuration.tts.engine,
+                    model: this.configuration.tts.model,
+                    language: this.configuration.tts.language,
+                    voice: this.configuration.tts.voice,
+                  },
+                },
         },
         {
           transaction,
@@ -161,11 +169,12 @@ export class Conversation extends Model<Conversation> {
       });
 
       for (const message of messages) {
-        const chatMessage = await ChatMessage.create(
+        await ChatMessage.create(
           {
             chatId: chat.id,
             content: message.content,
             role: message.role === "user" ? "USER" : "AGENT",
+            state: "completed",
             memberId: message.role === "assistant" ? chatMember.id : null,
           },
           {
@@ -173,16 +182,6 @@ export class Conversation extends Model<Conversation> {
             hooks: false,
           }
         );
-
-        for (const speech of message.speeches) {
-          await speech.update(
-            {
-              sourceId: chatMessage.id,
-              sourceType: "ChatMessage",
-            },
-            { transaction, hooks: false }
-          );
-        }
       }
       await transaction.commit();
     } catch (error) {
