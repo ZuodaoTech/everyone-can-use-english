@@ -16,13 +16,7 @@ import {
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
-import {
-  Chat,
-  ChatAgent,
-  ChatMember,
-  Recording,
-  Speech,
-} from "@main/db/models";
+import { Chat, ChatMember, Recording, Speech } from "@main/db/models";
 
 const logger = log.scope("db/models/chat-message");
 @Table({
@@ -71,8 +65,8 @@ export class ChatMessage extends Model<ChatMessage> {
   chatId: string;
 
   @AllowNull(true)
-  @Column(DataType.STRING)
-  role: "AGENT" | "USER" | "SYSTEM";
+  @Column(DataType.ENUM("AGENT", "USER", "SYSTEM"))
+  role: string;
 
   @Column(DataType.UUID)
   memberId: string | null;

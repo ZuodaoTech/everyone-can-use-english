@@ -97,15 +97,27 @@ export class ChatMember extends Model<ChatMember> {
     });
   }
 
-  @BeforeDestroy
+  @AfterDestroy
   static async destroyMessages(member: ChatMember) {
-    const chatAgent = await ChatAgent.findByPk(member.userId);
-    ChatMessage.create({
-      chatId: member.chatId,
-      content: `${chatAgent.name} has left the chat.`,
-      role: "SYSTEM",
+    ChatMember.findAll({
+      where: { chatId: member.chatId },
+    }).then(async (members) => {
+      // if the chat has no members, destroy the chat
+      if (members.filter((m) => m.id !== member.id).length === 0) {
+        Chat.destroy({ where: { id: member.chatId } });
+      } else {
+        ChatAgent.findByPk(member.userId).then((chatAgent) => {
+          if (!chatAgent) return;
+
+          ChatMessage.create({
+            chatId: member.chatId,
+            content: `${chatAgent.name} has left the chat.`,
+            role: "SYSTEM",
+          });
+          ChatMessage.destroy({ where: { memberId: member.id }, hooks: false });
+        });
+      }
     });
-    ChatMessage.destroy({ where: { memberId: member.id }, hooks: false });
   }
 
   @AfterCreate

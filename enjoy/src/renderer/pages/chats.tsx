@@ -1,4 +1,4 @@
-import { Chat, ChatAgents, ChatList } from "@renderer/components";
+import { ChatSession, ChatAgents, ChatList } from "@renderer/components";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -68,8 +68,9 @@ export default function Chats() {
         </>
       )}
       <ResizablePanel id="chat-session-panel" order={2} minSize={50}>
-        <Chat
+        <ChatSession
           chat={currentChat}
+          setChat={setCurrentChat}
           sidePanelCollapsed={sidePanelCollapsed}
           toggleSidePanel={() => setSidePanelCollapsed(!sidePanelCollapsed)}
         />

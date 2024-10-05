@@ -28,64 +28,47 @@ export const ChatList = (props: {
   setCurrentChat: (chat: ChatType) => void;
 }) => {
   const { chatAgent, currentChat, setCurrentChat } = props;
-  const { chats, createChat, destroyChat } = useChat(chatAgent?.id);
+  const { chats } = useChat(chatAgent?.id);
   const { sttEngine, currentGptEngine, currentTtsEngine } = useContext(
     AISettingsProviderContext
   );
-  const { learningLanguage } = useContext(AppSettingsProviderContext);
-  const {
-    currentChat: copilotCurrentChat,
-    setCurrentChat: setCopilotCurrentChat,
-  } = useContext(CopilotProviderContext);
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
+  const { currentChat: copilotCurrentChat } = useContext(
+    CopilotProviderContext
+  );
   const [deletingChat, setDeletingChat] = useState<ChatType>(null);
-
-  useEffect(() => {
-    if (
-      !currentChat ||
-      currentChat.members.findIndex(
-        (member) => member.userId === chatAgent?.id
-      ) === -1
-    ) {
-      const chat = chats.find((chat) => chat.id !== copilotCurrentChat?.id);
-      if (chat) {
-        setCurrentChat(chat);
-      } else {
-        handleCreateChat();
-      }
-    }
-  }, [chats]);
 
   const handleCreateChat = () => {
     if (!chatAgent) {
       return;
     }
-    createChat({
-      name: t("newChat"),
-      config: {
-        sttEngine: sttEngine,
-      },
-      members: [buildAgentMember(chatAgent)],
-    }).then((chat) => {
-      if (chat) {
+    EnjoyApp.chats
+      .create({
+        name: t("newChat"),
+        config: {
+          sttEngine: sttEngine,
+        },
+        members: [buildAgentMember(chatAgent)],
+      })
+      .then((chat) => {
         setCurrentChat(chat);
-      }
-    });
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   const handleDeleteChat = async () => {
     if (!deletingChat) return;
-    try {
-      await destroyChat(deletingChat.id);
-      if (deletingChat.id === currentChat?.id) {
-        setCurrentChat(null);
-      }
-      if (deletingChat.id === copilotCurrentChat?.id) {
-        setCopilotCurrentChat(null);
-      }
-      setDeletingChat(null);
-    } catch (error) {
-      toast.error(error.message);
-    }
+
+    EnjoyApp.chats
+      .destroy(deletingChat.id)
+      .catch((error) => {
+        toast.error(error.message);
+      })
+      .finally(() => {
+        setDeletingChat(null);
+      });
   };
 
   const buildAgentMember = (agent: ChatAgentType): ChatMemberDtoType => {
@@ -119,6 +102,24 @@ export const ChatList = (props: {
       config,
     };
   };
+
+  useEffect(() => {
+    const currentAgentNotInvolved =
+      currentChat?.members?.findIndex(
+        (member) => member.userId === chatAgent?.id
+      ) === -1;
+    const currentChatIsNotFound =
+      chats?.findIndex((chat) => chat.id === currentChat?.id) === -1;
+
+    if (!currentChat || currentAgentNotInvolved || currentChatIsNotFound) {
+      const chat = chats.find((chat) => chat.id !== copilotCurrentChat?.id);
+      if (chat) {
+        setCurrentChat(chat);
+      } else {
+        handleCreateChat();
+      }
+    }
+  }, [chats]);
 
   return (
     <>

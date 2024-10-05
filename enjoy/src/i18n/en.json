@@ -480,6 +480,8 @@
   "deleteConversation": "Delete conversation",
   "deleteConversationConfirmation": "Are you sure to delete this conversation inclcuding all messages?",
   "noConversationsYet": "No conversations yet",
+  "conversationMigrated": "Conversation has been migrated to Chat",
+  "conversationDeleted": "Conversation deleted",
   "translation": "Translation",
   "pressEnterToSend": "Press enter to send",
   "send": "Send",
@@ -857,7 +859,7 @@
   "chatNoContentYet": "Chat has no content yet.",
   "removeChatMember": "Remove member",
   "removeChatMemberConfirmation": "Are you sure to remove this member from the chat?",
-  "youAreChattingWithThisAgent": "You are chatting with this agent. Please close all chats before deleting.",
   "addMember": "Add member",
-  "added": "Added"
+  "added": "Added",
+  "migrateToChat": "Migrate to chat"
 }

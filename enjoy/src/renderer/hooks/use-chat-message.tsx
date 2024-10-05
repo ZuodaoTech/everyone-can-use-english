@@ -16,12 +16,8 @@ import { ConversationChain } from "langchain/chains";
 import { LLMResult } from "@langchain/core/outputs";
 import { CHAT_GROUP_PROMPT_TEMPLATE } from "@/constants";
 import dayjs from "@renderer/lib/dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import Mustache from "mustache";
 import { t } from "i18next";
-import { useAiCommand } from "@renderer/hooks";
-
-dayjs.extend(relativeTime);
 
 export const useChatMessage = (chat: ChatType) => {
   const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
@@ -31,7 +27,6 @@ export const useChatMessage = (chat: ChatType) => {
     chatMessagesReducer,
     []
   );
-  const { summarizeTopic } = useAiCommand();
 
   const fetchChatMessages = async (query?: string) => {
     if (!chat?.id) return;
@@ -314,20 +309,8 @@ export const useChatMessage = (chat: ChatType) => {
     );
   };
 
-  const updateChatName = async () => {
-    if (chatMessages.filter((m) => m.role === "AGENT").length < 1) return;
-
-    const content = chatMessages
-      .filter((m) => m.role === "AGENT" || m.role === "USER")
-      .slice(0, 10)
-      .map((m) => m.content)
-      .join("\n");
-    const name = await summarizeTopic(content);
-    EnjoyApp.chats.update(chat.id, { name });
-  };
-
   useEffect(() => {
-    if (!chat) return;
+    if (!chat?.id) return;
 
     addDblistener(onChatMessageRecordUpdate);
     fetchChatMessages();
@@ -335,17 +318,7 @@ export const useChatMessage = (chat: ChatType) => {
       removeDbListener(onChatMessageRecordUpdate);
       dispatchChatMessages({ type: "set", records: [] });
     };
-  }, [chat]);
-
-  useEffect(() => {
-    // Automatically update the chat name
-    if (
-      chat.name === t("newChat") &&
-      chatMessages.filter((m) => m.role === "AGENT").length > 1
-    ) {
-      updateChatName();
-    }
-  }, [chatMessages]);
+  }, [chat?.id]);
 
   return {
     chatMessages,

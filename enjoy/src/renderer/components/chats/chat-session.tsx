@@ -3,12 +3,13 @@ import { t } from "i18next";
 import { ChatSessionProvider } from "@renderer/context";
 import { ChatHeader, ChatInput, ChatMessages } from "@renderer/components";
 
-export const Chat = (props: {
+export const ChatSession = (props: {
   chat: ChatType;
+  setChat: (chat: ChatType) => void;
   sidePanelCollapsed: boolean;
   toggleSidePanel: () => void;
 }) => {
-  const { chat, sidePanelCollapsed, toggleSidePanel } = props;
+  const { chat, setChat, sidePanelCollapsed, toggleSidePanel } = props;
 
   if (!chat) {
     return (
@@ -25,7 +26,7 @@ export const Chat = (props: {
         sidePanelCollapsed={sidePanelCollapsed}
         toggleSidePanel={toggleSidePanel}
       />
-      <ChatSessionProvider chat={chat}>
+      <ChatSessionProvider chat={chat} setChat={setChat}>
         <div className="w-full max-w-screen-md mx-auto">
           <ChatMessages />
           <div className="h-16" />

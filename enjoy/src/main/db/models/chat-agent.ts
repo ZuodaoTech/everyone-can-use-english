@@ -99,7 +99,7 @@ export class ChatAgent extends Model<ChatAgent> {
     }
   }
 
-  @BeforeDestroy
+  @AfterDestroy
   static destroyMembers(chatAgent: ChatAgent) {
     ChatMember.destroy({ where: { userId: chatAgent.id } });
   }

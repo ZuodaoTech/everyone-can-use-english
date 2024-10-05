@@ -19,10 +19,7 @@ import { useContext, useEffect, useState } from "react";
 import { t } from "i18next";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useChatAgent } from "@renderer/hooks";
-import {
-  AppSettingsProviderContext,
-  CopilotProviderContext,
-} from "@/renderer/context";
+import { AppSettingsProviderContext } from "@/renderer/context";
 
 export const ChatAgents = (props: {
   currentChatAgent: ChatAgentType;
@@ -31,12 +28,6 @@ export const ChatAgents = (props: {
   const { currentChatAgent, setCurrentChatAgent } = props;
   const { chatAgents, fetchChatAgents } = useChatAgent();
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const {
-    occupiedChat,
-    setOccupiedChat,
-    currentChat: copilotCurrentChat,
-    setCurrentChat: setCopilotCurrentChat,
-  } = useContext(CopilotProviderContext);
   const [deletingChatAgent, setDeletingChatAgent] =
     useState<ChatAgentType>(null);
   const [editingChatAgent, setEditingChatAgent] = useState<ChatAgentType>(null);
@@ -46,19 +37,6 @@ export const ChatAgents = (props: {
 
   const handleDeleteChatAgent = () => {
     if (!deletingChatAgent) return;
-
-    const isOccupied = occupiedChat?.members?.some(
-      (member) => member.userId === deletingChatAgent.id
-    );
-
-    const isCopilotCurrent = copilotCurrentChat?.members?.some(
-      (member) => member.userId === deletingChatAgent.id
-    );
-
-    if (isOccupied || isCopilotCurrent) {
-      toast.error(t("youAreChattingWithThisAgent"));
-      return;
-    }
 
     EnjoyApp.chatAgents
       .destroy(deletingChatAgent.id)

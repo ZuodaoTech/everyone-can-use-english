@@ -1,5 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useChatMember, useChatMessage, useTranscribe } from "@renderer/hooks";
+import {
+  useAiCommand,
+  useChatMember,
+  useChatMessage,
+  useTranscribe,
+} from "@renderer/hooks";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import {
   AppSettingsProviderContext,
@@ -96,9 +101,11 @@ export const ChatSessionProviderContext =
 export const ChatSessionProvider = ({
   children,
   chat,
+  setChat,
 }: {
   children: React.ReactNode;
   chat: ChatType;
+  setChat?: (chat: ChatType) => void;
 }) => {
   const { EnjoyApp, recorderConfig, learningLanguage } = useContext(
     AppSettingsProviderContext
@@ -134,6 +141,7 @@ export const ChatSessionProvider = ({
 
   const { chatMembers } = useChatMember(chat.id);
   const { transcribe } = useTranscribe();
+  const { summarizeTopic } = useAiCommand();
 
   const cancelRecording = () => {
     setCancelingRecording(true);
@@ -290,6 +298,20 @@ export const ChatSessionProvider = ({
     });
   };
 
+  const updateChatName = async () => {
+    if (chatMessages.filter((m) => m.role === "AGENT").length < 1) return;
+
+    const content = chatMessages
+      .filter((m) => m.role === "AGENT" || m.role === "USER")
+      .slice(0, 10)
+      .map((m) => m.content)
+      .join("\n");
+    const name = await summarizeTopic(content);
+    EnjoyApp.chats.update(chat.id, { name }).then((chat) => {
+      setChat({ ...chat, name });
+    });
+  };
+
   useEffect(() => {
     askForMediaAccess();
   }, []);
@@ -313,6 +335,16 @@ export const ChatSessionProvider = ({
       stopRecording();
     }
   }, [recordingTime]);
+
+  useEffect(() => {
+    // Automatically update the chat name
+    if (
+      chat.name === t("newChat") &&
+      chatMessages.filter((m) => m.role === "AGENT").length > 0
+    ) {
+      updateChatName();
+    }
+  }, [chatMessages]);
 
   return (
     <ChatSessionProviderContext.Provider

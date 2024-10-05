@@ -24,7 +24,6 @@ import {
 import mainWindow from "@main/window";
 import log from "@main/logger";
 import { t } from "i18next";
-import { Op } from "sequelize";
 import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/types/enums";
 import { DEFAULT_GPT_CONFIG } from "@/constants";
 
@@ -114,12 +113,13 @@ export class Conversation extends Model<Conversation> {
     const tts = {
       engine: this.configuration.tts.engine,
       model: this.configuration.tts.model,
-      language: this.configuration.tts.language,
+      language: this.language,
       voice: this.configuration.tts.voice,
     };
 
     agent = await ChatAgent.create({
-      name: this.name,
+      name:
+        this.configuration.type === "tts" ? tts.voice || this.name : this.name,
       type: this.configuration.type === "gpt" ? "GPT" : "TTS",
       source,
       description: "",
@@ -138,8 +138,8 @@ export class Conversation extends Model<Conversation> {
     try {
       const chat = await Chat.create(
         {
-          name: this.name,
-          type: "CONVERSATION",
+          name: t("newChat"),
+          type: this.type === "gpt" ? "CONVERSATION" : "TTS",
           config: {
             stt: SttEngineOptionEnum.ENJOY_AZURE,
           },
@@ -185,7 +185,7 @@ export class Conversation extends Model<Conversation> {
       });
 
       for (const message of messages) {
-        await ChatMessage.create(
+        const chatMessage = await ChatMessage.create(
           {
             chatId: chat.id,
             content: message.content,
@@ -200,6 +200,17 @@ export class Conversation extends Model<Conversation> {
             hooks: false,
           }
         );
+        if (chat.type === "TTS") {
+          for (const speech of message.speeches) {
+            await speech.update(
+              {
+                sourceId: chatMessage.id,
+                sourceType: "ChatMessage",
+              },
+              { transaction }
+            );
+          }
+        }
       }
       await transaction.commit();
     } catch (error) {

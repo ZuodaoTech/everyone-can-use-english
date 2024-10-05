@@ -480,6 +480,8 @@
   "deleteConversation": "删除对话",
   "deleteConversationConfirmation": "您确定要删除此对话，以及对话中的所有消息吗？",
   "noConversationsYet": "还没有对话",
+  "conversationMigrated": "对话已迁移到聊天",
+  "conversationDeleted": "对话已删除",
   "translation": "翻译",
   "pressEnterToSend": "按 Enter 发送",
   "send": "发送",
@@ -857,7 +859,7 @@
   "chatNoContentYet": "聊天还没有内容",
   "removeChatMember": "移除群成员",
   "removeChatMemberConfirmation": "您确定要将此成员移出群聊吗？",
-  "youAreChattingWithThisAgent": "您正在与该智能体聊天。请关闭所有聊天再删除。",
   "addMember": "增加群成员",
-  "added": "已添加"
+  "added": "已添加",
+  "migrateToChat": "迁移到聊天"
 }

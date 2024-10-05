@@ -1,4 +1,4 @@
-export * from "./chat";
+export * from "./chat-session";
 export * from "./chat-agents";
 export * from "./chat-agent-form";
 export * from "./chat-card";
