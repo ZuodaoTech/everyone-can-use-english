@@ -66,7 +66,7 @@ export const ChatUserMessage = (props: {
   useEffect(() => {
     if (!isLastMessage) return;
     // If the message is from recording, wait for user to confirm before asking agent
-    if (chatMessage.recording) return;
+    if (chatMessage.recording && chatMessage.state !== "completed") return;
 
     askAgent();
   }, [chatMessage]);

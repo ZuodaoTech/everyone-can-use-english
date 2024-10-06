@@ -306,10 +306,14 @@ export const ChatSessionProvider = ({
       .slice(0, 10)
       .map((m) => m.content)
       .join("\n");
-    const name = await summarizeTopic(content);
-    EnjoyApp.chats.update(chat.id, { name }).then((chat) => {
-      setChat({ ...chat, name });
-    });
+    try {
+      const name = await summarizeTopic(content);
+      EnjoyApp.chats.update(chat.id, { name }).then((chat) => {
+        setChat({ ...chat, name });
+      });
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
