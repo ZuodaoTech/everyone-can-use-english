@@ -14,7 +14,6 @@ import {
   Scopes,
 } from "sequelize-typescript";
 import log from "@main/logger";
-import settings from "@main/settings";
 import { Chat, ChatAgent, ChatMessage } from "@main/db/models";
 import mainWindow from "@main/window";
 
@@ -73,17 +72,17 @@ export class ChatMember extends Model<ChatMember> {
   }
 
   @AfterCreate
-  @AfterUpdate
-  @AfterDestroy
   static async updateChats(member: ChatMember) {
     const agent = await ChatAgent.findByPk(member.userId);
     if (agent) {
-      await agent.update({ updatedAt: new Date() });
+      agent.changed("updatedAt", true);
+      agent.update({ updatedAt: new Date() });
     }
 
     const chat = await Chat.findByPk(member.chatId);
     if (chat) {
-      await chat.update({ updatedAt: new Date() });
+      chat.changed("updatedAt", true);
+      chat.update({ updatedAt: new Date() });
     }
   }
 
@@ -99,25 +98,7 @@ export class ChatMember extends Model<ChatMember> {
 
   @AfterDestroy
   static async destroyMessages(member: ChatMember) {
-    ChatMember.findAll({
-      where: { chatId: member.chatId },
-    }).then(async (members) => {
-      // if the chat has no members, destroy the chat
-      if (members.filter((m) => m.id !== member.id).length === 0) {
-        Chat.destroy({ where: { id: member.chatId } });
-      } else {
-        ChatAgent.findByPk(member.userId).then((chatAgent) => {
-          if (!chatAgent) return;
-
-          ChatMessage.create({
-            chatId: member.chatId,
-            content: `${chatAgent.name} has left the chat.`,
-            role: "SYSTEM",
-          });
-          ChatMessage.destroy({ where: { memberId: member.id }, hooks: false });
-        });
-      }
-    });
+    ChatMessage.destroy({ where: { memberId: member.id }, hooks: false });
   }
 
   @AfterCreate

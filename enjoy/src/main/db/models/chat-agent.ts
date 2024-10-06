@@ -9,7 +9,6 @@ import {
   DataType,
   AfterCreate,
   AllowNull,
-  BeforeDestroy,
   HasMany,
   BeforeSave,
 } from "sequelize-typescript";
@@ -147,6 +146,7 @@ export class ChatAgent extends Model<ChatAgent> {
             await chatMessage.update(
               {
                 role: "AGENT",
+                agentId: chatAgent.id,
               },
               {
                 transaction: tx,
@@ -189,6 +189,7 @@ export class ChatAgent extends Model<ChatAgent> {
         await chatMessage.update(
           {
             role: "USER",
+            agentId: null,
             memberId: null,
           },
           {

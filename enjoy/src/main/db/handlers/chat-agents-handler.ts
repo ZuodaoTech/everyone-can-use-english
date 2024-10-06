@@ -1,5 +1,5 @@
 import { ipcMain, IpcMainEvent } from "electron";
-import { ChatAgent } from "@main/db/models";
+import { Chat, ChatAgent, ChatMember } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
 import log from "@main/logger";
 import { t } from "i18next";
@@ -71,7 +71,36 @@ class ChatAgentsHandler {
     if (!agent) {
       throw new Error(t("models.chatAgent.notFound"));
     }
-    agent.destroy();
+
+    const transaction = await ChatAgent.sequelize.transaction();
+    try {
+      const chatMembers = await ChatMember.findAll({
+        where: {
+          userId: id,
+        },
+      });
+
+      const chats = await Chat.findAll({
+        where: {
+          id: {
+            [Op.in]: chatMembers.map((member) => member.chatId),
+          },
+        },
+      });
+
+      for (const chat of chats) {
+        if (
+          chat.members.filter((member) => member.userId !== id).length === 0
+        ) {
+          await chat.destroy({ transaction });
+        }
+      }
+      await agent.destroy({ transaction });
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
   }
 
   register() {

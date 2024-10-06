@@ -192,6 +192,7 @@ export class Conversation extends Model<Conversation> {
             role: message.role === "user" ? "USER" : "AGENT",
             state: "completed",
             memberId: message.role === "assistant" ? chatMember.id : null,
+            agentId: message.role === "assistant" ? agent.id : null,
             createdAt: message.createdAt,
             updatedAt: message.updatedAt,
           },

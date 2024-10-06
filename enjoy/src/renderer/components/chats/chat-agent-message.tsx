@@ -57,9 +57,6 @@ export const ChatAgentMessage = (props: {
     !(chat.type === "TTS" || chat.config.enableAutoTts)
   );
   const [displayPlayer, setDisplayPlayer] = useState(false);
-  const chatMember = chatMembers.find(
-    (member) => member.id === chatMessage.member?.id
-  );
 
   useEffect(() => {
     if (ref.current) {
@@ -74,7 +71,8 @@ export const ChatAgentMessage = (props: {
   }, [chatMessage]);
 
   useEffect(() => {
-    if (chatMessage?.member) return;
+    if (chatMessage.agent) return;
+
     EnjoyApp.chatMessages.findOne({ id: chatMessage.id }).then((message) => {
       dispatchChatMessages({
         type: "update",
@@ -83,27 +81,28 @@ export const ChatAgentMessage = (props: {
     });
   }, [chatMessage]);
 
-  if (!chatMember) return;
+  if (!chatMessage.agent) return;
 
   return (
     <div ref={ref}>
       <div className="mb-2 flex">
         <div
           className="flex items-center space-x-1 cursor-pointer"
-          onClick={() => onEditChatMember(chatMember)}
+          onClick={() => onEditChatMember(chatMessage.member)}
         >
           <Avatar className="w-8 h-8 bg-background avatar">
-            <AvatarImage src={chatMember.agent.avatarUrl}></AvatarImage>
+            <AvatarImage src={chatMessage.agent.avatarUrl}></AvatarImage>
             <AvatarFallback className="bg-background">
-              {chatMember.name}
+              {chatMessage.agent.name}
             </AvatarFallback>
           </Avatar>
           <div>
-            <div className="text-xs">{chatMember.name}</div>
+            <div className="text-xs">{chatMessage.agent.name}</div>
             <div className="italic text-xs text-muted-foreground/50">
-              {chatMember.agent.type === "TTS" &&
-                chatMember.agent.config.tts?.voice}
-              {chatMember.agent.type === "GPT" && chatMember.config.gpt?.model}
+              {chatMessage.agent.type === "TTS" &&
+                chatMessage.agent.config.tts?.voice}
+              {chatMessage.agent.type === "GPT" &&
+                chatMessage.agent.config.gpt?.model}
             </div>
           </div>
         </div>

@@ -16,7 +16,13 @@ import {
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
-import { Chat, ChatMember, Recording, Speech } from "@main/db/models";
+import {
+  Chat,
+  ChatAgent,
+  ChatMember,
+  Recording,
+  Speech,
+} from "@main/db/models";
 
 const logger = log.scope("db/models/chat-message");
 @Table({
@@ -31,11 +37,10 @@ const logger = log.scope("db/models/chat-message");
       {
         association: ChatMessage.associations.member,
         model: ChatMember,
-        include: [
-          {
-            association: ChatMember.associations.agent,
-          },
-        ],
+      },
+      {
+        association: ChatMessage.associations.agent,
+        model: ChatAgent,
       },
       {
         association: ChatMessage.associations.recording,
@@ -71,6 +76,9 @@ export class ChatMessage extends Model<ChatMessage> {
   @Column(DataType.UUID)
   memberId: string | null;
 
+  @Column(DataType.UUID)
+  agentId: string | null;
+
   @Column(DataType.JSON)
   mentions: string[];
 
@@ -93,6 +101,12 @@ export class ChatMessage extends Model<ChatMessage> {
     constraints: false,
   })
   member: ChatMember;
+
+  @BelongsTo(() => ChatAgent, {
+    foreignKey: "agentId",
+    constraints: false,
+  })
+  agent: ChatAgent;
 
   @HasOne(() => Recording, {
     foreignKey: "targetId",
@@ -165,7 +179,7 @@ export class ChatMessage extends Model<ChatMessage> {
   ) {
     if (!mainWindow.win) return;
 
-    if (action !== "destroy" && !chatMessage.member) {
+    if (action !== "destroy" && !chatMessage.agent) {
       await chatMessage.reload();
     }
 

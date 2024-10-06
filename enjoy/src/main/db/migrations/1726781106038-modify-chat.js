@@ -54,6 +54,11 @@ async function up({ context: queryInterface }) {
     allowNull: true,
   });
 
+  await queryInterface.addColumn("chat_messages", "agent_id", {
+    type: DataTypes.UUID,
+    allowNull: true,
+  });
+
   await queryInterface.addColumn("chat_messages", "mentions", {
     type: DataTypes.JSON,
     defaultValue: [],
@@ -128,6 +133,11 @@ async function down({ context: queryInterface }) {
   await queryInterface.removeColumn("chat_messages", "role", {
     type: DataTypes.STRING,
     allowNull: false,
+  });
+
+  await queryInterface.removeColumn("chat_messages", "agent_id", {
+    type: DataTypes.UUID,
+    allowNull: true,
   });
 
   await queryInterface.changeColumn("chat_messages", "member_id", {

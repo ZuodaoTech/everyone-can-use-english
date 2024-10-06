@@ -56,6 +56,7 @@ type ChatMessageType = {
   createdAt: Date;
   updatedAt: Date;
   member?: ChatMemberType;
+  agent?: ChatAgentType;
   recording?: RecordingType;
   speech?: SpeechType;
 };

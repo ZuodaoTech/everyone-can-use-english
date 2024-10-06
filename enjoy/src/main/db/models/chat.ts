@@ -166,7 +166,7 @@ export class Chat extends Model<Chat> {
     }
   }
 
-  @BeforeDestroy
+  @AfterDestroy
   static async destroyMembers(chat: Chat) {
     ChatMember.destroy({ where: { chatId: chat.id } });
   }
