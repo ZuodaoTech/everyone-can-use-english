@@ -2,9 +2,11 @@ import { createContext, useEffect, useState, useContext } from "react";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
+  HotKeysSettingsProviderContext,
 } from "@renderer/context";
 import { t } from "i18next";
 import { DEFAULT_GPT_CONFIG } from "@/constants";
+import { useHotkeys } from "react-hotkeys-hook";
 
 type CopilotProviderState = {
   active: boolean;
@@ -44,6 +46,7 @@ export const CopilotProvider = ({
   const { sttEngine, currentGptEngine, currentTtsEngine } = useContext(
     AISettingsProviderContext
   );
+  const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
 
   const findOrCreateChat = async () => {
     if (currentChat) return;
@@ -140,6 +143,10 @@ export const CopilotProvider = ({
       setActive(true);
     }
   }, [currentChat]);
+
+  useHotkeys(currentHotkeys.OpenCopilot, () => {
+    setActive(!active);
+  });
 
   return (
     <CopilotProviderContext.Provider

@@ -334,6 +334,7 @@
   "player": "播放器",
   "quitApp": "退出应用",
   "openPreferences": "打开设置",
+  "openCopilot": "打开 Copilot",
   "playOrPause": "播放/暂停",
   "playOrPauseRecording": "播放/暂停录音",
   "startOrStopRecording": "开始/结束录音",

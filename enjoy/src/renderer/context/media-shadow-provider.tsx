@@ -15,7 +15,6 @@ import Chart from "chart.js/auto";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
-import { debounce } from "lodash";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import { t } from "i18next";
 import { SttEngineOptionEnum } from "@/types/enums";

@@ -12,7 +12,8 @@ export const Hotkeys = () => {
   } | null>(null);
   const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
 
-  const commandOrCtrl = navigator.platform.includes("Mac") ? "Cmd" : "Ctrl";
+  const isMac = /Mac/.test(navigator.userAgent);
+  const commandOrCtrl = isMac ? "Cmd" : "Ctrl";
 
   const handleItemSelected = (item: { name: string; keyName: Hotkey }) => {
     setOpen(true);
@@ -50,6 +51,24 @@ export const Hotkeys = () => {
             {currentHotkeys.OpenPreferences}
           </kbd>
         </div>
+
+        <Separator />
+
+        <div className="flex items-center justify-between py-4">
+          <div className="flex items-center space-x-2">{t("openCopilot")}</div>
+          <kbd
+            onClick={() =>
+              handleItemSelected({
+                name: t("openCopilot"),
+                keyName: "OpenCopilot",
+              })
+            }
+            className="bg-muted px-2 py-1 rounded-md text-sm text-muted-foreground cursor-pointer capitalize"
+          >
+            {currentHotkeys.OpenCopilot}
+          </kbd>
+        </div>
+
         <Separator />
       </div>
 
