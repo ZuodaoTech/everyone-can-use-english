@@ -187,7 +187,8 @@
       "memberSettings": "Member Settings",
       "atLeastOneAgent": "The chat must have at least 1 agent.",
       "onlyGPTAgentCanBeAddedToThisChat": "Only GPT agent can be added to this chat",
-      "invalidAgentType": "Invalid agent type"
+      "invalidAgentType": "Invalid agent type",
+      "invalidMembers": "Invalid members"
     }
   },
   "sidebar": {

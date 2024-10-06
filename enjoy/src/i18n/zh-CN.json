@@ -187,7 +187,8 @@
       "memberSettings": "成员设置",
       "atLeastOneAgent": "聊天至少需要 1 个智能体参与",
       "onlyGPTAgentCanBeAddedToThisChat": "只有 GPT 智能体可以添加到此聊天",
-      "invalidAgentType": "无效的智能体类型"
+      "invalidAgentType": "无效的智能体类型",
+      "invalidMembers": "无效的成员"
     }
   },
   "sidebar": {

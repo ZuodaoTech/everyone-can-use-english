@@ -81,7 +81,7 @@ class ChatsHandler {
   private async create(_event: IpcMainEvent, data: ChatDtoType) {
     const { members, ...chatData } = data;
     if (!members || members.length === 0) {
-      throw new Error(t("models.chats.membersRequired"));
+      throw new Error(t("models.chat.atLeastOneAgent"));
     }
 
     const chatAgents = await ChatAgent.findAll({
@@ -93,7 +93,7 @@ class ChatsHandler {
     });
 
     if (chatAgents.length !== members.length) {
-      throw new Error(t("models.chats.invalidMembers"));
+      throw new Error(t("models.chat.invalidMembers"));
     }
 
     let type: "CONVERSATION" | "GROUP" | "TTS";
@@ -107,7 +107,7 @@ class ChatsHandler {
     ) {
       type = "GROUP";
     } else {
-      throw new Error(t("models.chats.invalidMembers"));
+      throw new Error(t("models.chat.invalidMembers"));
     }
 
     const transaction = await db.connection.transaction();

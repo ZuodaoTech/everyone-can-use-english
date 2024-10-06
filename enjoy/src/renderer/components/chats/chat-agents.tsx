@@ -38,6 +38,10 @@ export const ChatAgents = (props: {
   const handleDeleteChatAgent = () => {
     if (!deletingChatAgent) return;
 
+    if (currentChatAgent?.id === deletingChatAgent.id) {
+      setCurrentChatAgent(null);
+    }
+
     EnjoyApp.chatAgents
       .destroy(deletingChatAgent.id)
       .then(() => {
