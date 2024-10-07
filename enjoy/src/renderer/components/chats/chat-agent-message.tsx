@@ -36,7 +36,7 @@ import {
   AppSettingsProviderContext,
   ChatSessionProviderContext,
 } from "@renderer/context";
-import { useAiCommand, useConversation } from "@renderer/hooks";
+import { useAiCommand, useSpeech } from "@renderer/hooks";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { md5 } from "js-md5";
 
@@ -183,7 +183,7 @@ const ChatAgentMessageActions = (props: {
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
   const [resourcing, setResourcing] = useState<boolean>(false);
-  const { tts } = useConversation();
+  const { tts } = useSpeech();
   const [translating, setTranslating] = useState<boolean>(false);
   const { translate, summarizeTopic } = useAiCommand();
 

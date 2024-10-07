@@ -23,7 +23,7 @@ import {
   SpeechIcon,
 } from "lucide-react";
 import { t } from "i18next";
-import { useAiCommand, useConversation } from "@renderer/hooks";
+import { useAiCommand, useSpeech } from "@renderer/hooks";
 import {
   AppSettingsProviderContext,
   CourseProviderContext,
@@ -39,7 +39,7 @@ export const LlmMessage = (props: { llmMessage: LlmMessageType }) => {
   const [speech, setSpeech] = useState<Partial<SpeechType>>();
   const [speeching, setSpeeching] = useState<boolean>(false);
   const [resourcing, setResourcing] = useState<boolean>(false);
-  const { tts } = useConversation();
+  const { tts } = useSpeech();
   const { summarizeTopic, translate } = useAiCommand();
   const [translation, setTranslation] = useState<string>();
   const [translating, setTranslating] = useState<boolean>(false);
