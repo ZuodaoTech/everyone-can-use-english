@@ -402,9 +402,9 @@ const ChatUserMessageActions = (props: {
                   className="w-6 h-6"
                 >
                   {refinementVisible ? (
-                    <ChevronRightIcon className="w-4 h-4" />
-                  ) : (
                     <ChevronDownIcon className="w-4 h-4" />
+                  ) : (
+                    <ChevronRightIcon className="w-4 h-4" />
                   )}
                 </Button>
               </div>
