@@ -344,6 +344,9 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
               </AlertDialogContent>
             </AlertDialog>
           )}
+          <Button type="button" variant="secondary" onClick={onFinish}>
+            {t("cancel")}
+          </Button>
           <Button type="submit">{t("save")}</Button>
         </div>
       </form>

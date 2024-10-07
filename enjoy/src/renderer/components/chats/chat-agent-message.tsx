@@ -209,9 +209,21 @@ const ChatAgentMessageActions = (props: {
     }
   };
 
-  const createSpeech = () => {
+  const createSpeech = async () => {
     if (chatMessage?.speech) return;
     if (speeching) return;
+
+    // To use fresh config from chat member
+    const chatMember = await EnjoyApp.chatMembers.findOne({
+      where: {
+        id: chatMessage.member.id,
+      },
+    });
+
+    if (!chatMember) {
+      toast.error(t("models.chatMembers.notFound"));
+      return;
+    }
 
     setSpeeching(true);
 
@@ -220,16 +232,10 @@ const ChatAgentMessageActions = (props: {
       sourceId: chatMessage.id,
       text: chatMessage.content,
       configuration:
-        chatMessage.member.agent.type === "TTS"
-          ? chatMessage.member.agent.config.tts
-          : chatMessage.member.config.tts,
+        chatMember.agent.type === "TTS"
+          ? chatMember.agent.config.tts
+          : chatMember.config.tts,
     })
-      .then((speech) => {
-        dispatchChatMessages({
-          type: "update",
-          record: Object.assign({}, chatMessage, { speech }),
-        });
-      })
       .catch((err) => {
         toast.error(err.message);
       })

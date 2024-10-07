@@ -103,6 +103,20 @@ export const useChatMessage = (chatId: string) => {
           });
           break;
       }
+    } else if (model === "Speech") {
+      switch (action) {
+        case "create":
+          if (record.sourceType !== "ChatMessage") return;
+
+          dispatchChatMessages({
+            type: "update",
+            record: {
+              id: record.sourceId,
+              speech: record,
+            } as ChatMessageType,
+          });
+          break;
+      }
     }
   };
 

@@ -49,7 +49,11 @@ export const ChatSettings = (props: {
         {chat.type === "TTS" ? (
           <ChatAgentForm agent={chatMembers[0]?.agent} onFinish={onFinish} />
         ) : agentMembers.length > 0 ? (
-          <ChatMemberSetting chat={chat} agentMembers={agentMembers} />
+          <ChatMemberSetting
+            chat={chat}
+            agentMembers={agentMembers}
+            onFinish={onFinish}
+          />
         ) : (
           <div className="text-muted-foreground py-4 text-center">
             {t("noData")}
@@ -63,8 +67,9 @@ export const ChatSettings = (props: {
 const ChatMemberSetting = (props: {
   chat: ChatType;
   agentMembers: Partial<ChatMemberType>[];
+  onFinish?: () => void;
 }) => {
-  const { chat, agentMembers } = props;
+  const { chat, agentMembers, onFinish } = props;
   const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const { currentGptEngine, currentTtsEngine } = useContext(
     AISettingsProviderContext
@@ -140,6 +145,7 @@ const ChatMemberSetting = (props: {
             onDelete={() => {
               setMemberTab("new");
             }}
+            onFinish={onFinish}
           />
         </TabsContent>
       ))}
