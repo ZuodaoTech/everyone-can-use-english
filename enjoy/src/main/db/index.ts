@@ -231,32 +231,31 @@ db.backup = async () => {
   const backupPath = path.join(settings.userDataPath(), "backup");
   fs.ensureDirSync(backupPath);
 
-  // Check if the last backup is older than 1 day
-  const lastBackup = fs
+  const backupFiles = fs
     .readdirSync(backupPath)
     .filter((file) => file.startsWith(path.basename(dbPath)))
-    .sort()
-    .pop();
+    .sort();
+
+  // Check if the last backup is older than 1 day
+  const lastBackup = backupFiles.pop();
+  const timestamp = lastBackup?.match(/\d{13}/)?.[0];
   if (
     lastBackup &&
-    new Date(lastBackup.split(".")[lastBackup.split(".").length - 1]) >
-      new Date(Date.now() - 1000 * 60 * 60 * 24)
+    timestamp &&
+    new Date(parseInt(timestamp)) > new Date(Date.now() - 1000 * 60 * 60 * 24)
   ) {
-    logger.info("Backup is up to date");
+    logger.info(`Backup is up to date: ${lastBackup}`);
     return;
   }
 
   // Only keep the latest 10 backups
-  const backupFiles = fs
-    .readdirSync(backupPath)
-    .filter((file) => file.startsWith(path.basename(dbPath)));
   if (backupFiles.length >= 10) {
-    fs.unlinkSync(path.join(backupPath, backupFiles[0]));
+    fs.removeSync(path.join(backupPath, backupFiles[0]));
   }
 
   const backupFilePath = path.join(
     backupPath,
-    `${path.basename(dbPath)}.${Date.now()}`
+    `${path.basename(dbPath)}.${Date.now().toString().padStart(13, "0")}`
   );
   fs.copySync(dbPath, backupFilePath);
 
