@@ -56,7 +56,7 @@ const db = {
   disconnect: async () => {},
   registerIpcHandlers: () => {},
   isConnecting: false,
-  backup: async () => {},
+  backup: async (options?: { force: boolean }) => {},
   restore: async (backupFilePath: string) => {},
 };
 
@@ -166,26 +166,43 @@ db.connect = async () => {
       logger: logger,
     });
 
-    try {
+    const pendingMigrations = await umzug.pending();
+    logger.info(pendingMigrations);
+    if (pendingMigrations.length > 0) {
+      try {
+        await db.backup({ force: true });
+
+        // migrate up to the latest state
+        await umzug.up();
+
+        await sequelize.query("PRAGMA foreign_keys = false;");
+        await sequelize.sync();
+        await sequelize.authenticate();
+      } catch (err) {
+        logger.error(err);
+        await sequelize.close();
+        throw err;
+      }
+
+      const pendingMigrationTimestamp = pendingMigrations[0].name.split("-")[0];
+      if (parseInt(pendingMigrationTimestamp) <= 1725411577564) {
+        // migrate settings
+        logger.info("Migrating settings");
+        await UserSetting.migrateFromSettings();
+      }
+
+      if (parseInt(pendingMigrationTimestamp) <= 1726781106038) {
+        // migrate chat agents
+        logger.info("Migrating chat agents");
+        await ChatAgent.migrateConfigToChatMember();
+      }
+    } else {
       await db.backup();
-
-      // migrate up to the latest state
-      await umzug.up();
-
-      await sequelize.query("PRAGMA foreign_keys = false;");
-      await sequelize.sync();
-      await sequelize.authenticate();
-    } catch (err) {
-      logger.error(err);
-      await sequelize.close();
-      throw err;
     }
 
-    // migrate settings
-    await UserSetting.migrateFromSettings();
-
-    // migrate chat agents
-    await ChatAgent.migrateConfigToChatMember();
+    // vacuum the database
+    logger.info("Vacuuming the database");
+    await sequelize.query("VACUUM");
 
     // initialize i18n
     const language = (await UserSetting.get(
@@ -193,10 +210,8 @@ db.connect = async () => {
     )) as string;
     i18n(language);
 
-    // vacuum the database
-    await sequelize.query("VACUUM");
-
     // register handlers
+    logger.info(`Registering handlers`);
     for (const handler of handlers) {
       handler.register();
     }
@@ -221,7 +236,9 @@ db.disconnect = async () => {
   db.connection = null;
 };
 
-db.backup = async () => {
+db.backup = async (options?: { force: boolean }) => {
+  const force = options?.force ?? false;
+
   const dbPath = settings.dbPath();
   if (!dbPath) {
     logger.error("Db path is not ready");
@@ -240,6 +257,7 @@ db.backup = async () => {
   const lastBackup = backupFiles.pop();
   const timestamp = lastBackup?.match(/\d{13}/)?.[0];
   if (
+    !force &&
     lastBackup &&
     timestamp &&
     new Date(parseInt(timestamp)) > new Date(Date.now() - 1000 * 60 * 60 * 24)
