@@ -7909,13 +7909,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chroma-js@npm:^2.4.3":
-  version: 2.4.4
-  resolution: "@types/chroma-js@npm:2.4.4"
-  checksum: 10c0/8acd341c523fc960686ed9e60f23ae643da35bddf012b4b18cb0d941ee3bf82087262245ffa8c886ea31571cd5dc6eb553e849fab3c0509ea2c3a045a246178c
-  languageName: node
-  linkType: hard
-
 "@types/command-exists@npm:^1.2.3":
   version: 1.2.3
   resolution: "@types/command-exists@npm:1.2.3"
@@ -10504,13 +10497,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chroma-js@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "chroma-js@npm:3.1.1"
-  checksum: 10c0/fb5e3cd958a954b8cd44017f70aff42ae37bc561cdcea0ebeeb6d2df5989e7402e02c674274af2eefd1478ee172e05ce51ac353e3cbe1db139f599b338523339
-  languageName: node
-  linkType: hard
-
 "chrome-launcher@npm:^1.1.2":
   version: 1.1.2
   resolution: "chrome-launcher@npm:1.1.2"
@@ -12851,7 +12837,7 @@ __metadata:
     prop-types: "npm:^15.8.1"
     proxy-agent: "npm:^6.4.0"
     react: "npm:^18.3.1"
-    react-activity-calendar: "npm:^2.5.2"
+    react-activity-calendar: "npm:^2.6.2"
     react-audio-visualize: "npm:^1.2.0"
     react-audio-voice-recorder: "npm:^2.2.0"
     react-dom: "npm:^18.3.1"
@@ -20884,17 +20870,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-activity-calendar@npm:^2.5.2":
-  version: 2.5.2
-  resolution: "react-activity-calendar@npm:2.5.2"
+"react-activity-calendar@npm:^2.6.2":
+  version: 2.6.2
+  resolution: "react-activity-calendar@npm:2.6.2"
   dependencies:
-    "@types/chroma-js": "npm:^2.4.3"
-    chroma-js: "npm:^3.1.1"
     date-fns: "npm:^4.1.0"
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 10c0/364a0260791a3bd10a19b0c7b39c9a4978b4ab484d108e83c98c950580ad8cfc493f6783ebaf36b24742f6f418c93de5c4a7b5852589b34092ec11267daa845a
+  checksum: 10c0/03653c3e13758b1c551ecf42824775a5e34dfc57508a7690f849490b6a7bcaab258309515d06660abbb5c16613300eff24538799e8affded3269f5f979b3a2d0
   languageName: node
   linkType: hard
 
