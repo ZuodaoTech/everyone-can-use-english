@@ -121,7 +121,7 @@ export const ChatSessionProvider = ({
     onUpdateMessage,
     onDeleteMessage,
     invokeAgent,
-  } = useChatMessage(chat);
+  } = useChatMessage(chat.id);
 
   const [deletingMessage, setDeletingMessage] = useState<string>(null);
   const [cancelingRecording, setCancelingRecording] = useState(false);

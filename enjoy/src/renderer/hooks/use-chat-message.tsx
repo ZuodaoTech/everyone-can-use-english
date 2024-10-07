@@ -1,4 +1,4 @@
-import { useEffect, useContext, useReducer } from "react";
+import { useEffect, useContext, useReducer, useState } from "react";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
@@ -19,7 +19,7 @@ import dayjs from "@renderer/lib/dayjs";
 import Mustache from "mustache";
 import { t } from "i18next";
 
-export const useChatMessage = (chat: ChatType) => {
+export const useChatMessage = (chatId: string) => {
   const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
@@ -27,12 +27,13 @@ export const useChatMessage = (chat: ChatType) => {
     chatMessagesReducer,
     []
   );
+  const [chat, setChat] = useState<ChatType>(null);
 
   const fetchChatMessages = async (query?: string) => {
-    if (!chat?.id) return;
+    if (!chatId) return;
 
     return EnjoyApp.chatMessages
-      .findAll({ where: { chatId: chat.id }, query })
+      .findAll({ where: { chatId }, query })
       .then((data) => {
         dispatchChatMessages({ type: "set", records: data });
         return data;
@@ -47,7 +48,7 @@ export const useChatMessage = (chat: ChatType) => {
 
     return EnjoyApp.chatMessages
       .create({
-        chatId: chat.id,
+        chatId,
         content,
         role: "USER",
         state: "pending",
@@ -164,7 +165,7 @@ export const useChatMessage = (chat: ChatType) => {
     ]);
     for (const r of response) {
       await EnjoyApp.chatMessages.create({
-        chatId: chat.id,
+        chatId,
         memberId: member.id,
         content: r.text,
         state: "completed",
@@ -215,7 +216,7 @@ export const useChatMessage = (chat: ChatType) => {
       .trim();
 
     const message = await EnjoyApp.chatMessages.create({
-      chatId: chat.id,
+      chatId,
       memberId: member.id,
       content,
       state: "completed",
@@ -234,7 +235,7 @@ export const useChatMessage = (chat: ChatType) => {
     if (!pendingMessage) return;
 
     const message = await EnjoyApp.chatMessages.create({
-      chatId: chat.id,
+      chatId,
       memberId: member.id,
       content: pendingMessage.content,
       state: "completed",
@@ -310,7 +311,15 @@ export const useChatMessage = (chat: ChatType) => {
   };
 
   useEffect(() => {
-    if (!chat?.id) return;
+    if (!chatId) return;
+
+    EnjoyApp.chats.findOne({ where: { id: chatId } }).then((chat) => {
+      setChat(chat);
+    });
+  }, [chatId]);
+
+  useEffect(() => {
+    if (!chatId) return;
 
     addDblistener(onChatMessageRecordUpdate);
     fetchChatMessages();
@@ -318,7 +327,7 @@ export const useChatMessage = (chat: ChatType) => {
       removeDbListener(onChatMessageRecordUpdate);
       dispatchChatMessages({ type: "set", records: [] });
     };
-  }, [chat?.id]);
+  }, [chatId]);
 
   return {
     chatMessages,

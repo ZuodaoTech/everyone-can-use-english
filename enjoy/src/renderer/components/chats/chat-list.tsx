@@ -119,9 +119,6 @@ export const ChatList = (props: {
         handleCreateChat();
       }
     }
-    return () => {
-      setCurrentChat(null);
-    };
   }, [chats, chatAgent]);
 
   return (

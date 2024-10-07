@@ -137,12 +137,23 @@ export class ChatMessage extends Model<ChatMessage> {
     }
   }
 
+  @BeforeSave
+  static async setupAgentId(chatMessage: ChatMessage) {
+    if (chatMessage.agentId) return;
+    if (!chatMessage.memberId) return;
+
+    const member = await ChatMember.findByPk(chatMessage.memberId);
+    if (!member) return;
+
+    chatMessage.agentId = member.userId;
+  }
+
   @AfterCreate
   static async updateChat(chatMessage: ChatMessage) {
     const chat = await Chat.findByPk(chatMessage.chatId);
     if (chat) {
       chat.changed("updatedAt", true);
-      chat.update({ updatedAt: new Date() });
+      chat.update({ updatedAt: new Date() }, { hooks: false });
     }
 
     const member = await ChatMember.findByPk(chatMessage.memberId, {
@@ -154,7 +165,7 @@ export class ChatMessage extends Model<ChatMessage> {
     });
     if (member?.agent) {
       member.agent.changed("updatedAt", true);
-      member.agent.update({ updatedAt: new Date() });
+      member.agent.update({ updatedAt: new Date() }, { hooks: false });
     }
   }
 

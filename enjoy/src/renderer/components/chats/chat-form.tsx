@@ -93,7 +93,6 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
         toast.error(error.message);
       })
       .then(() => {
-        toast.success(t("models.chat.updated"));
         onFinish();
       });
   });
@@ -102,7 +101,6 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
     EnjoyApp.chats
       .destroy(chat.id)
       .then(() => {
-        toast.success(t("models.chat.deleted"));
         onFinish();
       })
       .catch((error) => {

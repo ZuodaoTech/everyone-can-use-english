@@ -76,13 +76,13 @@ export class ChatMember extends Model<ChatMember> {
     const agent = await ChatAgent.findByPk(member.userId);
     if (agent) {
       agent.changed("updatedAt", true);
-      agent.update({ updatedAt: new Date() });
+      agent.update({ updatedAt: new Date() }, { hooks: false });
     }
 
     const chat = await Chat.findByPk(member.chatId);
     if (chat) {
       chat.changed("updatedAt", true);
-      chat.update({ updatedAt: new Date() });
+      chat.update({ updatedAt: new Date() }, { hooks: false });
     }
   }
 
