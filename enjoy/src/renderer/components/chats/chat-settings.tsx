@@ -21,6 +21,7 @@ import {
   AppSettingsProviderContext,
 } from "@renderer/context";
 import { DEFAULT_GPT_CONFIG } from "@/constants";
+import { ChatAgentTypeEnum, ChatTypeEnum } from "@/types/enums";
 
 export const ChatSettings = (props: {
   chat: ChatType;
@@ -46,7 +47,7 @@ export const ChatSettings = (props: {
       </TabsContent>
 
       <TabsContent value="members">
-        {chat.type === "TTS" ? (
+        {chat.type === ChatTypeEnum.TTS ? (
           <ChatAgentForm agent={chatMembers[0]?.agent} onFinish={onFinish} />
         ) : agentMembers.length > 0 ? (
           <ChatMemberSetting
@@ -199,7 +200,7 @@ const ChatMemberSetting = (props: {
                     handleAddAgentMember(chatAgent);
                   }}
                   disabled={
-                    chatAgent.type === "TTS" ||
+                    chatAgent.type === ChatAgentTypeEnum.TTS ||
                     agentMembers.findIndex(
                       (member) => member.userId === chatAgent.id
                     ) > -1

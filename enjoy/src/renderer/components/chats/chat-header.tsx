@@ -21,6 +21,7 @@ import { useState } from "react";
 import { ChatSettings } from "@renderer/components";
 import { t } from "i18next";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
+import { ChatTypeEnum } from "@/types/enums";
 
 export const ChatHeader = (props: {
   chat: ChatType;
@@ -44,9 +45,13 @@ export const ChatHeader = (props: {
             <ChevronsLeftIcon className="w-5 h-5" />
           )}
         </Button>
-        {chat.type === "CONVERSATION" && <ChatBubbleIcon className="w-4 h-4" />}
-        {chat.type === "GROUP" && <UsersRoundIcon className="w-4 h-4" />}
-        {chat.type === "TTS" && <SpeechIcon className="w-4 h-4" />}
+        {chat.type === ChatTypeEnum.CONVERSATION && (
+          <ChatBubbleIcon className="w-4 h-4" />
+        )}
+        {chat.type === ChatTypeEnum.GROUP && (
+          <UsersRoundIcon className="w-4 h-4" />
+        )}
+        {chat.type === ChatTypeEnum.TTS && <SpeechIcon className="w-4 h-4" />}
         <span className="text-sm">{chat.name}</span>
       </div>
       <Dialog open={displayChatForm} onOpenChange={setDisplayChatForm}>

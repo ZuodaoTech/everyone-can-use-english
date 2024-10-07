@@ -1,9 +1,10 @@
 import { ipcMain, IpcMainEvent } from "electron";
-import { Chat, ChatAgent, ChatMessage, Recording } from "@main/db/models";
+import { ChatMessage, Recording } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
 import log from "@main/logger";
-import { enjoyUrlToPath, pathToEnjoyUrl } from "@/main/utils";
+import { enjoyUrlToPath } from "@/main/utils";
 import fs from "fs-extra";
+import { ChatMessageStateEnum } from "@/types/enums";
 
 const logger = log.scope("db/handlers/chats-handler");
 
@@ -86,7 +87,11 @@ class ChatMessagesHandler {
   private async update(
     _event: IpcMainEvent,
     id: string,
-    data: { state?: string; content?: string; recordingUrl?: string }
+    data: {
+      state?: ChatMessageStateEnum;
+      content?: string;
+      recordingUrl?: string;
+    }
   ) {
     const { recordingUrl } = data;
     delete data.recordingUrl;

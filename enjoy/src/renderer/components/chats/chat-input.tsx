@@ -22,6 +22,7 @@ import { t } from "i18next";
 import autosize from "autosize";
 import { ChatSuggestionButton } from "@renderer/components";
 import { useHotkeys } from "react-hotkeys-hook";
+import { ChatTypeEnum } from "@/types/enums";
 
 export const ChatInput = (props: { chat: ChatType }) => {
   const { chat } = props;
@@ -225,7 +226,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
           </ChatSuggestionButton>
         )}
 
-        {chat.type === "GROUP" && (
+        {chat.type === ChatTypeEnum.GROUP && (
           <Button
             data-tooltip-id={`${chat.id}-tooltip`}
             data-tooltip-content={t("continue")}
@@ -270,7 +271,7 @@ export const ChatInput = (props: { chat: ChatType }) => {
         )}
       </Button>
       {chat.config.enableChatAssistant && <ChatSuggestionButton chat={chat} />}
-      {chat.type === "GROUP" && (
+      {chat.type === ChatTypeEnum.GROUP && (
         <Button
           data-tooltip-id={`${chat.id}-tooltip`}
           data-tooltip-content={t("continue")}

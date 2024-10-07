@@ -52,7 +52,7 @@ type ChatMessageType = {
   memberId: string | null;
   chatId: string;
   content: string;
-  state: "pending" | "completed";
+  state: ChatMessageStateEnum;
   createdAt: Date;
   updatedAt: Date;
   member?: ChatMemberType;
@@ -108,7 +108,7 @@ type ChatMemberDtoType = {
 };
 
 type ChatMessageDtoType = {
-  state?: "pending" | "completed";
+  state?: ChatMessageStateEnum;
   content?: string;
   recordingUrl?: string;
 };

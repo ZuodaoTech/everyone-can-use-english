@@ -17,6 +17,7 @@ import {
 import { ForwardIcon } from "lucide-react";
 import { t } from "i18next";
 import { CopilotChatAgents, CopilotChats } from "@renderer/components";
+import { ChatMessageRoleEnum, ChatMessageStateEnum } from "@/types/enums";
 
 export const CopilotForwarder = (props: {
   prompt: string;
@@ -79,8 +80,8 @@ const CopilotForwarderContent = (props: {
       .create({
         chatId: chat.id,
         content: prompt,
-        role: "USER",
-        state: "pending",
+        role: ChatMessageRoleEnum.USER,
+        state: ChatMessageStateEnum.PENDING,
       })
       .then(() => {
         setCurrentChat(chat);

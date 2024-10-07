@@ -39,6 +39,7 @@ import {
 import { useAiCommand, useSpeech } from "@renderer/hooks";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { md5 } from "js-md5";
+import { ChatAgentTypeEnum, ChatTypeEnum } from "@/types/enums";
 
 export const ChatAgentMessage = (props: {
   chatMessage: ChatMessageType;
@@ -54,7 +55,7 @@ export const ChatAgentMessage = (props: {
   const [speeching, setSpeeching] = useState(false);
   const [translation, setTranslation] = useState<string>();
   const [displayContent, setDisplayContent] = useState(
-    !(chat.type === "TTS" || chat.config.enableAutoTts)
+    !(chat.type === ChatTypeEnum.TTS || chat.config.enableAutoTts)
   );
   const [displayPlayer, setDisplayPlayer] = useState(false);
 
@@ -99,9 +100,9 @@ export const ChatAgentMessage = (props: {
           <div>
             <div className="text-xs">{chatMessage.agent.name}</div>
             <div className="italic text-xs text-muted-foreground/50">
-              {chatMessage.agent.type === "TTS" &&
+              {chatMessage.agent.type === ChatAgentTypeEnum.TTS &&
                 chatMessage.agent.config.tts?.voice}
-              {chatMessage.agent.type === "GPT" &&
+              {chatMessage.agent.type === ChatAgentTypeEnum.GPT &&
                 chatMessage.agent.config.gpt?.model}
             </div>
           </div>
@@ -233,7 +234,7 @@ const ChatAgentMessageActions = (props: {
       sourceId: chatMessage.id,
       text: chatMessage.content,
       configuration:
-        chatMember.agent.type === "TTS"
+        chatMember.agent.type === ChatAgentTypeEnum.TTS
           ? chatMember.agent.config.tts
           : chatMember.config.tts,
     })
@@ -313,7 +314,7 @@ const ChatAgentMessageActions = (props: {
 
   useEffect(() => {
     if (chatMessage?.speech) return;
-    if (chat.type === "TTS" || chat.config.enableAutoTts) {
+    if (chat.type === ChatTypeEnum.TTS || chat.config.enableAutoTts) {
       createSpeech();
     }
   }, [chatMessage]);

@@ -9,6 +9,7 @@ import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { EllipsisIcon, SpeechIcon, UsersRoundIcon } from "lucide-react";
 import { t } from "i18next";
 import dayjs from "@renderer/lib/dayjs";
+import { ChatTypeEnum } from "@/types/enums";
 
 export const ChatCard = (props: {
   chat: ChatType;
@@ -39,9 +40,13 @@ export const ChatCard = (props: {
         } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
         onClick={() => !disabled && onSelect(chat)}
       >
-        {chat.type === "CONVERSATION" && <ChatBubbleIcon className="w-4 h-4" />}
-        {chat.type === "GROUP" && <UsersRoundIcon className="w-4 h-4" />}
-        {chat.type === "TTS" && <SpeechIcon className="w-4 h-4" />}
+        {chat.type === ChatTypeEnum.CONVERSATION && (
+          <ChatBubbleIcon className="w-4 h-4" />
+        )}
+        {chat.type === ChatTypeEnum.GROUP && (
+          <UsersRoundIcon className="w-4 h-4" />
+        )}
+        {chat.type === ChatTypeEnum.TTS && <SpeechIcon className="w-4 h-4" />}
         <div className="flex-1 text-sm font-serif line-clamp-1">
           {chat.name}
         </div>

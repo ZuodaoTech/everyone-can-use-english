@@ -34,6 +34,7 @@ import {
   CopilotProviderContext,
 } from "@renderer/context";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
+import { ChatTypeEnum } from "@/types/enums";
 
 export const CopilotHeader = () => {
   const [displayChatForm, setDisplayChatForm] = useState(false);
@@ -69,13 +70,15 @@ export const CopilotHeader = () => {
             />
           </PopoverContent>
         </Popover>
-        {currentChat?.type === "CONVERSATION" && (
+        {currentChat?.type === ChatTypeEnum.CONVERSATION && (
           <ChatBubbleIcon className="w-4 h-4" />
         )}
-        {currentChat?.type === "GROUP" && (
+        {currentChat?.type === ChatTypeEnum.GROUP && (
           <UsersRoundIcon className="w-4 h-4" />
         )}
-        {currentChat?.type === "TTS" && <SpeechIcon className="w-4 h-4" />}
+        {currentChat?.type === ChatTypeEnum.TTS && (
+          <SpeechIcon className="w-4 h-4" />
+        )}
         <span className="text-sm line-clamp-1">{currentChat?.name}</span>
       </div>
       <div className="flex items-center space-x-2">

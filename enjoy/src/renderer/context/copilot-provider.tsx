@@ -7,6 +7,7 @@ import {
 import { t } from "i18next";
 import { DEFAULT_GPT_CONFIG } from "@/constants";
 import { useHotkeys } from "react-hotkeys-hook";
+import { ChatAgentTypeEnum } from "@/types/enums";
 
 type CopilotProviderState = {
   active: boolean;
@@ -97,7 +98,7 @@ export const CopilotProvider = ({
 
   const buildAgentMember = (agent: ChatAgentType): ChatMemberDtoType => {
     const config =
-      agent.type === "TTS"
+      agent.type === ChatAgentTypeEnum.TTS
         ? {
             tts: {
               engine: currentTtsEngine.name,

@@ -27,6 +27,7 @@ import {
   AppSettingsProviderContext,
 } from "@renderer/context";
 import { useContext } from "react";
+import { ChatAgentTypeEnum } from "@/types/enums";
 
 export const ChatAgentForm = (props: {
   agent?: ChatAgentType;
@@ -36,7 +37,7 @@ export const ChatAgentForm = (props: {
   const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const { currentTtsEngine } = useContext(AISettingsProviderContext);
   const agentFormSchema = z.object({
-    type: z.enum(["GPT", "TTS", "STT"]),
+    type: z.enum([ChatAgentTypeEnum.GPT, ChatAgentTypeEnum.TTS]),
     name: z.string().min(1),
     description: z.string().min(1),
     config: z.object({
@@ -55,7 +56,7 @@ export const ChatAgentForm = (props: {
   const form = useForm<z.infer<typeof agentFormSchema>>({
     resolver: zodResolver(agentFormSchema),
     values: agent || {
-      type: "GPT",
+      type: ChatAgentTypeEnum.GPT,
       name: "",
       description: "",
     },
@@ -63,7 +64,7 @@ export const ChatAgentForm = (props: {
 
   const onSubmit = form.handleSubmit((data) => {
     const { type, name, description, config } = data;
-    if (type === "TTS") {
+    if (type === ChatAgentTypeEnum.TTS) {
       config.tts = {
         engine: config.tts?.engine || currentTtsEngine.name,
         model: config.tts?.model || currentTtsEngine.model,
@@ -142,16 +143,20 @@ export const ChatAgentForm = (props: {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="GPT">GPT</SelectItem>
-                    <SelectItem value="TTS">TTS</SelectItem>
+                    <SelectItem value={ChatAgentTypeEnum.GPT}>
+                      {ChatAgentTypeEnum.GPT}
+                    </SelectItem>
+                    <SelectItem value={ChatAgentTypeEnum.TTS}>
+                      {ChatAgentTypeEnum.TTS}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
-                {form.watch("type") === "GPT" && (
+                {form.watch("type") === ChatAgentTypeEnum.GPT && (
                   <FormDescription>
                     {t("models.chatAgent.typeGptDescription")}
                   </FormDescription>
                 )}
-                {form.watch("type") === "TTS" && (
+                {form.watch("type") === ChatAgentTypeEnum.TTS && (
                   <FormDescription>
                     {t("models.chatAgent.typeTtsDescription")}
                   </FormDescription>
@@ -199,7 +204,7 @@ export const ChatAgentForm = (props: {
             )}
           />
 
-          {form.watch("type") === "GPT" && (
+          {form.watch("type") === ChatAgentTypeEnum.GPT && (
             <FormField
               control={form.control}
               name="config.prompt"
@@ -221,7 +226,9 @@ export const ChatAgentForm = (props: {
             />
           )}
 
-          {form.watch("type") === "TTS" && <ChatTTSForm form={form} />}
+          {form.watch("type") === ChatAgentTypeEnum.TTS && (
+            <ChatTTSForm form={form} />
+          )}
         </div>
         <div className="flex items-center justify-end space-x-4">
           <Button type="button" variant="ghost" onClick={onFinish}>

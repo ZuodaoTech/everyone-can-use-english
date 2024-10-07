@@ -19,6 +19,7 @@ import { LoaderSpin } from "@renderer/components";
 import { useAiCommand } from "@renderer/hooks";
 import { md5 } from "js-md5";
 import dayjs from "@renderer/lib/dayjs";
+import { ChatMessageRoleEnum, ChatMessageStateEnum } from "@/types/enums";
 
 export const ChatSuggestionButton = (props: {
   chat: ChatType;
@@ -42,16 +43,20 @@ export const ChatSuggestionButton = (props: {
 
   [Chat History]
   ${chatMessages
-    .filter((m) => m.role === "AGENT" || m.role === "USER")
+    .filter(
+      (m) =>
+        m.role === ChatMessageRoleEnum.AGENT ||
+        m.role === ChatMessageRoleEnum.USER
+    )
     .slice(-10)
     .map((message) => {
       const timestamp = dayjs(message.createdAt).fromNow();
       switch (message.role) {
-        case "AGENT":
+        case ChatMessageRoleEnum.AGENT:
           return `${message.member.agent.name}: ${message.content} (${timestamp})`;
-        case "USER":
+        case ChatMessageRoleEnum.USER:
           return `${user.name}: ${message.content} (${timestamp})`;
-        case "SYSTEM":
+        case ChatMessageRoleEnum.SYSTEM:
           return `(${message.content}, ${timestamp})`;
         default:
           return "";
@@ -62,7 +67,7 @@ export const ChatSuggestionButton = (props: {
 
   const contextCacheKey = `chat-suggestion-${md5(
     chatMessages
-      .filter((m) => m.state === "completed")
+      .filter((m) => m.state === ChatMessageStateEnum.COMPLETED)
       .map((m) => m.content)
       .join("\n")
   )}`;

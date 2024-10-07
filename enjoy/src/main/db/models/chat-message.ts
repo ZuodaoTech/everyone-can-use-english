@@ -23,7 +23,11 @@ import {
   Recording,
   Speech,
 } from "@main/db/models";
-import { ChatMessageCategoryEnum, ChatMessageRoleEnum } from "@/types/enums";
+import {
+  ChatMessageCategoryEnum,
+  ChatMessageRoleEnum,
+  ChatMessageStateEnum,
+} from "@/types/enums";
 
 const logger = log.scope("db/models/chat-message");
 @Table({
@@ -93,7 +97,7 @@ export class ChatMessage extends Model<ChatMessage> {
   @AllowNull(false)
   @Default("pending")
   @Column(DataType.STRING)
-  state: string;
+  state: ChatMessageStateEnum;
 
   @BelongsTo(() => Chat, {
     foreignKey: "chatId",

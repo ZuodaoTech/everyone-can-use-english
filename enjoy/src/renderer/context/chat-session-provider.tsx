@@ -31,6 +31,7 @@ import { t } from "i18next";
 import { ChevronDownIcon } from "lucide-react";
 import { AudioPlayer, RecordingDetail } from "@renderer/components";
 import { Tooltip } from "react-tooltip";
+import { ChatMessageRoleEnum, ChatMessageStateEnum } from "@/types/enums";
 
 type ChatSessionProviderState = {
   chat: ChatType;
@@ -189,7 +190,9 @@ export const ChatSessionProvider = ({
     if (submitting) return;
 
     const pendingMessage = chatMessages.find(
-      (m) => m.role === "USER" && m.state === "pending"
+      (m) =>
+        m.role === ChatMessageRoleEnum.USER &&
+        m.state === ChatMessageStateEnum.PENDING
     );
 
     try {
@@ -255,17 +258,22 @@ export const ChatSessionProvider = ({
   const pickNextAgentMember = () => {
     const members = chat.members;
     const messages = chatMessages.filter(
-      (m) => m.role === "AGENT" || m.role === "USER"
+      (m) =>
+        m.role === ChatMessageRoleEnum.AGENT ||
+        m.role === ChatMessageRoleEnum.USER
     );
     let currentIndex = messages.length - 1;
     const spokeMembers = new Set();
 
     while (currentIndex >= 0) {
       const message = messages[currentIndex];
-      if (message.role === "AGENT" && spokeMembers.has(message.member?.id)) {
+      if (
+        message.role === ChatMessageRoleEnum.AGENT &&
+        spokeMembers.has(message.member?.id)
+      ) {
         break;
       }
-      if (message.role === "USER") {
+      if (message.role === ChatMessageRoleEnum.USER) {
         break;
       }
       if (!message.member) break;
@@ -299,10 +307,18 @@ export const ChatSessionProvider = ({
   };
 
   const updateChatName = async () => {
-    if (chatMessages.filter((m) => m.role === "AGENT").length < 1) return;
+    if (
+      chatMessages.filter((m) => m.role === ChatMessageRoleEnum.AGENT).length <
+      1
+    )
+      return;
 
     const content = chatMessages
-      .filter((m) => m.role === "AGENT" || m.role === "USER")
+      .filter(
+        (m) =>
+          m.role === ChatMessageRoleEnum.AGENT ||
+          m.role === ChatMessageRoleEnum.USER
+      )
       .slice(0, 10)
       .map((m) => m.content)
       .join("\n");
@@ -344,7 +360,8 @@ export const ChatSessionProvider = ({
     // Automatically update the chat name
     if (
       chat.name === t("newChat") &&
-      chatMessages.filter((m) => m.role === "AGENT").length > 0
+      chatMessages.filter((m) => m.role === ChatMessageRoleEnum.AGENT).length >
+        0
     ) {
       updateChatName();
     }

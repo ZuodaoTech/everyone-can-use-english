@@ -21,6 +21,7 @@ import { PlusIcon } from "lucide-react";
 import { DEFAULT_GPT_CONFIG } from "@/constants";
 import { useChat } from "@renderer/hooks";
 import { isSameTimeRange } from "@renderer/lib/utils";
+import { ChatAgentTypeEnum } from "@/types/enums";
 
 export const ChatList = (props: {
   chatAgent: ChatAgentType;
@@ -73,7 +74,7 @@ export const ChatList = (props: {
 
   const buildAgentMember = (agent: ChatAgentType): ChatMemberDtoType => {
     const config =
-      agent.type === "TTS"
+      agent.type === ChatAgentTypeEnum.TTS
         ? {
             tts: {
               engine: currentTtsEngine.name,

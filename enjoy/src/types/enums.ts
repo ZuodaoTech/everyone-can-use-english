@@ -49,3 +49,8 @@ export enum ChatMessageCategoryEnum {
   MEMBER_LEFT = "MEMBER_LEFT",
   CONTEXT_BREAK = "CONTEXT_BREAK",
 }
+
+export enum ChatMessageStateEnum {
+  PENDING = "pending",
+  COMPLETED = "completed",
+}

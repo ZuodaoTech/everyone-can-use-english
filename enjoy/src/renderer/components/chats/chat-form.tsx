@@ -37,7 +37,11 @@ import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
 } from "@renderer/context";
-import { SttEngineOptionEnum } from "@/types/enums";
+import {
+  ChatMessageRoleEnum,
+  ChatTypeEnum,
+  SttEngineOptionEnum,
+} from "@/types/enums";
 import { ChevronDownIcon, ChevronUpIcon, RefreshCwIcon } from "lucide-react";
 import { useAiCommand } from "@/renderer/hooks";
 import { cn } from "@/renderer/lib/utils";
@@ -116,7 +120,9 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
         order: [["createdAt", "ASC"]],
       });
       messages = messages.filter(
-        (m) => m.role === "AGENT" || m.role === "USER"
+        (m) =>
+          m.role === ChatMessageRoleEnum.AGENT ||
+          m.role === ChatMessageRoleEnum.USER
       );
       if (messages.length < 1) {
         toast.warning(t("chatNoContentYet"));
@@ -175,7 +181,9 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
             )}
           />
 
-          {["CONVERSATION", "GROUP"].includes(chat.type) && (
+          {[ChatTypeEnum.CONVERSATION, ChatTypeEnum.GROUP].includes(
+            chat.type
+          ) && (
             <>
               <FormField
                 control={form.control}
@@ -221,7 +229,9 @@ export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
           )}
         </div>
 
-        {["CONVERSATION", "GROUP"].includes(chat.type) && (
+        {[ChatTypeEnum.CONVERSATION, ChatTypeEnum.GROUP].includes(
+          chat.type
+        ) && (
           <>
             <Collapsible open={isMoreSettingsOpen} className="mb-6">
               <CollapsibleTrigger asChild>

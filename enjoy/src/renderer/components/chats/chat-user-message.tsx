@@ -42,6 +42,7 @@ import {
 import { useAiCommand } from "@renderer/hooks";
 import { md5 } from "js-md5";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
+import { ChatMessageRoleEnum, ChatMessageStateEnum } from "@/types/enums";
 
 export const ChatUserMessage = (props: {
   chatMessage: ChatMessageType;
@@ -66,7 +67,11 @@ export const ChatUserMessage = (props: {
   useEffect(() => {
     if (!isLastMessage) return;
     // If the message is from recording, wait for user to confirm before asking agent
-    if (chatMessage.recording && chatMessage.state !== "completed") return;
+    if (
+      chatMessage.recording &&
+      chatMessage.state !== ChatMessageStateEnum.COMPLETED
+    )
+      return;
 
     askAgent();
   }, [chatMessage]);
@@ -77,7 +82,7 @@ export const ChatUserMessage = (props: {
         <div className="w-full max-w-prose">
           <div
             className={`flex flex-col gap-2 px-3 py-2 mb-2 rounded-lg shadow-sm w-full ${
-              chatMessage.state === "pending"
+              chatMessage.state === ChatMessageStateEnum.PENDING
                 ? "bg-sky-500/30 border-sky-500"
                 : "bg-muted"
             }`}
@@ -147,23 +152,25 @@ export const ChatUserMessage = (props: {
               setContent={setContent}
               setEditing={setEditing}
             />
-            {chatMessage.state === "pending" && !submitting && !asking && (
-              <div className="flex justify-end items-center space-x-2">
-                <InfoIcon
-                  data-tooltip-id={`${chatMessage.chatId}-tooltip`}
-                  data-tooltip-content={t("confirmBeforeSending")}
-                  className="w-4 h-4 text-yellow-600"
-                />
-                <Button
-                  disabled={submitting || Boolean(asking)}
-                  onClick={() => askAgent()}
-                  variant="default"
-                  size="sm"
-                >
-                  {t("send")}
-                </Button>
-              </div>
-            )}
+            {chatMessage.state === ChatMessageStateEnum.PENDING &&
+              !submitting &&
+              !asking && (
+                <div className="flex justify-end items-center space-x-2">
+                  <InfoIcon
+                    data-tooltip-id={`${chatMessage.chatId}-tooltip`}
+                    data-tooltip-content={t("confirmBeforeSending")}
+                    className="w-4 h-4 text-yellow-600"
+                  />
+                  <Button
+                    disabled={submitting || Boolean(asking)}
+                    onClick={() => askAgent()}
+                    variant="default"
+                    size="sm"
+                  >
+                    {t("send")}
+                  </Button>
+                </div>
+              )}
           </div>
           <div className="flex justify-end text-xs text-muted-foreground timestamp">
             {formatDateTime(chatMessage.createdAt)}
@@ -235,9 +242,11 @@ const ChatUserMessageActions = (props: {
       (m) => new Date(m.createdAt) < new Date(chatMessage.createdAt)
     );
     return messages
-      .filter((m) => ["USER", "ASSISTANT"].includes(m.role))
+      .filter((m) =>
+        [ChatMessageRoleEnum.USER, ChatMessageRoleEnum.AGENT].includes(m.role)
+      )
       .map((message) =>
-        message.role === "USER"
+        message.role === ChatMessageRoleEnum.USER
           ? `${user.name}: ${message.content}`
           : `${message.member.agent.name}: ${message.content}`
       )
@@ -282,7 +291,7 @@ const ChatUserMessageActions = (props: {
     <>
       <DropdownMenu>
         <div className="flex items-center justify-end space-x-4">
-          {chatMessage.state === "pending" && (
+          {chatMessage.state === ChatMessageStateEnum.PENDING && (
             <>
               <EditIcon
                 data-tooltip-id="global-tooltip"
@@ -329,7 +338,7 @@ const ChatUserMessageActions = (props: {
               onClick={() => handleRefine()}
             />
           )}
-          {chatMessage.state === "completed" && (
+          {chatMessage.state === ChatMessageStateEnum.COMPLETED && (
             <>
               {copied ? (
                 <CheckIcon className="w-4 h-4 text-green-500" />

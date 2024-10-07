@@ -18,6 +18,11 @@ import { CHAT_GROUP_PROMPT_TEMPLATE } from "@/constants";
 import dayjs from "@renderer/lib/dayjs";
 import Mustache from "mustache";
 import { t } from "i18next";
+import {
+  ChatMessageRoleEnum,
+  ChatMessageStateEnum,
+  ChatTypeEnum,
+} from "@/types/enums";
 
 export const useChatMessage = (chatId: string) => {
   const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
@@ -50,8 +55,8 @@ export const useChatMessage = (chatId: string) => {
       .create({
         chatId,
         content,
-        role: "USER",
-        state: "pending",
+        role: ChatMessageRoleEnum.USER,
+        state: ChatMessageStateEnum.PENDING,
         recordingUrl,
       })
       .catch((error) => {
@@ -126,31 +131,33 @@ export const useChatMessage = (chatId: string) => {
     const member = await EnjoyApp.chatMembers.findOne({
       where: { id: memberId },
     });
-    if (chat.type === "CONVERSATION") {
+    if (chat.type === ChatTypeEnum.CONVERSATION) {
       return askAgentInConversation(member);
-    } else if (chat.type === "GROUP") {
+    } else if (chat.type === ChatTypeEnum.GROUP) {
       return askAgentInGroup(member);
-    } else if (chat.type === "TTS") {
+    } else if (chat.type === ChatTypeEnum.TTS) {
       return askAgentInTts(member);
     }
   };
 
   const askAgentInConversation = async (member: ChatMemberType) => {
     const pendingMessage = chatMessages.find(
-      (m) => m.role === "USER" && m.state === "pending"
+      (m) =>
+        m.role === ChatMessageRoleEnum.USER &&
+        m.state === ChatMessageStateEnum.PENDING
     );
     if (!pendingMessage) return;
 
     const llm = buildLlm(member);
     const historyBufferSize = member.config.gpt.historyBufferSize || 10;
     const messages = chatMessages
-      .filter((m) => m.state === "completed")
+      .filter((m) => m.state === ChatMessageStateEnum.COMPLETED)
       .slice(-historyBufferSize);
     const chatHistory = new ChatMessageHistory();
     messages.forEach((message) => {
-      if (message.role === "USER") {
+      if (message.role === ChatMessageRoleEnum.USER) {
         chatHistory.addUserMessage(message.content);
-      } else if (message.role === "AGENT") {
+      } else if (message.role === ChatMessageRoleEnum.AGENT) {
         chatHistory.addAIMessage(message.content);
       }
     });
@@ -184,15 +191,19 @@ export const useChatMessage = (chatId: string) => {
         chatId,
         memberId: member.id,
         content: r.text,
-        state: "completed",
+        state: ChatMessageStateEnum.COMPLETED,
       });
     }
-    onUpdateMessage(pendingMessage.id, { state: "completed" });
+    onUpdateMessage(pendingMessage.id, {
+      state: ChatMessageStateEnum.COMPLETED,
+    });
   };
 
   const askAgentInGroup = async (member: ChatMemberType) => {
     const pendingMessage = chatMessages.find(
-      (m) => m.role === "USER" && m.state === "pending"
+      (m) =>
+        m.role === ChatMessageRoleEnum.USER &&
+        m.state === ChatMessageStateEnum.PENDING
     );
 
     const llm = buildLlm(member);
@@ -203,16 +214,20 @@ export const useChatMessage = (chatId: string) => {
     const chain = prompt.pipe(llm);
     const historyBufferSize = member.config.gpt.historyBufferSize || 10;
     const history = chatMessages
-      .filter((m) => m.role === "AGENT" || m.role === "USER")
+      .filter(
+        (m) =>
+          m.role === ChatMessageRoleEnum.AGENT ||
+          m.role === ChatMessageRoleEnum.USER
+      )
       .slice(-historyBufferSize)
       .map((message) => {
         const timestamp = dayjs(message.createdAt).fromNow();
         switch (message.role) {
-          case "AGENT":
+          case ChatMessageRoleEnum.AGENT:
             return `${message.member.agent.name}: ${message.content} (${timestamp})`;
-          case "USER":
+          case ChatMessageRoleEnum.USER:
             return `${user.name}: ${message.content} (${timestamp})`;
-          case "SYSTEM":
+          case ChatMessageRoleEnum.SYSTEM:
             return `(${message.content}, ${timestamp})`;
           default:
             return "";
@@ -235,10 +250,12 @@ export const useChatMessage = (chatId: string) => {
       chatId,
       memberId: member.id,
       content,
-      state: "completed",
+      state: ChatMessageStateEnum.COMPLETED,
     });
     if (pendingMessage) {
-      onUpdateMessage(pendingMessage.id, { state: "completed" });
+      onUpdateMessage(pendingMessage.id, {
+        state: ChatMessageStateEnum.COMPLETED,
+      });
     }
 
     return message;
@@ -246,7 +263,9 @@ export const useChatMessage = (chatId: string) => {
 
   const askAgentInTts = async (member: ChatMemberType) => {
     const pendingMessage = chatMessages.find(
-      (m) => m.role === "USER" && m.state === "pending"
+      (m) =>
+        m.role === ChatMessageRoleEnum.USER &&
+        m.state === ChatMessageStateEnum.PENDING
     );
     if (!pendingMessage) return;
 
@@ -254,9 +273,11 @@ export const useChatMessage = (chatId: string) => {
       chatId,
       memberId: member.id,
       content: pendingMessage.content,
-      state: "completed",
+      state: ChatMessageStateEnum.COMPLETED,
     });
-    onUpdateMessage(pendingMessage.id, { state: "completed" });
+    onUpdateMessage(pendingMessage.id, {
+      state: ChatMessageStateEnum.COMPLETED,
+    });
 
     return message;
   };
