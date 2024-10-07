@@ -57,7 +57,7 @@ const AuthorizationStatusBar = () => {
 
   if (!user.accessToken) {
     return (
-      <div className="bg-destructive text-white py-2 px-4 h-10 flex items-center sticky top-0">
+      <div className="bg-destructive text-white py-2 px-4 h-10 flex items-center sticky top-0 z-10">
         <span className="text-sm">{t("authorizationExpired")}</span>
         <Button
           variant="outline"
