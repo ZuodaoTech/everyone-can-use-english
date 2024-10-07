@@ -23,9 +23,14 @@ export const ConversationCard = (props: { conversation: ConversationType }) => {
   };
 
   const handleMigrate = () => {
-    EnjoyApp.conversations.migrate(conversation.id).then(() => {
-      toast.success(t("conversationMigrated"));
-    });
+    EnjoyApp.conversations
+      .migrate(conversation.id)
+      .then(() => {
+        toast.success(t("conversationMigrated"));
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   return (
