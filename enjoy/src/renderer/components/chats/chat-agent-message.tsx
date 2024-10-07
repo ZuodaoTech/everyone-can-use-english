@@ -46,7 +46,7 @@ export const ChatAgentMessage = (props: {
   onEditChatMember: (chatMember: ChatMemberType) => void;
 }) => {
   const { chatMessage, onEditChatMember, isLastMessage } = props;
-  const { chat, chatMembers, askAgent, dispatchChatMessages } = useContext(
+  const { chat, askAgent, dispatchChatMessages } = useContext(
     ChatSessionProviderContext
   );
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -177,8 +177,9 @@ const ChatAgentMessageActions = (props: {
     translation,
     setTranslation,
   } = props;
-  const { chat, dispatchChatMessages, setShadowing, onDeleteMessage } =
-    useContext(ChatSessionProviderContext);
+  const { chat, setShadowing, onDeleteMessage } = useContext(
+    ChatSessionProviderContext
+  );
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
