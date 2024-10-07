@@ -93,14 +93,12 @@ export const useSpeech = () => {
       input: text,
     });
     const speechConfig = sdk.SpeechConfig.fromAuthorizationToken(token, region);
-    const audioConfig = sdk.AudioConfig.fromDefaultSpeakerOutput();
     speechConfig.speechRecognitionLanguage = learningLanguage;
     speechConfig.speechSynthesisVoiceName = voice;
 
-    const speechSynthesizer = new sdk.SpeechSynthesizer(
-      speechConfig,
-      audioConfig
-    );
+    // const speechSynthesizer = new sdk.SpeechSynthesizer(speechConfig, sdk.AudioConfig.fromDefaultSpeakerOutput());
+    // Do not playback audio when transcribed
+    const speechSynthesizer = new sdk.SpeechSynthesizer(speechConfig, null);
 
     return new Promise((resolve, reject) => {
       speechSynthesizer.speakTextAsync(
