@@ -34,7 +34,7 @@ export const ChatMessages = () => {
             onEditChatMember={setEditingChatMember}
           />
         ))}
-        {asking && (
+        {asking?.chatId === chat.id && (
           <ChatAgentMessageLoading
             chatMember={asking}
             onClick={() => setEditingChatMember(asking)}

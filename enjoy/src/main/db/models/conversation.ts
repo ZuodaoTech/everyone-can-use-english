@@ -111,25 +111,25 @@ export class Conversation extends Model<Conversation> {
     }
 
     const tts = {
-      engine: this.configuration.tts.engine,
-      model: this.configuration.tts.model,
+      engine: this.configuration.tts?.engine || "enjoyai",
+      model: this.configuration.tts?.model || "openai/tts-1",
       language: this.language,
-      voice: this.configuration.tts.voice,
+      voice: this.configuration.tts?.voice || "alloy",
     };
 
     agent = await ChatAgent.create({
       name:
         this.configuration.type === "tts" ? tts.voice || this.name : this.name,
-      type: this.configuration.type === "gpt" ? "GPT" : "TTS",
+      type: this.configuration.type === "tts" ? "TTS" : "GPT",
       source,
       description: "",
       config:
-        this.configuration.type === "gpt"
+        this.configuration.type === "tts"
           ? {
-              prompt: this.configuration.roleDefinition,
+              tts,
             }
           : {
-              tts,
+              prompt: this.configuration.roleDefinition,
             },
     });
 
@@ -139,7 +139,7 @@ export class Conversation extends Model<Conversation> {
       const chat = await Chat.create(
         {
           name: t("newChat"),
-          type: this.type === "gpt" ? "CONVERSATION" : "TTS",
+          type: this.type === "tts" ? "TTS" : "CONVERSATION",
           config: {
             stt: SttEngineOptionEnum.ENJOY_AZURE,
           },
@@ -154,12 +154,12 @@ export class Conversation extends Model<Conversation> {
           userId: agent.id,
           userType: "ChatAgent",
           config:
-            this.configuration.type === "gpt"
+            this.configuration.type === "tts"
               ? {
-                  gpt,
                   tts,
                 }
               : {
+                  gpt,
                   tts,
                 },
         },

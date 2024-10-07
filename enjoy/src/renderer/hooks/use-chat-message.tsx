@@ -80,6 +80,8 @@ export const useChatMessage = (chatId: string) => {
   const onChatMessageRecordUpdate = (event: CustomEvent) => {
     const { model, action, record } = event.detail;
     if (model === "ChatMessage") {
+      if (record.chatId !== chatId) return;
+
       switch (action) {
         case "create":
           dispatchChatMessages({ type: "append", record });
