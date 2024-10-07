@@ -18,6 +18,7 @@ import log from "@main/logger";
 import { ChatAgent, ChatMember, ChatMessage } from "@main/db/models";
 import mainWindow from "@main/window";
 import { t } from "i18next";
+import { ChatTypeEnum } from "@/types/enums";
 
 const logger = log.scope("db/models/chat");
 @Table({
@@ -51,7 +52,7 @@ export class Chat extends Model<Chat> {
   id: string;
 
   @Column(DataType.STRING)
-  type: "CONVERSATION" | "GROUP" | "TTS";
+  type: ChatTypeEnum;
 
   @AllowNull(false)
   @Column(DataType.STRING)
@@ -146,7 +147,7 @@ export class Chat extends Model<Chat> {
       if (members.some((m) => m.agent?.type !== "GPT")) {
         throw new Error(t("models.chat.onlyGPTAgentCanBeAddedToThisChat"));
       }
-      chat.type = "GROUP";
+      chat.type = ChatTypeEnum.GROUP;
     } else {
       const agent = members[0].agent;
       if (!agent) {
@@ -155,10 +156,10 @@ export class Chat extends Model<Chat> {
 
       switch (agent.type) {
         case "GPT":
-          chat.type = "CONVERSATION";
+          chat.type = ChatTypeEnum.CONVERSATION;
           break;
         case "TTS":
-          chat.type = "TTS";
+          chat.type = ChatTypeEnum.TTS;
           break;
         default:
           throw new Error(t("models.chat.invalidAgentType"));

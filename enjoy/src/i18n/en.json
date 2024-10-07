@@ -863,5 +863,7 @@
   "removeChatMemberConfirmation": "Are you sure to remove this member from the chat?",
   "addMember": "Add member",
   "added": "Added",
-  "migrateToChat": "Migrate to chat"
+  "migrateToChat": "Migrate to chat",
+  "memberJoined": "{{name}} has joined the chat.",
+  "memberLeft": "{{name}} has left the chat."
 }

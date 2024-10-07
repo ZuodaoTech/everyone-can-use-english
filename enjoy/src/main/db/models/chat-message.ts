@@ -23,6 +23,7 @@ import {
   Recording,
   Speech,
 } from "@main/db/models";
+import { ChatMessageCategoryEnum, ChatMessageRoleEnum } from "@/types/enums";
 
 const logger = log.scope("db/models/chat-message");
 @Table({
@@ -70,8 +71,12 @@ export class ChatMessage extends Model<ChatMessage> {
   chatId: string;
 
   @AllowNull(true)
-  @Column(DataType.ENUM("AGENT", "USER", "SYSTEM"))
-  role: string;
+  @Column(DataType.STRING)
+  role: ChatMessageRoleEnum;
+
+  @Default("DEFAULT")
+  @Column(DataType.STRING)
+  category: ChatMessageCategoryEnum;
 
   @Column(DataType.UUID)
   memberId: string | null;
@@ -131,9 +136,9 @@ export class ChatMessage extends Model<ChatMessage> {
     if (chatMessage.role) return;
 
     if (chatMessage.memberId) {
-      chatMessage.role = "AGENT";
+      chatMessage.role = ChatMessageRoleEnum.AGENT;
     } else {
-      chatMessage.role = "USER";
+      chatMessage.role = ChatMessageRoleEnum.USER;
     }
   }
 

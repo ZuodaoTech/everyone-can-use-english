@@ -15,6 +15,7 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "@renderer/components/ui";
+import { ChatAgentTypeEnum } from "@/types/enums";
 
 export const ChatMessages = () => {
   const { chatMessages, chat, asking } = useContext(ChatSessionProviderContext);
@@ -50,14 +51,14 @@ export const ChatMessages = () => {
           <DialogDescription className="sr-only">
             Edit chat member
           </DialogDescription>
-          {editingChatMember?.agent?.type === "GPT" && (
+          {editingChatMember?.agent?.type === ChatAgentTypeEnum.GPT && (
             <ChatMemberForm
               chat={chat}
               member={editingChatMember}
               onFinish={() => setEditingChatMember(null)}
             />
           )}
-          {editingChatMember?.agent?.type === "TTS" && (
+          {editingChatMember?.agent?.type === ChatAgentTypeEnum.TTS && (
             <ChatAgentForm
               agent={editingChatMember.agent}
               onFinish={() => setEditingChatMember(null)}
@@ -115,8 +116,9 @@ const ChatAgentAvatar = (props: {
       <div>
         <div className="text-sm">{chatMember.name}</div>
         <div className="italic text-xs text-muted-foreground/50">
-          {chatMember.agent.type === "GPT" && chatMember.config.gpt?.model}
-          {chatMember.agent.type === "TTS" &&
+          {chatMember.agent.type === ChatAgentTypeEnum.GPT &&
+            chatMember.config.gpt?.model}
+          {chatMember.agent.type === ChatAgentTypeEnum.TTS &&
             chatMember.agent.config.tts?.voice}
         </div>
       </div>

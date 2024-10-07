@@ -25,3 +25,27 @@ export enum AppSettingsKeyEnum {
   USER = "user",
   API_URL = "api_url",
 }
+
+export enum ChatTypeEnum {
+  CONVERSATION = "CONVERSATION",
+  GROUP = "GROUP",
+  TTS = "TTS",
+}
+
+export enum ChatAgentTypeEnum {
+  GPT = "GPT",
+  TTS = "TTS",
+}
+
+export enum ChatMessageRoleEnum {
+  USER = "USER",
+  AGENT = "AGENT",
+  SYSTEM = "SYSTEM",
+}
+
+export enum ChatMessageCategoryEnum {
+  DEFAULT = "DEFAULT",
+  MEMBER_JOINED = "MEMBER_JOINED",
+  MEMBER_LEFT = "MEMBER_LEFT",
+  CONTEXT_BREAK = "CONTEXT_BREAK",
+}

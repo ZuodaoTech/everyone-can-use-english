@@ -15,7 +15,11 @@ import {
 import mainWindow from "@main/window";
 import log from "@main/logger";
 import { Chat, ChatMember, ChatMessage, UserSetting } from "@main/db/models";
-import { UserSettingKeyEnum } from "@/types/enums";
+import {
+  ChatAgentTypeEnum,
+  ChatMessageRoleEnum,
+  UserSettingKeyEnum,
+} from "@/types/enums";
 import { DEFAULT_GPT_CONFIG } from "@/constants";
 
 const logger = log.scope("db/models/chat-agent");
@@ -32,7 +36,7 @@ export class ChatAgent extends Model<ChatAgent> {
   id: string;
 
   @Column(DataType.STRING)
-  type: string;
+  type: ChatAgentTypeEnum;
 
   @AllowNull(false)
   @Column(DataType.STRING)
@@ -145,7 +149,7 @@ export class ChatAgent extends Model<ChatAgent> {
           for (const chatMessage of chatMessages) {
             await chatMessage.update(
               {
-                role: "AGENT",
+                role: ChatMessageRoleEnum.AGENT,
                 agentId: chatAgent.id,
               },
               {
@@ -160,7 +164,7 @@ export class ChatAgent extends Model<ChatAgent> {
       }
       await chatAgent.update(
         {
-          type: "GPT",
+          type: ChatAgentTypeEnum.GPT,
           avatarUrl: `https://api.dicebear.com/9.x/shapes/svg?seed=${chatAgent.name}`,
           config: {
             prompt: chatAgent.config.prompt,
@@ -188,7 +192,7 @@ export class ChatAgent extends Model<ChatAgent> {
       for (const chatMessage of chatMessages) {
         await chatMessage.update(
           {
-            role: "USER",
+            role: ChatMessageRoleEnum.USER,
             agentId: null,
             memberId: null,
           },

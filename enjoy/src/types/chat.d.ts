@@ -1,6 +1,6 @@
 type ChatType = {
   id: string;
-  type: "CONVERSATION" | "GROUP" | "TTS" | "STT";
+  type: ChatTypeEnum;
   name: string;
   config: {
     sttEngine: SttEngineOptionEnum;
@@ -10,7 +10,6 @@ type ChatType = {
     [key: string]: any;
   };
   digest?: string;
-  contextBreaks?: string[];
   createdAt: string;
   updatedAt: string;
   membersCount: number;
@@ -19,7 +18,7 @@ type ChatType = {
 
 type ChatAgentType = {
   id: string;
-  type: "GPT" | "TTS" | "STT";
+  type: ChatAgentTypeEnum;
   name: string;
   avatarUrl: string;
   description: string;
@@ -48,7 +47,8 @@ type ChatMemberType = {
 
 type ChatMessageType = {
   id: string;
-  role: "USER" | "AGENT" | "SYSTEM";
+  role: ChatMessageRoleEnum;
+  category: ChatMessageCategoryEnum;
   memberId: string | null;
   chatId: string;
   content: string;
@@ -82,7 +82,7 @@ type TtsConfigType = {
 };
 
 type ChatDtoType = {
-  type?: "CONVERSATION" | "GROUP" | "TTS";
+  type?: ChatTypeEnum;
   name: string;
   config: {
     sttEngine: string;
@@ -114,7 +114,7 @@ type ChatMessageDtoType = {
 };
 
 type ChatAgentDtoType = {
-  type: "GPT" | "TTS";
+  type: ChatAgentTypeEnum;
   avatarUrl?: string;
   name: string;
   description?: string;

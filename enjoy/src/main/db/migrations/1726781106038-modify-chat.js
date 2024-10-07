@@ -6,12 +6,6 @@ async function up({ context: queryInterface }) {
     allowNull: true,
   });
 
-  await queryInterface.addColumn("chats", "context_breaks", {
-    type: DataTypes.JSON,
-    defaultValue: [],
-    allowNull: true,
-  });
-
   await queryInterface.removeColumn("chats", "language", {
     type: DataTypes.STRING,
     allowNull: true,
@@ -54,6 +48,11 @@ async function up({ context: queryInterface }) {
     allowNull: true,
   });
 
+  await queryInterface.addColumn("chat_messages", "category", {
+    type: DataTypes.STRING,
+    allowNull: true,
+  });
+
   await queryInterface.addColumn("chat_messages", "agent_id", {
     type: DataTypes.UUID,
     allowNull: true,
@@ -78,12 +77,6 @@ async function up({ context: queryInterface }) {
 async function down({ context: queryInterface }) {
   await queryInterface.removeColumn("chats", "type", {
     type: DataTypes.STRING,
-    allowNull: true,
-  });
-
-  await queryInterface.removeColumn("chats", "context_breaks", {
-    type: DataTypes.JSON,
-    defaultValue: [],
     allowNull: true,
   });
 
@@ -133,6 +126,11 @@ async function down({ context: queryInterface }) {
   await queryInterface.removeColumn("chat_messages", "role", {
     type: DataTypes.STRING,
     allowNull: false,
+  });
+
+  await queryInterface.removeColumn("chat_messages", "category", {
+    type: DataTypes.STRING,
+    allowNull: true,
   });
 
   await queryInterface.removeColumn("chat_messages", "agent_id", {

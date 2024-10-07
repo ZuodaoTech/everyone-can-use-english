@@ -16,6 +16,7 @@ import {
 import log from "@main/logger";
 import { Chat, ChatAgent, ChatMessage } from "@main/db/models";
 import mainWindow from "@main/window";
+import { ChatMessageCategoryEnum, ChatMessageRoleEnum } from "@/types/enums";
 
 const logger = log.scope("db/models/chat-member");
 @Table({
@@ -92,13 +93,27 @@ export class ChatMember extends Model<ChatMember> {
     ChatMessage.create({
       chatId: member.chatId,
       content: `${chatAgent.name} has joined the chat.`,
-      role: "SYSTEM",
+      agentId: chatAgent.id,
+      role: ChatMessageRoleEnum.SYSTEM,
+      category: ChatMessageCategoryEnum.MEMBER_JOINED,
     });
   }
 
   @AfterDestroy
   static async destroyMessages(member: ChatMember) {
     ChatMessage.destroy({ where: { memberId: member.id }, hooks: false });
+
+    ChatAgent.findByPk(member.userId).then((chatAgent) => {
+      if (!chatAgent) return;
+
+      ChatMessage.create({
+        chatId: member.chatId,
+        content: `${chatAgent.name} has left the chat.`,
+        agentId: chatAgent.id,
+        role: ChatMessageRoleEnum.SYSTEM,
+        category: ChatMessageCategoryEnum.MEMBER_LEFT,
+      });
+    });
   }
 
   @AfterCreate

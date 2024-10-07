@@ -1,4 +1,6 @@
+import { ChatMessageCategoryEnum, ChatMessageRoleEnum } from "@/types/enums";
 import { ChatAgentMessage, ChatUserMessage } from "@renderer/components";
+import { t } from "i18next";
 
 export const ChatMessage = (props: {
   chatMessage: ChatMessageType;
@@ -7,14 +9,14 @@ export const ChatMessage = (props: {
 }) => {
   const { chatMessage, isLastMessage, onEditChatMember } = props;
 
-  if (chatMessage.role === "USER") {
+  if (chatMessage.role === ChatMessageRoleEnum.USER) {
     return (
       <ChatUserMessage
-        chatMessage={props.chatMessage}
+        chatMessage={chatMessage}
         isLastMessage={isLastMessage}
       />
     );
-  } else if (props.chatMessage.role === "AGENT") {
+  } else if (chatMessage.role === ChatMessageRoleEnum.AGENT) {
     return (
       <ChatAgentMessage
         chatMessage={props.chatMessage}
@@ -22,10 +24,23 @@ export const ChatMessage = (props: {
         onEditChatMember={onEditChatMember}
       />
     );
-  } else if (props.chatMessage.role === "SYSTEM") {
+  } else if (chatMessage.role === ChatMessageRoleEnum.SYSTEM) {
     return (
       <div className="text-sm text-muted-foreground text-center">
-        {props.chatMessage.content}
+        {chatMessage.category === ChatMessageCategoryEnum.MEMBER_JOINED && (
+          <span>
+            {chatMessage.agent
+              ? t("memberJoined", { name: chatMessage.agent.name })
+              : chatMessage.content}
+          </span>
+        )}
+        {chatMessage.category === ChatMessageCategoryEnum.MEMBER_LEFT && (
+          <span>
+            {chatMessage.agent
+              ? t("memberLeft", { name: chatMessage.agent.name })
+              : chatMessage.content}
+          </span>
+        )}
       </div>
     );
   }

@@ -863,5 +863,7 @@
   "removeChatMemberConfirmation": "您确定要将此成员移出群聊吗？",
   "addMember": "增加群成员",
   "added": "已添加",
-  "migrateToChat": "迁移到聊天"
+  "migrateToChat": "迁移到聊天",
+  "memberJoined": "{{name}} 已加入聊天",
+  "memberLeft": "{{name}} 已离开聊天"
 }
