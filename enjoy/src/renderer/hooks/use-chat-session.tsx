@@ -24,7 +24,7 @@ import {
   ChatTypeEnum,
 } from "@/types/enums";
 
-export const useChatMessage = (chatId: string) => {
+export const useChatSession = (chatId: string) => {
   const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
@@ -90,9 +90,31 @@ export const useChatMessage = (chatId: string) => {
       });
   };
 
-  const onChatMessageRecordUpdate = (event: CustomEvent) => {
+  const onChatSessionUpdate = (event: CustomEvent) => {
     const { model, action, record } = event.detail;
-    if (model === "ChatMessage") {
+    if (model === "Chat") {
+      if (record.id !== chatId) return;
+
+      switch (action) {
+        case "update":
+          setChat(record);
+          break;
+        case "destroy":
+          setChat(null);
+          dispatchChatMessages({ type: "set", records: [] });
+          break;
+      }
+    } else if (model === "ChatMember") {
+      if ((chat?.members || []).findIndex((m) => m.id === record.id) === -1)
+        return;
+
+      fetchChat();
+    } else if (model === "ChatAgent") {
+      if ((chat?.members || []).findIndex((m) => m.userId === record.id) === -1)
+        return;
+
+      fetchChat();
+    } else if (model === "ChatMessage") {
       if (record.chatId !== chatId) return;
 
       switch (action) {
@@ -139,6 +161,7 @@ export const useChatMessage = (chatId: string) => {
     if (!chat) {
       await fetchChat();
     }
+    if (!chat) return;
 
     const member = await EnjoyApp.chatMembers.findOne({
       where: { id: memberId },
@@ -360,21 +383,21 @@ export const useChatMessage = (chatId: string) => {
   };
 
   useEffect(() => {
-    fetchChat();
-  }, [chatId]);
-
-  useEffect(() => {
     if (!chatId) return;
 
-    addDblistener(onChatMessageRecordUpdate);
+    fetchChat();
+    addDblistener(onChatSessionUpdate);
     fetchChatMessages();
     return () => {
-      removeDbListener(onChatMessageRecordUpdate);
+      removeDbListener(onChatSessionUpdate);
       dispatchChatMessages({ type: "set", records: [] });
     };
   }, [chatId]);
 
   return {
+    chat,
+    chatMembers: chat?.members,
+    chatAgents: chat?.members?.filter((m) => m.agent)?.map((m) => m.agent),
     chatMessages,
     fetchChatMessages,
     dispatchChatMessages,

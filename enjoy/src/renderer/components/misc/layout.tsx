@@ -7,7 +7,7 @@ import {
 } from "@renderer/context";
 import { useContext } from "react";
 import { Button } from "@renderer/components/ui/button";
-import { DbState, Copilot } from "@renderer/components";
+import { DbState, CopilotSession } from "@renderer/components";
 import { t } from "i18next";
 import {
   ResizableHandle,
@@ -68,7 +68,7 @@ export const Layout = () => {
               onCollapse={() => setActive(false)}
             >
               <div className="h-screen">
-                <Copilot />
+                <CopilotSession />
               </div>
             </ResizablePanel>
           </>

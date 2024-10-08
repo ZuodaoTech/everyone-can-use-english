@@ -11,6 +11,7 @@ import { AppSettingsProviderContext } from "@renderer/context";
 import { Button } from "@renderer/components/ui";
 import { t } from "i18next";
 import semver from "semver";
+import { DOWNLOAD_URL } from "@/constants";
 
 export default () => {
   const [channels, setChannels] = useState<string[]>([
@@ -93,9 +94,7 @@ const UpgradeNotice = () => {
         size="sm"
         className="ml-2 py-1 px-2 text-xs h-auto w-auto"
         onClick={() => {
-          EnjoyApp.shell.openExternal(
-            "https://1000h.org/enjoy-app/install.html"
-          );
+          EnjoyApp.shell.openExternal(DOWNLOAD_URL);
         }}
       >
         {t("upgrade")}

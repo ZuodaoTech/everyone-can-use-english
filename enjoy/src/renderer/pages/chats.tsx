@@ -69,8 +69,7 @@ export default function Chats() {
       )}
       <ResizablePanel id="chat-session-panel" order={2} minSize={50}>
         <ChatSession
-          chat={currentChat}
-          setChat={setCurrentChat}
+          chatId={currentChat?.id}
           sidePanelCollapsed={sidePanelCollapsed}
           toggleSidePanel={() => setSidePanelCollapsed(!sidePanelCollapsed)}
         />

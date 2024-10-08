@@ -4,19 +4,19 @@ import { Button, ScrollArea } from "@renderer/components/ui";
 import { t } from "i18next";
 import { ChatMessages, ChatInput, CopilotHeader } from "@renderer/components";
 
-export const Copilot = () => {
+export const CopilotSession = () => {
   const { currentChat } = useContext(CopilotProviderContext);
 
   return (
     <ScrollArea className="h-screen relative">
-      <CopilotHeader />
-      {currentChat ? (
-        <ChatSessionProvider chat={currentChat}>
+      {currentChat?.id ? (
+        <ChatSessionProvider chatId={currentChat.id}>
+          <CopilotHeader />
           <div className="w-full max-w-screen-md mx-auto">
             <ChatMessages />
             <div className="h-16" />
             <div className="absolute w-full max-w-screen-md bottom-0 min-h-16 pb-3 flex items-center">
-              <ChatInput chat={currentChat} />
+              <ChatInput />
             </div>
           </div>
         </ChatSessionProvider>

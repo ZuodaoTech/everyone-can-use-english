@@ -1,10 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import {
-  useAiCommand,
-  useChatMember,
-  useChatMessage,
-  useTranscribe,
-} from "@renderer/hooks";
+import { useAiCommand, useChatSession, useTranscribe } from "@renderer/hooks";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import {
   AppSettingsProviderContext,
@@ -37,6 +32,7 @@ type ChatSessionProviderState = {
   chat: ChatType;
   chatMessages: ChatMessageType[];
   chatMembers: ChatMemberType[];
+  chatAgents: ChatAgentType[];
   dispatchChatMessages: React.Dispatch<any>;
   submitting: boolean;
   asking: ChatMemberType;
@@ -75,6 +71,7 @@ const initialState: ChatSessionProviderState = {
   chat: null,
   chatMessages: [],
   chatMembers: [],
+  chatAgents: [],
   dispatchChatMessages: () => null,
   submitting: false,
   asking: null,
@@ -101,12 +98,10 @@ export const ChatSessionProviderContext =
 
 export const ChatSessionProvider = ({
   children,
-  chat,
-  setChat,
+  chatId,
 }: {
   children: React.ReactNode;
-  chat: ChatType;
-  setChat?: (chat: ChatType) => void;
+  chatId: string;
 }) => {
   const { EnjoyApp, recorderConfig, learningLanguage } = useContext(
     AppSettingsProviderContext
@@ -116,13 +111,16 @@ export const ChatSessionProvider = ({
   const [asking, setAsking] = useState<ChatMemberType>(null);
   const [assessing, setAssessing] = useState<RecordingType>(null);
   const {
+    chat,
+    chatAgents,
+    chatMembers,
     chatMessages,
     dispatchChatMessages,
     onCreateUserMessage,
     onUpdateMessage,
     onDeleteMessage,
     invokeAgent,
-  } = useChatMessage(chat.id);
+  } = useChatSession(chatId);
 
   const [deletingMessage, setDeletingMessage] = useState<string>(null);
   const [cancelingRecording, setCancelingRecording] = useState(false);
@@ -140,7 +138,6 @@ export const ChatSessionProvider = ({
     toast.error(exception.message);
   });
 
-  const { chatMembers } = useChatMember(chat.id);
   const { transcribe } = useTranscribe();
   const { summarizeTopic } = useAiCommand();
 
@@ -322,14 +319,9 @@ export const ChatSessionProvider = ({
       .slice(0, 10)
       .map((m) => m.content)
       .join("\n");
-    try {
-      const name = await summarizeTopic(content);
-      EnjoyApp.chats.update(chat.id, { name }).then((chat) => {
-        setChat({ ...chat, name });
-      });
-    } catch (error) {
+    summarizeTopic(content).catch((error) => {
       toast.error(error.message);
-    }
+    });
   };
 
   useEffect(() => {
@@ -357,6 +349,8 @@ export const ChatSessionProvider = ({
   }, [recordingTime]);
 
   useEffect(() => {
+    if (!chat) return;
+
     // Automatically update the chat name
     if (
       chat.name === t("newChat") &&
@@ -373,6 +367,7 @@ export const ChatSessionProvider = ({
         chat,
         chatMessages,
         chatMembers,
+        chatAgents,
         dispatchChatMessages,
         submitting,
         asking,
@@ -396,7 +391,7 @@ export const ChatSessionProvider = ({
       }}
     >
       <MediaShadowProvider>
-        {children}
+        {chat && children}
 
         <AlertDialog
           open={Boolean(deletingMessage)}
@@ -476,7 +471,7 @@ export const ChatSessionProvider = ({
           </SheetContent>
         </Sheet>
       </MediaShadowProvider>
-      <Tooltip id={`${chat.id}-tooltip`} />
+      <Tooltip id={`${chatId}-tooltip`} />
     </ChatSessionProviderContext.Provider>
   );
 };

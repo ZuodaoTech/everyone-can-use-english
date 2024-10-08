@@ -12,23 +12,20 @@ import {
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { ChatMemberForm, ChatForm, ChatAgentForm } from "@renderer/components";
-import { useChatMember } from "@renderer/hooks";
 import { PlusIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { useDebounce } from "@uidotdev/usehooks";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
+  ChatSessionProviderContext,
 } from "@renderer/context";
 import { DEFAULT_GPT_CONFIG } from "@/constants";
 import { ChatAgentTypeEnum, ChatTypeEnum } from "@/types/enums";
 
-export const ChatSettings = (props: {
-  chat: ChatType;
-  onFinish?: () => void;
-}) => {
-  const { chat, onFinish } = props;
-  const { chatMembers } = useChatMember(chat.id);
+export const ChatSettings = (props: { onFinish?: () => void }) => {
+  const { onFinish } = props;
+  const { chat, chatMembers } = useContext(ChatSessionProviderContext);
   const agentMembers = chatMembers.filter(
     (member) => member.userType === "ChatAgent"
   );

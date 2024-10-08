@@ -24,9 +24,9 @@ import { ChatSuggestionButton } from "@renderer/components";
 import { useHotkeys } from "react-hotkeys-hook";
 import { ChatTypeEnum } from "@/types/enums";
 
-export const ChatInput = (props: { chat: ChatType }) => {
-  const { chat } = props;
+export const ChatInput = () => {
   const {
+    chat,
     submitting,
     startRecording,
     stopRecording,

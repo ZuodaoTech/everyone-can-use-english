@@ -22,6 +22,8 @@ export const AI_WORKER_ENDPOINT = "https://ai-worker.enjoy.bot";
 export const WEB_API_URL = "https://enjoy.bot";
 export const WS_URL = "wss://enjoy.bot";
 
+export const DOWNLOAD_URL = "https://1000h.org/enjoy-app/download.html";
+
 export const REPO_URL =
   "https://github.com/zuodaotech/everyone-can-use-english";
 

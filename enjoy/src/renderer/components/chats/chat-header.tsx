@@ -17,19 +17,21 @@ import {
   SpeechIcon,
   UsersRoundIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ChatSettings } from "@renderer/components";
 import { t } from "i18next";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { ChatTypeEnum } from "@/types/enums";
+import { ChatSessionProviderContext } from "@/renderer/context";
 
 export const ChatHeader = (props: {
-  chat: ChatType;
   sidePanelCollapsed: boolean;
   toggleSidePanel: () => void;
 }) => {
-  const { chat, sidePanelCollapsed, toggleSidePanel } = props;
+  const { sidePanelCollapsed, toggleSidePanel } = props;
   const [displayChatForm, setDisplayChatForm] = useState(false);
+  const { chat } = useContext(ChatSessionProviderContext);
+
   return (
     <div className="h-10 border-b px-4 shadow flex items-center justify-between space-x-2 sticky top-0 z-10 bg-background mb-4">
       <div className="flex items-center space-x-1 line-clamp-1">
@@ -66,10 +68,7 @@ export const ChatHeader = (props: {
             Edit chat settings
           </DialogDescription>
           <ScrollArea className="h-full px-4">
-            <ChatSettings
-              chat={chat}
-              onFinish={() => setDisplayChatForm(false)}
-            />
+            <ChatSettings onFinish={() => setDisplayChatForm(false)} />
           </ScrollArea>
         </DialogContent>
       </Dialog>

@@ -125,10 +125,7 @@ export const CopilotHeader = () => {
                 Edit chat settings
               </DialogDescription>
               <ScrollArea className="h-full px-4">
-                <ChatSettings
-                  chat={currentChat}
-                  onFinish={() => setDisplayChatForm(false)}
-                />
+                <ChatSettings onFinish={() => setDisplayChatForm(false)} />
               </ScrollArea>
             </DialogContent>
           </Dialog>
