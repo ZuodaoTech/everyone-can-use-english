@@ -47,10 +47,7 @@ export const ChatAgentMessage = (props: {
   onEditChatMember: (chatMember: ChatMemberType) => void;
 }) => {
   const { chatMessage, onEditChatMember, isLastMessage } = props;
-  const { chat, askAgent, dispatchChatMessages } = useContext(
-    ChatSessionProviderContext
-  );
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { chat, askAgent } = useContext(ChatSessionProviderContext);
   const ref = useRef<HTMLDivElement>(null);
   const [speeching, setSpeeching] = useState(false);
   const [translation, setTranslation] = useState<string>();
@@ -69,17 +66,6 @@ export const ChatAgentMessage = (props: {
     if (isLastMessage) {
       askAgent();
     }
-  }, [chatMessage]);
-
-  useEffect(() => {
-    if (chatMessage.agent) return;
-
-    EnjoyApp.chatMessages.findOne({ id: chatMessage.id }).then((message) => {
-      dispatchChatMessages({
-        type: "update",
-        record: message,
-      });
-    });
   }, [chatMessage]);
 
   if (!chatMessage.agent) return;
@@ -151,6 +137,10 @@ export const ChatAgentMessage = (props: {
           setDisplayContent={setDisplayContent}
           translation={translation}
           setTranslation={setTranslation}
+          autoSpeech={
+            isLastMessage &&
+            (chat.type === ChatTypeEnum.TTS || chat.config.enableAutoTts)
+          }
         />
       </div>
       <div className="flex justify-start text-xs text-muted-foreground timestamp">
@@ -168,6 +158,7 @@ const ChatAgentMessageActions = (props: {
   setDisplayContent: (displayContent: boolean) => void;
   translation: string;
   setTranslation: (translation: string) => void;
+  autoSpeech: boolean;
 }) => {
   const {
     chatMessage,
@@ -177,6 +168,7 @@ const ChatAgentMessageActions = (props: {
     setDisplayContent,
     translation,
     setTranslation,
+    autoSpeech,
   } = props;
   const { chat, setShadowing, onDeleteMessage } = useContext(
     ChatSessionProviderContext
@@ -314,7 +306,7 @@ const ChatAgentMessageActions = (props: {
 
   useEffect(() => {
     if (chatMessage?.speech) return;
-    if (chat.type === ChatTypeEnum.TTS || chat.config.enableAutoTts) {
+    if (autoSpeech) {
       createSpeech();
     }
   }, [chatMessage]);
