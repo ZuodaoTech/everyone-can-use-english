@@ -319,9 +319,14 @@ export const ChatSessionProvider = ({
       .slice(0, 10)
       .map((m) => m.content)
       .join("\n");
-    summarizeTopic(content).catch((error) => {
+    try {
+      const topic = await summarizeTopic(content);
+      if (topic) {
+        EnjoyApp.chats.update(chat.id, { name: topic });
+      }
+    } catch (error) {
       toast.error(error.message);
-    });
+    }
   };
 
   useEffect(() => {
