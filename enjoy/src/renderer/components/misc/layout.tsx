@@ -13,7 +13,6 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-  ScrollArea,
 } from "@renderer/components/ui";
 
 export const Layout = () => {

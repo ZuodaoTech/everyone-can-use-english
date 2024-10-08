@@ -103,7 +103,7 @@ export const ChatAgentMessage = (props: {
               {chatMessage.agent.type === ChatAgentTypeEnum.TTS &&
                 chatMessage.agent.config.tts?.voice}
               {chatMessage.agent.type === ChatAgentTypeEnum.GPT &&
-                chatMessage.agent.config.gpt?.model}
+                chatMessage.member.config.gpt.model}
             </div>
           </div>
         </div>

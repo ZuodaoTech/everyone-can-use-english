@@ -236,12 +236,12 @@ export const AppSettingsProvider = ({
   };
 
   useEffect(() => {
-    if (db.state !== "connected") return;
-
-    fetchLanguages();
-    fetchVocabularyConfig();
-    initSentry();
-    fetchRecorderConfig();
+    if (db.state === "connected") {
+      fetchLanguages();
+      fetchVocabularyConfig();
+      initSentry();
+      fetchRecorderConfig();
+    }
   }, [db.state]);
 
   useEffect(() => {
@@ -267,7 +267,7 @@ export const AppSettingsProvider = ({
         },
       })
     );
-  }, [user, apiUrl, language]);
+  }, [user?.accessToken, apiUrl, language]);
 
   useEffect(() => {
     if (!apiUrl) return;
@@ -279,6 +279,7 @@ export const AppSettingsProvider = ({
 
   useEffect(() => {
     if (!webApi) return;
+    if (ipaMappings && latestVersion) return;
 
     webApi.config("ipa_mappings").then((mappings) => {
       if (mappings) setIpaMappings(mappings);
@@ -308,6 +309,7 @@ export const AppSettingsProvider = ({
     });
     return () => {
       db.disconnect();
+      setUser(null);
     };
   }, [user?.id]);
 
@@ -335,7 +337,7 @@ export const AppSettingsProvider = ({
         setProxy: setProxyConfigHandler,
         vocabularyConfig,
         setVocabularyConfig: setVocabularyConfigHandler,
-        initialized: Boolean(user && libraryPath),
+        initialized: Boolean(db.state === "connected" && libraryPath),
         ahoy,
         cable,
         recorderConfig,

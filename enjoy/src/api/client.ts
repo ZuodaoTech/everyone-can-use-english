@@ -74,7 +74,14 @@ export class Client {
           );
 
           if (err.response.data) {
-            err.message = err.response.data;
+            if (typeof err.response.data === "string") {
+              err.message = err.response.data;
+            } else if (typeof err.response.data === "object") {
+              err.message =
+                err.response.data.error ||
+                err.response.data.message ||
+                JSON.stringify(err.response.data);
+            }
           }
           return Promise.reject(err);
         }
