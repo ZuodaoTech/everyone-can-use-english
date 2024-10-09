@@ -47,7 +47,9 @@ export const ChatAgentMessage = (props: {
   onEditChatMember: (chatMember: ChatMemberType) => void;
 }) => {
   const { chatMessage, onEditChatMember, isLastMessage } = props;
-  const { chat, askAgent } = useContext(ChatSessionProviderContext);
+  const { chat, chatMembers, askAgent } = useContext(
+    ChatSessionProviderContext
+  );
   const ref = useRef<HTMLDivElement>(null);
   const [speeching, setSpeeching] = useState(false);
   const [translation, setTranslation] = useState<string>();
@@ -55,6 +57,8 @@ export const ChatAgentMessage = (props: {
     !(chat.type === ChatTypeEnum.TTS || chat.config.enableAutoTts)
   );
   const [displayPlayer, setDisplayPlayer] = useState(false);
+
+  const chatMember = chatMembers.find((m) => m.id === chatMessage.member.id);
 
   useEffect(() => {
     if (ref.current) {
@@ -68,28 +72,28 @@ export const ChatAgentMessage = (props: {
     }
   }, [chatMessage]);
 
-  if (!chatMessage.agent) return;
+  if (!chatMember?.agent) return;
 
   return (
     <div ref={ref}>
       <div className="mb-2 flex">
         <div
           className="flex items-center space-x-1 cursor-pointer"
-          onClick={() => onEditChatMember(chatMessage.member)}
+          onClick={() => onEditChatMember(chatMember)}
         >
           <Avatar className="w-8 h-8 bg-background avatar">
-            <AvatarImage src={chatMessage.agent.avatarUrl}></AvatarImage>
+            <AvatarImage src={chatMember.agent.avatarUrl}></AvatarImage>
             <AvatarFallback className="bg-background">
-              {chatMessage.agent.name}
+              {chatMember.agent.name}
             </AvatarFallback>
           </Avatar>
           <div>
-            <div className="text-xs">{chatMessage.agent.name}</div>
+            <div className="text-xs">{chatMember.agent.name}</div>
             <div className="italic text-xs text-muted-foreground/50">
-              {chatMessage.agent.type === ChatAgentTypeEnum.TTS &&
-                chatMessage.agent.config.tts?.voice}
-              {chatMessage.agent.type === ChatAgentTypeEnum.GPT &&
-                chatMessage.member.config.gpt.model}
+              {chatMember.agent.type === ChatAgentTypeEnum.TTS &&
+                chatMember.agent.config.tts?.voice}
+              {chatMember.agent.type === ChatAgentTypeEnum.GPT &&
+                chatMember.config.gpt.model}
             </div>
           </div>
         </div>
