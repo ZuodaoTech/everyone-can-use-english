@@ -105,8 +105,7 @@ export const useChatSession = (chatId: string) => {
           break;
       }
     } else if (model === "ChatMember") {
-      if ((chat?.members || []).findIndex((m) => m.id === record.id) === -1)
-        return;
+      if (record.chatId !== chatId) return;
 
       fetchChat();
     } else if (model === "ChatAgent") {

@@ -46,6 +46,8 @@ const initialState: AppSettingsProviderState = {
   initialized: false,
 };
 
+const EnjoyApp = window.__ENJOY_APP__;
+
 export const AppSettingsProviderContext =
   createContext<AppSettingsProviderState>(initialState);
 
@@ -67,7 +69,6 @@ export const AppSettingsProvider = ({
   const [vocabularyConfig, setVocabularyConfig] =
     useState<VocabularyConfigType>(null);
   const [proxy, setProxy] = useState<ProxyConfigType>();
-  const EnjoyApp = window.__ENJOY_APP__;
   const [recorderConfig, setRecorderConfig] = useState<RecorderConfigType>();
   const [ipaMappings, setIpaMappings] = useState<{ [key: string]: string }>(
     IPA_MAPPINGS

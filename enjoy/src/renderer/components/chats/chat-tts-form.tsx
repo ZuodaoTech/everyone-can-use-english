@@ -94,9 +94,7 @@ export const ChatTTSForm = (props: { form: ReturnType<typeof useForm> }) => {
               onValueChange={field.onChange}
             >
               <SelectTrigger className="text-xs">
-                <SelectValue>
-                  {LANGUAGES.find((lang) => lang.code === field.value)?.name}
-                </SelectValue>
+                <SelectValue placeholder={t("selectTtsLanguage")} />
               </SelectTrigger>
               <SelectContent>
                 {LANGUAGES.map((lang) => (
