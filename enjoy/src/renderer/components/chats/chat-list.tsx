@@ -24,12 +24,12 @@ import { isSameTimeRange } from "@renderer/lib/utils";
 import { ChatAgentTypeEnum } from "@/types/enums";
 
 export const ChatList = (props: {
+  chats: ChatType[];
   chatAgent: ChatAgentType;
   currentChat: ChatType;
   setCurrentChat: (chat: ChatType) => void;
 }) => {
-  const { chatAgent, currentChat, setCurrentChat } = props;
-  const { chats } = useChat(chatAgent?.id);
+  const { chats, chatAgent, currentChat, setCurrentChat } = props;
   const { sttEngine, currentGptEngine, currentTtsEngine } = useContext(
     AISettingsProviderContext
   );

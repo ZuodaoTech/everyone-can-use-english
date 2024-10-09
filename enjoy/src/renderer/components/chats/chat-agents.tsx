@@ -22,11 +22,13 @@ import { useChatAgent } from "@renderer/hooks";
 import { AppSettingsProviderContext } from "@/renderer/context";
 
 export const ChatAgents = (props: {
+  chatAgents: ChatAgentType[];
+  fetchChatAgents: (query?: string) => void;
   currentChatAgent: ChatAgentType;
   setCurrentChatAgent: (chatAgent: ChatAgentType) => void;
 }) => {
-  const { currentChatAgent, setCurrentChatAgent } = props;
-  const { chatAgents, fetchChatAgents } = useChatAgent();
+  const { currentChatAgent, setCurrentChatAgent, chatAgents, fetchChatAgents } =
+    props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [deletingChatAgent, setDeletingChatAgent] =
     useState<ChatAgentType>(null);

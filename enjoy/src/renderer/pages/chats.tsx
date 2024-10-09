@@ -6,6 +6,7 @@ import {
 } from "@renderer/components/ui";
 import { useState, useContext, useEffect } from "react";
 import { CopilotProviderContext } from "@renderer/context";
+import { useChat, useChatAgent } from "@renderer/hooks";
 
 export default function Chats() {
   const [currentChat, setCurrentChat] = useState<ChatType | null>(null);
@@ -15,6 +16,9 @@ export default function Chats() {
     CopilotProviderContext
   );
   const [sidePanelCollapsed, setSidePanelCollapsed] = useState(false);
+
+  const { chats } = useChat(currentChatAgent?.id);
+  const { chatAgents, fetchChatAgents } = useChatAgent();
 
   // Do not open the same chat in copilot and main window
   const handleSelectChat = (chat: ChatType) => {
@@ -50,6 +54,8 @@ export default function Chats() {
             <ResizablePanelGroup direction="vertical">
               <ResizablePanel defaultSize={50} minSize={30}>
                 <ChatAgents
+                  chatAgents={chatAgents}
+                  fetchChatAgents={fetchChatAgents}
                   currentChatAgent={currentChatAgent}
                   setCurrentChatAgent={setCurrentChatAgent}
                 />
@@ -57,6 +63,7 @@ export default function Chats() {
               <ResizableHandle />
               <ResizablePanel minSize={30}>
                 <ChatList
+                  chats={chats}
                   chatAgent={currentChatAgent}
                   currentChat={currentChat}
                   setCurrentChat={handleSelectChat}
