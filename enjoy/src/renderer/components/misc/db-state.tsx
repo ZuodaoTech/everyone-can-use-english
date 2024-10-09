@@ -8,14 +8,6 @@ import { t } from "i18next";
 export const DbState = () => {
   const db = useContext(DbProviderContext);
 
-  if (db.state === "connecting") {
-    return (
-      <div className="flex justify-center">
-        <LoaderIcon className="animate-spin w-6 h-6" />
-      </div>
-    );
-  }
-
   if (db.state === "connected") {
     return (
       <div className="">
@@ -42,4 +34,10 @@ export const DbState = () => {
       </div>
     );
   }
+
+  return (
+    <div className="flex justify-center">
+      <LoaderIcon className="animate-spin w-6 h-6" />
+    </div>
+  );
 };

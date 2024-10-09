@@ -1,42 +1,47 @@
+import { ChatMessageCategoryEnum, ChatMessageRoleEnum } from "@/types/enums";
 import { ChatAgentMessage, ChatUserMessage } from "@renderer/components";
-import { useContext, useEffect } from "react";
-import {
-  AppSettingsProviderContext,
-  ChatSessionProviderContext,
-} from "@renderer/context";
+import { t } from "i18next";
 
 export const ChatMessage = (props: {
   chatMessage: ChatMessageType;
   isLastMessage: boolean;
+  onEditChatMember: (chatMember: ChatMemberType) => void;
 }) => {
-  const { chatMessage, isLastMessage } = props;
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { dispatchChatMessages } = useContext(ChatSessionProviderContext);
+  const { chatMessage, isLastMessage, onEditChatMember } = props;
 
-  useEffect(() => {
-    if (!chatMessage?.member) {
-      EnjoyApp.chatMessages.findOne({ id: chatMessage.id }).then((message) => {
-        dispatchChatMessages({
-          type: "update",
-          record: message,
-        });
-      });
-    }
-  }, [chatMessage]);
-
-  if (chatMessage.member?.userType === "User") {
+  if (chatMessage.role === ChatMessageRoleEnum.USER) {
     return (
       <ChatUserMessage
-        chatMessage={props.chatMessage}
+        chatMessage={chatMessage}
         isLastMessage={isLastMessage}
       />
     );
-  } else if (props.chatMessage.member?.userType === "Agent") {
+  } else if (chatMessage.role === ChatMessageRoleEnum.AGENT) {
     return (
       <ChatAgentMessage
         chatMessage={props.chatMessage}
         isLastMessage={isLastMessage}
+        onEditChatMember={onEditChatMember}
       />
+    );
+  } else if (chatMessage.role === ChatMessageRoleEnum.SYSTEM) {
+    return (
+      <div className="text-sm text-muted-foreground text-center">
+        {chatMessage.category === ChatMessageCategoryEnum.MEMBER_JOINED && (
+          <span>
+            {chatMessage.agent
+              ? t("memberJoined", { name: chatMessage.agent.name })
+              : chatMessage.content}
+          </span>
+        )}
+        {chatMessage.category === ChatMessageCategoryEnum.MEMBER_LEFT && (
+          <span>
+            {chatMessage.agent
+              ? t("memberLeft", { name: chatMessage.agent.name })
+              : chatMessage.content}
+          </span>
+        )}
+      </div>
     );
   }
 };

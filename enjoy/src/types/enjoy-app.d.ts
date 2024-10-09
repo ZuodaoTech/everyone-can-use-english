@@ -236,6 +236,7 @@ type EnjoyAppType = {
     create: (params: any) => Promise<ConversationType>;
     update: (id: string, params: any) => Promise<ConversationType>;
     destroy: (id: string) => Promise<void>;
+    migrate: (id: string) => Promise<void>;
   };
   messages: {
     findAll: (params: any) => Promise<MessageType[]>;
@@ -385,6 +386,13 @@ type EnjoyAppType = {
     findOne: (params: any) => Promise<ChatAgentType>;
     create: (params: any) => Promise<ChatAgentType>;
     update: (id: string, params: any) => Promise<ChatAgentType>;
+    destroy: (id: string) => Promise<void>;
+  };
+  chatMembers: {
+    findAll: (params: any) => Promise<ChatMemberType[]>;
+    findOne: (params: any) => Promise<ChatMemberType>;
+    create: (params: any) => Promise<ChatMemberType>;
+    update: (id: string, params: any) => Promise<ChatMemberType>;
     destroy: (id: string) => Promise<void>;
   };
   chatMessages: {

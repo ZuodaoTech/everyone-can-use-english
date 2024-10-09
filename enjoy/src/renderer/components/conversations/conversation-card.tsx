@@ -1,11 +1,37 @@
-import { MessageCircleIcon, SpeechIcon } from "lucide-react";
+import { EllipsisIcon, MessageCircleIcon, SpeechIcon } from "lucide-react";
 import dayjs from "@renderer/lib/dayjs";
 import { useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  toast,
+} from "@renderer/components/ui";
+import { t } from "i18next";
 
 export const ConversationCard = (props: { conversation: ConversationType }) => {
   const { conversation } = props;
-  const { learningLanguage } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
+
+  const handleDelete = () => {
+    EnjoyApp.conversations.destroy(conversation.id).then(() => {
+      toast.success(t("conversationDeleted"));
+    });
+  };
+
+  const handleMigrate = () => {
+    EnjoyApp.conversations
+      .migrate(conversation.id)
+      .then(() => {
+        toast.success(t("conversationMigrated"));
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
 
   return (
     <div
@@ -31,9 +57,36 @@ export const ConversationCard = (props: { conversation: ConversationType }) => {
             | {conversation.language || learningLanguage}
           </div>
         </div>
-        <span className="min-w-fit text-sm text-muted-foreground">
-          {dayjs(conversation.createdAt).format("HH:mm l")}
-        </span>
+        <div className="flex items-center space-x-1">
+          <div className="min-w-fit text-sm text-muted-foreground">
+            {dayjs(conversation.createdAt).format("HH:mm l")}
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <EllipsisIcon className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleMigrate();
+                }}
+              >
+                <span>{t("migrateToChat")}</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleDelete();
+                }}
+              >
+                <span className="text-destructive">{t("delete")}</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </div>
   );

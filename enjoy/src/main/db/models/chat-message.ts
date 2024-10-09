@@ -12,10 +12,22 @@ import {
   AllowNull,
   Scopes,
   HasOne,
+  BeforeSave,
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import log from "@main/logger";
-import { Chat, ChatMember, Recording, Speech } from "@main/db/models";
+import {
+  Chat,
+  ChatAgent,
+  ChatMember,
+  Recording,
+  Speech,
+} from "@main/db/models";
+import {
+  ChatMessageCategoryEnum,
+  ChatMessageRoleEnum,
+  ChatMessageStateEnum,
+} from "@/types/enums";
 
 const logger = log.scope("db/models/chat-message");
 @Table({
@@ -30,11 +42,10 @@ const logger = log.scope("db/models/chat-message");
       {
         association: ChatMessage.associations.member,
         model: ChatMember,
-        include: [
-          {
-            association: ChatMember.associations.agent,
-          },
-        ],
+      },
+      {
+        association: ChatMessage.associations.agent,
+        model: ChatAgent,
       },
       {
         association: ChatMessage.associations.recording,
@@ -63,9 +74,22 @@ export class ChatMessage extends Model<ChatMessage> {
   @Column(DataType.UUID)
   chatId: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
+  @Column(DataType.STRING)
+  role: ChatMessageRoleEnum;
+
+  @Default("DEFAULT")
+  @Column(DataType.STRING)
+  category: ChatMessageCategoryEnum;
+
   @Column(DataType.UUID)
-  memberId: string;
+  memberId: string | null;
+
+  @Column(DataType.UUID)
+  agentId: string | null;
+
+  @Column(DataType.JSON)
+  mentions: string[];
 
   @Column(DataType.TEXT)
   content: string;
@@ -73,7 +97,7 @@ export class ChatMessage extends Model<ChatMessage> {
   @AllowNull(false)
   @Default("pending")
   @Column(DataType.STRING)
-  state: string;
+  state: ChatMessageStateEnum;
 
   @BelongsTo(() => Chat, {
     foreignKey: "chatId",
@@ -86,6 +110,12 @@ export class ChatMessage extends Model<ChatMessage> {
     constraints: false,
   })
   member: ChatMember;
+
+  @BelongsTo(() => ChatAgent, {
+    foreignKey: "agentId",
+    constraints: false,
+  })
+  agent: ChatAgent;
 
   @HasOne(() => Recording, {
     foreignKey: "targetId",
@@ -104,6 +134,49 @@ export class ChatMessage extends Model<ChatMessage> {
     },
   })
   speech: Speech;
+
+  @BeforeSave
+  static async setupRole(chatMessage: ChatMessage) {
+    if (chatMessage.role) return;
+
+    if (chatMessage.memberId) {
+      chatMessage.role = ChatMessageRoleEnum.AGENT;
+    } else {
+      chatMessage.role = ChatMessageRoleEnum.USER;
+    }
+  }
+
+  @BeforeSave
+  static async setupAgentId(chatMessage: ChatMessage) {
+    if (chatMessage.agentId) return;
+    if (!chatMessage.memberId) return;
+
+    const member = await ChatMember.findByPk(chatMessage.memberId);
+    if (!member) return;
+
+    chatMessage.agentId = member.userId;
+  }
+
+  @AfterCreate
+  static async updateChat(chatMessage: ChatMessage) {
+    const chat = await Chat.findByPk(chatMessage.chatId);
+    if (chat) {
+      chat.changed("updatedAt", true);
+      chat.update({ updatedAt: new Date() }, { hooks: false });
+    }
+
+    const member = await ChatMember.findByPk(chatMessage.memberId, {
+      include: [
+        {
+          association: ChatMember.associations.agent,
+        },
+      ],
+    });
+    if (member?.agent) {
+      member.agent.changed("updatedAt", true);
+      member.agent.update({ updatedAt: new Date() }, { hooks: false });
+    }
+  }
 
   @AfterCreate
   static async notifyForCreate(chatMessage: ChatMessage) {
@@ -125,6 +198,10 @@ export class ChatMessage extends Model<ChatMessage> {
     action: "create" | "update" | "destroy"
   ) {
     if (!mainWindow.win) return;
+
+    if (action !== "destroy" && !chatMessage.agent) {
+      await chatMessage.reload();
+    }
 
     mainWindow.win.webContents.send("db-on-transaction", {
       model: "ChatMessage",

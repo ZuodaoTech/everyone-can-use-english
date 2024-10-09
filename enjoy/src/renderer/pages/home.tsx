@@ -11,6 +11,7 @@ import { AppSettingsProviderContext } from "@renderer/context";
 import { Button } from "@renderer/components/ui";
 import { t } from "i18next";
 import semver from "semver";
+import { DOWNLOAD_URL } from "@/constants";
 
 export default () => {
   const [channels, setChannels] = useState<string[]>([
@@ -32,7 +33,7 @@ export default () => {
   }, [webApi]);
 
   return (
-    <div className="relative">
+    <div className="w-full relative">
       <AuthorizationStatusBar />
       <UpgradeNotice />
       <div className="max-w-5xl mx-auto px-4 py-6 lg:px-8">
@@ -57,7 +58,7 @@ const AuthorizationStatusBar = () => {
 
   if (!user.accessToken) {
     return (
-      <div className="bg-destructive text-white py-2 px-4 h-10 flex items-center sticky top-0">
+      <div className="bg-destructive text-white py-2 px-4 h-10 flex items-center sticky top-0 z-10">
         <span className="text-sm">{t("authorizationExpired")}</span>
         <Button
           variant="outline"
@@ -93,9 +94,7 @@ const UpgradeNotice = () => {
         size="sm"
         className="ml-2 py-1 px-2 text-xs h-auto w-auto"
         onClick={() => {
-          EnjoyApp.shell.openExternal(
-            "https://1000h.org/enjoy-app/install.html"
-          );
+          EnjoyApp.shell.openExternal(DOWNLOAD_URL);
         }}
       >
         {t("upgrade")}

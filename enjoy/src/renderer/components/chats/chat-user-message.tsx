@@ -1,7 +1,4 @@
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
   Button,
   Collapsible,
   CollapsibleContent,
@@ -14,7 +11,7 @@ import {
   toast,
 } from "@renderer/components/ui";
 import {
-  ConversationShortcuts,
+  CopilotForwarder,
   MarkdownWrapper,
   PronunciationAssessmentScoreDetail,
   WavesurferPlayer,
@@ -30,21 +27,22 @@ import {
   EditIcon,
   ForwardIcon,
   GaugeCircleIcon,
+  InfoIcon,
   LoaderIcon,
   MicIcon,
-  MoreVerticalIcon,
+  MoreHorizontalIcon,
   SparklesIcon,
   Volume2Icon,
 } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
   AppSettingsProviderContext,
-  ChatProviderContext,
   ChatSessionProviderContext,
 } from "@renderer/context";
 import { useAiCommand } from "@renderer/hooks";
 import { md5 } from "js-md5";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
+import { ChatMessageRoleEnum, ChatMessageStateEnum } from "@/types/enums";
 
 export const ChatUserMessage = (props: {
   chatMessage: ChatMessageType;
@@ -55,8 +53,10 @@ export const ChatUserMessage = (props: {
   const ref = useRef<HTMLDivElement>(null);
   const [editing, setEditing] = useState<boolean>(false);
   const [content, setContent] = useState<string>(chatMessage.content);
-  const { onUpdateMessage } = useContext(ChatSessionProviderContext);
-  const [displayPlayer, setDisplayPlayer] = useState(isLastMessage);
+  const { onUpdateMessage, askAgent, submitting, asking } = useContext(
+    ChatSessionProviderContext
+  );
+  const [displayPlayer, setDisplayPlayer] = useState(false);
 
   useEffect(() => {
     if (ref.current) {
@@ -64,89 +64,118 @@ export const ChatUserMessage = (props: {
     }
   }, [ref]);
 
+  useEffect(() => {
+    if (!isLastMessage) return;
+    // If the message is from recording, wait for user to confirm before asking agent
+    if (
+      chatMessage.recording &&
+      chatMessage.state !== ChatMessageStateEnum.COMPLETED
+    )
+      return;
+
+    askAgent();
+  }, [chatMessage]);
+
   return (
-    <div ref={ref} className="mb-6">
-      <div className="flex items-center space-x-2 justify-end mb-2">
-        <div className="text-sm text-muted-foreground">
-          {chatMessage.member.user.name}
-        </div>
-        <Avatar className="w-8 h-8 bg-background avatar">
-          <AvatarImage src={chatMessage.member.user.avatarUrl}></AvatarImage>
-          <AvatarFallback className="bg-background">
-            {chatMessage.member.user.name}
-          </AvatarFallback>
-        </Avatar>
-      </div>
+    <div ref={ref}>
       <div className="flex justify-end">
-        <div className="flex flex-col gap-2 p-4 mb-2 bg-sky-500/30 border-sky-500 rounded-lg shadow-sm w-full max-w-prose">
-          {recording &&
-            (displayPlayer ? (
-              <>
-                <WavesurferPlayer
-                  id={recording.id}
-                  src={recording.src}
-                  autoplay={true}
+        <div className="w-full max-w-prose">
+          <div
+            className={`flex flex-col gap-2 px-3 py-2 mb-2 rounded-lg shadow-sm w-full ${
+              chatMessage.state === ChatMessageStateEnum.PENDING
+                ? "bg-sky-500/30 border-sky-500"
+                : "bg-muted"
+            }`}
+          >
+            {recording &&
+              (displayPlayer ? (
+                <>
+                  <WavesurferPlayer
+                    id={recording.id}
+                    src={recording.src}
+                    autoplay={true}
+                  />
+                  {recording?.pronunciationAssessment && (
+                    <div className="flex justify-end">
+                      <PronunciationAssessmentScoreDetail
+                        assessment={recording.pronunciationAssessment}
+                      />
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Button
+                  onClick={() => setDisplayPlayer(true)}
+                  className="w-8 h-8"
+                  variant="ghost"
+                  size="icon"
+                >
+                  <Volume2Icon className="w-5 h-5" />
+                </Button>
+              ))}
+            {editing ? (
+              <div className="">
+                <Textarea
+                  className="bg-background mb-2"
+                  value={content}
+                  onChange={(event) => setContent(event.target.value)}
                 />
-                {recording?.pronunciationAssessment && (
-                  <div className="flex justify-end">
-                    <PronunciationAssessmentScoreDetail
-                      assessment={recording.pronunciationAssessment}
-                    />
-                  </div>
-                )}
-              </>
-            ) : (
-              <Button
-                onClick={() => setDisplayPlayer(true)}
-                className="w-8 h-8"
-                variant="ghost"
-                size="icon"
-              >
-                <Volume2Icon className="w-5 h-5" />
-              </Button>
-            ))}
-          {editing ? (
-            <div className="">
-              <Textarea
-                className="bg-background mb-2"
-                value={content}
-                onChange={(event) => setContent(event.target.value)}
-              />
-              <div className="flex justify-end space-x-4">
-                <Button
-                  onClick={() => setEditing(false)}
-                  variant="secondary"
-                  size="sm"
-                >
-                  {t("cancel")}
-                </Button>
-                <Button
-                  onClick={() =>
-                    onUpdateMessage(chatMessage.id, { content }).finally(() =>
-                      setEditing(false)
-                    )
-                  }
-                  variant="default"
-                  size="sm"
-                >
-                  {t("save")}
-                </Button>
+                <div className="flex justify-end space-x-4">
+                  <Button
+                    onClick={() => setEditing(false)}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    {t("cancel")}
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      onUpdateMessage(chatMessage.id, { content }).finally(() =>
+                        setEditing(false)
+                      )
+                    }
+                    variant="default"
+                    size="sm"
+                  >
+                    {t("save")}
+                  </Button>
+                </div>
               </div>
-            </div>
-          ) : (
-            <MarkdownWrapper className="select-text prose dark:prose-invert">
-              {chatMessage.content}
-            </MarkdownWrapper>
-          )}
-          <ChatUserMessageActions
-            chatMessage={chatMessage}
-            setContent={setContent}
-            setEditing={setEditing}
-          />
+            ) : (
+              <MarkdownWrapper className="select-text prose dark:prose-invert">
+                {chatMessage.content}
+              </MarkdownWrapper>
+            )}
+
+            <ChatUserMessageActions
+              chatMessage={chatMessage}
+              setContent={setContent}
+              setEditing={setEditing}
+            />
+            {chatMessage.state === ChatMessageStateEnum.PENDING &&
+              !submitting &&
+              !asking && (
+                <div className="flex justify-end items-center space-x-2">
+                  <InfoIcon
+                    data-tooltip-id={`${chatMessage.chatId}-tooltip`}
+                    data-tooltip-content={t("confirmBeforeSending")}
+                    className="w-4 h-4 text-yellow-600"
+                  />
+                  <Button
+                    disabled={submitting || Boolean(asking)}
+                    onClick={() => askAgent()}
+                    variant="default"
+                    size="sm"
+                  >
+                    {t("send")}
+                  </Button>
+                </div>
+              )}
+          </div>
+          <div className="flex justify-end text-xs text-muted-foreground timestamp">
+            {formatDateTime(chatMessage.createdAt)}
+          </div>
         </div>
-      </div>
-      <div className="flex justify-end text-xs text-muted-foreground timestamp">
-        {formatDateTime(chatMessage.createdAt)}
       </div>
     </div>
   );
@@ -165,7 +194,9 @@ const ChatUserMessageActions = (props: {
   const { refine } = useAiCommand();
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copied, setCopied] = useState<boolean>(false);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage, user } = useContext(
+    AppSettingsProviderContext
+  );
   const {
     chatMessages,
     startRecording,
@@ -176,7 +207,6 @@ const ChatUserMessageActions = (props: {
     onDeleteMessage,
     submitting,
   } = useContext(ChatSessionProviderContext);
-  const { currentChat } = useContext(ChatProviderContext);
 
   const handleRefine = async (params?: { reload?: boolean }) => {
     if (refining) return;
@@ -194,7 +224,7 @@ const ChatUserMessageActions = (props: {
 
         const context = `I'm chatting in a chatroom. The previous messages are as follows:\n\n${buildChatHistory()}`;
         const result = await refine(chatMessage.content, {
-          learningLanguage: currentChat.language,
+          learningLanguage,
           context,
         });
         EnjoyApp.cacheObjects.set(cacheKey, result);
@@ -212,11 +242,13 @@ const ChatUserMessageActions = (props: {
       (m) => new Date(m.createdAt) < new Date(chatMessage.createdAt)
     );
     return messages
-      .map(
-        (message) =>
-          `${(message.member.user || message.member.agent).name}: ${
-            message.content
-          }`
+      .filter((m) =>
+        [ChatMessageRoleEnum.USER, ChatMessageRoleEnum.AGENT].includes(m.role)
+      )
+      .map((message) =>
+        message.role === ChatMessageRoleEnum.USER
+          ? `${user.name}: ${message.content}`
+          : `${message.member.agent.name}: ${message.content}`
       )
       .join("\n");
   };
@@ -259,31 +291,30 @@ const ChatUserMessageActions = (props: {
     <>
       <DropdownMenu>
         <div className="flex items-center justify-end space-x-4">
-          {chatMessage.state === "pending" && (
+          {chatMessage.state === ChatMessageStateEnum.PENDING && (
             <>
-              {submitting ? (
-                <LoaderIcon className="w-4 h-4 animate-spin" />
-              ) : (
-                <EditIcon
-                  data-tooltip-id="global-tooltip"
-                  data-tooltip-content={t("edit")}
-                  className="w-4 h-4 cursor-pointer"
-                  onClick={() => {
-                    setContent(chatMessage.content);
-                    setEditing(true);
-                  }}
-                />
-              )}
-              {isPaused || isRecording || submitting ? (
-                <LoaderIcon className="w-4 h-4 animate-spin" />
-              ) : (
-                <MicIcon
-                  data-tooltip-id="global-tooltip"
-                  data-tooltip-content={t("reRecord")}
-                  className="w-4 h-4 cursor-pointer"
-                  onClick={startRecording}
-                />
-              )}
+              <EditIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("edit")}
+                className={`w-4 h-4 ${
+                  submitting ? "cursor-not-allowed" : "cursor-pointer"
+                }`}
+                onClick={() => {
+                  if (submitting) return;
+                  setContent(chatMessage.content);
+                  setEditing(true);
+                }}
+              />
+              <MicIcon
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("reRecord")}
+                className={`w-4 h-4 ${
+                  submitting || isPaused || isRecording
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer"
+                }`}
+                onClick={startRecording}
+              />
             </>
           )}
           {chatMessage.recording &&
@@ -307,44 +338,47 @@ const ChatUserMessageActions = (props: {
               onClick={() => handleRefine()}
             />
           )}
-          {copied ? (
-            <CheckIcon className="w-4 h-4 text-green-500" />
-          ) : (
-            <CopyIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("copyText")}
-              className="w-4 h-4 cursor-pointer"
-              onClick={() => {
-                copyToClipboard(chatMessage.content);
-                setCopied(true);
-                setTimeout(() => {
-                  setCopied(false);
-                }, 3000);
-              }}
-            />
-          )}
-          <ConversationShortcuts
-            prompt={chatMessage.content}
-            excludedIds={[]}
-            trigger={
-              <ForwardIcon
-                data-tooltip-id="global-tooltip"
-                data-tooltip-content={t("forward")}
-                className="w-4 h-4 cursor-pointer"
+          {chatMessage.state === ChatMessageStateEnum.COMPLETED && (
+            <>
+              {copied ? (
+                <CheckIcon className="w-4 h-4 text-green-500" />
+              ) : (
+                <CopyIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("copyText")}
+                  className="w-4 h-4 cursor-pointer"
+                  onClick={() => {
+                    copyToClipboard(chatMessage.content);
+                    setCopied(true);
+                    setTimeout(() => {
+                      setCopied(false);
+                    }, 3000);
+                  }}
+                />
+              )}
+              <CopilotForwarder
+                prompt={chatMessage.content}
+                trigger={
+                  <ForwardIcon
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("forward")}
+                    className="w-4 h-4 cursor-pointer"
+                  />
+                }
               />
-            }
-          />
-          {Boolean(chatMessage.recording) && (
-            <DownloadIcon
-              data-tooltip-id="global-tooltip"
-              data-tooltip-content={t("download")}
-              data-testid="chat-message-download-recording"
-              onClick={handleDownload}
-              className="w-4 h-4 cursor-pointer"
-            />
+              {Boolean(chatMessage.recording) && (
+                <DownloadIcon
+                  data-tooltip-id="global-tooltip"
+                  data-tooltip-content={t("download")}
+                  data-testid="chat-message-download-recording"
+                  onClick={handleDownload}
+                  className="w-4 h-4 cursor-pointer"
+                />
+              )}
+            </>
           )}
           <DropdownMenuTrigger>
-            <MoreVerticalIcon className="w-4 h-4" />
+            <MoreHorizontalIcon className="w-4 h-4" />
           </DropdownMenuTrigger>
         </div>
         <DropdownMenuContent>
@@ -377,9 +411,9 @@ const ChatUserMessageActions = (props: {
                   className="w-6 h-6"
                 >
                   {refinementVisible ? (
-                    <ChevronRightIcon className="w-4 h-4" />
-                  ) : (
                     <ChevronDownIcon className="w-4 h-4" />
+                  ) : (
+                    <ChevronRightIcon className="w-4 h-4" />
                   )}
                 </Button>
               </div>

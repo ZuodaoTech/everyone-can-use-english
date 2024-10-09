@@ -22,6 +22,8 @@ export const AI_WORKER_ENDPOINT = "https://ai-worker.enjoy.bot";
 export const WEB_API_URL = "https://enjoy.bot";
 export const WS_URL = "wss://enjoy.bot";
 
+export const DOWNLOAD_URL = "https://1000h.org/enjoy-app/download.html";
+
 export const REPO_URL =
   "https://github.com/zuodaotech/everyone-can-use-english";
 
@@ -58,28 +60,28 @@ export const NOT_SUPPORT_JSON_FORMAT_MODELS = [
   "gpt-4-32k",
 ];
 
-export const CHAT_SYSTEM_PROMPT_TEMPLATE = `You are {name}. 
-{agent_prompt}
-{agent_chat_prompt}
-
-[Rules must be followed]
-1. Always reply in {language}.
-2. Reply in your personality style and talk in casual way.
-3. Reply what you would say only, do not include any other format.
-
-[Chat Topic]
-{topic}
-
-[Chat Members]
-{members}
+export const CHAT_GROUP_PROMPT_TEMPLATE = `You are {name} in this chat. You should reply to everyone in this chat and always stay in character.
 
 [Chat History]
 {history}
+
+Return reply as {name}.
 `;
+
+export const DEFAULT_GPT_CONFIG = {
+  model: "gpt-4o",
+  engine: "enjoyai",
+  temperature: 0.8,
+  historyBufferSize: 10,
+  maxCompletionTokens: -1,
+  presencePenalty: 0,
+  frequencyPenalty: 0,
+  numberOfChoices: 1,
+};
 
 export const AGENT_FIXTURE_AVA = {
   name: "Ava",
-  introduction: "I'm Ava, your English speaking teacher.",
+  description: "I'm Ava, your English speaking teacher.",
   language: "en-US",
   config: {
     engine: "enjoyai",
@@ -95,7 +97,7 @@ export const AGENT_FIXTURE_AVA = {
 
 export const AGENT_FIXTURE_ANDREW = {
   name: "Andrew",
-  introduction: "I'm Andrew, your American friend.",
+  description: "I'm Andrew, your American friend.",
   language: "en-US",
   config: {
     engine: "enjoyai",

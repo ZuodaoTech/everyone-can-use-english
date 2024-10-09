@@ -11,10 +11,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-  Avatar,
-  AvatarFallback,
   Button,
-  Checkbox,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Form,
   FormDescription,
   FormField,
@@ -22,338 +22,312 @@ import {
   FormLabel,
   FormMessage,
   Input,
-  Label,
-  ScrollArea,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Switch,
   Textarea,
+  toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useContext, useState } from "react";
-import { CheckCircleIcon } from "lucide-react";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
 } from "@renderer/context";
-import { CHAT_SYSTEM_PROMPT_TEMPLATE, LANGUAGES } from "@/constants";
-import Mustache from "mustache";
-import { SttEngineOptionEnum } from "@/types/enums";
+import {
+  ChatMessageRoleEnum,
+  ChatTypeEnum,
+  SttEngineOptionEnum,
+} from "@/types/enums";
+import { ChevronDownIcon, ChevronUpIcon, RefreshCwIcon } from "lucide-react";
+import { useAiCommand } from "@/renderer/hooks";
+import { cn } from "@/renderer/lib/utils";
 
-export const ChatForm = (props: {
-  chat?: ChatType;
-  chatAgents: ChatAgentType[];
-  onSave: (data: {
-    name: string;
-    topic: string;
-    language: string;
-    members: Array<Partial<ChatMemberType>>;
-    config: any;
-  }) => void;
-  onDestroy?: () => void;
-}) => {
-  const { chat, chatAgents, onSave, onDestroy } = props;
-  const { user, learningLanguage, nativeLanguage } = useContext(
-    AppSettingsProviderContext
-  );
+export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
+  const { chat, onFinish } = props;
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { sttEngine } = useContext(AISettingsProviderContext);
-  const [editingMember, setEditingMember] =
-    useState<Partial<ChatMemberType> | null>();
-
+  const { summarizeTopic } = useAiCommand();
+  const [isMoreSettingsOpen, setIsMoreSettingsOpen] = useState(false);
+  const [isGeneratingTopic, setIsGeneratingTopic] = useState(false);
   const chatFormSchema = z.object({
     name: z.string().min(1),
-    topic: z.string(),
-    language: z.string(),
     config: z.object({
-      sttEngine: z.string(),
+      sttEngine: z.string().default(sttEngine),
+      prompt: z.string().optional(),
+      enableChatAssistant: z.boolean().default(false),
+      enableAutoTts: z.boolean().default(false),
     }),
-    members: z
-      .array(
-        z.object({
-          userId: z.string(),
-          userType: z.enum(["User", "Agent"]).default("Agent"),
-          config: z.object({
-            prompt: z.string().optional(),
-            introduction: z.string().optional(),
-          }),
-        })
-      )
-      .min(2),
   });
 
   const form = useForm<z.infer<typeof chatFormSchema>>({
     resolver: zodResolver(chatFormSchema),
-    values: chat
+    values: chat?.id
       ? {
           name: chat.name,
-          topic: chat.topic,
-          language: chat.language,
           config: chat.config,
-          members: [...chat.members],
         }
       : {
           name: t("newChat"),
-          topic: "Casual Chat.",
-          language: learningLanguage,
           config: {
             sttEngine,
+            prompt: "",
+            enableChatAssistant: true,
+            enableAutoTts: true,
           },
-          members: [
-            {
-              userId: user.id.toString(),
-              userType: "User",
-              config: {
-                introduction: `I am ${nativeLanguage} speaker learning ${learningLanguage}.`,
-              },
-            },
-          ],
         },
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    const { name, topic, language, members, config } = data;
-    return onSave({
-      name,
-      topic,
-      language,
-      members,
-      config,
-    });
+    const { name, config } = data;
+    EnjoyApp.chats
+      .update(chat.id, {
+        name,
+        config: {
+          sttEngine: config.sttEngine,
+          prompt: config.prompt,
+          enableChatAssistant: config.enableChatAssistant,
+          enableAutoTts: config.enableAutoTts,
+        },
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      })
+      .then(() => {
+        onFinish();
+      });
   });
+
+  const handleDeleteChat = () => {
+    EnjoyApp.chats
+      .destroy(chat.id)
+      .then(() => {
+        onFinish();
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
+  const generateTopic = async () => {
+    setIsGeneratingTopic(true);
+    try {
+      let messages = await EnjoyApp.chatMessages.findAll({
+        where: { chatId: chat.id },
+        order: [["createdAt", "ASC"]],
+      });
+      messages = messages.filter(
+        (m) =>
+          m.role === ChatMessageRoleEnum.AGENT ||
+          m.role === ChatMessageRoleEnum.USER
+      );
+      if (messages.length < 1) {
+        toast.warning(t("chatNoContentYet"));
+        return;
+      }
+      const content = messages
+        .slice(0, 10)
+        .map((m) => m.content)
+        .join("\n");
+
+      return await summarizeTopic(content);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsGeneratingTopic(false);
+    }
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="">
-        <div className="mb-6">{chat?.id ? t("editChat") : t("newChat")}</div>
-        <div className="space-y-4 mb-6">
+      <form onSubmit={onSubmit}>
+        <div className="space-y-4 px-2 mb-6">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("models.chat.name")}</FormLabel>
-                <Input {...field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="language"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("models.chat.language")}</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="text-xs">
-                    <SelectValue>
-                      {
-                        LANGUAGES.find((lang) => lang.code === field.value)
-                          ?.name
-                      }
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {LANGUAGES.map((lang) => (
-                      <SelectItem
-                        className="text-xs"
-                        value={lang.code}
-                        key={lang.code}
-                      >
-                        {lang.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="topic"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("models.chat.topic")}</FormLabel>
-                <Textarea className="max-h-96" {...field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="config.sttEngine"
-            render={({ field }) => (
-              <FormItem className="grid w-full items-center">
-                <FormLabel>{t("sttAiService")}</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={SttEngineOptionEnum.LOCAL}>
-                      {t("local")}
-                    </SelectItem>
-                    <SelectItem value={SttEngineOptionEnum.ENJOY_AZURE}>
-                      {t("enjoyAzure")}
-                    </SelectItem>
-                    <SelectItem value={SttEngineOptionEnum.ENJOY_CLOUDFLARE}>
-                      {t("enjoyCloudflare")}
-                    </SelectItem>
-                    <SelectItem value={SttEngineOptionEnum.OPENAI}>
-                      {t("openai")}
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>
-                  {form.watch("config.sttEngine") ===
-                    SttEngineOptionEnum.LOCAL &&
-                    t("localSpeechToTextDescription")}
-                  {form.watch("config.sttEngine") ===
-                    SttEngineOptionEnum.ENJOY_AZURE &&
-                    t("enjoyAzureSpeechToTextDescription")}
-                  {form.watch("config.sttEngine") ===
-                    SttEngineOptionEnum.ENJOY_CLOUDFLARE &&
-                    t("enjoyCloudflareSpeechToTextDescription")}
-                  {form.watch("config.sttEngine") ===
-                    SttEngineOptionEnum.OPENAI &&
-                    t("openaiSpeechToTextDescription")}
-                </FormDescription>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="members"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  {t("models.chat.members")}({field.value.length})
-                </FormLabel>
-                <ScrollArea className="w-full h-36 rounded-lg p-2 bg-muted">
-                  <div className="grid grid-cols-3 gap-3">
-                    <div
-                      className={`flex items-center space-x-1 px-2 py-1 rounded-lg w-full overflow-hidden relative hover:shadow border cursor-pointer ${
-                        editingMember?.userType === "User"
-                          ? "border-blue-500 bg-background"
-                          : ""
-                      }`}
-                      onClick={() => {
-                        const member = field.value.find(
-                          (m) => m.userType === "User"
-                        );
+                <div className="flex items-center space-x-2 justify-between">
+                  <Input className="flex-1" {...field} />
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    disabled={isGeneratingTopic}
+                    data-tooltip-id="global-tooltip"
+                    data-tooltip-content={t("models.chat.generateTopic")}
+                    onClick={async () => {
+                      if (isGeneratingTopic) return;
+                      const topic = await generateTopic();
+                      if (!topic) return;
 
-                        setEditingMember(member);
-                      }}
-                    >
-                      <Avatar className="w-10 h-10">
-                        <img src={user.avatarUrl} alt={user.name} />
-                        <AvatarFallback>{user.name[0]}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="text-sm line-clamp-1">{user.name}</div>
-                      </div>
-                      <CheckCircleIcon className="absolute top-2 right-2 w-4 h-4 text-green-500" />
+                      field.onChange(topic);
+                    }}
+                  >
+                    <RefreshCwIcon
+                      className={cn(
+                        "w-4 h-4",
+                        isGeneratingTopic && "animate-spin"
+                      )}
+                    />
+                  </Button>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {[ChatTypeEnum.CONVERSATION, ChatTypeEnum.GROUP].includes(
+            chat.type
+          ) && (
+            <>
+              <FormField
+                control={form.control}
+                name="config.enableChatAssistant"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-2">
+                      <FormLabel>
+                        {t("models.chat.enableChatAssistant")}
+                      </FormLabel>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
                     </div>
-                    {chatAgents
-                      .filter((a) => a.language === form.watch("language"))
-                      .map((chatAgent) => (
-                        <div
-                          key={chatAgent.id}
-                          className={`flex items-center space-x-1 px-2 py-1 rounded-lg w-full overflow-hidden relative cursor-pointer border hover:shadow ${
-                            editingMember?.userId === chatAgent.id
-                              ? "border-blue-500 bg-background"
-                              : ""
-                          }`}
-                          onClick={() => {
-                            const member = field.value.find(
-                              (m) => m.userId === chatAgent.id
-                            );
-                            if (editingMember?.userId === chatAgent.id) {
-                              setEditingMember(null);
-                            } else {
-                              setEditingMember(
-                                member || {
-                                  userId: chatAgent.id,
-                                  userType: "Agent",
-                                  config: {},
-                                }
-                              );
-                            }
-                          }}
-                        >
-                          <Avatar className="w-12 h-12">
-                            <img
-                              src={chatAgent.avatarUrl}
-                              alt={chatAgent.name}
-                            />
-                            <AvatarFallback>{chatAgent.name[0]}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <div className="text-sm line-clamp-1">
-                              {chatAgent.name}
-                            </div>
-                            <div className="text-xs text-muted-foreground line-clamp-1">
-                              {chatAgent.introduction}
-                            </div>
-                          </div>
-                          {field.value.findIndex(
-                            (m) => m.userId === chatAgent.id
-                          ) > -1 && (
-                            <CheckCircleIcon className="absolute top-2 right-2 w-4 h-4 text-green-500" />
-                          )}
-                        </div>
-                      ))}
-                  </div>
-                </ScrollArea>
-                {editingMember && (
-                  <MemberForm
-                    language={form.watch("language")}
-                    topic={form.watch("topic")}
-                    members={form.watch("members")}
-                    member={editingMember}
-                    chatAgents={chatAgents}
-                    checked={
-                      field.value.findIndex(
-                        (m) => m.userId === editingMember.userId
-                      ) > -1
-                    }
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        field.onChange([
-                          ...field.value,
-                          {
-                            ...editingMember,
-                            prompt: "",
-                          },
-                        ]);
-                      } else {
-                        field.onChange(
-                          field.value.filter(
-                            (m) => m.userId !== editingMember.userId
-                          )
-                        );
-                      }
-                    }}
-                    onConfigChange={(config) => {
-                      editingMember.config = config;
-                      setEditingMember({ ...editingMember });
-
-                      field.onChange(
-                        field.value.map((m) =>
-                          m.userId === editingMember.userId ? editingMember : m
-                        )
-                      );
-                    }}
-                  />
+                    <FormDescription>
+                      {t("models.chat.enableChatAssistantDescription")}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
                 )}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              />
+              <FormField
+                control={form.control}
+                name="config.enableAutoTts"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-2">
+                      <FormLabel>{t("models.chat.enableAutoTts")}</FormLabel>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </div>
+                    <FormDescription>
+                      {t("models.chat.enableAutoTtsDescription")}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
         </div>
-        <div className="flex items-center space-x-4">
+
+        {[ChatTypeEnum.CONVERSATION, ChatTypeEnum.GROUP].includes(
+          chat.type
+        ) && (
+          <>
+            <Collapsible open={isMoreSettingsOpen} className="mb-6">
+              <CollapsibleTrigger asChild>
+                <Button
+                  type="button"
+                  variant="link"
+                  className="w-full justify-center text-muted-foreground"
+                  size="sm"
+                  onClick={() => setIsMoreSettingsOpen(!isMoreSettingsOpen)}
+                >
+                  {t("models.chat.moreSettings")}
+                  {isMoreSettingsOpen ? (
+                    <ChevronUpIcon className="w-4 h-4 ml-2" />
+                  ) : (
+                    <ChevronDownIcon className="w-4 h-4 ml-2" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="space-y-4 px-2">
+                <FormField
+                  control={form.control}
+                  name="config.sttEngine"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("sttAiService")}</FormLabel>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={t(
+                              "models.chat.sttAiServicePlaceholder"
+                            )}
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value={SttEngineOptionEnum.LOCAL}>
+                            {t("local")}
+                          </SelectItem>
+                          <SelectItem value={SttEngineOptionEnum.ENJOY_AZURE}>
+                            {t("enjoyAzure")}
+                          </SelectItem>
+                          <SelectItem
+                            value={SttEngineOptionEnum.ENJOY_CLOUDFLARE}
+                          >
+                            {t("enjoyCloudflare")}
+                          </SelectItem>
+                          <SelectItem value={SttEngineOptionEnum.OPENAI}>
+                            {t("openai")}
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        {t("models.chat.sttAiServiceDescription")}
+                      </FormDescription>
+                      <FormDescription>
+                        {form.watch("config.sttEngine") ===
+                          SttEngineOptionEnum.LOCAL &&
+                          t("localSpeechToTextDescription")}
+                        {form.watch("config.sttEngine") ===
+                          SttEngineOptionEnum.ENJOY_AZURE &&
+                          t("enjoyAzureSpeechToTextDescription")}
+                        {form.watch("config.sttEngine") ===
+                          SttEngineOptionEnum.ENJOY_CLOUDFLARE &&
+                          t("enjoyCloudflareSpeechToTextDescription")}
+                        {form.watch("config.sttEngine") ===
+                          SttEngineOptionEnum.OPENAI &&
+                          t("openaiSpeechToTextDescription")}
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="config.prompt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("models.chat.prompt")}</FormLabel>
+                      <Textarea
+                        {...field}
+                        placeholder={t("models.chat.promptPlaceholder")}
+                      />
+                      <FormDescription>
+                        {t("models.chat.promptDescription")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CollapsibleContent>
+            </Collapsible>
+          </>
+        )}
+
+        <div className="flex items-center justify-end space-x-4 w-full">
           {chat?.id && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -361,7 +335,6 @@ export const ChatForm = (props: {
                   {t("delete")}
                 </Button>
               </AlertDialogTrigger>
-
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>{t("deleteChat")}</AlertDialogTitle>
@@ -373,7 +346,7 @@ export const ChatForm = (props: {
                   <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
                   <AlertDialogAction
                     className="bg-destructive hover:bg-destructive-hover"
-                    onClick={onDestroy}
+                    onClick={handleDeleteChat}
                   >
                     {t("delete")}
                   </AlertDialogAction>
@@ -381,141 +354,12 @@ export const ChatForm = (props: {
               </AlertDialogContent>
             </AlertDialog>
           )}
-          <Button>{t("save")}</Button>
+          <Button type="button" variant="secondary" onClick={onFinish}>
+            {t("cancel")}
+          </Button>
+          <Button type="submit">{t("save")}</Button>
         </div>
       </form>
     </Form>
   );
-};
-
-const MemberForm = (props: {
-  language: string;
-  topic: string;
-  members: Array<Partial<ChatMemberType>>;
-  member: Partial<ChatMemberType>;
-  chatAgents: ChatAgentType[];
-  checked: boolean;
-  onCheckedChange: (checked: boolean) => void;
-  onConfigChange?: (config: ChatMemberType["config"]) => void;
-}) => {
-  const {
-    language,
-    topic,
-    members,
-    member,
-    chatAgents,
-    checked,
-    onCheckedChange,
-    onConfigChange,
-  } = props;
-  const { user } = useContext(AppSettingsProviderContext);
-  const chatAgent = chatAgents.find((a) => a.id === member.userId);
-
-  const fullPrompt = chatAgent
-    ? Mustache.render(
-        CHAT_SYSTEM_PROMPT_TEMPLATE,
-        {
-          name: chatAgent.name,
-          agent_prompt: chatAgent.config.prompt,
-          agent_chat_prompt: member.config.chatPrompt,
-          language,
-          topic,
-          members: members
-            .map((m) => {
-              if (m.userType === "User") {
-                return `- ${user.name} (${m.config.introduction})`;
-              } else {
-                const agent = chatAgents.find((a) => a.id === m.userId);
-                if (!agent) return "";
-                return `- ${agent.name} (${agent.introduction})`;
-              }
-            })
-            .join("\n"),
-          history: "...",
-        },
-        {},
-        ["{", "}"]
-      )
-    : "";
-
-  if (member.userType === "User") {
-    return (
-      <>
-        <Label>{t("models.chat.memberConfig")}</Label>
-        <div className="p-4 border rounded-lg">
-          <div className="flex items-center space-x-2 mb-2">
-            <Avatar className="w-12 h-12">
-              <img src={user.avatarUrl} />
-              <AvatarFallback>{user.name[0]}</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <div className="text-sm line-clamp-1">{user.name}</div>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2 mb-2">
-            <Checkbox checked={true} disabled id="member" />
-            <Label htmlFor="member">{t("addToChat")}</Label>
-          </div>
-          <div className="space-y-2">
-            <Label>{t("introduction")}</Label>
-            <Textarea
-              value={member.config.introduction}
-              onChange={(event) => {
-                const introduction = event.target.value;
-                onConfigChange({ ...member.config, introduction });
-              }}
-              placeholder={t("introduceYourself")}
-            />
-          </div>
-        </div>
-      </>
-    );
-  } else if (chatAgent) {
-    return (
-      <>
-        <Label>{t("models.chat.memberConfig")}</Label>
-        <div className="p-4 border space-y-4 rounded-lg">
-          <div className="flex items-center space-x-2 mb-2">
-            <Avatar className="w-12 h-12">
-              <img src={chatAgent.avatarUrl} />
-              <AvatarFallback>{chatAgent.name[0]}</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <div className="text-sm line-clamp-1">{chatAgent.name}</div>
-              <div className="text-xs text-muted-foreground line-clamp-1">
-                {chatAgent.introduction}
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2 mb-2">
-            <Checkbox
-              checked={checked}
-              onCheckedChange={onCheckedChange}
-              id="member"
-            />
-            <Label htmlFor="member">{t("addToChat")}</Label>
-          </div>
-          {checked && (
-            <>
-              <div className="space-y-2">
-                <Label>{t("prompt")}</Label>
-                <Textarea
-                  value={member.config.prompt}
-                  onChange={(event) => {
-                    const prompt = event.target.value;
-                    onConfigChange({ ...member.config, prompt });
-                  }}
-                  placeholder={t("extraPromptForChat")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>{t("promptPreview")}</Label>
-                <Textarea className="min-h-36" disabled value={fullPrompt} />
-              </div>
-            </>
-          )}
-        </div>
-      </>
-    );
-  }
 };

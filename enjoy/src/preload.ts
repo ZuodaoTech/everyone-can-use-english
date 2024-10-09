@@ -390,6 +390,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     destroy: (id: string) => {
       return ipcRenderer.invoke("conversations-destroy", id);
     },
+    migrate: (id: string) => {
+      return ipcRenderer.invoke("conversations-migrate", id);
+    },
   },
   pronunciationAssessments: {
     findAll: (params: { where?: any; offset?: number; limit?: number }) => {
@@ -679,6 +682,23 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     destroy: (id: string) => {
       return ipcRenderer.invoke("chat-agents-destroy", id);
+    },
+  },
+  chatMembers: {
+    findAll: (params: any) => {
+      return ipcRenderer.invoke("chat-members-find-all", params);
+    },
+    findOne: (params: any) => {
+      return ipcRenderer.invoke("chat-members-find-one", params);
+    },
+    create: (params: any) => {
+      return ipcRenderer.invoke("chat-members-create", params);
+    },
+    update: (id: string, params: any) => {
+      return ipcRenderer.invoke("chat-members-update", id, params);
+    },
+    destroy: (id: string) => {
+      return ipcRenderer.invoke("chat-members-destroy", id);
     },
   },
   chatMessages: {

@@ -9,9 +9,14 @@ export const EnrollmentSegment = () => {
   const { webApi } = useContext(AppSettingsProviderContext);
   const [enrollments, setEnrollments] = useState<EnrollmentType[]>([]);
   const fetchEnrollments = async () => {
-    webApi.enrollments().then(({ enrollments }) => {
-      setEnrollments(enrollments);
-    });
+    webApi
+      .enrollments()
+      .then(({ enrollments }) => {
+        setEnrollments(enrollments);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
   };
 
   useEffect(() => {

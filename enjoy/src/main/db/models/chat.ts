@@ -11,11 +11,13 @@ import {
   AllowNull,
   HasMany,
   Scopes,
-  BeforeDestroy,
+  BeforeSave,
 } from "sequelize-typescript";
 import log from "@main/logger";
 import { ChatAgent, ChatMember, ChatMessage } from "@main/db/models";
 import mainWindow from "@main/window";
+import { t } from "i18next";
+import { ChatAgentTypeEnum, ChatTypeEnum } from "@/types/enums";
 
 const logger = log.scope("db/models/chat");
 @Table({
@@ -48,16 +50,12 @@ export class Chat extends Model<Chat> {
   @Column({ primaryKey: true, type: DataType.UUID })
   id: string;
 
+  @Column(DataType.STRING)
+  type: ChatTypeEnum;
+
   @AllowNull(false)
   @Column(DataType.STRING)
   name: string;
-
-  @Column(DataType.TEXT)
-  topic: string;
-
-  @AllowNull(false)
-  @Column(DataType.STRING)
-  language: string;
 
   @Column(DataType.TEXT)
   digest: string;
@@ -110,15 +108,67 @@ export class Chat extends Model<Chat> {
   static async notify(chat: Chat, action: "create" | "update" | "destroy") {
     if (!mainWindow.win) return;
 
+    if (
+      action !== "destroy" &&
+      (!chat.members || !chat.members.some((m) => m.agent))
+    ) {
+      chat.members = await ChatMember.findAll({
+        where: { chatId: chat.id },
+        include: [
+          {
+            association: "agent",
+          },
+        ],
+      });
+    }
     mainWindow.win.webContents.send("db-on-transaction", {
       model: "Chat",
       id: chat.id,
-      action: action,
+      action,
       record: chat.toJSON(),
     });
   }
 
-  @BeforeDestroy
+  @BeforeSave
+  static async setupChatType(chat: Chat) {
+    if (chat.isNewRecord && chat.type) {
+      return;
+    }
+
+    const members = await ChatMember.findAll({
+      where: { chatId: chat.id },
+    });
+
+    if (members.length < 1) {
+      throw new Error(t("models.chat.atLeastOneAgent"));
+    } else if (members.length > 1) {
+      // For group chat, all members must be GPT agent
+      if (members.some((m) => m.agent?.type !== ChatAgentTypeEnum.GPT)) {
+        throw new Error(t("models.chat.onlyGPTAgentCanBeAddedToThisChat"));
+      }
+      chat.type = ChatTypeEnum.GROUP;
+    } else {
+      const agent = members[0].agent;
+      if (!agent) {
+        logger.error("Chat.setupChatType: agent not found", chat.id);
+        throw new Error(t("models.chat.atLeastOneAgent"));
+      }
+
+      switch (agent.type) {
+        case ChatAgentTypeEnum.GPT:
+          chat.type = ChatTypeEnum.CONVERSATION;
+          break;
+        case ChatAgentTypeEnum.TTS:
+          chat.type = ChatTypeEnum.TTS;
+          break;
+        default:
+          logger.error("Chat.setupChatType: invalid agent type", chat.id);
+          throw new Error(t("models.chat.invalidAgentType"));
+      }
+    }
+  }
+
+  @AfterDestroy
   static async destroyMembers(chat: Chat) {
     ChatMember.destroy({ where: { chatId: chat.id } });
   }

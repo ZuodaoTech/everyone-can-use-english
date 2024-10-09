@@ -10,11 +10,16 @@ export const StoriesSegment = () => {
   const { webApi } = useContext(AppSettingsProviderContext);
 
   const fetchStorys = async () => {
-    webApi.mineStories().then((response) => {
-      if (response?.stories) {
-        setStorys(response.stories);
-      }
-    });
+    webApi
+      .mineStories()
+      .then((response) => {
+        if (response?.stories) {
+          setStorys(response.stories);
+        }
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
   };
 
   useEffect(() => {

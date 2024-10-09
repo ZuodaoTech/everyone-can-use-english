@@ -12,10 +12,20 @@ import {
   AllowNull,
   BeforeSave,
 } from "sequelize-typescript";
-import { Message, Speech } from "@main/db/models";
+import {
+  Chat,
+  ChatAgent,
+  ChatMember,
+  ChatMessage,
+  Message,
+  Speech,
+  UserSetting,
+} from "@main/db/models";
 import mainWindow from "@main/window";
 import log from "@main/logger";
 import { t } from "i18next";
+import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/types/enums";
+import { DEFAULT_GPT_CONFIG } from "@/constants";
 
 const logger = log.scope("db/models/conversation");
 @Table({
@@ -70,6 +80,146 @@ export class Conversation extends Model<Conversation> {
 
   @HasMany(() => Message)
   messages: Message[];
+
+  async migrateToChat() {
+    const source = `conversations://${this.id}`;
+    let agent = await ChatAgent.findOne({
+      where: {
+        source,
+      },
+    });
+
+    if (agent) return;
+
+    const gpt = {
+      engine: this.engine,
+      model: this.configuration.model,
+      temperature: this.configuration.temperature,
+      maxCompletionTokens: this.configuration.maxTokens,
+      presencePenalty: this.configuration.presencePenalty,
+      frequencyPenalty: this.configuration.frequencyPenalty,
+      historyBufferSize: this.configuration.historyBufferSize,
+      numberOfChoices: this.configuration.numberOfChoices,
+    };
+
+    if (!["openai", "enjoyai"].includes(this.engine)) {
+      const defaultGptEngine = await UserSetting.get(
+        UserSettingKeyEnum.GPT_ENGINE
+      );
+      gpt.engine = defaultGptEngine?.name || DEFAULT_GPT_CONFIG.engine;
+      gpt.model = defaultGptEngine?.models?.default || DEFAULT_GPT_CONFIG.model;
+    }
+
+    const tts = {
+      engine: this.configuration.tts?.engine || "enjoyai",
+      model: this.configuration.tts?.model || "openai/tts-1",
+      language: this.language,
+      voice: this.configuration.tts?.voice || "alloy",
+    };
+
+    agent = await ChatAgent.create({
+      name:
+        this.configuration.type === "tts" ? tts.voice || this.name : this.name,
+      type: this.configuration.type === "tts" ? "TTS" : "GPT",
+      source,
+      description: "",
+      config:
+        this.configuration.type === "tts"
+          ? {
+              tts,
+            }
+          : {
+              prompt: this.configuration.roleDefinition,
+            },
+    });
+
+    const transaction = await Conversation.sequelize.transaction();
+
+    try {
+      const chat = await Chat.create(
+        {
+          name: t("newChat"),
+          type: this.type === "tts" ? "TTS" : "CONVERSATION",
+          config: {
+            stt: SttEngineOptionEnum.ENJOY_AZURE,
+          },
+        },
+        {
+          transaction,
+        }
+      );
+      const chatMember = await ChatMember.create(
+        {
+          chatId: chat.id,
+          userId: agent.id,
+          userType: "ChatAgent",
+          config:
+            this.configuration.type === "tts"
+              ? {
+                  tts,
+                }
+              : {
+                  gpt,
+                  tts,
+                },
+        },
+        {
+          transaction,
+          hooks: false,
+        }
+      );
+
+      const messages = await Message.findAll({
+        where: {
+          conversationId: this.id,
+        },
+        include: [
+          {
+            association: "speeches",
+            model: Speech,
+            where: { sourceType: "Message" },
+            required: false,
+          },
+        ],
+        order: [["createdAt", "ASC"]],
+      });
+
+      for (const message of messages) {
+        const chatMessage = await ChatMessage.create(
+          {
+            chatId: chat.id,
+            content: message.content,
+            role: message.role === "user" ? "USER" : "AGENT",
+            state: "completed",
+            memberId: message.role === "assistant" ? chatMember.id : null,
+            agentId: message.role === "assistant" ? agent.id : null,
+            createdAt: message.createdAt,
+            updatedAt: message.updatedAt,
+          },
+          {
+            transaction,
+            hooks: false,
+          }
+        );
+        if (chat.type === "TTS") {
+          for (const speech of message.speeches) {
+            await speech.update(
+              {
+                sourceId: chatMessage.id,
+                sourceType: "ChatMessage",
+              },
+              { transaction }
+            );
+          }
+        }
+      }
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      logger.error(error);
+      throw error;
+    }
+  }
 
   @BeforeSave
   static validateConfiguration(conversation: Conversation) {

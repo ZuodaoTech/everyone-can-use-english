@@ -2,16 +2,23 @@ import { Sidebar } from "./sidebar";
 import { Outlet, Link } from "react-router-dom";
 import {
   AppSettingsProviderContext,
+  CopilotProviderContext,
   DbProviderContext,
 } from "@renderer/context";
 import { useContext } from "react";
 import { Button } from "@renderer/components/ui/button";
-import { DbState } from "@renderer/components";
+import { DbState, CopilotSession } from "@renderer/components";
 import { t } from "i18next";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@renderer/components/ui";
 
 export const Layout = () => {
   const { initialized } = useContext(AppSettingsProviderContext);
   const db = useContext(DbProviderContext);
+  const { active, setActive } = useContext(CopilotProviderContext);
 
   if (!initialized) {
     return (
@@ -34,14 +41,38 @@ export const Layout = () => {
     );
   } else if (db.state === "connected") {
     return (
-      <div className="min-h-screen" data-testid="layout-home">
-        <div className="flex flex-start">
-          <Sidebar />
-          <div className="flex-1 border-l overflow-x-hidden">
-            <Outlet />
+      <ResizablePanelGroup
+        direction="horizontal"
+        className="h-screen w-full"
+        data-testid="layout-home"
+      >
+        <ResizablePanel id="main-panel" order={1} minSize={50}>
+          <div className="flex flex-start">
+            <Sidebar />
+            <div className="flex-1 border-l overflow-x-hidden overflow-y-auto h-screen">
+              <Outlet />
+            </div>
           </div>
-        </div>
-      </div>
+        </ResizablePanel>
+        {active && (
+          <>
+            <ResizableHandle />
+            <ResizablePanel
+              id="copilot-panel"
+              order={2}
+              collapsible={true}
+              defaultSize={30}
+              maxSize={50}
+              minSize={15}
+              onCollapse={() => setActive(false)}
+            >
+              <div className="h-screen">
+                <CopilotSession />
+              </div>
+            </ResizablePanel>
+          </>
+        )}
+      </ResizablePanelGroup>
     );
   } else {
     return (

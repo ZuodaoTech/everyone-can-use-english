@@ -1,34 +1,30 @@
 type ChatType = {
   id: string;
+  type: ChatTypeEnum;
   name: string;
-  topic: string;
-  language: string;
   config: {
-    sttEngine: WhisperConfigType["service"];
+    sttEngine: SttEngineOptionEnum;
+    prompt?: string;
+    enableChatAssistant?: boolean;
+    enableAutoTts?: boolean;
     [key: string]: any;
   };
   digest?: string;
   createdAt: string;
   updatedAt: string;
   membersCount: number;
-  sessions: ChatSessionType[];
   members: ChatMemberType[];
 };
 
 type ChatAgentType = {
   id: string;
+  type: ChatAgentTypeEnum;
   name: string;
   avatarUrl: string;
-  introduction: string;
-  language: string;
+  description: string;
+  source?: string;
+  prompt?: string;
   config: {
-    engine: "enjoyai" | "openai";
-    model: string;
-    prompt: string;
-    temperature?: number;
-    ttsEngine: "enjoyai" | "openai";
-    ttsModel: string;
-    ttsVoice: string;
     [key: string]: any;
   };
 };
@@ -37,26 +33,93 @@ type ChatMemberType = {
   id: string;
   chatId: string;
   userId: string;
-  userType: "Agent" | "User";
+  name: string;
+  userType: "ChatAgent";
   config: {
     prompt?: string;
-    introduction?: string;
+    description?: string;
+    gpt?: GptConfigType;
+    tts?: TtsConfigType;
     [key: string]: any;
   };
-  name: string;
-  agent?: ChatAgentType;
-  user?: UserType;
+  agent: ChatAgentType;
 };
 
 type ChatMessageType = {
   id: string;
-  memberId: string;
+  role: ChatMessageRoleEnum;
+  category: ChatMessageCategoryEnum;
+  memberId: string | null;
   chatId: string;
   content: string;
-  state: "pending" | "completed";
+  state: ChatMessageStateEnum;
   createdAt: Date;
   updatedAt: Date;
   member?: ChatMemberType;
+  agent?: ChatAgentType;
   recording?: RecordingType;
   speech?: SpeechType;
+};
+
+type GptConfigType = {
+  engine: string;
+  model: string;
+  temperature?: number;
+  maxCompletionTokens?: number;
+  frequencyPenalty?: number;
+  presencePenalty?: number;
+  numberOfChoices?: number;
+  historyBufferSize?: number;
+  [key: string]: any;
+};
+
+type TtsConfigType = {
+  engine: string;
+  model: string;
+  language: string;
+  voice: string;
+  [key: string]: any;
+};
+
+type ChatDtoType = {
+  type?: ChatTypeEnum;
+  name: string;
+  config: {
+    sttEngine: string;
+    prompt?: string;
+    enableChatAssistant?: boolean;
+    enableAutoTts?: boolean;
+  };
+  members?: Array<ChatMemberDtoType>;
+};
+
+type ChatMemberDtoType = {
+  chatId?: string;
+  userId: string;
+  userType: "ChatAgent";
+  config: {
+    prompt?: string;
+    description?: string;
+    language?: string;
+    gpt?: GptConfigType;
+    tts?: TtsConfigType;
+    [key: string]: any;
+  };
+};
+
+type ChatMessageDtoType = {
+  state?: ChatMessageStateEnum;
+  content?: string;
+  recordingUrl?: string;
+};
+
+type ChatAgentDtoType = {
+  type: ChatAgentTypeEnum;
+  avatarUrl?: string;
+  name: string;
+  description?: string;
+  source?: string;
+  config: {
+    [key: string]: any;
+  };
 };

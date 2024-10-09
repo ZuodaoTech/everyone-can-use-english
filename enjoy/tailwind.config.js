@@ -13,6 +13,10 @@ module.exports = {
       },
     },
     extend: {
+      fontSize: {
+        xxs: "0.625rem",
+        xxxs: "0.5rem",
+      },
       fontFamily: {
         code: ["CharisSIL", ...defaultTheme.fontFamily.mono],
       },

@@ -25,4 +25,4 @@ export const summarizeTopicCommand = async (
 };
 
 const SYSTEM_PROMPT =
-  "Please generate a four to five words title summarizing our conversation in {learning_language} without any lead-in, punctuation, quotation marks, periods, symbols, bold text, or additional text. Remove enclosing quotation marks.";
+  "Please generate a four to five words title summarizing our conversation without any lead-in, punctuation, quotation marks, periods, symbols, bold text, or additional text. Remove enclosing quotation marks. Please use the main language of the text.";

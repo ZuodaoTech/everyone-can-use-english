@@ -49,6 +49,7 @@ const defaultKeyMap = {
   // system
   QuitApp: `${ControlOrCommand}+Q`,
   OpenPreferences: `${ControlOrCommand}+Comma`,
+  OpenCopilot: `${ControlOrCommand}+L`,
   // player
   PlayOrPause: "Space",
   StartOrStopRecording: "R",

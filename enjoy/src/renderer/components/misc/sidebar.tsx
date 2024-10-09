@@ -33,13 +33,16 @@ import {
   SpeechIcon,
   GraduationCapIcon,
   MessagesSquareIcon,
-  PanelRightCloseIcon,
-  PanelRightOpenIcon,
+  PanelLeftOpenIcon,
+  PanelLeftCloseIcon,
 } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import { t } from "i18next";
 import { Preferences } from "@renderer/components";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  CopilotProviderContext,
+} from "@renderer/context";
 import { useContext, useEffect } from "react";
 import { NoticiationsChannel } from "@renderer/cables";
 import { useState } from "react";
@@ -48,6 +51,7 @@ export const Sidebar = () => {
   const location = useLocation();
   const activeTab = location.pathname;
   const { EnjoyApp, cable } = useContext(AppSettingsProviderContext);
+  const { active, setActive } = useContext(CopilotProviderContext);
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
@@ -89,7 +93,11 @@ export const Sidebar = () => {
       >
         <ScrollArea className="w-full h-full pb-12">
           <div className="py-4 mb-4 flex items-center space-x-1 justify-center">
-            <img src="./assets/logo-light.svg" className="w-8 h-8" />
+            <img
+              src="./assets/logo-light.svg"
+              className="w-8 h-8 cursor-pointer hover:animate-spin"
+              onClick={() => setActive(!active)}
+            />
             <span
               className={`text-xl font-semibold text-[#4797F5] ${
                 isOpen ? "" : "hidden"
@@ -327,9 +335,9 @@ export const Sidebar = () => {
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? (
-              <PanelRightOpenIcon className="h-5 w-5" />
+              <PanelLeftCloseIcon className="h-5 w-5" />
             ) : (
-              <PanelRightCloseIcon className="h-5 w-5" />
+              <PanelLeftOpenIcon className="h-5 w-5" />
             )}
             {isOpen && <span className="ml-2"> {t("sidebar.collapse")} </span>}
           </Button>

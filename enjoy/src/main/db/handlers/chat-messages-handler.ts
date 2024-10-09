@@ -2,8 +2,9 @@ import { ipcMain, IpcMainEvent } from "electron";
 import { ChatMessage, Recording } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
 import log from "@main/logger";
-import { enjoyUrlToPath, pathToEnjoyUrl } from "@/main/utils";
+import { enjoyUrlToPath } from "@/main/utils";
 import fs from "fs-extra";
+import { ChatMessageStateEnum } from "@/types/enums";
 
 const logger = log.scope("db/handlers/chats-handler");
 
@@ -52,34 +53,45 @@ class ChatMessagesHandler {
     delete data.recordingUrl;
 
     const transaction = await ChatMessage.sequelize.transaction();
-    const message = await ChatMessage.create(data);
+    try {
+      const message = await ChatMessage.create(data);
 
-    if (recordingUrl) {
-      // create new recording
-      const filePath = enjoyUrlToPath(recordingUrl);
-      const blob = fs.readFileSync(filePath);
-      const recording = await Recording.createFromBlob(
-        {
-          type: "audio/wav",
-          arrayBuffer: blob,
-        },
-        {
-          targetType: "ChatMessage",
-          targetId: message.id,
-        },
-        transaction
-      );
-      message.recording = recording;
+      if (recordingUrl) {
+        // create new recording
+        const filePath = enjoyUrlToPath(recordingUrl);
+        const blob = fs.readFileSync(filePath);
+        const recording = await Recording.createFromBlob(
+          {
+            type: "audio/wav",
+            arrayBuffer: blob,
+          },
+          {
+            targetType: "ChatMessage",
+            targetId: message.id,
+          },
+          transaction
+        );
+        message.recording = recording;
+      }
+
+      await transaction.commit();
+
+      return (await message.reload()).toJSON();
+    } catch (error) {
+      await transaction.rollback();
+      logger.error(error);
+      throw error;
     }
-    await transaction.commit();
-
-    return (await message.reload()).toJSON();
   }
 
   private async update(
     _event: IpcMainEvent,
     id: string,
-    data: { state?: string; content?: string; recordingUrl?: string }
+    data: {
+      state?: ChatMessageStateEnum;
+      content?: string;
+      recordingUrl?: string;
+    }
   ) {
     const { recordingUrl } = data;
     delete data.recordingUrl;
@@ -89,40 +101,46 @@ class ChatMessagesHandler {
 
     const transaction = await ChatMessage.sequelize.transaction();
 
-    // update content
-    await message.update({ ...data }, { transaction });
+    try {
+      // update content
+      await message.update({ ...data }, { transaction });
 
-    if (recordingUrl) {
-      // destroy existing recording
-      await message.recording?.destroy({ transaction });
+      if (recordingUrl) {
+        // destroy existing recording
+        await message.recording?.destroy({ transaction });
 
-      // create new recording
-      const filePath = enjoyUrlToPath(recordingUrl);
-      const blob = fs.readFileSync(filePath);
-      const recording = await Recording.createFromBlob(
-        {
-          type: "audio/wav",
-          arrayBuffer: blob,
-        },
-        {
-          targetType: "ChatMessage",
-          targetId: message.id,
-          referenceText: message.content,
-        },
-        transaction
-      );
-      message.recording = recording;
-    } else if (message.recording) {
-      message.recording.update(
-        {
-          referenceText: message.content,
-        },
-        { transaction }
-      );
+        // create new recording
+        const filePath = enjoyUrlToPath(recordingUrl);
+        const blob = fs.readFileSync(filePath);
+        const recording = await Recording.createFromBlob(
+          {
+            type: "audio/wav",
+            arrayBuffer: blob,
+          },
+          {
+            targetType: "ChatMessage",
+            targetId: message.id,
+            referenceText: message.content,
+          },
+          transaction
+        );
+        message.recording = recording;
+      } else if (message.recording) {
+        await message.recording.update(
+          {
+            referenceText: message.content,
+          },
+          { transaction }
+        );
+      }
+      await transaction.commit();
+
+      return (await message.reload()).toJSON();
+    } catch (error) {
+      await transaction.rollback();
+      logger.error(error);
+      throw error;
     }
-    await transaction.commit();
-
-    return (await message.reload()).toJSON();
   }
 
   private async destroy(_event: IpcMainEvent, id: string) {

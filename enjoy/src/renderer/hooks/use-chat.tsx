@@ -2,19 +2,24 @@ import { useEffect, useContext, useReducer } from "react";
 import {
   DbProviderContext,
   AppSettingsProviderContext,
+  CopilotProviderContext,
 } from "@renderer/context";
 import { toast } from "@renderer/components/ui";
 import { t } from "i18next";
 import { chatsReducer } from "@renderer/reducers";
 
-export const useChat = () => {
+export const useChat = (chatAgentId?: string) => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
+  const {
+    currentChat: copilotCurrentChat,
+    setCurrentChat: setCopilotCurrentChat,
+  } = useContext(CopilotProviderContext);
   const [chats, dispatchChats] = useReducer(chatsReducer, []);
 
   const fetchChats = async (query?: string) => {
     EnjoyApp.chats
-      .findAll({ query })
+      .findAll({ query, chatAgentId })
       .then((data) => {
         dispatchChats({ type: "set", records: data });
       })
@@ -23,67 +28,12 @@ export const useChat = () => {
       });
   };
 
-  const createChat = (data: {
-    name: string;
-    language: string;
-    topic: string;
-    members: Array<{
-      userId?: string;
-      userType?: "User" | "Agent";
-      config?: {
-        prompt?: string;
-        introduction?: string;
-      };
-    }>;
-    config: {
-      sttEngine: string;
-    };
-  }) => {
-    return EnjoyApp.chats
-      .create(data)
-      .then((chat) => {
-        toast.success(t("models.chat.created"));
-        dispatchChats({ type: "append", record: chat });
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  };
-
-  const updateChat = (
-    id: string,
-    data: {
-      name: string;
-      language: string;
-      topic: string;
-      members: Array<{
-        userId?: string;
-        userType?: "User" | "Agent";
-        prompt?: string;
-        introduction?: string;
-      }>;
-      config: {
-        sttEngine: string;
-      };
-    }
-  ) => {
+  const updateChat = (id: string, data: ChatDtoType) => {
     return EnjoyApp.chats
       .update(id, data)
       .then((chat) => {
-        console.log(chat);
         dispatchChats({ type: "update", record: chat });
         toast.success(t("models.chat.updated"));
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  };
-
-  const destroyChat = (id: string) => {
-    return EnjoyApp.chats
-      .destroy(id)
-      .then(() => {
-        toast.success(t("models.chat.deleted"));
       })
       .catch((error) => {
         toast.error(error.message);
@@ -94,11 +44,21 @@ export const useChat = () => {
     const { model, action, record } = event.detail || {};
     if (model !== "Chat") return;
     switch (action) {
+      case "create": {
+        toast.success(t("models.chat.created"));
+        dispatchChats({ type: "prepend", record });
+        break;
+      }
       case "update": {
+        toast.success(t("models.chat.updated"));
         dispatchChats({ type: "update", record });
         break;
       }
       case "destroy": {
+        toast.success(t("models.chat.deleted"));
+        if (record.id === copilotCurrentChat?.id) {
+          setCopilotCurrentChat(null);
+        }
         dispatchChats({ type: "remove", record });
         break;
       }
@@ -106,7 +66,6 @@ export const useChat = () => {
   };
 
   useEffect(() => {
-    fetchChats();
     addDblistener(onChatUpdate);
 
     return () => {
@@ -114,11 +73,13 @@ export const useChat = () => {
     };
   }, []);
 
+  useEffect(() => {
+    fetchChats();
+  }, [chatAgentId]);
+
   return {
     chats,
     fetchChats,
-    createChat,
     updateChat,
-    destroyChat,
   };
 };

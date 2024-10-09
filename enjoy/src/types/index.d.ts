@@ -193,6 +193,15 @@ type GptEngineSettingType = {
   key?: string;
 };
 
+type TtsEngineSettingType = {
+  name: string;
+  model: string;
+  voice: string;
+  language?: string;
+  baseUrl?: string;
+  key?: string;
+};
+
 type PlatformInfo = {
   platform: string;
   arch: string;

@@ -1,50 +1,86 @@
 import {
-  Avatar,
-  AvatarFallback,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogTitle,
   Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Input,
-  ScrollArea,
+  toast,
 } from "@renderer/components/ui";
-import { ChatAgentForm } from "@renderer/components";
-import { PlusCircleIcon } from "lucide-react";
+import { ChatAgentCard, ChatAgentForm } from "@renderer/components";
+import { PlusIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { t } from "i18next";
 import { useDebounce } from "@uidotdev/usehooks";
-import { ChatProviderContext } from "@renderer/context";
+import { AppSettingsProviderContext } from "@/renderer/context";
 
-export const ChatAgents = () => {
-  const {
-    chatAgents,
-    fetchChatAgents,
-    updateChatAgent,
-    createChatAgent,
-    destroyChatAgent,
-  } = useContext(ChatProviderContext);
-  const [selected, setSelected] = useState<ChatAgentType>();
+export const ChatAgents = (props: {
+  chatAgents: ChatAgentType[];
+  fetchChatAgents: (query?: string) => void;
+  currentChatAgent: ChatAgentType;
+  setCurrentChatAgent: (chatAgent: ChatAgentType) => void;
+}) => {
+  const { currentChatAgent, setCurrentChatAgent, chatAgents, fetchChatAgents } =
+    props;
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const [deletingChatAgent, setDeletingChatAgent] =
+    useState<ChatAgentType>(null);
+  const [editingChatAgent, setEditingChatAgent] = useState<ChatAgentType>(null);
+  const [creatingChatAgent, setCreatingChatAgent] = useState<boolean>(false);
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
+
+  const handleDeleteChatAgent = () => {
+    if (!deletingChatAgent) return;
+
+    if (currentChatAgent?.id === deletingChatAgent.id) {
+      setCurrentChatAgent(null);
+    }
+
+    EnjoyApp.chatAgents
+      .destroy(deletingChatAgent.id)
+      .then(() => {
+        toast.success(t("models.chatAgent.deleted"));
+        setDeletingChatAgent(null);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
+  useEffect(() => {
+    if (currentChatAgent) return;
+
+    setCurrentChatAgent(chatAgents[0]);
+  }, [chatAgents]);
 
   useEffect(() => {
     fetchChatAgents(debouncedQuery);
   }, [debouncedQuery]);
 
   return (
-    <div className="grid grid-cols-3 overflow-hidden h-full">
-      <ScrollArea className="h-full col-span-1 bg-muted/50 p-4">
-        <div className="sticky flex items-center space-x-2 mb-4">
+    <>
+      <div className="overflow-y-auto h-full relative py-2 px-1">
+        <div className="sticky flex items-center space-x-2 py-2 px-1">
           <Input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            className="rounded-full"
+            className="rounded h-8 text-xs"
             placeholder={t("search")}
           />
           <Button
-            onClick={() => setSelected(null)}
-            className="w-8 h-8"
+            className="w-8 h-8 p-0"
             variant="ghost"
             size="icon"
+            onClick={() => setCreatingChatAgent(true)}
           >
-            <PlusCircleIcon className="w-5 h-5" />
+            <PlusIcon className="w-4 h-4" />
           </Button>
         </div>
         {chatAgents.length === 0 && (
@@ -52,46 +88,62 @@ export const ChatAgents = () => {
             <span className="text-sm text-muted-foreground">{t("noData")}</span>
           </div>
         )}
-        <div className="space-y-2">
+        <div className="grid gap-1">
           {chatAgents.map((chatAgent) => (
-            <div
+            <ChatAgentCard
               key={chatAgent.id}
-              className={`flex items-center space-x-1 px-2 py-1 rounded-lg cursor-pointer hover:bg-background hover:border ${
-                chatAgent.id === selected?.id ? "bg-background border" : ""
-              }`}
-              onClick={() => setSelected(chatAgent)}
-            >
-              <Avatar className="w-12 h-12">
-                <img src={chatAgent.avatarUrl} alt={chatAgent.name} />
-                <AvatarFallback>{chatAgent.name[0]}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <div className="text-sm line-clamp-1">{chatAgent.name}</div>
-                <div className="text-xs text-muted-foreground line-clamp-1">
-                  {chatAgent.introduction}
-                </div>
-              </div>
-            </div>
+              chatAgent={chatAgent}
+              selected={currentChatAgent?.id === chatAgent.id}
+              onSelect={setCurrentChatAgent}
+              onEdit={setEditingChatAgent}
+              onDelete={setDeletingChatAgent}
+            />
           ))}
         </div>
-      </ScrollArea>
-      <ScrollArea className="h-full col-span-2 py-6 px-10">
-        <ChatAgentForm
-          agent={selected}
-          onSave={(data) => {
-            if (selected) {
-              return updateChatAgent(selected.id, data);
-            } else {
-              return createChatAgent(data).then(() => setSelected(null));
-            }
-          }}
-          onDestroy={() => {
-            if (!selected) return;
-            destroyChatAgent(selected.id);
-            setSelected(null);
-          }}
-        />
-      </ScrollArea>
-    </div>
+      </div>
+      <AlertDialog
+        open={!!deletingChatAgent}
+        onOpenChange={() => setDeletingChatAgent(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogTitle>{t("deleteChatAgent")}</AlertDialogTitle>
+          <AlertDialogDescription>
+            {t("deleteChatAgentConfirmation")}
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeletingChatAgent(null)}>
+              {t("cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive-hover"
+              onClick={handleDeleteChatAgent}
+            >
+              {t("delete")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <Dialog
+        open={!!editingChatAgent}
+        onOpenChange={() => setEditingChatAgent(null)}
+      >
+        <DialogContent className="max-w-screen-md max-h-full overflow-auto">
+          <DialogTitle className="sr-only"></DialogTitle>
+          <ChatAgentForm
+            agent={editingChatAgent}
+            onFinish={() => setEditingChatAgent(null)}
+          />
+        </DialogContent>
+      </Dialog>
+      <Dialog open={creatingChatAgent} onOpenChange={setCreatingChatAgent}>
+        <DialogContent className="max-w-screen-md max-h-full overflow-auto">
+          <DialogTitle className="sr-only"></DialogTitle>
+          <ChatAgentForm
+            agent={null}
+            onFinish={() => setCreatingChatAgent(false)}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };

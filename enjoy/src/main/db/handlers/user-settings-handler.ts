@@ -4,61 +4,25 @@ import db from "@main/db";
 import { UserSettingKeyEnum } from "@/types/enums";
 
 class UserSettingsHandler {
-  private async get(event: IpcMainEvent, key: UserSettingKeyEnum) {
-    return UserSetting.get(key)
-      .then((value) => {
-        return value;
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+  private async get(_event: IpcMainEvent, key: UserSettingKeyEnum) {
+    return await UserSetting.get(key);
   }
 
   private async set(
-    event: IpcMainEvent,
+    _event: IpcMainEvent,
     key: UserSettingKeyEnum,
     value: string | object
   ) {
-    return UserSetting.set(key, value)
-      .then(() => {
-        return;
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    await UserSetting.set(key, value);
   }
 
-  private async delete(event: IpcMainEvent, key: UserSettingKeyEnum) {
-    return UserSetting.destroy({ where: { key } })
-      .then(() => {
-        return;
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+  private async delete(_event: IpcMainEvent, key: UserSettingKeyEnum) {
+    await UserSetting.destroy({ where: { key } });
   }
 
-  private async clear(event: IpcMainEvent) {
-    return UserSetting.destroy({ where: {} })
-      .then(() => {
-        db.connection.query("VACUUM");
-        return;
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+  private async clear(_event: IpcMainEvent) {
+    await UserSetting.destroy({ where: {} });
+    db.connection.query("VACUUM");
   }
 
   register() {

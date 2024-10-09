@@ -18,7 +18,7 @@ export const useAiCommand = () => {
   const { EnjoyApp, webApi, nativeLanguage, learningLanguage } = useContext(
     AppSettingsProviderContext
   );
-  const { currentEngine } = useContext(AISettingsProviderContext);
+  const { currentGptEngine } = useContext(AISettingsProviderContext);
 
   const lookupWord = async (params: {
     word: string;
@@ -46,7 +46,7 @@ export const useAiCommand = () => {
     }
 
     const modelName =
-      currentEngine.models.lookup || currentEngine.models.default;
+      currentGptEngine.models.lookup || currentGptEngine.models.default;
 
     const res = await lookupCommand(
       {
@@ -57,9 +57,9 @@ export const useAiCommand = () => {
         learningLanguage,
       },
       {
-        key: currentEngine.key,
+        key: currentGptEngine.key,
         modelName,
-        baseUrl: currentEngine.baseUrl,
+        baseUrl: currentGptEngine.baseUrl,
       }
     );
 
@@ -82,10 +82,10 @@ export const useAiCommand = () => {
 
   const extractStory = async (story: StoryType) => {
     const res = await extractStoryCommand(story.content, learningLanguage, {
-      key: currentEngine.key,
+      key: currentGptEngine.key,
       modelName:
-        currentEngine.models.extractStory || currentEngine.models.default,
-      baseUrl: currentEngine.baseUrl,
+        currentGptEngine.models.extractStory || currentGptEngine.models.default,
+      baseUrl: currentGptEngine.baseUrl,
     });
     const { words = [], idioms = [] } = res;
 
@@ -100,9 +100,10 @@ export const useAiCommand = () => {
     cacheKey?: string
   ): Promise<string> => {
     return translateCommand(text, nativeLanguage, {
-      key: currentEngine.key,
-      modelName: currentEngine.models.translate || currentEngine.models.default,
-      baseUrl: currentEngine.baseUrl,
+      key: currentGptEngine.key,
+      modelName:
+        currentGptEngine.models.translate || currentGptEngine.models.default,
+      baseUrl: currentGptEngine.baseUrl,
     }).then((res) => {
       if (cacheKey) {
         EnjoyApp.cacheObjects.set(cacheKey, res);
@@ -119,9 +120,10 @@ export const useAiCommand = () => {
         nativeLanguage,
       },
       {
-        key: currentEngine.key,
-        modelName: currentEngine.models.analyze || currentEngine.models.default,
-        baseUrl: currentEngine.baseUrl,
+        key: currentGptEngine.key,
+        modelName:
+          currentGptEngine.models.analyze || currentGptEngine.models.default,
+        baseUrl: currentGptEngine.baseUrl,
       }
     );
 
@@ -133,17 +135,17 @@ export const useAiCommand = () => {
 
   const punctuateText = async (text: string) => {
     return punctuateCommand(text, {
-      key: currentEngine.key,
-      modelName: currentEngine.models.default,
-      baseUrl: currentEngine.baseUrl,
+      key: currentGptEngine.key,
+      modelName: currentGptEngine.models.default,
+      baseUrl: currentGptEngine.baseUrl,
     });
   };
 
   const summarizeTopic = async (text: string) => {
     return summarizeTopicCommand(text, learningLanguage, {
-      key: currentEngine.key,
-      modelName: currentEngine.models.default,
-      baseUrl: currentEngine.baseUrl,
+      key: currentGptEngine.key,
+      modelName: currentGptEngine.models.default,
+      baseUrl: currentGptEngine.baseUrl,
     });
   };
 
@@ -164,9 +166,9 @@ export const useAiCommand = () => {
         context,
       },
       {
-        key: currentEngine.key,
-        modelName: currentEngine.models.default,
-        baseUrl: currentEngine.baseUrl,
+        key: currentGptEngine.key,
+        modelName: currentGptEngine.models.default,
+        baseUrl: currentGptEngine.baseUrl,
       }
     );
   };
@@ -186,9 +188,9 @@ export const useAiCommand = () => {
         nativeLanguage: options?.nativeLanguage || nativeLanguage,
       },
       {
-        key: currentEngine.key,
-        modelName: currentEngine.models.default,
-        baseUrl: currentEngine.baseUrl,
+        key: currentGptEngine.key,
+        modelName: currentGptEngine.models.default,
+        baseUrl: currentGptEngine.baseUrl,
       }
     );
 

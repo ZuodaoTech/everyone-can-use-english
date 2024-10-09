@@ -4,6 +4,7 @@ import {
   DbProviderContext,
 } from "@renderer/context";
 import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/types/enums";
+import { GPT_PROVIDERS, TTS_PROVIDERS } from "@renderer/components";
 
 type AISettingsProviderState = {
   setWhisperModel?: (name: string) => Promise<void>;
@@ -14,7 +15,10 @@ type AISettingsProviderState = {
   openai?: LlmProviderType;
   setOpenai?: (config: LlmProviderType) => void;
   setGptEngine?: (engine: GptEngineSettingType) => void;
-  currentEngine?: GptEngineSettingType;
+  currentGptEngine?: GptEngineSettingType;
+  currentTtsEngine?: TtsEngineSettingType;
+  gptProviders?: typeof GPT_PROVIDERS;
+  ttsProviders?: typeof TTS_PROVIDERS;
 };
 
 const initialState: AISettingsProviderState = {};
@@ -38,10 +42,55 @@ export const AISettingsProvider = ({
   const [sttEngine, setSttEngine] = useState<SttEngineOptionEnum>(
     SttEngineOptionEnum.ENJOY_AZURE
   );
-  const { EnjoyApp, libraryPath, user, apiUrl } = useContext(
-    AppSettingsProviderContext
-  );
+  const { EnjoyApp, libraryPath, user, apiUrl, webApi, learningLanguage } =
+    useContext(AppSettingsProviderContext);
+  const [gptProviders, setGptProviders] = useState<any>(GPT_PROVIDERS);
+  const [ttsProviders, setTtsProviders] = useState<any>(TTS_PROVIDERS);
   const db = useContext(DbProviderContext);
+
+  const refreshGptProviders = async () => {
+    let providers = GPT_PROVIDERS;
+
+    try {
+      const config = await webApi.config("gpt_providers");
+      providers = Object.assign(providers, config);
+    } catch (e) {
+      console.warn(`Failed to fetch remote GPT config: ${e.message}`);
+    }
+
+    try {
+      const response = await fetch(providers["ollama"]?.baseUrl + "/api/tags");
+      providers["ollama"].models = (await response.json()).models.map(
+        (m: any) => m.name
+      );
+    } catch (e) {
+      console.warn(`No ollama server found: ${e.message}`);
+    }
+
+    if (openai?.models) {
+      providers["openai"].models = openai.models.split(",");
+    }
+
+    setGptProviders({ ...providers });
+  };
+
+  const refreshTtsProviders = async () => {
+    let providers = TTS_PROVIDERS;
+
+    try {
+      const config = await webApi.config("tts_providers_v2");
+      providers = Object.assign(providers, config);
+    } catch (e) {
+      console.warn(`Failed to fetch remote TTS config: ${e.message}`);
+    }
+
+    setTtsProviders({ ...providers });
+  };
+
+  useEffect(() => {
+    refreshGptProviders();
+    refreshTtsProviders();
+  }, [openai, gptEngine]);
 
   useEffect(() => {
     if (db.state !== "connected") return;
@@ -133,7 +182,7 @@ export const AISettingsProvider = ({
               setGptEngine(engine);
             });
         },
-        currentEngine:
+        currentGptEngine:
           gptEngine.name === "openai"
             ? Object.assign(gptEngine, {
                 key: openai.key,
@@ -143,6 +192,20 @@ export const AISettingsProvider = ({
                 key: user?.accessToken,
                 baseUrl: `${apiUrl}/api/ai`,
               }),
+        currentTtsEngine:
+          gptEngine.name === "openai"
+            ? {
+                name: "openai",
+                model: "tts-1",
+                voice: "alloy",
+                language: learningLanguage,
+              }
+            : {
+                name: "enjoyai",
+                model: "openai/tts-1",
+                voice: "alloy",
+                language: learningLanguage,
+              },
         openai,
         setOpenai: (config: LlmProviderType) => handleSetOpenai(config),
         whisperConfig,
@@ -150,6 +213,8 @@ export const AISettingsProvider = ({
         setWhisperModel,
         sttEngine,
         setSttEngine: (name: SttEngineOptionEnum) => handleSetSttEngine(name),
+        gptProviders,
+        ttsProviders,
       }}
     >
       {children}

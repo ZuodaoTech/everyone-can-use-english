@@ -339,14 +339,14 @@ const RecorderButton = () => {
           >
             {isPaused ? (
               <PlayIcon
-                data-tooltip-id="chat-input-tooltip"
+                data-tooltip-id="media-shadow-tooltip"
                 data-tooltip-content={t("continue")}
                 fill="white"
                 className="w-4 h-4"
               />
             ) : (
               <PauseIcon
-                data-tooltip-id="chat-input-tooltip"
+                data-tooltip-id="media-shadow-tooltip"
                 data-tooltip-content={t("pause")}
                 fill="white"
                 className="w-4 h-4"
@@ -354,7 +354,7 @@ const RecorderButton = () => {
             )}
           </Button>
           <Button
-            data-tooltip-id="chat-input-tooltip"
+            data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("finish")}
             onClick={stopRecording}
             className="rounded-full bg-green-500 hover:bg-green-600 shadow w-8 h-8"

@@ -46,6 +46,8 @@ const initialState: AppSettingsProviderState = {
   initialized: false,
 };
 
+const EnjoyApp = window.__ENJOY_APP__;
+
 export const AppSettingsProviderContext =
   createContext<AppSettingsProviderState>(initialState);
 
@@ -67,7 +69,6 @@ export const AppSettingsProvider = ({
   const [vocabularyConfig, setVocabularyConfig] =
     useState<VocabularyConfigType>(null);
   const [proxy, setProxy] = useState<ProxyConfigType>();
-  const EnjoyApp = window.__ENJOY_APP__;
   const [recorderConfig, setRecorderConfig] = useState<RecorderConfigType>();
   const [ipaMappings, setIpaMappings] = useState<{ [key: string]: string }>(
     IPA_MAPPINGS
@@ -236,12 +237,12 @@ export const AppSettingsProvider = ({
   };
 
   useEffect(() => {
-    if (db.state !== "connected") return;
-
-    fetchLanguages();
-    fetchVocabularyConfig();
-    initSentry();
-    fetchRecorderConfig();
+    if (db.state === "connected") {
+      fetchLanguages();
+      fetchVocabularyConfig();
+      initSentry();
+      fetchRecorderConfig();
+    }
   }, [db.state]);
 
   useEffect(() => {
@@ -267,7 +268,7 @@ export const AppSettingsProvider = ({
         },
       })
     );
-  }, [user, apiUrl, language]);
+  }, [user?.accessToken, apiUrl, language]);
 
   useEffect(() => {
     if (!apiUrl) return;
@@ -279,6 +280,7 @@ export const AppSettingsProvider = ({
 
   useEffect(() => {
     if (!webApi) return;
+    if (ipaMappings && latestVersion) return;
 
     webApi.config("ipa_mappings").then((mappings) => {
       if (mappings) setIpaMappings(mappings);
@@ -308,6 +310,7 @@ export const AppSettingsProvider = ({
     });
     return () => {
       db.disconnect();
+      setUser(null);
     };
   }, [user?.id]);
 
@@ -335,7 +338,7 @@ export const AppSettingsProvider = ({
         setProxy: setProxyConfigHandler,
         vocabularyConfig,
         setVocabularyConfig: setVocabularyConfigHandler,
-        initialized: Boolean(user && libraryPath),
+        initialized: Boolean(db.state === "connected" && libraryPath),
         ahoy,
         cable,
         recorderConfig,

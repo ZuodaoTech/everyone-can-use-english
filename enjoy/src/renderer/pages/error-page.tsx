@@ -10,7 +10,7 @@ export default () => {
     <div className="h-screen px-4 py-6 lg:px-8">
       <PagePlaceholder
         placeholder={t("somethingWentWrong")}
-        extra={error ? JSON.stringify(error) : ""}
+        extra={error ? (error as Error).message : ""}
         showBackButton
       />
     </div>

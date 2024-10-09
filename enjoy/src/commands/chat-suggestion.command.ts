@@ -42,11 +42,8 @@ export const chatSuggestionCommand = async (
   return jsonCommand(prompt, { ...options, schema });
 };
 
-const SYSTEM_PROMPT = `I speak {native_language}. You're my {learning_language} coach. I'am chatting with foreign friends. And I don't know what to say next.
-
-{context}`;
-
-const PROMPT = `Please provide me with at least 5 suggestions for what counld I say in {learning_language} and explain them in {native_language}.
+const SYSTEM_PROMPT = `I speak {native_language}. You're my {learning_language} coach. I'am chatting with foreign friends.
+I'll provide you with the context of the chat. Please provide me with at least 5 suggestions for what counld I say in {learning_language} and explain them in {native_language}.
 
 Reply in JSON format only. The output should be structured like this:
 {{
@@ -57,3 +54,5 @@ Reply in JSON format only. The output should be structured like this:
     }}
   ]
 }}`;
+
+const PROMPT = `{context}`;

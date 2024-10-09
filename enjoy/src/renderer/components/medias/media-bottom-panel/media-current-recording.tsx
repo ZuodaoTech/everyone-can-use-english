@@ -566,7 +566,7 @@ export const MediaCurrentRecording = () => {
         </span>
         <div className="flex items-center gap-2">
           <Button
-            data-tooltip-id="chat-input-tooltip"
+            data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("cancel")}
             onClick={cancelRecording}
             className="rounded-full shadow w-8 h-8 bg-red-500 hover:bg-red-600"
@@ -582,14 +582,14 @@ export const MediaCurrentRecording = () => {
           >
             {isPaused ? (
               <PlayIcon
-                data-tooltip-id="chat-input-tooltip"
+                data-tooltip-id="media-shadow-tooltip"
                 data-tooltip-content={t("continue")}
                 fill="white"
                 className="w-4 h-4"
               />
             ) : (
               <PauseIcon
-                data-tooltip-id="chat-input-tooltip"
+                data-tooltip-id="media-shadow-tooltip"
                 data-tooltip-content={t("pause")}
                 fill="white"
                 className="w-4 h-4"
@@ -598,7 +598,7 @@ export const MediaCurrentRecording = () => {
           </Button>
           <Button
             id="media-record-button"
-            data-tooltip-id="chat-input-tooltip"
+            data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("finish")}
             onClick={stopRecording}
             className="rounded-full bg-green-500 hover:bg-green-600 shadow w-8 h-8"

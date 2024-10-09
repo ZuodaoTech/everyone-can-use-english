@@ -35,7 +35,7 @@ import {
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { t } from "i18next";
 import { AppSettingsProviderContext } from "@renderer/context";
-import { useConversation, useAiCommand } from "@renderer/hooks";
+import { useSpeech, useAiCommand } from "@renderer/hooks";
 import { formatDateTime } from "@renderer/lib/utils";
 
 export const AssistantMessageComponent = (props: {
@@ -53,7 +53,7 @@ export const AssistantMessageComponent = (props: {
   const [resourcing, setResourcing] = useState<boolean>(false);
   const [shadowing, setShadowing] = useState<boolean>(false);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { tts } = useConversation();
+  const { tts } = useSpeech();
   const { summarizeTopic } = useAiCommand();
 
   useEffect(() => {

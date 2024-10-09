@@ -9,6 +9,9 @@ export const chatMessagesReducer = (
   switch (action.type) {
     case "append": {
       if (action.record) {
+        if (chatMessages.find((m) => m.id === action.record.id)) {
+          return chatMessages;
+        }
         return [...chatMessages, action.record];
       } else if (action.records) {
         return [...chatMessages, ...action.records];

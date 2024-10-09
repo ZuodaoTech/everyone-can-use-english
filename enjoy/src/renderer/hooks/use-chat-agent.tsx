@@ -23,12 +23,7 @@ export const useChatAgent = () => {
       });
   };
 
-  const createChatAgent = (data: {
-    name: string;
-    language: string;
-    introduction: string;
-    config: any;
-  }) => {
+  const createChatAgent = (data: ChatAgentDtoType) => {
     return EnjoyApp.chatAgents
       .create(data)
       .then((agent) => {
@@ -40,15 +35,7 @@ export const useChatAgent = () => {
       });
   };
 
-  const updateChatAgent = (
-    id: string,
-    data: {
-      name: string;
-      language: string;
-      introduction: string;
-      config: any;
-    }
-  ) => {
+  const updateChatAgent = (id: string, data: ChatAgentDtoType) => {
     return EnjoyApp.chatAgents
       .update(id, data)
       .then((agent) => {
