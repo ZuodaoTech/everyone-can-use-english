@@ -76,9 +76,9 @@ test.describe("with login", async () => {
       });
     });
 
-    await page.evaluate(() => {
-      return (window as any).__ENJOY_APP__.app.reload();
-    });
+    // await page.evaluate(() => {
+    //   return (window as any).__ENJOY_APP__.app.reload();
+    // });
   });
 
   test("should enter homepage after login", async () => {
