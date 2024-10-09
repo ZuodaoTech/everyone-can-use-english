@@ -11,7 +11,6 @@ import {
   AllowNull,
   HasMany,
   Scopes,
-  BeforeDestroy,
   BeforeSave,
 } from "sequelize-typescript";
 import log from "@main/logger";
@@ -151,6 +150,7 @@ export class Chat extends Model<Chat> {
     } else {
       const agent = members[0].agent;
       if (!agent) {
+        logger.error("Chat.setupChatType: agent not found", chat.id);
         throw new Error(t("models.chat.atLeastOneAgent"));
       }
 
@@ -162,6 +162,7 @@ export class Chat extends Model<Chat> {
           chat.type = ChatTypeEnum.TTS;
           break;
         default:
+          logger.error("Chat.setupChatType: invalid agent type", chat.id);
           throw new Error(t("models.chat.invalidAgentType"));
       }
     }
