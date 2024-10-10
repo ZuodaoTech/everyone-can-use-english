@@ -123,7 +123,6 @@
     "@rails/actioncable": "7.2.100",
     "@ricky0123/vad-react": "^0.0.24",
     "@ricky0123/vad-web": "^0.0.18",
-    "@sentry/electron": "^5.4.0",
     "@uidotdev/usehooks": "^2.4.1",
     "@vidstack/react": "^1.12.11",
     "ahoy.js": "^0.4.4",
