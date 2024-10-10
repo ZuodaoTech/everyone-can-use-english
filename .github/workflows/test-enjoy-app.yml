@@ -66,6 +66,9 @@ jobs:
         if: contains(matrix.os, 'macos') || contains(matrix.os, 'windows')
         run: yarn enjoy:test:renderer
 
+      - name: Make App
+        run: yarn enjoy:make
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
