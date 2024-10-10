@@ -3928,9 +3928,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/core@npm:^0.3.7":
-  version: 0.3.7
-  resolution: "@langchain/core@npm:0.3.7"
+"@langchain/core@npm:^0.3.8":
+  version: 0.3.8
+  resolution: "@langchain/core@npm:0.3.8"
   dependencies:
     ansi-styles: "npm:^5.0.0"
     camelcase: "npm:6"
@@ -3943,7 +3943,7 @@ __metadata:
     uuid: "npm:^10.0.0"
     zod: "npm:^3.22.4"
     zod-to-json-schema: "npm:^3.22.3"
-  checksum: 10c0/8935d63678228e3d8b33da36c880d57e954af2704d8cafabe439064425d981f3c0aadd404056e132bc81e38779a7c811c52c85ca333c8a8c2c9bf2689a87058d
+  checksum: 10c0/2f1aaf17ae781d0439c6296b9ff2c8d159d6f72b8ae8a0b684d4c39d76f8072bb4d3cfa9c517946cda31bcb2fef69eb0aef2840369eb51ce47c10f4bcef50621
   languageName: node
   linkType: hard
 
@@ -13163,7 +13163,7 @@ __metadata:
     "@electron/fuses": "npm:^1.8.0"
     "@hookform/resolvers": "npm:^3.9.0"
     "@langchain/community": "npm:^0.3.4"
-    "@langchain/core": "npm:^0.3.7"
+    "@langchain/core": "npm:^0.3.8"
     "@langchain/ollama": "npm:^0.1.0"
     "@mozilla/readability": "npm:^0.5.0"
     "@playwright/test": "npm:^1.47.2"
@@ -13267,7 +13267,7 @@ __metadata:
     mustache: "npm:^4.2.0"
     next-themes: "npm:^0.3.0"
     octokit: "npm:^4.0.2"
-    openai: "npm:^4.67.1"
+    openai: "npm:^4.67.3"
     pitchfinder: "npm:^2.3.2"
     postcss: "npm:^8.4.47"
     progress: "npm:^2.0.3"
@@ -19611,7 +19611,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openai@npm:^4.57.3, openai@npm:^4.67.1":
+"openai@npm:^4.57.3":
   version: 4.67.1
   resolution: "openai@npm:4.67.1"
   dependencies:
