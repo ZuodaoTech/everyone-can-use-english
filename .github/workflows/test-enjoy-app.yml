@@ -59,14 +59,15 @@ jobs:
 
       - name: Run renderer tests with xvfb-run on Ubuntu
         if: contains(matrix.os, 'ubuntu')
-        continue-on-error: true
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn enjoy:test:renderer
 
       - name: Run renderer tests on macOS or Windows
         if: contains(matrix.os, 'macos') || contains(matrix.os, 'windows')
-        continue-on-error: true
         run: yarn enjoy:test:renderer
+
+      - name: Make App
+        run: yarn enjoy:make
 
       - uses: actions/upload-artifact@v4
         if: always()

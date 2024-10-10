@@ -4,8 +4,6 @@ import { Client } from "@/api";
 import i18n from "@renderer/i18n";
 import ahoy from "ahoy.js";
 import { type Consumer, createConsumer } from "@rails/actioncable";
-import * as Sentry from "@sentry/electron/renderer";
-import { SENTRY_DSN } from "@/constants";
 import { DbProviderContext } from "@renderer/context";
 import { UserSettingKeyEnum } from "@/types/enums";
 
@@ -74,16 +72,6 @@ export const AppSettingsProvider = ({
     IPA_MAPPINGS
   );
   const db = useContext(DbProviderContext);
-
-  const initSentry = () => {
-    EnjoyApp.app.isPackaged().then((isPackaged) => {
-      if (isPackaged) {
-        Sentry.init({
-          dsn: SENTRY_DSN,
-        });
-      }
-    });
-  };
 
   const fetchLanguages = async () => {
     const language = await EnjoyApp.userSettings.get(
@@ -240,7 +228,6 @@ export const AppSettingsProvider = ({
     if (db.state === "connected") {
       fetchLanguages();
       fetchVocabularyConfig();
-      initSentry();
       fetchRecorderConfig();
     }
   }, [db.state]);
