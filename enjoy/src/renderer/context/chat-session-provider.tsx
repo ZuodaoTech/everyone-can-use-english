@@ -53,15 +53,15 @@ type ChatSessionProviderState = {
   setShadowing: (audio: AudioType) => void;
   assessing: RecordingType;
   setAssessing: (recording: RecordingType) => void;
-  onDeleteMessage?: (id: string) => void;
-  onCreateMessage?: (
+  deleteMessage?: (id: string) => void;
+  createMessage?: (
     content: string,
     options: {
       onSuccess?: (message: ChatMessageType) => void;
       onError?: (error: Error) => void;
     }
   ) => Promise<ChatMessageType | void>;
-  onUpdateMessage?: (
+  updateMessage?: (
     id: string,
     data: Partial<ChatMessageType>
   ) => Promise<ChatMessageType>;
@@ -89,8 +89,8 @@ const initialState: ChatSessionProviderState = {
   setShadowing: () => null,
   assessing: null,
   setAssessing: () => null,
-  onCreateMessage: () => null,
-  onUpdateMessage: () => null,
+  createMessage: () => null,
+  updateMessage: () => null,
 };
 
 export const ChatSessionProviderContext =
@@ -116,9 +116,9 @@ export const ChatSessionProvider = ({
     chatMembers,
     chatMessages,
     dispatchChatMessages,
-    onCreateUserMessage,
-    onUpdateMessage,
-    onDeleteMessage,
+    createUserMessage,
+    updateMessage,
+    deleteMessage,
     invokeAgent,
   } = useChatSession(chatId);
 
@@ -153,7 +153,7 @@ export const ChatSessionProvider = ({
     });
   };
 
-  const onCreateMessage = async (
+  const createMessage = async (
     content: string,
     options: {
       onSuccess?: (message: ChatMessageType) => void;
@@ -164,7 +164,7 @@ export const ChatSessionProvider = ({
     if (submitting) return;
 
     setSubmitting(true);
-    onCreateUserMessage(content)
+    createUserMessage(content)
       .then((message) => {
         if (message) {
           onSuccess?.(message);
@@ -201,12 +201,12 @@ export const ChatSessionProvider = ({
       });
 
       if (pendingMessage) {
-        await onUpdateMessage(pendingMessage.id, {
+        await updateMessage(pendingMessage.id, {
           content: transcript,
           recordingUrl: url,
         });
       } else {
-        await onCreateUserMessage(transcript, url);
+        await createUserMessage(transcript, url);
       }
     } catch (error) {
       toast.error(error.message);
@@ -390,9 +390,9 @@ export const ChatSessionProvider = ({
         setShadowing,
         assessing,
         setAssessing,
-        onDeleteMessage: (id) => setDeletingMessage(id),
-        onCreateMessage,
-        onUpdateMessage,
+        deleteMessage: (id) => setDeletingMessage(id),
+        createMessage,
+        updateMessage,
       }}
     >
       <MediaShadowProvider>
@@ -414,9 +414,7 @@ export const ChatSessionProvider = ({
 
             <AlertDialogFooter>
               <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => onDeleteMessage(deletingMessage)}
-              >
+              <AlertDialogAction onClick={() => deleteMessage(deletingMessage)}>
                 {t("confirm")}
               </AlertDialogAction>
             </AlertDialogFooter>

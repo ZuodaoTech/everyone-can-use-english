@@ -56,7 +56,7 @@ export const useChatMessage = (chatId: string) => {
       });
   };
 
-  const onCreateUserMessage = (content: string, recordingUrl?: string) => {
+  const createUserMessage = (content: string, recordingUrl?: string) => {
     if (!content) return;
 
     return EnjoyApp.chatMessages
@@ -72,11 +72,11 @@ export const useChatMessage = (chatId: string) => {
       });
   };
 
-  const onUpdateMessage = (id: string, data: ChatMessageDtoType) => {
+  const updateMessage = (id: string, data: ChatMessageDtoType) => {
     return EnjoyApp.chatMessages.update(id, data);
   };
 
-  const onDeleteMessage = async (chatMessageId: string) => {
+  const deleteMessage = async (chatMessageId: string) => {
     return EnjoyApp.chatMessages
       .destroy(chatMessageId)
       .then(() =>
@@ -206,7 +206,7 @@ export const useChatMessage = (chatId: string) => {
         state: ChatMessageStateEnum.COMPLETED,
       });
     }
-    onUpdateMessage(pendingMessage.id, {
+    updateMessage(pendingMessage.id, {
       state: ChatMessageStateEnum.COMPLETED,
     });
   };
@@ -265,7 +265,7 @@ export const useChatMessage = (chatId: string) => {
       state: ChatMessageStateEnum.COMPLETED,
     });
     if (pendingMessage) {
-      onUpdateMessage(pendingMessage.id, {
+      updateMessage(pendingMessage.id, {
         state: ChatMessageStateEnum.COMPLETED,
       });
     }
@@ -287,7 +287,7 @@ export const useChatMessage = (chatId: string) => {
       content: pendingMessage.content,
       state: ChatMessageStateEnum.COMPLETED,
     });
-    onUpdateMessage(pendingMessage.id, {
+    updateMessage(pendingMessage.id, {
       state: ChatMessageStateEnum.COMPLETED,
     });
 
@@ -378,9 +378,9 @@ export const useChatMessage = (chatId: string) => {
     chatMessages,
     fetchChatMessages,
     dispatchChatMessages,
-    onCreateUserMessage,
-    onUpdateMessage,
-    onDeleteMessage,
+    createUserMessage,
+    updateMessage,
+    deleteMessage,
     invokeAgent,
   };
 };

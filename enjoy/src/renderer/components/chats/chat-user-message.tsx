@@ -53,7 +53,7 @@ export const ChatUserMessage = (props: {
   const ref = useRef<HTMLDivElement>(null);
   const [editing, setEditing] = useState<boolean>(false);
   const [content, setContent] = useState<string>(chatMessage.content);
-  const { onUpdateMessage, askAgent, submitting, asking } = useContext(
+  const { updateMessage, askAgent, submitting, asking } = useContext(
     ChatSessionProviderContext
   );
   const [displayPlayer, setDisplayPlayer] = useState(false);
@@ -130,7 +130,7 @@ export const ChatUserMessage = (props: {
                   </Button>
                   <Button
                     onClick={() =>
-                      onUpdateMessage(chatMessage.id, { content }).finally(() =>
+                      updateMessage(chatMessage.id, { content }).finally(() =>
                         setEditing(false)
                       )
                     }
@@ -204,7 +204,7 @@ const ChatUserMessageActions = (props: {
     isPaused,
     assessing,
     setAssessing,
-    onDeleteMessage,
+    deleteMessage,
     submitting,
   } = useContext(ChatSessionProviderContext);
 
@@ -384,7 +384,7 @@ const ChatUserMessageActions = (props: {
         <DropdownMenuContent>
           <DropdownMenuItem
             className="cursor-pointer"
-            onClick={() => onDeleteMessage(chatMessage.id)}
+            onClick={() => deleteMessage(chatMessage.id)}
           >
             <span className="mr-auto text-destructive capitalize">
               {t("delete")}

@@ -37,7 +37,7 @@ export const ChatInput = () => {
     recordingTime,
     isPaused,
     askAgent,
-    onCreateMessage,
+    createMessage,
     shadowing,
   } = useContext(ChatSessionProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -66,6 +66,16 @@ export const ChatInput = () => {
       autosize.destroy(inputRef.current);
     };
   }, [inputRef.current]);
+
+  useEffect(() => {
+    if (content) return;
+
+    const evt = new CustomEvent("autosize:update", {
+      bubbles: true,
+      cancelable: false,
+    });
+    inputRef.current?.dispatchEvent(evt);
+  }, [content]);
 
   useEffect(() => {
     EnjoyApp.cacheObjects
@@ -199,7 +209,9 @@ export const ChatInput = () => {
           data-tooltip-id={`${chat.id}-tooltip`}
           data-tooltip-content={t("send")}
           onClick={() =>
-            onCreateMessage(content, { onSuccess: () => setContent("") })
+            createMessage(content, {
+              onSuccess: () => setContent(""),
+            })
           }
           disabled={submitting || !content}
           className="rounded-full shadow w-8 h-8"

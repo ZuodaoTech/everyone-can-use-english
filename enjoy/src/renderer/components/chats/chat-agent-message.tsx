@@ -174,7 +174,7 @@ const ChatAgentMessageActions = (props: {
     setTranslation,
     autoSpeech,
   } = props;
-  const { chat, setShadowing, onDeleteMessage } = useContext(
+  const { chat, setShadowing, deleteMessage } = useContext(
     ChatSessionProviderContext
   );
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -417,7 +417,7 @@ const ChatAgentMessageActions = (props: {
       <DropdownMenuContent>
         <DropdownMenuItem
           className="cursor-pointer"
-          onClick={() => onDeleteMessage(chatMessage.id)}
+          onClick={() => deleteMessage(chatMessage.id)}
         >
           <span className="mr-auto text-destructive capitalize">
             {t("delete")}
