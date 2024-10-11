@@ -26,8 +26,9 @@ import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
 } from "@renderer/context";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ChatAgentTypeEnum } from "@/types/enums";
+import { CHAT_AGENT_TEMPLATES } from "@/constants";
 
 export const ChatAgentForm = (props: {
   agent?: ChatAgentType;
@@ -36,6 +37,7 @@ export const ChatAgentForm = (props: {
   const { agent, onFinish } = props;
   const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const { currentTtsEngine } = useContext(AISettingsProviderContext);
+  const [selectedPreset, setSelectedPreset] = useState<string>("custom");
   const agentFormSchema = z.object({
     type: z.enum([ChatAgentTypeEnum.GPT, ChatAgentTypeEnum.TTS]),
     name: z.string().min(1),
@@ -108,6 +110,24 @@ export const ChatAgentForm = (props: {
     }
   });
 
+  useEffect(() => {
+    if (
+      form.watch("type") !== ChatAgentTypeEnum.GPT ||
+      selectedPreset === "custom"
+    ) {
+      form.setValue("name", "");
+      form.setValue("config.prompt", "");
+    } else {
+      const template = CHAT_AGENT_TEMPLATES.find(
+        (p) => p.key === selectedPreset
+      );
+      if (!template) return;
+
+      form.setValue("name", template.name);
+      form.setValue("config.prompt", template.prompt);
+    }
+  }, [selectedPreset, form.watch("type")]);
+
   return (
     <Form {...form}>
       <form onSubmit={onSubmit}>
@@ -165,6 +185,29 @@ export const ChatAgentForm = (props: {
               </FormItem>
             )}
           />
+
+          {form.watch("type") === ChatAgentTypeEnum.GPT && (
+            <FormItem>
+              <FormLabel className="capitalize">{t("templates")}</FormLabel>
+              <Select
+                onValueChange={setSelectedPreset}
+                value={selectedPreset || "custom"}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t("templates")} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="custom">{t("custom")}</SelectItem>
+                  {CHAT_AGENT_TEMPLATES.map((template) => (
+                    <SelectItem key={template.key} value={template.key}>
+                      {template.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormItem>
+          )}
+
           <FormField
             control={form.control}
             name="name"

@@ -1,3 +1,4 @@
+export * from "./chat-agent-templates";
 export * from "./gpt-presets";
 export * from "./ipa";
 
