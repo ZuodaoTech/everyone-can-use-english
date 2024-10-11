@@ -4,6 +4,12 @@ import { z } from "zod";
 import {
   Avatar,
   Button,
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
   Form,
   FormControl,
   FormDescription,
@@ -12,6 +18,9 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Select,
   SelectContent,
   SelectItem,
@@ -29,7 +38,22 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { ChatAgentTypeEnum } from "@/types/enums";
 import { CHAT_AGENT_TEMPLATES } from "@/constants";
+import { cn } from "@/renderer/lib/utils";
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 
+const TEMPLATES = [
+  {
+    key: "custom",
+    name: t("custom"),
+    prompt: "",
+  },
+  {
+    key: "default",
+    name: t("models.chatAgent.namePlaceholder"),
+    prompt: t("models.chatAgent.promptPlaceholder"),
+  },
+  ...CHAT_AGENT_TEMPLATES,
+];
 export const ChatAgentForm = (props: {
   agent?: ChatAgentType;
   onFinish: () => void;
@@ -37,7 +61,7 @@ export const ChatAgentForm = (props: {
   const { agent, onFinish } = props;
   const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const { currentTtsEngine } = useContext(AISettingsProviderContext);
-  const [selectedPreset, setSelectedPreset] = useState<string>("custom");
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("custom");
   const agentFormSchema = z.object({
     type: z.enum([ChatAgentTypeEnum.GPT, ChatAgentTypeEnum.TTS]),
     name: z.string().min(1),
@@ -111,22 +135,21 @@ export const ChatAgentForm = (props: {
   });
 
   useEffect(() => {
-    if (
-      form.watch("type") !== ChatAgentTypeEnum.GPT ||
-      selectedPreset === "custom"
-    ) {
+    if (form.watch("type") !== ChatAgentTypeEnum.GPT) {
       form.setValue("name", "");
       form.setValue("config.prompt", "");
     } else {
-      const template = CHAT_AGENT_TEMPLATES.find(
-        (p) => p.key === selectedPreset
-      );
+      const template = TEMPLATES.find((p) => p.key === selectedTemplate);
       if (!template) return;
 
-      form.setValue("name", template.name);
+      if (selectedTemplate === "custom") {
+        form.setValue("name", "");
+      } else {
+        form.setValue("name", template.name);
+      }
       form.setValue("config.prompt", template.prompt);
     }
-  }, [selectedPreset, form.watch("type")]);
+  }, [selectedTemplate, form.watch("type")]);
 
   return (
     <Form {...form}>
@@ -187,24 +210,57 @@ export const ChatAgentForm = (props: {
           />
 
           {form.watch("type") === ChatAgentTypeEnum.GPT && (
-            <FormItem>
+            <FormItem className="flex flex-col">
               <FormLabel className="capitalize">{t("templates")}</FormLabel>
-              <Select
-                onValueChange={setSelectedPreset}
-                value={selectedPreset || "custom"}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={t("templates")} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="custom">{t("custom")}</SelectItem>
-                  {CHAT_AGENT_TEMPLATES.map((template) => (
-                    <SelectItem key={template.key} value={template.key}>
-                      {template.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    className={cn(
+                      "w-full justify-between",
+                      !selectedTemplate && "text-muted-foreground"
+                    )}
+                  >
+                    {selectedTemplate
+                      ? TEMPLATES.find(
+                          (template) => template.key === selectedTemplate
+                        )?.name
+                      : t("templates")}
+                    <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput
+                      placeholder={t("templates")}
+                      className="h-9"
+                    />
+                    <CommandList>
+                      <CommandEmpty>{t("noTemplatesFound")}</CommandEmpty>
+                      <CommandGroup>
+                        {TEMPLATES.map((template) => (
+                          <CommandItem
+                            key={template.key}
+                            value={template.key}
+                            onSelect={() => setSelectedTemplate(template.key)}
+                          >
+                            {template.name}
+                            <CheckIcon
+                              className={cn(
+                                "ml-auto h-4 w-4",
+                                template.key === selectedTemplate
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </FormItem>
           )}
 
