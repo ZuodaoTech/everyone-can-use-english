@@ -65,7 +65,7 @@ export const ChatAgentForm = (props: {
   const agentFormSchema = z.object({
     type: z.enum([ChatAgentTypeEnum.GPT, ChatAgentTypeEnum.TTS]),
     name: z.string().min(1),
-    description: z.string().min(1),
+    description: z.string().optional(),
     config: z.object({
       prompt: z.string().optional(),
       tts: z
