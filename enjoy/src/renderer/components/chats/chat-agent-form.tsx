@@ -40,28 +40,33 @@ import { ChatAgentTypeEnum } from "@/types/enums";
 import { CHAT_AGENT_TEMPLATES } from "@/constants";
 import { cn } from "@/renderer/lib/utils";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-
-const TEMPLATES = [
-  {
-    key: "custom",
-    name: t("custom"),
-    prompt: "",
-  },
-  {
-    key: "default",
-    name: t("models.chatAgent.namePlaceholder"),
-    prompt: t("models.chatAgent.promptPlaceholder"),
-  },
-  ...CHAT_AGENT_TEMPLATES,
-];
 export const ChatAgentForm = (props: {
   agent?: ChatAgentType;
   onFinish: () => void;
 }) => {
   const { agent, onFinish } = props;
-  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage, webApi } = useContext(
+    AppSettingsProviderContext
+  );
   const { currentTtsEngine } = useContext(AISettingsProviderContext);
   const [selectedTemplate, setSelectedTemplate] = useState<string>("custom");
+  const [templates, setTemplates] = useState<
+    {
+      key: string;
+      name: string;
+      description: string;
+      prompt: string;
+    }[]
+  >(CHAT_AGENT_TEMPLATES);
+
+  const fetchTemplates = () => {
+    webApi.config("chat_agent_templates").then((tpls) => {
+      if (Array.isArray(tpls) && tpls.length > 0) {
+        setTemplates(tpls);
+      }
+    });
+  };
+
   const agentFormSchema = z.object({
     type: z.enum([ChatAgentTypeEnum.GPT, ChatAgentTypeEnum.TTS]),
     name: z.string().min(1),
@@ -134,6 +139,22 @@ export const ChatAgentForm = (props: {
     }
   });
 
+  const TEMPLATES = [
+    {
+      key: "custom",
+      name: t("custom"),
+      description: "",
+      prompt: "",
+    },
+    {
+      key: "default",
+      name: t("models.chatAgent.namePlaceholder"),
+      description: t("models.chatAgent.descriptionPlaceholder"),
+      prompt: t("models.chatAgent.promptPlaceholder"),
+    },
+    ...templates,
+  ];
+
   useEffect(() => {
     if (form.watch("type") !== ChatAgentTypeEnum.GPT) {
       form.setValue("name", "");
@@ -144,12 +165,18 @@ export const ChatAgentForm = (props: {
 
       if (selectedTemplate === "custom") {
         form.setValue("name", "");
+        form.setValue("description", "");
       } else {
-        form.setValue("name", template.name);
+        form.setValue("name", template.name || "");
+        form.setValue("description", template.description || "");
       }
-      form.setValue("config.prompt", template.prompt);
+      form.setValue("config.prompt", template.prompt || "");
     }
   }, [selectedTemplate, form.watch("type")]);
+
+  useEffect(() => {
+    fetchTemplates();
+  }, []);
 
   return (
     <Form {...form}>
