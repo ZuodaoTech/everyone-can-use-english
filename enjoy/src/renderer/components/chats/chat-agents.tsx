@@ -9,6 +9,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   Input,
   toast,
@@ -128,7 +129,10 @@ export const ChatAgents = (props: {
         onOpenChange={() => setEditingChatAgent(null)}
       >
         <DialogContent className="max-w-screen-md max-h-full overflow-auto">
-          <DialogTitle className="sr-only"></DialogTitle>
+          <DialogTitle className="sr-only">Edit Chat Agent</DialogTitle>
+          <DialogDescription className="sr-only">
+            Edit chat agent configuration
+          </DialogDescription>
           <ChatAgentForm
             agent={editingChatAgent}
             onFinish={() => setEditingChatAgent(null)}
@@ -137,7 +141,10 @@ export const ChatAgents = (props: {
       </Dialog>
       <Dialog open={creatingChatAgent} onOpenChange={setCreatingChatAgent}>
         <DialogContent className="max-w-screen-md max-h-full overflow-auto">
-          <DialogTitle className="sr-only"></DialogTitle>
+          <DialogTitle className="sr-only">Create Chat Agent</DialogTitle>
+          <DialogDescription className="sr-only">
+            Create a new chat agent
+          </DialogDescription>
           <ChatAgentForm
             agent={null}
             onFinish={() => setCreatingChatAgent(false)}
