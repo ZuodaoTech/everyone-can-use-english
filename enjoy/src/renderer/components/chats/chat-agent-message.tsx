@@ -58,8 +58,6 @@ export const ChatAgentMessage = (props: {
   );
   const [displayPlayer, setDisplayPlayer] = useState(false);
 
-  const chatMember = chatMembers.find((m) => m.id === chatMessage.member.id);
-
   useEffect(() => {
     if (ref.current) {
       ref.current.scrollIntoView({ behavior: "smooth" });
@@ -72,6 +70,8 @@ export const ChatAgentMessage = (props: {
     }
   }, [chatMessage]);
 
+  if (!chatMessage) return;
+  const chatMember = chatMembers.find((m) => m?.id === chatMessage.member?.id);
   if (!chatMember?.agent) return;
 
   return (

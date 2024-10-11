@@ -43,6 +43,7 @@ export const ChatList = (props: {
     if (!chatAgent) {
       return;
     }
+
     EnjoyApp.chats
       .create({
         name: t("newChat"),
@@ -105,6 +106,11 @@ export const ChatList = (props: {
   };
 
   useEffect(() => {
+    if (!chatAgent) {
+      setCurrentChat(null);
+      return;
+    }
+
     const currentAgentNotInvolved =
       currentChat?.members?.findIndex(
         (member) => member.userId === chatAgent?.id
@@ -117,7 +123,7 @@ export const ChatList = (props: {
       if (chat) {
         setCurrentChat(chat);
       } else {
-        handleCreateChat();
+        setCurrentChat(null);
       }
     }
   }, [chats, chatAgent]);
