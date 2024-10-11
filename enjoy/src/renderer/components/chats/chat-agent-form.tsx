@@ -4,6 +4,12 @@ import { z } from "zod";
 import {
   Avatar,
   Button,
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
   Form,
   FormControl,
   FormDescription,
@@ -12,6 +18,9 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Select,
   SelectContent,
   SelectItem,
@@ -26,20 +35,42 @@ import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
 } from "@renderer/context";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ChatAgentTypeEnum } from "@/types/enums";
-
+import { CHAT_AGENT_TEMPLATES } from "@/constants";
+import { cn } from "@/renderer/lib/utils";
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 export const ChatAgentForm = (props: {
   agent?: ChatAgentType;
   onFinish: () => void;
 }) => {
   const { agent, onFinish } = props;
-  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage, webApi } = useContext(
+    AppSettingsProviderContext
+  );
   const { currentTtsEngine } = useContext(AISettingsProviderContext);
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("custom");
+  const [templates, setTemplates] = useState<
+    {
+      key: string;
+      name: string;
+      description: string;
+      prompt: string;
+    }[]
+  >(CHAT_AGENT_TEMPLATES);
+
+  const fetchTemplates = () => {
+    webApi.config("chat_agent_templates").then((tpls) => {
+      if (Array.isArray(tpls) && tpls.length > 0) {
+        setTemplates(tpls);
+      }
+    });
+  };
+
   const agentFormSchema = z.object({
     type: z.enum([ChatAgentTypeEnum.GPT, ChatAgentTypeEnum.TTS]),
     name: z.string().min(1),
-    description: z.string().min(1),
+    description: z.string().optional(),
     config: z.object({
       prompt: z.string().optional(),
       tts: z
@@ -108,6 +139,45 @@ export const ChatAgentForm = (props: {
     }
   });
 
+  const TEMPLATES = [
+    {
+      key: "custom",
+      name: t("custom"),
+      description: "",
+      prompt: "",
+    },
+    {
+      key: "default",
+      name: t("models.chatAgent.namePlaceholder"),
+      description: t("models.chatAgent.descriptionPlaceholder"),
+      prompt: t("models.chatAgent.promptPlaceholder"),
+    },
+    ...templates,
+  ];
+
+  useEffect(() => {
+    if (form.watch("type") !== ChatAgentTypeEnum.GPT) {
+      form.setValue("name", "");
+      form.setValue("config.prompt", "");
+    } else {
+      const template = TEMPLATES.find((p) => p.key === selectedTemplate);
+      if (!template) return;
+
+      if (selectedTemplate === "custom") {
+        form.setValue("name", "");
+        form.setValue("description", "");
+      } else {
+        form.setValue("name", template.name || "");
+        form.setValue("description", template.description || "");
+      }
+      form.setValue("config.prompt", template.prompt || "");
+    }
+  }, [selectedTemplate, form.watch("type")]);
+
+  useEffect(() => {
+    fetchTemplates();
+  }, []);
+
   return (
     <Form {...form}>
       <form onSubmit={onSubmit}>
@@ -165,6 +235,62 @@ export const ChatAgentForm = (props: {
               </FormItem>
             )}
           />
+
+          {form.watch("type") === ChatAgentTypeEnum.GPT && (
+            <FormItem className="flex flex-col">
+              <FormLabel className="capitalize">{t("templates")}</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    className={cn(
+                      "w-full justify-between",
+                      !selectedTemplate && "text-muted-foreground"
+                    )}
+                  >
+                    {selectedTemplate
+                      ? TEMPLATES.find(
+                          (template) => template.key === selectedTemplate
+                        )?.name
+                      : t("templates")}
+                    <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput
+                      placeholder={t("templates")}
+                      className="h-9"
+                    />
+                    <CommandList>
+                      <CommandEmpty>{t("noTemplatesFound")}</CommandEmpty>
+                      <CommandGroup>
+                        {TEMPLATES.map((template) => (
+                          <CommandItem
+                            key={template.key}
+                            value={template.key}
+                            onSelect={() => setSelectedTemplate(template.key)}
+                          >
+                            {template.name}
+                            <CheckIcon
+                              className={cn(
+                                "ml-auto h-4 w-4",
+                                template.key === selectedTemplate
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </FormItem>
+          )}
+
           <FormField
             control={form.control}
             name="name"

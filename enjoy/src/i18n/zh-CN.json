@@ -865,5 +865,6 @@
   "added": "已添加",
   "migrateToChat": "迁移到聊天",
   "memberJoined": "{{name}} 已加入聊天",
-  "memberLeft": "{{name}} 已离开聊天"
+  "memberLeft": "{{name}} 已离开聊天",
+  "templates": "模板"
 }

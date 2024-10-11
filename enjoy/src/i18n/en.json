@@ -865,5 +865,6 @@
   "added": "Added",
   "migrateToChat": "Migrate to chat",
   "memberJoined": "{{name}} has joined the chat.",
-  "memberLeft": "{{name}} has left the chat."
+  "memberLeft": "{{name}} has left the chat.",
+  "templates": "templates"
 }

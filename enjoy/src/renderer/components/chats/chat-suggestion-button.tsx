@@ -27,7 +27,7 @@ export const ChatSuggestionButton = (props: {
   children?: ReactElement;
 }) => {
   const { chat } = props;
-  const { chatMessages, onCreateMessage } = useContext(
+  const { chatMessages, createMessage } = useContext(
     ChatSessionProviderContext
   );
   const [suggestions, setSuggestions] = useState<
@@ -138,7 +138,7 @@ export const ChatSuggestionButton = (props: {
                         size="icon"
                         className="rounded-full w-6 h-6"
                         onClick={() =>
-                          onCreateMessage(suggestion.text, {
+                          createMessage(suggestion.text, {
                             onSuccess: () => setOpen(false),
                           })
                         }

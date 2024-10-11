@@ -58,8 +58,6 @@ export const ChatAgentMessage = (props: {
   );
   const [displayPlayer, setDisplayPlayer] = useState(false);
 
-  const chatMember = chatMembers.find((m) => m.id === chatMessage.member.id);
-
   useEffect(() => {
     if (ref.current) {
       ref.current.scrollIntoView({ behavior: "smooth" });
@@ -72,6 +70,8 @@ export const ChatAgentMessage = (props: {
     }
   }, [chatMessage]);
 
+  if (!chatMessage) return;
+  const chatMember = chatMembers.find((m) => m?.id === chatMessage.member?.id);
   if (!chatMember?.agent) return;
 
   return (
@@ -174,7 +174,7 @@ const ChatAgentMessageActions = (props: {
     setTranslation,
     autoSpeech,
   } = props;
-  const { chat, setShadowing, onDeleteMessage } = useContext(
+  const { chat, setShadowing, deleteMessage } = useContext(
     ChatSessionProviderContext
   );
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -417,7 +417,7 @@ const ChatAgentMessageActions = (props: {
       <DropdownMenuContent>
         <DropdownMenuItem
           className="cursor-pointer"
-          onClick={() => onDeleteMessage(chatMessage.id)}
+          onClick={() => deleteMessage(chatMessage.id)}
         >
           <span className="mr-auto text-destructive capitalize">
             {t("delete")}
