@@ -86,11 +86,18 @@ export const ChatAgentForm = (props: {
 
   const form = useForm<z.infer<typeof agentFormSchema>>({
     resolver: zodResolver(agentFormSchema),
-    values: agent || {
-      type: ChatAgentTypeEnum.GPT,
-      name: "",
-      description: "",
-    },
+    values: agent
+      ? {
+          type: agent.type,
+          name: agent.name,
+          description: agent.description,
+          config: agent.config,
+        }
+      : {
+          type: ChatAgentTypeEnum.GPT,
+          name: "",
+          description: "",
+        },
   });
 
   const onSubmit = form.handleSubmit((data) => {
@@ -155,7 +162,7 @@ export const ChatAgentForm = (props: {
     ...templates,
   ];
 
-  useEffect(() => {
+  const applyTemplate = () => {
     if (form.watch("type") !== ChatAgentTypeEnum.GPT) {
       form.setValue("name", "");
       form.setValue("config.prompt", "");
@@ -172,6 +179,12 @@ export const ChatAgentForm = (props: {
       }
       form.setValue("config.prompt", template.prompt || "");
     }
+  };
+
+  useEffect(() => {
+    if (agent && selectedTemplate === "custom") return;
+
+    applyTemplate();
   }, [selectedTemplate, form.watch("type")]);
 
   useEffect(() => {

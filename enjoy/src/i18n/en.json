@@ -868,5 +868,6 @@
   "memberLeft": "{{name}} has left the chat.",
   "templates": "templates",
   "askAgentToReply": "Ask @{{name}} to reply",
-  "inviteAgentInChatAndReply": "Invite @{{name}} into the chat and reply"
+  "inviteAgentInChatAndReply": "Invite @{{name}} into the chat and reply",
+  "chatInputPlaceholder": "Type @ to mention agents, press Enter to send"
 }
