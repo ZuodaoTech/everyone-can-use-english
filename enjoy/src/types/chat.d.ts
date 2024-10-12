@@ -37,7 +37,7 @@ type ChatMemberType = {
   userType: "ChatAgent";
   config: {
     prompt?: string;
-    description?: string;
+    replyOnlyWhenMentioned?: boolean;
     gpt?: GptConfigType;
     tts?: TtsConfigType;
     [key: string]: any;

@@ -1,7 +1,6 @@
 import {
   AfterUpdate,
   AfterDestroy,
-  BeforeDestroy,
   BelongsTo,
   Table,
   Column,

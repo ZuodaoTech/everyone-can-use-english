@@ -20,7 +20,7 @@ import {
 } from "@renderer/context";
 import { t } from "i18next";
 import autosize from "autosize";
-import { ChatSuggestionButton } from "@renderer/components";
+import { ChatMentioning, ChatSuggestionButton } from "@renderer/components";
 import { useHotkeys } from "react-hotkeys-hook";
 import { ChatTypeEnum } from "@/types/enums";
 
@@ -39,6 +39,7 @@ export const ChatInput = () => {
     askAgent,
     createMessage,
     shadowing,
+    chatAgents,
   } = useContext(ChatSessionProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -46,6 +47,7 @@ export const ChatInput = () => {
   const [inputMode, setInputMode] = useState<"text" | "audio">("text");
   const [content, setContent] = useState("");
   const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
+  const [mentioned, setMentioned] = useState<ChatAgentType[]>([]);
 
   useEffect(() => {
     if (!inputRef.current) return;
@@ -183,75 +185,120 @@ export const ChatInput = () => {
 
   if (inputMode === "text") {
     return (
-      <div className="z-10 w-full flex items-end gap-2 px-2 py-2 bg-muted mx-4 rounded-3xl shadow-lg">
-        <Button
-          data-tooltip-id={`${chat.id}-tooltip`}
-          data-tooltip-content={t("audioInput")}
-          disabled={submitting}
-          onClick={() => setInputMode("audio")}
-          variant="ghost"
-          className=""
-          size="icon"
-        >
-          <MicIcon className="w-6 h-6" />
-        </Button>
-        <Textarea
-          ref={inputRef}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          disabled={submitting}
-          placeholder={t("pressEnterToSend")}
-          data-testid="chat-input"
-          className="flex-1 h-8 text-muted-foreground rounded-lg text-sm leading-7 px-0 py-1 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none min-h-[2.25rem] max-h-[70vh] scrollbar-thin !overflow-x-hidden"
-        />
-        <Button
-          ref={submitRef}
-          data-tooltip-id={`${chat.id}-tooltip`}
-          data-tooltip-content={t("send")}
-          onClick={() =>
-            createMessage(content, {
-              onSuccess: () => setContent(""),
-            })
-          }
-          disabled={submitting || !content}
-          className="rounded-full shadow w-8 h-8"
-          variant="default"
-          size="icon"
-        >
-          {submitting ? (
-            <LoaderIcon className="w-6 h-6 animate-spin" />
-          ) : (
-            <ArrowUpIcon className="w-6 h-6" />
+      <ChatMentioning
+        input={content}
+        members={chatAgents}
+        mentioned={mentioned.map((chatAgent) => chatAgent.id)}
+        onMention={(chatAgent) => {
+          setMentioned([...mentioned, chatAgent]);
+        }}
+        onRemove={(chatAgent) => {
+          setMentioned(mentioned.filter((ca) => ca.id !== chatAgent.id));
+        }}
+        onCancel={() => setContent("")}
+      >
+        <div className="z-10 w-full mx-4">
+          {mentioned.length > 0 && (
+            <div className="w-full bg-purple-300 rounded px-4 py-2 mb-1">
+              {mentioned.map((chatAgent) => (
+                <div
+                  className="flex items-center justify-between"
+                  key={chatAgent.id}
+                >
+                  <div className="text-sm text-purple-700">
+                    {chatAgents.findIndex((ca) => ca.id === chatAgent.id) > -1
+                      ? t("askAgentToReply", { name: chatAgent.name })
+                      : t("inviteAgentInChatAndReply", {
+                          name: chatAgent.name,
+                        })}
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="p-1 text-purple-700 hover:bg-transparent hover:text-purple-900"
+                    onClick={() =>
+                      setMentioned(
+                        mentioned.filter((ca) => ca.id !== chatAgent.id)
+                      )
+                    }
+                  >
+                    <XIcon className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
           )}
-        </Button>
-        {chat.config.enableChatAssistant && (
-          <ChatSuggestionButton chat={chat} asChild>
+          <div className="w-full flex items-end gap-2 px-2 py-2 bg-muted rounded-3xl shadow-lg">
             <Button
               data-tooltip-id={`${chat.id}-tooltip`}
-              data-tooltip-content={t("suggestion")}
-              className="rounded-full w-8 h-8"
+              data-tooltip-content={t("audioInput")}
+              disabled={submitting}
+              onClick={() => setInputMode("audio")}
               variant="ghost"
+              className=""
               size="icon"
             >
-              <WandIcon className="w-6 h-6" />
+              <MicIcon className="w-6 h-6" />
             </Button>
-          </ChatSuggestionButton>
-        )}
+            <Textarea
+              ref={inputRef}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              disabled={submitting}
+              placeholder={t("pressEnterToSend")}
+              data-testid="chat-input"
+              className="flex-1 h-8 text-muted-foreground rounded-lg text-sm leading-7 px-0 py-1 shadow-none focus-visible:outline-0 focus-visible:ring-0 border-none min-h-[2.25rem] max-h-[70vh] scrollbar-thin !overflow-x-hidden"
+            />
+            <Button
+              ref={submitRef}
+              data-tooltip-id={`${chat.id}-tooltip`}
+              data-tooltip-content={t("send")}
+              onClick={() =>
+                createMessage(content, {
+                  onSuccess: () => setContent(""),
+                })
+              }
+              disabled={submitting || !content.trim() || content === "@"}
+              className="rounded-full shadow w-8 h-8"
+              variant="default"
+              size="icon"
+            >
+              {submitting ? (
+                <LoaderIcon className="w-6 h-6 animate-spin" />
+              ) : (
+                <ArrowUpIcon className="w-6 h-6" />
+              )}
+            </Button>
+            {chat.config.enableChatAssistant && (
+              <ChatSuggestionButton chat={chat} asChild>
+                <Button
+                  data-tooltip-id={`${chat.id}-tooltip`}
+                  data-tooltip-content={t("suggestion")}
+                  className="rounded-full w-8 h-8"
+                  variant="ghost"
+                  size="icon"
+                >
+                  <WandIcon className="w-6 h-6" />
+                </Button>
+              </ChatSuggestionButton>
+            )}
 
-        {chat.type === ChatTypeEnum.GROUP && (
-          <Button
-            data-tooltip-id={`${chat.id}-tooltip`}
-            data-tooltip-content={t("continue")}
-            disabled={submitting}
-            onClick={() => askAgent({ force: true })}
-            className=""
-            variant="ghost"
-            size="icon"
-          >
-            <StepForwardIcon className="w-6 h-6" />
-          </Button>
-        )}
-      </div>
+            {chat.type === ChatTypeEnum.GROUP && (
+              <Button
+                data-tooltip-id={`${chat.id}-tooltip`}
+                data-tooltip-content={t("continue")}
+                disabled={submitting}
+                onClick={() => askAgent({ force: true })}
+                className=""
+                variant="ghost"
+                size="icon"
+              >
+                <StepForwardIcon className="w-6 h-6" />
+              </Button>
+            )}
+          </div>
+        </div>
+      </ChatMentioning>
     );
   }
 

@@ -88,6 +88,7 @@ export class ChatMessage extends Model<ChatMessage> {
   @Column(DataType.UUID)
   agentId: string | null;
 
+  @Default([])
   @Column(DataType.JSON)
   mentions: string[];
 

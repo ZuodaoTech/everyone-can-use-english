@@ -866,5 +866,7 @@
   "migrateToChat": "Migrate to chat",
   "memberJoined": "{{name}} has joined the chat.",
   "memberLeft": "{{name}} has left the chat.",
-  "templates": "templates"
+  "templates": "templates",
+  "askAgentToReply": "Ask @{{name}} to reply",
+  "inviteAgentInChatAndReply": "Invite @{{name}} into the chat and reply"
 }

@@ -19,7 +19,7 @@ type AppSettingsProviderState = {
   login?: (user: UserType) => void;
   logout?: () => void;
   setLibraryPath?: (path: string) => Promise<void>;
-  EnjoyApp?: EnjoyAppType;
+  EnjoyApp: EnjoyAppType;
   language?: "en" | "zh-CN";
   switchLanguage?: (language: "en" | "zh-CN") => void;
   nativeLanguage?: string;
@@ -38,13 +38,14 @@ type AppSettingsProviderState = {
   ipaMappings?: { [key: string]: string };
 };
 
+const EnjoyApp = window.__ENJOY_APP__;
+
 const initialState: AppSettingsProviderState = {
   webApi: null,
   user: null,
   initialized: false,
+  EnjoyApp: EnjoyApp,
 };
-
-const EnjoyApp = window.__ENJOY_APP__;
 
 export const AppSettingsProviderContext =
   createContext<AppSettingsProviderState>(initialState);
