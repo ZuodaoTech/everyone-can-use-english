@@ -73,22 +73,20 @@ export class ChatMember extends Model<ChatMember> {
 
   @AfterCreate
   static async updateChats(member: ChatMember) {
-    const agent = await ChatAgent.findByPk(member.userId);
-    if (agent) {
-      agent.changed("updatedAt", true);
-      agent.update({ updatedAt: new Date() }, { hooks: false });
-    }
-
     const chat = await Chat.findByPk(member.chatId);
     if (chat) {
       chat.changed("updatedAt", true);
-      chat.update({ updatedAt: new Date() }, { hooks: false });
+      chat.update({ updatedAt: new Date() });
     }
   }
 
   @AfterCreate
   static async chatSystemAddedMessage(member: ChatMember) {
     const chatAgent = await ChatAgent.findByPk(member.userId);
+    if (!chatAgent) return;
+    chatAgent.changed("updatedAt", true);
+    chatAgent.update({ updatedAt: new Date() });
+
     ChatMessage.create({
       chatId: member.chatId,
       content: `${chatAgent.name} has joined the chat.`,
