@@ -23,7 +23,6 @@ class ChatMessagesHandler {
       };
     }
     const chatMessages = await ChatMessage.findAll({
-      order: [["createdAt", "DESC"]],
       where,
       ...options,
     });

@@ -255,6 +255,7 @@ export const ChatInput = () => {
               data-tooltip-content={t("send")}
               onClick={() =>
                 createMessage(content, {
+                  mentions: mentioned.map((m) => m.id),
                   onSuccess: () => setContent(""),
                 })
               }

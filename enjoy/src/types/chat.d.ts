@@ -53,6 +53,7 @@ type ChatMessageType = {
   chatId: string;
   content: string;
   state: ChatMessageStateEnum;
+  mentions: string[];
   createdAt: Date;
   updatedAt: Date;
   member?: ChatMemberType;

@@ -14,18 +14,24 @@ import {
 import { BufferMemory, ChatMessageHistory } from "langchain/memory";
 import { ConversationChain } from "langchain/chains";
 import { LLMResult } from "@langchain/core/outputs";
-import { CHAT_GROUP_PROMPT_TEMPLATE } from "@/constants";
+import { CHAT_GROUP_PROMPT_TEMPLATE, DEFAULT_GPT_CONFIG } from "@/constants";
 import dayjs from "@renderer/lib/dayjs";
 import Mustache from "mustache";
 import { t } from "i18next";
 import {
+  ChatAgentTypeEnum,
   ChatMessageRoleEnum,
   ChatMessageStateEnum,
   ChatTypeEnum,
 } from "@/types/enums";
 
 export const useChatSession = (chatId: string) => {
-  const { EnjoyApp, user, apiUrl } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, user, apiUrl, learningLanguage } = useContext(
+    AppSettingsProviderContext
+  );
+  const { currentGptEngine, currentTtsEngine } = useContext(
+    AISettingsProviderContext
+  );
   const { openai } = useContext(AISettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [chatMessages, dispatchChatMessages] = useReducer(
@@ -50,27 +56,6 @@ export const useChatSession = (chatId: string) => {
       .then((data) => {
         dispatchChatMessages({ type: "set", records: data });
         return data;
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  };
-
-  const createUserMessage = (
-    content: string,
-    options: { recordingUrl?: string; mentions?: string[] } = {}
-  ) => {
-    const { recordingUrl, mentions } = options;
-    if (!content) return;
-
-    return EnjoyApp.chatMessages
-      .create({
-        chatId,
-        content,
-        role: ChatMessageRoleEnum.USER,
-        state: ChatMessageStateEnum.PENDING,
-        mentions,
-        recordingUrl,
       })
       .catch((error) => {
         toast.error(error.message);
@@ -386,6 +371,46 @@ export const useChatSession = (chatId: string) => {
     );
   };
 
+  const buildAgentMember = async (
+    agentId: string
+  ): Promise<ChatMemberDtoType> => {
+    const agent = await EnjoyApp.chatAgents.findOne({ where: { id: agentId } });
+    if (!agent) {
+      throw new Error(t("models.chatAgent.notFound"));
+    }
+
+    const config =
+      agent.type === ChatAgentTypeEnum.TTS
+        ? {
+            tts: {
+              engine: currentTtsEngine.name,
+              model: currentTtsEngine.model,
+              voice: currentTtsEngine.voice,
+              language: learningLanguage,
+              ...agent.config.tts,
+            },
+          }
+        : {
+            gpt: {
+              ...DEFAULT_GPT_CONFIG,
+              engine: currentGptEngine.name,
+              model: currentGptEngine.models.default,
+            },
+            tts: {
+              engine: currentTtsEngine.name,
+              model: currentTtsEngine.model,
+              voice: currentTtsEngine.voice,
+              language: learningLanguage,
+            },
+          };
+    return {
+      chatId,
+      userId: agent.id,
+      userType: "ChatAgent",
+      config,
+    };
+  };
+
   useEffect(() => {
     if (!chatId) return;
 
@@ -405,9 +430,9 @@ export const useChatSession = (chatId: string) => {
     chatMessages,
     fetchChatMessages,
     dispatchChatMessages,
-    createUserMessage,
     updateMessage,
     deleteMessage,
     invokeAgent,
+    buildAgentMember,
   };
 };
