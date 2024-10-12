@@ -56,7 +56,14 @@ export const useChatMessage = (chatId: string) => {
       });
   };
 
-  const createUserMessage = (content: string, recordingUrl?: string) => {
+  const createUserMessage = (
+    content: string,
+    options: {
+      recordingUrl?: string;
+      mentions?: string[];
+    } = {}
+  ) => {
+    const { recordingUrl, mentions } = options;
     if (!content) return;
 
     return EnjoyApp.chatMessages

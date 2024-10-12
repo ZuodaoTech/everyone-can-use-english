@@ -56,7 +56,11 @@ export const useChatSession = (chatId: string) => {
       });
   };
 
-  const createUserMessage = (content: string, recordingUrl?: string) => {
+  const createUserMessage = (
+    content: string,
+    options: { recordingUrl?: string; mentions?: string[] } = {}
+  ) => {
+    const { recordingUrl, mentions } = options;
     if (!content) return;
 
     return EnjoyApp.chatMessages
@@ -65,6 +69,7 @@ export const useChatSession = (chatId: string) => {
         content,
         role: ChatMessageRoleEnum.USER,
         state: ChatMessageStateEnum.PENDING,
+        mentions,
         recordingUrl,
       })
       .catch((error) => {

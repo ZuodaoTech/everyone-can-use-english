@@ -47,7 +47,9 @@ class ChatMessagesHandler {
 
   private async create(
     _event: IpcMainEvent,
-    data: Partial<Attributes<ChatMessage>> & { recordingUrl?: string }
+    data: Partial<Attributes<ChatMessage>> & {
+      recordingUrl?: string;
+    }
   ) {
     const { recordingUrl } = data;
     delete data.recordingUrl;

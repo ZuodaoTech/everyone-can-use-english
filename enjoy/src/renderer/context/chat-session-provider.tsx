@@ -156,15 +156,16 @@ export const ChatSessionProvider = ({
   const createMessage = async (
     content: string,
     options: {
+      mentions?: string[];
       onSuccess?: (message: ChatMessageType) => void;
       onError?: (error: Error) => void;
     } = {}
   ) => {
-    const { onSuccess, onError } = options;
+    const { onSuccess, onError, mentions } = options;
     if (submitting) return;
 
     setSubmitting(true);
-    createUserMessage(content)
+    createUserMessage(content, { mentions })
       .then((message) => {
         if (message) {
           onSuccess?.(message);
@@ -206,7 +207,7 @@ export const ChatSessionProvider = ({
           recordingUrl: url,
         });
       } else {
-        await createUserMessage(transcript, url);
+        await createUserMessage(transcript, { recordingUrl: url });
       }
     } catch (error) {
       toast.error(error.message);
