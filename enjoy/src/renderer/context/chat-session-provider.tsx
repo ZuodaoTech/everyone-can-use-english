@@ -203,6 +203,7 @@ export const ChatSessionProvider = ({
     try {
       for (const userId of unJoinedMentions) {
         const memberDto = await buildAgentMember(userId);
+        memberDto.config.replyOnlyWhenMentioned = true;
         await EnjoyApp.chatMembers.create(memberDto);
       }
       return true;
@@ -330,7 +331,10 @@ export const ChatSessionProvider = ({
     }
 
     // pick a member that has not spoken yet
-    return members.find((member) => !spokeMembers.has(member.id));
+    return members.find(
+      (member) =>
+        !member.config.replyOnlyWhenMentioned && !spokeMembers.has(member.id)
+    );
   };
 
   const onAssess = (assessment: PronunciationAssessmentType) => {

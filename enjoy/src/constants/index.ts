@@ -61,10 +61,7 @@ export const NOT_SUPPORT_JSON_FORMAT_MODELS = [
 export const CHAT_GROUP_PROMPT_TEMPLATE = `You are {name} in this chat. You should reply to everyone in this chat and always stay in character.
 
 [Chat History]
-{history}
-
-Return reply as {name}.
-`;
+{history}`;
 
 export const DEFAULT_GPT_CONFIG = {
   model: "gpt-4o",

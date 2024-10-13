@@ -230,12 +230,6 @@ export const useChatSession = (chatId: string) => {
         m.state === ChatMessageStateEnum.PENDING
     );
 
-    const llm = buildLlm(member);
-    const prompt = ChatPromptTemplate.fromMessages([
-      ["system", buildSystemPrompt(member)],
-      ["user", CHAT_GROUP_PROMPT_TEMPLATE],
-    ]);
-    const chain = prompt.pipe(llm);
     const historyBufferSize = member.config.gpt.historyBufferSize || 10;
     const history = chatMessages
       .filter(
@@ -259,9 +253,18 @@ export const useChatSession = (chatId: string) => {
       })
       .join("\n");
 
+    const llm = buildLlm(member);
+    const prompt = ChatPromptTemplate.fromMessages([
+      ["system", buildSystemPrompt(member)],
+      ["system", CHAT_GROUP_PROMPT_TEMPLATE],
+      ["user", "{input}"],
+    ]);
+    const chain = prompt.pipe(llm);
+
     const reply = await chain.invoke({
       name: member.agent.name,
       history,
+      input: "Return your reply directly without any extra words.",
     });
 
     // the reply may contain the member's name like "ChatAgent: xxx". We need to remove it.
@@ -391,6 +394,8 @@ export const useChatSession = (chatId: string) => {
             },
           }
         : {
+            replyOnlyWhenMentioned: false,
+            prompt: "",
             gpt: {
               ...DEFAULT_GPT_CONFIG,
               engine: currentGptEngine.name,
@@ -403,6 +408,7 @@ export const useChatSession = (chatId: string) => {
               language: learningLanguage,
             },
           };
+
     return {
       chatId,
       userId: agent.id,
