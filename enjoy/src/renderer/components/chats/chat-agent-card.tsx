@@ -13,7 +13,7 @@ import { EllipsisIcon } from "lucide-react";
 
 export const ChatAgentCard = (props: {
   chatAgent: ChatAgentType;
-  selected: boolean;
+  selected?: boolean;
   onSelect: (chatAgent: ChatAgentType) => void;
   onEdit?: (chatAgent: ChatAgentType) => void;
   onDelete?: (chatAgent: ChatAgentType) => void;

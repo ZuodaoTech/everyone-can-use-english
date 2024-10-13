@@ -42,8 +42,7 @@ export const CopilotProvider = ({
   const [active, setActive] = useState(false);
   const [currentChat, setCurrentChat] = useState<ChatType>(null);
   const [occupiedChat, setOccupiedChat] = useState<ChatType | null>(null);
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const { learningLanguage } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const { sttEngine, currentGptEngine, currentTtsEngine } = useContext(
     AISettingsProviderContext
   );

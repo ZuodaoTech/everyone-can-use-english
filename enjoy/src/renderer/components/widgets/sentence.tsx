@@ -15,7 +15,11 @@ export const Sentence = ({
       {words.map((word, index) => {
         return (
           <span key={index}>
-            <Vocabulary key={index} word={word} context={sentence} />
+            {word.match(/[a-zA-Z]+/) ? (
+              <Vocabulary word={word} context={sentence} />
+            ) : (
+              word
+            )}
             {index === words.length - 1 ? " " : " "}
           </span>
         );

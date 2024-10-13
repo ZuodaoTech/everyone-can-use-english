@@ -37,7 +37,7 @@ type ChatMemberType = {
   userType: "ChatAgent";
   config: {
     prompt?: string;
-    description?: string;
+    replyOnlyWhenMentioned?: boolean;
     gpt?: GptConfigType;
     tts?: TtsConfigType;
     [key: string]: any;
@@ -53,6 +53,7 @@ type ChatMessageType = {
   chatId: string;
   content: string;
   state: ChatMessageStateEnum;
+  mentions: string[];
   createdAt: Date;
   updatedAt: Date;
   member?: ChatMemberType;
@@ -99,8 +100,7 @@ type ChatMemberDtoType = {
   userType: "ChatAgent";
   config: {
     prompt?: string;
-    description?: string;
-    language?: string;
+    replyOnlyWhenMentioned?: boolean;
     gpt?: GptConfigType;
     tts?: TtsConfigType;
     [key: string]: any;

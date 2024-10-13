@@ -22,6 +22,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  Switch,
   Textarea,
   toast,
 } from "@renderer/components/ui";
@@ -43,8 +44,10 @@ export const ChatMemberForm = (props: {
   const buildFullPrompt = (prompt: string) => {
     return Mustache.render(
       `{{{agent_prompt}}}
-      {{{chat_prompt}}}
-      {{{member_prompt}}}`,
+
+{{{chat_prompt}}}
+
+{{{member_prompt}}}`,
       {
         agent_prompt: member.agent.prompt,
         chat_prompt: chat.config.prompt,
@@ -59,7 +62,7 @@ export const ChatMemberForm = (props: {
     userType: z.enum(["User", "ChatAgent"]).default("ChatAgent"),
     config: z.object({
       prompt: z.string().optional(),
-      description: z.string().optional(),
+      replyOnlyWhenMentioned: z.boolean().default(false),
       gpt: z.object({
         engine: z.string(),
         model: z.string(),
@@ -132,6 +135,24 @@ export const ChatMemberForm = (props: {
   return (
     <Form {...form}>
       <form onSubmit={onSubmit}>
+        <FormField
+          control={form.control}
+          name="config.replyOnlyWhenMentioned"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center space-x-2">
+                <FormLabel>{t("replyOnlyWhenMentioned")}</FormLabel>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </div>
+              <FormDescription>
+                {t("replyOnlyWhenMentionedDescription")}
+              </FormDescription>
+            </FormItem>
+          )}
+        />
         <Accordion
           defaultValue="gpt"
           type="single"

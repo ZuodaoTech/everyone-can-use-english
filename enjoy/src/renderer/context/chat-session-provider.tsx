@@ -57,6 +57,7 @@ type ChatSessionProviderState = {
   createMessage?: (
     content: string,
     options: {
+      mentions?: string[];
       onSuccess?: (message: ChatMessageType) => void;
       onError?: (error: Error) => void;
     }
@@ -116,10 +117,10 @@ export const ChatSessionProvider = ({
     chatMembers,
     chatMessages,
     dispatchChatMessages,
-    createUserMessage,
     updateMessage,
     deleteMessage,
     invokeAgent,
+    buildAgentMember,
   } = useChatSession(chatId);
 
   const [deletingMessage, setDeletingMessage] = useState<string>(null);
@@ -156,15 +157,28 @@ export const ChatSessionProvider = ({
   const createMessage = async (
     content: string,
     options: {
+      mentions?: string[];
       onSuccess?: (message: ChatMessageType) => void;
       onError?: (error: Error) => void;
     } = {}
   ) => {
-    const { onSuccess, onError } = options;
+    const { onSuccess, onError, mentions } = options;
     if (submitting) return;
 
     setSubmitting(true);
-    createUserMessage(content)
+    const joined = await ensureAllMentionsJoined(mentions);
+    if (!joined) {
+      setSubmitting(false);
+      return;
+    }
+    EnjoyApp.chatMessages
+      .create({
+        chatId,
+        content,
+        role: ChatMessageRoleEnum.USER,
+        state: ChatMessageStateEnum.PENDING,
+        mentions,
+      })
       .then((message) => {
         if (message) {
           onSuccess?.(message);
@@ -177,6 +191,26 @@ export const ChatSessionProvider = ({
       .finally(() => {
         setSubmitting(false);
       });
+  };
+
+  const ensureAllMentionsJoined = async (mentions: string[]) => {
+    if (!mentions || mentions.length === 0) return true;
+
+    const unJoinedMentions = mentions.filter((userId) => {
+      return chatMembers.findIndex((m) => m.userId === userId) === -1;
+    });
+
+    try {
+      for (const userId of unJoinedMentions) {
+        const memberDto = await buildAgentMember(userId);
+        memberDto.config.replyOnlyWhenMentioned = true;
+        await EnjoyApp.chatMembers.create(memberDto);
+      }
+      return true;
+    } catch (error) {
+      toast.error(error.message);
+      return false;
+    }
   };
 
   const onRecorded = async (blob: Blob) => {
@@ -201,12 +235,18 @@ export const ChatSessionProvider = ({
       });
 
       if (pendingMessage) {
-        await updateMessage(pendingMessage.id, {
+        await EnjoyApp.chatMessages.update(pendingMessage.id, {
           content: transcript,
           recordingUrl: url,
         });
       } else {
-        await createUserMessage(transcript, url);
+        await EnjoyApp.chatMessages.create({
+          chatId,
+          content: transcript,
+          role: ChatMessageRoleEnum.USER,
+          state: ChatMessageStateEnum.PENDING,
+          recordingUrl: url,
+        });
       }
     } catch (error) {
       toast.error(error.message);
@@ -261,6 +301,7 @@ export const ChatSessionProvider = ({
     );
     let currentIndex = messages.length - 1;
     const spokeMembers = new Set();
+    let lastUserMessage: ChatMessageType = null;
 
     while (currentIndex >= 0) {
       const message = messages[currentIndex];
@@ -271,6 +312,7 @@ export const ChatSessionProvider = ({
         break;
       }
       if (message.role === ChatMessageRoleEnum.USER) {
+        lastUserMessage = message;
         break;
       }
       if (!message.member) break;
@@ -279,10 +321,20 @@ export const ChatSessionProvider = ({
       currentIndex--;
     }
 
-    // pick a member that has not spoken yet
-    const nextMember = members.find((member) => !spokeMembers.has(member.id));
+    // If the last user message mentions some members, pick one of them that has not spoken yet
+    if (lastUserMessage && lastUserMessage.mentions.length > 0) {
+      return members.find(
+        (member) =>
+          lastUserMessage.mentions.includes(member.userId) &&
+          !spokeMembers.has(member.id)
+      );
+    }
 
-    return nextMember;
+    // pick a member that has not spoken yet
+    return members.find(
+      (member) =>
+        !member.config.replyOnlyWhenMentioned && !spokeMembers.has(member.id)
+    );
   };
 
   const onAssess = (assessment: PronunciationAssessmentType) => {
