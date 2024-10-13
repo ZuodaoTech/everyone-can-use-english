@@ -5,6 +5,7 @@ import {
   PopoverAnchor,
   PopoverContent,
   PopoverTrigger,
+  Separator,
 } from "@renderer/components/ui";
 import { useContext, useEffect, useState } from "react";
 import { ChatAgentCard } from "@renderer/components";
@@ -35,7 +36,6 @@ export const ChatMentioning = (props: {
     EnjoyApp.chatAgents.findAll({}).then((chatAgents) => {
       // sort members to the front
       const sortedChatAgents = [
-        ...members,
         ...chatAgents.filter((ca) => !members.some((m) => m.id === ca.id)),
       ];
       setChatAgents(sortedChatAgents);
@@ -67,6 +67,21 @@ export const ChatMentioning = (props: {
         className="p-0 w-[var(--radix-popper-anchor-width)]"
       >
         <div className="w-full max-h-72 overflow-y-auto">
+          {members.map((member) => (
+            <ChatAgentCard
+              key={member.id}
+              chatAgent={member}
+              onSelect={() => {
+                if (mentioned.includes(member.id)) {
+                  onRemove(member);
+                } else {
+                  onMention(member);
+                }
+              }}
+              selected={mentioned.includes(member.id)}
+            />
+          ))}
+          <Separator />
           {chatAgents.map((chatAgent) => (
             <ChatAgentCard
               key={chatAgent.id}
