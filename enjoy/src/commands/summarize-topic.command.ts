@@ -14,9 +14,11 @@ export const summarizeTopicCommand = async (
 ): Promise<string> => {
   if (!text) throw new Error("Text is required");
 
+  const formattedText = text.replace(/\{/g, "{{").replace(/\}/g, "}}");
+
   const prompt = await ChatPromptTemplate.fromMessages([
     ["system", SYSTEM_PROMPT],
-    ["human", text],
+    ["human", formattedText],
   ]).format({
     learning_language: LANGUAGES.find((l) => l.code === learningLanguage).name,
   });
