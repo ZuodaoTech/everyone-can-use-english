@@ -869,7 +869,7 @@
   "templates": "templates",
   "askAgentToReply": "Ask @{{name}} to reply",
   "inviteAgentInChatAndReply": "Invite @{{name}} into the chat and reply",
-  "chatInputPlaceholder": "Type @ to mention agents, press Enter to send",
+  "chatInputPlaceholder": "Enter to send, Shift+Enter to new line, @ to mention agents",
   "replyOnlyWhenMentioned": "Reply only when mentioned",
   "replyOnlyWhenMentionedDescription": "Will only reply when you mention this agent using @"
 }

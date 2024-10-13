@@ -869,7 +869,7 @@
   "templates": "模板",
   "askAgentToReply": "请 @{{name}} 回复",
   "inviteAgentInChatAndReply": "邀请 @{{name}} 加入聊天并回复",
-  "chatInputPlaceholder": "输入 @ 指定智能体回答，按回车发送",
+  "chatInputPlaceholder": "Enter 发送， Shift+Enter 换行， @ 指定智能体回答",
   "replyOnlyWhenMentioned": "仅在提及时回复",
   "replyOnlyWhenMentionedDescription": "通过 @ 指定智能体时才会回复"
 }
