@@ -30,13 +30,15 @@ export const chatSuggestionCommand = async (
     ),
   });
 
+  const formattedContext = context.replace(/\{/g, "{{").replace(/\}/g, "}}");
+
   const prompt = await ChatPromptTemplate.fromMessages([
     ["system", SYSTEM_PROMPT],
     ["human", PROMPT],
   ]).format({
     native_language: nativeLanguage,
     learning_language: learningLanguage,
-    context,
+    context: formattedContext,
   });
 
   return jsonCommand(prompt, { ...options, schema });

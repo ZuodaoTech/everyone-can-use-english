@@ -19,13 +19,15 @@ export const refineCommand = async (
   if (!text) throw new Error("Text is required");
 
   const { learningLanguage, nativeLanguage, context = "None" } = params;
+  const formattedContext = context.replace(/\{/g, "{{").replace(/\}/g, "}}");
+
   const prompt = await ChatPromptTemplate.fromMessages([
     ["system", SYSTEM_PROMPT],
     ["human", text],
   ]).format({
     learning_language: LANGUAGES.find((l) => l.code === learningLanguage).name,
     native_language: LANGUAGES.find((l) => l.code === nativeLanguage).name,
-    context,
+    context: formattedContext,
   });
 
   return textCommand(prompt, options);
