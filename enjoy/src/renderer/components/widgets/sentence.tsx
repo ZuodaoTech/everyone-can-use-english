@@ -8,7 +8,9 @@ export const Sentence = ({
   sentence: string;
   className?: string;
 }) => {
-  let words = sentence.split(" ");
+  // split by space or punctuation
+  // Sentence may be in other languages, so need to handle only English words
+  let words = sentence.split(/(\s+|[a-zA-Z]+)/);
 
   return (
     <span className={cn("break-words align-middle", className)}>
@@ -20,7 +22,6 @@ export const Sentence = ({
             ) : (
               word
             )}
-            {index === words.length - 1 ? " " : " "}
           </span>
         );
       })}
