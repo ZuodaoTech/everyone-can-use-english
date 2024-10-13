@@ -2,6 +2,7 @@ import { ArrowUpIcon, WandIcon } from "lucide-react";
 import {
   Button,
   Popover,
+  PopoverAnchor,
   PopoverArrow,
   PopoverContent,
   PopoverTrigger,
@@ -25,8 +26,9 @@ export const ChatSuggestionButton = (props: {
   chat: ChatType;
   asChild?: boolean;
   children?: ReactElement;
+  anchorRef?: React.RefObject<HTMLDivElement>;
 }) => {
-  const { chat } = props;
+  const { chat, anchorRef } = props;
   const { chatMessages, createMessage } = useContext(
     ChatSessionProviderContext
   );

@@ -199,7 +199,7 @@ export const ChatInput = () => {
       >
         <div className="z-10 w-full mx-4">
           {mentioned.length > 0 && (
-            <div className="w-full bg-purple-300 rounded px-4 py-2 mb-1">
+            <div className="w-full bg-purple-300 rounded px-4 py-2 mb-1 opacity-80 hover:opacity-100">
               {mentioned.map((chatAgent) => (
                 <div
                   className="flex items-center justify-between"
@@ -215,7 +215,7 @@ export const ChatInput = () => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="p-1 text-purple-700 hover:bg-transparent hover:text-purple-900"
+                    className="w-6 h-6 text-purple-700 hover:bg-transparent hover:text-purple-900"
                     onClick={() =>
                       setMentioned(
                         mentioned.filter((ca) => ca.id !== chatAgent.id)
