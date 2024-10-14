@@ -3439,9 +3439,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/community@npm:^0.3.4":
-  version: 0.3.4
-  resolution: "@langchain/community@npm:0.3.4"
+"@langchain/community@npm:^0.3.5":
+  version: 0.3.5
+  resolution: "@langchain/community@npm:0.3.5"
   dependencies:
     "@langchain/openai": "npm:>=0.2.0 <0.4.0"
     binary-extensions: "npm:^2.2.0"
@@ -3483,6 +3483,7 @@ __metadata:
     "@huggingface/inference": ^2.6.4
     "@langchain/core": ">=0.2.21 <0.4.0"
     "@layerup/layerup-security": ^1.5.12
+    "@libsql/client": ^0.14.0
     "@mendable/firecrawl-js": ^0.0.13
     "@mlc-ai/web-llm": "*"
     "@mozilla/readability": "*"
@@ -3630,6 +3631,8 @@ __metadata:
     "@huggingface/inference":
       optional: true
     "@layerup/layerup-security":
+      optional: true
+    "@libsql/client":
       optional: true
     "@mendable/firecrawl-js":
       optional: true
@@ -3813,7 +3816,7 @@ __metadata:
       optional: true
     youtubei.js:
       optional: true
-  checksum: 10c0/4c4dcc0cc3f1070f5000231d795d874f3d4c4500fe0eb502ab419cf8b565e3ac284cf45fa8e1d1a018a52e8f6dfa5d84728822620de2b3ba8c6b748ed4b5c3dc
+  checksum: 10c0/242d85ec7c3e6ed903b3941ee9e09b744800b8819bd5fc059f033eea9de6625c664bc0fcf229f4cb56a10a6c88efb0113856bcfb8515b36b6a8f9b19316e5d4d
   languageName: node
   linkType: hard
 
@@ -12350,7 +12353,7 @@ __metadata:
     "@electron-forge/publisher-s3": "npm:^7.5.0"
     "@electron/fuses": "npm:^1.8.0"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@langchain/community": "npm:^0.3.4"
+    "@langchain/community": "npm:^0.3.5"
     "@langchain/core": "npm:^0.3.9"
     "@langchain/ollama": "npm:^0.1.0"
     "@mozilla/readability": "npm:^0.5.0"
