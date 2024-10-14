@@ -873,5 +873,11 @@
   "inviteAgentInChatAndReply": "邀请 @{{name}} 加入聊天并回复",
   "chatInputPlaceholder": "Enter 发送， Shift+Enter 换行， @ 指定智能体回答",
   "replyOnlyWhenMentioned": "仅在提及时回复",
-  "replyOnlyWhenMentionedDescription": "通过 @ 指定智能体时才会回复"
+  "replyOnlyWhenMentionedDescription": "通过 @ 指定智能体时才会回复",
+  "bulkDelete": "批量删除",
+  "deleteRecordingsWithoutAssessment": "删除未评估的录音",
+  "deleteRecordingsWithScoreLessThan90": "删除得分低于 90 分的录音",
+  "deleteRecordingsWithScoreLessThan80": "删除得分低于 80 分的录音",
+  "deleteAllRecordings": "删除所有录音",
+  "bulkDeleteConfirmation": "此操作无法撤销。您的录音统计数据将保持不变，但录音文件将被永久删除。"
 }

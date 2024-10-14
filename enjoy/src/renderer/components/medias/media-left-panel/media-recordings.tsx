@@ -188,51 +188,50 @@ export const MediaRecordings = () => {
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle>{t("bulkDelete")}</AlertDialogTitle>
-                    <AlertDialogDescription>
+                    <AlertDialogDescription className="mb-4">
                       {t("bulkDeleteConfirmation")}
-
-                      <RadioGroup
-                        value={deleteBulkType}
-                        onValueChange={(value) => setDeleteBulkType(value)}
-                      >
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="noAssessments"
-                            id="noAssessments"
-                          />
-                          <Label htmlFor="noAssessments">
-                            {t("deleteRecordingsWithoutAssessment")}(
-                            {recordingsWithoutAssessment.length})
-                          </Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="scoreLessThan90"
-                            id="scoreLessThan90"
-                          />
-                          <Label htmlFor="scoreLessThan90">
-                            {t("deleteRecordingsWithScoreLessThan90")}(
-                            {recordingsWithScoreLessThan90.length})
-                          </Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="scoreLessThan80"
-                            id="scoreLessThan80"
-                          />
-                          <Label htmlFor="scoreLessThan80">
-                            {t("deleteRecordingsWithScoreLessThan80")}(
-                            {recordingsWithScoreLessThan80.length})
-                          </Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="all" id="all" />
-                          <Label htmlFor="all">
-                            {t("deleteAllRecordings")}({recordings.length})
-                          </Label>
-                        </div>
-                      </RadioGroup>
                     </AlertDialogDescription>
+                    <RadioGroup
+                      value={deleteBulkType}
+                      onValueChange={(value) => setDeleteBulkType(value)}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="noAssessments"
+                          id="noAssessments"
+                        />
+                        <Label htmlFor="noAssessments">
+                          {t("deleteRecordingsWithoutAssessment")}(
+                          {recordingsWithoutAssessment.length})
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="scoreLessThan90"
+                          id="scoreLessThan90"
+                        />
+                        <Label htmlFor="scoreLessThan90">
+                          {t("deleteRecordingsWithScoreLessThan90")}(
+                          {recordingsWithScoreLessThan90.length})
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="scoreLessThan80"
+                          id="scoreLessThan80"
+                        />
+                        <Label htmlFor="scoreLessThan80">
+                          {t("deleteRecordingsWithScoreLessThan80")}(
+                          {recordingsWithScoreLessThan80.length})
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="all" id="all" />
+                        <Label htmlFor="all" className="text-destructive">
+                          {t("deleteAllRecordings")}({recordings.length})
+                        </Label>
+                      </div>
+                    </RadioGroup>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
