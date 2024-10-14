@@ -32,6 +32,7 @@ import echogarden from "@main/echogarden";
 import { t } from "i18next";
 import { Attributes, Transaction } from "sequelize";
 import { v5 as uuidv5 } from "uuid";
+import FfmpegWrapper from "@main/ffmpeg";
 
 const logger = log.scope("db/models/recording");
 
@@ -299,14 +300,10 @@ export class Recording extends Model<Recording> {
     }
 
     // rename file
-    const filename = `${md5}.wav`;
-    fs.moveSync(
-      file,
-      path.join(settings.userDataPath(), "recordings", filename),
-      {
-        overwrite: true,
-      }
-    );
+    const filename = `${md5}.mp3`;
+    const destFile = path.join(settings.userDataPath(), "recordings", filename);
+    const ffmpeg = new FfmpegWrapper();
+    await ffmpeg.compressAudio(file, destFile);
 
     const userId = settings.getSync("user.id");
     const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);

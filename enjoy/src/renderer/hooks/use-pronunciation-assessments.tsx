@@ -19,7 +19,8 @@ export const usePronunciationAssessments = () => {
     }
 
     EnjoyApp.recordings.sync(recording.id);
-    const blob = await (await fetch(recording.src)).blob();
+    const url = await EnjoyApp.echogarden.transcode(recording.src);
+    const blob = await (await fetch(url)).blob();
     targetId = recording.id;
     targetType = "Recording";
 
