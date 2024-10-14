@@ -2125,6 +2125,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@electron-forge/maker-base@npm:7.5.0":
+  version: 7.5.0
+  resolution: "@electron-forge/maker-base@npm:7.5.0"
+  dependencies:
+    "@electron-forge/shared-types": "npm:7.5.0"
+    fs-extra: "npm:^10.0.0"
+    which: "npm:^2.0.2"
+  checksum: 10c0/897fe0bfc02baacb0f95a4ca8ac700caad55aeeddf56088fb8f5787e72956c5735d00349660f2bbf1270136afa2b855595f391b41242ccdcf8244e3135b2a7f0
+  languageName: node
+  linkType: hard
+
 "@electron-forge/maker-deb@npm:<7.5.0":
   version: 7.4.0
   resolution: "@electron-forge/maker-deb@npm:7.4.0"
@@ -2183,16 +2194,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron-forge/maker-zip@npm:<7.5.0":
-  version: 7.4.0
-  resolution: "@electron-forge/maker-zip@npm:7.4.0"
+"@electron-forge/maker-zip@npm:<7.6.0":
+  version: 7.5.0
+  resolution: "@electron-forge/maker-zip@npm:7.5.0"
   dependencies:
-    "@electron-forge/maker-base": "npm:7.4.0"
-    "@electron-forge/shared-types": "npm:7.4.0"
+    "@electron-forge/maker-base": "npm:7.5.0"
+    "@electron-forge/shared-types": "npm:7.5.0"
     cross-zip: "npm:^4.0.0"
     fs-extra: "npm:^10.0.0"
     got: "npm:^11.8.5"
-  checksum: 10c0/405d329b9191eaaba51b68378a60257673595265710aaeae65a40134e8c26c49295f6ddaf100b05f4f270496ca4f5ead1219f16bcb05149a87aeeb34f29dcdc7
+  checksum: 10c0/5bea59c084e36b11b67e7d58b8fd9de6e9098546d6cda8f04ab888b7b041adbd71e013c5f624f0354e0de718144b06e82df740fbd8a51b2667a6ea85e644f6cb
   languageName: node
   linkType: hard
 
@@ -12342,7 +12353,7 @@ __metadata:
     "@electron-forge/maker-dmg": "npm:<7.5.0"
     "@electron-forge/maker-rpm": "npm:<7.5.0"
     "@electron-forge/maker-squirrel": "npm:<7.5.0"
-    "@electron-forge/maker-zip": "npm:<7.5.0"
+    "@electron-forge/maker-zip": "npm:<7.6.0"
     "@electron-forge/plugin-auto-unpack-natives": "npm:<7.5.0"
     "@electron-forge/plugin-fuses": "npm:<7.5.0"
     "@electron-forge/plugin-vite": "npm:<7.5.0"
