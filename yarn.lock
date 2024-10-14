@@ -2125,6 +2125,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@electron-forge/maker-base@npm:7.5.0":
+  version: 7.5.0
+  resolution: "@electron-forge/maker-base@npm:7.5.0"
+  dependencies:
+    "@electron-forge/shared-types": "npm:7.5.0"
+    fs-extra: "npm:^10.0.0"
+    which: "npm:^2.0.2"
+  checksum: 10c0/897fe0bfc02baacb0f95a4ca8ac700caad55aeeddf56088fb8f5787e72956c5735d00349660f2bbf1270136afa2b855595f391b41242ccdcf8244e3135b2a7f0
+  languageName: node
+  linkType: hard
+
 "@electron-forge/maker-deb@npm:<7.5.0":
   version: 7.4.0
   resolution: "@electron-forge/maker-deb@npm:7.4.0"
@@ -2154,17 +2165,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron-forge/maker-rpm@npm:<7.5.0":
-  version: 7.4.0
-  resolution: "@electron-forge/maker-rpm@npm:7.4.0"
+"@electron-forge/maker-rpm@npm:<7.6.0":
+  version: 7.5.0
+  resolution: "@electron-forge/maker-rpm@npm:7.5.0"
   dependencies:
-    "@electron-forge/maker-base": "npm:7.4.0"
-    "@electron-forge/shared-types": "npm:7.4.0"
+    "@electron-forge/maker-base": "npm:7.5.0"
+    "@electron-forge/shared-types": "npm:7.5.0"
     electron-installer-redhat: "npm:^3.2.0"
   dependenciesMeta:
     electron-installer-redhat:
       optional: true
-  checksum: 10c0/c05e4f68c1b378575d6c2b458e29a13a7c614227490665f143b6cd042f7b16f1ac0c02642c86a734b5730c3c1f5f8c482e99a73448393223e0260a4ab2b371b1
+  checksum: 10c0/284a11e4c73d983e3481c625f0fc74690a9b42e3cd411bc8331d9d60408cd6655337d6c2bd7e151e4e27870ba2a45a0b7baef9ebe34e9c2295abc870bbb4648a
   languageName: node
   linkType: hard
 
@@ -12340,7 +12351,7 @@ __metadata:
     "@electron-forge/cli": "npm:<7.5.0"
     "@electron-forge/maker-deb": "npm:<7.5.0"
     "@electron-forge/maker-dmg": "npm:<7.5.0"
-    "@electron-forge/maker-rpm": "npm:<7.5.0"
+    "@electron-forge/maker-rpm": "npm:<7.6.0"
     "@electron-forge/maker-squirrel": "npm:<7.5.0"
     "@electron-forge/maker-zip": "npm:<7.5.0"
     "@electron-forge/plugin-auto-unpack-natives": "npm:<7.5.0"
