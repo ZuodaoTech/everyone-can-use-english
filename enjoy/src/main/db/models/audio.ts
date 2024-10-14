@@ -340,7 +340,7 @@ export class Audio extends Model<Audio> {
     logger.debug("Generated ID:", id);
 
     const destDir = path.join(settings.userDataPath(), "audios");
-    const destFile = path.join(destDir, `${md5}.mp3`);
+    const destFile = path.join(destDir, `${md5}.compressed.mp3`);
 
     let metadata = {
       extname,

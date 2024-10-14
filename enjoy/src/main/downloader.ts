@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import mainWin from "@main/window";
 import log from "@main/logger";
+import settings from "@main/settings";
 
 const logger = log.scope("downloader");
 class Downloader {
@@ -24,6 +25,7 @@ class Downloader {
     return new Promise((resolve, _reject) => {
       webContents.downloadURL(url);
 
+      const cachePath = settings.cachePath();
       webContents.session.on("will-download", (_event, item, _webContents) => {
         if (savePath) {
           try {
@@ -36,9 +38,7 @@ class Downloader {
             item.setSavePath(savePath);
           }
         } else {
-          item.setSavePath(
-            path.join(app.getPath("downloads"), item.getFilename())
-          );
+          item.setSavePath(path.join(cachePath, item.getFilename()));
         }
 
         this.tasks.push(item);
