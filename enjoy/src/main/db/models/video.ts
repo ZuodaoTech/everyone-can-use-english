@@ -2,7 +2,6 @@ import {
   AfterCreate,
   AfterUpdate,
   AfterDestroy,
-  BeforeCreate,
   BelongsTo,
   Table,
   Column,
@@ -371,7 +370,10 @@ export class Video extends Model<Video> {
       // fetch metadata
       const ffmpeg = new FfmpegWrapper();
       const fileMetadata = await ffmpeg.generateMetadata(filePath);
-      metadata = Object.assign(metadata, fileMetadata);
+      metadata = Object.assign(metadata, {
+        ...fileMetadata,
+        duration: fileMetadata.format.duration,
+      });
 
       // Compress file to destFile
       await ffmpeg.compressVideo(filePath, destFile);
