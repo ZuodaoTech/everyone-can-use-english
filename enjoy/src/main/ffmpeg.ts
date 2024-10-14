@@ -290,6 +290,70 @@ export default class FfmpegWrapper {
     });
   }
 
+  compressVideo(input: string, output: string) {
+    const ffmpeg = Ffmpeg();
+    return new Promise((resolve, reject) => {
+      ffmpeg
+        .input(input)
+        .outputOptions(
+          "-c:v",
+          "libx264",
+          "-tag:v",
+          "avc1",
+          "-movflags",
+          "faststart",
+          "-crf",
+          "30",
+          "-preset",
+          "superfast"
+        )
+        .on("start", (commandLine) => {
+          logger.info("Spawned FFmpeg with command: " + commandLine);
+          fs.ensureDirSync(path.dirname(output));
+        })
+        .on("end", () => {
+          logger.info(`File "${output}" created`);
+          resolve(output);
+        })
+        .on("error", (err) => {
+          logger.error(err);
+          reject(err);
+        })
+        .save(output);
+    });
+  }
+
+  compressAudio(input: string, output: string) {
+    const ffmpeg = Ffmpeg();
+    return new Promise((resolve, reject) => {
+      ffmpeg
+        .input(input)
+        .outputOptions(
+          "-ar",
+          "16000",
+          "-b:a",
+          "32000",
+          "-ac",
+          "1",
+          "-preset",
+          "superfast"
+        )
+        .on("start", (commandLine) => {
+          logger.info("Spawned FFmpeg with command: " + commandLine);
+          fs.ensureDirSync(path.dirname(output));
+        })
+        .on("end", () => {
+          logger.info(`File "${output}" created`);
+          resolve(output);
+        })
+        .on("error", (err) => {
+          logger.error(err);
+          reject(err);
+        })
+        .save(output);
+    });
+  }
+
   registerIpcHandlers() {
     ipcMain.handle("ffmpeg-check-command", async (_event) => {
       return await this.checkCommand();

@@ -251,7 +251,7 @@ export const MediaCurrentRecording = () => {
         toast.promise(
           EnjoyApp.download.start(currentRecording.src, savePath as string),
           {
-            loading: t("downloading", { file: currentRecording.filename }),
+            loading: t("downloadingFile", { file: currentRecording.filename }),
             success: () => t("downloadedSuccessfully"),
             error: t("downloadFailed"),
             position: "bottom-right",

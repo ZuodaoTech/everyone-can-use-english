@@ -175,7 +175,11 @@ export const AudibleBooksSegment = () => {
               {downloading && (
                 <LoaderIcon className="w-4 h-4 animate-spin mr-2" />
               )}
-              {t("downloadSample")}
+              {downloading
+                ? progress < 100
+                  ? t("downloading")
+                  : t("importing")
+                : t("downloadSample")}
             </Button>
           </DialogFooter>
 

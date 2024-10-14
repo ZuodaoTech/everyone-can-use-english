@@ -2,7 +2,6 @@ import {
   AfterCreate,
   AfterUpdate,
   AfterDestroy,
-  BeforeCreate,
   BelongsTo,
   Table,
   Column,
@@ -35,8 +34,6 @@ import { Client } from "@/api";
 import startCase from "lodash/startCase";
 import { v5 as uuidv5 } from "uuid";
 import FfmpegWrapper from "@main/ffmpeg";
-
-const SIZE_LIMIT = 1024 * 1024 * 50; // 50MB
 
 const logger = log.scope("db/models/audio");
 
@@ -127,7 +124,13 @@ export class Audio extends Model<Audio> {
 
   @Column(DataType.VIRTUAL)
   get src(): string {
-    if (this.filePath) {
+    if (this.compressedFilePath) {
+      return `enjoy://${path.posix.join(
+        "library",
+        "audios",
+        this.getDataValue("md5") + ".compressed.mp3"
+      )}`;
+    } else if (this.originalFilePath) {
       return `enjoy://${path.posix.join(
         "library",
         "audios",
@@ -162,10 +165,28 @@ export class Audio extends Model<Audio> {
   }
 
   get filePath(): string {
+    return this.compressedFilePath || this.originalFilePath;
+  }
+
+  get originalFilePath(): string {
     const file = path.join(
       settings.userDataPath(),
       "audios",
       this.getDataValue("md5") + this.extname
+    );
+
+    if (fs.existsSync(file)) {
+      return file;
+    } else {
+      return null;
+    }
+  }
+
+  get compressedFilePath(): string {
+    const file = path.join(
+      settings.userDataPath(),
+      "audios",
+      this.getDataValue("md5") + ".compressed.mp3"
     );
 
     if (fs.existsSync(file)) {
@@ -224,20 +245,6 @@ export class Audio extends Model<Audio> {
     });
 
     return output;
-  }
-
-  @BeforeCreate
-  static async setupDefaultAttributes(audio: Audio) {
-    try {
-      const ffmpeg = new Ffmpeg();
-      const fileMetadata = await ffmpeg.generateMetadata(audio.filePath);
-      audio.metadata = Object.assign(audio.metadata || {}, {
-        ...fileMetadata,
-        duration: fileMetadata.format.duration,
-      });
-    } catch (err) {
-      logger.error("failed to generate metadata", err.message);
-    }
   }
 
   @AfterCreate
@@ -315,11 +322,6 @@ export class Audio extends Model<Audio> {
       throw new Error(t("models.audio.fileNotSupported", { file: filePath }));
     }
 
-    const stats = fs.statSync(filePath);
-    if (stats.size > SIZE_LIMIT) {
-      throw new Error(t("models.audio.fileTooLarge", { file: filePath }));
-    }
-
     const md5 = await hashFile(filePath, { algo: "md5" });
 
     // check if file already exists
@@ -338,15 +340,27 @@ export class Audio extends Model<Audio> {
     logger.debug("Generated ID:", id);
 
     const destDir = path.join(settings.userDataPath(), "audios");
-    const destFile = path.join(destDir, `${md5}${extname}`);
+    const destFile = path.join(destDir, `${md5}.compressed.mp3`);
+
+    let metadata = {
+      extname,
+    };
 
     // Copy file to library
     try {
       // Create directory if not exists
       fs.ensureDirSync(destDir);
 
-      // Copy file
-      fs.copySync(filePath, destFile);
+      // Generate metadata
+      const ffmpeg = new Ffmpeg();
+      const fileMetadata = await ffmpeg.generateMetadata(filePath);
+      metadata = Object.assign(metadata, {
+        ...fileMetadata,
+        duration: fileMetadata.format.duration,
+      });
+
+      // Compress file
+      await ffmpeg.compressAudio(filePath, destFile);
 
       // Check if file copied
       fs.accessSync(destFile, fs.constants.R_OK);
@@ -367,9 +381,7 @@ export class Audio extends Model<Audio> {
       name,
       description,
       coverUrl,
-      metadata: {
-        extname,
-      },
+      metadata,
     });
 
     return record.save().catch((err) => {

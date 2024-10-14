@@ -276,7 +276,9 @@ const ChatUserMessageActions = (props: {
             savePath as string
           ),
           {
-            loading: t("downloading", { file: chatMessage.recording.filename }),
+            loading: t("downloadingFile", {
+              file: chatMessage.recording.filename,
+            }),
             success: () => t("downloadedSuccessfully"),
             error: t("downloadFailed"),
             position: "bottom-right",

@@ -142,7 +142,7 @@ export const AssistantMessageComponent = (props: {
         if (!savePath) return;
 
         toast.promise(EnjoyApp.download.start(speech.src, savePath as string), {
-          loading: t("downloading", { file: speech.filename }),
+          loading: t("downloadingFile", { file: speech.filename }),
           success: () => t("downloadedSuccessfully"),
           error: t("downloadFailed"),
           position: "bottom-right",

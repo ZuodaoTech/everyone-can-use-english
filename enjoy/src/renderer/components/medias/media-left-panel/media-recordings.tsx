@@ -78,7 +78,7 @@ export const MediaRecordings = () => {
           if (!savePath) return;
 
           toast.promise(EnjoyApp.download.start(url, savePath as string), {
-            loading: t("downloading", { file: filename }),
+            loading: t("downloadingFile", { file: filename }),
             success: () => t("downloadedSuccessfully"),
             error: t("downloadFailed"),
             position: "bottom-right",

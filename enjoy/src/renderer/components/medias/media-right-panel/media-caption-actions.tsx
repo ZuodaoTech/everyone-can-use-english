@@ -80,7 +80,7 @@ export const MediaCaptionActions = (props: {
         toast.promise(
           EnjoyApp.download.start(segment.src, savePath as string),
           {
-            loading: t("downloading", { file: media.filename }),
+            loading: t("downloadingFile", { file: media.filename }),
             success: () => t("downloadedSuccessfully"),
             error: t("downloadFailed"),
             position: "bottom-right",
@@ -133,7 +133,7 @@ export const MediaCaptionActions = (props: {
         if (!savePath) return;
 
         toast.promise(EnjoyApp.download.start(src, savePath as string), {
-          loading: t("downloading", { file: media.filename }),
+          loading: t("downloadingFile", { file: media.filename }),
           success: () => t("downloadedSuccessfully"),
           error: t("downloadFailed"),
           position: "bottom-right",

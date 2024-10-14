@@ -122,7 +122,7 @@ export const MediaWaveform = () => {
         if (!savePath) return;
 
         toast.promise(EnjoyApp.download.start(media.src, savePath as string), {
-          loading: t("downloading", { file: media.filename }),
+          loading: t("downloadingFile", { file: media.filename }),
           success: () => t("downloadedSuccessfully"),
           error: t("downloadFailed"),
           position: "bottom-right",

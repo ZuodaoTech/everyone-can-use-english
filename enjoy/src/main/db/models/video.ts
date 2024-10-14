@@ -2,7 +2,6 @@ import {
   AfterCreate,
   AfterUpdate,
   AfterDestroy,
-  BeforeCreate,
   BelongsTo,
   Table,
   Column,
@@ -35,8 +34,6 @@ import { Client } from "@/api";
 import startCase from "lodash/startCase";
 import { v5 as uuidv5 } from "uuid";
 import FfmpegWrapper from "@main/ffmpeg";
-
-const SIZE_LIMIT = 1024 * 1024 * 100; // 100MB
 
 const logger = log.scope("db/models/video");
 
@@ -127,7 +124,13 @@ export class Video extends Model<Video> {
 
   @Column(DataType.VIRTUAL)
   get src(): string {
-    if (this.filePath) {
+    if (this.compressedFilePath) {
+      return `enjoy://${path.posix.join(
+        "library",
+        "videos",
+        this.getDataValue("md5") + ".compressed.mp4"
+      )}`;
+    } else if (this.originalFilePath) {
       return `enjoy://${path.posix.join(
         "library",
         "videos",
@@ -162,10 +165,28 @@ export class Video extends Model<Video> {
   }
 
   get filePath(): string {
+    return this.compressedFilePath || this.originalFilePath;
+  }
+
+  get originalFilePath(): string {
     const file = path.join(
       settings.userDataPath(),
       "videos",
       this.getDataValue("md5") + this.extname
+    );
+
+    if (fs.existsSync(file)) {
+      return file;
+    } else {
+      return null;
+    }
+  }
+
+  get compressedFilePath(): string {
+    const file = path.join(
+      settings.userDataPath(),
+      "videos",
+      `${this.getDataValue("md5")}.compressed.mp4`
     );
 
     if (fs.existsSync(file)) {
@@ -247,20 +268,6 @@ export class Video extends Model<Video> {
     return output;
   }
 
-  @BeforeCreate
-  static async setupDefaultAttributes(video: Video) {
-    try {
-      const ffmpeg = new Ffmpeg();
-      const fileMetadata = await ffmpeg.generateMetadata(video.filePath);
-      video.metadata = Object.assign(video.metadata || {}, {
-        ...fileMetadata,
-        duration: fileMetadata.format.duration,
-      });
-    } catch (err) {
-      logger.error("failed to generate metadata", err.message);
-    }
-  }
-
   @AfterCreate
   static autoSync(video: Video) {
     // auto sync should not block the main thread
@@ -331,11 +338,6 @@ export class Video extends Model<Video> {
       throw new Error(t("models.video.fileNotSupported", { file: filePath }));
     }
 
-    const stats = fs.statSync(filePath);
-    if (stats.size > SIZE_LIMIT) {
-      throw new Error(t("models.video.fileTooLarge", { file: filePath }));
-    }
-
     const md5 = await hashFile(filePath, { algo: "md5" });
 
     // check if file already exists
@@ -354,15 +356,27 @@ export class Video extends Model<Video> {
     logger.debug("Generated ID:", id);
 
     const destDir = path.join(settings.userDataPath(), "videos");
-    const destFile = path.join(destDir, `${md5}${extname}`);
+    const destFile = path.join(destDir, `${md5}.compressed.mp4`);
+
+    let metadata = {
+      extname,
+    };
 
     // Copy file to library
     try {
       // Create directory if not exists
       fs.ensureDirSync(destDir);
 
-      // Copy file
-      fs.copySync(filePath, destFile);
+      // fetch metadata
+      const ffmpeg = new FfmpegWrapper();
+      const fileMetadata = await ffmpeg.generateMetadata(filePath);
+      metadata = Object.assign(metadata, {
+        ...fileMetadata,
+        duration: fileMetadata.format.duration,
+      });
+
+      // Compress file to destFile
+      await ffmpeg.compressVideo(filePath, destFile);
 
       // Check if file copied
       fs.accessSync(destFile, fs.constants.R_OK);
@@ -383,9 +397,7 @@ export class Video extends Model<Video> {
       name,
       description,
       coverUrl,
-      metadata: {
-        extname,
-      },
+      metadata,
     });
 
     return record.save().catch((err) => {
