@@ -2196,13 +2196,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron-forge/plugin-auto-unpack-natives@npm:<7.5.0":
-  version: 7.4.0
-  resolution: "@electron-forge/plugin-auto-unpack-natives@npm:7.4.0"
+"@electron-forge/plugin-auto-unpack-natives@npm:<7.6.0":
+  version: 7.5.0
+  resolution: "@electron-forge/plugin-auto-unpack-natives@npm:7.5.0"
   dependencies:
-    "@electron-forge/plugin-base": "npm:7.4.0"
-    "@electron-forge/shared-types": "npm:7.4.0"
-  checksum: 10c0/3beaf0b001c2f2d12edcb93a0a6df6502fbbe663c9d350792d225d43b8d953b4893902b212d0589b4615dbf576a4e6a24f8dd9085da9a5da2bca009a96e72dc4
+    "@electron-forge/plugin-base": "npm:7.5.0"
+    "@electron-forge/shared-types": "npm:7.5.0"
+  checksum: 10c0/1f83e821f50b44f6c421a17d0c2bd7ec5ea53a9b66ba6ae899d0ecbacde6e680e862aabe2d3b431a5321f14cf0814fa26a3637c8c313f4179b27317a60566d84
   languageName: node
   linkType: hard
 
@@ -2212,6 +2212,15 @@ __metadata:
   dependencies:
     "@electron-forge/shared-types": "npm:7.4.0"
   checksum: 10c0/78fd6861fb9c1f2f234b7e83eb1b12700f68edd60195437e032d510685a17faf272133d7c278fb29f56c2b206eac09123bdc2a5bb0a27dda16a358c19206735a
+  languageName: node
+  linkType: hard
+
+"@electron-forge/plugin-base@npm:7.5.0":
+  version: 7.5.0
+  resolution: "@electron-forge/plugin-base@npm:7.5.0"
+  dependencies:
+    "@electron-forge/shared-types": "npm:7.5.0"
+  checksum: 10c0/b71d9669a6e172b3d96f95d70344881b5d4dda50e6f413a022a75e7f65cef1e16eb9d6bb47c58b1294ec302305cf1ff53cc86dfe3dc95d3ca4ba39c5840fece7
   languageName: node
   linkType: hard
 
@@ -12343,7 +12352,7 @@ __metadata:
     "@electron-forge/maker-rpm": "npm:<7.5.0"
     "@electron-forge/maker-squirrel": "npm:<7.5.0"
     "@electron-forge/maker-zip": "npm:<7.5.0"
-    "@electron-forge/plugin-auto-unpack-natives": "npm:<7.5.0"
+    "@electron-forge/plugin-auto-unpack-natives": "npm:<7.6.0"
     "@electron-forge/plugin-fuses": "npm:<7.5.0"
     "@electron-forge/plugin-vite": "npm:<7.5.0"
     "@electron-forge/publisher-github": "npm:<7.5.0"
