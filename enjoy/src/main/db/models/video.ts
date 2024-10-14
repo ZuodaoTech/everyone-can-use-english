@@ -36,8 +36,6 @@ import startCase from "lodash/startCase";
 import { v5 as uuidv5 } from "uuid";
 import FfmpegWrapper from "@main/ffmpeg";
 
-const SIZE_LIMIT = 1024 * 1024 * 100; // 100MB
-
 const logger = log.scope("db/models/video");
 
 @Table({
@@ -339,11 +337,6 @@ export class Video extends Model<Video> {
       return Audio.buildFromLocalFile(filePath, params);
     } else if (!VideoFormats.includes(extname.split(".").pop() as string)) {
       throw new Error(t("models.video.fileNotSupported", { file: filePath }));
-    }
-
-    const stats = fs.statSync(filePath);
-    if (stats.size > SIZE_LIMIT) {
-      throw new Error(t("models.video.fileTooLarge", { file: filePath }));
     }
 
     const md5 = await hashFile(filePath, { algo: "md5" });

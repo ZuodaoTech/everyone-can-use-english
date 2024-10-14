@@ -161,7 +161,11 @@ export const YoutubeVideosSegment = (props: { channel: string }) => {
               {submitting && (
                 <LoaderIcon className="w-4 h-4 animate-spin mr-2" />
               )}
-              {t("downloadVideo")}
+              {submitting
+                ? progress < 100
+                  ? t("downloading")
+                  : t("importing")
+                : t("downloadVideo")}
             </Button>
           </DialogFooter>
           {submitting && (

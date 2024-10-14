@@ -145,7 +145,7 @@ const TranscriptionRecordingsList = () => {
         toast.promise(
           EnjoyApp.download.start(recording.src, savePath as string),
           {
-            loading: t("downloading", { file: recording.filename }),
+            loading: t("downloadingFile", { file: recording.filename }),
             success: () => t("downloadedSuccessfully"),
             error: t("downloadFailed"),
             position: "bottom-right",
