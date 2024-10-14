@@ -28,11 +28,12 @@ class RecordingsHandler {
     event: IpcMainEvent,
     options: FindOptions<Attributes<Recording>>
   ) {
-    return Recording.findAll({
-      include: PronunciationAssessment,
-      order: [["createdAt", "DESC"]],
-      ...options,
-    })
+    return Recording.scope("withoutDeleted")
+      .findAll({
+        include: PronunciationAssessment,
+        order: [["createdAt", "DESC"]],
+        ...options,
+      })
       .then((recordings) => {
         if (!recordings) {
           return [];
@@ -48,11 +49,12 @@ class RecordingsHandler {
   }
 
   private async findOne(event: IpcMainEvent, where: WhereOptions<Recording>) {
-    return Recording.findOne({
-      where: {
-        ...where,
-      },
-    })
+    return Recording.scope("withoutDeleted")
+      .findOne({
+        where: {
+          ...where,
+        },
+      })
       .then((recording) => {
         if (!recording) {
           throw new Error(t("models.recording.notFound"));
@@ -141,7 +143,7 @@ class RecordingsHandler {
   }
 
   private async destroy(_event: IpcMainEvent, id: string) {
-    const recording = await Recording.findOne({
+    const recording = await Recording.scope("withoutDeleted").findOne({
       where: {
         id,
       },
@@ -151,11 +153,36 @@ class RecordingsHandler {
       throw new Error(t("models.recording.notFound"));
     }
 
-    await recording.destroy();
+    await recording.softDelete();
+  }
+
+  private async destroyBulk(
+    _event: IpcMainEvent,
+    where: WhereOptions<Recording> & { ids: string[] }
+  ) {
+    if (where.ids) {
+      where = {
+        id: {
+          [Op.in]: where.ids,
+        },
+        ...where,
+      };
+    }
+    delete where.ids;
+
+    const recordings = await Recording.scope("withoutDeleted").findAll({
+      where,
+    });
+    if (recordings.length === 0) {
+      return;
+    }
+    for (const recording of recordings) {
+      await recording.softDelete();
+    }
   }
 
   private async upload(_event: IpcMainEvent, id: string) {
-    const recording = await Recording.findOne({
+    const recording = await Recording.scope("withoutDeleted").findOne({
       where: {
         id,
       },
@@ -336,7 +363,7 @@ class RecordingsHandler {
   // Select the highest score of the recordings of each referenceId from the
   // recordings of the target and export as a single file.
   private async export(
-    event: IpcMainEvent,
+    _event: IpcMainEvent,
     targetId: string,
     targetType: string
   ) {
@@ -360,7 +387,7 @@ class RecordingsHandler {
     }
 
     // query all recordings of the target
-    const recordings = await Recording.findAll({
+    const recordings = await Recording.scope("withoutDeleted").findAll({
       where: {
         targetId,
         targetType,
@@ -405,6 +432,7 @@ class RecordingsHandler {
     ipcMain.handle("recordings-sync-all", this.syncAll);
     ipcMain.handle("recordings-create", this.create);
     ipcMain.handle("recordings-destroy", this.destroy);
+    ipcMain.handle("recordings-destroy-bulk", this.destroyBulk);
     ipcMain.handle("recordings-upload", this.upload);
     ipcMain.handle("recordings-stats", this.stats);
     ipcMain.handle("recordings-group-by-date", this.groupByDate);
@@ -420,6 +448,7 @@ class RecordingsHandler {
     ipcMain.removeHandler("recordings-sync-all");
     ipcMain.removeHandler("recordings-create");
     ipcMain.removeHandler("recordings-destroy");
+    ipcMain.removeHandler("recordings-destroy-bulk");
     ipcMain.removeHandler("recordings-upload");
     ipcMain.removeHandler("recordings-stats");
     ipcMain.removeHandler("recordings-group-by-date");

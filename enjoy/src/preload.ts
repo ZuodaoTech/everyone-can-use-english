@@ -351,6 +351,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     destroy: (id: string) => {
       return ipcRenderer.invoke("recordings-destroy", id);
     },
+    destroyBulk: (where: any, options?: any) => {
+      return ipcRenderer.invoke("recordings-destroy-bulk", where, options);
+    },
     upload: (id: string) => {
       return ipcRenderer.invoke("recordings-upload", id);
     },

@@ -13,16 +13,12 @@ export const useRecordings = (
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [recordings, dispatchRecordings] = useReducer(recordingsReducer, []);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
 
-  const fetchRecordings = async (offset = 0) => {
+  const fetchRecordings = async () => {
     setLoading(true);
 
-    const limit = 10;
     EnjoyApp.recordings
       .findAll({
-        limit,
-        offset,
         where: {
           targetId: media.id,
           targetType: media.mediaType,
@@ -30,14 +26,8 @@ export const useRecordings = (
         },
       })
       .then((_recordings) => {
-        if (_recordings.length < limit) {
-          setHasMore(false);
-        } else {
-          setHasMore(true);
-        }
-
         dispatchRecordings({
-          type: offset === 0 ? "set" : "append",
+          type: "set",
           records: _recordings,
         });
       })
@@ -61,6 +51,8 @@ export const useRecordings = (
     }
 
     if (model != "Recording") return;
+    if (record.targetId !== media.id) return;
+    if (record.referenceId !== referenceId) return;
 
     if (action === "destroy") {
       dispatchRecordings({
@@ -68,13 +60,22 @@ export const useRecordings = (
         record,
       });
     } else if (action === "create") {
-      if ((record as RecordingType).targetId !== media.id) return;
-      if ((record as RecordingType).referenceId !== referenceId) return;
-
       dispatchRecordings({
         type: "create",
         record,
       });
+    } else if (action === "update") {
+      if (record.isDeleted) {
+        dispatchRecordings({
+          type: "destroy",
+          record,
+        });
+      } else {
+        dispatchRecordings({
+          type: "update",
+          record,
+        });
+      }
     }
   };
 
@@ -91,12 +92,11 @@ export const useRecordings = (
   useEffect(() => {
     if (!media) return;
 
-    fetchRecordings(0);
+    fetchRecordings();
   }, [media, referenceId]);
 
   return {
     recordings,
-    hasMore,
     fetchRecordings,
     loading,
   };

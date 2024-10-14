@@ -13,6 +13,7 @@ import {
   DataType,
   Unique,
   HasOne,
+  Scopes,
 } from "sequelize-typescript";
 import mainWindow from "@main/window";
 import {
@@ -30,7 +31,7 @@ import storage from "@main/storage";
 import { Client } from "@/api";
 import echogarden from "@main/echogarden";
 import { t } from "i18next";
-import { Attributes, Transaction } from "sequelize";
+import { Attributes, Op, Transaction } from "sequelize";
 import { v5 as uuidv5 } from "uuid";
 import FfmpegWrapper from "@main/ffmpeg";
 
@@ -42,6 +43,20 @@ const logger = log.scope("db/models/recording");
   underscored: true,
   timestamps: true,
 })
+@Scopes(() => ({
+  withoutDeleted: {
+    where: {
+      deletedAt: null,
+    },
+  },
+  onlyDeleted: {
+    where: {
+      deletedAt: {
+        [Op.not]: null,
+      },
+    },
+  },
+}))
 export class Recording extends Model<Recording> {
   @IsUUID("all")
   @Default(DataType.UUIDV4)
@@ -97,6 +112,9 @@ export class Recording extends Model<Recording> {
   @Column(DataType.DATE)
   uploadedAt: Date;
 
+  @Column(DataType.DATE)
+  deletedAt: Date;
+
   @Column(DataType.VIRTUAL)
   get isSynced(): boolean {
     return Boolean(this.syncedAt) && this.syncedAt >= this.updatedAt;
@@ -108,7 +126,14 @@ export class Recording extends Model<Recording> {
   }
 
   @Column(DataType.VIRTUAL)
+  get isDeleted(): boolean {
+    return Boolean(this.deletedAt);
+  }
+
+  @Column(DataType.VIRTUAL)
   get src(): string {
+    if (!this.filePath) return;
+
     return `enjoy://${path.posix.join(
       "library",
       "recordings",
@@ -117,11 +142,25 @@ export class Recording extends Model<Recording> {
   }
 
   get filePath(): string {
-    return path.join(
+    const file = path.join(
       settings.userDataPath(),
       "recordings",
       this.getDataValue("filename")
     );
+    if (fs.existsSync(file)) {
+      return file;
+    }
+
+    return file;
+  }
+
+  async softDelete() {
+    await this.update({
+      deletedAt: new Date(),
+    });
+    if (this.filePath) {
+      fs.remove(this.filePath);
+    }
   }
 
   async upload(force: boolean = false) {
