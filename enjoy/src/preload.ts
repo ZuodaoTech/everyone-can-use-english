@@ -76,6 +76,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       set: (config: ProxyConfigType) => {
         return ipcRenderer.invoke("system-proxy-set", config);
       },
+      refresh: () => {
+        return ipcRenderer.invoke("system-proxy-refresh");
+      },
     },
   },
   providers: {

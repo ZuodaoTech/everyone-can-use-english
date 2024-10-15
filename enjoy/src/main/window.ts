@@ -104,10 +104,21 @@ main.init = async () => {
       throw new Error("Invalid proxy config");
     }
 
-    if (config) {
-      if (!config.url) {
-        config.enabled = false;
-      }
+    if (config && !config.url) {
+      config.enabled = false;
+    }
+
+    return settings.setSync("proxy", config);
+  });
+
+  ipcMain.handle("system-proxy-refresh", (_event) => {
+    let config = settings.getSync("proxy") as ProxyConfigType;
+    if (!config) {
+      config = {
+        enabled: false,
+        url: "",
+      };
+      settings.setSync("proxy", config);
     }
 
     if (config.enabled && config.url) {
@@ -124,8 +135,6 @@ main.init = async () => {
       });
       mainWindow.webContents.session.closeAllConnections();
     }
-
-    return settings.setSync("proxy", config);
   });
 
   // BrowserView

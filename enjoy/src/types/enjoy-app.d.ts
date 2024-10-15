@@ -27,6 +27,7 @@ type EnjoyAppType = {
     proxy: {
       get: () => Promise<ProxyConfigType>;
       set: (config: ProxyConfigType) => Promise<void>;
+      refresh: () => Promise<void>;
     };
   };
   providers: {

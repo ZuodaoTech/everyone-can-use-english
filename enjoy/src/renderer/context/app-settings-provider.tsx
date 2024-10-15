@@ -162,11 +162,13 @@ export const AppSettingsProvider = ({
   const fetchProxyConfig = async () => {
     const config = await EnjoyApp.system.proxy.get();
     setProxy(config);
+    EnjoyApp.system.proxy.refresh();
   };
 
   const setProxyConfigHandler = async (config: ProxyConfigType) => {
     EnjoyApp.system.proxy.set(config).then(() => {
       setProxy(config);
+      EnjoyApp.system.proxy.refresh();
     });
   };
 
