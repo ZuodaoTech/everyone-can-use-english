@@ -879,5 +879,13 @@
   "deleteRecordingsWithScoreLessThan90": "删除得分低于 90 分的录音",
   "deleteRecordingsWithScoreLessThan80": "删除得分低于 80 分的录音",
   "deleteAllRecordings": "删除所有录音",
-  "bulkDeleteConfirmation": "此操作无法撤销。您的录音统计数据将保持不变，但录音文件将被永久删除。"
+  "noRecordingsToDelete": "没有录音可以删除",
+  "recordingsDeletedSuccessfully": "录音删除成功",
+  "deleting": "正在删除",
+  "bulkDeleteRecordingsConfirmation": "此操作无法撤销。您的录音统计数据将保持不变，但录音文件将被永久删除。",
+  "diskUsage": "磁盘使用情况",
+  "diskUsageDescription": "Enjoy App 的磁盘使用情况",
+  "releaseDiskSpace": "释放磁盘",
+  "bulkDeleteRecordings": "删除录音",
+  "bulkDeleteAborted": "批量删除已中止"
 }

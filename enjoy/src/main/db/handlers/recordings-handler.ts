@@ -162,10 +162,10 @@ class RecordingsHandler {
   ) {
     if (where.ids) {
       where = {
+        ...where,
         id: {
           [Op.in]: where.ids,
         },
-        ...where,
       };
     }
     delete where.ids;
@@ -360,6 +360,35 @@ class RecordingsHandler {
       });
   }
 
+  private async statsForDeleteBulk() {
+    // all recordings
+    const recordings = await Recording.scope("withoutDeleted").findAll({
+      include: PronunciationAssessment,
+      order: [["createdAt", "DESC"]],
+    });
+    // no assessment
+    const noAssessment = recordings.filter((r) => !r.pronunciationAssessment);
+    // score less than 90
+    const scoreLessThan90 = recordings.filter(
+      (r) =>
+        !r.pronunciationAssessment ||
+        r.pronunciationAssessment?.pronunciationScore < 90
+    );
+    // score less than 80
+    const scoreLessThan80 = recordings.filter(
+      (r) =>
+        !r.pronunciationAssessment ||
+        r.pronunciationAssessment?.pronunciationScore < 80
+    );
+
+    return {
+      noAssessment: noAssessment.map((r) => r.id),
+      scoreLessThan90: scoreLessThan90.map((r) => r.id),
+      scoreLessThan80: scoreLessThan80.map((r) => r.id),
+      all: recordings.map((r) => r.id),
+    };
+  }
+
   // Select the highest score of the recordings of each referenceId from the
   // recordings of the target and export as a single file.
   private async export(
@@ -438,6 +467,7 @@ class RecordingsHandler {
     ipcMain.handle("recordings-group-by-date", this.groupByDate);
     ipcMain.handle("recordings-group-by-target", this.groupByTarget);
     ipcMain.handle("recordings-group-by-segment", this.groupBySegment);
+    ipcMain.handle("recordings-stats-for-delete-bulk", this.statsForDeleteBulk);
     ipcMain.handle("recordings-export", this.export);
   }
 
@@ -454,6 +484,7 @@ class RecordingsHandler {
     ipcMain.removeHandler("recordings-group-by-date");
     ipcMain.removeHandler("recordings-group-by-target");
     ipcMain.removeHandler("recordings-group-by-segment");
+    ipcMain.removeHandler("recordings-stats-for-delete-bulk");
     ipcMain.removeHandler("recordings-export");
   }
 }

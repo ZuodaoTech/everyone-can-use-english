@@ -189,7 +189,7 @@ export const MediaRecordings = () => {
                   <AlertDialogHeader>
                     <AlertDialogTitle>{t("bulkDelete")}</AlertDialogTitle>
                     <AlertDialogDescription className="mb-4">
-                      {t("bulkDeleteConfirmation")}
+                      {t("bulkDeleteRecordingsConfirmation")}
                     </AlertDialogDescription>
                     <RadioGroup
                       value={deleteBulkType}

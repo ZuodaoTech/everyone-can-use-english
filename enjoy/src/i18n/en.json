@@ -879,5 +879,13 @@
   "deleteRecordingsWithScoreLessThan90": "Delete recordings with score less than 90",
   "deleteRecordingsWithScoreLessThan80": "Delete recordings with score less than 80",
   "deleteAllRecordings": "Delete all recordings",
-  "bulkDeleteConfirmation": "This operation cannot be undone. Your recordings stats will be unchaged, but the recording files will be deleted permanently."
+  "noRecordingsToDelete": "No recordings to delete",
+  "recordingsDeletedSuccessfully": "Recordings deleted successfully",
+  "deleting": "Deleting",
+  "bulkDeleteRecordingsConfirmation": "This operation cannot be undone. Your recordings stats will be unchaged, but the recording files will be deleted permanently.",
+  "diskUsage": "Disk Usage",
+  "diskUsageDescription": "The disk usage of Enjoy App.",
+  "releaseDiskSpace": "Release",
+  "bulkDeleteRecordings": "Delete Recordings",
+  "bulkDeleteAborted": "Bulk delete aborted"
 }

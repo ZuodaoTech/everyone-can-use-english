@@ -373,6 +373,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
         targetType
       );
     },
+    statsForDeleteBulk: () => {
+      return ipcRenderer.invoke("recordings-stats-for-delete-bulk");
+    },
     export: (targetId: string, targetType: string) => {
       return ipcRenderer.invoke("recordings-export", targetId, targetType);
     },
