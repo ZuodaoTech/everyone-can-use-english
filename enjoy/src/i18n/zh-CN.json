@@ -873,5 +873,19 @@
   "inviteAgentInChatAndReply": "邀请 @{{name}} 加入聊天并回复",
   "chatInputPlaceholder": "Enter 发送， Shift+Enter 换行， @ 指定智能体回答",
   "replyOnlyWhenMentioned": "仅在提及时回复",
-  "replyOnlyWhenMentionedDescription": "通过 @ 指定智能体时才会回复"
+  "replyOnlyWhenMentionedDescription": "通过 @ 指定智能体时才会回复",
+  "bulkDelete": "批量删除",
+  "deleteRecordingsWithoutAssessment": "删除未评估的录音",
+  "deleteRecordingsWithScoreLessThan90": "删除得分低于 90 分的录音",
+  "deleteRecordingsWithScoreLessThan80": "删除得分低于 80 分的录音",
+  "deleteAllRecordings": "删除所有录音",
+  "noRecordingsToDelete": "没有录音可以删除",
+  "recordingsDeletedSuccessfully": "录音删除成功",
+  "deleting": "正在删除",
+  "bulkDeleteRecordingsConfirmation": "此操作无法撤销。您的录音统计数据将保持不变，但录音文件将被永久删除。",
+  "diskUsage": "磁盘使用情况",
+  "diskUsageDescription": "Enjoy App 的磁盘使用情况",
+  "releaseDiskSpace": "释放磁盘",
+  "bulkDeleteRecordings": "删除录音",
+  "bulkDeleteAborted": "批量删除已中止"
 }

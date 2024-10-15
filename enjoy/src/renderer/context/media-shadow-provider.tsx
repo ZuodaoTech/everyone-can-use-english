@@ -87,7 +87,6 @@ type MediaShadowContextType = {
   recordings: RecordingType[];
   fetchRecordings: (offset: number) => void;
   loadingRecordings: boolean;
-  hasMoreRecordings: boolean;
   // Notes
   currentNotes: NoteType[];
   createNote: (params: any) => void;
@@ -157,7 +156,6 @@ export const MediaShadowProvider = ({
     recordings,
     fetchRecordings,
     loading: loadingRecordings,
-    hasMore: hasMoreRecordings,
   } = useRecordings(media, currentSegmentIndex);
 
   const {
@@ -683,7 +681,6 @@ export const MediaShadowProvider = ({
           recordings,
           fetchRecordings,
           loadingRecordings,
-          hasMoreRecordings,
           currentNotes: notes,
           createNote,
           currentSegment: segment,

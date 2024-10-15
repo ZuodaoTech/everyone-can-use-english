@@ -15,6 +15,9 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   toast,
+  RadioGroup,
+  RadioGroupItem,
+  Label,
 } from "@renderer/components/ui";
 import {
   AppSettingsProviderContext,
@@ -37,9 +40,6 @@ export const MediaRecordings = () => {
   const containerRef = useRef<HTMLDivElement>();
   const {
     recordings = [],
-    hasMoreRecordings,
-    loadingRecordings,
-    fetchRecordings,
     currentRecording,
     setCurrentRecording,
     currentSegmentIndex,
@@ -49,6 +49,7 @@ export const MediaRecordings = () => {
 
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [selectedRecording, setSelectedRecording] = useState(null);
+  const [deleteBulkType, setDeleteBulkType] = useState("noAssessments");
 
   const handleDelete = () => {
     if (!selectedRecording) return;
@@ -56,6 +57,51 @@ export const MediaRecordings = () => {
     EnjoyApp.recordings.destroy(selectedRecording.id).catch((err) => {
       toast.error(err.message);
     });
+  };
+
+  const recordingsWithoutAssessment = recordings.filter(
+    (r) => !r.pronunciationAssessment
+  );
+  const recordingsWithScoreLessThan90 = recordings.filter(
+    (r) =>
+      !r.pronunciationAssessment ||
+      r.pronunciationAssessment.pronunciationScore < 90
+  );
+  const recordingsWithScoreLessThan80 = recordings.filter(
+    (r) =>
+      !r.pronunciationAssessment ||
+      r.pronunciationAssessment.pronunciationScore < 80
+  );
+
+  const handleDestroyBulk = () => {
+    let ids: string[] = [];
+    if (deleteBulkType === "noAssessments") {
+      ids = recordingsWithoutAssessment.map((r) => r.id);
+    } else if (deleteBulkType === "scoreLessThan90") {
+      ids = recordingsWithScoreLessThan90.map((r) => r.id);
+    } else if (deleteBulkType === "scoreLessThan80") {
+      ids = recordingsWithScoreLessThan80.map((r) => r.id);
+    } else if (deleteBulkType === "all") {
+      ids = recordings.map((r) => r.id);
+    }
+
+    if (ids.length === 0) {
+      toast.error(t("noRecordingsToDelete"));
+      return;
+    }
+
+    EnjoyApp.recordings
+      .destroyBulk({
+        ids,
+        targetId: media.id,
+        targetType: media.mediaType,
+      })
+      .then(() => {
+        toast.success(t("recordingsDeletedSuccessfully"));
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
 
   const handleExport = async () => {
@@ -127,6 +173,70 @@ export const MediaRecordings = () => {
                     <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
                     <AlertDialogAction asChild>
                       <Button onClick={handleExport}>{t("export")}</Button>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" className="block w-full">
+                    {t("bulkDelete")}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t("bulkDelete")}</AlertDialogTitle>
+                    <AlertDialogDescription className="mb-4">
+                      {t("bulkDeleteRecordingsConfirmation")}
+                    </AlertDialogDescription>
+                    <RadioGroup
+                      value={deleteBulkType}
+                      onValueChange={(value) => setDeleteBulkType(value)}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="noAssessments"
+                          id="noAssessments"
+                        />
+                        <Label htmlFor="noAssessments">
+                          {t("deleteRecordingsWithoutAssessment")}(
+                          {recordingsWithoutAssessment.length})
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="scoreLessThan90"
+                          id="scoreLessThan90"
+                        />
+                        <Label htmlFor="scoreLessThan90">
+                          {t("deleteRecordingsWithScoreLessThan90")}(
+                          {recordingsWithScoreLessThan90.length})
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="scoreLessThan80"
+                          id="scoreLessThan80"
+                        />
+                        <Label htmlFor="scoreLessThan80">
+                          {t("deleteRecordingsWithScoreLessThan80")}(
+                          {recordingsWithScoreLessThan80.length})
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="all" id="all" />
+                        <Label htmlFor="all" className="text-destructive">
+                          {t("deleteAllRecordings")}({recordings.length})
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                      <Button onClick={handleDestroyBulk}>{t("delete")}</Button>
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -209,22 +319,6 @@ export const MediaRecordings = () => {
           </div>
         </div>
       ))}
-
-      {hasMoreRecordings && (
-        <div className="py-2 flex items-center justify-center">
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={loadingRecordings}
-            onClick={() => fetchRecordings(recordings.length)}
-          >
-            {loadingRecordings && (
-              <LoaderIcon className="w-4 h-4 animate-spin mr-2" />
-            )}
-            {t("loadMore")}
-          </Button>
-        </div>
-      )}
 
       <AlertDialog
         open={selectedRecording}

@@ -20,6 +20,7 @@ import {
   RecorderSettings,
   VocabularySettings,
   DictSettings,
+  DiskUsage,
 } from "@renderer/components";
 import { useState } from "react";
 import { Tooltip } from "react-tooltip";
@@ -97,6 +98,8 @@ export const Preferences = () => {
           <UserSettings />
           <Separator />
           <LibrarySettings />
+          <Separator />
+          <DiskUsage />
           <Separator />
           <EmailSettings />
           <Separator />

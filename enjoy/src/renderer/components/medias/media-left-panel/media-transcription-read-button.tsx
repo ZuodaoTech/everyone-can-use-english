@@ -45,6 +45,7 @@ import {
 import { useRecordings } from "@renderer/hooks";
 import { formatDateTime } from "@renderer/lib/utils";
 import {
+  LoaderSpin,
   MediaCaption,
   RecordingDetail,
   WavesurferPlayer,
@@ -157,12 +158,11 @@ const TranscriptionRecordingsList = () => {
       });
   };
 
-  const {
-    recordings,
-    fetchRecordings,
-    loading: loadingRecordings,
-    hasMore: hasMoreRecordings,
-  } = useRecordings(media, -1);
+  const { recordings, loading: loadingRecordings } = useRecordings(media, -1);
+
+  if (loadingRecordings) {
+    return <LoaderSpin />;
+  }
 
   return (
     <div>
@@ -223,19 +223,6 @@ const TranscriptionRecordingsList = () => {
           <WavesurferPlayer id={recording.id} src={recording.src} />
         </div>
       ))}
-      {hasMoreRecordings && (
-        <div className="flex items-center justify-center">
-          <Button
-            variant="secondary"
-            onClick={() => fetchRecordings(recordings.length)}
-          >
-            {loadingRecordings && (
-              <LoaderIcon className="w-4 h-4 animate-spin" />
-            )}
-            <span>{t("loadMore")}</span>
-          </Button>
-        </div>
-      )}
 
       <Sheet
         open={Boolean(assessing)}

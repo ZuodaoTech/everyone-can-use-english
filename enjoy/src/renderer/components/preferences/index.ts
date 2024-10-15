@@ -13,6 +13,7 @@ export * from "./learning-language-settings";
 export * from "./default-engine-settings";
 export * from "./openai-settings";
 export * from "./library-settings";
+export * from "./disk-usage";
 export * from "./stt-settings";
 
 export * from "./user-settings";

@@ -195,6 +195,13 @@ type EnjoyAppType = {
     create: (params: any) => Promise<RecordingType>;
     update: (id: string, params: any) => Promise<RecordingType | undefined>;
     destroy: (id: string) => Promise<void>;
+    destroyBulk: (where: any) => Promise<void>;
+    statsForDeleteBulk: () => Promise<{
+      noAssessment: string[];
+      scoreLessThan90: string[];
+      scoreLessThan80: string[];
+      all: string[];
+    }>;
     upload: (id: string) => Promise<void>;
     stats: (params: { from: string; to: string }) => Promise<{
       count: number;
