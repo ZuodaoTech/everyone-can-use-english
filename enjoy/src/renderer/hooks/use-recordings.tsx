@@ -25,10 +25,14 @@ export const useRecordings = (
           referenceId,
         },
       })
-      .then((_recordings) => {
+      .then((records) => {
         dispatchRecordings({
           type: "set",
-          records: _recordings,
+          records: records.filter((r) => r.src),
+        });
+
+        EnjoyApp.recordings.destroyBulk({
+          ids: records.filter((r) => !r.src).map((r) => r.id),
         });
       })
       .finally(() => {

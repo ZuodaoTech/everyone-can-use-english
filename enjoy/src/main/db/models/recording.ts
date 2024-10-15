@@ -151,7 +151,7 @@ export class Recording extends Model<Recording> {
       return file;
     }
 
-    return file;
+    return null;
   }
 
   async softDelete() {
