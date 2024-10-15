@@ -9,9 +9,9 @@
     "markdown-it-sup": "^2.0.0",
     "mermaid": "^11.3.0",
     "sass": "^1.79.5",
-    "vitepress": "^1.4.0",
+    "vitepress": "^1.4.1",
     "vitepress-plugin-mermaid": "^2.0.17",
-    "vue": "^3.5.11"
+    "vue": "^3.5.12"
   },
   "scripts": {
     "dev": "vitepress dev",
