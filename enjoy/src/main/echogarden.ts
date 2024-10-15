@@ -1,6 +1,6 @@
 import { ipcMain } from "electron";
 import * as Echogarden from "echogarden/dist/api/API.js";
-import { AlignmentOptions } from "echogarden/dist/api/API";
+import { AlignmentOptions, RecognitionOptions } from "echogarden/dist/api/API";
 import {
   encodeRawAudioToWave,
   decodeWaveToRawAudio,
@@ -38,6 +38,7 @@ const __dirname = path
 
 const logger = log.scope("echogarden");
 class EchogardenWrapper {
+  public recognize: typeof Echogarden.recognize;
   public align: typeof Echogarden.align;
   public alignSegments: typeof Echogarden.alignSegments;
   public denoise: typeof Echogarden.denoise;
@@ -50,6 +51,7 @@ class EchogardenWrapper {
   public wordTimelineToSegmentSentenceTimeline: typeof wordTimelineToSegmentSentenceTimeline;
 
   constructor() {
+    this.recognize = Echogarden.recognize;
     this.align = Echogarden.align;
     this.alignSegments = Echogarden.alignSegments;
     this.denoise = Echogarden.denoise;
@@ -102,6 +104,20 @@ class EchogardenWrapper {
   }
 
   registerIpcHandlers() {
+    ipcMain.handle(
+      "echogarden-recognize",
+      async (_event, url: string, options: RecognitionOptions) => {
+        logger.debug("echogarden-recognize:", options);
+        try {
+          const input = enjoyUrlToPath(url);
+          return await this.recognize(input, options);
+        } catch (err) {
+          logger.error(err);
+          throw err;
+        }
+      }
+    );
+
     ipcMain.handle(
       "echogarden-align",
       async (

@@ -15,10 +15,9 @@ import {
   TimelineEntry,
   type TimelineEntryType,
 } from "echogarden/dist/utilities/Timeline";
-import take from "lodash/take";
-import sortedUniqBy from "lodash/sortedUniqBy";
 import { parseText } from "media-captions";
 import { SttEngineOptionEnum } from "@/types/enums";
+import { RecognitionResult } from "echogarden/dist/api/API.js";
 
 // test a text string has any punctuations or not
 // some transcribed text may not have any punctuations
@@ -26,7 +25,7 @@ const punctuationsPattern = /\w[.,!?](\s|$)/g;
 
 export const useTranscribe = () => {
   const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
-  const { openai } = useContext(AISettingsProviderContext);
+  const { openai, whisperConfig } = useContext(AISettingsProviderContext);
   const { punctuateText } = useAiCommand();
   const [output, setOutput] = useState<string>("");
 
@@ -75,39 +74,16 @@ export const useTranscribe = () => {
     const blob = await (await fetch(url)).blob();
 
     let result: any;
-    let timeline: Timeline = [];
     if (service === "upload" && originalText) {
-      const caption = await parseText(originalText, { type: "srt" });
-      if (caption.cues.length > 0) {
-        timeline = caption.cues.map((cue) => {
-          return {
-            type: "sentence",
-            text: cue.text,
-            startTime: cue.startTime,
-            endTime: cue.endTime,
-            timeline: [],
-          };
-        });
-        result = {
-          engine: "upload",
-          model: "-",
-          text: timeline.map((entry) => entry.text).join(" "),
-          timeline,
-        };
-      } else {
-        result = {
-          engine: "upload",
-          model: "-",
-          text: originalText,
-        };
-      }
+      result = await alignText(blob, { originalText, language, isolate });
     } else if (service === SttEngineOptionEnum.LOCAL) {
       result = await transcribeByLocal(url, language);
     } else if (service === SttEngineOptionEnum.ENJOY_CLOUDFLARE) {
-      result = await transcribeByCloudflareAi(blob);
+      result = await transcribeByCloudflareAi(blob, { language, isolate });
     } else if (service === SttEngineOptionEnum.OPENAI) {
       result = await transcribeByOpenAi(
-        new File([blob], "audio.mp3", { type: "audio/mp3" })
+        new File([blob], "audio.mp3", { type: "audio/mp3" }),
+        { language, isolate }
       );
     } else {
       // Azure AI is the default service
@@ -121,41 +97,62 @@ export const useTranscribe = () => {
       );
     }
 
-    let transcript = result.text;
-    if (!align) {
-      return {
-        ...result,
-        transcript,
-        url,
-      };
-    }
+    return {
+      ...result,
+      url,
+    };
+  };
 
-    /*
-     * if timeline is available and the transcript contains punctuations
-     * use `alignSegments` to align each sentence with the timeline
-     * otherwise, use `align` to align the whole transcript
-     * if the transcript does not contain any punctuation, use AI command to add punctuation
-     */
-    if (result.timeline?.length && transcript.match(punctuationsPattern)) {
-      timeline = [...result.timeline];
-      setOutput("Aligning the transcript...");
+  const alignText = async (
+    blob: Blob,
+    options: { originalText: string; language: string; isolate?: boolean }
+  ): Promise<{
+    engine: string;
+    model: string;
+    transcript: string;
+    timeline: TimelineEntry[];
+  }> => {
+    const { originalText, language, isolate = false } = options;
+    let timeline: Timeline = [];
+    const caption = await parseText(originalText, { type: "srt" });
+
+    if (caption.cues.length > 0) {
+      // valid srt file
+      timeline = caption.cues.map((cue) => {
+        return {
+          type: "sentence",
+          text: cue.text,
+          startTime: cue.startTime,
+          endTime: cue.endTime,
+          timeline: [],
+        };
+      });
+
       const wordTimeline = await EnjoyApp.echogarden.alignSegments(
         new Uint8Array(await blob.arrayBuffer()),
         timeline,
         {
-          language,
+          language: language.split("-")[0],
           isolate,
         }
       );
+
       timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
         wordTimeline,
-        transcript,
+        caption.cues.map((cue) => cue.text).join(" "),
         language.split("-")[0]
       );
+
+      return {
+        engine: "upload",
+        model: "-",
+        transcript: timeline.map((entry) => entry.text).join(" "),
+        timeline,
+      };
     } else {
       // Remove all content inside `()`, `[]`, `{}` and trim the text
       // remove all markdown formatting
-      transcript = transcript
+      let transcript = originalText
         .replace(/\(.*?\)/g, "")
         .replace(/\[.*?\]/g, "")
         .replace(/\{.*?\}/g, "")
@@ -168,7 +165,7 @@ export const useTranscribe = () => {
           transcript = await punctuateText(transcript);
         } catch (err) {
           toast.error(err.message);
-          console.warn(err.message);
+          console.warn(err);
         }
       }
 
@@ -177,7 +174,7 @@ export const useTranscribe = () => {
         new Uint8Array(await blob.arrayBuffer()),
         transcript,
         {
-          language,
+          language: language.split("-")[0],
           isolate,
         }
       );
@@ -191,15 +188,13 @@ export const useTranscribe = () => {
           });
         }
       });
+      return {
+        engine: "upload",
+        model: "-",
+        transcript,
+        timeline,
+      };
     }
-
-    return {
-      ...result,
-      originalText,
-      transcript,
-      timeline,
-      url,
-    };
   };
 
   const transcribeByLocal = async (
@@ -208,25 +203,23 @@ export const useTranscribe = () => {
   ): Promise<{
     engine: string;
     model: string;
-    text: string;
+    transcript: string;
     timeline: TimelineEntry[];
   }> => {
-    const res = await EnjoyApp.whisper.transcribe(
-      {
-        file: url,
+    const languageCode = language.split("-")[0];
+    const res: RecognitionResult = await EnjoyApp.echogarden.recognize(url, {
+      engine: "whisper",
+      language: languageCode,
+      whisper: {
+        model: languageCode === "en" ? "tiny.en" : "tiny",
       },
-      {
-        language,
-        force: true,
-        extra: ["--prompt", `"Hello! Welcome to listen to this audio."`],
-      }
-    );
+    });
 
     if (!res) {
       throw new Error(t("whisperTranscribeFailed", { error: "" }));
     }
 
-    const timeline: TimelineEntry[] = res.transcription
+    const timeline: TimelineEntry[] = res.timeline
       .map((segment) => {
         // ignore the word if it is empty or in the format of `[xxx]` or `(xxx)`
         if (
@@ -237,10 +230,11 @@ export const useTranscribe = () => {
         }
 
         return {
-          type: "segment" as TimelineEntryType,
+          type: segment.type,
           text: segment.text.trim(),
-          startTime: segment.offsets.from / 1000.0,
-          endTime: segment.offsets.to / 1000.0,
+          startTime: segment.startTime,
+          endTime: segment.endTime,
+          timeline: [],
         };
       })
       .filter((s) => Boolean(s?.text));
@@ -252,13 +246,18 @@ export const useTranscribe = () => {
 
     return {
       engine: "whisper",
-      model: res.model.type,
-      text: transcript,
+      model: whisperConfig.model,
+      transcript,
       timeline,
     };
   };
 
-  const transcribeByOpenAi = async (file: File) => {
+  const transcribeByOpenAi = async (
+    file: File,
+    options: { language: string; isolate: boolean }
+  ) => {
+    const { language, isolate } = options;
+    const languageCode = language.split("-")[0];
     if (!openai?.key) {
       throw new Error(t("openaiKeyRequired"));
     }
@@ -270,6 +269,7 @@ export const useTranscribe = () => {
       maxRetries: 0,
     });
 
+    setOutput("Transcribing from OpenAI...");
     const res: {
       text: string;
       words?: { word: string; start: number; end: number }[];
@@ -281,37 +281,64 @@ export const useTranscribe = () => {
       timestamp_granularities: ["segment"],
     })) as any;
 
+    setOutput("Aligning the transcript...");
     let timeline: TimelineEntry[] = [];
-    if (res.segments) {
-      res.segments.forEach((segment) => {
-        const segmentTimeline = {
+    if (res.words) {
+      res.words.forEach((word) => {
+        const wordTimeline = {
+          type: "word" as TimelineEntryType,
+          text: word.word,
+          startTime: word.start,
+          endTime: word.end,
+        };
+        timeline.push(wordTimeline);
+      });
+    } else if (res.segments) {
+      const segmentTimeline = res.segments.map((segment) => {
+        return {
           type: "segment" as TimelineEntryType,
           text: segment.text,
           startTime: segment.start,
           endTime: segment.end,
-          timeline: [] as Timeline,
+          timeline: [] as TimelineEntry[],
         };
-
-        timeline.push(segmentTimeline);
       });
+      timeline = await EnjoyApp.echogarden.alignSegments(
+        new Uint8Array(await file.arrayBuffer()),
+        segmentTimeline,
+        {
+          language: languageCode,
+          isolate,
+        }
+      );
     }
+
+    timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
+      timeline,
+      res.text,
+      languageCode
+    );
 
     return {
       engine: "openai",
       model: "whisper-1",
-      text: res.text,
+      transcript: res.text,
       timeline,
     };
   };
 
   const transcribeByCloudflareAi = async (
-    blob: Blob
+    blob: Blob,
+    options: { language: string; isolate: boolean }
   ): Promise<{
     engine: string;
     model: string;
-    text: string;
+    transcript: string;
     timeline?: TimelineEntry[];
   }> => {
+    const { language, isolate } = options;
+    const languageCode = language.split("-")[0];
+    setOutput("Transcribing from Cloudflare...");
     const res: CfWhipserOutputType = (
       await axios.postForm(`${AI_WORKER_ENDPOINT}/audio/transcriptions`, blob, {
         headers: {
@@ -321,21 +348,50 @@ export const useTranscribe = () => {
       })
     ).data;
 
-    const caption = await parseText(res.vtt, { type: "vtt" });
-    const timeline: Timeline = caption.cues.map((cue) => {
-      return {
-        type: "segment",
-        text: cue.text,
-        startTime: cue.startTime,
-        endTime: cue.endTime,
-        timeline: [],
-      };
-    });
+    setOutput("Aligning the transcript...");
+    // Get word timeline from the result
+    let wordTimeline: Timeline = [];
+    if (res.words && res.words.length > 0) {
+      wordTimeline = res.words.map((word) => {
+        return {
+          type: "word",
+          text: word.word,
+          startTime: word.start,
+          endTime: word.end,
+        };
+      });
+    } else {
+      const caption = await parseText(res.vtt, { type: "vtt" });
+      const segmentTimeline: TimelineEntry[] = caption.cues.map((cue) => {
+        return {
+          type: "segment",
+          text: cue.text,
+          startTime: cue.startTime,
+          endTime: cue.endTime,
+          timeline: [],
+        };
+      });
+      wordTimeline = await EnjoyApp.echogarden.alignSegments(
+        new Uint8Array(await blob.arrayBuffer()),
+        segmentTimeline,
+        {
+          language: languageCode,
+          isolate,
+        }
+      );
+    }
+
+    // Get sentence timeline from the word timeline
+    const timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
+      wordTimeline,
+      res.text,
+      languageCode
+    );
 
     return {
       engine: "cloudflare",
       model: "@cf/openai/whisper",
-      text: res.text,
+      transcript: res.text,
       timeline,
     };
   };
@@ -350,7 +406,7 @@ export const useTranscribe = () => {
   ): Promise<{
     engine: string;
     model: string;
-    text: string;
+    transcript: string;
     tokenId: number;
     timeline?: TimelineEntry[];
   }> => {
@@ -364,90 +420,60 @@ export const useTranscribe = () => {
     config.speechRecognitionLanguage = language;
     config.requestWordLevelTimestamps();
     config.outputFormat = sdk.OutputFormat.Detailed;
+    config.setProfanity(sdk.ProfanityOption.Raw);
 
     // create the speech recognizer.
     const reco = new sdk.SpeechRecognizer(config, audioConfig);
 
-    let results: SpeechRecognitionResultType[] = [];
+    setOutput("Transcribing from Azure...");
+    const result: sdk.SpeechRecognitionResult = await new Promise(
+      (resolve, reject) => {
+        reco.recognizeOnceAsync(
+          (result: sdk.SpeechRecognitionResult) => {
+            reco.close();
+            setOutput(result.text);
+            resolve(result);
+          },
 
-    const res: {
-      engine: string;
-      model: string;
-      text: string;
-      tokenId: number;
-      timeline?: TimelineEntry[];
-    } = await new Promise((resolve, reject) => {
-      reco.recognizing = (_s, e) => {
-        setOutput(e.result.text);
-      };
-
-      reco.recognized = (_s, e) => {
-        const json = e.result.properties.getProperty(
-          sdk.PropertyId.SpeechServiceResponse_JsonResult
+          (error) => {
+            reco.close();
+            setOutput(error);
+            reject(error);
+          }
         );
-        const result = JSON.parse(json);
-        results = results.concat(result);
-      };
+      }
+    );
 
-      reco.canceled = (_s, e) => {
-        if (e.reason === sdk.CancellationReason.Error) {
-          return reject(new Error(e.errorDetails));
-        }
+    setOutput("Aligning the transcript...");
+    const wordTimeline: Timeline = [];
+    const transcript = result.text;
+    const resultObject = JSON.parse(result.json);
+    const bestResult = resultObject.NBest[0];
+    if (!bestResult) {
+      throw new Error("No best result found");
+    }
+    for (const word of bestResult.Words) {
+      wordTimeline.push({
+        type: "word",
+        text: word.Word,
+        startTime: word.Offset / 10000000.0,
+        endTime: (word.Offset + word.Duration) / 10000000.0,
+      });
+    }
 
-        reco.stopContinuousRecognitionAsync();
-        console.log("CANCELED: Reason=" + e.reason);
-      };
+    const timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
+      wordTimeline,
+      transcript,
+      language.split("-")[0]
+    );
 
-      reco.sessionStopped = async (_s, e) => {
-        console.log(
-          "Session stopped. Stop continuous recognition.",
-          e.sessionId,
-          results
-        );
-        reco.stopContinuousRecognitionAsync();
-
-        try {
-          const timeline: Timeline = [];
-          results.forEach((result) => {
-            if (!result.DisplayText) return;
-
-            const best = take(sortedUniqBy(result.NBest, "Confidence"), 1)[0];
-            if (!best.Words) return;
-            if (!best.Confidence || best.Confidence < 0.5) return;
-
-            const firstWord = best.Words[0];
-            const lastWord = best.Words[best.Words.length - 1];
-
-            timeline.push({
-              type: "sentence",
-              text: best.Display,
-              startTime: firstWord.Offset / 10000000.0,
-              endTime: (lastWord.Offset + lastWord.Duration) / 10000000.0,
-              timeline: [],
-            });
-          });
-
-          const transcript = timeline
-            .map((result) => result.text)
-            .join(" ")
-            .trim();
-
-          resolve({
-            engine: "azure",
-            model: "whisper",
-            text: transcript,
-            timeline,
-            tokenId: id,
-          });
-        } catch (err) {
-          reject(err);
-        }
-      };
-
-      reco.startContinuousRecognitionAsync();
-    });
-
-    return res;
+    return {
+      engine: "azure",
+      model: "whisper",
+      transcript,
+      timeline,
+      tokenId: id,
+    };
   };
 
   return {

@@ -273,6 +273,10 @@ type EnjoyAppType = {
     ) => Promise<SpeechType>;
   };
   echogarden: {
+    recognize: (
+      input: string,
+      options: RecognitionOptions
+    ) => Promise<RecognitionResult>;
     align: (
       input: string | Uint8Array,
       transcript: string,

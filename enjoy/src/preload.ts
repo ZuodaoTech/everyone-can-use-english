@@ -3,6 +3,7 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 import { version } from "../package.json";
 import { Timeline } from "echogarden/dist/utilities/Timeline";
+import { RecognitionOptions } from "echogarden/dist/api/API";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
@@ -472,6 +473,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   echogarden: {
+    recognize: (input: string, options: RecognitionOptions) => {
+      return ipcRenderer.invoke("echogarden-recognize", input, options);
+    },
     align: (input: string, transcript: string, options: any) => {
       return ipcRenderer.invoke("echogarden-align", input, transcript, options);
     },
