@@ -73,7 +73,7 @@ class EchogardenWrapper {
       wordTimelineToSegmentSentenceTimeline;
   }
 
-  async check() {
+  async check(options: WhisperOptions = {}) {
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
     let model = "tiny.en";
     try {
@@ -91,6 +91,7 @@ class EchogardenWrapper {
         whisper: {
           model,
           language: "en",
+          ...options,
         } as WhisperOptions,
       });
       logger.info(result);
@@ -221,8 +222,8 @@ class EchogardenWrapper {
       }
     );
 
-    ipcMain.handle("echogarden-check", async (_event) => {
-      return this.check();
+    ipcMain.handle("echogarden-check", async (_event, options: any) => {
+      return this.check(options);
     });
   }
 }
