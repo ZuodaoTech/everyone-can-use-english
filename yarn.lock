@@ -32,10 +32,10 @@ __metadata:
     "@nuxtjs/seo": "npm:^2.0.0-rc.23"
     autoprefixer: "npm:^10.4.20"
     nuxt: "npm:^3.13.2"
-    nuxt-og-image: "npm:^3.0.4"
+    nuxt-og-image: "npm:^3.0.6"
     postcss: "npm:^8.4.47"
     sass: "npm:^1.79.5"
-    tailwindcss: "npm:^3.4.13"
+    tailwindcss: "npm:^3.4.14"
     vue: "npm:^3.5.12"
     vue-router: "npm:^4.4.5"
   languageName: unknown
@@ -363,7 +363,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-polly@npm:^3.669.0":
+"@aws-sdk/client-polly@npm:^3.670.0":
   version: 3.670.0
   resolution: "@aws-sdk/client-polly@npm:3.670.0"
   dependencies:
@@ -622,9 +622,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-transcribe-streaming@npm:^3.669.0":
-  version: 3.670.0
-  resolution: "@aws-sdk/client-transcribe-streaming@npm:3.670.0"
+"@aws-sdk/client-transcribe-streaming@npm:^3.672.0":
+  version: 3.672.0
+  resolution: "@aws-sdk/client-transcribe-streaming@npm:3.672.0"
   dependencies:
     "@aws-crypto/sha256-browser": "npm:5.2.0"
     "@aws-crypto/sha256-js": "npm:5.2.0"
@@ -674,7 +674,7 @@ __metadata:
     "@smithy/util-retry": "npm:^3.0.7"
     "@smithy/util-utf8": "npm:^3.0.0"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/24952fb07dddce9c82cb8082fd7382681e980d01a072b64278aa9c4d3e20b36b345ad813d4f890d902b3f34fcfc9c252c37f7af165e0e2b40c520cb797ad1852
+  checksum: 10c0/8470177bcf36036a76db9567e01d747c7db5e4977cacee4577a1864da64cda069fd96971829e61a28fb98da34e07de55c0cb6e202443edb7d1504e72dcc53782
   languageName: node
   linkType: hard
 
@@ -2380,17 +2380,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@es-joy/jsdoccomment@npm:^0.46.0":
-  version: 0.46.0
-  resolution: "@es-joy/jsdoccomment@npm:0.46.0"
-  dependencies:
-    comment-parser: "npm:1.4.1"
-    esquery: "npm:^1.6.0"
-    jsdoc-type-pratt-parser: "npm:~4.0.0"
-  checksum: 10c0/a7a67936ebf6d9aaf74af018c3ac744769af3552b05ad9b88fca96b2ffdca16e724b0ff497f53634ec4cca81e98d8c471b6b6bde0fa5b725af4222ad9a0707f0
-  languageName: node
-  linkType: hard
-
 "@esbuild/aix-ppc64@npm:0.20.2":
   version: 0.20.2
   resolution: "@esbuild/aix-ppc64@npm:0.20.2"
@@ -3839,7 +3828,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/devtools-kit@npm:1.6.0, @nuxt/devtools-kit@npm:^1.4.1, @nuxt/devtools-kit@npm:^1.4.2, @nuxt/devtools-kit@npm:^1.5.1":
+"@nuxt/devtools-kit@npm:1.6.0, @nuxt/devtools-kit@npm:^1.4.1, @nuxt/devtools-kit@npm:^1.4.2, @nuxt/devtools-kit@npm:^1.5.1, @nuxt/devtools-kit@npm:^1.6.0":
   version: 1.6.0
   resolution: "@nuxt/devtools-kit@npm:1.6.0"
   dependencies:
@@ -4670,14 +4659,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.48.0":
-  version: 1.48.0
-  resolution: "@playwright/test@npm:1.48.0"
+"@playwright/test@npm:^1.48.1":
+  version: 1.48.1
+  resolution: "@playwright/test@npm:1.48.1"
   dependencies:
-    playwright: "npm:1.48.0"
+    playwright: "npm:1.48.1"
   bin:
     playwright: cli.js
-  checksum: 10c0/595a5db99f75d1ffce11df2980ca0dd20523a0a20dd962e4256e536dddccca0138883ae2e9c82aaa26094fb50def73062badc14c001d20fb62a3a0b2df18ebca
+  checksum: 10c0/32cedc3b2d375cb8f4a830bc820d7726b0235be7a6202e1d6ee46e739b83666271c47c100c11311cf5a916468c18e6a4dc526accf9ef090786e7614c2633b2b8
   languageName: node
   linkType: hard
 
@@ -6056,10 +6045,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rails/actioncable@npm:7.2.100":
-  version: 7.2.100
-  resolution: "@rails/actioncable@npm:7.2.100"
-  checksum: 10c0/dc24fcd1a9f153e5550c691ddff5ea7d3d7589a3be39cf14991d3fb6e77d1d952dbf9ab5f00c9781f85e750d94f7a80ade3231ab284b008d6de311ed33b21cb9
+"@rails/actioncable@npm:7.2.101":
+  version: 7.2.101
+  resolution: "@rails/actioncable@npm:7.2.101"
+  checksum: 10c0/5917b0d5c51c8b38bb33532fd6483937d6bf030add46e2bca0272aed5b5b43ceec881f8c89a9784b416cb86a2655198f0faac4929a67caa4812ed622346cdc90
   languageName: node
   linkType: hard
 
@@ -8048,7 +8037,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unocss/preset-wind@npm:^0.63.1":
+"@unocss/preset-wind@npm:^0.63.1, @unocss/preset-wind@npm:^0.63.4":
   version: 0.63.4
   resolution: "@unocss/preset-wind@npm:0.63.4"
   dependencies:
@@ -9748,12 +9737,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chart.js@npm:^4.4.4":
-  version: 4.4.4
-  resolution: "chart.js@npm:4.4.4"
+"chart.js@npm:^4.4.5":
+  version: 4.4.5
+  resolution: "chart.js@npm:4.4.5"
   dependencies:
     "@kurkle/color": "npm:^0.3.0"
-  checksum: 10c0/9fa3206403a6103916f7762c2665d322c42b0cc07fba91526b1d033ddb887c1ba74b3ebc0bd0748a9e55abd1017f25fdb2292cdd6579d8c2d3bcb1c58f71281c
+  checksum: 10c0/042393725d1dc6a7fc55757abc5db88cbce0e84ad115c08d552af56d72197e806eb78e04253d12a5f0cf331a57a059dc30fc2dab9324e4f695806b3a087d1b0c
   languageName: node
   linkType: hard
 
@@ -10248,13 +10237,6 @@ __metadata:
   version: 9.5.0
   resolution: "commander@npm:9.5.0"
   checksum: 10c0/5f7784fbda2aaec39e89eb46f06a999e00224b3763dc65976e05929ec486e174fe9aac2655f03ba6a5e83875bd173be5283dc19309b7c65954701c02025b3c1d
-  languageName: node
-  linkType: hard
-
-"comment-parser@npm:1.4.1":
-  version: 1.4.1
-  resolution: "comment-parser@npm:1.4.1"
-  checksum: 10c0/d6c4be3f5be058f98b24f2d557f745d8fe1cc9eb75bebbdccabd404a0e1ed41563171b16285f593011f8b6a5ec81f564fb1f2121418ac5cbf0f49255bf0840dd
   languageName: node
   linkType: hard
 
@@ -11725,12 +11707,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"echogarden@npm:^1.8.1":
-  version: 1.8.1
-  resolution: "echogarden@npm:1.8.1"
+"echogarden@npm:^1.8.4":
+  version: 1.8.4
+  resolution: "echogarden@npm:1.8.4"
   dependencies:
-    "@aws-sdk/client-polly": "npm:^3.669.0"
-    "@aws-sdk/client-transcribe-streaming": "npm:^3.669.0"
+    "@aws-sdk/client-polly": "npm:^3.670.0"
+    "@aws-sdk/client-transcribe-streaming": "npm:^3.672.0"
     "@echogarden/espeak-ng-emscripten": "npm:^0.1.2"
     "@echogarden/fasttext-wasm": "npm:^0.1.0"
     "@echogarden/flite-wasi": "npm:^0.1.1"
@@ -11760,7 +11742,7 @@ __metadata:
     jsdom: "npm:^25.0.1"
     json5: "npm:^2.2.3"
     kuromoji: "npm:^0.1.2"
-    microsoft-cognitiveservices-speech-sdk: "npm:^1.40.0"
+    microsoft-cognitiveservices-speech-sdk: "npm:^1.41.0"
     moving-median: "npm:^1.0.0"
     msgpack-lite: "npm:^0.1.26"
     onnxruntime-node: "npm:^1.19.2"
@@ -11975,16 +11957,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^32.2.0":
-  version: 32.2.0
-  resolution: "electron@npm:32.2.0"
+"electron@npm:^33.0.1":
+  version: 33.0.1
+  resolution: "electron@npm:33.0.1"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^20.9.0"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10c0/28d988a9d05c89e93d70cc790bd53ecc97135cc3fa9efe3617f10b87cdf85ada468d383afd7858bcf8f064aa189ea7f8987e32c7ebaac70bda64e8f9f85621e8
+  checksum: 10c0/cd5e5cef21df2d5e1ffc95cfe90397c984152db54ac1032deb97f1716f778d41f5fa7c83e42bc86ae3c509a6d45f578515a540b6453ebf818310cc303e95f083
   languageName: node
   linkType: hard
 
@@ -12123,7 +12105,7 @@ __metadata:
     "@langchain/core": "npm:^0.3.11"
     "@langchain/ollama": "npm:^0.1.0"
     "@mozilla/readability": "npm:^0.5.0"
-    "@playwright/test": "npm:^1.48.0"
+    "@playwright/test": "npm:^1.48.1"
     "@radix-ui/react-accordion": "npm:^1.2.1"
     "@radix-ui/react-alert-dialog": "npm:^1.1.2"
     "@radix-ui/react-aspect-ratio": "npm:^1.1.0"
@@ -12148,7 +12130,7 @@ __metadata:
     "@radix-ui/react-toast": "npm:^1.2.2"
     "@radix-ui/react-toggle": "npm:^1.1.0"
     "@radix-ui/react-tooltip": "npm:^1.1.3"
-    "@rails/actioncable": "npm:7.2.100"
+    "@rails/actioncable": "npm:7.2.101"
     "@tailwindcss/typography": "npm:^0.5.15"
     "@types/ahoy.js": "npm:^0.4.2"
     "@types/autosize": "npm:^4.0.3"
@@ -12180,7 +12162,7 @@ __metadata:
     axios: "npm:^1.7.7"
     camelcase: "npm:^8.0.0"
     camelcase-keys: "npm:^9.1.3"
-    chart.js: "npm:^4.4.4"
+    chart.js: "npm:^4.4.5"
     cheerio: "npm:^1.0.0"
     class-variance-authority: "npm:^0.7.0"
     clsx: "npm:^2.1.1"
@@ -12192,8 +12174,8 @@ __metadata:
     dayjs: "npm:^1.11.13"
     decamelize: "npm:^6.0.0"
     decamelize-keys: "npm:^2.0.1"
-    echogarden: "npm:^1.8.1"
-    electron: "npm:^32.2.0"
+    echogarden: "npm:^1.8.4"
+    electron: "npm:^33.0.1"
     electron-context-menu: "npm:^4.0.4"
     electron-devtools-installer: "npm:^3.2.0"
     electron-log: "npm:^5.2.0"
@@ -12215,9 +12197,9 @@ __metadata:
     langchain: "npm:^0.3.2"
     lodash: "npm:^4.17.21"
     lru-cache: "npm:^11.0.1"
-    lucide-react: "npm:^0.452.0"
+    lucide-react: "npm:^0.453.0"
     mark.js: "npm:^8.11.1"
-    microsoft-cognitiveservices-speech-sdk: "npm:^1.40.0"
+    microsoft-cognitiveservices-speech-sdk: "npm:^1.41.0"
     mustache: "npm:^4.2.0"
     next-themes: "npm:^0.3.0"
     octokit: "npm:^4.0.2"
@@ -12251,10 +12233,10 @@ __metadata:
     tailwind-merge: "npm:^2.5.4"
     tailwind-scrollbar: "npm:^3.1.0"
     tailwind-scrollbar-hide: "npm:^1.1.7"
-    tailwindcss: "npm:^3.4.13"
+    tailwindcss: "npm:^3.4.14"
     tailwindcss-animate: "npm:^1.0.7"
     ts-node: "npm:^10.9.2"
-    tslib: "npm:^2.7.0"
+    tslib: "npm:^2.8.0"
     typescript: "npm:^5.6.3"
     umzug: "npm:^3.8.2"
     unzipper: "npm:^0.12.3"
@@ -12925,7 +12907,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esquery@npm:^1.5.0, esquery@npm:^1.6.0":
+"esquery@npm:^1.5.0":
   version: 1.6.0
   resolution: "esquery@npm:1.6.0"
   dependencies:
@@ -15652,13 +15634,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsdoc-type-pratt-parser@npm:~4.0.0":
-  version: 4.0.0
-  resolution: "jsdoc-type-pratt-parser@npm:4.0.0"
-  checksum: 10c0/b23ef7bbbe2f56d72630d1c5a233dc9fecaff399063d373c57bef136908c1b05e723dac107177303c03ccf8d75aa51507510b282aa567600477479c5ea0c36d1
-  languageName: node
-  linkType: hard
-
 "jsdom@npm:^25.0.1":
   version: 25.0.1
   resolution: "jsdom@npm:25.0.1"
@@ -16367,12 +16342,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.452.0":
-  version: 0.452.0
-  resolution: "lucide-react@npm:0.452.0"
+"lucide-react@npm:^0.453.0":
+  version: 0.453.0
+  resolution: "lucide-react@npm:0.453.0"
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
-  checksum: 10c0/8e8dd351dfcdffc65a3a76eba04f08310fb13c8fce3e2cab74246c72df45d37e467d521b36053298fb33fe1c5c4770be4750eefa224ae5cf6258dffe95c72da1
+  checksum: 10c0/eec257049609eff958329943da6e129c8db1969aa789c6e922f59418d7b6f6913c22e971ac7885efc80eeb3e41e180c48afdee92738a63a31ef5a39836037b7e
   languageName: node
   linkType: hard
 
@@ -16395,7 +16370,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.30.0, magic-string@npm:^0.30.10, magic-string@npm:^0.30.11, magic-string@npm:^0.30.3, magic-string@npm:^0.30.4, magic-string@npm:^0.30.8":
+"magic-string@npm:^0.30.0, magic-string@npm:^0.30.10, magic-string@npm:^0.30.11, magic-string@npm:^0.30.12, magic-string@npm:^0.30.3, magic-string@npm:^0.30.4, magic-string@npm:^0.30.8":
   version: 0.30.12
   resolution: "magic-string@npm:0.30.12"
   dependencies:
@@ -17112,18 +17087,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"microsoft-cognitiveservices-speech-sdk@npm:^1.40.0":
-  version: 1.40.0
-  resolution: "microsoft-cognitiveservices-speech-sdk@npm:1.40.0"
+"microsoft-cognitiveservices-speech-sdk@npm:^1.41.0":
+  version: 1.41.0
+  resolution: "microsoft-cognitiveservices-speech-sdk@npm:1.41.0"
   dependencies:
-    "@es-joy/jsdoccomment": "npm:^0.46.0"
     "@types/webrtc": "npm:^0.0.37"
     agent-base: "npm:^6.0.1"
     bent: "npm:^7.3.12"
     https-proxy-agent: "npm:^4.0.0"
     uuid: "npm:^9.0.0"
     ws: "npm:^7.5.6"
-  checksum: 10c0/a4a1de9a045dd2235dd09ba0df1b1b0d0451fc52ad5cf4f53d2467017d041baef252e00002ff58d9ff8182b4976ce58e4d8b14b17e49c25ebc6de019eefb1be5
+  checksum: 10c0/0335660d8ca809a5b0b86d7664482a169e660ef30d28665201b36d12ef0c9e4dbc18dcd9b4b5d9a473d3f29610b264afb367a1c7a6f78171c968a03f113c64e7
   languageName: node
   linkType: hard
 
@@ -18059,7 +18033,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuxt-og-image@npm:^3.0.3, nuxt-og-image@npm:^3.0.4":
+"nuxt-og-image@npm:^3.0.3":
   version: 3.0.4
   resolution: "nuxt-og-image@npm:3.0.4"
   dependencies:
@@ -18093,6 +18067,43 @@ __metadata:
     unwasm: "npm:^0.3.9"
     yoga-wasm-web: "npm:^0.3.3"
   checksum: 10c0/446944c66e3126cd9685d6ddd06a2c3c5fea9fd8c6d7743de1d984364332b99fe8d1f65a4479be2a42ccbcb07415c38abd2f2497f142d7a24f99c0a2cf0812f8
+  languageName: node
+  linkType: hard
+
+"nuxt-og-image@npm:^3.0.6":
+  version: 3.0.6
+  resolution: "nuxt-og-image@npm:3.0.6"
+  dependencies:
+    "@nuxt/devtools-kit": "npm:^1.6.0"
+    "@nuxt/kit": "npm:^3.13.2"
+    "@resvg/resvg-js": "npm:^2.6.2"
+    "@resvg/resvg-wasm": "npm:^2.6.2"
+    "@unocss/core": "npm:^0.63.4"
+    "@unocss/preset-wind": "npm:^0.63.4"
+    chrome-launcher: "npm:^1.1.2"
+    defu: "npm:^6.1.4"
+    execa: "npm:^9.4.0"
+    image-size: "npm:^1.1.1"
+    magic-string: "npm:^0.30.12"
+    nuxt-site-config: "npm:^2.2.18"
+    nuxt-site-config-kit: "npm:^2.2.18"
+    nypm: "npm:^0.3.12"
+    ofetch: "npm:^1.4.1"
+    ohash: "npm:^1.1.4"
+    pathe: "npm:^1.1.2"
+    pkg-types: "npm:^1.2.1"
+    playwright-core: "npm:^1.48.0"
+    radix3: "npm:^1.1.2"
+    satori: "npm:^0.11.2"
+    satori-html: "npm:^0.3.2"
+    sirv: "npm:^3.0.0"
+    std-env: "npm:^3.7.0"
+    strip-literal: "npm:^2.1.0"
+    ufo: "npm:^1.5.4"
+    unplugin: "npm:^1.14.1"
+    unwasm: "npm:^0.3.9"
+    yoga-wasm-web: "npm:^0.3.3"
+  checksum: 10c0/d71168e687ab973ab79e3a879520d86155689e5400f1e5241013354a48d3ef5ee2b815412e4fa0cbe129121f22a6d1cf4fb668166d276743f87a9dfc47ee18ca
   languageName: node
   linkType: hard
 
@@ -18358,7 +18369,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ofetch@npm:^1.3.4, ofetch@npm:^1.4.0":
+"ofetch@npm:^1.3.4, ofetch@npm:^1.4.0, ofetch@npm:^1.4.1":
   version: 1.4.1
   resolution: "ofetch@npm:1.4.1"
   dependencies:
@@ -19137,7 +19148,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkg-types@npm:^1.0.3, pkg-types@npm:^1.1.1, pkg-types@npm:^1.2.0":
+"pkg-types@npm:^1.0.3, pkg-types@npm:^1.1.1, pkg-types@npm:^1.2.0, pkg-types@npm:^1.2.1":
   version: 1.2.1
   resolution: "pkg-types@npm:1.2.1"
   dependencies:
@@ -19148,7 +19159,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.48.0, playwright-core@npm:^1.47.2":
+"playwright-core@npm:1.48.1, playwright-core@npm:^1.48.0":
+  version: 1.48.1
+  resolution: "playwright-core@npm:1.48.1"
+  bin:
+    playwright-core: cli.js
+  checksum: 10c0/2f75532b9b7dfa0e586f5660ac1d8ea729bbdbd28dd2c0711e7cfc1adfe5cf7448d7f15a018ec9851a8f50c0743c3990cb9df23064bed603627baeac4dce3915
+  languageName: node
+  linkType: hard
+
+"playwright-core@npm:^1.47.2":
   version: 1.48.0
   resolution: "playwright-core@npm:1.48.0"
   bin:
@@ -19157,18 +19177,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright@npm:1.48.0":
-  version: 1.48.0
-  resolution: "playwright@npm:1.48.0"
+"playwright@npm:1.48.1":
+  version: 1.48.1
+  resolution: "playwright@npm:1.48.1"
   dependencies:
     fsevents: "npm:2.3.2"
-    playwright-core: "npm:1.48.0"
+    playwright-core: "npm:1.48.1"
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     playwright: cli.js
-  checksum: 10c0/4c18b06f7de87442c697c5df5b1e1e4027c5d9f05c07679aca0135dcf18e69a4424ec7a0c91a323487ea4a92fb5146fc80c04329479426722ea742fd5eff1afa
+  checksum: 10c0/96280ae656226e52015c0c69c4c19e9f594c19353a79012a19bd7b7175d7b409c1aed289a629df49ef897a57ccd24668ad15b86c283db10f76212a4db90a94ac
   languageName: node
   linkType: hard
 
@@ -20886,7 +20906,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"satori@npm:^0.11.1":
+"satori@npm:^0.11.1, satori@npm:^0.11.2":
   version: 0.11.2
   resolution: "satori@npm:0.11.2"
   dependencies:
@@ -21271,6 +21291,17 @@ __metadata:
     mrmime: "npm:^2.0.0"
     totalist: "npm:^3.0.0"
   checksum: 10c0/68f8ee857f6a9415e9c07a1f31c7c561df8d5f1b1ba79bee3de583fa37da8718def5309f6b1c6e2c3ef77de45d74f5e49efc7959214443aa92d42e9c99180a4e
+  languageName: node
+  linkType: hard
+
+"sirv@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "sirv@npm:3.0.0"
+  dependencies:
+    "@polka/url": "npm:^1.0.0-next.24"
+    mrmime: "npm:^2.0.0"
+    totalist: "npm:^3.0.0"
+  checksum: 10c0/282c52ee5a93cafa297096ad31aa6c3004a21d4c93abe728b701e51e4329acb887f6e92f07696225414fd6bb4a7782fd64a42d0b6b6467ae0f66bd3fde90b865
   languageName: node
   linkType: hard
 
@@ -22014,9 +22045,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:^3.4.13":
-  version: 3.4.13
-  resolution: "tailwindcss@npm:3.4.13"
+"tailwindcss@npm:^3.4.14":
+  version: 3.4.14
+  resolution: "tailwindcss@npm:3.4.14"
   dependencies:
     "@alloc/quick-lru": "npm:^5.2.0"
     arg: "npm:^5.0.2"
@@ -22043,7 +22074,7 @@ __metadata:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 10c0/c6525be3dd26febc4ec5e45e80596bff8b48ade7de258c1ec8704297bf47c1ec7b2b186b13662ebaa6ab4795ad8879fb64064f796756bfc8b46558b542b01a6c
+  checksum: 10c0/f6c23f8a3293ce3b2511bca1e50008ac94bd8562cb09fec32fe4f8e8a4f54d9e9fc10e567b7f974abdd4b33e550564a2616d4e793c736955432f28448141ce45
   languageName: node
   linkType: hard
 
@@ -22457,10 +22488,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.6.2, tslib@npm:^2.7.0":
+"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.6.2":
   version: 2.7.0
   resolution: "tslib@npm:2.7.0"
   checksum: 10c0/469e1d5bf1af585742128827000711efa61010b699cb040ab1800bcd3ccdd37f63ec30642c9e07c4439c1db6e46345582614275daca3e0f4abae29b0083f04a6
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.8.0":
+  version: 2.8.0
+  resolution: "tslib@npm:2.8.0"
+  checksum: 10c0/31e4d14dc1355e9b89e4d3c893a18abb7f90b6886b089c2da91224d0a7752c79f3ddc41bc1aa0a588ac895bd97bb99c5bc2bfdb2f86de849f31caeb3ba79bbe5
   languageName: node
   linkType: hard
 
