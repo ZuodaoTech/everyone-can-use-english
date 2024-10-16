@@ -88,19 +88,33 @@ export const AISettingsProvider = ({
   };
 
   const refreshWhisperModel = async () => {
-    const model = await EnjoyApp.userSettings.get(UserSettingKeyEnum.WHISPER);
-    if (WHISPER_MODELS.includes(model)) {
+    const whisperModel = await EnjoyApp.userSettings.get(
+      UserSettingKeyEnum.WHISPER
+    );
+    if (WHISPER_MODELS.includes(whisperModel)) {
+      setWhisperModel(whisperModel);
+    } else {
+      let model = "tiny";
+      if (whisperModel.match(/tiny/)) {
+        model = "tiny";
+      } else if (whisperModel.match(/base/)) {
+        model = "base";
+      } else if (whisperModel.match(/small/)) {
+        model = "small";
+      } else if (whisperModel.match(/medium/)) {
+        model = "medium";
+      } else if (whisperModel.match(/large/)) {
+        model = "large-v3-turbo";
+      }
+
+      if (
+        learningLanguage.match(/en/) &&
+        model.match(/tiny|base|small|medium/)
+      ) {
+        model = `${model}.en`;
+      }
+
       setWhisperModel(model);
-    } else if (model.match(/tiny/)) {
-      setWhisperModel("tiny");
-    } else if (model.match(/base/)) {
-      setWhisperModel("base");
-    } else if (model.match(/small/)) {
-      setWhisperModel("small");
-    } else if (model.match(/medium/)) {
-      setWhisperModel("medium");
-    } else if (model.match(/large/)) {
-      setWhisperModel("large-v3-turbo");
     }
   };
 

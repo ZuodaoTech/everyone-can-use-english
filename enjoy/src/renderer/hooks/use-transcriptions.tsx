@@ -279,26 +279,17 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   useEffect(() => {
     if (!transcribing) return;
 
-    if (service === "local") {
-      EnjoyApp.whisper.onProgress((_, p: number) => {
-        if (p > 100) p = 100;
-        setTranscribingProgress(p);
-      });
-    }
-
     EnjoyApp.app.onCmdOutput((_, output) => {
       setTranscribingOutput(output);
     });
 
     return () => {
-      EnjoyApp.whisper.removeProgressListeners();
       EnjoyApp.app.removeCmdOutputListeners();
       setTranscribingOutput(null);
     };
   }, [media, service, transcribing]);
 
   const abortGenerateTranscription = () => {
-    EnjoyApp.whisper.abort();
     setTranscribing(false);
   };
 

@@ -31,6 +31,10 @@ Echogarden.setGlobalOption(
   "ffmpegPath",
   ffmpegPath.replace("app.asar", "app.asar.unpacked")
 );
+Echogarden.setGlobalOption(
+  "packageBaseURL",
+  "https://hf-mirror.com/echogarden/echogarden-packages/resolve/main/"
+);
 
 const __filename = url.fileURLToPath(import.meta.url);
 /*

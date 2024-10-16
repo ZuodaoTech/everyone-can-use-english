@@ -295,25 +295,6 @@ type EnjoyAppType = {
     transcode: (input: string) => Promise<string>;
     check: () => Promise<{ success: boolean; log: string }>;
   };
-  whisper: {
-    config: () => Promise<WhisperConfigType>;
-    check: () => Promise<{ success: boolean; log: string }>;
-    setModel: (model: string) => Promise<WhisperConfigType>;
-    transcribe: (
-      params: {
-        file?: string;
-        blob?: { type: string; arrayBuffer: ArrayBuffer };
-      },
-      options?: {
-        language?: string;
-        force?: boolean;
-        extra?: string[];
-      }
-    ) => Promise<Partial<WhisperOutputType>>;
-    onProgress: (callback: (event, progress: number) => void) => void;
-    abort: () => Promise<void>;
-    removeProgressListeners: () => Promise<void>;
-  };
   ffmpeg: {
     check: () => Promise<boolean>;
     transcode: (

@@ -506,42 +506,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       return ipcRenderer.invoke("echogarden-check");
     },
   },
-  whisper: {
-    config: () => {
-      return ipcRenderer.invoke("whisper-config");
-    },
-    setModel: (model: string) => {
-      return ipcRenderer.invoke("whisper-set-model", model);
-    },
-    check: () => {
-      return ipcRenderer.invoke("whisper-check");
-    },
-    transcribe: (
-      params: {
-        file?: string;
-        blob?: {
-          type: string;
-          arrayBuffer: ArrayBuffer;
-        };
-      },
-      options?: {
-        language?: string;
-        force?: boolean;
-        extra?: string[];
-      }
-    ) => {
-      return ipcRenderer.invoke("whisper-transcribe", params, options);
-    },
-    onProgress: (
-      callback: (event: IpcRendererEvent, progress: number) => void
-    ) => ipcRenderer.on("whisper-on-progress", callback),
-    abort: () => {
-      return ipcRenderer.invoke("whisper-abort");
-    },
-    removeProgressListeners: () => {
-      ipcRenderer.removeAllListeners("whisper-on-progress");
-    },
-  },
   ffmpeg: {
     check: () => {
       return ipcRenderer.invoke("ffmpeg-check-command");

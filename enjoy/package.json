@@ -19,9 +19,8 @@
     "test:main": "yarn run playwright test e2e/main.spec.ts",
     "test:renderer": "yarn run playwright test e2e/renderer.spec.ts",
     "create-migration": "zx ./src/main/db/create-migration.mjs",
-    "download-whisper-model": "zx ./scripts/download-whisper-model.mjs",
     "download-dictionaries": "zx ./scripts/download-dictionaries.mjs",
-    "download": "yarn run download-whisper-model && yarn run download-dictionaries"
+    "download": "yarn run download-dictionaries"
   },
   "keywords": [],
   "author": {
