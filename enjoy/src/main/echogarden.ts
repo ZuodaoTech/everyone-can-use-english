@@ -165,6 +165,9 @@ class EchogardenWrapper {
         options: AlignmentOptions
       ) => {
         logger.debug("echogarden-align-segments:", timeline, options);
+        if (typeof input === "string") {
+          input = enjoyUrlToPath(input);
+        }
         try {
           const rawAudio = await this.ensureRawAudio(input, 16000);
           return await this.alignSegments(rawAudio, timeline, options);
