@@ -73,27 +73,27 @@ class EchogardenWrapper {
       wordTimelineToSegmentSentenceTimeline;
   }
 
-  async check(options: WhisperOptions = {}) {
+  async check(
+    options: RecognitionOptions = {
+      engine: "whisper",
+      whisper: {
+        model: "tiny.en",
+        language: "en",
+      } as WhisperOptions,
+    }
+  ) {
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
-    let model = "tiny.en";
     try {
       const whisperModel = await UserSetting.get(UserSettingKeyEnum.WHISPER);
       if (WHISPER_MODELS.includes(whisperModel)) {
-        model = whisperModel;
+        options.whisper.model = whisperModel;
       }
     } catch (e) {
       logger.error(e);
     }
 
     try {
-      const result = await this.recognize(sampleFile, {
-        engine: "whisper",
-        whisper: {
-          model,
-          language: "en",
-          ...options,
-        } as WhisperOptions,
-      });
+      const result = await this.recognize(sampleFile, options);
       logger.info(result);
       fs.writeJsonSync(
         path.join(settings.cachePath(), "echogarden-check.json"),

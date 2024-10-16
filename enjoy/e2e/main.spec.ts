@@ -63,10 +63,13 @@ test.afterAll(async () => {
 test("validate echogarden command", async () => {
   const res = await page.evaluate(() => {
     return window.__ENJOY_APP__.echogarden.check({
-      model: "tiny.en",
-      language: "en",
-      encoderProvider: "cpu",
-      decoderProvider: "cpu",
+      engine: "whisper",
+      whisper: {
+        model: "tiny.en",
+        language: "en",
+        encoderProvider: "cpu",
+        decoderProvider: "cpu",
+      },
     });
   });
   console.info(res.log);
