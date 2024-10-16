@@ -333,19 +333,19 @@ export const useTranscribe = () => {
         )
       ).data;
 
-      if (!res.vtt) {
-        throw new Error(t("cloudflareTranscribeFailed", { error: "" }));
+      const segmentTimeline: TimelineEntry[] = [];
+      if (res.vtt) {
+        const caption = await parseText(res.vtt, { type: "vtt" });
+        for (const cue of caption.cues) {
+          segmentTimeline.push({
+            type: "segment",
+            text: cue.text,
+            startTime: cue.startTime,
+            endTime: cue.endTime,
+            timeline: [],
+          });
+        }
       }
-      const caption = await parseText(res.vtt, { type: "vtt" });
-      const segmentTimeline: TimelineEntry[] = caption.cues.map((cue) => {
-        return {
-          type: "segment",
-          text: cue.text,
-          startTime: cue.startTime,
-          endTime: cue.endTime,
-          timeline: [],
-        };
-      });
 
       return {
         engine: "cloudflare",
