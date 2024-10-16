@@ -30,7 +30,7 @@ import {
   toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import { LANGUAGES } from "@/constants";
+import { LANGUAGES, WHISPER_MODELS } from "@/constants";
 import { ChevronDownIcon, ChevronUpIcon, LoaderIcon } from "lucide-react";
 import { parseText } from "media-captions";
 import { milisecondsToTimestamp } from "@/utils";
@@ -39,6 +39,7 @@ import { SttEngineOptionEnum } from "@/types/enums";
 const transcriptionSchema = z.object({
   language: z.string(),
   service: z.union([z.nativeEnum(SttEngineOptionEnum), z.literal("upload")]),
+  model: z.string().optional(),
   text: z.string().optional(),
   isolate: z.boolean().optional(),
 });
@@ -60,13 +61,14 @@ export const TranscriptionCreateForm = (props: {
     originalText,
   } = props;
   const { learningLanguage } = useContext(AppSettingsProviderContext);
-  const { sttEngine } = useContext(AISettingsProviderContext);
+  const { sttEngine, whisperModel } = useContext(AISettingsProviderContext);
 
   const form = useForm<z.infer<typeof transcriptionSchema>>({
     resolver: zodResolver(transcriptionSchema),
     values: {
       language: learningLanguage,
       service: originalText ? "upload" : sttEngine,
+      model: sttEngine === SttEngineOptionEnum.LOCAL ? whisperModel : "",
       text: originalText,
       isolate: false,
     },
@@ -197,6 +199,35 @@ export const TranscriptionCreateForm = (props: {
             </FormItem>
           )}
         />
+
+        {form.watch("service") === SttEngineOptionEnum.LOCAL && (
+          <FormField
+            control={form.control}
+            name="model"
+            render={({ field }) => (
+              <FormItem className="grid w-full items-center">
+                <FormLabel>{t("model")}</FormLabel>
+                <Select
+                  disabled={transcribing}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {WHISPER_MODELS.map((model) => (
+                      <SelectItem key={model} value={model}>
+                        {model}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
+        )}
+
         <FormField
           control={form.control}
           name="language"

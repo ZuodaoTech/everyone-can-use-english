@@ -107,6 +107,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const generateTranscription = async (params?: {
     originalText?: string;
     language?: string;
+    model?: string;
     service?: SttEngineOptionEnum | "upload";
     isolate?: boolean;
   }) => {
@@ -114,6 +115,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
       originalText,
       language = learningLanguage,
       service = sttEngine,
+      model,
       isolate = false,
     } = params || {};
     setService(service);

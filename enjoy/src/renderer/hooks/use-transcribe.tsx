@@ -11,7 +11,6 @@ import axios from "axios";
 import { useAiCommand } from "./use-ai-command";
 import { toast } from "@renderer/components/ui";
 import {
-  Timeline,
   TimelineEntry,
   type TimelineEntryType,
 } from "echogarden/dist/utilities/Timeline";
@@ -48,6 +47,7 @@ export const useTranscribe = () => {
     params?: {
       targetId?: string;
       targetType?: string;
+      model?: string;
       originalText?: string;
       language: string;
       service: SttEngineOptionEnum | "upload";
@@ -65,6 +65,7 @@ export const useTranscribe = () => {
   }> => {
     const url = await transcode(mediaSrc);
     const {
+      model,
       targetId,
       targetType,
       originalText,
@@ -80,7 +81,7 @@ export const useTranscribe = () => {
     if (service === "upload" && originalText) {
       result = await alignText(originalText);
     } else if (service === SttEngineOptionEnum.LOCAL) {
-      result = await transcribeByLocal(url, { language });
+      result = await transcribeByLocal(url, { language, model });
     } else if (service === SttEngineOptionEnum.ENJOY_CLOUDFLARE) {
       result = await transcribeByCloudflareAi(blob);
     } else if (service === SttEngineOptionEnum.OPENAI) {
@@ -219,19 +220,16 @@ export const useTranscribe = () => {
 
   const transcribeByLocal = async (
     url: string,
-    options: { language: string }
+    options: { language: string; model?: string }
   ): Promise<{
     engine: string;
     model: string;
     transcript: string;
     segmentTimeline: TimelineEntry[];
   }> => {
-    const { language } = options;
+    let { language, model = whisperModel } = options || {};
     const languageCode = language.split("-")[0];
-    let model = whisperModel;
-    if (model.match(/large/)) {
-      model = whisperModel;
-    } else if (model.match(/en/) && languageCode !== "en") {
+    if (model.match(/en/) && languageCode !== "en") {
       model = model.replace(".en", "");
     }
 
