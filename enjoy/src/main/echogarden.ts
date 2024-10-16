@@ -22,6 +22,10 @@ import settings from "@main/settings";
 import fs from "fs-extra";
 import ffmpegPath from "ffmpeg-static";
 import { enjoyUrlToPath, pathToEnjoyUrl } from "./utils";
+import { UserSetting } from "./db/models";
+import { UserSettingKeyEnum } from "@/types/enums";
+import { WHISPER_MODELS } from "@/constants";
+import { WhisperOptions } from "echogarden/dist/recognition/WhisperSTT.js";
 
 Echogarden.setGlobalOption(
   "ffmpegPath",
@@ -67,12 +71,24 @@ class EchogardenWrapper {
 
   async check() {
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
+    let model = "tiny.en";
     try {
-      const result = await this.align(
-        sampleFile,
-        "And so my fellow Americans ask not what your country can do for you",
-        {}
-      );
+      const whisperModel = await UserSetting.get(UserSettingKeyEnum.WHISPER);
+      if (WHISPER_MODELS.includes(whisperModel)) {
+        model = whisperModel;
+      }
+    } catch (e) {
+      logger.error(e);
+    }
+
+    try {
+      const result = await this.recognize(sampleFile, {
+        engine: "whisper",
+        whisper: {
+          model,
+          language: "en",
+        } as WhisperOptions,
+      });
       logger.info(result);
       fs.writeJsonSync(
         path.join(settings.cachePath(), "echogarden-check.json"),
@@ -80,10 +96,10 @@ class EchogardenWrapper {
         { spaces: 2 }
       );
 
-      return true;
+      return { success: true, log: "" };
     } catch (e) {
       logger.error(e);
-      return false;
+      return { success: false, log: e.message };
     }
   }
 

@@ -293,7 +293,7 @@ type EnjoyAppType = {
       language: string
     ) => Promise<Timeline>;
     transcode: (input: string) => Promise<string>;
-    check: () => Promise<boolean>;
+    check: () => Promise<{ success: boolean; log: string }>;
   };
   whisper: {
     config: () => Promise<WhisperConfigType>;

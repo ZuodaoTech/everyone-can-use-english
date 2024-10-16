@@ -25,7 +25,7 @@ const punctuationsPattern = /\w[.,!?](\s|$)/g;
 
 export const useTranscribe = () => {
   const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
-  const { openai, whisperConfig } = useContext(AISettingsProviderContext);
+  const { openai, whisperModel } = useContext(AISettingsProviderContext);
   const { punctuateText } = useAiCommand();
   const [output, setOutput] = useState<string>("");
 
@@ -207,48 +207,55 @@ export const useTranscribe = () => {
     timeline: TimelineEntry[];
   }> => {
     const languageCode = language.split("-")[0];
-    const res: RecognitionResult = await EnjoyApp.echogarden.recognize(url, {
-      engine: "whisper",
-      language: languageCode,
-      whisper: {
-        model: languageCode === "en" ? "tiny.en" : "tiny",
-      },
-    });
+    let model = whisperModel;
+    if (model.match(/large/)) {
+      model = whisperModel;
+    } else if (model.match(/en/) && languageCode !== "en") {
+      model = model.replace(".en", "");
+    }
+
+    let res: RecognitionResult;
+    try {
+      res = await EnjoyApp.echogarden.recognize(url, {
+        engine: "whisper",
+        language: languageCode,
+        whisper: {
+          model,
+        },
+      });
+    } catch (err) {
+      throw new Error(t("whisperTranscribeFailed", { error: err.message }));
+    }
 
     if (!res) {
       throw new Error(t("whisperTranscribeFailed", { error: "" }));
     }
 
-    const timeline: TimelineEntry[] = res.timeline
-      .map((segment) => {
-        // ignore the word if it is empty or in the format of `[xxx]` or `(xxx)`
-        if (
-          !segment.text.trim() ||
-          segment.text.trim().match(/^[\[\(].+[\]\)]$/)
-        ) {
-          return null;
-        }
+    // const timeline: TimelineEntry[] = res.timeline
+    //   .map((segment) => {
+    //     // ignore the word if it is empty or in the format of `[xxx]` or `(xxx)`
+    //     if (
+    //       !segment.text.trim() ||
+    //       segment.text.trim().match(/^[\[\(].+[\]\)]$/)
+    //     ) {
+    //       return null;
+    //     }
 
-        return {
-          type: segment.type,
-          text: segment.text.trim(),
-          startTime: segment.startTime,
-          endTime: segment.endTime,
-          timeline: [],
-        };
-      })
-      .filter((s) => Boolean(s?.text));
-
-    const transcript = timeline
-      .map((segment) => segment.text)
-      .join(" ")
-      .trim();
+    //     return {
+    //       type: segment.type,
+    //       text: segment.text.trim(),
+    //       startTime: segment.startTime,
+    //       endTime: segment.endTime,
+    //       timeline: [],
+    //     };
+    //   })
+    //   .filter((s) => Boolean(s?.text));
 
     return {
       engine: "whisper",
-      model: whisperConfig.model,
-      transcript,
-      timeline,
+      model,
+      transcript: res.transcript,
+      timeline: res.timeline,
     };
   };
 

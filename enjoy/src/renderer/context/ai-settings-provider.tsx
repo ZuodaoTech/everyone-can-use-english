@@ -5,13 +5,13 @@ import {
 } from "@renderer/context";
 import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/types/enums";
 import { GPT_PROVIDERS, TTS_PROVIDERS } from "@renderer/components";
+import { WHISPER_MODELS } from "@/constants";
 
 type AISettingsProviderState = {
-  setWhisperModel?: (name: string) => Promise<void>;
   sttEngine?: SttEngineOptionEnum;
   setSttEngine?: (name: string) => Promise<void>;
-  whisperConfig?: WhisperConfigType;
-  refreshWhisperConfig?: () => void;
+  whisperModel?: string;
+  setWhisperModel?: (name: string) => void;
   openai?: LlmProviderType;
   setOpenai?: (config: LlmProviderType) => void;
   setGptEngine?: (engine: GptEngineSettingType) => void;
@@ -38,7 +38,7 @@ export const AISettingsProvider = ({
     },
   });
   const [openai, setOpenai] = useState<LlmProviderType>(null);
-  const [whisperConfig, setWhisperConfig] = useState<WhisperConfigType>(null);
+  const [whisperModel, setWhisperModel] = useState<string>(null);
   const [sttEngine, setSttEngine] = useState<SttEngineOptionEnum>(
     SttEngineOptionEnum.ENJOY_AZURE
   );
@@ -87,6 +87,30 @@ export const AISettingsProvider = ({
     setTtsProviders({ ...providers });
   };
 
+  const refreshWhisperModel = async () => {
+    const model = await EnjoyApp.userSettings.get(UserSettingKeyEnum.WHISPER);
+    if (WHISPER_MODELS.includes(model)) {
+      setWhisperModel(model);
+    } else if (model.match(/tiny/)) {
+      setWhisperModel("tiny");
+    } else if (model.match(/base/)) {
+      setWhisperModel("base");
+    } else if (model.match(/small/)) {
+      setWhisperModel("small");
+    } else if (model.match(/medium/)) {
+      setWhisperModel("medium");
+    } else if (model.match(/large/)) {
+      setWhisperModel("large-v3-turbo");
+    }
+  };
+
+  const handleSetWhisperModel = async (name: string) => {
+    if (WHISPER_MODELS.includes(name)) {
+      setWhisperModel(name);
+      EnjoyApp.userSettings.set(UserSettingKeyEnum.WHISPER, name);
+    }
+  };
+
   useEffect(() => {
     refreshGptProviders();
     refreshTtsProviders();
@@ -101,21 +125,7 @@ export const AISettingsProvider = ({
   useEffect(() => {
     if (db.state !== "connected") return;
     if (!libraryPath) return;
-
-    refreshWhisperConfig();
   }, [db.state, libraryPath]);
-
-  const refreshWhisperConfig = async () => {
-    const config = await EnjoyApp.whisper.config();
-    setWhisperConfig(config);
-  };
-
-  const setWhisperModel = async (name: string) => {
-    return EnjoyApp.whisper.setModel(name).then((config) => {
-      if (!config) return;
-      setWhisperConfig(config);
-    });
-  };
 
   const handleSetSttEngine = async (name: SttEngineOptionEnum) => {
     setSttEngine(name);
@@ -165,6 +175,8 @@ export const AISettingsProvider = ({
           setGptEngine(engine);
         });
     }
+
+    refreshWhisperModel();
   };
 
   const handleSetOpenai = async (config: LlmProviderType) => {
@@ -208,9 +220,8 @@ export const AISettingsProvider = ({
               },
         openai,
         setOpenai: (config: LlmProviderType) => handleSetOpenai(config),
-        whisperConfig,
-        refreshWhisperConfig,
-        setWhisperModel,
+        whisperModel,
+        setWhisperModel: handleSetWhisperModel,
         sttEngine,
         setSttEngine: (name: SttEngineOptionEnum) => handleSetSttEngine(name),
         gptProviders,
