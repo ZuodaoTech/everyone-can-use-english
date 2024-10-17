@@ -17,7 +17,7 @@ __metadata:
     markdown-it-sub: "npm:^2.0.0"
     markdown-it-sup: "npm:^2.0.0"
     mermaid: "npm:^11.3.0"
-    sass: "npm:^1.79.5"
+    sass: "npm:^1.80.1"
     swiper: "npm:^11.1.14"
     vitepress: "npm:^1.4.1"
     vitepress-plugin-mermaid: "npm:^2.0.17"
@@ -34,7 +34,7 @@ __metadata:
     nuxt: "npm:^3.13.2"
     nuxt-og-image: "npm:^3.0.6"
     postcss: "npm:^8.4.47"
-    sass: "npm:^1.79.5"
+    sass: "npm:^1.80.1"
     tailwindcss: "npm:^3.4.14"
     vue: "npm:^3.5.12"
     vue-router: "npm:^4.4.5"
@@ -1710,10 +1710,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@echogarden/espeak-ng-emscripten@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "@echogarden/espeak-ng-emscripten@npm:0.1.2"
-  checksum: 10c0/7b0b8b3834222879e5c971ec352569de96919a32561670c5c252ea6f8d9ce4fdf07ac3424321556c628ede6c083d6c384315264732ed0289bca07c1d848b026f
+"@echogarden/espeak-ng-emscripten@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@echogarden/espeak-ng-emscripten@npm:0.2.0"
+  checksum: 10c0/ec2669328e6f6629c5d416d5f15af5ff7de93fc01b44297022a982c0661c9df9cdcf3754f81c4ef77d6ca31fd84674c19a4fe94cc4f9bdc097315111cc157415
   languageName: node
   linkType: hard
 
@@ -3194,9 +3194,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/community@npm:^0.3.5":
-  version: 0.3.5
-  resolution: "@langchain/community@npm:0.3.5"
+"@langchain/community@npm:^0.3.6":
+  version: 0.3.6
+  resolution: "@langchain/community@npm:0.3.6"
   dependencies:
     "@langchain/openai": "npm:>=0.2.0 <0.4.0"
     binary-extensions: "npm:^2.2.0"
@@ -3571,13 +3571,13 @@ __metadata:
       optional: true
     youtubei.js:
       optional: true
-  checksum: 10c0/242d85ec7c3e6ed903b3941ee9e09b744800b8819bd5fc059f033eea9de6625c664bc0fcf229f4cb56a10a6c88efb0113856bcfb8515b36b6a8f9b19316e5d4d
+  checksum: 10c0/b79c29dc1a0ed3a1eb50717d365715103a5e34ae87b4a4da5c5aaffe8b91c829a623ee766ed3cb1feb28fdad9bcbe9cd788084f1079731eeb635064944f8eac6
   languageName: node
   linkType: hard
 
-"@langchain/core@npm:^0.3.11":
-  version: 0.3.11
-  resolution: "@langchain/core@npm:0.3.11"
+"@langchain/core@npm:^0.3.13":
+  version: 0.3.13
+  resolution: "@langchain/core@npm:0.3.13"
   dependencies:
     ansi-styles: "npm:^5.0.0"
     camelcase: "npm:6"
@@ -3590,7 +3590,7 @@ __metadata:
     uuid: "npm:^10.0.0"
     zod: "npm:^3.22.4"
     zod-to-json-schema: "npm:^3.22.3"
-  checksum: 10c0/71781b891ab8f56686206f6b7ef9a4849b8d1181e32c93f0be85a526d2c7feb1de78eff5fd94a9a97e4bc23e26e79ff92e3acc3d812c579e768ed92f1318e680
+  checksum: 10c0/013a04e3812479ec300832e33f0bab59900961d941146d3340e8e8294f3661f7ae209151309aaccdaa8905a4058740654e07e73fff492e890a00d5286dd9d3e8
   languageName: node
   linkType: hard
 
@@ -7618,7 +7618,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=20, @types/node@npm:^22.7.5":
+"@types/node@npm:*, @types/node@npm:>=20":
   version: 22.7.5
   resolution: "@types/node@npm:22.7.5"
   dependencies:
@@ -7649,6 +7649,15 @@ __metadata:
   dependencies:
     undici-types: "npm:~6.19.2"
   checksum: 10c0/bba43f447c3c80548513954dae174e18132e9149d572c09df4a282772960d33e229d05680fb5364997c03489c22fe377d1dbcd018a3d4ff1cfbcfcdaa594a9c3
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.7.6":
+  version: 22.7.6
+  resolution: "@types/node@npm:22.7.6"
+  dependencies:
+    undici-types: "npm:~6.19.2"
+  checksum: 10c0/d4406a63afce981c363fb1d1954aaf1759ad2d487c0833ebf667565ea4e45ff217d6fab4b5343badbdeccdf9d2e4a0841d633e0c929ceabcb33c288663dd0c73
   languageName: node
   linkType: hard
 
@@ -11707,13 +11716,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"echogarden@npm:^1.8.4":
-  version: 1.8.4
-  resolution: "echogarden@npm:1.8.4"
+"echogarden@npm:^1.8.5":
+  version: 1.8.5
+  resolution: "echogarden@npm:1.8.5"
   dependencies:
     "@aws-sdk/client-polly": "npm:^3.670.0"
     "@aws-sdk/client-transcribe-streaming": "npm:^3.672.0"
-    "@echogarden/espeak-ng-emscripten": "npm:^0.1.2"
+    "@echogarden/espeak-ng-emscripten": "npm:^0.2.0"
     "@echogarden/fasttext-wasm": "npm:^0.1.0"
     "@echogarden/flite-wasi": "npm:^0.1.1"
     "@echogarden/fvad-wasm": "npm:^0.1.2"
@@ -12101,8 +12110,8 @@ __metadata:
     "@electron-forge/publisher-s3": "npm:^7.5.0"
     "@electron/fuses": "npm:^1.8.0"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@langchain/community": "npm:^0.3.5"
-    "@langchain/core": "npm:^0.3.11"
+    "@langchain/community": "npm:^0.3.6"
+    "@langchain/core": "npm:^0.3.13"
     "@langchain/ollama": "npm:^0.1.0"
     "@mozilla/readability": "npm:^0.5.0"
     "@playwright/test": "npm:^1.48.1"
@@ -12142,7 +12151,7 @@ __metadata:
     "@types/lodash": "npm:^4.17.10"
     "@types/mark.js": "npm:^8.11.12"
     "@types/mustache": "npm:^4.2.5"
-    "@types/node": "npm:^22.7.5"
+    "@types/node": "npm:^22.7.6"
     "@types/prop-types": "npm:^15.7.13"
     "@types/rails__actioncable": "npm:^6.1.11"
     "@types/react": "npm:^18.3.11"
@@ -12174,7 +12183,7 @@ __metadata:
     dayjs: "npm:^1.11.13"
     decamelize: "npm:^6.0.0"
     decamelize-keys: "npm:^2.0.1"
-    echogarden: "npm:^1.8.4"
+    echogarden: "npm:^1.8.5"
     electron: "npm:^33.0.1"
     electron-context-menu: "npm:^4.0.4"
     electron-devtools-installer: "npm:^3.2.0"
@@ -20883,9 +20892,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.79.5":
-  version: 1.79.5
-  resolution: "sass@npm:1.79.5"
+"sass@npm:^1.80.1":
+  version: 1.80.1
+  resolution: "sass@npm:1.80.1"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
     chokidar: "npm:^4.0.0"
@@ -20893,7 +20902,7 @@ __metadata:
     source-map-js: "npm:>=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 10c0/7331865fd1d0c03e6e180a4fe0e175ac1bf1214f6c77f0d99ad72fbe2ed9ede3fab8a64c0c41471cb8a358a9d11624ec59a49283f9b6070eb99c522b34b814bf
+  checksum: 10c0/91ec2b8bcba4c3c68c047fdcbe04cb82646b5cc6446e04d9134ff3c642d9895363de5cbf88869f0a6aa81bcd2de9b8ccba7df7ff35d33a07a18754014ee7a31a
   languageName: node
   linkType: hard
 
