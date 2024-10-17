@@ -12,7 +12,6 @@ import path from "path";
 import db from "@main/db";
 import settings from "@main/settings";
 import downloader from "@main/downloader";
-import whisper from "@main/whisper";
 import fs from "fs-extra";
 import log from "@main/logger";
 import { REPO_URL, WS_URL } from "@/constants";
@@ -61,9 +60,6 @@ main.init = async () => {
 
   // echogarden
   echogarden.registerIpcHandlers();
-
-  // Whisper
-  whisper.registerIpcHandlers();
 
   // Waveform
   waveform.registerIpcHandlers();
@@ -411,7 +407,6 @@ ${log}
       segments: path.join(settings.userDataPath(), "segments"),
       speeches: path.join(settings.userDataPath(), "speeches"),
       recordings: path.join(settings.userDataPath(), "recordings"),
-      whisper: path.join(settings.libraryPath(), "whisper"),
       waveforms: path.join(settings.libraryPath(), "waveforms"),
       logs: path.join(settings.libraryPath(), "logs"),
       cache: settings.cachePath(),

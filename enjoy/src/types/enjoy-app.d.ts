@@ -273,6 +273,10 @@ type EnjoyAppType = {
     ) => Promise<SpeechType>;
   };
   echogarden: {
+    recognize: (
+      input: string,
+      options: RecognitionOptions
+    ) => Promise<RecognitionResult>;
     align: (
       input: string | Uint8Array,
       transcript: string,
@@ -289,26 +293,7 @@ type EnjoyAppType = {
       language: string
     ) => Promise<Timeline>;
     transcode: (input: string) => Promise<string>;
-    check: () => Promise<boolean>;
-  };
-  whisper: {
-    config: () => Promise<WhisperConfigType>;
-    check: () => Promise<{ success: boolean; log: string }>;
-    setModel: (model: string) => Promise<WhisperConfigType>;
-    transcribe: (
-      params: {
-        file?: string;
-        blob?: { type: string; arrayBuffer: ArrayBuffer };
-      },
-      options?: {
-        language?: string;
-        force?: boolean;
-        extra?: string[];
-      }
-    ) => Promise<Partial<WhisperOutputType>>;
-    onProgress: (callback: (event, progress: number) => void) => void;
-    abort: () => Promise<void>;
-    removeProgressListeners: () => Promise<void>;
+    check: (options?: any) => Promise<{ success: boolean; log: string }>;
   };
   ffmpeg: {
     check: () => Promise<boolean>;

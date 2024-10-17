@@ -45,16 +45,6 @@ export default defineConfig((env) => {
       viteStaticCopy({
         targets: [
           {
-            src: `lib/whisper.cpp/${
-              process.env.PACKAGE_OS_ARCH || os.arch()
-            }/${os.platform()}/*`,
-            dest: "lib/whisper",
-          },
-          {
-            src: `lib/whisper.cpp/models/*`,
-            dest: "lib/whisper/models",
-          },
-          {
             src: `lib/youtubedr/${
               process.env.PACKAGE_OS_ARCH || os.arch()
             }/${os.platform()}/*`,

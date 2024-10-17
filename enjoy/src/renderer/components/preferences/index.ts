@@ -28,7 +28,6 @@ export * from "./theme-settings";
 
 export * from "./proxy-settings";
 
-export * from "./whisper-model-options";
 export * from "./network-state";
 
 export * from "./recorder-settings";

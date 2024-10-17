@@ -107,6 +107,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const generateTranscription = async (params?: {
     originalText?: string;
     language?: string;
+    model?: string;
     service?: SttEngineOptionEnum | "upload";
     isolate?: boolean;
   }) => {
@@ -114,6 +115,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
       originalText,
       language = learningLanguage,
       service = sttEngine,
+      model,
       isolate = false,
     } = params || {};
     setService(service);
@@ -279,26 +281,17 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   useEffect(() => {
     if (!transcribing) return;
 
-    if (service === "local") {
-      EnjoyApp.whisper.onProgress((_, p: number) => {
-        if (p > 100) p = 100;
-        setTranscribingProgress(p);
-      });
-    }
-
     EnjoyApp.app.onCmdOutput((_, output) => {
       setTranscribingOutput(output);
     });
 
     return () => {
-      EnjoyApp.whisper.removeProgressListeners();
       EnjoyApp.app.removeCmdOutputListeners();
       setTranscribingOutput(null);
     };
   }, [media, service, transcribing]);
 
   const abortGenerateTranscription = () => {
-    EnjoyApp.whisper.abort();
     setTranscribing(false);
   };
 

@@ -3,6 +3,7 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 import { version } from "../package.json";
 import { Timeline } from "echogarden/dist/utilities/Timeline";
+import { RecognitionOptions } from "echogarden/dist/api/API";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
@@ -472,6 +473,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   echogarden: {
+    recognize: (input: string, options: RecognitionOptions) => {
+      return ipcRenderer.invoke("echogarden-recognize", input, options);
+    },
     align: (input: string, transcript: string, options: any) => {
       return ipcRenderer.invoke("echogarden-align", input, transcript, options);
     },
@@ -500,42 +504,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
     check: () => {
       return ipcRenderer.invoke("echogarden-check");
-    },
-  },
-  whisper: {
-    config: () => {
-      return ipcRenderer.invoke("whisper-config");
-    },
-    setModel: (model: string) => {
-      return ipcRenderer.invoke("whisper-set-model", model);
-    },
-    check: () => {
-      return ipcRenderer.invoke("whisper-check");
-    },
-    transcribe: (
-      params: {
-        file?: string;
-        blob?: {
-          type: string;
-          arrayBuffer: ArrayBuffer;
-        };
-      },
-      options?: {
-        language?: string;
-        force?: boolean;
-        extra?: string[];
-      }
-    ) => {
-      return ipcRenderer.invoke("whisper-transcribe", params, options);
-    },
-    onProgress: (
-      callback: (event: IpcRendererEvent, progress: number) => void
-    ) => ipcRenderer.on("whisper-on-progress", callback),
-    abort: () => {
-      return ipcRenderer.invoke("whisper-abort");
-    },
-    removeProgressListeners: () => {
-      ipcRenderer.removeAllListeners("whisper-on-progress");
     },
   },
   ffmpeg: {

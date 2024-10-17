@@ -2,9 +2,20 @@ export * from "./chat-agent-templates";
 export * from "./gpt-presets";
 export * from "./ipa";
 
-// https://hf-mirror.com/ggerganov/whisper.cpp/tree/main
-import whisperModels from "./whisper-models.json";
-export const WHISPER_MODELS_OPTIONS = whisperModels;
+export const WHISPER_MODELS = [
+  "tiny",
+  "tiny.en",
+  "base",
+  "base.en",
+  "small",
+  "small.en",
+  "medium",
+  "medium.en",
+  "large-v1",
+  "large-v2",
+  "large-v3",
+  "large-v3-turbo",
+];
 
 import languages from "./languages.json";
 export const LANGUAGES = languages;

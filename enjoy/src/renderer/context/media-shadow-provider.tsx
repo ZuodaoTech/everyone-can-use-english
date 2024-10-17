@@ -62,6 +62,7 @@ type MediaShadowContextType = {
   generateTranscription: (params?: {
     originalText?: string;
     language?: string;
+    model?: string;
     service?: SttEngineOptionEnum | "upload";
     isolate?: boolean;
   }) => Promise<void>;

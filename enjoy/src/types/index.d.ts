@@ -235,3 +235,26 @@ type DictSettingType = {
   removing: string[];
   mdicts: MDict[];
 };
+
+type TranscribeParamsType = {
+  mediaSrc: string | Blob;
+  params?: {
+    targetId?: string;
+    targetType?: string;
+    originalText?: string;
+    language: string;
+    service: SttEngineOptionEnum | "upload";
+    isolate?: boolean;
+    align?: boolean;
+  };
+};
+
+type TranscribeResultType = {
+  engine: string;
+  model: string;
+  transcript: string;
+  timeline: TimelineEntry[];
+  originalText?: string;
+  tokenId?: number;
+  url: string;
+};
