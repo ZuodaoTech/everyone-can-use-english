@@ -106,6 +106,7 @@ export const useTranscribe = () => {
       return {
         ...result,
         timeline: [],
+        url,
       };
     }
 
