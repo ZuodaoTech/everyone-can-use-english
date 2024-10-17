@@ -16,7 +16,7 @@ import { useContext, useEffect, useState } from "react";
 export const EmailSettings = () => {
   const { user, login, webApi } = useContext(AppSettingsProviderContext);
   const [editing, setEditing] = useState(false);
-  const [email, setEmail] = useState(user.email);
+  const [email, setEmail] = useState(user?.email);
   const [code, setCode] = useState("");
   const [codeSent, setCodeSent] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(0);

@@ -30,7 +30,7 @@ export const UserSettings = () => {
   const { user, login, logout, webApi } = useContext(
     AppSettingsProviderContext
   );
-  const [name, setName] = useState(user.name);
+  const [name, setName] = useState(user?.name);
   const [editing, setEditing] = useState(false);
 
   const refreshProfile = () => {

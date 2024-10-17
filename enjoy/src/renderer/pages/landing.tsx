@@ -6,7 +6,7 @@ import { LoginForm } from "@renderer/components";
 import { AppSettingsProviderContext } from "@renderer/context";
 
 export default () => {
-  const { initialized } = useContext(AppSettingsProviderContext);
+  const { initialized, EnjoyApp } = useContext(AppSettingsProviderContext);
 
   return (
     <div className="h-screen w-full px-4 py-6 lg:px-8 flex flex-col">
@@ -19,10 +19,14 @@ export default () => {
       </div>
       <div className="mt-auto">
         <div className="flex mb-4 justify-end space-x-4">
-          {initialized && (
+          {initialized ? (
             <Link data-testid="start-to-use-button" to="/" replace>
               <Button className="w-24">{t("startToUse")}</Button>
             </Link>
+          ) : (
+            <Button className="w-24" onClick={() => EnjoyApp.app.reload()}>
+              {t("reload")}
+            </Button>
           )}
         </div>
       </div>
