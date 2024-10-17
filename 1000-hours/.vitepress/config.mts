@@ -449,6 +449,16 @@ export default withMermaid(
             ],
           },
           {
+            text: "聊天",
+            collapsed: false,
+            items: [
+              { text: "简介", link: "/enjoy-app/chat" },
+              { text: "与智能体对话", link: "/enjoy-app/chat-with-agent" },
+              { text: "多个智能体群聊", link: "/enjoy-app/chat-group" },
+              { text: "Copilot", link: "/enjoy-app/chat-copilot" },
+            ],
+          },
+          {
             text: "阅读文本",
             collapsed: false,
             items: [
