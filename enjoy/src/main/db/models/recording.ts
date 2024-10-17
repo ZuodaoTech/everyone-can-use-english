@@ -173,7 +173,7 @@ export class Recording extends Model<Recording> {
       .then((result) => {
         logger.debug("upload result:", result.data);
         if (result.data.success) {
-          this.update({ uploadedAt: new Date() });
+          this.update({ uploadedAt: new Date() }, { hooks: false });
         } else {
           throw new Error(result.data);
         }
@@ -194,7 +194,7 @@ export class Recording extends Model<Recording> {
     });
 
     return webApi.syncRecording(this.toJSON()).then(() => {
-      this.update({ syncedAt: new Date() });
+      this.update({ syncedAt: new Date() }, { hooks: false });
     });
   }
 

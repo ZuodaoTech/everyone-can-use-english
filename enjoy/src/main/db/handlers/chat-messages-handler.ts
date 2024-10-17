@@ -103,9 +103,6 @@ class ChatMessagesHandler {
     const transaction = await ChatMessage.sequelize.transaction();
 
     try {
-      // update content
-      await message.update({ ...data }, { transaction });
-
       if (recordingUrl) {
         // destroy existing recording
         await message.recording?.destroy({ transaction });
@@ -113,27 +110,30 @@ class ChatMessagesHandler {
         // create new recording
         const filePath = enjoyUrlToPath(recordingUrl);
         const blob = fs.readFileSync(filePath);
-        const recording = await Recording.createFromBlob(
+        await Recording.createFromBlob(
           {
             type: "audio/wav",
             arrayBuffer: blob,
           },
           {
             targetType: "ChatMessage",
-            targetId: message.id,
-            referenceText: message.content,
+            targetId: id,
+            referenceText: data.content,
           },
           transaction
         );
-        message.recording = recording;
       } else if (message.recording) {
         await message.recording.update(
           {
-            referenceText: message.content,
+            referenceText: data.content,
           },
           { transaction }
         );
       }
+
+      // update content
+      await message.update({ ...data }, { transaction });
+
       await transaction.commit();
 
       return (await message.reload()).toJSON();

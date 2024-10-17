@@ -106,6 +106,7 @@ export const useTranscribe = () => {
       return {
         ...result,
         timeline: [],
+        url,
       };
     }
 
@@ -128,6 +129,7 @@ export const useTranscribe = () => {
       return {
         ...result,
         timeline,
+        url,
       };
     } else if (transcript) {
       setOutput("Aligning the transcript...");
@@ -154,6 +156,7 @@ export const useTranscribe = () => {
       return {
         ...result,
         timeline,
+        url,
       };
     } else {
       throw new Error(t("transcribeFailed"));
