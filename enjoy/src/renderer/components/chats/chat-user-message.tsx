@@ -67,13 +67,11 @@ export const ChatUserMessage = (props: {
   useEffect(() => {
     if (!isLastMessage) return;
     // If the message is from recording, wait for user to confirm before asking agent
-    if (
-      chatMessage.recording &&
-      chatMessage.state !== ChatMessageStateEnum.COMPLETED
-    )
+    if (chatMessage.state !== ChatMessageStateEnum.COMPLETED) {
       return;
-
-    askAgent();
+    } else {
+      askAgent();
+    }
   }, [chatMessage]);
 
   return (
@@ -87,32 +85,11 @@ export const ChatUserMessage = (props: {
                 : "bg-muted"
             }`}
           >
-            {recording &&
-              (displayPlayer ? (
-                <>
-                  <WavesurferPlayer
-                    id={recording.id}
-                    src={recording.src}
-                    autoplay={true}
-                  />
-                  {recording?.pronunciationAssessment && (
-                    <div className="flex justify-end">
-                      <PronunciationAssessmentScoreDetail
-                        assessment={recording.pronunciationAssessment}
-                      />
-                    </div>
-                  )}
-                </>
-              ) : (
-                <Button
-                  onClick={() => setDisplayPlayer(true)}
-                  className="w-8 h-8"
-                  variant="ghost"
-                  size="icon"
-                >
-                  <Volume2Icon className="w-5 h-5" />
-                </Button>
-              ))}
+            <ChatUserMessageRecording
+              chatMessage={chatMessage}
+              displayPlayer={displayPlayer}
+              setDisplayPlayer={setDisplayPlayer}
+            />
             {editing ? (
               <div className="">
                 <Textarea
@@ -178,6 +155,47 @@ export const ChatUserMessage = (props: {
         </div>
       </div>
     </div>
+  );
+};
+
+const ChatUserMessageRecording = (props: {
+  chatMessage: ChatMessageType;
+  displayPlayer: boolean;
+  setDisplayPlayer: (value: boolean) => void;
+}) => {
+  const { chatMessage, displayPlayer, setDisplayPlayer } = props;
+  const { recording } = chatMessage;
+
+  if (!recording?.src) return null;
+
+  if (displayPlayer) {
+    return (
+      <>
+        <WavesurferPlayer
+          id={recording.id}
+          src={recording.src}
+          autoplay={true}
+        />
+        {recording?.pronunciationAssessment && (
+          <div className="flex justify-end">
+            <PronunciationAssessmentScoreDetail
+              assessment={recording.pronunciationAssessment}
+            />
+          </div>
+        )}
+      </>
+    );
+  }
+
+  return (
+    <Button
+      onClick={() => setDisplayPlayer(true)}
+      className="w-8 h-8"
+      variant="ghost"
+      size="icon"
+    >
+      <Volume2Icon className="w-5 h-5" />
+    </Button>
   );
 };
 

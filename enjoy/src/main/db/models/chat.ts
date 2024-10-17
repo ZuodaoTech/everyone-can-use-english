@@ -108,19 +108,10 @@ export class Chat extends Model<Chat> {
   static async notify(chat: Chat, action: "create" | "update" | "destroy") {
     if (!mainWindow.win) return;
 
-    if (
-      action !== "destroy" &&
-      (!chat.members || !chat.members.some((m) => m.agent))
-    ) {
-      chat.members = await ChatMember.findAll({
-        where: { chatId: chat.id },
-        include: [
-          {
-            association: "agent",
-          },
-        ],
-      });
+    if (action !== "destroy") {
+      chat = await Chat.findByPk(chat.id);
     }
+
     mainWindow.win.webContents.send("db-on-transaction", {
       model: "Chat",
       id: chat.id,

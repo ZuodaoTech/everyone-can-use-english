@@ -134,8 +134,8 @@ export class ChatMember extends Model<ChatMember> {
   ) {
     if (!mainWindow.win) return;
 
-    if (action !== "destroy" && !member.agent) {
-      await member.reload();
+    if (action !== "destroy") {
+      member = await ChatMember.findByPk(member.id);
     }
     mainWindow.win.webContents.send("db-on-transaction", {
       model: "ChatMember",

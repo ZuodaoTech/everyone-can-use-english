@@ -200,8 +200,8 @@ export class ChatMessage extends Model<ChatMessage> {
   ) {
     if (!mainWindow.win) return;
 
-    if (action !== "destroy" && !chatMessage.agent) {
-      await chatMessage.reload();
+    if (action !== "destroy") {
+      chatMessage = await ChatMessage.findByPk(chatMessage.id);
     }
 
     mainWindow.win.webContents.send("db-on-transaction", {
