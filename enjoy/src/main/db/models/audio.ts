@@ -85,7 +85,10 @@ export class Audio extends Model<Audio> {
   })
   transcription: Transcription;
 
-  @BelongsTo(() => Speech, "md5")
+  @BelongsTo(() => Speech, {
+    foreignKey: "md5",
+    constraints: false,
+  })
   speech: Speech;
 
   @Default(0)
