@@ -174,10 +174,6 @@ db.connect = async () => {
 
         // migrate up to the latest state
         await umzug.up();
-
-        await sequelize.query("PRAGMA foreign_keys = false;");
-        await sequelize.sync();
-        await sequelize.authenticate();
       } catch (err) {
         logger.error(err);
         await sequelize.close();
@@ -199,6 +195,10 @@ db.connect = async () => {
     } else {
       await db.backup();
     }
+
+    await sequelize.query("PRAGMA foreign_keys = false;");
+    await sequelize.sync();
+    await sequelize.authenticate();
 
     // vacuum the database
     logger.info("Vacuuming the database");

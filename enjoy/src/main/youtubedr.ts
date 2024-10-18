@@ -133,7 +133,7 @@ class Youtubedr {
         {
           timeout: TEN_MINUTES,
           signal: this.abortController.signal,
-          env: this.proxyEnv()
+          env: this.proxyEnv(),
         }
       );
 
@@ -189,7 +189,7 @@ class Youtubedr {
         command,
         {
           timeout: ONE_MINUTE,
-          env: this.proxyEnv()
+          env: this.proxyEnv(),
         },
         (error, stdout, stderr) => {
           if (error) {
@@ -249,7 +249,7 @@ class Youtubedr {
       this.getYtVideoId(url);
       return true;
     } catch (error) {
-      logger.warn(error);
+      logger.warn(error.message);
       return false;
     }
   };
@@ -264,14 +264,14 @@ class Youtubedr {
    */
   proxyEnv = () => {
     // keep current environment variables
-    let env = {...process.env}
+    let env = { ...process.env };
     const proxyConfig = settings.getSync("proxy") as ProxyConfigType;
     if (proxyConfig.enabled && proxyConfig.url) {
       env["HTTP_PROXY"] = proxyConfig.url;
       env["HTTPS_PROXY"] = proxyConfig.url;
     }
-    return env
-  }
+    return env;
+  };
 }
 
 export default new Youtubedr();

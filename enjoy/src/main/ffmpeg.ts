@@ -347,7 +347,7 @@ export default class FfmpegWrapper {
           resolve(output);
         })
         .on("error", (err) => {
-          logger.error(err);
+          logger.error(err.message);
           reject(err);
         })
         .save(output);

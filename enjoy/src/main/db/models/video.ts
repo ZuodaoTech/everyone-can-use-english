@@ -349,7 +349,8 @@ export class Video extends Model<Video> {
         md5,
       },
     });
-    if (existing) {
+    if (!!existing) {
+      logger.warn("Video already exists:", existing.id);
       return existing;
     }
 

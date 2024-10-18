@@ -58,11 +58,13 @@ export class ChatMember extends Model<ChatMember> {
 
   @BelongsTo(() => Chat, {
     foreignKey: "chatId",
+    constraints: false,
   })
   chat: Chat;
 
   @BelongsTo(() => ChatAgent, {
     foreignKey: "userId",
+    constraints: false,
   })
   agent: ChatAgent;
 

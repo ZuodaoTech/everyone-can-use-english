@@ -107,7 +107,7 @@ class AudiosHandler {
 
       return audio.toJSON();
     } catch (err) {
-      logger.error(err);
+      logger.error(err.message);
       throw err;
     }
   }

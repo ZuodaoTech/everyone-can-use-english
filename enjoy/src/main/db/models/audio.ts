@@ -333,7 +333,8 @@ export class Audio extends Model<Audio> {
         md5,
       },
     });
-    if (existing) {
+    if (!!existing) {
+      logger.warn("Audio already exists:", existing.id);
       return existing;
     }
 
@@ -388,7 +389,7 @@ export class Audio extends Model<Audio> {
     });
 
     return record.save().catch((err) => {
-      logger.error(err);
+      logger.error(err.message);
       // Remove copied file
       fs.removeSync(destFile);
       throw err;
