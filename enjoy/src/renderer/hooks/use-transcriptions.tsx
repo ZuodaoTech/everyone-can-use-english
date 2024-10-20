@@ -115,7 +115,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
       originalText,
       language = learningLanguage,
       service = sttEngine,
-      model,
+      model: whisperModel,
       isolate = false,
     } = params || {};
     setService(service);
@@ -138,6 +138,7 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         {
           targetId: media.id,
           targetType: media.mediaType,
+          model: whisperModel,
           originalText,
           language,
           service,
