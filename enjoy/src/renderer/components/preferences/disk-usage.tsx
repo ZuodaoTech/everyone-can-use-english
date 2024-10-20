@@ -1,7 +1,6 @@
 import { t } from "i18next";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -53,6 +52,7 @@ export const DiskUsage = () => {
 const UsageDetail = () => {
   const [open, setOpen] = useState(false);
   const [usage, setUsage] = useState<DiskUsageType>([]);
+  const [loading, setLoading] = useState(false);
 
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
@@ -66,9 +66,18 @@ const UsageDetail = () => {
 
   useEffect(() => {
     if (open) {
-      EnjoyApp.app.diskUsage().then((usage) => {
-        setUsage(usage);
-      });
+      setLoading(true);
+      EnjoyApp.app
+        .diskUsage()
+        .then((usage) => {
+          setUsage(usage);
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   }, [open]);
 
@@ -79,44 +88,53 @@ const UsageDetail = () => {
           {t("detail")}
         </Button>
       </DialogTrigger>
-      <DialogContent className="h-3/5">
-        <DialogHeader>
-          <DialogTitle>{t("diskUsage")}</DialogTitle>
-          <DialogDescription className="sr-only">
-            {t("diskUsageDescription")}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="h-full overflow-hidden">
-          <ScrollArea className="h-full px-4">
-            <div className="grid gap-4">
-              {usage.map((item) => (
-                <div key={item.name}>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <Badge>/{item.path.split("/").pop()}</Badge>
-                        <div className="text-sm text-muted-foreground">
-                          {humanFileSize(item.size)}
+      <DialogContent className={loading ? "" : "h-3/5"}>
+        {loading && (
+          <div className="flex items-center justify-center">
+            <LoaderIcon className="w-6 h-6 animate-spin" />
+          </div>
+        )}
+        {!loading && (
+          <>
+            <DialogHeader>
+              <DialogTitle>{t("diskUsage")}</DialogTitle>
+              <DialogDescription className="sr-only">
+                {t("diskUsageDescription")}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="h-full overflow-hidden">
+              <ScrollArea className="h-full px-4">
+                <div className="grid gap-4">
+                  {usage.map((item) => (
+                    <div key={item.name}>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <Badge>/{item.path.split("/").pop()}</Badge>
+                            <div className="text-sm text-muted-foreground">
+                              {humanFileSize(item.size)}
+                            </div>
+                          </div>
+                          <div className="text-sm">
+                            {t(`libraryDescriptions.${item.name}`)}
+                          </div>
                         </div>
+                        <Button
+                          onClick={() => openPath(item.path)}
+                          variant="secondary"
+                          size="sm"
+                        >
+                          {t("open")}
+                        </Button>
                       </div>
-                      <div className="text-sm">
-                        {t(`libraryDescriptions.${item.name}`)}
-                      </div>
+                      <Separator className="my-2" />
                     </div>
-                    <Button
-                      onClick={() => openPath(item.path)}
-                      variant="secondary"
-                      size="sm"
-                    >
-                      {t("open")}
-                    </Button>
-                  </div>
-                  <Separator className="my-2" />
+                  ))}
                 </div>
-              ))}
+              </ScrollArea>
             </div>
-          </ScrollArea>
-        </div>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
