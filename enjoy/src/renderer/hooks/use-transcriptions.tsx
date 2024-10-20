@@ -94,7 +94,13 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         items: 10,
       });
       if (result.transcriptions.length) {
-        return result.transcriptions[0];
+        for (const tr of result.transcriptions) {
+          if (validateTranscription(tr)) {
+            return tr;
+          } else {
+            console.warn(`Invalid transcription: ${tr.id}`);
+          }
+        }
       } else {
         return null;
       }
@@ -253,6 +259,21 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
       );
     }
     return timeline;
+  };
+
+  const validateTranscription = (transcription: TranscriptionType) => {
+    if (!transcription) return;
+
+    const { timeline, transcript } = transcription.result;
+    if (!timeline || !transcript) {
+      return false;
+    }
+
+    if (timeline[0]?.type !== "sentence") {
+      return false;
+    }
+
+    return true;
   };
 
   /*
