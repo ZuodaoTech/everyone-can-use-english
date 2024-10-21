@@ -1891,17 +1891,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron-forge/maker-deb@npm:<7.5.0":
-  version: 7.4.0
-  resolution: "@electron-forge/maker-deb@npm:7.4.0"
+"@electron-forge/maker-base@npm:7.5.0":
+  version: 7.5.0
+  resolution: "@electron-forge/maker-base@npm:7.5.0"
   dependencies:
-    "@electron-forge/maker-base": "npm:7.4.0"
-    "@electron-forge/shared-types": "npm:7.4.0"
+    "@electron-forge/shared-types": "npm:7.5.0"
+    fs-extra: "npm:^10.0.0"
+    which: "npm:^2.0.2"
+  checksum: 10c0/897fe0bfc02baacb0f95a4ca8ac700caad55aeeddf56088fb8f5787e72956c5735d00349660f2bbf1270136afa2b855595f391b41242ccdcf8244e3135b2a7f0
+  languageName: node
+  linkType: hard
+
+"@electron-forge/maker-deb@npm:<7.6.0":
+  version: 7.5.0
+  resolution: "@electron-forge/maker-deb@npm:7.5.0"
+  dependencies:
+    "@electron-forge/maker-base": "npm:7.5.0"
+    "@electron-forge/shared-types": "npm:7.5.0"
     electron-installer-debian: "npm:^3.2.0"
   dependenciesMeta:
     electron-installer-debian:
       optional: true
-  checksum: 10c0/6fc0ebc1611b9c7b717c80197de104b3ed51a0a18e0ee19e7cbf738861c6e2fe4c95e7bb4a35c7aa01b5b74f4381ebe5f780cee6d32316e61915b0f60ee9794b
+  checksum: 10c0/55f104b3f60d89579892c3af7f12da55d70a63441e4e08117ea344df429123d3bf048175558c424187ffef850c1dd8698d708d654155114e42cbfcb886f0b4e2
   languageName: node
   linkType: hard
 
@@ -12098,7 +12109,7 @@ __metadata:
     "@andrkrn/ffprobe-static": "npm:^5.2.0"
     "@divisey/js-mdict": "npm:^5.0.0"
     "@electron-forge/cli": "npm:<7.5.0"
-    "@electron-forge/maker-deb": "npm:<7.5.0"
+    "@electron-forge/maker-deb": "npm:<7.6.0"
     "@electron-forge/maker-dmg": "npm:<7.5.0"
     "@electron-forge/maker-rpm": "npm:<7.5.0"
     "@electron-forge/maker-squirrel": "npm:<7.5.0"
