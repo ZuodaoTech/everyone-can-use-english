@@ -1891,6 +1891,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@electron-forge/maker-base@npm:7.5.0":
+  version: 7.5.0
+  resolution: "@electron-forge/maker-base@npm:7.5.0"
+  dependencies:
+    "@electron-forge/shared-types": "npm:7.5.0"
+    fs-extra: "npm:^10.0.0"
+    which: "npm:^2.0.2"
+  checksum: 10c0/897fe0bfc02baacb0f95a4ca8ac700caad55aeeddf56088fb8f5787e72956c5735d00349660f2bbf1270136afa2b855595f391b41242ccdcf8244e3135b2a7f0
+  languageName: node
+  linkType: hard
+
 "@electron-forge/maker-deb@npm:<7.5.0":
   version: 7.4.0
   resolution: "@electron-forge/maker-deb@npm:7.4.0"
@@ -1934,18 +1945,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron-forge/maker-squirrel@npm:<7.5.0":
-  version: 7.4.0
-  resolution: "@electron-forge/maker-squirrel@npm:7.4.0"
+"@electron-forge/maker-squirrel@npm:<7.6.0":
+  version: 7.5.0
+  resolution: "@electron-forge/maker-squirrel@npm:7.5.0"
   dependencies:
-    "@electron-forge/maker-base": "npm:7.4.0"
-    "@electron-forge/shared-types": "npm:7.4.0"
+    "@electron-forge/maker-base": "npm:7.5.0"
+    "@electron-forge/shared-types": "npm:7.5.0"
     electron-winstaller: "npm:^5.3.0"
     fs-extra: "npm:^10.0.0"
   dependenciesMeta:
     electron-winstaller:
       optional: true
-  checksum: 10c0/05c114f346425d1a271d48e2548680b8ca0caff208b51413bc3ed80d1b08b33af377a245dc6f94e39284d74bfadcdfc4cc3d1ed286f9b78a536a6774e566155b
+  checksum: 10c0/6e8733543c91cc97b58fe60784bb0607a3cc828e2cbf5b36db3f40855a1d24ea8c561b3939758b6e2d5ba60ddccf4220a545c95e89d8a77639daa1f37fa8b548
   languageName: node
   linkType: hard
 
@@ -12101,7 +12112,7 @@ __metadata:
     "@electron-forge/maker-deb": "npm:<7.5.0"
     "@electron-forge/maker-dmg": "npm:<7.5.0"
     "@electron-forge/maker-rpm": "npm:<7.5.0"
-    "@electron-forge/maker-squirrel": "npm:<7.5.0"
+    "@electron-forge/maker-squirrel": "npm:<7.6.0"
     "@electron-forge/maker-zip": "npm:<7.5.0"
     "@electron-forge/plugin-auto-unpack-natives": "npm:<7.5.0"
     "@electron-forge/plugin-fuses": "npm:<7.5.0"
