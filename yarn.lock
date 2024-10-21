@@ -1891,6 +1891,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@electron-forge/maker-base@npm:7.5.0":
+  version: 7.5.0
+  resolution: "@electron-forge/maker-base@npm:7.5.0"
+  dependencies:
+    "@electron-forge/shared-types": "npm:7.5.0"
+    fs-extra: "npm:^10.0.0"
+    which: "npm:^2.0.2"
+  checksum: 10c0/897fe0bfc02baacb0f95a4ca8ac700caad55aeeddf56088fb8f5787e72956c5735d00349660f2bbf1270136afa2b855595f391b41242ccdcf8244e3135b2a7f0
+  languageName: node
+  linkType: hard
+
 "@electron-forge/maker-deb@npm:<7.5.0":
   version: 7.4.0
   resolution: "@electron-forge/maker-deb@npm:7.4.0"
@@ -1905,18 +1916,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron-forge/maker-dmg@npm:<7.5.0":
-  version: 7.4.0
-  resolution: "@electron-forge/maker-dmg@npm:7.4.0"
+"@electron-forge/maker-dmg@npm:<7.6.0":
+  version: 7.5.0
+  resolution: "@electron-forge/maker-dmg@npm:7.5.0"
   dependencies:
-    "@electron-forge/maker-base": "npm:7.4.0"
-    "@electron-forge/shared-types": "npm:7.4.0"
-    electron-installer-dmg: "npm:^4.0.0"
+    "@electron-forge/maker-base": "npm:7.5.0"
+    "@electron-forge/shared-types": "npm:7.5.0"
+    electron-installer-dmg: "npm:^5.0.1"
     fs-extra: "npm:^10.0.0"
   dependenciesMeta:
     electron-installer-dmg:
       optional: true
-  checksum: 10c0/532a2b05de33914fd9e7065acd21b8978c49b494a89ce926e8c1046b7a76d5bdbaf543d3a9e6ad4bb69e097cd722a04428e14dcd3ac9080d633f0c47717e1626
+  checksum: 10c0/7495a16e2a6cf0a75f3edf36788e4b4fed36df2ae72e165ee48998611438de07f67e9f5c09a509570dedd1d96e35c334cceedd253415c1c8aa6ae0fb47b5804c
   languageName: node
   linkType: hard
 
@@ -7291,6 +7302,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/appdmg@npm:^0.5.5":
+  version: 0.5.5
+  resolution: "@types/appdmg@npm:0.5.5"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/9aa1b38a27b9310fcb6fc3fdac2aab4d3d05a0165a485c4a3a09d75712e4ea6a2e5f1e75a1a657c2e071bba92344dc0610fdb89320308601dd1e596f1aa57da0
+  languageName: node
+  linkType: hard
+
 "@types/argparse@npm:1.0.38":
   version: 1.0.38
   resolution: "@types/argparse@npm:1.0.38"
@@ -11864,19 +11884,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-installer-dmg@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "electron-installer-dmg@npm:4.0.0"
+"electron-installer-dmg@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "electron-installer-dmg@npm:5.0.1"
   dependencies:
+    "@types/appdmg": "npm:^0.5.5"
     appdmg: "npm:^0.6.4"
     debug: "npm:^4.3.2"
-    minimist: "npm:^1.1.1"
+    minimist: "npm:^1.2.7"
   dependenciesMeta:
     appdmg:
       optional: true
   bin:
-    electron-installer-dmg: bin/electron-installer-dmg.js
-  checksum: 10c0/5e257a67c1fa08306f6b451b481c9559ed0e75c5169f341db84939f506eb8e87354c44da7af4a83b1851bea7edfe6698c1dbcc1c955e2aff44d87d70579ec1ca
+    electron-installer-dmg: dist/electron-installer-dmg-bin.js
+  checksum: 10c0/a342f45518dfd4d60a09c185c0528c59e28885722ca32b68cac8d4701a346c4b405879e48a757799cf6b6eb609f7424e1e3cca17155eec9423eeacf08ded5e6a
   languageName: node
   linkType: hard
 
@@ -12099,7 +12120,7 @@ __metadata:
     "@divisey/js-mdict": "npm:^5.0.0"
     "@electron-forge/cli": "npm:<7.5.0"
     "@electron-forge/maker-deb": "npm:<7.5.0"
-    "@electron-forge/maker-dmg": "npm:<7.5.0"
+    "@electron-forge/maker-dmg": "npm:<7.6.0"
     "@electron-forge/maker-rpm": "npm:<7.5.0"
     "@electron-forge/maker-squirrel": "npm:<7.5.0"
     "@electron-forge/maker-zip": "npm:<7.5.0"
@@ -17251,7 +17272,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist@npm:^1.1.1, minimist@npm:^1.1.3, minimist@npm:^1.2.0, minimist@npm:^1.2.3, minimist@npm:^1.2.5, minimist@npm:^1.2.6, minimist@npm:^1.2.8":
+"minimist@npm:^1.1.3, minimist@npm:^1.2.0, minimist@npm:^1.2.3, minimist@npm:^1.2.5, minimist@npm:^1.2.6, minimist@npm:^1.2.7, minimist@npm:^1.2.8":
   version: 1.2.8
   resolution: "minimist@npm:1.2.8"
   checksum: 10c0/19d3fcdca050087b84c2029841a093691a91259a47def2f18222f41e7645a0b7c44ef4b40e88a1e58a40c84d2ef0ee6047c55594d298146d0eb3f6b737c20ce6
