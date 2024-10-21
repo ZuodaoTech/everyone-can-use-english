@@ -3194,9 +3194,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/community@npm:^0.3.6":
-  version: 0.3.6
-  resolution: "@langchain/community@npm:0.3.6"
+"@langchain/community@npm:^0.3.7":
+  version: 0.3.7
+  resolution: "@langchain/community@npm:0.3.7"
   dependencies:
     "@langchain/openai": "npm:>=0.2.0 <0.4.0"
     binary-extensions: "npm:^2.2.0"
@@ -3571,7 +3571,7 @@ __metadata:
       optional: true
     youtubei.js:
       optional: true
-  checksum: 10c0/b79c29dc1a0ed3a1eb50717d365715103a5e34ae87b4a4da5c5aaffe8b91c829a623ee766ed3cb1feb28fdad9bcbe9cd788084f1079731eeb635064944f8eac6
+  checksum: 10c0/772ad491451f57b2cd65e1cc06fbaac44898a08f523091a3caedfcfb6e253201e6467cb371bf538f284c476faa9a3ab736ec9dbd6f587512983ab2b09668b9c2
   languageName: node
   linkType: hard
 
@@ -12110,7 +12110,7 @@ __metadata:
     "@electron-forge/publisher-s3": "npm:^7.5.0"
     "@electron/fuses": "npm:^1.8.0"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@langchain/community": "npm:^0.3.6"
+    "@langchain/community": "npm:^0.3.7"
     "@langchain/core": "npm:^0.3.13"
     "@langchain/ollama": "npm:^0.1.0"
     "@mozilla/readability": "npm:^0.5.0"
