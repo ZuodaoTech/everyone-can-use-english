@@ -305,7 +305,11 @@ export default class FfmpegWrapper {
           "-crf",
           "30",
           "-preset",
-          "superfast"
+          "superfast",
+          "-c:a",
+          "aac",
+          "-b:a",
+          "128k"
         )
         .on("start", (commandLine) => {
           logger.info("Spawned FFmpeg with command: " + commandLine);
