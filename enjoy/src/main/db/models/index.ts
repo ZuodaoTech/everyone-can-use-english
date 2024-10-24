@@ -14,3 +14,4 @@ export * from "./speech";
 export * from "./user-setting";
 export * from "./transcription";
 export * from "./video";
+export * from "./document";

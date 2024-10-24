@@ -616,4 +616,12 @@ export class Client {
       params: decamelizeKeys(params),
     });
   }
+
+  syncDocument(document: Partial<DocumentEType>) {
+    return this.api.post("/api/documents", decamelizeKeys(document));
+  }
+
+  deleteDocument(id: string) {
+    return this.api.delete(`/api/documents/${id}`);
+  }
 }
