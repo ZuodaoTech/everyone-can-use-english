@@ -1,5 +1,5 @@
 import { Button, Input, toast } from "@renderer/components/ui";
-import { StoryForm, LoaderSpin } from "@renderer/components";
+import { DocumentCard, LoaderSpin } from "@renderer/components";
 import { useState, useContext, useEffect } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
@@ -57,7 +57,7 @@ export default () => {
         <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
           <ChevronLeftIcon className="w-5 h-5" />
         </Button>
-        <span>{t("sidebar.audios")}</span>
+        <span>{t("sidebar.documents")}</span>
       </div>
       <div className="flex flex-wrap items-center gap-4 mb-4">
         <Input
@@ -71,7 +71,11 @@ export default () => {
       {loading ? (
         <LoaderSpin />
       ) : (
-        <div className="grid grid-cols-3 gap-4"></div>
+        <div className="grid grid-cols-5 gap-4">
+          {documents.map((document) => (
+            <DocumentCard key={document.id} document={document} />
+          ))}
+        </div>
       )}
     </div>
   );

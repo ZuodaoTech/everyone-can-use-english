@@ -189,6 +189,11 @@
       "onlyGPTAgentCanBeAddedToThisChat": "Only GPT agent can be added to this chat",
       "invalidAgentType": "Invalid agent type",
       "invalidMembers": "Invalid members"
+    },
+    "document": {
+      "fileNotFound": "File not found {{file}}",
+      "fileNotSupported": "File not supported {{file}}",
+      "failedToCopyFile": "Failed to copy file {{file}}"
     }
   },
   "sidebar": {
@@ -199,6 +204,7 @@
     "audios": "Audios",
     "videos": "Videos",
     "stories": "Stories",
+    "documents": "Documents",
     "books": "Books",
     "vocabulary": "Vocabulary",
     "library": "Library",

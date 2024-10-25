@@ -264,7 +264,7 @@ export class Document extends Model<Document> {
       );
     }
 
-    const { title = path.basename(filePath, extension) } = params || {};
+    const { title = path.basename(filePath, `.${extension}`) } = params || {};
 
     const record = this.build({
       id,

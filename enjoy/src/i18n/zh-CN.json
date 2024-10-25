@@ -189,6 +189,11 @@
       "onlyGPTAgentCanBeAddedToThisChat": "只有 GPT 智能体可以添加到此聊天",
       "invalidAgentType": "无效的智能体类型",
       "invalidMembers": "无效的成员"
+    },
+    "document": {
+      "fileNotFound": "文件未找到 {{file}}",
+      "fileNotSupported": "文件格式不支持 {{file}}",
+      "failedToCopyFile": "复制文件失败 {{file}}"
     }
   },
   "sidebar": {
@@ -199,6 +204,7 @@
     "audios": "音频",
     "videos": "视频",
     "stories": "文章",
+    "documents": "文档",
     "books": "电子书",
     "vocabulary": "生词本",
     "library": "资料库",

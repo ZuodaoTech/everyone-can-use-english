@@ -17,7 +17,7 @@ class DocumentsHandler {
     delete options.where;
 
     if (query) {
-      (where as any).name = {
+      (where as any).title = {
         [Op.like]: `%${query}%`,
       };
     }
