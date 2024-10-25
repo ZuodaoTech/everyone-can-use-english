@@ -897,5 +897,6 @@
   "diskUsageDescription": "Enjoy App 的磁盘使用情况",
   "releaseDiskSpace": "释放磁盘",
   "bulkDeleteRecordings": "删除录音",
-  "bulkDeleteAborted": "批量删除已中止"
+  "bulkDeleteAborted": "批量删除已中止",
+  "notFound": "未找到"
 }

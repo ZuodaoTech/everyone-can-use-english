@@ -897,5 +897,6 @@
   "diskUsageDescription": "The disk usage of Enjoy App.",
   "releaseDiskSpace": "Release",
   "bulkDeleteRecordings": "Delete Recordings",
-  "bulkDeleteAborted": "Bulk delete aborted"
+  "bulkDeleteAborted": "Bulk delete aborted",
+  "notFound": "Not found"
 }
