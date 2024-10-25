@@ -35,6 +35,7 @@ import {
   MessagesSquareIcon,
   PanelLeftOpenIcon,
   PanelLeftCloseIcon,
+  FileIcon,
 } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import { t } from "i18next";
@@ -155,11 +156,11 @@ export const Sidebar = () => {
             />
 
             <SidebarItem
-              href="/stories"
-              label={t("sidebar.stories")}
-              tooltip={t("sidebar.stories")}
-              active={activeTab.startsWith("/stories")}
-              Icon={NewspaperIcon}
+              href="/documents"
+              label={t("sidebar.documents")}
+              tooltip={t("sidebar.documents")}
+              active={activeTab.startsWith("/documents")}
+              Icon={FileIcon}
               isOpen={isOpen}
             />
 

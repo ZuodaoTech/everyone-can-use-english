@@ -699,4 +699,27 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
       return ipcRenderer.invoke("chat-messages-destroy", id);
     },
   },
+  documents: {
+    findAll: (params: any) => {
+      return ipcRenderer.invoke("documents-find-all", params);
+    },
+    findOne: (params: any) => {
+      return ipcRenderer.invoke("documents-find-one", params);
+    },
+    create: (params: any) => {
+      return ipcRenderer.invoke("documents-create", params);
+    },
+    update: (id: string, params: any) => {
+      return ipcRenderer.invoke("documents-update", id, params);
+    },
+    destroy: (id: string) => {
+      return ipcRenderer.invoke("documents-destroy", id);
+    },
+    upload: (id: string) => {
+      return ipcRenderer.invoke("documents-upload", id);
+    },
+    cleanUp: () => {
+      return ipcRenderer.invoke("documents-clean-up");
+    },
+  },
 });

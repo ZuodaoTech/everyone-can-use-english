@@ -69,8 +69,8 @@ export class Client {
           this.logger.error(
             err.response.status,
             err.response.config.method.toUpperCase(),
-            err.response.config.baseURL + err.response.config.url,
-            err.response.data
+            err.response.config.baseURL + err.response.config.url
+            // err.response.data
           );
 
           if (err.response.data) {
@@ -86,7 +86,6 @@ export class Client {
           return Promise.reject(err);
         }
 
-        this.logger.error(err.message);
         return Promise.reject(err);
       }
     );

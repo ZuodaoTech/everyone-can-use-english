@@ -11,6 +11,8 @@ import Audios from "./pages/audios";
 import Videos from "./pages/videos";
 import Stories from "./pages/stories";
 import Story from "./pages/story";
+import Documents from "./pages/documents";
+import Document from "./pages/document";
 import Books from "./pages/books";
 import Profile from "./pages/profile";
 import User from "./pages/user";
@@ -95,6 +97,14 @@ export default createHashRouter([
       {
         path: "/videos/:id",
         element: <Video />,
+      },
+      {
+        path: "/documents",
+        element: <Documents />,
+      },
+      {
+        path: "/documents/:id",
+        element: <Document />,
       },
       {
         path: "/stories",

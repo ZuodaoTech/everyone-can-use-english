@@ -23,6 +23,7 @@ import { DocumentFormats } from "@/constants";
 import { hashFile } from "@/main/utils";
 import { v5 as uuidv5 } from "uuid";
 import { fileTypeFromFile } from "file-type";
+import mime from "mime-types";
 import storage from "@/main/storage";
 
 const logger = log.scope("db/models/document");
@@ -133,7 +134,7 @@ export class Document extends Model<Document> {
 
   @AfterFind
   static async syncAfterFind(documents: Document[]) {
-    if (!documents.length) return;
+    if (!documents?.length) return;
 
     const unsyncedDocuments = documents.filter(
       (document) => document.id && !document.isSynced
@@ -142,14 +143,16 @@ export class Document extends Model<Document> {
 
     unsyncedDocuments.forEach((document) => {
       document.sync().catch((err) => {
-        logger.error("sync document error", document.id, err);
+        logger.error(err.message);
       });
     });
   }
 
   @AfterCreate
   static syncAndUploadAfterCreate(document: Document) {
-    document.sync();
+    document.sync().catch((err) => {
+      logger.error(err.message);
+    });
   }
 
   @AfterCreate
@@ -165,7 +168,7 @@ export class Document extends Model<Document> {
   @AfterUpdate
   static syncAfterUpdate(document: Document) {
     document.sync().catch((err) => {
-      logger.error("sync error", err);
+      logger.error(err.message);
     });
   }
 
@@ -213,8 +216,20 @@ export class Document extends Model<Document> {
     }
 
     // Check if file format is supported
+    let mimeType: string;
+    let extension: string;
     const fileType = await fileTypeFromFile(filePath);
-    if (!DocumentFormats.includes(fileType.ext)) {
+    if (fileType) {
+      mimeType = fileType.mime;
+      extension = fileType.ext;
+    } else {
+      mimeType = mime.lookup(filePath) || "";
+      extension = mime.extension(mimeType) || "";
+    }
+
+    logger.debug("detected file type", filePath, mimeType, extension);
+    if (!DocumentFormats.includes(extension)) {
+      logger.error("unsupported file type", filePath, extension);
       throw new Error(
         t("models.document.fileNotSupported", { file: filePath })
       );
@@ -227,8 +242,8 @@ export class Document extends Model<Document> {
       size: stat.size,
       created: stat.birthtime,
       modified: stat.mtime,
-      mimeType: fileType.mime,
-      extension: fileType.ext,
+      mimeType,
+      extension,
     };
 
     // generate ID
@@ -236,18 +251,20 @@ export class Document extends Model<Document> {
     const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);
 
     const destDir = path.join(settings.userDataPath(), "documents");
-    const destFile = path.join(destDir, `${md5}.${fileType.ext}`);
+    fs.ensureDirSync(destDir);
+    const destFile = path.join(destDir, `${md5}.${extension}`);
 
     try {
       // copy file to library
       fs.copyFileSync(filePath, destFile);
     } catch (error) {
+      logger.error("failed to copy file", filePath, error);
       throw new Error(
         t("models.document.failedToCopyFile", { file: filePath })
       );
     }
 
-    const { title = path.basename(filePath, fileType.ext) } = params || {};
+    const { title = path.basename(filePath, extension) } = params || {};
 
     const record = this.build({
       id,

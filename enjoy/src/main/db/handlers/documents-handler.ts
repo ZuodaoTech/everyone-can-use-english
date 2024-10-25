@@ -4,8 +4,6 @@ import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
 import downloader from "@main/downloader";
 import log from "@main/logger";
 import { t } from "i18next";
-import youtubedr from "@main/youtubedr";
-import { pathToEnjoyUrl } from "@/main/utils";
 
 const logger = log.scope("db/handlers/documents-handler");
 
@@ -55,24 +53,22 @@ class DocumentsHandler {
 
   private async create(
     event: IpcMainEvent,
-    uri: string,
     params: {
+      uri: string;
       title?: string;
-    } = {}
+    }
   ) {
-    let file = uri;
-    let filePath: string;
+    let { uri, title } = params;
     if (uri.startsWith("http")) {
-      file = await downloader.download(uri, {
+      uri = await downloader.download(uri, {
         webContents: event.sender,
       });
-      if (!file) throw new Error("Failed to download file");
-      filePath = file;
+      if (!uri) throw new Error("Failed to download file");
     }
 
     try {
-      const document = await Document.buildFromLocalFile(filePath, {
-        title: params.title,
+      const document = await Document.buildFromLocalFile(uri, {
+        title,
       });
 
       return document.toJSON();
