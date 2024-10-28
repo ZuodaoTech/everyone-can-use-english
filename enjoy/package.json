@@ -152,7 +152,7 @@
     "i18next": "^23.16.1",
     "intl-tel-input": "^24.6.0",
     "js-md5": "^0.8.3",
-    "langchain": "^0.3.2",
+    "langchain": "^0.3.5",
     "lodash": "^4.17.21",
     "lru-cache": "^11.0.1",
     "lucide-react": "^0.453.0",
