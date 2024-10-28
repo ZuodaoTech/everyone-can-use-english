@@ -1,5 +1,12 @@
 import { t } from "i18next";
-import { Button, toast } from "@renderer/components/ui";
+import {
+  Button,
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+  ScrollArea,
+  toast,
+} from "@renderer/components/ui";
 import {
   DocumentHtmlRenderer,
   DocumentMarkdownRenderer,
@@ -46,14 +53,19 @@ export default () => {
           <span className="text-sm">{document.title}</span>
         </div>
 
-        <div className="flex-1 max-w-prose mx-auto">
-          {document.metadata.extension === "html" && (
-            <DocumentHtmlRenderer document={document} />
-          )}
-          {document.metadata.extension === "epub" && (
-            <DocumentEpubRenderer document={document} />
-          )}
-        </div>
+        <ResizablePanelGroup direction="horizontal" className="p-4">
+          <ResizablePanel className="">
+            <ScrollArea className="h-full px-4 border rounded-lg">
+              {document.metadata.extension === "html" && (
+                <DocumentHtmlRenderer document={document} />
+              )}
+              {document.metadata.extension === "epub" && (
+                <DocumentEpubRenderer document={document} />
+              )}
+            </ScrollArea>
+          </ResizablePanel>
+          <ResizablePanel></ResizablePanel>
+        </ResizablePanelGroup>
       </div>
     </>
   );
