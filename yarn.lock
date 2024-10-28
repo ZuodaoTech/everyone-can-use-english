@@ -11966,16 +11966,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^33.0.1":
-  version: 33.0.1
-  resolution: "electron@npm:33.0.1"
+"electron@npm:^33.0.2":
+  version: 33.0.2
+  resolution: "electron@npm:33.0.2"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^20.9.0"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10c0/cd5e5cef21df2d5e1ffc95cfe90397c984152db54ac1032deb97f1716f778d41f5fa7c83e42bc86ae3c509a6d45f578515a540b6453ebf818310cc303e95f083
+  checksum: 10c0/a7f8b810412e1cc5430edca1b07eeebe75d91d82405adb7ca83d585caf9d72893db7eba0eb88ddc2a0e7e013add1d464a2663afdc3542693d62e1aac5cbfa626
   languageName: node
   linkType: hard
 
@@ -12184,7 +12184,7 @@ __metadata:
     decamelize: "npm:^6.0.0"
     decamelize-keys: "npm:^2.0.1"
     echogarden: "npm:^1.8.7"
-    electron: "npm:^33.0.1"
+    electron: "npm:^33.0.2"
     electron-context-menu: "npm:^4.0.4"
     electron-devtools-installer: "npm:^3.2.0"
     electron-log: "npm:^5.2.0"

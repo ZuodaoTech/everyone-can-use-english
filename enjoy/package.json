@@ -65,7 +65,7 @@
     "@typescript-eslint/parser": "^8.10.0",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
-    "electron": "^33.0.1",
+    "electron": "^33.0.2",
     "electron-devtools-installer": "^3.2.0",
     "electron-playwright-helpers": "^1.7.1",
     "eslint": "^9.13.0",
