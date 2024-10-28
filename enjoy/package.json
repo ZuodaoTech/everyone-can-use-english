@@ -174,7 +174,7 @@
     "react-hotkeys-hook": "^4.5.1",
     "react-i18next": "^15.0.3",
     "react-markdown": "^9.0.1",
-    "react-resizable-panels": "^2.1.4",
+    "react-resizable-panels": "^2.1.6",
     "react-router-dom": "^6.27.0",
     "react-shadow-root": "^6.2.0",
     "react-tooltip": "^5.28.0",
