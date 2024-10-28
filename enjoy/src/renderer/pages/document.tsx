@@ -3,6 +3,7 @@ import { Button, toast } from "@renderer/components/ui";
 import {
   DocumentHtmlRenderer,
   DocumentMarkdownRenderer,
+  DocumentEpubRenderer,
   PagePlaceholder,
 } from "@renderer/components";
 import { useState, useContext, useEffect } from "react";
@@ -48,6 +49,9 @@ export default () => {
         <div className="flex-1 max-w-prose mx-auto">
           {document.metadata.extension === "html" && (
             <DocumentHtmlRenderer document={document} />
+          )}
+          {document.metadata.extension === "epub" && (
+            <DocumentEpubRenderer document={document} />
           )}
         </div>
       </div>

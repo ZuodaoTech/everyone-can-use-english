@@ -156,3 +156,12 @@ export function imgErrorToDefalut(
   target.onerror = null;
   target.src = "assets/default-img.jpg";
 }
+
+export function blobToDataUrl(blob: Blob) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}

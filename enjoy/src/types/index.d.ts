@@ -3,6 +3,8 @@
 // whether you're running in development or production).
 declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string;
 declare const MAIN_WINDOW_VITE_NAME: string;
+declare module "foliate-js/view.js";
+declare module "foliate-js/epub.js";
 declare module "compromise-paragraphs";
 
 type SupportedLlmProviderType = "enjoyai" | "openai";

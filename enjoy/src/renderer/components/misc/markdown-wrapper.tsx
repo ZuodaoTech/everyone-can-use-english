@@ -1,7 +1,8 @@
-import Markdown from "react-markdown";
+import Markdown, { defaultUrlTransform } from "react-markdown";
 import { visitParents } from "unist-util-visit-parents";
 import { Sentence } from "@renderer/components";
 import { cn } from "@renderer/lib/utils";
+import remarkGfm from "remark-gfm";
 
 function rehypeWrapText() {
   return function wrapTextTransform(tree: any) {
@@ -29,7 +30,14 @@ export const MarkdownWrapper = ({
   return (
     <Markdown
       className={cn("prose dark:prose-invert", className)}
+      remarkPlugins={[remarkGfm]}
       rehypePlugins={[rehypeWrapText]}
+      urlTransform={(url) => {
+        if (url.startsWith("blob:") || url.startsWith("data:")) {
+          return url;
+        }
+        return defaultUrlTransform(url);
+      }}
       components={{
         a({ node, children, ...props }) {
           try {

@@ -17,6 +17,7 @@ export default defineConfig((env) => {
     base: "./",
     build: {
       outDir: `.vite/renderer/${name}`,
+      target: "esnext",
     },
     plugins: [
       pluginExposeRenderer(name),
@@ -40,6 +41,9 @@ export default defineConfig((env) => {
     },
     optimizeDeps: {
       exclude: ["@ffmpeg/ffmpeg", "@ffmpeg/util"],
+      esbuildOptions: {
+        target: "esnext",
+      },
     },
     clearScreen: false,
   } as UserConfig;
