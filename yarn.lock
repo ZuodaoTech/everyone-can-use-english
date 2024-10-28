@@ -12250,7 +12250,7 @@ __metadata:
     umzug: "npm:^3.8.2"
     unzipper: "npm:^0.12.3"
     update-electron-app: "npm:^3.0.0"
-    vite: "npm:^5.4.9"
+    vite: "npm:^5.4.10"
     vite-plugin-static-copy: "npm:^2.0.0"
     wavesurfer.js: "npm:^7.8.7"
     zod: "npm:^3.23.8"
@@ -23534,7 +23534,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.0, vite@npm:^5.4.5, vite@npm:^5.4.8, vite@npm:^5.4.9":
+"vite@npm:^5.0.0, vite@npm:^5.4.5, vite@npm:^5.4.8":
   version: 5.4.9
   resolution: "vite@npm:5.4.9"
   dependencies:
@@ -23574,6 +23574,49 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 10c0/e9c59f2c639047e37c79bbbb151c7a55a3dc27932957cf4cf0447ee0bdcc1ddfd9b1fb3ba0465371c01ba3616d62561327855794c2d652213c3a10a32e6d369d
+  languageName: node
+  linkType: hard
+
+"vite@npm:^5.4.10":
+  version: 5.4.10
+  resolution: "vite@npm:5.4.10"
+  dependencies:
+    esbuild: "npm:^0.21.3"
+    fsevents: "npm:~2.3.3"
+    postcss: "npm:^8.4.43"
+    rollup: "npm:^4.20.0"
+  peerDependencies:
+    "@types/node": ^18.0.0 || >=20.0.0
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    sass-embedded: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    sass-embedded:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 10c0/4ef4807d2fd166a920de244dbcec791ba8a903b017a7d8e9f9b4ac40d23f8152c1100610583d08f542b47ca617a0505cfc5f8407377d610599d58296996691ed
   languageName: node
   linkType: hard
 
