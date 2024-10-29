@@ -9,7 +9,7 @@ function rehypeWrapText() {
     visitParents(tree, "text", (node, ancestors) => {
       const parent = ancestors.at(-1);
 
-      if (parent.tagName !== "vocabulary") {
+      if (parent.tagName !== "vocabulary" && parent.tagName !== "a") {
         node.type = "element";
         node.tagName = "vocabulary";
         node.properties = { text: node.value };
@@ -22,10 +22,12 @@ function rehypeWrapText() {
 export const MarkdownWrapper = ({
   children,
   className,
+  onLinkClick,
   ...props
 }: {
   children: string;
   className?: string;
+  onLinkClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }) => {
   return (
     <Markdown
@@ -46,7 +48,11 @@ export const MarkdownWrapper = ({
             props.rel = "noopener noreferrer";
           } catch (e) {}
 
-          return <a {...props}>{children}</a>;
+          return (
+            <a {...props} onClick={onLinkClick}>
+              {children}
+            </a>
+          );
         },
         vocabulary({ node, children, ...props }) {
           return <Sentence sentence={props.text} />;

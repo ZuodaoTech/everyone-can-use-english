@@ -55,7 +55,7 @@ export default () => {
 
         <ResizablePanelGroup direction="horizontal" className="p-4">
           <ResizablePanel className="">
-            <ScrollArea className="h-full px-4 border rounded-lg">
+            <ScrollArea className="h-full px-4 pb-6 border rounded-lg">
               {document.metadata.extension === "html" && (
                 <DocumentHtmlRenderer document={document} />
               )}
