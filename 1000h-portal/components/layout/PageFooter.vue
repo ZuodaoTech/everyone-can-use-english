@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
-    <div>© {{ year }} ANEX Inc.</div>
-    <div class="opacity-50 mt-1">All rights reserved.</div>
+    <div>© {{ year }} <span>{{ icpCompany || 'ANEX Inc.' }}</span></div>
+    <div class="opacity-50 mt-1">{{ icpCode || 'All rights reserved.' }} </div>
   </div>
 </template>
 
@@ -15,6 +15,11 @@ export default {
 const year = computed(() => {
   return new Date().getFullYear();
 });
+
+const icpCompany = process.env.ICP_COMPANY
+const icpCode = process.env.ICP_CODE
+
+
 </script>
 
 <style lang="scss" scoped>
