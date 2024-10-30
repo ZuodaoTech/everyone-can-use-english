@@ -35,11 +35,12 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Set Base Path
+        run: sed -i 's/defineConfig({/defineConfig({"base":"\/1000-hours\/",/g' 1000-hours/.vitepress/config.mts  
+
       - name: Build
         run: yarn docs:build
 
-      - name: Set Base Path
-        run: sed -i 's/defineConfig({/defineConfig({"base":"\/1000-hours\/",/g' 1000-hours/.vitepress/config.mts  
 
       - uses: manyuanrong/setup-ossutil@v2.0
         with:
