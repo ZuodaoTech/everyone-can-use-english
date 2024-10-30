@@ -1,0 +1,51 @@
+name: Deploy 1000h portal (aliyun) 
+
+env:
+  OSS_ENDPOINT: oss-cn-beijing.aliyuncs.com
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "1000h-portal/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "1000h-portal/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      # checkout the code
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Setup node env
+        uses: actions/setup-node@master
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build
+        run: yarn portal:generate
+
+      - uses: manyuanrong/setup-ossutil@v2.0
+        with:
+          endpoint: ${{ env.OSS_ENDPOINT }}
+          access-key-id: ${{ secrets.GLOBAL_OSS_ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.GLOBAL_OSS_ACCESS_KEY_SECRET }}
+      - run: ossutil cp -r -u -f 1000h-portal/.output/public ${{ secrets.ALIYUN_OSS_PORTAL_URL }} --include "*" --exclude "*.html"  -e ${{ env.OSS_ENDPOINT }}
+      - run: ossutil cp -r -u -f 1000h-portal/.output/public/index.html ${{ secrets.ALIYUN_OSS_PORTAL_URL }}  -e ${{ env.OSS_ENDPOINT }}
+      - run: ossutil set-meta ${{ secrets.ALIYUN_OSS_PORTAL_URL }}/ Cache-Control:no-cache --include "*.html" -r -f --update  -e ${{ env.OSS_ENDPOINT }}
