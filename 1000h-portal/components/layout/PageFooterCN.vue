@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
-    <div>© {{ year }} ANEX Inc.</div>
-    <div class="opacity-50 mt-1">All rights reserved.</div>
+    <div>© {{ year }} 北京般渡教育科技有限公司</div>
+    <div class="opacity-50 mt-1">京ICP备2022015741号-3</div>
   </div>
 </template>
 

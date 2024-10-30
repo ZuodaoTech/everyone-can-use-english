@@ -38,10 +38,10 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Replace CN Footer
+        run: cp 1000h-portal/components/layout/PageFooterCN.vue 1000h-portal/components/layout/PageFooter.vue
+
       - name: Build
-        env:
-          ICP_COMPANY: 北京般渡教育科技有限公司
-          ICP_CODE: 京ICP备2022015741号-3
         run: yarn portal:generate
 
       - uses: manyuanrong/setup-ossutil@v2.0
