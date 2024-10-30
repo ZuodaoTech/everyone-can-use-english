@@ -1,0 +1,47 @@
+name: Deploy 1000h website(aliyun)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "1000-hours/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "1000-hours/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      # checkout the code
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Setup node env
+        uses: actions/setup-node@master
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build
+        run: yarn docs:build
+
+      - uses: manyuanrong/setup-ossutil@v2.0
+        with:
+          endpoint: ${{ env.OSS_ENDPOINT }}
+          access-key-id: ${{ secrets.GLOBAL_OSS_ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.GLOBAL_OSS_ACCESS_KEY_SECRET }}
+      - run: ossutil cp -r -u -f 1000-hours/.vitepress/dist ${{ secrets.ALIYUN_OSS_PRESS_URL }}1000-hours/ --include "*" --exclude "*.html"  -e ${{ env.OSS_ENDPOINT }}
+      - run: ossutil cp -r -u -f 1000-hours/.vitepress/dist/index.html ${{ secrets.ALIYUN_OSS_PRESS_URL }}1000-hours/  -e ${{ env.OSS_ENDPOINT }}
+      - run: ossutil set-meta ${{ secrets.ALIYUN_OSS_PRESS_URL }}1000-hours/ Cache-Control:no-cache --include "*.html" -r -f --update  -e ${{ env.OSS_ENDPOINT }}
