@@ -1,5 +1,6 @@
 name: Deploy 1000h website(aliyun)
-
+env:
+  OSS_ENDPOINT: oss-cn-beijing.aliyuncs.com
 on:
   workflow_dispatch:
   push:
@@ -42,6 +43,5 @@ jobs:
           endpoint: ${{ env.OSS_ENDPOINT }}
           access-key-id: ${{ secrets.GLOBAL_OSS_ACCESS_KEY_ID }}
           access-key-secret: ${{ secrets.GLOBAL_OSS_ACCESS_KEY_SECRET }}
-      - run: ossutil cp -r -u -f 1000-hours/.vitepress/dist ${{ secrets.ALIYUN_OSS_PRESS_URL }}1000-hours/ --include "*" --exclude "*.html"  -e ${{ env.OSS_ENDPOINT }}
-      - run: ossutil cp -r -u -f 1000-hours/.vitepress/dist/index.html ${{ secrets.ALIYUN_OSS_PRESS_URL }}1000-hours/  -e ${{ env.OSS_ENDPOINT }}
-      - run: ossutil set-meta ${{ secrets.ALIYUN_OSS_PRESS_URL }}1000-hours/ Cache-Control:no-cache --include "*.html" -r -f --update  -e ${{ env.OSS_ENDPOINT }}
+      - run: ossutil cp -r -u -f 1000-hours/.vitepress/dist ${{ secrets.ALIYUN_OSS_PRESS_URL }}/1000-hours/ --include "*"   -e ${{ env.OSS_ENDPOINT }}
+      - run: ossutil set-meta ${{ secrets.ALIYUN_OSS_PRESS_URL }}/1000-hours/ Cache-Control:no-cache --include "*.html" -r -f --update  -e ${{ env.OSS_ENDPOINT }}
