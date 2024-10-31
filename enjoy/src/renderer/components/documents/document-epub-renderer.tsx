@@ -46,7 +46,6 @@ export const DocumentEpubRenderer = (props: {
 
     const index = paragraph.dataset.index || "0";
 
-    console.log(section, index);
     EnjoyApp.documents.update(document.id, {
       lastReadPosition: {
         section,
