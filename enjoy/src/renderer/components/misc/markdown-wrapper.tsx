@@ -12,7 +12,12 @@ import {
   useContext,
   useRef,
 } from "react";
-import { LanguagesIcon, LoaderIcon, SpeechIcon } from "lucide-react";
+import {
+  LanguagesIcon,
+  LoaderIcon,
+  RefreshCwIcon,
+  SpeechIcon,
+} from "lucide-react";
 import { Button, toast } from "@renderer/components/ui";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { md5 } from "js-md5";
@@ -63,7 +68,7 @@ const Paragraph = memo(
     const id = useMemo(() => uuidv4(), [children]);
     // Get content from children
 
-    const handleTranslate = async () => {
+    const handleTranslate = async (force = false) => {
       if (translating) return;
 
       const content = entry.target.textContent?.trim();
@@ -73,10 +78,15 @@ const Paragraph = memo(
 
       const cacheKey = `translate-${md5Hash}`;
       const cached = await EnjoyApp.cacheObjects.get(cacheKey);
-      if (cached) {
-        setTranslation(cached);
+      if (cached && !force) {
+        if (translation) {
+          setTranslation("");
+        } else {
+          setTranslation(cached);
+        }
       } else {
         setTranslating(true);
+        setTranslation("");
         translate(content, cacheKey)
           .then((result) => {
             setTranslation(result);
@@ -118,7 +128,7 @@ const Paragraph = memo(
               </Button>
             )}
             <Button
-              onClick={handleTranslate}
+              onClick={() => handleTranslate()}
               variant="ghost"
               size="icon"
               className="w-4 h-4"
@@ -132,7 +142,19 @@ const Paragraph = memo(
           </span>
           {children}
         </p>
-        {translation && <p id={`translation-${id}`}>{translation}</p>}
+        {translation && (
+          <p id={`translation-${id}`}>
+            {translation}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="w-4 h-4 opacity-50 hover:opacity-100"
+              onClick={() => handleTranslate(true)}
+            >
+              <RefreshCwIcon className="w-3 h-3" />
+            </Button>
+          </p>
+        )}
       </>
     );
   }
