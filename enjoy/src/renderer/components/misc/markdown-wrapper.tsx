@@ -105,7 +105,7 @@ const Paragraph = memo(
       if (entry?.isIntersecting) {
         onParagraphVisible(`paragraph-${id}`);
       }
-    }, [entry?.isIntersecting, onParagraphVisible]);
+    }, [entry?.isIntersecting]);
 
     return (
       <>

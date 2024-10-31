@@ -13,7 +13,8 @@ import {
   toast,
 } from "@renderer/components/ui";
 import { ChevronLeftIcon, ChevronRightIcon, MenuIcon } from "lucide-react";
-import { AppSettingsProviderContext } from "@/renderer/context";
+import { AppSettingsProviderContext } from "@renderer/context";
+import debounce from "lodash/debounce";
 
 export const DocumentEpubRenderer = (props: {
   document: DocumentEType;
@@ -24,25 +25,35 @@ export const DocumentEpubRenderer = (props: {
 
   const [book, setBook] = useState<typeof EPUB>();
   const [content, setContent] = useState<string>();
-  const [section, setSection] = useState<number>(0);
+  const [section, setSection] = useState<number>(
+    document.lastReadPosition.section || 0
+  );
   const [title, setTitle] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const paragraphRef = useRef<string>("");
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const handleParagraphVisible = (id: string) => {
-    console.log("paragraph visible", id);
-    paragraphRef.current = id;
+  const updateDocumentPosition = debounce(() => {
+    console.log(paragraphRef.current);
 
-    const currentParagraph: HTMLElement | null = ref.current?.querySelector(
-      `#${id}`
+    if (!paragraphRef.current) return;
+
+    const paragraph: HTMLElement | null = ref.current?.querySelector(
+      `#${paragraphRef.current}`
     );
-    if (!currentParagraph) return;
+    if (!paragraph) return;
 
-    const index = currentParagraph.dataset.index;
-    console.log("index", index);
-  };
+    const index = paragraph.dataset.index || "0";
+
+    console.log(section, index);
+    EnjoyApp.documents.update(document.id, {
+      lastReadPosition: {
+        section,
+        paragraph: parseInt(index),
+      },
+    });
+  }, 1000);
 
   const refreshBookMetadata = () => {
     if (!book) return;
@@ -135,7 +146,7 @@ export const DocumentEpubRenderer = (props: {
     if (!ref?.current) return;
 
     let anchor = ref.current?.querySelector(
-      `#${paragraphRef.current || "start-anchor"}`
+      `[data-index="${document.lastReadPosition.paragraph || 0}"]`
     );
     anchor ||= ref.current?.querySelector("#start-anchor");
 
@@ -145,8 +156,8 @@ export const DocumentEpubRenderer = (props: {
   }, [content]);
 
   useEffect(() => {
-    console.log("paragraph", paragraphRef.current);
-  }, [paragraphRef.current]);
+    updateDocumentPosition();
+  }, [section]);
 
   if (!book) return <LoaderSpin />;
 
@@ -213,7 +224,10 @@ export const DocumentEpubRenderer = (props: {
         <MarkdownWrapper
           className="mx-auto max-w-full"
           onLinkClick={handleLinkClick}
-          onParagraphVisible={handleParagraphVisible}
+          onParagraphVisible={(id) => {
+            paragraphRef.current = id;
+            updateDocumentPosition();
+          }}
           onSpeech={onSpeech}
         >
           {content}

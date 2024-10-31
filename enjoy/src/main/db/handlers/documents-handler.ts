@@ -83,7 +83,7 @@ class DocumentsHandler {
     id: string,
     params: Attributes<Document>
   ) {
-    const { title, metadata } = params;
+    const { title, metadata, lastReadPosition } = params;
 
     const document = await Document.findByPk(id);
 
@@ -93,6 +93,7 @@ class DocumentsHandler {
     return await document.update({
       title,
       metadata,
+      lastReadPosition,
     });
   }
 
