@@ -21,7 +21,7 @@ import settings from "@main/settings";
 import OpenAI, { type ClientOptions } from "openai";
 import { t } from "i18next";
 import { hashFile } from "@main/utils";
-import { Audio, Message, UserSetting } from "@main/db/models";
+import { Audio, Document, Message, UserSetting } from "@main/db/models";
 import log from "@main/logger";
 import proxyAgent from "@main/proxy-agent";
 
@@ -55,10 +55,13 @@ export class Speech extends Model<Speech> {
   sourceType: string;
 
   @Column(DataType.VIRTUAL)
-  source: Message;
+  source: Message | Document;
 
   @BelongsTo(() => Message, { foreignKey: "sourceId", constraints: false })
   message: Message;
+
+  @BelongsTo(() => Document, { foreignKey: "sourceId", constraints: false })
+  document: Document;
 
   @HasOne(() => Audio, "md5")
   audio: Audio;
@@ -66,6 +69,14 @@ export class Speech extends Model<Speech> {
   @AllowNull(false)
   @Column(DataType.TEXT)
   text: string;
+
+  @AllowNull(true)
+  @Column(DataType.INTEGER)
+  section: number;
+
+  @AllowNull(true)
+  @Column(DataType.INTEGER)
+  paragraph: number;
 
   @AllowNull(false)
   @Column(DataType.JSON)
@@ -125,9 +136,15 @@ export class Speech extends Model<Speech> {
       if (!instance) continue;
       if (instance.sourceType === "Message" && instance.message !== undefined) {
         instance.source = instance.message;
+      } else if (
+        instance.sourceType === "Document" &&
+        instance.document !== undefined
+      ) {
+        instance.source = instance.document;
       }
       // To prevent mistakes:
       delete instance.dataValues.message;
+      delete instance.dataValues.document;
     }
   }
 
