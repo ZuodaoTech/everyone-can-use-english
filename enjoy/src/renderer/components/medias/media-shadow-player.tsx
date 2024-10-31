@@ -1,14 +1,19 @@
+import { MediaShadowProviderContext } from "@renderer/context";
 import {
   MediaLoadingModal,
   MediaRightPanel,
   MediaLeftPanel,
   MediaBottomPanel,
+  MediaProvider,
 } from "@renderer/components";
 import {
+  Button,
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@renderer/components/ui";
+import { useContext, useState } from "react";
+import { RefreshCcwDotIcon } from "lucide-react";
 
 export const MediaShadowPlayer = () => {
   return (
@@ -18,15 +23,7 @@ export const MediaShadowPlayer = () => {
         direction="vertical"
       >
         <ResizablePanel defaultSize={60} minSize={50}>
-          <ResizablePanelGroup direction="horizontal">
-            <ResizablePanel defaultSize={40} minSize={20}>
-              <MediaLeftPanel />
-            </ResizablePanel>
-            <ResizableHandle />
-            <ResizablePanel minSize={20}>
-              <MediaRightPanel />
-            </ResizablePanel>
-          </ResizablePanelGroup>
+          <TopPanel />
         </ResizablePanel>
         <ResizableHandle />
 
@@ -36,5 +33,39 @@ export const MediaShadowPlayer = () => {
       </ResizablePanelGroup>
       <MediaLoadingModal />
     </>
+  );
+};
+
+const TopPanel = () => {
+  const { layout } = useContext(MediaShadowProviderContext);
+  const [displayPanel, setDisplayPanel] = useState<"left" | "right" | null>(
+    "right"
+  );
+
+  if (layout === "normal") {
+    return (
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel id="left-panel" order={0} defaultSize={40} minSize={20}>
+          <MediaLeftPanel />
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel id="right-panel" order={1} minSize={20}>
+          <MediaRightPanel />
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    );
+  }
+
+  return (
+    <div className="h-full">
+      <MediaLeftPanel
+        className={displayPanel === "left" ? "flex-1" : "invisible fixed"}
+        setDisplayPanel={setDisplayPanel}
+      />
+      <MediaRightPanel
+        className={displayPanel === "right" ? "flex-1" : "invisible fixed"}
+        setDisplayPanel={setDisplayPanel}
+      />
+    </div>
   );
 };

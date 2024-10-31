@@ -23,6 +23,8 @@ const ONE_MINUTE = 60;
 const TEN_MINUTES = 10 * ONE_MINUTE;
 
 type MediaShadowContextType = {
+  layout: "compact" | "normal";
+  onCancel?: () => void;
   media: AudioType | VideoType;
   setMedia: (media: AudioType | VideoType) => void;
   setMediaProvider: (mediaProvider: HTMLAudioElement | null) => void;
@@ -103,8 +105,12 @@ export const MediaShadowProviderContext =
 
 export const MediaShadowProvider = ({
   children,
+  layout = "normal",
+  onCancel,
 }: {
   children: React.ReactNode;
+  layout?: "compact" | "normal";
+  onCancel?: () => void;
 }) => {
   const minPxPerSec = 150;
   const { EnjoyApp, learningLanguage, recorderConfig } = useContext(
@@ -636,6 +642,8 @@ export const MediaShadowProvider = ({
     <>
       <MediaShadowProviderContext.Provider
         value={{
+          layout,
+          onCancel,
           media,
           setMedia,
           setMediaProvider,

@@ -9,7 +9,6 @@ import {
 } from "@renderer/components/ui";
 import {
   DocumentHtmlRenderer,
-  DocumentMarkdownRenderer,
   DocumentEpubRenderer,
   PagePlaceholder,
   DocumentPlayer,
@@ -74,7 +73,10 @@ export default () => {
   }
 
   return (
-    <MediaShadowProvider>
+    <MediaShadowProvider
+      layout="compact"
+      onCancel={() => setDisplayPlayer(false)}
+    >
       <div className="h-screen flex flex-col relative">
         <div className="flex space-x-1 items-center h-12 px-4">
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>

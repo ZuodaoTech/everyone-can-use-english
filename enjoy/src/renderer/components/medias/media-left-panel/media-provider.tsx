@@ -20,8 +20,10 @@ import {
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { milisecondsToTimestamp } from "@/utils";
 import { toast } from "@renderer/components/ui";
+import { cn } from "@renderer/lib/utils";
 
-export const MediaProvider = () => {
+export const MediaProvider = (props: { className?: string }) => {
+  const { className } = props;
   const { theme } = useContext(ThemeProviderContext);
   const { media, setMediaProvider, setDecodeError, transcription } = useContext(
     MediaShadowProviderContext
@@ -63,7 +65,7 @@ export const MediaProvider = () => {
   if (!media?.src) return null;
 
   return (
-    <div className="px-2 py-4">
+    <div className={cn("px-2 py-4", className)}>
       <VidstackMediaPlayer
         ref={player}
         className="my-auto"

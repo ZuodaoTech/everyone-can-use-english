@@ -1,10 +1,8 @@
 import { useEffect, useState, useContext, useRef } from "react";
-import {
-  AppSettingsProviderContext,
-  MediaShadowProviderContext,
-} from "@renderer/context";
+import { MediaShadowProviderContext } from "@renderer/context";
 import cloneDeep from "lodash/cloneDeep";
 import {
+  Button,
   ScrollArea,
   Tabs,
   TabsList,
@@ -22,8 +20,14 @@ import {
   MediaCaptionNote,
   MediaCaptionTranslation,
 } from "@renderer/components";
+import { cn } from "@renderer/lib/utils";
+import { ArrowLeftRightIcon } from "lucide-react";
 
-export const MediaRightPanel = () => {
+export const MediaRightPanel = (props: {
+  className?: string;
+  setDisplayPanel?: (displayPanel: "left" | "right" | null) => void;
+}) => {
+  const { className, setDisplayPanel } = props;
   const {
     currentSegmentIndex,
     currentTime,
@@ -34,6 +38,7 @@ export const MediaRightPanel = () => {
     editingRegion,
     setEditingRegion,
     setTranscriptionDraft,
+    layout,
   } = useContext(MediaShadowProviderContext);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
@@ -257,33 +262,45 @@ export const MediaRightPanel = () => {
   if (!caption) return null;
 
   return (
-    <div className="h-full relative">
+    <div className={cn("h-full relative", className)}>
       <div className="flex-1 font-serif h-full">
         <Tabs
           value={tab}
           onValueChange={(value) => setTab(value)}
           className="h-full flex flex-col"
         >
-          <TabsList className="grid grid-cols-3 gap-4 rounded-none w-full px-4">
-            <TabsTrigger
-              value="translation"
-              className="capitalize block truncate px-1"
-            >
-              {t("captionTabs.translation")}
-            </TabsTrigger>
-            <TabsTrigger
-              value="note"
-              className="capitalize block truncate px-1"
-            >
-              {t("captionTabs.note")}
-            </TabsTrigger>
-            <TabsTrigger
-              value="analysis"
-              className="capitalize block truncate px-1"
-            >
-              {t("captionTabs.analysis")}
-            </TabsTrigger>
-          </TabsList>
+          <div className="flex items-center bg-muted px-4">
+            {layout === "compact" && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="mr-2"
+                onClick={() => setDisplayPanel?.("left")}
+              >
+                <ArrowLeftRightIcon className="w-4 h-4" />
+              </Button>
+            )}
+            <TabsList className="grid grid-cols-3 gap-4 rounded-none w-full">
+              <TabsTrigger
+                value="translation"
+                className="capitalize block truncate px-1"
+              >
+                {t("captionTabs.translation")}
+              </TabsTrigger>
+              <TabsTrigger
+                value="note"
+                className="capitalize block truncate px-1"
+              >
+                {t("captionTabs.note")}
+              </TabsTrigger>
+              <TabsTrigger
+                value="analysis"
+                className="capitalize block truncate px-1"
+              >
+                {t("captionTabs.analysis")}
+              </TabsTrigger>
+            </TabsList>
+          </div>
           <ScrollArea className="flex-1 relative">
             <MediaCaption
               caption={caption}
