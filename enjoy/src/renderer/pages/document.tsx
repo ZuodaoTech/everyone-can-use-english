@@ -47,6 +47,7 @@ export default () => {
 
   const handleSpeech = (id: string, params: { section: number }) => {
     const { section } = params;
+    setDisplayPlayer(true);
 
     const paragraph = ref.current?.querySelector(`#paragraph-${id}`);
     if (!paragraph) return;
@@ -56,7 +57,6 @@ export default () => {
 
     const paragraphIndex = paragraph.getAttribute("data-index") ?? "0";
 
-    setDisplayPlayer(true);
     setPlayingMetadata({
       section,
       paragraph: parseInt(paragraphIndex),

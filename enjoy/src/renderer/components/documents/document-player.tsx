@@ -42,6 +42,8 @@ export const DocumentPlayer = (props: {
   };
 
   const findOrCreateSpeech = () => {
+    if (!section || !paragraph) return;
+
     EnjoyApp.speeches
       .findOne({
         sourceId: document.id,
@@ -99,7 +101,7 @@ export const DocumentPlayer = (props: {
     startShadow();
   }, [speech]);
 
-  if (speeching || resourcing) {
+  if (!section || !paragraph || speeching || resourcing) {
     return <LoaderSpin />;
   }
 

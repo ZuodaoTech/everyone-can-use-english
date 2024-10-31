@@ -547,68 +547,7 @@ export const MediaCurrentRecording = () => {
   ];
 
   if (isRecording || isPaused) {
-    return (
-      <div className="w-full h-full flex justify-center items-center gap-4 border rounded-xl shadow">
-        <LiveAudioVisualizer
-          mediaRecorder={mediaRecorder}
-          barWidth={2}
-          gap={2}
-          width={480}
-          height="100%"
-          fftSize={512}
-          maxDecibels={-10}
-          minDecibels={-80}
-          smoothingTimeConstant={0.4}
-        />
-        <span className="serif text-muted-foreground text-sm">
-          {Math.floor(recordingTime / 60)}:
-          {String(recordingTime % 60).padStart(2, "0")}
-        </span>
-        <div className="flex items-center gap-2">
-          <Button
-            data-tooltip-id="media-shadow-tooltip"
-            data-tooltip-content={t("cancel")}
-            onClick={cancelRecording}
-            className="rounded-full shadow w-8 h-8 bg-red-500 hover:bg-red-600"
-            variant="secondary"
-            size="icon"
-          >
-            <XIcon fill="white" className="w-4 h-4 text-white" />
-          </Button>
-          <Button
-            onClick={togglePauseResume}
-            className="rounded-full shadow w-8 h-8"
-            size="icon"
-          >
-            {isPaused ? (
-              <PlayIcon
-                data-tooltip-id="media-shadow-tooltip"
-                data-tooltip-content={t("continue")}
-                fill="white"
-                className="w-4 h-4"
-              />
-            ) : (
-              <PauseIcon
-                data-tooltip-id="media-shadow-tooltip"
-                data-tooltip-content={t("pause")}
-                fill="white"
-                className="w-4 h-4"
-              />
-            )}
-          </Button>
-          <Button
-            id="media-record-button"
-            data-tooltip-id="media-shadow-tooltip"
-            data-tooltip-content={t("finish")}
-            onClick={stopRecording}
-            className="rounded-full bg-green-500 hover:bg-green-600 shadow w-8 h-8"
-            size="icon"
-          >
-            <CheckIcon className="w-4 h-4 text-white" />
-          </Button>
-        </div>
-      </div>
-    );
+    return <MediaRecorder />;
   }
 
   if (!currentRecording?.src)
@@ -799,5 +738,110 @@ export const MediaRecordButton = () => {
         <MicIcon className="w-4 h-4 text-white" />
       )}
     </Button>
+  );
+};
+
+const MediaRecorder = () => {
+  const {
+    mediaRecorder,
+    recordingTime,
+    isRecording,
+    isPaused,
+    cancelRecording,
+    togglePauseResume,
+    stopRecording,
+  } = useContext(MediaShadowProviderContext);
+  const ref = useRef(null);
+  const [size, setSize] = useState<{ width: number; height: number } | null>(
+    null
+  );
+
+  const calContainerSize = () => {
+    const size = ref?.current?.getBoundingClientRect();
+    if (!size) return;
+
+    setSize({ width: size.width, height: size.height });
+  };
+  const debouncedCalContainerSize = debounce(calContainerSize, 100);
+
+  useEffect(() => {
+    if (!ref?.current) return;
+
+    const observer = new ResizeObserver(() => {
+      debouncedCalContainerSize();
+    });
+    observer.observe(ref.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [ref]);
+
+  return (
+    <div
+      ref={ref}
+      className="w-full h-full flex justify-center items-center gap-4 border rounded-xl shadow"
+    >
+      {size?.width && size?.width > 1024 && (
+        <LiveAudioVisualizer
+          mediaRecorder={mediaRecorder}
+          barWidth={2}
+          gap={2}
+          width={480}
+          height="100%"
+          fftSize={512}
+          maxDecibels={-10}
+          minDecibels={-80}
+          smoothingTimeConstant={0.4}
+        />
+      )}
+      <span className="serif text-muted-foreground text-sm">
+        {Math.floor(recordingTime / 60)}:
+        {String(recordingTime % 60).padStart(2, "0")}
+      </span>
+      <div className="flex items-center gap-2">
+        <Button
+          data-tooltip-id="media-shadow-tooltip"
+          data-tooltip-content={t("cancel")}
+          onClick={cancelRecording}
+          className="rounded-full shadow w-8 h-8 bg-red-500 hover:bg-red-600"
+          variant="secondary"
+          size="icon"
+        >
+          <XIcon fill="white" className="w-4 h-4 text-white" />
+        </Button>
+        <Button
+          onClick={togglePauseResume}
+          className="rounded-full shadow w-8 h-8"
+          size="icon"
+        >
+          {isPaused ? (
+            <PlayIcon
+              data-tooltip-id="media-shadow-tooltip"
+              data-tooltip-content={t("continue")}
+              fill="white"
+              className="w-4 h-4"
+            />
+          ) : (
+            <PauseIcon
+              data-tooltip-id="media-shadow-tooltip"
+              data-tooltip-content={t("pause")}
+              fill="white"
+              className="w-4 h-4"
+            />
+          )}
+        </Button>
+        <Button
+          id="media-record-button"
+          data-tooltip-id="media-shadow-tooltip"
+          data-tooltip-content={t("finish")}
+          onClick={stopRecording}
+          className="rounded-full bg-green-500 hover:bg-green-600 shadow w-8 h-8"
+          size="icon"
+        >
+          <CheckIcon className="w-4 h-4 text-white" />
+        </Button>
+      </div>
+    </div>
   );
 };
