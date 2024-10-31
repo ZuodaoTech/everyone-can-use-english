@@ -15,8 +15,11 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon, MenuIcon } from "lucide-react";
 import { AppSettingsProviderContext } from "@/renderer/context";
 
-export const DocumentEpubRenderer = (props: { document: DocumentEType }) => {
-  const { document } = props;
+export const DocumentEpubRenderer = (props: {
+  document: DocumentEType;
+  onSpeech: (id: string) => void;
+}) => {
+  const { document, onSpeech } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const [book, setBook] = useState<typeof EPUB>();
@@ -39,14 +42,6 @@ export const DocumentEpubRenderer = (props: { document: DocumentEType }) => {
 
     const index = currentParagraph.dataset.index;
     console.log("index", index);
-  };
-
-  const handleSpeech = (id: string) => {
-    const paragraph = ref.current?.querySelector(`#${id}`);
-    if (!paragraph) return;
-
-    const text = paragraph.textContent;
-    console.log("text", text);
   };
 
   const refreshBookMetadata = () => {
@@ -219,7 +214,7 @@ export const DocumentEpubRenderer = (props: { document: DocumentEType }) => {
           className="mx-auto max-w-full"
           onLinkClick={handleLinkClick}
           onParagraphVisible={handleParagraphVisible}
-          onSpeech={handleSpeech}
+          onSpeech={onSpeech}
         >
           {content}
         </MarkdownWrapper>

@@ -13,7 +13,7 @@ import {
   DocumentEpubRenderer,
   PagePlaceholder,
 } from "@renderer/components";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { ChevronLeftIcon } from "lucide-react";
@@ -23,6 +23,8 @@ export default () => {
   const { id } = useParams<{ id: string }>();
   const [document, setDocument] = useState<DocumentEType | null>(null);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const [displayPlayer, setDisplayPlayer] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   const fetchDocument = () => {
     EnjoyApp.documents
@@ -33,6 +35,13 @@ export default () => {
       .catch((err) => {
         toast.error(err.message);
       });
+  };
+
+  const handleSpeech = (id: string) => {
+    console.log("speech", id);
+    const paragraph = ref.current?.querySelector(`#paragraph-${id}`);
+    console.log("paragraph", paragraph?.textContent);
+    setDisplayPlayer(true);
   };
 
   useEffect(() => {
@@ -54,17 +63,28 @@ export default () => {
         </div>
 
         <ResizablePanelGroup direction="horizontal" className="p-4">
-          <ResizablePanel className="">
-            <ScrollArea className="h-full px-4 pb-6 border rounded-lg">
+          <ResizablePanel id="document" order={0} className="">
+            <ScrollArea
+              ref={ref}
+              className="h-full px-4 pb-6 border rounded-lg"
+            >
               {document.metadata.extension === "html" && (
                 <DocumentHtmlRenderer document={document} />
               )}
               {document.metadata.extension === "epub" && (
-                <DocumentEpubRenderer document={document} />
+                <DocumentEpubRenderer
+                  document={document}
+                  onSpeech={handleSpeech}
+                />
               )}
             </ScrollArea>
           </ResizablePanel>
-          <ResizablePanel></ResizablePanel>
+          {displayPlayer && (
+            <>
+              <ResizableHandle className="mx-4" />
+              <ResizablePanel id="player" order={1}></ResizablePanel>
+            </>
+          )}
         </ResizablePanelGroup>
       </div>
     </>
