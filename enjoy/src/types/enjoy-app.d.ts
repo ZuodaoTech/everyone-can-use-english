@@ -260,6 +260,8 @@ type EnjoyAppType = {
         sourceId: string;
         sourceType: string;
         text: string;
+        section?: number;
+        paragraph?: number;
         configuration: {
           engine: string;
           model: string;

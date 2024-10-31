@@ -12,10 +12,14 @@ import {
   DocumentMarkdownRenderer,
   DocumentEpubRenderer,
   PagePlaceholder,
+  DocumentPlayer,
 } from "@renderer/components";
 import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  MediaShadowProvider,
+} from "@renderer/context";
 import { ChevronLeftIcon } from "lucide-react";
 
 export default () => {
@@ -24,6 +28,11 @@ export default () => {
   const [document, setDocument] = useState<DocumentEType | null>(null);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [displayPlayer, setDisplayPlayer] = useState(false);
+  const [playingMetadata, setPlayingMetadata] = useState<{
+    section: number;
+    paragraph: number;
+    text: string;
+  } | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
   const fetchDocument = () => {
@@ -37,11 +46,23 @@ export default () => {
       });
   };
 
-  const handleSpeech = (id: string) => {
-    console.log("speech", id);
+  const handleSpeech = (id: string, params: { section: number }) => {
+    const { section } = params;
+
     const paragraph = ref.current?.querySelector(`#paragraph-${id}`);
-    console.log("paragraph", paragraph?.textContent);
+    if (!paragraph) return;
+
+    const text = paragraph.textContent.trim();
+    if (!text) return;
+
+    const paragraphIndex = paragraph.getAttribute("data-index") ?? "0";
+
     setDisplayPlayer(true);
+    setPlayingMetadata({
+      section,
+      paragraph: parseInt(paragraphIndex),
+      text,
+    });
   };
 
   useEffect(() => {
@@ -53,7 +74,7 @@ export default () => {
   }
 
   return (
-    <>
+    <MediaShadowProvider>
       <div className="h-screen flex flex-col relative">
         <div className="flex space-x-1 items-center h-12 px-4">
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
@@ -82,11 +103,13 @@ export default () => {
           {displayPlayer && (
             <>
               <ResizableHandle className="mx-4" />
-              <ResizablePanel id="player" order={1}></ResizablePanel>
+              <ResizablePanel id="player" order={1}>
+                <DocumentPlayer document={document} {...playingMetadata} />
+              </ResizablePanel>
             </>
           )}
         </ResizablePanelGroup>
       </div>
-    </>
+    </MediaShadowProvider>
   );
 };

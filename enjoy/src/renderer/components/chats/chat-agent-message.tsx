@@ -174,7 +174,7 @@ const ChatAgentMessageActions = (props: {
     setTranslation,
     autoSpeech,
   } = props;
-  const { chat, setShadowing, deleteMessage } = useContext(
+  const { setShadowing, deleteMessage } = useContext(
     ChatSessionProviderContext
   );
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
