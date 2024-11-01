@@ -899,5 +899,7 @@
   "bulkDeleteRecordings": "Delete Recordings",
   "bulkDeleteAborted": "Bulk delete aborted",
   "notFound": "Not found",
-  "saved": "Saved"
+  "saved": "Saved",
+  "autoTranslate": "Auto translate",
+  "autoNextSpeech": "Auto speech"
 }

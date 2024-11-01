@@ -899,5 +899,7 @@
   "bulkDeleteRecordings": "删除录音",
   "bulkDeleteAborted": "批量删除已中止",
   "notFound": "未找到",
-  "saved": "已保存"
+  "saved": "已保存",
+  "autoTranslate": "自动翻译",
+  "autoNextSpeech": "连续朗读"
 }

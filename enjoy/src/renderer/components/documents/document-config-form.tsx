@@ -68,7 +68,7 @@ export const DocumentConfigForm = (props: {
             name="config.autoTranslate"
             render={({ field }) => (
               <FormItem>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-between space-x-2">
                   <FormLabel>{t("autoTranslate")}</FormLabel>
                   <Switch
                     checked={field.value}
@@ -84,7 +84,7 @@ export const DocumentConfigForm = (props: {
             name="config.autoNextSpeech"
             render={({ field }) => (
               <FormItem>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-between space-x-2">
                   <FormLabel>{t("autoNextSpeech")}</FormLabel>
                   <Switch
                     checked={field.value}
