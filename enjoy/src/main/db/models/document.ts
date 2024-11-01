@@ -180,7 +180,9 @@ export class Document extends Model<Document> {
 
   @AfterUpdate
   static notifyForUpdate(document: Document) {
-    this.notify(document, "update");
+    if (document.changed("config") || document.changed("title")) {
+      this.notify(document, "update");
+    }
   }
 
   @AfterUpdate
