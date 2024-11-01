@@ -47,13 +47,22 @@ export default () => {
 
   const handleSpeech = (id: string, params: { section: number }) => {
     const { section } = params;
-    setDisplayPlayer(true);
+    if (!id) {
+      setDisplayPlayer(false);
+      return;
+    }
 
     const paragraph = ref.current?.querySelector(`#paragraph-${id}`);
-    if (!paragraph) return;
+    if (!paragraph) {
+      setDisplayPlayer(false);
+      return;
+    }
 
     const text = paragraph.textContent.trim();
-    if (!text) return;
+    if (!text) {
+      setDisplayPlayer(false);
+      return;
+    }
 
     const paragraphIndex = paragraph.getAttribute("data-index") ?? "0";
 
@@ -62,6 +71,7 @@ export default () => {
       paragraph: parseInt(paragraphIndex),
       text,
     });
+    setDisplayPlayer(true);
   };
 
   useEffect(() => {
@@ -98,18 +108,19 @@ export default () => {
                 <DocumentEpubRenderer
                   document={document}
                   onSpeech={handleSpeech}
+                  speechingParagraph={playingMetadata?.paragraph}
                 />
               )}
             </ScrollArea>
           </ResizablePanel>
-          {displayPlayer && (
-            <>
-              <ResizableHandle className="mx-4" />
-              <ResizablePanel id="player" order={1}>
-                <DocumentPlayer document={document} {...playingMetadata} />
-              </ResizablePanel>
-            </>
-          )}
+          <ResizableHandle className="invisible" />
+          <ResizablePanel
+            id="player"
+            order={1}
+            className={displayPlayer ? "" : "invisible fixed"}
+          >
+            <DocumentPlayer document={document} {...playingMetadata} />
+          </ResizablePanel>
         </ResizablePanelGroup>
       </div>
     </MediaShadowProvider>

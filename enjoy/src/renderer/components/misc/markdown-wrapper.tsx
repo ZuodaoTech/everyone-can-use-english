@@ -47,12 +47,14 @@ const Paragraph = memo(
     children,
     onParagraphVisible,
     onSpeech,
+    speechingParagraph,
     ...props
   }: {
     index: number;
     children: any;
     onParagraphVisible?: (id: string) => void;
     onSpeech?: (id: string) => void;
+    speechingParagraph?: number;
   }) => {
     const { EnjoyApp } = useContext(AppSettingsProviderContext);
     const { translate } = useAiCommand();
@@ -119,10 +121,18 @@ const Paragraph = memo(
           <span className="flex items-center gap-2 opacity-50 hover:opacity-100">
             {onSpeech && (
               <Button
-                onClick={() => onSpeech(id)}
+                onClick={() => {
+                  if (speechingParagraph === index) {
+                    onSpeech(null);
+                  } else {
+                    onSpeech(id);
+                  }
+                }}
                 variant="ghost"
                 size="icon"
-                className="w-4 h-4"
+                className={`w-4 h-4 ${
+                  speechingParagraph === index ? "bg-yellow-500/30" : ""
+                }`}
               >
                 <SpeechIcon className="w-3 h-3" />
               </Button>
@@ -140,7 +150,13 @@ const Paragraph = memo(
               )}
             </Button>
           </span>
-          {children}
+          <span
+            className={`${
+              speechingParagraph === index ? "bg-yellow-500/30" : ""
+            }`}
+          >
+            {children}
+          </span>
         </p>
         {translation && (
           <p id={`translation-${id}`}>
@@ -167,6 +183,7 @@ export const MarkdownWrapper = memo(
     className,
     onLinkClick,
     onSpeech,
+    speechingParagraph,
     onParagraphVisible,
     ...props
   }: {
@@ -174,6 +191,7 @@ export const MarkdownWrapper = memo(
     className?: string;
     onLinkClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
     onSpeech?: (id: string) => void;
+    speechingParagraph?: number;
     onParagraphVisible?: (id: string) => void;
   }) => {
     // Memoize component callbacks
@@ -205,6 +223,7 @@ export const MarkdownWrapper = memo(
               index={paragraphIndex++}
               onParagraphVisible={onParagraphVisible}
               onSpeech={onSpeech}
+              speechingParagraph={speechingParagraph}
               {...props}
             >
               {children}

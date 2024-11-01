@@ -2,8 +2,13 @@ import { AppSettingsProviderContext } from "@renderer/context";
 import { useSpeech } from "@renderer/hooks";
 import { useContext, useEffect, useState } from "react";
 import { Button, toast } from "@renderer/components/ui";
-import { AudioPlayer, LoaderSpin } from "@renderer/components";
+import {
+  AudioPlayer,
+  LoaderSpin,
+  WavesurferPlayer,
+} from "@renderer/components";
 import { t } from "i18next";
+import { LoaderIcon } from "lucide-react";
 
 export const DocumentPlayer = (props: {
   document: DocumentEType;
@@ -41,30 +46,24 @@ export const DocumentPlayer = (props: {
     }
   };
 
-  const findOrCreateSpeech = () => {
+  const findOrCreateSpeech = async () => {
     if (!section || !paragraph) return;
 
-    EnjoyApp.speeches
-      .findOne({
-        sourceId: document.id,
-        sourceType: "Document",
-        section,
-        paragraph,
-      })
-      .then((speech) => {
-        if (speech) {
-          setSpeech(speech);
-        } else {
-          createSpeech();
-        }
-      })
-      .catch((err) => {
-        toast.error(err.message);
-      });
+    const existingSpeech = await EnjoyApp.speeches.findOne({
+      sourceId: document.id,
+      sourceType: "Document",
+      section,
+      paragraph,
+    });
+
+    if (existingSpeech) {
+      setSpeech(existingSpeech);
+    } else {
+      createSpeech();
+    }
   };
 
   const createSpeech = async () => {
-    if (speech) return;
     if (speeching) return;
 
     setSpeeching(true);
@@ -92,31 +91,65 @@ export const DocumentPlayer = (props: {
   };
 
   useEffect(() => {
+    console.log("started player", section, paragraph);
     findOrCreateSpeech();
+
+    return () => {
+      setSpeech(null);
+      setAudio(null);
+    };
   }, [document.id, section, paragraph]);
 
-  useEffect(() => {
-    if (!speech) return;
-
-    startShadow();
-  }, [speech]);
-
-  if (!section || !paragraph || speeching || resourcing) {
+  if (!section || !paragraph) {
     return <LoaderSpin />;
+  }
+
+  if (speeching) {
+    return (
+      <div className="flex flex-col justify-center items-center h-full">
+        <div className="flex items-center justify-center mb-2">
+          <LoaderIcon className="animate-spin text-muted-foreground" />
+        </div>
+        <div className="text-muted-foreground text-sm">
+          {t("creatingSpeech")}
+        </div>
+      </div>
+    );
+  }
+
+  if (resourcing) {
+    return (
+      <div className="flex flex-col justify-center items-center h-full">
+        <div className="flex items-center justify-center mb-2">
+          <LoaderIcon className="animate-spin text-muted-foreground" />
+        </div>
+        <div className="text-muted-foreground text-sm">
+          {t("preparingAudio")}
+        </div>
+      </div>
+    );
   }
 
   if (!speech) {
     return (
       <div className="flex justify-center items-center h-full">
-        <Button onClick={createSpeech}>{t("retry")}</Button>
+        <Button onClick={createSpeech}>{t("textToSpeech")}</Button>
       </div>
     );
   }
 
   if (!audio) {
     return (
-      <div className="flex justify-center items-center h-full">
-        <Button onClick={startShadow}>{t("retry")}</Button>
+      <div className="flex flex-col gap-4 justify-center items-center h-full">
+        <WavesurferPlayer
+          id={speech.id}
+          src={speech.src}
+          autoplay={true}
+          className="w-full h-full"
+        />
+        <div className="flex justify-center">
+          <Button onClick={startShadow}>{t("shadowingExercise")}</Button>
+        </div>
       </div>
     );
   }

@@ -19,8 +19,9 @@ import debounce from "lodash/debounce";
 export const DocumentEpubRenderer = (props: {
   document: DocumentEType;
   onSpeech: (id: string, params: { section: number }) => void;
+  speechingParagraph?: number;
 }) => {
-  const { document, onSpeech } = props;
+  const { document, onSpeech, speechingParagraph } = props;
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const [book, setBook] = useState<typeof EPUB>();
@@ -227,6 +228,7 @@ export const DocumentEpubRenderer = (props: {
             paragraphRef.current = id;
             updateDocumentPosition();
           }}
+          speechingParagraph={speechingParagraph}
           onSpeech={(id) => onSpeech(id, { section })}
         >
           {content}
