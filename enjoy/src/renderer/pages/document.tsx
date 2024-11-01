@@ -52,7 +52,7 @@ export default () => {
       return;
     }
 
-    const paragraph = ref.current?.querySelector(`#paragraph-${id}`);
+    const paragraph = ref.current?.querySelector(`#${id}`);
     if (!paragraph) {
       setDisplayPlayer(false);
       return;
@@ -78,6 +78,12 @@ export default () => {
     fetchDocument();
   }, [id]);
 
+  useEffect(() => {
+    if (!displayPlayer) {
+      setPlayingMetadata(null);
+    }
+  }, [displayPlayer]);
+
   if (!document) {
     return <PagePlaceholder placeholder={t("notFound")} />;
   }
@@ -99,7 +105,7 @@ export default () => {
           <ResizablePanel id="document" order={0} className="">
             <ScrollArea
               ref={ref}
-              className="h-full px-4 pb-6 border rounded-lg"
+              className="h-full px-4 pb-6 border rounded-lg shadow-lg"
             >
               {document.metadata.extension === "html" && (
                 <DocumentHtmlRenderer document={document} />
@@ -113,7 +119,9 @@ export default () => {
               )}
             </ScrollArea>
           </ResizablePanel>
-          <ResizableHandle className="invisible" />
+          <ResizableHandle
+            className={displayPlayer ? "invisible mx-2" : "invisible"}
+          />
           <ResizablePanel
             id="player"
             order={1}

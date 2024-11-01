@@ -67,9 +67,6 @@ const Paragraph = memo(
       rootMargin: "0px",
     });
 
-    const id = useMemo(() => uuidv4(), [children]);
-    // Get content from children
-
     const handleTranslate = async (force = false) => {
       if (translating) return;
 
@@ -105,7 +102,7 @@ const Paragraph = memo(
     useEffect(() => {
       if (!onParagraphVisible) return;
       if (entry?.isIntersecting) {
-        onParagraphVisible(`paragraph-${id}`);
+        onParagraphVisible(`paragraph-${index}`);
       }
     }, [entry?.isIntersecting]);
 
@@ -113,7 +110,7 @@ const Paragraph = memo(
       <>
         <p
           ref={ref}
-          id={`paragraph-${id}`}
+          id={`paragraph-${index}`}
           className="paragraph"
           data-index={index}
           {...props}
@@ -125,7 +122,7 @@ const Paragraph = memo(
                   if (speechingParagraph === index) {
                     onSpeech(null);
                   } else {
-                    onSpeech(id);
+                    onSpeech(`paragraph-${index}`);
                   }
                 }}
                 variant="ghost"
@@ -159,7 +156,7 @@ const Paragraph = memo(
           </span>
         </p>
         {translation && (
-          <p id={`translation-${id}`}>
+          <p id={`translation-${index}`}>
             {translation}
             <Button
               variant="ghost"

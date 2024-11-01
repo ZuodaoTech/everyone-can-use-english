@@ -47,7 +47,7 @@ export const DocumentPlayer = (props: {
   };
 
   const findOrCreateSpeech = async () => {
-    if (!section || !paragraph) return;
+    if (typeof section !== "number" || typeof paragraph !== "number") return;
 
     const existingSpeech = await EnjoyApp.speeches.findOne({
       sourceId: document.id,
@@ -91,7 +91,6 @@ export const DocumentPlayer = (props: {
   };
 
   useEffect(() => {
-    console.log("started player", section, paragraph);
     findOrCreateSpeech();
 
     return () => {
@@ -100,7 +99,7 @@ export const DocumentPlayer = (props: {
     };
   }, [document.id, section, paragraph]);
 
-  if (!section || !paragraph) {
+  if (typeof section !== "number" || typeof paragraph !== "number") {
     return <LoaderSpin />;
   }
 

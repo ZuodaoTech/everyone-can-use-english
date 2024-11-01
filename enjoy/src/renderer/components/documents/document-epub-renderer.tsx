@@ -36,8 +36,6 @@ export const DocumentEpubRenderer = (props: {
   const ref = useRef<HTMLDivElement>(null);
 
   const updateDocumentPosition = debounce(() => {
-    console.log(paragraphRef.current);
-
     if (!paragraphRef.current) return;
 
     const paragraph: HTMLElement | null = ref.current?.querySelector(
