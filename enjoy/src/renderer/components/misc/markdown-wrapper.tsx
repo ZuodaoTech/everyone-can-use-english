@@ -48,6 +48,7 @@ const Paragraph = memo(
     onParagraphVisible,
     onSpeech,
     speechingParagraph,
+    autoTranslate,
     ...props
   }: {
     index: number;
@@ -55,6 +56,7 @@ const Paragraph = memo(
     onParagraphVisible?: (id: string) => void;
     onSpeech?: (id: string) => void;
     speechingParagraph?: number;
+    autoTranslate?: boolean;
   }) => {
     const { EnjoyApp } = useContext(AppSettingsProviderContext);
     const { translate } = useAiCommand();
@@ -67,6 +69,14 @@ const Paragraph = memo(
       rootMargin: "0px",
     });
 
+    const toggleTranslation = () => {
+      if (translation) {
+        setTranslation("");
+      } else {
+        handleTranslate();
+      }
+    };
+
     const handleTranslate = async (force = false) => {
       if (translating) return;
 
@@ -78,11 +88,7 @@ const Paragraph = memo(
       const cacheKey = `translate-${md5Hash}`;
       const cached = await EnjoyApp.cacheObjects.get(cacheKey);
       if (cached && !force) {
-        if (translation) {
-          setTranslation("");
-        } else {
-          setTranslation(cached);
-        }
+        setTranslation(cached);
       } else {
         setTranslating(true);
         setTranslation("");
@@ -103,8 +109,11 @@ const Paragraph = memo(
       if (!onParagraphVisible) return;
       if (entry?.isIntersecting) {
         onParagraphVisible(`paragraph-${index}`);
+        if (autoTranslate) {
+          handleTranslate();
+        }
       }
-    }, [entry?.isIntersecting]);
+    }, [entry?.isIntersecting, autoTranslate]);
 
     return (
       <>
@@ -135,7 +144,7 @@ const Paragraph = memo(
               </Button>
             )}
             <Button
-              onClick={() => handleTranslate()}
+              onClick={toggleTranslation}
               variant="ghost"
               size="icon"
               className="w-4 h-4"
@@ -182,6 +191,7 @@ export const MarkdownWrapper = memo(
     onSpeech,
     speechingParagraph,
     onParagraphVisible,
+    autoTranslate,
     ...props
   }: {
     children: string;
@@ -190,6 +200,7 @@ export const MarkdownWrapper = memo(
     onSpeech?: (id: string) => void;
     speechingParagraph?: number;
     onParagraphVisible?: (id: string) => void;
+    autoTranslate?: boolean;
   }) => {
     // Memoize component callbacks
     const handleLinkClick = useCallback(onLinkClick, [onLinkClick]);
@@ -221,6 +232,7 @@ export const MarkdownWrapper = memo(
               onParagraphVisible={onParagraphVisible}
               onSpeech={onSpeech}
               speechingParagraph={speechingParagraph}
+              autoTranslate={autoTranslate}
               {...props}
             >
               {children}
@@ -228,7 +240,7 @@ export const MarkdownWrapper = memo(
           );
         },
       };
-    }, [handleLinkClick, onParagraphVisible, onSpeech]);
+    }, [handleLinkClick, onParagraphVisible, onSpeech, autoTranslate]);
 
     return (
       <Markdown

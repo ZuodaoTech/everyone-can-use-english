@@ -73,11 +73,7 @@ export const DocumentPlayer = (props: {
       section,
       paragraph,
       text,
-      configuration: {
-        engine: "enjoyai",
-        model: "tts-1",
-        voice: "shimmer",
-      },
+      configuration: document.config.tts,
     })
       .then((res) => {
         setSpeech(res);

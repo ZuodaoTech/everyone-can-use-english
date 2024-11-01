@@ -268,6 +268,7 @@ export const DocumentEpubRenderer = (props: {
             paragraphRef.current = id;
             updateDocumentPosition();
           }}
+          autoTranslate={document.config.autoTranslate}
           speechingParagraph={speechingParagraph}
           onSpeech={(id) => onSpeech(id, { section })}
         >
