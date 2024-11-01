@@ -898,5 +898,6 @@
   "releaseDiskSpace": "Release",
   "bulkDeleteRecordings": "Delete Recordings",
   "bulkDeleteAborted": "Bulk delete aborted",
-  "notFound": "Not found"
+  "notFound": "Not found",
+  "saved": "Saved"
 }

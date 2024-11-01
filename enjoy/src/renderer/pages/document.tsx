@@ -17,6 +17,7 @@ import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   AppSettingsProviderContext,
+  DbProviderContext,
   MediaShadowProvider,
 } from "@renderer/context";
 import { ChevronLeftIcon } from "lucide-react";
@@ -26,6 +27,7 @@ export default () => {
   const { id } = useParams<{ id: string }>();
   const [document, setDocument] = useState<DocumentEType | null>(null);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [displayPlayer, setDisplayPlayer] = useState(false);
   const [playingMetadata, setPlayingMetadata] = useState<{
     section: number;
@@ -43,6 +45,13 @@ export default () => {
       .catch((err) => {
         toast.error(err.message);
       });
+  };
+
+  const handleDocumentUpdate = (event: CustomEvent) => {
+    const { state, record } = event.detail;
+    if (state === "updated" && record.id === id) {
+      setDocument(record as DocumentEType);
+    }
   };
 
   const handleSpeech = (id: string, params: { section: number }) => {
@@ -83,6 +92,14 @@ export default () => {
       setPlayingMetadata(null);
     }
   }, [displayPlayer]);
+
+  useEffect(() => {
+    addDblistener(handleDocumentUpdate);
+
+    return () => {
+      removeDbListener(handleDocumentUpdate);
+    };
+  }, []);
 
   if (!document) {
     return <PagePlaceholder placeholder={t("notFound")} />;

@@ -30,7 +30,7 @@ import {
   toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import { ChatTTSForm } from "@renderer/components";
+import { TTSForm } from "@renderer/components";
 import {
   AISettingsProviderContext,
   AppSettingsProviderContext,
@@ -366,7 +366,7 @@ export const ChatAgentForm = (props: {
           )}
 
           {form.watch("type") === ChatAgentTypeEnum.TTS && (
-            <ChatTTSForm form={form} />
+            <TTSForm form={form} />
           )}
         </div>
         <div className="flex items-center justify-end space-x-4">

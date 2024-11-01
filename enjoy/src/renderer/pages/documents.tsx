@@ -22,7 +22,6 @@ export default () => {
     EnjoyApp.documents
       .findAll({ query: debouncedQuery })
       .then((documents) => {
-        console.log(documents);
         setDocuments(documents);
       })
       .finally(() => {
@@ -37,7 +36,18 @@ export default () => {
     });
     if (selected) {
       EnjoyApp.documents
-        .create({ uri: selected[0] })
+        .create({
+          uri: selected[0],
+          config: {
+            autoTranslate: false,
+            autoNextSpeech: true,
+            tts: {
+              engine: "enjoyai",
+              model: "openai/tts-1",
+              voice: "alloy",
+            },
+          },
+        })
         .then((document) => {
           navigate(`/documents/${document.id}`);
         })

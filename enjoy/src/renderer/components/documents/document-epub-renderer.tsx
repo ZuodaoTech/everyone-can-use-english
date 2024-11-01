@@ -1,5 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { LoaderSpin, MarkdownWrapper } from "@renderer/components";
+import {
+  DocumentConfigForm,
+  LoaderSpin,
+  MarkdownWrapper,
+} from "@renderer/components";
 import { makeBook } from "foliate-js/view.js";
 import { EPUB } from "foliate-js/epub.js";
 import { blobToDataUrl } from "@renderer/lib/utils";
@@ -11,10 +15,19 @@ import {
   DropdownMenuItem,
   Button,
   toast,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from "@renderer/components/ui";
-import { ChevronLeftIcon, ChevronRightIcon, MenuIcon } from "lucide-react";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MenuIcon,
+  SettingsIcon,
+} from "lucide-react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import debounce from "lodash/debounce";
+import { t } from "i18next";
 
 export const DocumentEpubRenderer = (props: {
   document: DocumentEType;
@@ -31,6 +44,7 @@ export const DocumentEpubRenderer = (props: {
   );
   const [title, setTitle] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const [configOpen, setConfigOpen] = useState<boolean>(false);
   const paragraphRef = useRef<string>("");
 
   const ref = useRef<HTMLDivElement>(null);
@@ -50,6 +64,7 @@ export const DocumentEpubRenderer = (props: {
         section,
         paragraph: parseInt(index),
       },
+      lastReadAt: new Date(),
     });
   }, 1000);
 
@@ -162,39 +177,66 @@ export const DocumentEpubRenderer = (props: {
   return (
     <div ref={ref} className="select-text relative">
       <div className="flex items-center justify-between space-x-2 sticky top-0 z-10 bg-background py-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="w-6 h-6">
-              <MenuIcon className="w-5 h-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            side="bottom"
-            align="start"
-            className="w-64 max-h-96 overflow-y-auto"
-          >
-            {(book?.toc as any[]).map((item: any) => (
-              <div key={item.href}>
-                <DropdownMenuItem
-                  className="cursor-pointer text-sm"
-                  key={item.href}
-                  onClick={() => handleSectionClick(item.href)}
-                >
-                  {item.label}
-                </DropdownMenuItem>
-                {(item.subitems || []).map((subitem: any) => (
+        <div className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="w-6 h-6">
+                <MenuIcon className="w-5 h-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              side="bottom"
+              align="start"
+              className="w-64 max-h-96 overflow-y-auto"
+            >
+              {(book?.toc as any[]).map((item: any) => (
+                <div key={item.href}>
                   <DropdownMenuItem
-                    className="cursor-pointer pl-4 text-sm text-muted-foreground"
-                    key={subitem.href}
-                    onClick={() => handleSectionClick(subitem.href)}
+                    className="cursor-pointer text-sm"
+                    key={item.href}
+                    onClick={() => handleSectionClick(item.href)}
                   >
-                    {subitem.label}
+                    {item.label}
                   </DropdownMenuItem>
-                ))}
-              </div>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+                  {(item.subitems || []).map((subitem: any) => (
+                    <DropdownMenuItem
+                      className="cursor-pointer pl-4 text-sm text-muted-foreground"
+                      key={subitem.href}
+                      onClick={() => handleSectionClick(subitem.href)}
+                    >
+                      {subitem.label}
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Popover open={configOpen} onOpenChange={setConfigOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="ghost" size="icon" className="w-6 h-6">
+                <SettingsIcon className="w-5 h-5" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent side="bottom" align="start">
+              <DocumentConfigForm
+                config={document.config}
+                onSubmit={(data: any) => {
+                  return EnjoyApp.documents
+                    .update(document.id, {
+                      ...data,
+                    })
+                    .then(() => {
+                      toast.success(t("saved"));
+                      setConfigOpen(false);
+                    })
+                    .catch((err) => {
+                      toast.error(err.message);
+                    });
+                }}
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
         <div className="text-xs text-muted-foreground truncate">{title}</div>
         <div className="flex items-center gap-2">
           <Button

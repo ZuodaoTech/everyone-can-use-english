@@ -22,7 +22,10 @@ class DocumentsHandler {
       };
     }
     const documents = await Document.findAll({
-      order: [["updatedAt", "DESC"]],
+      order: [
+        ["lastReadAt", "DESC"],
+        ["updatedAt", "DESC"],
+      ],
       where,
       ...options,
     });
@@ -56,9 +59,10 @@ class DocumentsHandler {
     params: {
       uri: string;
       title?: string;
+      config?: Record<string, any>;
     }
   ) {
-    let { uri, title } = params;
+    let { uri, title, config } = params;
     if (uri.startsWith("http")) {
       uri = await downloader.download(uri, {
         webContents: event.sender,
@@ -69,6 +73,7 @@ class DocumentsHandler {
     try {
       const document = await Document.buildFromLocalFile(uri, {
         title,
+        config,
       });
 
       return document.toJSON();
@@ -83,7 +88,7 @@ class DocumentsHandler {
     id: string,
     params: Attributes<Document>
   ) {
-    const { title, metadata, lastReadPosition } = params;
+    const { title, metadata, lastReadPosition, lastReadAt, config } = params;
 
     const document = await Document.findByPk(id);
 
@@ -94,6 +99,8 @@ class DocumentsHandler {
       title,
       metadata,
       lastReadPosition,
+      lastReadAt,
+      config,
     });
   }
 

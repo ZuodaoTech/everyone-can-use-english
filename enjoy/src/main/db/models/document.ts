@@ -53,6 +53,9 @@ export class Document extends Model<Document> {
   metadata: Record<string, any>;
 
   @Column(DataType.JSON)
+  config: Record<string, any>;
+
+  @Column(DataType.JSON)
   lastReadPosition: Record<string, any>;
 
   @Column(DataType.DATE)
@@ -63,6 +66,21 @@ export class Document extends Model<Document> {
 
   @Column(DataType.DATE)
   uploadedAt: Date;
+
+  @Column(DataType.VIRTUAL)
+  get autoTranslate(): boolean {
+    return this.config.autoTranslate || false;
+  }
+
+  @Column(DataType.VIRTUAL)
+  get autoNextSpeech(): boolean {
+    return this.config.autoNextSpeech || false;
+  }
+
+  @Column(DataType.VIRTUAL)
+  get ttsConfig(): Record<string, any> {
+    return this.config.tts || {};
+  }
 
   @Column(DataType.VIRTUAL)
   get filePath(): string {
@@ -194,6 +212,7 @@ export class Document extends Model<Document> {
     filePath: string,
     params: {
       title?: string;
+      config?: Record<string, any>;
     }
   ): Promise<Document> {
     // Check if file exists
@@ -264,13 +283,25 @@ export class Document extends Model<Document> {
       );
     }
 
-    const { title = path.basename(filePath, `.${extension}`) } = params || {};
+    const {
+      title = path.basename(filePath, `.${extension}`),
+      config = {
+        autoTranslate: false,
+        autoNextSpeech: true,
+        tts: {
+          engine: "enjoyai",
+          model: "openai/tts-1",
+          voice: "alloy",
+        },
+      },
+    } = params || {};
 
     const record = this.build({
       id,
       md5,
       title,
       metadata,
+      config,
     });
 
     return record.save().catch((err) => {

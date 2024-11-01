@@ -26,6 +26,11 @@ async function up({ context: queryInterface }) {
         allowNull: false,
         defaultValue: {},
       },
+      config: {
+        type: DataTypes.JSON,
+        allowNull: false,
+        defaultValue: {},
+      },
       last_read_position: {
         type: DataTypes.JSON,
         defaultValue: {},
