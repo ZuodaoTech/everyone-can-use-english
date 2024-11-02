@@ -21,7 +21,6 @@ import {
 import { Button, toast } from "@renderer/components/ui";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { md5 } from "js-md5";
-import { v4 as uuidv4 } from "uuid";
 import { AppSettingsProviderContext } from "@/renderer/context";
 import { useAiCommand } from "@/renderer/hooks";
 
@@ -49,6 +48,7 @@ const Paragraph = memo(
     onSpeech,
     speechingParagraph,
     autoTranslate,
+    translatable,
     ...props
   }: {
     index: number;
@@ -57,6 +57,7 @@ const Paragraph = memo(
     onSpeech?: (id: string) => void;
     speechingParagraph?: number;
     autoTranslate?: boolean;
+    translatable?: boolean;
   }) => {
     const { EnjoyApp } = useContext(AppSettingsProviderContext);
     const { translate } = useAiCommand();
@@ -105,6 +106,11 @@ const Paragraph = memo(
       }
     };
 
+    const content = useMemo(() => {
+      if (!entry?.target) return "";
+      return entry.target.textContent?.trim();
+    }, [entry?.target]);
+
     useEffect(() => {
       if (!onParagraphVisible) return;
       if (entry?.isIntersecting) {
@@ -125,7 +131,7 @@ const Paragraph = memo(
           {...props}
         >
           <span className="flex items-center gap-2 opacity-50 hover:opacity-100">
-            {onSpeech && (
+            {onSpeech && content && (
               <Button
                 onClick={() => {
                   if (speechingParagraph === index) {
@@ -143,18 +149,20 @@ const Paragraph = memo(
                 <SpeechIcon className="w-3 h-3" />
               </Button>
             )}
-            <Button
-              onClick={toggleTranslation}
-              variant="ghost"
-              size="icon"
-              className="w-4 h-4"
-            >
-              {translating ? (
-                <LoaderIcon className="w-3 h-3 animate-spin" />
-              ) : (
-                <LanguagesIcon className="w-3 h-3" />
-              )}
-            </Button>
+            {translatable && content && (
+              <Button
+                onClick={toggleTranslation}
+                variant="ghost"
+                size="icon"
+                className="w-4 h-4"
+              >
+                {translating ? (
+                  <LoaderIcon className="w-3 h-3 animate-spin" />
+                ) : (
+                  <LanguagesIcon className="w-3 h-3" />
+                )}
+              </Button>
+            )}
           </span>
           <span
             className={`${
@@ -191,6 +199,7 @@ export const MarkdownWrapper = memo(
     onSpeech,
     speechingParagraph,
     onParagraphVisible,
+    translatable = false,
     autoTranslate,
     ...props
   }: {
@@ -200,6 +209,7 @@ export const MarkdownWrapper = memo(
     onSpeech?: (id: string) => void;
     speechingParagraph?: number;
     onParagraphVisible?: (id: string) => void;
+    translatable?: boolean;
     autoTranslate?: boolean;
   }) => {
     // Memoize component callbacks
@@ -233,6 +243,7 @@ export const MarkdownWrapper = memo(
               onSpeech={onSpeech}
               speechingParagraph={speechingParagraph}
               autoTranslate={autoTranslate}
+              translatable={translatable}
               {...props}
             >
               {children}
@@ -240,7 +251,13 @@ export const MarkdownWrapper = memo(
           );
         },
       };
-    }, [handleLinkClick, onParagraphVisible, onSpeech, autoTranslate]);
+    }, [
+      handleLinkClick,
+      onParagraphVisible,
+      onSpeech,
+      autoTranslate,
+      translatable,
+    ]);
 
     return (
       <Markdown

@@ -271,6 +271,7 @@ export const DocumentEpubRenderer = (props: {
           autoTranslate={document.config.autoTranslate}
           speechingParagraph={speechingParagraph}
           onSpeech={(id) => onSpeech(id, { section })}
+          translatable={true}
         >
           {content}
         </MarkdownWrapper>
