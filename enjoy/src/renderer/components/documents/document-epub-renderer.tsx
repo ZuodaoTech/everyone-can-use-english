@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import {
   DocumentConfigForm,
   LoaderSpin,
@@ -25,48 +25,52 @@ import {
   MenuIcon,
   SettingsIcon,
 } from "lucide-react";
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  DocumentProviderContext,
+} from "@renderer/context";
 import debounce from "lodash/debounce";
 import { t } from "i18next";
 
-export const DocumentEpubRenderer = (props: {
-  document: DocumentEType;
-  onSpeech: (id: string, params: { section: number }) => void;
-  speechingParagraph?: number;
-}) => {
-  const { document, onSpeech, speechingParagraph } = props;
+export const DocumentEpubRenderer = () => {
+  const { ref, document, playingParagraph, setPlayingParagraph } = useContext(
+    DocumentProviderContext
+  );
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const [book, setBook] = useState<typeof EPUB>();
   const [content, setContent] = useState<string>();
-  const [section, setSection] = useState<number>(
-    document.lastReadPosition.section || 0
-  );
+  const [section, setSection] = useState<number>(0);
   const [title, setTitle] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [configOpen, setConfigOpen] = useState<boolean>(false);
   const paragraphRef = useRef<string>("");
 
-  const ref = useRef<HTMLDivElement>(null);
+  const onParagraphVisible = useCallback((id: string) => {
+    paragraphRef.current = id;
+  }, []);
 
-  const updateDocumentPosition = debounce(() => {
-    if (!paragraphRef.current) return;
+  const updateDocumentPosition = useCallback(
+    debounce(() => {
+      if (!paragraphRef.current) return;
 
-    const paragraph: HTMLElement | null = ref.current?.querySelector(
-      `#${paragraphRef.current}`
-    );
-    if (!paragraph) return;
+      const paragraph: HTMLElement | null = ref.current?.querySelector(
+        `#${paragraphRef.current}`
+      );
+      if (!paragraph) return;
 
-    const index = paragraph.dataset.index || "0";
+      const index = paragraph.dataset.index || "0";
 
-    EnjoyApp.documents.update(document.id, {
-      lastReadPosition: {
-        section,
-        paragraph: parseInt(index),
-      },
-      lastReadAt: new Date(),
-    });
-  }, 1000);
+      EnjoyApp.documents.update(document.id, {
+        lastReadPosition: {
+          section,
+          paragraph: parseInt(index),
+        },
+        lastReadAt: new Date(),
+      });
+    }, 1000),
+    [document, ref]
+  );
 
   const refreshBookMetadata = () => {
     if (!book) return;
@@ -125,12 +129,6 @@ export const DocumentEpubRenderer = (props: {
     setSection(section + 1);
   };
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    handleSectionClick(new URL(e.currentTarget.href).pathname);
-    e.currentTarget.blur();
-  };
-
   const handleSectionClick = (id: string) => {
     const sec = book.sections.findIndex((sec: any) => sec.id.endsWith(id));
     if (sec === -1) return;
@@ -138,12 +136,21 @@ export const DocumentEpubRenderer = (props: {
     setSection(sec);
   };
 
+  const handleLinkClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      handleSectionClick(new URL(e.currentTarget.href).pathname);
+      e.currentTarget.blur();
+    },
+    [handleSectionClick]
+  );
+
   useEffect(() => {
     makeBook(document.src).then((epub: typeof EPUB) => {
       setBook(epub);
       setLoading(false);
     });
-  }, [document.src]);
+  }, [document?.src]);
 
   useEffect(() => {
     if (!book) return;
@@ -170,12 +177,22 @@ export const DocumentEpubRenderer = (props: {
 
   useEffect(() => {
     updateDocumentPosition();
-  }, [section]);
+
+    return () => {
+      paragraphRef.current = null;
+    };
+  }, [section, paragraphRef?.current]);
+
+  useEffect(() => {
+    if (!document) return;
+
+    setSection(document.lastReadPosition.section || 0);
+  }, [document]);
 
   if (!book) return <LoaderSpin />;
 
   return (
-    <div ref={ref} className="select-text relative">
+    <div className="select-text relative">
       <div className="flex items-center justify-between space-x-2 sticky top-0 z-10 bg-background py-2">
         <div className="flex items-center gap-2">
           <DropdownMenu>
@@ -264,13 +281,10 @@ export const DocumentEpubRenderer = (props: {
         <MarkdownWrapper
           className="mx-auto max-w-full"
           onLinkClick={handleLinkClick}
-          onParagraphVisible={(id) => {
-            paragraphRef.current = id;
-            updateDocumentPosition();
-          }}
+          onParagraphVisible={onParagraphVisible}
           autoTranslate={document.config.autoTranslate}
-          speechingParagraph={speechingParagraph}
-          onSpeech={(id) => onSpeech(id, { section })}
+          playingParagraph={playingParagraph}
+          onSpeech={(id) => setPlayingParagraph(id)}
           translatable={true}
         >
           {content}

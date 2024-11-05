@@ -8,3 +8,4 @@ export * from "./hotkeys-settings-provider";
 export * from "./media-shadow-provider";
 export * from "./theme-provider";
 export * from "./dict-provider";
+export * from "./document-provider";

@@ -1,0 +1,94 @@
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import {
+  AppSettingsProviderContext,
+  DbProviderContext,
+  MediaShadowProvider,
+} from "@renderer/context";
+import { toast } from "@renderer/components/ui";
+import { t } from "i18next";
+
+type DocumentProviderProps = {
+  ref: React.RefObject<HTMLDivElement>;
+  document: DocumentEType;
+  playingParagraph: string | null;
+  setPlayingParagraph: (paragraph: string | null) => void;
+  section: number;
+  setSection: (section: number) => void;
+};
+
+export const DocumentProviderContext = createContext<DocumentProviderProps>({
+  ref: null,
+  document: null,
+  playingParagraph: null,
+  setPlayingParagraph: () => {},
+  section: 0,
+  setSection: () => {},
+});
+
+export function DocumentProvider({
+  documentId,
+  children,
+}: {
+  documentId: string;
+  children: React.ReactNode;
+}) {
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { addDblistener, removeDbListener } = useContext(DbProviderContext);
+  const [document, setDocument] = useState<DocumentEType>(null);
+  const [section, setSection] = useState(0);
+  const [playingParagraph, setPlayingParagraph] = useState<string | null>(null);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  const fetchDocument = async () => {
+    if (!documentId) return;
+
+    EnjoyApp.documents
+      .findOne({ id: documentId })
+      .then((doc) => {
+        setDocument(doc);
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
+  const handleDocumentUpdate = (event: CustomEvent) => {
+    const { state, record } = event.detail;
+    if (state === "updated" && record.id === documentId) {
+      setDocument(record as DocumentEType);
+    }
+  };
+
+  useEffect(() => {
+    addDblistener(handleDocumentUpdate);
+
+    return () => {
+      removeDbListener(handleDocumentUpdate);
+    };
+  }, []);
+
+  useEffect(() => {
+    fetchDocument();
+  }, [documentId]);
+
+  return (
+    <DocumentProviderContext.Provider
+      value={{
+        document,
+        ref,
+        playingParagraph,
+        setPlayingParagraph,
+        section,
+        setSection,
+      }}
+    >
+      <MediaShadowProvider
+        layout="compact"
+        onCancel={() => setPlayingParagraph(null)}
+      >
+        <div ref={ref}>{children}</div>
+      </MediaShadowProvider>
+    </DocumentProviderContext.Provider>
+  );
+}

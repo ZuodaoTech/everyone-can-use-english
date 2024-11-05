@@ -1,4 +1,7 @@
-import { AppSettingsProviderContext } from "@renderer/context";
+import {
+  AppSettingsProviderContext,
+  DocumentProviderContext,
+} from "@renderer/context";
 import { useSpeech } from "@renderer/hooks";
 import { useContext, useEffect, useState } from "react";
 import { Button, toast } from "@renderer/components/ui";
@@ -10,19 +13,35 @@ import {
 import { t } from "i18next";
 import { LoaderIcon } from "lucide-react";
 
-export const DocumentPlayer = (props: {
-  document: DocumentEType;
-  section: number;
-  paragraph: number;
-  text: string;
-}) => {
-  const { document, section, paragraph, text } = props;
+export const DocumentPlayer = () => {
+  const { ref, document, section, playingParagraph } = useContext(
+    DocumentProviderContext
+  );
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const [paragraph, setParagraph] = useState<{
+    index: number;
+    text: string;
+  } | null>(null);
   const [speech, setSpeech] = useState<SpeechType | null>(null);
   const [speeching, setSpeeching] = useState(false);
   const [resourcing, setResourcing] = useState(false);
   const { tts } = useSpeech();
   const [audio, setAudio] = useState<AudioType | null>(null);
+
+  const findParagraph = () => {
+    if (!playingParagraph) return;
+
+    const element: HTMLElement | null = ref.current?.querySelector(
+      `#${playingParagraph}`
+    );
+    console.log("findParagraph", element);
+    if (!element) return;
+
+    setParagraph({
+      index: parseInt(element.dataset.index),
+      text: element.textContent.trim(),
+    });
+  };
 
   const startShadow = async () => {
     if (!speech) return;
@@ -37,7 +56,7 @@ export const DocumentPlayer = (props: {
       setResourcing(true);
       EnjoyApp.audios
         .create(speech.filePath, {
-          name: `[S${section}P${paragraph}]-${document.title}`,
+          name: `[S${section}P${paragraph.index}]-${document.title}`,
           originalText: speech.text,
         })
         .then((audio) => setAudio(audio))
@@ -47,13 +66,13 @@ export const DocumentPlayer = (props: {
   };
 
   const findOrCreateSpeech = async () => {
-    if (typeof section !== "number" || typeof paragraph !== "number") return;
+    if (typeof section !== "number" || !paragraph) return;
 
     const existingSpeech = await EnjoyApp.speeches.findOne({
       sourceId: document.id,
       sourceType: "Document",
       section,
-      paragraph,
+      paragraph: paragraph.index,
     });
 
     if (existingSpeech) {
@@ -71,8 +90,8 @@ export const DocumentPlayer = (props: {
       sourceId: document.id,
       sourceType: "Document",
       section,
-      paragraph,
-      text,
+      paragraph: paragraph.index,
+      text: paragraph.text,
       configuration: document.config.tts,
     })
       .then((res) => {
@@ -93,9 +112,19 @@ export const DocumentPlayer = (props: {
       setSpeech(null);
       setAudio(null);
     };
-  }, [document.id, section, paragraph]);
+  }, [document, section, paragraph]);
 
-  if (typeof section !== "number" || typeof paragraph !== "number") {
+  useEffect(() => {
+    if (!ref.current) return;
+
+    findParagraph();
+
+    return () => {
+      setParagraph(null);
+    };
+  }, [ref, playingParagraph]);
+
+  if (typeof section !== "number" || !paragraph) {
     return <LoaderSpin />;
   }
 

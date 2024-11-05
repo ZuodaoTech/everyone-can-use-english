@@ -46,7 +46,7 @@ const Paragraph = memo(
     children,
     onParagraphVisible,
     onSpeech,
-    speechingParagraph,
+    playingParagraph,
     autoTranslate,
     translatable,
     ...props
@@ -55,7 +55,7 @@ const Paragraph = memo(
     children: any;
     onParagraphVisible?: (id: string) => void;
     onSpeech?: (id: string) => void;
-    speechingParagraph?: number;
+    playingParagraph?: string;
     autoTranslate?: boolean;
     translatable?: boolean;
   }) => {
@@ -111,6 +111,8 @@ const Paragraph = memo(
       return entry.target.textContent?.trim();
     }, [entry?.target]);
 
+    const id = `paragraph-${index}`;
+
     useEffect(() => {
       if (!onParagraphVisible) return;
       if (entry?.isIntersecting) {
@@ -125,7 +127,7 @@ const Paragraph = memo(
       <>
         <p
           ref={ref}
-          id={`paragraph-${index}`}
+          id={id}
           className="paragraph"
           data-index={index}
           {...props}
@@ -134,16 +136,16 @@ const Paragraph = memo(
             {onSpeech && content && (
               <Button
                 onClick={() => {
-                  if (speechingParagraph === index) {
+                  if (playingParagraph === id) {
                     onSpeech(null);
                   } else {
-                    onSpeech(`paragraph-${index}`);
+                    onSpeech(id);
                   }
                 }}
                 variant="ghost"
                 size="icon"
                 className={`w-4 h-4 ${
-                  speechingParagraph === index ? "bg-yellow-500/30" : ""
+                  playingParagraph === id ? "bg-yellow-500/30" : ""
                 }`}
               >
                 <SpeechIcon className="w-3 h-3" />
@@ -165,9 +167,7 @@ const Paragraph = memo(
             )}
           </span>
           <span
-            className={`${
-              speechingParagraph === index ? "bg-yellow-500/30" : ""
-            }`}
+            className={`${playingParagraph === id ? "bg-yellow-500/30" : ""}`}
           >
             {children}
           </span>
@@ -197,7 +197,7 @@ export const MarkdownWrapper = memo(
     className,
     onLinkClick,
     onSpeech,
-    speechingParagraph,
+    playingParagraph,
     onParagraphVisible,
     translatable = false,
     autoTranslate,
@@ -207,7 +207,7 @@ export const MarkdownWrapper = memo(
     className?: string;
     onLinkClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
     onSpeech?: (id: string) => void;
-    speechingParagraph?: number;
+    playingParagraph?: string;
     onParagraphVisible?: (id: string) => void;
     translatable?: boolean;
     autoTranslate?: boolean;
@@ -216,6 +216,7 @@ export const MarkdownWrapper = memo(
     const handleLinkClick = useCallback(onLinkClick, [onLinkClick]);
 
     const components = useMemo(() => {
+      console.log("render components");
       let paragraphIndex = 0;
 
       return {
@@ -241,7 +242,7 @@ export const MarkdownWrapper = memo(
               index={paragraphIndex++}
               onParagraphVisible={onParagraphVisible}
               onSpeech={onSpeech}
-              speechingParagraph={speechingParagraph}
+              playingParagraph={playingParagraph}
               autoTranslate={autoTranslate}
               translatable={translatable}
               {...props}
@@ -255,8 +256,8 @@ export const MarkdownWrapper = memo(
       handleLinkClick,
       onParagraphVisible,
       onSpeech,
+      playingParagraph,
       autoTranslate,
-      translatable,
     ]);
 
     return (
