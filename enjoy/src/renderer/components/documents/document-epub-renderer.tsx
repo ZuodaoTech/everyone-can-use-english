@@ -152,9 +152,17 @@ export const DocumentEpubRenderer = () => {
     []
   );
 
+  const togglePlayingParagraph = (id: string) => {
+    if (playingParagraph === id) {
+      setPlayingParagraph(null);
+    } else {
+      setPlayingParagraph(id);
+    }
+  };
+
   const onSpeechMemo = useCallback(
     (id: string) => {
-      setPlayingParagraph(id);
+      togglePlayingParagraph(id);
     },
     [setPlayingParagraph]
   );

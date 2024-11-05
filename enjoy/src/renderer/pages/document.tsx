@@ -4,7 +4,6 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
   ScrollArea,
-  toast,
 } from "@renderer/components/ui";
 import {
   DocumentHtmlRenderer,
@@ -12,7 +11,7 @@ import {
   DocumentPlayer,
   LoaderSpin,
 } from "@renderer/components";
-import { useState, useContext, useEffect, useRef } from "react";
+import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DocumentProvider, DocumentProviderContext } from "@renderer/context";
 import { ChevronLeftIcon } from "lucide-react";
@@ -32,7 +31,6 @@ export default () => {
 const DocumentComponent = () => {
   const { document, playingParagraph } = useContext(DocumentProviderContext);
   const navigate = useNavigate();
-  const ref = useRef<HTMLDivElement>(null);
 
   if (!document) {
     return (
@@ -53,10 +51,7 @@ const DocumentComponent = () => {
 
       <ResizablePanelGroup direction="horizontal" className="p-4">
         <ResizablePanel id="document" order={0} className="">
-          <ScrollArea
-            ref={ref}
-            className="h-full px-4 pb-6 border rounded-lg shadow-lg"
-          >
+          <ScrollArea className="h-full px-4 pb-6 border rounded-lg shadow-lg">
             {document.metadata.extension === "html" && (
               <DocumentHtmlRenderer document={document} />
             )}

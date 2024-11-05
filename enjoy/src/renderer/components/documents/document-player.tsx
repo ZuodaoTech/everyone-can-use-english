@@ -36,7 +36,7 @@ export const DocumentPlayer = () => {
     );
     if (!element) return;
 
-    element.scrollIntoView({ behavior: "smooth" });
+    element.scrollIntoView({ behavior: "smooth", block: "center" });
     element.classList.add("playing-paragraph", "bg-yellow-100");
 
     setParagraph({

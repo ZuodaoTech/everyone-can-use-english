@@ -5,7 +5,6 @@ import {
   MediaShadowProvider,
 } from "@renderer/context";
 import { toast } from "@renderer/components/ui";
-import { t } from "i18next";
 
 type DocumentProviderProps = {
   ref: React.RefObject<HTMLDivElement>;
@@ -66,7 +65,7 @@ export function DocumentProvider({
     return () => {
       removeDbListener(handleDocumentUpdate);
     };
-  }, []);
+  }, [documentId]);
 
   useEffect(() => {
     fetchDocument();

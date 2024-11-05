@@ -10,7 +10,6 @@ import {
   useMemo,
   memo,
   useContext,
-  useRef,
 } from "react";
 import {
   LanguagesIcon,
@@ -202,7 +201,6 @@ export const MarkdownWrapper = memo(
     const handleLinkClick = useCallback(onLinkClick, [onLinkClick]);
 
     const components = useMemo(() => {
-      console.log("render components");
       let paragraphIndex = 0;
 
       return {
