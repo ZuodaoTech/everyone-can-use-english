@@ -46,7 +46,6 @@ const Paragraph = memo(
     children,
     onParagraphVisible,
     onSpeech,
-    playingParagraph,
     autoTranslate,
     translatable,
     ...props
@@ -55,7 +54,6 @@ const Paragraph = memo(
     children: any;
     onParagraphVisible?: (id: string) => void;
     onSpeech?: (id: string) => void;
-    playingParagraph?: string;
     autoTranslate?: boolean;
     translatable?: boolean;
   }) => {
@@ -136,17 +134,11 @@ const Paragraph = memo(
             {onSpeech && content && (
               <Button
                 onClick={() => {
-                  if (playingParagraph === id) {
-                    onSpeech(null);
-                  } else {
-                    onSpeech(id);
-                  }
+                  onSpeech(id);
                 }}
                 variant="ghost"
                 size="icon"
-                className={`w-4 h-4 ${
-                  playingParagraph === id ? "bg-yellow-500/30" : ""
-                }`}
+                className="w-4 h-4"
               >
                 <SpeechIcon className="w-3 h-3" />
               </Button>
@@ -166,11 +158,7 @@ const Paragraph = memo(
               </Button>
             )}
           </span>
-          <span
-            className={`${playingParagraph === id ? "bg-yellow-500/30" : ""}`}
-          >
-            {children}
-          </span>
+          <span>{children}</span>
         </p>
         {translation && (
           <p id={`translation-${index}`}>
@@ -197,7 +185,6 @@ export const MarkdownWrapper = memo(
     className,
     onLinkClick,
     onSpeech,
-    playingParagraph,
     onParagraphVisible,
     translatable = false,
     autoTranslate,
@@ -207,7 +194,6 @@ export const MarkdownWrapper = memo(
     className?: string;
     onLinkClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
     onSpeech?: (id: string) => void;
-    playingParagraph?: string;
     onParagraphVisible?: (id: string) => void;
     translatable?: boolean;
     autoTranslate?: boolean;
@@ -242,7 +228,6 @@ export const MarkdownWrapper = memo(
               index={paragraphIndex++}
               onParagraphVisible={onParagraphVisible}
               onSpeech={onSpeech}
-              playingParagraph={playingParagraph}
               autoTranslate={autoTranslate}
               translatable={translatable}
               {...props}
@@ -252,13 +237,7 @@ export const MarkdownWrapper = memo(
           );
         },
       };
-    }, [
-      handleLinkClick,
-      onParagraphVisible,
-      onSpeech,
-      playingParagraph,
-      autoTranslate,
-    ]);
+    }, [handleLinkClick, onParagraphVisible, onSpeech, autoTranslate]);
 
     return (
       <Markdown

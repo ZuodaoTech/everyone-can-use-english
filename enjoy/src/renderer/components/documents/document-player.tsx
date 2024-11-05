@@ -34,8 +34,10 @@ export const DocumentPlayer = () => {
     const element: HTMLElement | null = ref.current?.querySelector(
       `#${playingParagraph}`
     );
-    console.log("findParagraph", element);
     if (!element) return;
+
+    element.scrollIntoView({ behavior: "smooth" });
+    element.classList.add("playing-paragraph", "bg-yellow-100");
 
     setParagraph({
       index: parseInt(element.dataset.index),
@@ -121,6 +123,9 @@ export const DocumentPlayer = () => {
 
     return () => {
       setParagraph(null);
+      ref.current?.querySelectorAll(".playing-paragraph").forEach((el) => {
+        el.classList.remove("playing-paragraph", "bg-yellow-100");
+      });
     };
   }, [ref, playingParagraph]);
 

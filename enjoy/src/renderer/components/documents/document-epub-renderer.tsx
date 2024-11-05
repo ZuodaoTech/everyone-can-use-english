@@ -1,4 +1,11 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   DocumentConfigForm,
   LoaderSpin,
@@ -142,7 +149,22 @@ export const DocumentEpubRenderer = () => {
       handleSectionClick(new URL(e.currentTarget.href).pathname);
       e.currentTarget.blur();
     },
-    [handleSectionClick]
+    []
+  );
+
+  const onSpeechMemo = useCallback(
+    (id: string) => {
+      setPlayingParagraph(id);
+    },
+    [setPlayingParagraph]
+  );
+
+  // Memoize the document config values passed to MarkdownWrapper
+  const documentConfig = useMemo(
+    () => ({
+      autoTranslate: document.config.autoTranslate,
+    }),
+    [document.config.autoTranslate]
   );
 
   useEffect(() => {
@@ -282,9 +304,8 @@ export const DocumentEpubRenderer = () => {
           className="mx-auto max-w-full"
           onLinkClick={handleLinkClick}
           onParagraphVisible={onParagraphVisible}
-          autoTranslate={document.config.autoTranslate}
-          playingParagraph={playingParagraph}
-          onSpeech={(id) => setPlayingParagraph(id)}
+          autoTranslate={documentConfig.autoTranslate}
+          onSpeech={onSpeechMemo}
           translatable={true}
         >
           {content}
