@@ -1,11 +1,4 @@
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import {
   DocumentConfigForm,
   LoaderSpin,
@@ -40,14 +33,12 @@ import debounce from "lodash/debounce";
 import { t } from "i18next";
 
 export const DocumentEpubRenderer = () => {
-  const { ref, document, togglePlayingParagraph } = useContext(
-    DocumentProviderContext
-  );
+  const { ref, document, togglePlayingParagraph, section, setSection } =
+    useContext(DocumentProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const [book, setBook] = useState<typeof EPUB>();
   const [content, setContent] = useState<string>();
-  const [section, setSection] = useState<number>(0);
   const [title, setTitle] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [configOpen, setConfigOpen] = useState<boolean>(false);
@@ -191,12 +182,6 @@ export const DocumentEpubRenderer = () => {
       behavior: "smooth",
     });
   }, [content]);
-
-  useEffect(() => {
-    if (!document) return;
-
-    setSection(document.lastReadPosition.section || 0);
-  }, [document]);
 
   if (!book) return <LoaderSpin />;
 

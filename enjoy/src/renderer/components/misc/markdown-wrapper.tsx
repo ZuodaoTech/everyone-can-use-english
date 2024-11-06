@@ -135,6 +135,11 @@ const Paragraph = memo(
           {...props}
         >
           <span className="flex items-center gap-2 opacity-50 hover:opacity-100">
+            {content && (onSpeech || translatable) && (
+              <span className="text-xs text-muted-foreground">
+                #{index + 1}
+              </span>
+            )}
             {onSpeech && content && (
               <Button
                 onClick={() => {
@@ -160,11 +165,6 @@ const Paragraph = memo(
                   <LanguagesIcon className="w-3 h-3" />
                 )}
               </Button>
-            )}
-            {content && (onSpeech || translatable) && (
-              <span className="text-xs text-muted-foreground">
-                #{index + 1}
-              </span>
             )}
           </span>
           <span className="paragraph-content">{children}</span>

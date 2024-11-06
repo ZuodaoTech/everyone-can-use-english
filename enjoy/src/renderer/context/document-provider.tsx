@@ -71,6 +71,11 @@ export function DocumentProvider({
   };
 
   useEffect(() => {
+    if (!document) return;
+    setSection(document.lastReadPosition.section || 0);
+  }, [document]);
+
+  useEffect(() => {
     addDblistener(handleDocumentUpdate);
 
     return () => {
@@ -95,7 +100,7 @@ export function DocumentProvider({
     >
       <MediaShadowProvider
         layout="compact"
-        onCancel={() => setPlayingParagraph(null)}
+        onCancel={() => togglePlayingParagraph(null)}
       >
         <div ref={ref}>{children}</div>
       </MediaShadowProvider>

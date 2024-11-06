@@ -168,7 +168,7 @@ export const DocumentPlayer = () => {
       setSpeech(null);
       setAudio(null);
     };
-  }, [document, section, paragraph]);
+  }, [paragraph]);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -183,6 +183,13 @@ export const DocumentPlayer = () => {
       });
     };
   }, [ref, playingParagraph]);
+
+  // Close the player when the section changes
+  useEffect(() => {
+    return () => {
+      togglePlayingParagraph(null);
+    };
+  }, [section]);
 
   if (typeof section !== "number" || !paragraph) {
     return <LoaderSpin />;
@@ -216,8 +223,15 @@ export const DocumentPlayer = () => {
 
   if (!speech) {
     return (
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center space-x-4 h-full">
         <Button onClick={findOrCreateSpeech}>{t("textToSpeech")}</Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => togglePlayingParagraph(null)}
+        >
+          <XIcon className="w-4 h-4" />
+        </Button>
       </div>
     );
   }
