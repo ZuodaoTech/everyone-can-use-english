@@ -47,6 +47,7 @@ const Paragraph = memo(
     onSpeech,
     autoTranslate,
     translatable,
+    section,
     ...props
   }: {
     index: number;
@@ -55,6 +56,7 @@ const Paragraph = memo(
     onSpeech?: (id: string) => void;
     autoTranslate?: boolean;
     translatable?: boolean;
+    section?: number;
   }) => {
     const { EnjoyApp } = useContext(AppSettingsProviderContext);
     const { translate } = useAiCommand();
@@ -127,6 +129,7 @@ const Paragraph = memo(
           id={id}
           className="paragraph"
           data-index={index}
+          data-section={section}
           {...props}
         >
           <span className="flex items-center gap-2 opacity-50 hover:opacity-100">
@@ -187,6 +190,7 @@ export const MarkdownWrapper = memo(
     onParagraphVisible,
     translatable = false,
     autoTranslate,
+    section,
     ...props
   }: {
     children: string;
@@ -196,6 +200,7 @@ export const MarkdownWrapper = memo(
     onParagraphVisible?: (id: string) => void;
     translatable?: boolean;
     autoTranslate?: boolean;
+    section?: number;
   }) => {
     // Memoize component callbacks
     const handleLinkClick = useCallback(onLinkClick, [onLinkClick]);
@@ -228,6 +233,7 @@ export const MarkdownWrapper = memo(
               onSpeech={onSpeech}
               autoTranslate={autoTranslate}
               translatable={translatable}
+              section={section}
               {...props}
             >
               {children}
@@ -235,7 +241,7 @@ export const MarkdownWrapper = memo(
           );
         },
       };
-    }, [handleLinkClick, onParagraphVisible, onSpeech, autoTranslate]);
+    }, [handleLinkClick, onParagraphVisible, onSpeech, autoTranslate, section]);
 
     return (
       <Markdown

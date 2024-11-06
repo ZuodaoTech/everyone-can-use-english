@@ -51,33 +51,31 @@ export const DocumentEpubRenderer = () => {
   const [title, setTitle] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [configOpen, setConfigOpen] = useState<boolean>(false);
-  const paragraphRef = useRef<string>("");
 
   const onParagraphVisible = useCallback((id: string) => {
-    paragraphRef.current = id;
+    updateDocumentPosition(id);
   }, []);
 
-  const updateDocumentPosition = useCallback(
-    debounce(() => {
-      if (!paragraphRef.current) return;
+  const updateDocumentPosition = debounce((id: string) => {
+    if (!id) return;
 
-      const paragraph: HTMLElement | null = ref.current?.querySelector(
-        `#${paragraphRef.current}`
-      );
-      if (!paragraph) return;
+    console.log("updateDocumentPosition", id);
 
-      const index = paragraph.dataset.index || "0";
+    const paragraph: HTMLElement | null = ref.current?.querySelector(`#${id}`);
+    if (!paragraph) return;
 
-      EnjoyApp.documents.update(document.id, {
-        lastReadPosition: {
-          section,
-          paragraph: parseInt(index),
-        },
-        lastReadAt: new Date(),
-      });
-    }, 1000),
-    [document, ref]
-  );
+    const index = paragraph.dataset.index || "0";
+    const sectionIndex = paragraph.dataset.section || "0";
+
+    console.log("updateDocumentPosition", sectionIndex, index);
+    EnjoyApp.documents.update(document.id, {
+      lastReadPosition: {
+        section: parseInt(sectionIndex),
+        paragraph: parseInt(index),
+      },
+      lastReadAt: new Date(),
+    });
+  }, 1000);
 
   const refreshBookMetadata = () => {
     if (!book) return;
@@ -198,14 +196,6 @@ export const DocumentEpubRenderer = () => {
   }, [content]);
 
   useEffect(() => {
-    updateDocumentPosition();
-
-    return () => {
-      paragraphRef.current = null;
-    };
-  }, [section, paragraphRef?.current]);
-
-  useEffect(() => {
     if (!document) return;
 
     setSection(document.lastReadPosition.section || 0);
@@ -307,6 +297,7 @@ export const DocumentEpubRenderer = () => {
           autoTranslate={documentConfig.autoTranslate}
           onSpeech={onSpeechMemo}
           translatable={true}
+          section={section}
         >
           {content}
         </MarkdownWrapper>
