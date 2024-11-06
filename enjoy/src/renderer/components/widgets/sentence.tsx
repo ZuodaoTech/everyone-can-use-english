@@ -25,3 +25,5 @@ export const Sentence = memo(
     );
   }
 );
+
+Sentence.displayName = "Sentence";

@@ -62,3 +62,5 @@ export const Vocabulary = memo(
     );
   }
 );
+
+Vocabulary.displayName = "Vocabulary";
