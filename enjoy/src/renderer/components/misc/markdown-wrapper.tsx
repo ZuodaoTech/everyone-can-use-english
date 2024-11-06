@@ -14,8 +14,8 @@ import {
 import {
   LanguagesIcon,
   LoaderIcon,
+  PlayIcon,
   RefreshCwIcon,
-  SpeechIcon,
 } from "lucide-react";
 import { Button, toast } from "@renderer/components/ui";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
@@ -80,7 +80,9 @@ const Paragraph = memo(
     const handleTranslate = async (force = false) => {
       if (translating) return;
 
-      const content = entry.target.textContent?.trim();
+      const content = entry.target
+        ?.querySelector(".paragraph-content")
+        ?.textContent?.trim();
       if (!content) return;
 
       const md5Hash = md5(content);
@@ -107,7 +109,7 @@ const Paragraph = memo(
 
     const content = useMemo(() => {
       if (!entry?.target) return "";
-      return entry.target.textContent?.trim();
+      return entry.target?.textContent?.trim();
     }, [entry?.target]);
 
     const id = `paragraph-${index}`;
@@ -142,7 +144,7 @@ const Paragraph = memo(
                 size="icon"
                 className="w-4 h-4"
               >
-                <SpeechIcon className="w-3 h-3" />
+                <PlayIcon className="w-3 h-3" />
               </Button>
             )}
             {translatable && content && (
@@ -159,8 +161,13 @@ const Paragraph = memo(
                 )}
               </Button>
             )}
+            {content && (onSpeech || translatable) && (
+              <span className="text-xs text-muted-foreground">
+                #{index + 1}
+              </span>
+            )}
           </span>
-          <span>{children}</span>
+          <span className="paragraph-content">{children}</span>
         </p>
         {translation && (
           <p id={`translation-${index}`}>

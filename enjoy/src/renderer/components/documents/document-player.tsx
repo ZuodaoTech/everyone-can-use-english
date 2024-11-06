@@ -18,6 +18,12 @@ export const DocumentPlayer = () => {
     useContext(DocumentProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [paragraph, setParagraph] = useState<{
+    id: string;
+    index: number;
+    text: string;
+  } | null>(null);
+  const [nextParagraph, setNextParagraph] = useState<{
+    id: string;
     index: number;
     text: string;
   } | null>(null);
@@ -39,8 +45,46 @@ export const DocumentPlayer = () => {
     element.classList.add("playing-paragraph", "bg-yellow-100");
 
     setParagraph({
+      id: element.id,
       index: parseInt(element.dataset.index),
-      text: element.textContent.trim(),
+      text: element.querySelector(".paragraph-content")?.textContent?.trim(),
+    });
+  };
+
+  const findNextParagraph = async (index: number) => {
+    if (!document.config.autoNextSpeech) return;
+
+    const next: HTMLElement | null = ref.current?.querySelector(
+      `[data-index="${index}"]`
+    );
+    if (!next) return;
+
+    const text = next.querySelector(".paragraph-content")?.textContent?.trim();
+    if (!text) {
+      return findNextParagraph(index + 1);
+    }
+
+    const existingSpeech = await EnjoyApp.speeches.findOne({
+      sourceId: document.id,
+      sourceType: "Document",
+      section,
+      paragraph: index,
+    });
+
+    if (!existingSpeech) {
+      tts({
+        sourceId: document.id,
+        sourceType: "Document",
+        section,
+        paragraph: index,
+        text,
+        configuration: document.config.tts,
+      });
+    }
+    setNextParagraph({
+      id: next.id,
+      index,
+      text,
     });
   };
 
@@ -79,7 +123,7 @@ export const DocumentPlayer = () => {
     if (existingSpeech) {
       setSpeech(existingSpeech);
     } else {
-      createSpeech();
+      createSpeech(paragraph);
     }
   };
 
@@ -91,16 +135,17 @@ export const DocumentPlayer = () => {
     findOrCreateSpeech();
   };
 
-  const createSpeech = async () => {
+  const createSpeech = async (paragraph: { index: number; text: string }) => {
     if (speeching) return;
+    const { index, text } = paragraph;
 
     setSpeeching(true);
     tts({
       sourceId: document.id,
       sourceType: "Document",
       section,
-      paragraph: paragraph.index,
-      text: paragraph.text,
+      paragraph: index,
+      text,
       configuration: document.config.tts,
     })
       .then((res) => {
@@ -115,7 +160,9 @@ export const DocumentPlayer = () => {
   };
 
   useEffect(() => {
+    if (typeof section !== "number" || !paragraph) return;
     findOrCreateSpeech();
+    findNextParagraph(paragraph.index + 1);
 
     return () => {
       setSpeech(null);
@@ -170,7 +217,7 @@ export const DocumentPlayer = () => {
   if (!speech) {
     return (
       <div className="flex justify-center items-center h-full">
-        <Button onClick={createSpeech}>{t("textToSpeech")}</Button>
+        <Button onClick={findOrCreateSpeech}>{t("textToSpeech")}</Button>
       </div>
     );
   }
@@ -182,6 +229,12 @@ export const DocumentPlayer = () => {
           id={speech.id}
           src={speech.src}
           autoplay={true}
+          onEnded={() => {
+            console.log("ended, nextParagraph", nextParagraph);
+            if (nextParagraph) {
+              togglePlayingParagraph(nextParagraph.id);
+            }
+          }}
           className="w-full h-full"
         />
         <div className="flex justify-center space-x-4">
