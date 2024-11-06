@@ -59,15 +59,12 @@ export const DocumentEpubRenderer = () => {
   const updateDocumentPosition = debounce((id: string) => {
     if (!id) return;
 
-    console.log("updateDocumentPosition", id);
-
     const paragraph: HTMLElement | null = ref.current?.querySelector(`#${id}`);
     if (!paragraph) return;
 
     const index = paragraph.dataset.index || "0";
     const sectionIndex = paragraph.dataset.section || "0";
 
-    console.log("updateDocumentPosition", sectionIndex, index);
     EnjoyApp.documents.update(document.id, {
       lastReadPosition: {
         section: parseInt(sectionIndex),
