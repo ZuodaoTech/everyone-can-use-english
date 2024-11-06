@@ -64,8 +64,8 @@ export function DocumentProvider({
   };
 
   const handleDocumentUpdate = (event: CustomEvent) => {
-    const { state, record } = event.detail;
-    if (state === "updated" && record.id === documentId) {
+    const { action, record } = event.detail;
+    if (action === "update" && record.id === documentId) {
       setDocument(record as DocumentEType);
     }
   };
