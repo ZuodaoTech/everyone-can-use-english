@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   AppSettingsProviderContext,
   DbProviderContext,
@@ -10,7 +17,7 @@ type DocumentProviderProps = {
   ref: React.RefObject<HTMLDivElement>;
   document: DocumentEType;
   playingParagraph: string | null;
-  setPlayingParagraph: (paragraph: string | null) => void;
+  togglePlayingParagraph: (paragraph: string | null) => void;
   section: number;
   setSection: (section: number) => void;
 };
@@ -19,7 +26,7 @@ export const DocumentProviderContext = createContext<DocumentProviderProps>({
   ref: null,
   document: null,
   playingParagraph: null,
-  setPlayingParagraph: () => {},
+  togglePlayingParagraph: () => {},
   section: 0,
   setSection: () => {},
 });
@@ -38,6 +45,10 @@ export function DocumentProvider({
   const [playingParagraph, setPlayingParagraph] = useState<string | null>(null);
 
   const ref = useRef<HTMLDivElement>(null);
+
+  const togglePlayingParagraph = useCallback((paragraph: string | null) => {
+    setPlayingParagraph((prev) => (prev === paragraph ? null : paragraph));
+  }, []);
 
   const fetchDocument = async () => {
     if (!documentId) return;
@@ -77,7 +88,7 @@ export function DocumentProvider({
         document,
         ref,
         playingParagraph,
-        setPlayingParagraph,
+        togglePlayingParagraph,
         section,
         setSection,
       }}

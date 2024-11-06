@@ -40,7 +40,7 @@ import debounce from "lodash/debounce";
 import { t } from "i18next";
 
 export const DocumentEpubRenderer = () => {
-  const { ref, document, playingParagraph, setPlayingParagraph } = useContext(
+  const { ref, document, togglePlayingParagraph } = useContext(
     DocumentProviderContext
   );
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -152,19 +152,11 @@ export const DocumentEpubRenderer = () => {
     []
   );
 
-  const togglePlayingParagraph = (id: string) => {
-    if (playingParagraph === id) {
-      setPlayingParagraph(null);
-    } else {
-      setPlayingParagraph(id);
-    }
-  };
-
   const onSpeechMemo = useCallback(
     (id: string) => {
       togglePlayingParagraph(id);
     },
-    [setPlayingParagraph]
+    [togglePlayingParagraph]
   );
 
   // Memoize the document config values passed to MarkdownWrapper

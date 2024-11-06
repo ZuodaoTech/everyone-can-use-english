@@ -457,6 +457,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     ) => {
       return ipcRenderer.invoke("speeches-create", params, blob);
     },
+    delete: (id: string) => {
+      return ipcRenderer.invoke("speeches-delete", id);
+    },
   },
   audiowaveform: {
     generate: (

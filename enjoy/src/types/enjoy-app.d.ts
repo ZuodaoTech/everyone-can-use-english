@@ -273,6 +273,7 @@ type EnjoyAppType = {
         arrayBuffer: ArrayBuffer;
       }
     ) => Promise<SpeechType>;
+    delete: (id: string) => Promise<void>;
   };
   echogarden: {
     recognize: (

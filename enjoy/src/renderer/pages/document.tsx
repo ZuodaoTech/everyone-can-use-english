@@ -15,10 +15,8 @@ import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DocumentProvider, DocumentProviderContext } from "@renderer/context";
 import { ChevronLeftIcon } from "lucide-react";
-import { t } from "i18next";
 
 export default () => {
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
   return (

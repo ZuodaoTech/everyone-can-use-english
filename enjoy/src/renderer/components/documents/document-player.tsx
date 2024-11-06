@@ -11,12 +11,11 @@ import {
   WavesurferPlayer,
 } from "@renderer/components";
 import { t } from "i18next";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, RefreshCcwIcon, XIcon } from "lucide-react";
 
 export const DocumentPlayer = () => {
-  const { ref, document, section, playingParagraph } = useContext(
-    DocumentProviderContext
-  );
+  const { ref, document, section, playingParagraph, togglePlayingParagraph } =
+    useContext(DocumentProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const [paragraph, setParagraph] = useState<{
     index: number;
@@ -84,6 +83,14 @@ export const DocumentPlayer = () => {
     }
   };
 
+  const refreshSpeech = async () => {
+    if (speech) {
+      await EnjoyApp.speeches.delete(speech.id);
+      setSpeech(null);
+    }
+    findOrCreateSpeech();
+  };
+
   const createSpeech = async () => {
     if (speeching) return;
 
@@ -118,6 +125,7 @@ export const DocumentPlayer = () => {
 
   useEffect(() => {
     if (!ref.current) return;
+    if (!playingParagraph) return;
 
     findParagraph();
 
@@ -176,8 +184,18 @@ export const DocumentPlayer = () => {
           autoplay={true}
           className="w-full h-full"
         />
-        <div className="flex justify-center">
+        <div className="flex justify-center space-x-4">
+          <Button variant="outline" size="icon" onClick={refreshSpeech}>
+            <RefreshCcwIcon className="w-4 h-4" />
+          </Button>
           <Button onClick={startShadow}>{t("shadowingExercise")}</Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => togglePlayingParagraph(null)}
+          >
+            <XIcon className="w-4 h-4" />
+          </Button>
         </div>
       </div>
     );
