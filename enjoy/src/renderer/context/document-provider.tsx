@@ -76,15 +76,13 @@ export function DocumentProvider({
   }, [document]);
 
   useEffect(() => {
+    fetchDocument();
     addDblistener(handleDocumentUpdate);
 
     return () => {
       removeDbListener(handleDocumentUpdate);
+      setDocument(null);
     };
-  }, [documentId]);
-
-  useEffect(() => {
-    fetchDocument();
   }, [documentId]);
 
   return (

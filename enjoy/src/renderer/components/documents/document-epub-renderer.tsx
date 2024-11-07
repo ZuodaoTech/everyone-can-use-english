@@ -85,11 +85,16 @@ export const DocumentEpubRenderer = () => {
       setTitle(tocItem?.label || sectionDoc.title);
 
       for (const img of sectionDoc.body.querySelectorAll("img")) {
-        const image = book.resources.manifest.find(
-          (resource: any) =>
-            resource.id === img.id ||
-            resource.id === new URL(img.src || "").pathname.split("/").pop()
-        );
+        let image: any;
+        if (img.src) {
+          image = book.resources.manifest.find((resource: any) =>
+            resource.href.endsWith(new URL(img.src).pathname)
+          );
+        } else if (img.id) {
+          image = book.resources.manifest.find(
+            (resource: any) => resource.id === img.id
+          );
+        }
         if (!image) continue;
 
         const blob = new Blob([await book.loadBlob(image.href)], {
