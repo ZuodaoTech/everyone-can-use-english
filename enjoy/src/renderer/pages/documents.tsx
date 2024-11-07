@@ -56,7 +56,7 @@ export default () => {
       {loading ? (
         <LoaderSpin />
       ) : (
-        <div className="grid grid-cols-5 gap-4">
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {documents.map((document) => (
             <DocumentCard key={document.id} document={document} />
           ))}

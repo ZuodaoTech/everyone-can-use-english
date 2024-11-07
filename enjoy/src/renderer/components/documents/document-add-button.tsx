@@ -58,6 +58,7 @@ export const DocumentAddButton = () => {
             voice: "alloy",
           },
         },
+        source: uri,
       })
       .then((doc) => {
         navigate(`/documents/${doc.id}`);

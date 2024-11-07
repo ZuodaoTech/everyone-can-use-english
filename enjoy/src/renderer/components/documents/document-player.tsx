@@ -11,7 +11,12 @@ import {
   WavesurferPlayer,
 } from "@renderer/components";
 import { t } from "i18next";
-import { LoaderIcon, RefreshCcwIcon, XIcon } from "lucide-react";
+import {
+  ChevronLeftIcon,
+  LoaderIcon,
+  RefreshCcwIcon,
+  XIcon,
+} from "lucide-react";
 
 export const DocumentPlayer = () => {
   const { ref, document, section, playingParagraph, togglePlayingParagraph } =
@@ -244,7 +249,6 @@ export const DocumentPlayer = () => {
           src={speech.src}
           autoplay={true}
           onEnded={() => {
-            console.log("ended, nextParagraph", nextParagraph);
             if (nextParagraph) {
               togglePlayingParagraph(nextParagraph.id);
             }
@@ -268,5 +272,20 @@ export const DocumentPlayer = () => {
     );
   }
 
-  return <AudioPlayer id={audio.id} md5={audio.md5} />;
+  return (
+    <div className="flex flex-col h-full">
+      <div className="flex space-x-1 items-center mb-1">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-5 w-5"
+          onClick={() => togglePlayingParagraph(null)}
+        >
+          <XIcon className="w-4 h-4" />
+        </Button>
+        <span className="text-sm line-clamp-1">{audio.name}</span>
+      </div>
+      <AudioPlayer id={audio.id} md5={audio.md5} />
+    </div>
+  );
 };

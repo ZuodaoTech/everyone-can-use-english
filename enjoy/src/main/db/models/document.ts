@@ -215,6 +215,7 @@ export class Document extends Model<Document> {
     params: {
       title?: string;
       config?: Record<string, any>;
+      source?: string;
     }
   ): Promise<Document> {
     // Check if file exists
@@ -268,6 +269,7 @@ export class Document extends Model<Document> {
       modified: stat.mtime,
       mimeType,
       extension,
+      source: params.source,
     };
 
     // generate ID

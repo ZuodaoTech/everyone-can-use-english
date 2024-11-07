@@ -79,6 +79,10 @@ export const DocumentCard = (props: {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+
+          <div className="absolute right-1 bottom-1 z-10 bg-black/50 text-xs text-white px-1 rounded-sm">
+            {document.metadata?.extension}
+          </div>
         </div>
       </Link>
       <AlertDialog open={deleting} onOpenChange={setDeleting}>

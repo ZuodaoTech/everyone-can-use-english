@@ -60,9 +60,10 @@ class DocumentsHandler {
       uri: string;
       title?: string;
       config?: Record<string, any>;
+      source?: string;
     }
   ) {
-    let { uri, title, config } = params;
+    let { uri, title, config, source } = params;
     if (uri.startsWith("http")) {
       uri = await downloader.download(uri, {
         webContents: event.sender,
@@ -74,6 +75,7 @@ class DocumentsHandler {
       const document = await Document.buildFromLocalFile(uri, {
         title,
         config,
+        source,
       });
 
       return document.toJSON();

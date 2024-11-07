@@ -40,11 +40,11 @@ const DocumentComponent = () => {
 
   return (
     <div className="h-screen flex flex-col relative">
-      <div className="flex space-x-1 items-center h-12 px-4">
+      <div className="flex space-x-1 items-center px-4">
         <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
           <ChevronLeftIcon className="w-5 h-5" />
         </Button>
-        <span className="text-sm">{document.title}</span>
+        <span className="text-sm line-clamp-1">{document.title}</span>
       </div>
 
       <ResizablePanelGroup direction="horizontal" className="p-4">

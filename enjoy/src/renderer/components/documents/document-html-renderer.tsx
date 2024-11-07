@@ -62,11 +62,22 @@ export const DocumentHtmlRenderer = () => {
         <div className="flex items-center gap-2">
           <DocumentConfigButton document={document} />
         </div>
-        <div className="text-xs text-muted-foreground truncate">{title}</div>
+        <div className="text-xs text-muted-foreground max-w-full truncate">
+          {title}
+        </div>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="w-6 h-6">
-            <LinkIcon className="w-5 h-5" />
-          </Button>
+          {document.metadata?.source && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="w-6 h-6"
+              onClick={() => {
+                EnjoyApp.shell.openExternal(document.metadata.source);
+              }}
+            >
+              <LinkIcon className="w-4 h-4" />
+            </Button>
+          )}
         </div>
       </div>
       <MarkdownWrapper
