@@ -86,7 +86,9 @@ export const DocumentEpubRenderer = () => {
 
       for (const img of sectionDoc.body.querySelectorAll("img")) {
         const image = book.resources.manifest.find(
-          (resource: any) => resource.id === img.id
+          (resource: any) =>
+            resource.id === img.id ||
+            resource.id === new URL(img.src || "").pathname.split("/").pop()
         );
         if (!image) continue;
 
@@ -122,12 +124,15 @@ export const DocumentEpubRenderer = () => {
     setSection(section + 1);
   };
 
-  const handleSectionClick = (id: string) => {
-    const sec = book.sections.findIndex((sec: any) => sec.id.endsWith(id));
-    if (sec === -1) return;
+  const handleSectionClick = useCallback(
+    (id: string) => {
+      const sec = book.sections.findIndex((sec: any) => sec.id.endsWith(id));
+      if (sec === -1) return;
 
-    setSection(sec);
-  };
+      setSection(sec);
+    },
+    [book]
+  );
 
   const handleLinkClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -135,7 +140,7 @@ export const DocumentEpubRenderer = () => {
       handleSectionClick(new URL(e.currentTarget.href).pathname);
       e.currentTarget.blur();
     },
-    []
+    [handleSectionClick]
   );
 
   const onSpeechMemo = useCallback(
