@@ -20,7 +20,7 @@ import fs from "fs-extra";
 import { t } from "i18next";
 import path from "path";
 import { DocumentFormats } from "@/constants";
-import { hashFile } from "@/main/utils";
+import { enjoyUrlToPath, hashFile } from "@/main/utils";
 import { v5 as uuidv5 } from "uuid";
 import { fileTypeFromFile } from "file-type";
 import mime from "mime-types";
@@ -218,6 +218,9 @@ export class Document extends Model<Document> {
     }
   ): Promise<Document> {
     // Check if file exists
+    if (filePath.startsWith("enjoy://")) {
+      filePath = enjoyUrlToPath(filePath);
+    }
     try {
       fs.accessSync(filePath, fs.constants.R_OK);
     } catch (error) {

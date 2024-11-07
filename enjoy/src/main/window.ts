@@ -257,7 +257,32 @@ main.init = async () => {
     view.setVisible(false);
     mainWindow.contentView.addChildView(view);
 
+    // Add timeout handler
+    const timeout = setTimeout(() => {
+      logger.debug("view-scrape timeout", url);
+      event.sender.send("view-on-state", {
+        state: "did-fail-load",
+        error: "Request timed out",
+        url: url,
+      });
+      (view.webContents as any)?.destroy();
+      mainWindow.contentView.removeChildView(view);
+    }, 30000); // 30 second timeout
+
+    view.webContents.on("did-start-loading", () => {
+      logger.debug("view-scrape did-start-loading", url);
+    });
+
+    view.webContents.on("did-stop-loading", () => {
+      logger.debug("view-scrape did-stop-loading", url);
+    });
+
+    view.webContents.on("dom-ready", () => {
+      logger.debug("view-scrape dom-ready", url);
+    });
+
     view.webContents.on("did-navigate", (_event, url) => {
+      clearTimeout(timeout);
       event.sender.send("view-on-state", {
         state: "did-navigate",
         url,
@@ -266,6 +291,7 @@ main.init = async () => {
     view.webContents.on(
       "did-fail-load",
       (_event, _errorCode, errrorDescription, validatedURL) => {
+        clearTimeout(timeout);
         event.sender.send("view-on-state", {
           state: "did-fail-load",
           error: errrorDescription,
@@ -276,6 +302,8 @@ main.init = async () => {
       }
     );
     view.webContents.on("did-finish-load", () => {
+      clearTimeout(timeout);
+      logger.debug("view-scrape did-finish-load", url);
       view.webContents
         .executeJavaScript(`document.documentElement.innerHTML`)
         .then((html) => {
@@ -288,7 +316,16 @@ main.init = async () => {
         });
     });
 
-    view.webContents.loadURL(url);
+    view.webContents.loadURL(url).catch((err) => {
+      logger.error("view-scrape loadURL error", err);
+      (view.webContents as any).destroy();
+      mainWindow.contentView.removeChildView(view);
+      event.sender.send("view-on-state", {
+        state: "did-fail-load",
+        error: err.message,
+        url: url,
+      });
+    });
   });
 
   // App options

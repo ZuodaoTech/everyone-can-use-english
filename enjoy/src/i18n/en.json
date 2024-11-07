@@ -901,5 +901,6 @@
   "notFound": "Not found",
   "saved": "Saved",
   "autoTranslate": "Auto translate",
-  "autoNextSpeech": "Auto speech"
+  "autoNextSpeech": "Auto speech",
+  "failedToLoadLink": "Failed to load link"
 }

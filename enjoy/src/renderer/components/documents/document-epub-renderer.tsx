@@ -1,6 +1,6 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
-  DocumentConfigForm,
+  DocumentConfigButton,
   LoaderSpin,
   MarkdownWrapper,
 } from "@renderer/components";
@@ -15,22 +15,12 @@ import {
   DropdownMenuItem,
   Button,
   toast,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
 } from "@renderer/components/ui";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MenuIcon,
-  SettingsIcon,
-} from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, MenuIcon } from "lucide-react";
 import {
   AppSettingsProviderContext,
   DocumentProviderContext,
 } from "@renderer/context";
-import debounce from "lodash/debounce";
-import { t } from "i18next";
 
 export const DocumentEpubRenderer = () => {
   const { ref, document, onSpeech, section, setSection, onParagraphVisible } =
@@ -41,7 +31,6 @@ export const DocumentEpubRenderer = () => {
   const [content, setContent] = useState<string>();
   const [title, setTitle] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
-  const [configOpen, setConfigOpen] = useState<boolean>(false);
 
   const refreshBookMetadata = () => {
     if (!book) return;
@@ -195,31 +184,7 @@ export const DocumentEpubRenderer = () => {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Popover open={configOpen} onOpenChange={setConfigOpen}>
-            <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className="w-6 h-6">
-                <SettingsIcon className="w-5 h-5" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent side="bottom" align="start">
-              <DocumentConfigForm
-                config={document.config}
-                onSubmit={(data: any) => {
-                  return EnjoyApp.documents
-                    .update(document.id, {
-                      ...data,
-                    })
-                    .then(() => {
-                      toast.success(t("saved"));
-                      setConfigOpen(false);
-                    })
-                    .catch((err) => {
-                      toast.error(err.message);
-                    });
-                }}
-              />
-            </PopoverContent>
-          </Popover>
+          <DocumentConfigButton document={document} />
         </div>
         <div className="text-xs text-muted-foreground truncate">{title}</div>
         <div className="flex items-center gap-2">

@@ -1,13 +1,13 @@
 import { Readability } from "@mozilla/readability";
 import { useContext, useEffect, useState } from "react";
-import { MarkdownWrapper } from "@renderer/components";
+import { DocumentConfigButton, MarkdownWrapper } from "@renderer/components";
 import Turndown from "turndown";
 import {
   AppSettingsProviderContext,
   DocumentProviderContext,
 } from "@/renderer/context";
 import { Button } from "../ui";
-import { ChevronLeftIcon, LinkIcon } from "lucide-react";
+import { LinkIcon } from "lucide-react";
 
 export const DocumentHtmlRenderer = () => {
   const { ref, document, onSpeech, onParagraphVisible } = useContext(
@@ -21,7 +21,7 @@ export const DocumentHtmlRenderer = () => {
     const res = await fetch(document.src);
     const text = await res.text();
     const doc = new DOMParser().parseFromString(text, "text/html");
-    setTitle(doc.title);
+    setTitle(doc.title || document.title);
     const readability = new Readability(doc);
     const article = readability.parse();
     const markdownContent = new Turndown().turndown(article.content);
@@ -60,9 +60,7 @@ export const DocumentHtmlRenderer = () => {
     <div className="select-text relative">
       <div className="flex items-center justify-between space-x-2 sticky top-0 z-10 bg-background py-2">
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="w-6 h-6">
-            <ChevronLeftIcon className="w-5 h-5" />
-          </Button>
+          <DocumentConfigButton document={document} />
         </div>
         <div className="text-xs text-muted-foreground truncate">{title}</div>
         <div className="flex items-center gap-2">

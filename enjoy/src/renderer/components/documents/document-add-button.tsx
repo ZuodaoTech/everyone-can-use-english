@@ -12,10 +12,12 @@ import {
 } from "@renderer/components/ui";
 import { PlusCircleIcon, LoaderIcon } from "lucide-react";
 import { t } from "i18next";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { DocumentFormats } from "@/constants";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { useNavigate } from "react-router-dom";
+import { Readability } from "@mozilla/readability";
+import { Buffer } from "buffer";
 
 export const DocumentAddButton = () => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -36,10 +38,17 @@ export const DocumentAddButton = () => {
     if (!uri) return;
 
     setSubmitting(true);
+    if (uri.startsWith("http")) {
+      EnjoyApp.view.scrape(uri);
+    } else {
+      createFromLocalFile(uri);
+    }
+  };
 
+  const createFromLocalFile = async (path: string) => {
     EnjoyApp.documents
       .create({
-        uri,
+        uri: path,
         config: {
           autoTranslate: false,
           autoNextSpeech: true,
@@ -61,6 +70,38 @@ export const DocumentAddButton = () => {
         setOpen(false);
       });
   };
+
+  const onViewState = async (event: {
+    state: string;
+    error?: string;
+    html?: string;
+  }) => {
+    const { state, html, error } = event;
+    console.log(event);
+    if (state === "did-finish-load") {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      const reader = new Readability(doc);
+      const article = reader.parse();
+
+      const file = await EnjoyApp.cacheObjects.writeFile(
+        `${doc.title}.html`,
+        Buffer.from(article.content)
+      );
+      createFromLocalFile(file);
+    } else if (state === "did-fail-load") {
+      setSubmitting(false);
+      toast.error(error || t("failedToLoadLink"));
+    }
+  };
+
+  useEffect(() => {
+    EnjoyApp.view.onViewState((_event, state) => onViewState(state));
+
+    return () => {
+      EnjoyApp.view.removeViewStateListeners();
+      EnjoyApp.view.remove();
+    };
+  }, []);
 
   return (
     <Dialog open={open} onOpenChange={handleOpen}>
@@ -113,7 +154,6 @@ export const DocumentAddButton = () => {
         <DialogFooter>
           <Button
             variant="ghost"
-            disabled={submitting}
             onClick={() => {
               setOpen(false);
             }}
