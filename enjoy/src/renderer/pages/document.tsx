@@ -48,8 +48,12 @@ const DocumentComponent = () => {
       </div>
 
       <ResizablePanelGroup direction="horizontal" className="p-4">
-        <ResizablePanel id="document" order={0} className="">
-          <ScrollArea className="h-full px-4 pb-6 border rounded-lg shadow-lg">
+        <ResizablePanel id="document" order={0}>
+          <ScrollArea
+            className={`h-full px-4 pb-6 border rounded-lg shadow-lg ${
+              playingParagraph ? "" : "max-w-screen-md mx-auto"
+            }`}
+          >
             {document.metadata.extension === "html" && <DocumentHtmlRenderer />}
             {document.metadata.extension === "epub" && <DocumentEpubRenderer />}
           </ScrollArea>
