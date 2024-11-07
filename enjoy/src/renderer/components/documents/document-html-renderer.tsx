@@ -1,47 +1,85 @@
 import { Readability } from "@mozilla/readability";
-import { useEffect, useState } from "react";
-import { convert } from "html-to-text";
+import { useContext, useEffect, useState } from "react";
 import { MarkdownWrapper } from "@renderer/components";
+import Turndown from "turndown";
+import {
+  AppSettingsProviderContext,
+  DocumentProviderContext,
+} from "@/renderer/context";
+import { Button } from "../ui";
+import { ChevronLeftIcon, LinkIcon } from "lucide-react";
 
-export const DocumentHtmlRenderer = (props: { document: DocumentEType }) => {
-  const { document } = props;
+export const DocumentHtmlRenderer = () => {
+  const { ref, document, onSpeech, onParagraphVisible } = useContext(
+    DocumentProviderContext
+  );
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>();
 
   const fetchContent = async () => {
     const res = await fetch(document.src);
     const text = await res.text();
-    console.log(text);
     const doc = new DOMParser().parseFromString(text, "text/html");
+    setTitle(doc.title);
     const readability = new Readability(doc);
     const article = readability.parse();
-    const markdownContent = convert(article.content, {
-      wordwrap: false,
-      selectors: [
-        {
-          selector: "a",
-          options: {
-            hideLinkHrefIfSameAsText: true,
-            ignoreHref: true,
-          },
-        },
-        {
-          selector: "img",
-          options: {
-            ignoreImageAlt: true,
-          },
-        },
-      ],
-    });
+    const markdownContent = new Turndown().turndown(article.content);
     setContent(markdownContent);
   };
+
+  // auto scroll to the top when new section is rendered
+  useEffect(() => {
+    if (!content) return;
+    if (!ref?.current) return;
+
+    let anchor = ref.current?.querySelector(
+      `[data-index="${document.lastReadPosition.paragraph || 0}"]`
+    );
+
+    anchor?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [content]);
 
   useEffect(() => {
     fetchContent();
   }, [document.src]);
 
+  useEffect(() => {
+    if (!title) return;
+
+    if (document.title !== title) {
+      EnjoyApp.documents.update(document.id, {
+        title,
+      });
+    }
+  }, [title]);
+
   return (
-    <div className="">
-      <MarkdownWrapper>{content}</MarkdownWrapper>
+    <div className="select-text relative">
+      <div className="flex items-center justify-between space-x-2 sticky top-0 z-10 bg-background py-2">
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" className="w-6 h-6">
+            <ChevronLeftIcon className="w-5 h-5" />
+          </Button>
+        </div>
+        <div className="text-xs text-muted-foreground truncate">{title}</div>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" className="w-6 h-6">
+            <LinkIcon className="w-5 h-5" />
+          </Button>
+        </div>
+      </div>
+      <MarkdownWrapper
+        className="mx-auto max-w-full"
+        autoTranslate={document.config.autoTranslate}
+        onSpeech={onSpeech}
+        onParagraphVisible={onParagraphVisible}
+        translatable={true}
+      >
+        {content}
+      </MarkdownWrapper>
     </div>
   );
 };

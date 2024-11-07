@@ -33,7 +33,7 @@ import debounce from "lodash/debounce";
 import { t } from "i18next";
 
 export const DocumentEpubRenderer = () => {
-  const { ref, document, togglePlayingParagraph, section, setSection } =
+  const { ref, document, onSpeech, section, setSection, onParagraphVisible } =
     useContext(DocumentProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
@@ -42,28 +42,6 @@ export const DocumentEpubRenderer = () => {
   const [title, setTitle] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [configOpen, setConfigOpen] = useState<boolean>(false);
-
-  const onParagraphVisible = useCallback((id: string) => {
-    updateDocumentPosition(id);
-  }, []);
-
-  const updateDocumentPosition = debounce((id: string) => {
-    if (!id) return;
-
-    const paragraph: HTMLElement | null = ref.current?.querySelector(`#${id}`);
-    if (!paragraph) return;
-
-    const index = paragraph.dataset.index || "0";
-    const sectionIndex = paragraph.dataset.section || "0";
-
-    EnjoyApp.documents.update(document.id, {
-      lastReadPosition: {
-        section: parseInt(sectionIndex),
-        paragraph: parseInt(index),
-      },
-      lastReadAt: new Date(),
-    });
-  }, 1000);
 
   const refreshBookMetadata = () => {
     if (!book) return;
@@ -146,21 +124,6 @@ export const DocumentEpubRenderer = () => {
       e.currentTarget.blur();
     },
     [handleSectionClick]
-  );
-
-  const onSpeechMemo = useCallback(
-    (id: string) => {
-      togglePlayingParagraph(id);
-    },
-    [togglePlayingParagraph]
-  );
-
-  // Memoize the document config values passed to MarkdownWrapper
-  const documentConfig = useMemo(
-    () => ({
-      autoTranslate: document.config.autoTranslate,
-    }),
-    [document.config.autoTranslate]
   );
 
   useEffect(() => {
@@ -286,8 +249,8 @@ export const DocumentEpubRenderer = () => {
           className="mx-auto max-w-full"
           onLinkClick={handleLinkClick}
           onParagraphVisible={onParagraphVisible}
-          autoTranslate={documentConfig.autoTranslate}
-          onSpeech={onSpeechMemo}
+          autoTranslate={document.config.autoTranslate}
+          onSpeech={onSpeech}
           translatable={true}
           section={section}
         >

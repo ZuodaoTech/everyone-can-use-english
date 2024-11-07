@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -12,6 +13,7 @@ import {
   MediaShadowProvider,
 } from "@renderer/context";
 import { toast } from "@renderer/components/ui";
+import debounce from "lodash/debounce";
 
 type DocumentProviderProps = {
   ref: React.RefObject<HTMLDivElement>;
@@ -20,6 +22,8 @@ type DocumentProviderProps = {
   togglePlayingParagraph: (paragraph: string | null) => void;
   section: number;
   setSection: (section: number) => void;
+  onSpeech: (paragraph: string) => void;
+  onParagraphVisible: (id: string) => void;
 };
 
 export const DocumentProviderContext = createContext<DocumentProviderProps>({
@@ -29,6 +33,8 @@ export const DocumentProviderContext = createContext<DocumentProviderProps>({
   togglePlayingParagraph: () => {},
   section: 0,
   setSection: () => {},
+  onSpeech: () => {},
+  onParagraphVisible: () => {},
 });
 
 export function DocumentProvider({
@@ -46,9 +52,38 @@ export function DocumentProvider({
 
   const ref = useRef<HTMLDivElement>(null);
 
+  const onParagraphVisible = useCallback((id: string) => {
+    updateDocumentPosition(id);
+  }, []);
+
+  const updateDocumentPosition = debounce((id: string) => {
+    if (!id) return;
+
+    const paragraph: HTMLElement | null = ref.current?.querySelector(`#${id}`);
+    if (!paragraph) return;
+
+    const index = paragraph.dataset.index || "0";
+    const sectionIndex = paragraph.dataset.section || "0";
+
+    EnjoyApp.documents.update(document.id, {
+      lastReadPosition: {
+        section: parseInt(sectionIndex),
+        paragraph: parseInt(index),
+      },
+      lastReadAt: new Date(),
+    });
+  }, 1000);
+
   const togglePlayingParagraph = useCallback((paragraph: string | null) => {
     setPlayingParagraph((prev) => (prev === paragraph ? null : paragraph));
   }, []);
+
+  const onSpeech = useCallback(
+    (paragraph: string) => {
+      togglePlayingParagraph(paragraph);
+    },
+    [togglePlayingParagraph]
+  );
 
   const fetchDocument = async () => {
     if (!documentId) return;
@@ -94,6 +129,8 @@ export function DocumentProvider({
         togglePlayingParagraph,
         section,
         setSection,
+        onSpeech,
+        onParagraphVisible,
       }}
     >
       <MediaShadowProvider

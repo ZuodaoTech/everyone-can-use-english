@@ -1,12 +1,15 @@
-import { Button, Input, toast } from "@renderer/components/ui";
-import { DocumentCard, LoaderSpin } from "@renderer/components";
+import { Button, Input } from "@renderer/components/ui";
+import {
+  DocumentAddButton,
+  DocumentCard,
+  LoaderSpin,
+} from "@renderer/components";
 import { useState, useContext, useEffect } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import { ChevronLeftIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDebounce } from "@uidotdev/usehooks";
-import { DocumentFormats } from "@/constants";
 
 export default () => {
   const navigate = useNavigate();
@@ -29,34 +32,6 @@ export default () => {
       });
   };
 
-  const handleAdd = async () => {
-    const selected = await EnjoyApp.dialog.showOpenDialog({
-      properties: ["openFile"],
-      filters: [{ name: "documents", extensions: DocumentFormats }],
-    });
-    if (selected) {
-      EnjoyApp.documents
-        .create({
-          uri: selected[0],
-          config: {
-            autoTranslate: false,
-            autoNextSpeech: true,
-            tts: {
-              engine: "enjoyai",
-              model: "openai/tts-1",
-              voice: "alloy",
-            },
-          },
-        })
-        .then((document) => {
-          navigate(`/documents/${document.id}`);
-        })
-        .catch((err) => {
-          toast.error(err.message);
-        });
-    }
-  };
-
   useEffect(() => {
     fetchDocuments();
   }, [debouncedQuery]);
@@ -75,7 +50,7 @@ export default () => {
           placeholder={t("search")}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <Button onClick={handleAdd}>{t("add")}</Button>
+        <DocumentAddButton />
       </div>
 
       {loading ? (
