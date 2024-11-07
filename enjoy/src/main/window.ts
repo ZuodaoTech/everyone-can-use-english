@@ -310,6 +310,7 @@ main.init = async () => {
           event.sender.send("view-on-state", {
             state: "did-finish-load",
             html,
+            url,
           });
           (view.webContents as any).destroy();
           mainWindow.contentView.removeChildView(view);

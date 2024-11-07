@@ -41,11 +41,11 @@ export const DocumentAddButton = () => {
     if (uri.startsWith("http")) {
       EnjoyApp.view.scrape(uri);
     } else {
-      createFromLocalFile(uri);
+      createFromLocalFile(uri, uri);
     }
   };
 
-  const createFromLocalFile = async (path: string) => {
+  const createFromLocalFile = async (path: string, source?: string) => {
     EnjoyApp.documents
       .create({
         uri: path,
@@ -58,7 +58,7 @@ export const DocumentAddButton = () => {
             voice: "alloy",
           },
         },
-        source: uri,
+        source,
       })
       .then((doc) => {
         navigate(`/documents/${doc.id}`);
@@ -74,11 +74,11 @@ export const DocumentAddButton = () => {
 
   const onViewState = async (event: {
     state: string;
+    url?: string;
     error?: string;
     html?: string;
   }) => {
-    const { state, html, error } = event;
-    console.log(event);
+    const { state, html, error, url } = event;
     if (state === "did-finish-load") {
       const doc = new DOMParser().parseFromString(html, "text/html");
       const reader = new Readability(doc);
@@ -88,7 +88,7 @@ export const DocumentAddButton = () => {
         `${doc.title}.html`,
         Buffer.from(article.content)
       );
-      createFromLocalFile(file);
+      createFromLocalFile(file, url);
     } else if (state === "did-fail-load") {
       setSubmitting(false);
       toast.error(error || t("failedToLoadLink"));

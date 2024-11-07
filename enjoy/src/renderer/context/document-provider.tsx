@@ -52,9 +52,12 @@ export function DocumentProvider({
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const onParagraphVisible = useCallback((id: string) => {
-    updateDocumentPosition(id);
-  }, []);
+  const onParagraphVisible = useCallback(
+    (id: string) => {
+      updateDocumentPosition(id);
+    },
+    [document]
+  );
 
   const updateDocumentPosition = debounce((id: string) => {
     if (!id) return;
