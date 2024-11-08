@@ -50,6 +50,7 @@ const LoadingContent = () => {
     transcribingProgress,
     transcribingOutput,
     generateTranscription,
+    onCancel,
   } = useContext(MediaShadowProviderContext);
   if (decoded) {
     // Decoded and transcription created but not ready
@@ -109,7 +110,12 @@ const LoadingContent = () => {
           </div>
         </div>
         <AlertDialogFooter>
-          <Button variant="secondary" onClick={() => navigate(-1)}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              onCancel ? onCancel() : navigate(-1);
+            }}
+          >
             {t("cancel")}
           </Button>
         </AlertDialogFooter>
@@ -132,7 +138,12 @@ const LoadingContent = () => {
           )}
         </div>
         <AlertDialogFooter>
-          <Button variant="secondary" onClick={() => navigate(-1)}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              onCancel ? onCancel() : navigate(-1);
+            }}
+          >
             {t("cancel")}
           </Button>
         </AlertDialogFooter>

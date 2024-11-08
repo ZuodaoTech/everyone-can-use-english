@@ -117,7 +117,11 @@ app.on("ready", async () => {
 
   protocol.handle("enjoy", (request) => {
     let url = request.url.replace("enjoy://", "");
-    if (url.match(/library\/(audios|videos|recordings|speeches|segments)/g)) {
+    if (
+      url.match(
+        /library\/(audios|videos|recordings|speeches|segments|documents)/g
+      )
+    ) {
       url = url.replace("library/", "");
       url = path.join(settings.userDataPath(), url);
     } else if (url.startsWith("library")) {

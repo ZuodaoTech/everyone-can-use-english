@@ -18,7 +18,7 @@ import { t } from "i18next";
 import { useContext } from "react";
 import { AISettingsProviderContext } from "@renderer/context";
 
-export const ChatGPTForm = (props: { form: ReturnType<typeof useForm> }) => {
+export const GPTForm = (props: { form: ReturnType<typeof useForm> }) => {
   const { form } = props;
   const { gptProviders } = useContext(AISettingsProviderContext);
 

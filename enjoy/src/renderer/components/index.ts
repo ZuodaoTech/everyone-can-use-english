@@ -3,6 +3,7 @@ export * from "./chats";
 export * from "./conversations";
 export * from "./copilots";
 export * from "./courses";
+export * from "./documents";
 export * from "./llm-chats";
 export * from "./meanings";
 export * from "./messages";

@@ -30,7 +30,7 @@ import { t } from "i18next";
 import { useContext } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import Mustache from "mustache";
-import { ChatGPTForm, ChatTTSForm } from "@renderer/components";
+import { GPTForm, TTSForm } from "@renderer/components";
 
 export const ChatMemberForm = (props: {
   chat: ChatType;
@@ -164,7 +164,7 @@ export const ChatMemberForm = (props: {
               {t("models.chatMember.gptSettings")}
             </AccordionTrigger>
             <AccordionContent className="space-y-4 px-2">
-              <ChatGPTForm form={form} />
+              <GPTForm form={form} />
             </AccordionContent>
           </AccordionItem>
 
@@ -173,7 +173,7 @@ export const ChatMemberForm = (props: {
               {t("models.chatMember.ttsSettings")}
             </AccordionTrigger>
             <AccordionContent className="space-y-4 px-2">
-              <ChatTTSForm form={form} />
+              <TTSForm form={form} />
             </AccordionContent>
           </AccordionItem>
 

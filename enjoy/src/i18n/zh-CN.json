@@ -189,6 +189,11 @@
       "onlyGPTAgentCanBeAddedToThisChat": "只有 GPT 智能体可以添加到此聊天",
       "invalidAgentType": "无效的智能体类型",
       "invalidMembers": "无效的成员"
+    },
+    "document": {
+      "fileNotFound": "文件未找到 {{file}}",
+      "fileNotSupported": "文件格式不支持 {{file}}",
+      "failedToCopyFile": "复制文件失败 {{file}}"
     }
   },
   "sidebar": {
@@ -199,6 +204,7 @@
     "audios": "音频",
     "videos": "视频",
     "stories": "文章",
+    "documents": "文档",
     "books": "电子书",
     "vocabulary": "生词本",
     "library": "资料库",
@@ -529,6 +535,8 @@
   "addedStories": "添加的文章",
   "addedAudios": "添加的音频",
   "addedVideos": "添加的视频",
+  "addedDocuments": "添加的文档",
+  "document": "文档",
   "frontSide": "正面",
   "backSide": "反面",
   "aiExtractVocabulary": "AI 提取生词",
@@ -891,5 +899,13 @@
   "diskUsageDescription": "Enjoy App 的磁盘使用情况",
   "releaseDiskSpace": "释放磁盘",
   "bulkDeleteRecordings": "删除录音",
-  "bulkDeleteAborted": "批量删除已中止"
+  "bulkDeleteAborted": "批量删除已中止",
+  "notFound": "未找到",
+  "saved": "已保存",
+  "autoTranslate": "自动翻译",
+  "autoNextSpeech": "连续朗读",
+  "failedToLoadLink": "加载链接失败",
+  "refreshSpeech": "刷新语音",
+  "locateParagraph": "定位段落",
+  "close": "关闭"
 }

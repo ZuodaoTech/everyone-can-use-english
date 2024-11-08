@@ -25,6 +25,8 @@ class SpeechesHandler {
       sourceId: string;
       sourceType: string;
       text: string;
+      section?: number;
+      segment?: number;
       configuration: {
         engine: string;
         model: string;
@@ -55,14 +57,20 @@ class SpeechesHandler {
       });
   }
 
+  private async delete(event: IpcMainEvent, id: string) {
+    await Speech.destroy({ where: { id } });
+  }
+
   register() {
     ipcMain.handle("speeches-find-one", this.findOne);
     ipcMain.handle("speeches-create", this.create);
+    ipcMain.handle("speeches-delete", this.delete);
   }
 
   unregister() {
     ipcMain.removeHandler("speeches-find-one");
     ipcMain.removeHandler("speeches-create");
+    ipcMain.removeHandler("speeches-delete");
   }
 }
 

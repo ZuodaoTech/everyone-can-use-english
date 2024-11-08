@@ -29,6 +29,8 @@ export const useSpeech = () => {
         text: params.text,
         sourceType: params.sourceType,
         sourceId: params.sourceId,
+        section: params.section,
+        segment: params.segment,
         configuration: {
           engine,
           model,

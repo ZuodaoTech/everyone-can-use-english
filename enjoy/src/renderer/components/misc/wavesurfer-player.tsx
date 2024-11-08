@@ -22,6 +22,7 @@ export const WavesurferPlayer = (props: {
   pitchContourOptions?: any;
   className?: string;
   autoplay?: boolean;
+  onEnded?: () => void;
 }) => {
   const {
     id,
@@ -33,6 +34,7 @@ export const WavesurferPlayer = (props: {
     pitchContourOptions,
     className = "",
     autoplay = false,
+    onEnded,
   } = props;
   const [initialized, setInitialized] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -94,6 +96,9 @@ export const WavesurferPlayer = (props: {
       }),
       wavesurfer.on("pause", () => {
         setIsPlaying(false);
+      }),
+      wavesurfer.on("finish", () => {
+        onEnded && onEnded();
       }),
       wavesurfer.on("timeupdate", (time: number) => {
         setCurrentTime(time);

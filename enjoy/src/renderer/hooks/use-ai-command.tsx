@@ -13,6 +13,7 @@ import {
   refineCommand,
   chatSuggestionCommand,
 } from "@commands";
+import { md5 as md5Hash } from "js-md5";
 
 export const useAiCommand = () => {
   const { EnjoyApp, webApi, nativeLanguage, learningLanguage } = useContext(
@@ -99,17 +100,48 @@ export const useAiCommand = () => {
     text: string,
     cacheKey?: string
   ): Promise<string> => {
-    return translateCommand(text, nativeLanguage, {
-      key: currentGptEngine.key,
-      modelName:
-        currentGptEngine.models.translate || currentGptEngine.models.default,
-      baseUrl: currentGptEngine.baseUrl,
-    }).then((res) => {
-      if (cacheKey) {
-        EnjoyApp.cacheObjects.set(cacheKey, res);
+    let translatedContent = "";
+    const md5 = md5Hash(text.trim());
+    const engine = currentGptEngine.key;
+    const modelName =
+      currentGptEngine.models.translate || currentGptEngine.models.default;
+
+    try {
+      const res = await webApi.translations({
+        md5,
+        translatedLanguage: nativeLanguage,
+        engine: modelName,
+      });
+
+      if (res.translations.length > 0) {
+        translatedContent = res.translations[0].translatedContent;
       }
-      return res;
-    });
+    } catch (error) {
+      console.error(error);
+    }
+
+    if (!translatedContent) {
+      translatedContent = await translateCommand(text, nativeLanguage, {
+        key: engine,
+        modelName,
+        baseUrl: currentGptEngine.baseUrl,
+      });
+
+      webApi.createTranslation({
+        md5,
+        content: text,
+        translatedContent,
+        language: learningLanguage,
+        translatedLanguage: nativeLanguage,
+        engine: modelName,
+      });
+    }
+
+    if (cacheKey) {
+      EnjoyApp.cacheObjects.set(cacheKey, translatedContent);
+    }
+
+    return translatedContent;
   };
 
   const analyzeText = async (text: string, cacheKey?: string) => {

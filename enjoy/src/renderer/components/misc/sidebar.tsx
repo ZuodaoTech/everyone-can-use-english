@@ -155,10 +155,10 @@ export const Sidebar = () => {
             />
 
             <SidebarItem
-              href="/stories"
-              label={t("sidebar.stories")}
-              tooltip={t("sidebar.stories")}
-              active={activeTab.startsWith("/stories")}
+              href="/documents"
+              label={t("sidebar.documents")}
+              tooltip={t("sidebar.documents")}
+              active={activeTab.startsWith("/documents")}
               Icon={NewspaperIcon}
               isOpen={isOpen}
             />

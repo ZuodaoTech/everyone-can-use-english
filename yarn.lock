@@ -3692,6 +3692,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mixmark-io/domino@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@mixmark-io/domino@npm:2.2.0"
+  checksum: 10c0/aa468a15f9217d425220fe6a4b3f9416cbe8e566ee14efc191c6d5cc04fe39338b16a90bbac190f28d44e69465db5f2cf95f479c621ce38060ca6b2a3d346e9d
+  languageName: node
+  linkType: hard
+
 "@mozilla/readability@npm:^0.5.0":
   version: 0.5.0
   resolution: "@mozilla/readability@npm:0.5.0"
@@ -7228,6 +7235,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tokenizer/token@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@tokenizer/token@npm:0.3.0"
+  checksum: 10c0/7ab9a822d4b5ff3f5bca7f7d14d46bdd8432528e028db4a52be7fbf90c7f495cc1af1324691dda2813c6af8dc4b8eb29de3107d4508165f9aa5b53e7d501f155
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:1":
   version: 1.1.2
   resolution: "@tootallnate/once@npm:1.1.2"
@@ -7580,6 +7594,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mime-types@npm:^2":
+  version: 2.1.4
+  resolution: "@types/mime-types@npm:2.1.4"
+  checksum: 10c0/a10d57881d14a053556b3d09292de467968d965b0a06d06732c748da39b3aa569270b5b9f32529fd0e9ac1e5f3b91abb894f5b1996373254a65cb87903c86622
+  languageName: node
+  linkType: hard
+
 "@types/minimatch@npm:*":
   version: 5.1.2
   resolution: "@types/minimatch@npm:5.1.2"
@@ -7735,6 +7756,13 @@ __metadata:
   version: 2.3.8
   resolution: "@types/sizzle@npm:2.3.8"
   checksum: 10c0/ab5460147ae6680cc20c2223a8f17d9f7c97144b70f00a222a1c32d68b5207696d48177ab9784dda88c74d93ed5a78dd31f74d271b15382520b423c81b4aac89
+  languageName: node
+  linkType: hard
+
+"@types/turndown@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "@types/turndown@npm:5.0.5"
+  checksum: 10c0/d6b4f8451caf72399f36f810461baf5f3b5e958ff216388bb3324a9949079daad31d970a28a140b3571db8793908396e757329334f5dc8bcff414698b8c31113
   languageName: node
   linkType: hard
 
@@ -12150,6 +12178,7 @@ __metadata:
     "@types/intl-tel-input": "npm:^18.1.4"
     "@types/lodash": "npm:^4.17.12"
     "@types/mark.js": "npm:^8.11.12"
+    "@types/mime-types": "npm:^2"
     "@types/mustache": "npm:^4.2.5"
     "@types/node": "npm:^22.7.7"
     "@types/prop-types": "npm:^15.7.13"
@@ -12157,6 +12186,7 @@ __metadata:
     "@types/react": "npm:^18.3.11"
     "@types/react-dom": "npm:^18.3.1"
     "@types/semver": "npm:^7.5.8"
+    "@types/turndown": "npm:^5.0.5"
     "@types/unzipper": "npm:^0.10.10"
     "@types/validator": "npm:^13.12.2"
     "@types/wavesurfer.js": "npm:^6.0.12"
@@ -12195,8 +12225,10 @@ __metadata:
     eslint-import-resolver-typescript: "npm:^3.6.3"
     eslint-plugin-import: "npm:^2.31.0"
     ffmpeg-static: "npm:^5.2.0"
+    file-type: "npm:^19.6.0"
     flora-colossus: "npm:^2.0.0"
     fluent-ffmpeg: "npm:^2.1.3"
+    foliate-js: "https://github.com/johnfactotum/foliate-js"
     fs-extra: "npm:^11.2.0"
     html-to-text: "npm:^9.0.5"
     https-proxy-agent: "npm:^7.0.5"
@@ -12209,6 +12241,7 @@ __metadata:
     lucide-react: "npm:^0.453.0"
     mark.js: "npm:^8.11.1"
     microsoft-cognitiveservices-speech-sdk: "npm:^1.41.0"
+    mime-types: "npm:^2.1.35"
     mustache: "npm:^4.2.0"
     next-themes: "npm:^0.3.0"
     octokit: "npm:^4.0.2"
@@ -12233,6 +12266,7 @@ __metadata:
     react-shadow-root: "npm:^6.2.0"
     react-tooltip: "npm:^5.28.0"
     reflect-metadata: "npm:^0.2.2"
+    remark-gfm: "npm:^4.0.0"
     rimraf: "npm:^6.0.1"
     semver: "npm:^7.6.3"
     sequelize: "npm:^6.37.4"
@@ -12246,6 +12280,7 @@ __metadata:
     tailwindcss-animate: "npm:^1.0.7"
     ts-node: "npm:^10.9.2"
     tslib: "npm:^2.8.0"
+    turndown: "npm:^7.2.0"
     typescript: "npm:^5.6.3"
     umzug: "npm:^3.8.2"
     unzipper: "npm:^0.12.3"
@@ -13350,6 +13385,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"file-type@npm:^19.6.0":
+  version: 19.6.0
+  resolution: "file-type@npm:19.6.0"
+  dependencies:
+    get-stream: "npm:^9.0.1"
+    strtok3: "npm:^9.0.1"
+    token-types: "npm:^6.0.0"
+    uint8array-extras: "npm:^1.3.0"
+  checksum: 10c0/ae90ab618d0e759f26806024eb25ade851406301d2deae4b2dca6e9df0de13b4be575114a5f8129e73f6de537644a45fc4eb7cfa8b7dad63316b01b0e6f3bd2e
+  languageName: node
+  linkType: hard
+
 "file-uri-to-path@npm:1.0.0":
   version: 1.0.0
   resolution: "file-uri-to-path@npm:1.0.0"
@@ -13489,6 +13536,13 @@ __metadata:
   dependencies:
     tabbable: "npm:^6.2.0"
   checksum: 10c0/5d1cdefdc11ae97f2c7bcced5c0facfa9794e1ec7a9d8b6547f3f03b51de0423ab572666371f6632b2165613470ec8245daea836160319d52d7a6434e6847a23
+  languageName: node
+  linkType: hard
+
+"foliate-js@https://github.com/johnfactotum/foliate-js":
+  version: 0.0.0
+  resolution: "foliate-js@https://github.com/johnfactotum/foliate-js.git#commit=519c0329b2bb9b0e1ac9a293e76ad8a5f4488812"
+  checksum: 10c0/5b031706cc4a3eb4785cc815a9f993acf8c46018684a8946b517e25a8840c2097635d6928d5865cf2921ccf9fa89ced171205cab5832648ed64ec24ee1e3e0ae
   languageName: node
   linkType: hard
 
@@ -13942,7 +13996,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-stream@npm:^9.0.0":
+"get-stream@npm:^9.0.0, get-stream@npm:^9.0.1":
   version: 9.0.1
   resolution: "get-stream@npm:9.0.1"
   dependencies:
@@ -16565,6 +16619,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"markdown-table@npm:^3.0.0":
+  version: 3.0.4
+  resolution: "markdown-table@npm:3.0.4"
+  checksum: 10c0/1257b31827629a54c24a5030a3dac952256c559174c95ce3ef89bebd6bff0cb1444b1fd667b1a1bb53307f83278111505b3e26f0c4e7b731e0060d435d2d930b
+  languageName: node
+  linkType: hard
+
 "marked@npm:^13.0.2":
   version: 13.0.3
   resolution: "marked@npm:13.0.3"
@@ -16602,6 +16663,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mdast-util-find-and-replace@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "mdast-util-find-and-replace@npm:3.0.1"
+  dependencies:
+    "@types/mdast": "npm:^4.0.0"
+    escape-string-regexp: "npm:^5.0.0"
+    unist-util-is: "npm:^6.0.0"
+    unist-util-visit-parents: "npm:^6.0.0"
+  checksum: 10c0/1faca98c4ee10a919f23b8cc6d818e5bb6953216a71dfd35f51066ed5d51ef86e5063b43dcfdc6061cd946e016a9f0d44a1dccadd58452cf4ed14e39377f00cb
+  languageName: node
+  linkType: hard
+
 "mdast-util-from-markdown@npm:^2.0.0":
   version: 2.0.1
   resolution: "mdast-util-from-markdown@npm:2.0.1"
@@ -16619,6 +16692,83 @@ __metadata:
     micromark-util-types: "npm:^2.0.0"
     unist-util-stringify-position: "npm:^4.0.0"
   checksum: 10c0/496596bc6419200ff6258531a0ebcaee576a5c169695f5aa296a79a85f2a221bb9247d565827c709a7c2acfb56ae3c3754bf483d86206617bd299a9658c8121c
+  languageName: node
+  linkType: hard
+
+"mdast-util-gfm-autolink-literal@npm:^2.0.0":
+  version: 2.0.1
+  resolution: "mdast-util-gfm-autolink-literal@npm:2.0.1"
+  dependencies:
+    "@types/mdast": "npm:^4.0.0"
+    ccount: "npm:^2.0.0"
+    devlop: "npm:^1.0.0"
+    mdast-util-find-and-replace: "npm:^3.0.0"
+    micromark-util-character: "npm:^2.0.0"
+  checksum: 10c0/963cd22bd42aebdec7bdd0a527c9494d024d1ad0739c43dc040fee35bdfb5e29c22564330a7418a72b5eab51d47a6eff32bc0255ef3ccb5cebfe8970e91b81b6
+  languageName: node
+  linkType: hard
+
+"mdast-util-gfm-footnote@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "mdast-util-gfm-footnote@npm:2.0.0"
+  dependencies:
+    "@types/mdast": "npm:^4.0.0"
+    devlop: "npm:^1.1.0"
+    mdast-util-from-markdown: "npm:^2.0.0"
+    mdast-util-to-markdown: "npm:^2.0.0"
+    micromark-util-normalize-identifier: "npm:^2.0.0"
+  checksum: 10c0/c673b22bea24740235e74cfd66765b41a2fa540334f7043fa934b94938b06b7d3c93f2d3b33671910c5492b922c0cc98be833be3b04cfed540e0679650a6d2de
+  languageName: node
+  linkType: hard
+
+"mdast-util-gfm-strikethrough@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "mdast-util-gfm-strikethrough@npm:2.0.0"
+  dependencies:
+    "@types/mdast": "npm:^4.0.0"
+    mdast-util-from-markdown: "npm:^2.0.0"
+    mdast-util-to-markdown: "npm:^2.0.0"
+  checksum: 10c0/b053e93d62c7545019bd914271ea9e5667ad3b3b57d16dbf68e56fea39a7e19b4a345e781312714eb3d43fdd069ff7ee22a3ca7f6149dfa774554f19ce3ac056
+  languageName: node
+  linkType: hard
+
+"mdast-util-gfm-table@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "mdast-util-gfm-table@npm:2.0.0"
+  dependencies:
+    "@types/mdast": "npm:^4.0.0"
+    devlop: "npm:^1.0.0"
+    markdown-table: "npm:^3.0.0"
+    mdast-util-from-markdown: "npm:^2.0.0"
+    mdast-util-to-markdown: "npm:^2.0.0"
+  checksum: 10c0/128af47c503a53bd1c79f20642561e54a510ad5e2db1e418d28fefaf1294ab839e6c838e341aef5d7e404f9170b9ca3d1d89605f234efafde93ee51174a6e31e
+  languageName: node
+  linkType: hard
+
+"mdast-util-gfm-task-list-item@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "mdast-util-gfm-task-list-item@npm:2.0.0"
+  dependencies:
+    "@types/mdast": "npm:^4.0.0"
+    devlop: "npm:^1.0.0"
+    mdast-util-from-markdown: "npm:^2.0.0"
+    mdast-util-to-markdown: "npm:^2.0.0"
+  checksum: 10c0/258d725288482b636c0a376c296431390c14b4f29588675297cb6580a8598ed311fc73ebc312acfca12cc8546f07a3a285a53a3b082712e2cbf5c190d677d834
+  languageName: node
+  linkType: hard
+
+"mdast-util-gfm@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "mdast-util-gfm@npm:3.0.0"
+  dependencies:
+    mdast-util-from-markdown: "npm:^2.0.0"
+    mdast-util-gfm-autolink-literal: "npm:^2.0.0"
+    mdast-util-gfm-footnote: "npm:^2.0.0"
+    mdast-util-gfm-strikethrough: "npm:^2.0.0"
+    mdast-util-gfm-table: "npm:^2.0.0"
+    mdast-util-gfm-task-list-item: "npm:^2.0.0"
+    mdast-util-to-markdown: "npm:^2.0.0"
+  checksum: 10c0/91596fe9bf3e4a0c546d0c57f88106c17956d9afbe88ceb08308e4da2388aff64489d649ddad599caecfdf755fc3ae4c9b82c219b85281bc0586b67599881fca
   languageName: node
   linkType: hard
 
@@ -16874,6 +17024,99 @@ __metadata:
   languageName: node
   linkType: hard
 
+"micromark-extension-gfm-autolink-literal@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "micromark-extension-gfm-autolink-literal@npm:2.1.0"
+  dependencies:
+    micromark-util-character: "npm:^2.0.0"
+    micromark-util-sanitize-uri: "npm:^2.0.0"
+    micromark-util-symbol: "npm:^2.0.0"
+    micromark-util-types: "npm:^2.0.0"
+  checksum: 10c0/84e6fbb84ea7c161dfa179665dc90d51116de4c28f3e958260c0423e5a745372b7dcbc87d3cde98213b532e6812f847eef5ae561c9397d7f7da1e59872ef3efe
+  languageName: node
+  linkType: hard
+
+"micromark-extension-gfm-footnote@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "micromark-extension-gfm-footnote@npm:2.1.0"
+  dependencies:
+    devlop: "npm:^1.0.0"
+    micromark-core-commonmark: "npm:^2.0.0"
+    micromark-factory-space: "npm:^2.0.0"
+    micromark-util-character: "npm:^2.0.0"
+    micromark-util-normalize-identifier: "npm:^2.0.0"
+    micromark-util-sanitize-uri: "npm:^2.0.0"
+    micromark-util-symbol: "npm:^2.0.0"
+    micromark-util-types: "npm:^2.0.0"
+  checksum: 10c0/d172e4218968b7371b9321af5cde8c77423f73b233b2b0fcf3ff6fd6f61d2e0d52c49123a9b7910612478bf1f0d5e88c75a3990dd68f70f3933fe812b9f77edc
+  languageName: node
+  linkType: hard
+
+"micromark-extension-gfm-strikethrough@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "micromark-extension-gfm-strikethrough@npm:2.1.0"
+  dependencies:
+    devlop: "npm:^1.0.0"
+    micromark-util-chunked: "npm:^2.0.0"
+    micromark-util-classify-character: "npm:^2.0.0"
+    micromark-util-resolve-all: "npm:^2.0.0"
+    micromark-util-symbol: "npm:^2.0.0"
+    micromark-util-types: "npm:^2.0.0"
+  checksum: 10c0/ef4f248b865bdda71303b494671b7487808a340b25552b11ca6814dff3fcfaab9be8d294643060bbdb50f79313e4a686ab18b99cbe4d3ee8a4170fcd134234fb
+  languageName: node
+  linkType: hard
+
+"micromark-extension-gfm-table@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "micromark-extension-gfm-table@npm:2.1.0"
+  dependencies:
+    devlop: "npm:^1.0.0"
+    micromark-factory-space: "npm:^2.0.0"
+    micromark-util-character: "npm:^2.0.0"
+    micromark-util-symbol: "npm:^2.0.0"
+    micromark-util-types: "npm:^2.0.0"
+  checksum: 10c0/c1b564ab68576406046d825b9574f5b4dbedbb5c44bede49b5babc4db92f015d9057dd79d8e0530f2fecc8970a695c40ac2e5e1d4435ccf3ef161038d0d1463b
+  languageName: node
+  linkType: hard
+
+"micromark-extension-gfm-tagfilter@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "micromark-extension-gfm-tagfilter@npm:2.0.0"
+  dependencies:
+    micromark-util-types: "npm:^2.0.0"
+  checksum: 10c0/995558843fff137ae4e46aecb878d8a4691cdf23527dcf1e2f0157d66786be9f7bea0109c52a8ef70e68e3f930af811828ba912239438e31a9cfb9981f44d34d
+  languageName: node
+  linkType: hard
+
+"micromark-extension-gfm-task-list-item@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "micromark-extension-gfm-task-list-item@npm:2.1.0"
+  dependencies:
+    devlop: "npm:^1.0.0"
+    micromark-factory-space: "npm:^2.0.0"
+    micromark-util-character: "npm:^2.0.0"
+    micromark-util-symbol: "npm:^2.0.0"
+    micromark-util-types: "npm:^2.0.0"
+  checksum: 10c0/78aa537d929e9309f076ba41e5edc99f78d6decd754b6734519ccbbfca8abd52e1c62df68d41a6ae64d2a3fc1646cea955893c79680b0b4385ced4c52296181f
+  languageName: node
+  linkType: hard
+
+"micromark-extension-gfm@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "micromark-extension-gfm@npm:3.0.0"
+  dependencies:
+    micromark-extension-gfm-autolink-literal: "npm:^2.0.0"
+    micromark-extension-gfm-footnote: "npm:^2.0.0"
+    micromark-extension-gfm-strikethrough: "npm:^2.0.0"
+    micromark-extension-gfm-table: "npm:^2.0.0"
+    micromark-extension-gfm-tagfilter: "npm:^2.0.0"
+    micromark-extension-gfm-task-list-item: "npm:^2.0.0"
+    micromark-util-combine-extensions: "npm:^2.0.0"
+    micromark-util-types: "npm:^2.0.0"
+  checksum: 10c0/970e28df6ebdd7c7249f52a0dda56e0566fbfa9ae56c8eeeb2445d77b6b89d44096880cd57a1c01e7821b1f4e31009109fbaca4e89731bff7b83b8519690e5d9
+  languageName: node
+  linkType: hard
+
 "micromark-factory-destination@npm:^2.0.0":
   version: 2.0.0
   resolution: "micromark-factory-destination@npm:2.0.0"
@@ -17124,7 +17367,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-types@npm:^2.1.12, mime-types@npm:^2.1.25, mime-types@npm:~2.1.24, mime-types@npm:~2.1.34":
+"mime-types@npm:^2.1.12, mime-types@npm:^2.1.25, mime-types@npm:^2.1.35, mime-types@npm:~2.1.24, mime-types@npm:~2.1.34":
   version: 2.1.35
   resolution: "mime-types@npm:2.1.35"
   dependencies:
@@ -19100,6 +19343,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"peek-readable@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "peek-readable@npm:5.3.1"
+  checksum: 10c0/49f628e4728887230c158699e422ebb10747f5e02aee930ec10634fa7142e74e67d3fb3a780e7a9b9f092c61bf185f07d167c099b2359b22a58cee3dbfe0e43b
+  languageName: node
+  linkType: hard
+
 "pend@npm:~1.2.0":
   version: 1.2.0
   resolution: "pend@npm:1.2.0"
@@ -20468,6 +20718,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"remark-gfm@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "remark-gfm@npm:4.0.0"
+  dependencies:
+    "@types/mdast": "npm:^4.0.0"
+    mdast-util-gfm: "npm:^3.0.0"
+    micromark-extension-gfm: "npm:^3.0.0"
+    remark-parse: "npm:^11.0.0"
+    remark-stringify: "npm:^11.0.0"
+    unified: "npm:^11.0.0"
+  checksum: 10c0/db0aa85ab718d475c2596e27c95be9255d3b0fc730a4eda9af076b919f7dd812f7be3ac020611a8dbe5253fd29671d7b12750b56e529fdc32dfebad6dbf77403
+  languageName: node
+  linkType: hard
+
 "remark-parse@npm:^11.0.0":
   version: 11.0.0
   resolution: "remark-parse@npm:11.0.0"
@@ -20490,6 +20754,17 @@ __metadata:
     unified: "npm:^11.0.0"
     vfile: "npm:^6.0.0"
   checksum: 10c0/68f986e8ee758d415e93babda2a0d89477c15b7c200edc23b8b1d914dd6e963c5fc151a11cbbbcfa7dd237367ff3ef86e302be90f31f37a17b0748668bd8c65b
+  languageName: node
+  linkType: hard
+
+"remark-stringify@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "remark-stringify@npm:11.0.0"
+  dependencies:
+    "@types/mdast": "npm:^4.0.0"
+    mdast-util-to-markdown: "npm:^2.0.0"
+    unified: "npm:^11.0.0"
+  checksum: 10c0/0cdb37ce1217578f6f847c7ec9f50cbab35df5b9e3903d543e74b405404e67c07defcb23cd260a567b41b769400f6de03c2c3d9cd6ae7a6707d5c8d89ead489f
   languageName: node
   linkType: hard
 
@@ -21873,6 +22148,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"strtok3@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "strtok3@npm:9.0.1"
+  dependencies:
+    "@tokenizer/token": "npm:^0.3.0"
+    peek-readable: "npm:^5.3.1"
+  checksum: 10c0/ab96030c3d30899fc885ed87b305086b6421d64c1a2b9f5240c6ecffde7b819e174d67bd3b1ecc14a10f539c7a818a0ac47386b4bbb2fa913f673b6ed1c0eb78
+  languageName: node
+  linkType: hard
+
 "style-to-object@npm:^1.0.0":
   version: 1.0.8
   resolution: "style-to-object@npm:1.0.8"
@@ -22377,6 +22662,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"token-types@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "token-types@npm:6.0.0"
+  dependencies:
+    "@tokenizer/token": "npm:^0.3.0"
+    ieee754: "npm:^1.2.1"
+  checksum: 10c0/5bf5eba51d63f71f301659ff70ce10ca43e7038364883437d8b4541cc98377e3e56109b11720e25fe51047014efaccdff90eaf6de9a78270483578814b838ab9
+  languageName: node
+  linkType: hard
+
 "toposort-class@npm:^1.0.1":
   version: 1.0.1
   resolution: "toposort-class@npm:1.0.1"
@@ -22542,6 +22837,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"turndown@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "turndown@npm:7.2.0"
+  dependencies:
+    "@mixmark-io/domino": "npm:^2.2.0"
+  checksum: 10c0/6abcdcdf9d35cd79d7a8100a7de1d2226b921d5bd99e73ac14a7ead39c059978f519378913375efb04c68bcfc40f7ffe2dee0ce9ae4d54dc1235b12856a78d4e
+  languageName: node
+  linkType: hard
+
 "type-check@npm:^0.4.0, type-check@npm:~0.4.0":
   version: 0.4.0
   resolution: "type-check@npm:0.4.0"
@@ -22688,6 +22992,13 @@ __metadata:
   version: 1.5.4
   resolution: "ufo@npm:1.5.4"
   checksum: 10c0/b5dc4dc435c49c9ef8890f1b280a19ee4d0954d1d6f9ab66ce62ce64dd04c7be476781531f952a07c678d51638d02ad4b98e16237be29149295b0f7c09cda765
+  languageName: node
+  linkType: hard
+
+"uint8array-extras@npm:^1.3.0":
+  version: 1.4.0
+  resolution: "uint8array-extras@npm:1.4.0"
+  checksum: 10c0/eaffd3388634b7e5e1496073b878dd19136043137d3e7e0d2a453e37f566a5a551e640819e1a6596c6df9b9d1f7b70884cc29db6a357bdd424811f3598d504dd
   languageName: node
   linkType: hard
 

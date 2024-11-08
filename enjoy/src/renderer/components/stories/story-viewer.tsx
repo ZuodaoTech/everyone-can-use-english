@@ -5,7 +5,7 @@ import { ChevronLeftIcon, ExternalLinkIcon } from "lucide-react";
 import { Button } from "@renderer/components/ui";
 import uniq from "lodash/uniq";
 import Mark from "mark.js";
-import { Vocabulary } from "@/renderer/components";
+import { Vocabulary } from "@renderer/components";
 
 export const StoryViewer = (props: {
   story: Partial<StoryType> & Partial<CreateStoryParamsType>;

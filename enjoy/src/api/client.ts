@@ -69,8 +69,8 @@ export class Client {
           this.logger.error(
             err.response.status,
             err.response.config.method.toUpperCase(),
-            err.response.config.baseURL + err.response.config.url,
-            err.response.data
+            err.response.config.baseURL + err.response.config.url
+            // err.response.data
           );
 
           if (err.response.data) {
@@ -86,7 +86,6 @@ export class Client {
           return Promise.reject(err);
         }
 
-        this.logger.error(err.message);
         return Promise.reject(err);
       }
     );
@@ -615,5 +614,38 @@ export class Client {
     return this.api.get(`/api/chats/${chatId}/messages`, {
       params: decamelizeKeys(params),
     });
+  }
+
+  syncDocument(document: Partial<DocumentEType>) {
+    return this.api.post("/api/mine/documents", decamelizeKeys(document));
+  }
+
+  deleteDocument(id: string) {
+    return this.api.delete(`/api/mine/documents/${id}`);
+  }
+
+  translations(params?: {
+    md5?: string;
+    translatedLanguage?: string;
+    engine?: string;
+  }): Promise<
+    {
+      translations: TranslationType[];
+    } & PagyResponseType
+  > {
+    return this.api.get("/api/translations", {
+      params: decamelizeKeys(params),
+    });
+  }
+
+  createTranslation(params: {
+    md5: string;
+    content: string;
+    translatedContent: string;
+    language: string;
+    translatedLanguage: string;
+    engine: string;
+  }): Promise<TranslationType> {
+    return this.api.post("/api/translations", decamelizeKeys(params));
   }
 }

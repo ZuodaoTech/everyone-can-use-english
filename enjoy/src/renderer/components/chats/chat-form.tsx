@@ -43,8 +43,8 @@ import {
   SttEngineOptionEnum,
 } from "@/types/enums";
 import { ChevronDownIcon, ChevronUpIcon, RefreshCwIcon } from "lucide-react";
-import { useAiCommand } from "@/renderer/hooks";
-import { cn } from "@/renderer/lib/utils";
+import { useAiCommand } from "@renderer/hooks";
+import { cn } from "@renderer/lib/utils";
 
 export const ChatForm = (props: { chat: ChatType; onFinish?: () => void }) => {
   const { chat, onFinish } = props;

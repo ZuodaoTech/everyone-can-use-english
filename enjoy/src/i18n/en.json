@@ -189,6 +189,11 @@
       "onlyGPTAgentCanBeAddedToThisChat": "Only GPT agent can be added to this chat",
       "invalidAgentType": "Invalid agent type",
       "invalidMembers": "Invalid members"
+    },
+    "document": {
+      "fileNotFound": "File not found {{file}}",
+      "fileNotSupported": "File not supported {{file}}",
+      "failedToCopyFile": "Failed to copy file {{file}}"
     }
   },
   "sidebar": {
@@ -199,6 +204,7 @@
     "audios": "Audios",
     "videos": "Videos",
     "stories": "Stories",
+    "documents": "Documents",
     "books": "Books",
     "vocabulary": "Vocabulary",
     "library": "Library",
@@ -529,6 +535,8 @@
   "addedStories": "added stories",
   "addedAudios": "added audios",
   "addedVideos": "added videos",
+  "addedDocuments": "added documents",
+  "document": "document",
   "frontSide": "front side",
   "backSide": "back side",
   "aiExtractVocabulary": "AI extract vocabulary",
@@ -891,5 +899,13 @@
   "diskUsageDescription": "The disk usage of Enjoy App.",
   "releaseDiskSpace": "Release",
   "bulkDeleteRecordings": "Delete Recordings",
-  "bulkDeleteAborted": "Bulk delete aborted"
+  "bulkDeleteAborted": "Bulk delete aborted",
+  "notFound": "Not found",
+  "saved": "Saved",
+  "autoTranslate": "Auto translate",
+  "autoNextSpeech": "Auto speech",
+  "failedToLoadLink": "Failed to load link",
+  "refreshSpeech": "Refresh speech",
+  "locateParagraph": "Locate paragraph",
+  "close": "Close"
 }

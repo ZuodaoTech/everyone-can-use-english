@@ -1,7 +1,7 @@
 import {
   AudiosSegment,
   AudibleBooksSegment,
-  StoriesSegment,
+  DocumentsSegment,
   VideosSegment,
   YoutubeVideosSegment,
   EnrollmentSegment,
@@ -41,7 +41,7 @@ export default () => {
           <EnrollmentSegment />
           <AudiosSegment />
           <VideosSegment />
-          <StoriesSegment />
+          <DocumentsSegment />
           <AudibleBooksSegment />
           {channels.map((channel) => (
             <YoutubeVideosSegment key={channel} channel={channel} />

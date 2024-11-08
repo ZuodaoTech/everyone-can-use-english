@@ -260,6 +260,8 @@ type EnjoyAppType = {
         sourceId: string;
         sourceType: string;
         text: string;
+        section?: number;
+        segment?: number;
         configuration: {
           engine: string;
           model: string;
@@ -271,6 +273,7 @@ type EnjoyAppType = {
         arrayBuffer: ArrayBuffer;
       }
     ) => Promise<SpeechType>;
+    delete: (id: string) => Promise<void>;
   };
   echogarden: {
     recognize: (
@@ -394,5 +397,14 @@ type EnjoyAppType = {
     create: (params: any) => Promise<ChatMessageType>;
     update: (id: string, params: any) => Promise<ChatMessageType>;
     destroy: (id: string) => Promise<ChatMessageType>;
+  };
+  documents: {
+    findAll: (params?: any) => Promise<DocumentEType[]>;
+    findOne: (params: any) => Promise<DocumentEType>;
+    create: (params: any) => Promise<DocumentEType>;
+    update: (id: string, params: any) => Promise<DocumentEType>;
+    destroy: (id: string) => Promise<void>;
+    upload: (id: string) => Promise<void>;
+    cleanUp: () => Promise<void>;
   };
 };

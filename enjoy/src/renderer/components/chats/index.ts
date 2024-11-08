@@ -13,7 +13,5 @@ export * from "./chat-agent-card";
 export * from "./chat-settings";
 export * from "./chat-member-form";
 export * from "./chat-header";
-export * from "./chat-tts-form";
-export * from "./chat-gpt-form";
 export * from "./chat-suggestion-button";
 export * from "./chat-mentioning";

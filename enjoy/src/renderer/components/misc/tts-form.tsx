@@ -16,7 +16,7 @@ import { t } from "i18next";
 import { useContext } from "react";
 import { AISettingsProviderContext } from "@renderer/context";
 
-export const ChatTTSForm = (props: { form: ReturnType<typeof useForm> }) => {
+export const TTSForm = (props: { form: ReturnType<typeof useForm> }) => {
   const { form } = props;
   const { ttsProviders } = useContext(AISettingsProviderContext);
 
