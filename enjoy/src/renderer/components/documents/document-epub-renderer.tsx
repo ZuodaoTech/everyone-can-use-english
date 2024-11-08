@@ -30,12 +30,12 @@ export const DocumentEpubRenderer = () => {
     section,
     setSection,
     onSegmentVisible,
-    locateSegment,
+    content,
+    setContent,
   } = useContext(DocumentProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const [book, setBook] = useState<typeof EPUB>();
-  const [content, setContent] = useState<string>();
   const [title, setTitle] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -132,25 +132,9 @@ export const DocumentEpubRenderer = () => {
   useEffect(() => {
     if (!book) return;
 
-    (window as any).book = book;
     refreshBookMetadata();
     renderCurrentSection();
   }, [book, section]);
-
-  // auto scroll to the top when new section is rendered
-  useEffect(() => {
-    if (!content) return;
-    if (!ref?.current) return;
-
-    if (document.lastReadPosition.section === section) {
-      const element = locateSegment(
-        `segment-${document.lastReadPosition.segment || 0}`
-      );
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }
-  }, [section, content]);
 
   if (!book) return <LoaderSpin />;
 

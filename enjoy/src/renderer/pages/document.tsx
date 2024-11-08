@@ -10,6 +10,7 @@ import {
   DocumentEpubRenderer,
   DocumentPlayer,
   LoaderSpin,
+  DocumentTextRenderer,
 } from "@renderer/components";
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -56,6 +57,9 @@ const DocumentComponent = () => {
           >
             {document.metadata.extension === "html" && <DocumentHtmlRenderer />}
             {document.metadata.extension === "epub" && <DocumentEpubRenderer />}
+            {["txt", "md", "markdown"].includes(
+              document.metadata.extension
+            ) && <DocumentTextRenderer />}
           </ScrollArea>
         </ResizablePanel>
         <ResizableHandle

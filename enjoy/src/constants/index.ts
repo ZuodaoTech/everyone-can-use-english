@@ -61,7 +61,7 @@ export const AudioFormats = ["mp3", "wav", "ogg", "flac", "m4a", "wma", "aac"];
 
 export const VideoFormats = ["mp4", "mkv", "avi", "mov", "wmv", "flv", "webm"];
 
-export const DocumentFormats = ["epub", "md", "html", "txt"];
+export const DocumentFormats = ["epub", "md", "markdown", "html", "txt"];
 
 export const PROCESS_TIMEOUT = 1000 * 60 * 15;
 

@@ -35,6 +35,8 @@ type DocumentProviderProps = {
   onSpeech: (segment: string) => void;
   onSegmentVisible: (id: string) => void;
   locateSegment: (id: string) => HTMLElement | null;
+  content: string;
+  setContent: (content: string) => void;
 };
 
 export const DocumentProviderContext = createContext<DocumentProviderProps>({
@@ -49,6 +51,8 @@ export const DocumentProviderContext = createContext<DocumentProviderProps>({
   onSpeech: () => {},
   onSegmentVisible: () => {},
   locateSegment: () => null,
+  content: "",
+  setContent: () => {},
 });
 
 export function DocumentProvider({
@@ -76,6 +80,7 @@ export function DocumentProvider({
     index: number;
     text: string;
   } | null>(null);
+  const [content, setContent] = useState<string>();
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -198,6 +203,21 @@ export function DocumentProvider({
     };
   }, [ref, playingSegmentId]);
 
+  // auto scroll to the top when new section is rendered
+  useEffect(() => {
+    if (!content) return;
+    if (!ref?.current) return;
+
+    if (document.lastReadPosition.section === section) {
+      const element = locateSegment(
+        `segment-${document.lastReadPosition.segment || 0}`
+      );
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [section, content]);
+
   useEffect(() => {
     if (!document) return;
     setSection(document.lastReadPosition.section || 0);
@@ -227,6 +247,8 @@ export function DocumentProvider({
         onSpeech,
         onSegmentVisible,
         locateSegment,
+        content,
+        setContent,
       }}
     >
       <MediaShadowProvider

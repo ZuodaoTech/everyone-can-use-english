@@ -1,48 +1,32 @@
-import { Readability } from "@mozilla/readability";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import {
   DocumentConfigButton,
   LoaderSpin,
   MarkdownWrapper,
 } from "@renderer/components";
-import Turndown from "turndown";
 import {
   AppSettingsProviderContext,
   DocumentProviderContext,
-} from "@/renderer/context";
-import { Button } from "../ui";
+} from "@renderer/context";
+import { Button } from "@renderer/components/ui";
 import { LinkIcon } from "lucide-react";
 
-export const DocumentHtmlRenderer = () => {
+export const DocumentTextRenderer = () => {
   const { document, onSpeech, onSegmentVisible, content, setContent } =
     useContext(DocumentProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const [title, setTitle] = useState<string>("");
 
   const fetchContent = async () => {
     const res = await fetch(document.src);
+    console.log("res", res);
     const text = await res.text();
-    const doc = new DOMParser().parseFromString(text, "text/html");
-    setTitle(doc.title || document.title);
-    const readability = new Readability(doc);
-    const article = readability.parse();
-    const markdownContent = new Turndown().turndown(article.content);
-    setContent(markdownContent);
+    console.log("text", text);
+    setContent(text);
   };
 
   useEffect(() => {
     fetchContent();
   }, [document.src]);
-
-  useEffect(() => {
-    if (!title) return;
-
-    if (document.title !== title) {
-      EnjoyApp.documents.update(document.id, {
-        title,
-      });
-    }
-  }, [title]);
 
   if (!content) return <LoaderSpin />;
 
@@ -53,7 +37,7 @@ export const DocumentHtmlRenderer = () => {
           <DocumentConfigButton document={document} />
         </div>
         <div className="text-xs text-muted-foreground max-w-full truncate">
-          {title}
+          {document.title}
         </div>
         <div className="flex items-center gap-2">
           {document.metadata?.source && (
