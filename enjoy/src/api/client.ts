@@ -623,4 +623,29 @@ export class Client {
   deleteDocument(id: string) {
     return this.api.delete(`/api/mine/documents/${id}`);
   }
+
+  translations(params?: {
+    md5?: string;
+    translatedLanguage?: string;
+    engine?: string;
+  }): Promise<
+    {
+      translations: TranslationType[];
+    } & PagyResponseType
+  > {
+    return this.api.get("/api/translations", {
+      params: decamelizeKeys(params),
+    });
+  }
+
+  createTranslation(params: {
+    md5: string;
+    content: string;
+    translatedContent: string;
+    language: string;
+    translatedLanguage: string;
+    engine: string;
+  }): Promise<TranslationType> {
+    return this.api.post("/api/translations", decamelizeKeys(params));
+  }
 }
