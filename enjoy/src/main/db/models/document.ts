@@ -49,6 +49,12 @@ export class Document extends Model<Document> {
   @Column(DataType.STRING)
   title: string;
 
+  @Column(DataType.STRING)
+  coverUrl: string;
+
+  @Column(DataType.STRING)
+  source: string;
+
   @Column(DataType.JSON)
   metadata: Record<string, any>;
 
@@ -269,7 +275,7 @@ export class Document extends Model<Document> {
       modified: stat.mtime,
       mimeType,
       extension,
-      source: params.source,
+      extname: extension,
     };
 
     // generate ID
@@ -301,6 +307,7 @@ export class Document extends Model<Document> {
           voice: "alloy",
         },
       },
+      source,
     } = params || {};
 
     const record = this.build({
@@ -309,6 +316,7 @@ export class Document extends Model<Document> {
       title,
       metadata,
       config,
+      source,
     });
 
     return record.save().catch((err) => {

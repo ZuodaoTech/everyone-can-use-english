@@ -21,6 +21,12 @@ async function up({ context: queryInterface }) {
       language: {
         type: DataTypes.STRING,
       },
+      cover_url: {
+        type: DataTypes.STRING,
+      },
+      source: {
+        type: DataTypes.STRING,
+      },
       metadata: {
         type: DataTypes.JSON,
         allowNull: false,

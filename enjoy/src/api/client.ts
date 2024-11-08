@@ -617,10 +617,10 @@ export class Client {
   }
 
   syncDocument(document: Partial<DocumentEType>) {
-    return this.api.post("/api/documents", decamelizeKeys(document));
+    return this.api.post("/api/mine/documents", decamelizeKeys(document));
   }
 
   deleteDocument(id: string) {
-    return this.api.delete(`/api/documents/${id}`);
+    return this.api.delete(`/api/mine/documents/${id}`);
   }
 }
