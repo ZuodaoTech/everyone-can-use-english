@@ -188,9 +188,11 @@ export function DocumentProvider({
     const element = locateSegment(playingSegmentId);
     if (!element) return;
 
+    const index = parseInt(element.dataset.index || "0");
+    findNextSegment(index + 1);
     setPlayingSegment({
       id: element.id,
-      index: parseInt(element.dataset.index || "0"),
+      index,
       text: element.querySelector(".segment-content")?.textContent?.trim(),
     });
 
