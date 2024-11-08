@@ -83,12 +83,6 @@ export function DocumentProvider({
     return ref.current?.querySelector(`#${id}`) as HTMLElement | null;
   };
 
-  const findPlayingSegment = async (index: number) => {
-    if (!playingSegmentId) return;
-
-    return locateSegment(playingSegmentId);
-  };
-
   const findNextSegment = async (index: number) => {
     if (!document.config.autoNextSpeech) return;
 
@@ -145,7 +139,7 @@ export function DocumentProvider({
     EnjoyApp.documents.update(document.id, {
       lastReadPosition: {
         section: parseInt(sectionIndex),
-        paragraph: parseInt(index),
+        segment: parseInt(index),
       },
       lastReadAt: new Date(),
     });

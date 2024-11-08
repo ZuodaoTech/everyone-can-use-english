@@ -142,8 +142,15 @@ export const DocumentEpubRenderer = () => {
     if (!content) return;
     if (!ref?.current) return;
 
-    locateSegment(`segment-${document.lastReadPosition.segment || 0}`);
-  }, [content]);
+    if (document.lastReadPosition.section === section) {
+      const element = locateSegment(
+        `segment-${document.lastReadPosition.segment || 0}`
+      );
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [section, content]);
 
   if (!book) return <LoaderSpin />;
 
