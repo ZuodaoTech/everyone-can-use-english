@@ -11,15 +11,15 @@
   },
   "dependencies": {
     "@nuxtjs/seo": "^2.0.0-rc.23",
-    "nuxt": "^3.13.2",
-    "nuxt-og-image": "^3.0.6",
+    "nuxt": "^3.14.159",
+    "nuxt-og-image": "^3.0.8",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
-    "sass": "^1.80.3",
+    "sass": "^1.80.6",
     "tailwindcss": "^3.4.14"
   }
 }
