@@ -138,7 +138,7 @@ export const DocumentAddButton = () => {
                 properties: ["openFile"],
                 filters: [
                   {
-                    name: "documents",
+                    name: t("documents"),
                     extensions: DocumentFormats,
                   },
                 ],

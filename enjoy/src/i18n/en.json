@@ -535,6 +535,8 @@
   "addedStories": "added stories",
   "addedAudios": "added audios",
   "addedVideos": "added videos",
+  "addedDocuments": "added documents",
+  "document": "document",
   "frontSide": "front side",
   "backSide": "back side",
   "aiExtractVocabulary": "AI extract vocabulary",
@@ -902,5 +904,8 @@
   "saved": "Saved",
   "autoTranslate": "Auto translate",
   "autoNextSpeech": "Auto speech",
-  "failedToLoadLink": "Failed to load link"
+  "failedToLoadLink": "Failed to load link",
+  "refreshSpeech": "Refresh speech",
+  "locateParagraph": "Locate paragraph",
+  "close": "Close"
 }

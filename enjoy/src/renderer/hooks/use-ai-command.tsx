@@ -109,7 +109,7 @@ export const useAiCommand = () => {
     try {
       const res = await webApi.translations({
         md5,
-        translatedLanguage: learningLanguage,
+        translatedLanguage: nativeLanguage,
         engine: modelName,
       });
 
@@ -131,8 +131,8 @@ export const useAiCommand = () => {
         md5,
         content: text,
         translatedContent,
-        language: nativeLanguage,
-        translatedLanguage: learningLanguage,
+        language: learningLanguage,
+        translatedLanguage: nativeLanguage,
         engine: modelName,
       });
     }

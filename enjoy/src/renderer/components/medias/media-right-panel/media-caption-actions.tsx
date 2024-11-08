@@ -173,6 +173,7 @@ export const MediaCaptionActions = (props: {
             className="rounded-full w-8 h-8 p-0"
             data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("displayIpa")}
+            data-tooltip-place="left"
             onClick={() => setDisplayIpa(!displayIpa)}
           >
             <SpeechIcon className="w-4 h-4" />
@@ -184,6 +185,7 @@ export const MediaCaptionActions = (props: {
             className="rounded-full w-8 h-8 p-0"
             data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("displayNotes")}
+            data-tooltip-place="left"
             onClick={() => setDisplayNotes(!displayNotes)}
           >
             <NotebookPenIcon className="w-4 h-4" />
@@ -195,6 +197,7 @@ export const MediaCaptionActions = (props: {
               <Button
                 data-tooltip-id="media-shadow-tooltip"
                 data-tooltip-content={t("sendToAIAssistant")}
+                data-tooltip-place="left"
                 variant="outline"
                 size="sm"
                 className="p-0 w-8 h-8 rounded-full"
@@ -210,6 +213,7 @@ export const MediaCaptionActions = (props: {
             className="rounded-full w-8 h-8 p-0"
             data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("copyText")}
+            data-tooltip-place="left"
             onClick={() => {
               if (displayIpa) {
                 const text = caption.timeline
@@ -245,6 +249,7 @@ export const MediaCaptionActions = (props: {
               <CopyIcon
                 data-tooltip-id="media-shadow-tooltip"
                 data-tooltip-content={t("copyText")}
+                data-tooltip-place="left"
                 className="w-4 h-4"
               />
             )}
@@ -256,6 +261,7 @@ export const MediaCaptionActions = (props: {
             className="rounded-full w-8 h-8 p-0"
             data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={t("downloadSegment")}
+            data-tooltip-place="left"
             onClick={handleDownload}
           >
             <DownloadIcon className="w-4 h-4" />

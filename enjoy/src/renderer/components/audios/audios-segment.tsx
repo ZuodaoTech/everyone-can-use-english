@@ -62,7 +62,7 @@ export const AudiosSegment = (props: { limit?: number }) => {
 
       {audios.length === 0 ? (
         <div className="flex items-center justify-center h-48 border border-dashed rounded-lg">
-          <MediaAddButton />
+          <MediaAddButton type="Audio" />
         </div>
       ) : (
         <ScrollArea>

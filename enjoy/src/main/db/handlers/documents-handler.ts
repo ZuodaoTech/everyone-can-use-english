@@ -152,7 +152,6 @@ class DocumentsHandler {
     ipcMain.removeHandler("documents-destroy");
     ipcMain.removeHandler("documents-upload");
     ipcMain.removeHandler("documents-clean-up");
-    ipcMain.removeHandler("audios-clean-up");
   }
 }
 

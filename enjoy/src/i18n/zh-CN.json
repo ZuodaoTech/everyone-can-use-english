@@ -535,6 +535,8 @@
   "addedStories": "添加的文章",
   "addedAudios": "添加的音频",
   "addedVideos": "添加的视频",
+  "addedDocuments": "添加的文档",
+  "document": "文档",
   "frontSide": "正面",
   "backSide": "反面",
   "aiExtractVocabulary": "AI 提取生词",
@@ -902,5 +904,8 @@
   "saved": "已保存",
   "autoTranslate": "自动翻译",
   "autoNextSpeech": "连续朗读",
-  "failedToLoadLink": "加载链接失败"
+  "failedToLoadLink": "加载链接失败",
+  "refreshSpeech": "刷新语音",
+  "locateParagraph": "定位段落",
+  "close": "关闭"
 }

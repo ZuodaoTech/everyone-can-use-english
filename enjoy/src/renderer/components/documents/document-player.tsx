@@ -14,6 +14,7 @@ import { t } from "i18next";
 import {
   ChevronLeftIcon,
   LoaderIcon,
+  LocateFixedIcon,
   RefreshCcwIcon,
   XIcon,
 } from "lucide-react";
@@ -38,16 +39,21 @@ export const DocumentPlayer = () => {
   const { tts } = useSpeech();
   const [audio, setAudio] = useState<AudioType | null>(null);
 
-  const findParagraph = () => {
-    if (!playingParagraph) return;
-
-    const element: HTMLElement | null = ref.current?.querySelector(
-      `#${playingParagraph}`
-    );
+  const locateParagraph = (id: string) => {
+    const element: HTMLElement | null = ref.current?.querySelector(`#${id}`);
     if (!element) return;
 
     element.scrollIntoView({ behavior: "smooth", block: "center" });
     element.classList.add("playing-paragraph", "bg-yellow-100");
+
+    return element;
+  };
+
+  const findParagraph = () => {
+    if (!playingParagraph) return;
+
+    const element = locateParagraph(playingParagraph);
+    if (!element) return;
 
     setParagraph({
       id: element.id,
@@ -256,11 +262,31 @@ export const DocumentPlayer = () => {
           className="w-full h-full"
         />
         <div className="flex justify-center space-x-4">
-          <Button variant="outline" size="icon" onClick={refreshSpeech}>
+          <Button
+            data-tooltip-content={t("refreshSpeech")}
+            data-tooltip-place="bottom"
+            data-tooltip-id="global-tooltip"
+            variant="outline"
+            size="icon"
+            onClick={refreshSpeech}
+          >
             <RefreshCcwIcon className="w-4 h-4" />
+          </Button>
+          <Button
+            data-tooltip-content={t("locateParagraph")}
+            data-tooltip-place="bottom"
+            data-tooltip-id="global-tooltip"
+            variant="outline"
+            size="icon"
+            onClick={() => locateParagraph(playingParagraph)}
+          >
+            <LocateFixedIcon className="w-4 h-4" />
           </Button>
           <Button onClick={startShadow}>{t("shadowingExercise")}</Button>
           <Button
+            data-tooltip-content={t("close")}
+            data-tooltip-place="bottom"
+            data-tooltip-id="global-tooltip"
             variant="outline"
             size="icon"
             onClick={() => togglePlayingParagraph(null)}
@@ -278,7 +304,7 @@ export const DocumentPlayer = () => {
         <Button
           variant="ghost"
           size="icon"
-          className="h-5 w-5"
+          className="h-6 w-6"
           onClick={() => togglePlayingParagraph(null)}
         >
           <XIcon className="w-4 h-4" />

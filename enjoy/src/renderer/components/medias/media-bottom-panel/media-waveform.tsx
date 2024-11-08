@@ -269,6 +269,7 @@ export const MediaWaveform = () => {
             variant={`${action.active ? "secondary" : "ghost"}`}
             data-tooltip-id="media-shadow-tooltip"
             data-tooltip-content={action.label}
+            data-tooltip-place="left"
             className="relative p-0 w-full h-full rounded-none"
             onClick={action.onClick}
           >
@@ -284,6 +285,7 @@ export const MediaWaveform = () => {
                 size="icon"
                 data-tooltip-id="media-shadow-tooltip"
                 data-tooltip-content={t("more")}
+                data-tooltip-place="left"
                 className="relative p-0 w-full h-full rounded-none"
               >
                 <MoreHorizontalIcon className="w-4 h-4" />

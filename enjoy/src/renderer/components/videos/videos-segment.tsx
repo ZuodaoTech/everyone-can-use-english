@@ -62,7 +62,7 @@ export const VideosSegment = (props: { limit?: number }) => {
 
       {videos.length === 0 ? (
         <div className="flex items-center justify-center h-48 border border-dashed rounded-lg">
-          <MediaAddButton />
+          <MediaAddButton type="Video" />
         </div>
       ) : (
         <ScrollArea>
