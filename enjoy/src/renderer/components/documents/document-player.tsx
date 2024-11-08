@@ -12,7 +12,6 @@ import {
 } from "@renderer/components";
 import { t } from "i18next";
 import {
-  ChevronLeftIcon,
   LoaderIcon,
   LocateFixedIcon,
   RefreshCcwIcon,
@@ -20,84 +19,21 @@ import {
 } from "lucide-react";
 
 export const DocumentPlayer = () => {
-  const { ref, document, section, playingParagraph, togglePlayingParagraph } =
-    useContext(DocumentProviderContext);
+  const {
+    ref,
+    document,
+    section,
+    togglePlayingSegment,
+    locateSegment,
+    playingSegment,
+    nextSegment,
+  } = useContext(DocumentProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
-  const [paragraph, setParagraph] = useState<{
-    id: string;
-    index: number;
-    text: string;
-  } | null>(null);
-  const [nextParagraph, setNextParagraph] = useState<{
-    id: string;
-    index: number;
-    text: string;
-  } | null>(null);
   const [speech, setSpeech] = useState<SpeechType | null>(null);
   const [speeching, setSpeeching] = useState(false);
   const [resourcing, setResourcing] = useState(false);
   const { tts } = useSpeech();
   const [audio, setAudio] = useState<AudioType | null>(null);
-
-  const locateParagraph = (id: string) => {
-    const element: HTMLElement | null = ref.current?.querySelector(`#${id}`);
-    if (!element) return;
-
-    element.scrollIntoView({ behavior: "smooth", block: "center" });
-    element.classList.add("playing-paragraph", "bg-yellow-100");
-
-    return element;
-  };
-
-  const findParagraph = () => {
-    if (!playingParagraph) return;
-
-    const element = locateParagraph(playingParagraph);
-    if (!element) return;
-
-    setParagraph({
-      id: element.id,
-      index: parseInt(element.dataset.index),
-      text: element.querySelector(".paragraph-content")?.textContent?.trim(),
-    });
-  };
-
-  const findNextParagraph = async (index: number) => {
-    if (!document.config.autoNextSpeech) return;
-
-    const next: HTMLElement | null = ref.current?.querySelector(
-      `[data-index="${index}"]`
-    );
-    if (!next) return;
-
-    const text = next.querySelector(".paragraph-content")?.textContent?.trim();
-    if (!text) {
-      return findNextParagraph(index + 1);
-    }
-
-    const existingSpeech = await EnjoyApp.speeches.findOne({
-      sourceId: document.id,
-      sourceType: "Document",
-      section,
-      paragraph: index,
-    });
-
-    if (!existingSpeech) {
-      tts({
-        sourceId: document.id,
-        sourceType: "Document",
-        section,
-        paragraph: index,
-        text,
-        configuration: document.config.tts,
-      });
-    }
-    setNextParagraph({
-      id: next.id,
-      index,
-      text,
-    });
-  };
 
   const startShadow = async () => {
     if (!speech) return;
@@ -112,7 +48,7 @@ export const DocumentPlayer = () => {
       setResourcing(true);
       EnjoyApp.audios
         .create(speech.filePath, {
-          name: `[S${section}P${paragraph.index}]-${document.title}`,
+          name: `[S${section}P${playingSegment.index}]-${document.title}`,
           originalText: speech.text,
         })
         .then((audio) => setAudio(audio))
@@ -122,19 +58,19 @@ export const DocumentPlayer = () => {
   };
 
   const findOrCreateSpeech = async () => {
-    if (typeof section !== "number" || !paragraph) return;
+    if (typeof section !== "number" || !playingSegment) return;
 
     const existingSpeech = await EnjoyApp.speeches.findOne({
       sourceId: document.id,
       sourceType: "Document",
       section,
-      paragraph: paragraph.index,
+      segment: playingSegment.index,
     });
 
     if (existingSpeech) {
       setSpeech(existingSpeech);
     } else {
-      createSpeech(paragraph);
+      createSpeech(playingSegment);
     }
   };
 
@@ -146,16 +82,16 @@ export const DocumentPlayer = () => {
     findOrCreateSpeech();
   };
 
-  const createSpeech = async (paragraph: { index: number; text: string }) => {
+  const createSpeech = async (segment: { index: number; text: string }) => {
     if (speeching) return;
-    const { index, text } = paragraph;
+    const { index, text } = segment;
 
     setSpeeching(true);
     tts({
       sourceId: document.id,
       sourceType: "Document",
       section,
-      paragraph: index,
+      segment: index,
       text,
       configuration: document.config.tts,
     })
@@ -171,38 +107,23 @@ export const DocumentPlayer = () => {
   };
 
   useEffect(() => {
-    if (typeof section !== "number" || !paragraph) return;
+    if (typeof section !== "number" || !playingSegment) return;
     findOrCreateSpeech();
-    findNextParagraph(paragraph.index + 1);
 
     return () => {
       setSpeech(null);
       setAudio(null);
     };
-  }, [paragraph]);
-
-  useEffect(() => {
-    if (!ref.current) return;
-    if (!playingParagraph) return;
-
-    findParagraph();
-
-    return () => {
-      setParagraph(null);
-      ref.current?.querySelectorAll(".playing-paragraph").forEach((el) => {
-        el.classList.remove("playing-paragraph", "bg-yellow-100");
-      });
-    };
-  }, [ref, playingParagraph]);
+  }, [playingSegment]);
 
   // Close the player when the section changes
   useEffect(() => {
     return () => {
-      togglePlayingParagraph(null);
+      togglePlayingSegment(null);
     };
   }, [section]);
 
-  if (typeof section !== "number" || !paragraph) {
+  if (typeof section !== "number" || !playingSegment) {
     return <LoaderSpin />;
   }
 
@@ -239,7 +160,7 @@ export const DocumentPlayer = () => {
         <Button
           variant="outline"
           size="icon"
-          onClick={() => togglePlayingParagraph(null)}
+          onClick={() => togglePlayingSegment(null)}
         >
           <XIcon className="w-4 h-4" />
         </Button>
@@ -255,8 +176,8 @@ export const DocumentPlayer = () => {
           src={speech.src}
           autoplay={true}
           onEnded={() => {
-            if (nextParagraph) {
-              togglePlayingParagraph(nextParagraph.id);
+            if (nextSegment) {
+              togglePlayingSegment(nextSegment.id);
             }
           }}
           className="w-full h-full"
@@ -278,7 +199,7 @@ export const DocumentPlayer = () => {
             data-tooltip-id="global-tooltip"
             variant="outline"
             size="icon"
-            onClick={() => locateParagraph(playingParagraph)}
+            onClick={() => locateSegment(playingSegment.id)}
           >
             <LocateFixedIcon className="w-4 h-4" />
           </Button>
@@ -289,7 +210,7 @@ export const DocumentPlayer = () => {
             data-tooltip-id="global-tooltip"
             variant="outline"
             size="icon"
-            onClick={() => togglePlayingParagraph(null)}
+            onClick={() => togglePlayingSegment(null)}
           >
             <XIcon className="w-4 h-4" />
           </Button>
@@ -305,7 +226,7 @@ export const DocumentPlayer = () => {
           variant="ghost"
           size="icon"
           className="h-6 w-6"
-          onClick={() => togglePlayingParagraph(null)}
+          onClick={() => togglePlayingSegment(null)}
         >
           <XIcon className="w-4 h-4" />
         </Button>

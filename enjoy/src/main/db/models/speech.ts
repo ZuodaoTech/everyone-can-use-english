@@ -76,7 +76,7 @@ export class Speech extends Model<Speech> {
 
   @AllowNull(true)
   @Column(DataType.INTEGER)
-  paragraph: number;
+  segment: number;
 
   @AllowNull(false)
   @Column(DataType.JSON)

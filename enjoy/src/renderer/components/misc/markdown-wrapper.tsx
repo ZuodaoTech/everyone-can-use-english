@@ -38,21 +38,23 @@ function rehypeWrapText() {
   };
 }
 
-// Memoize the Paragraph component
-const Paragraph = memo(
+// Memoize the Segment component
+const Segment = memo(
   ({
+    tag: Tag,
     index,
     children,
-    onParagraphVisible,
+    onSegmentVisible,
     onSpeech,
     autoTranslate,
     translatable,
     section,
     ...props
   }: {
+    tag: "h1" | "h2" | "h3" | "h4" | "h5" | "p";
     index: number;
     children: any;
-    onParagraphVisible?: (id: string) => void;
+    onSegmentVisible?: (id: string) => void;
     onSpeech?: (id: string) => void;
     autoTranslate?: boolean;
     translatable?: boolean;
@@ -81,7 +83,7 @@ const Paragraph = memo(
       if (translating) return;
 
       const content = entry.target
-        ?.querySelector(".paragraph-content")
+        ?.querySelector(".segment-content")
         ?.textContent?.trim();
       if (!content) return;
 
@@ -110,14 +112,14 @@ const Paragraph = memo(
     const content = useMemo(() => {
       if (!entry?.target) return "";
       return entry.target?.textContent?.trim();
-    }, [entry?.target]);
+    }, [entry]);
 
-    const id = `paragraph-${index}`;
+    const id = `segment-${index}`;
 
     useEffect(() => {
-      if (!onParagraphVisible) return;
+      if (!onSegmentVisible) return;
       if (entry?.isIntersecting) {
-        onParagraphVisible(`paragraph-${index}`);
+        onSegmentVisible(`segment-${index}`);
         if (autoTranslate) {
           handleTranslate();
         }
@@ -126,13 +128,12 @@ const Paragraph = memo(
 
     return (
       <>
-        <p
+        <Tag
+          id={`segment-${index}`}
           ref={ref}
-          id={id}
-          className="paragraph"
           data-index={index}
           data-section={section}
-          {...props}
+          className="segment"
         >
           <span className="flex items-center gap-2 opacity-50 hover:opacity-100">
             {content && (onSpeech || translatable) && (
@@ -167,10 +168,10 @@ const Paragraph = memo(
               </Button>
             )}
           </span>
-          <span className="paragraph-content">{children}</span>
-        </p>
+          <span className="segment-content">{children}</span>
+        </Tag>
         {translation && (
-          <p id={`translation-${index}`}>
+          <Tag id={`translation-${index}`}>
             {translation}
             <Button
               variant="ghost"
@@ -180,7 +181,7 @@ const Paragraph = memo(
             >
               <RefreshCwIcon className="w-3 h-3" />
             </Button>
-          </p>
+          </Tag>
         )}
       </>
     );
@@ -194,7 +195,7 @@ export const MarkdownWrapper = memo(
     className,
     onLinkClick,
     onSpeech,
-    onParagraphVisible,
+    onSegmentVisible,
     translatable = false,
     autoTranslate,
     section,
@@ -204,7 +205,7 @@ export const MarkdownWrapper = memo(
     className?: string;
     onLinkClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
     onSpeech?: (id: string) => void;
-    onParagraphVisible?: (id: string) => void;
+    onSegmentVisible?: (id: string) => void;
     translatable?: boolean;
     autoTranslate?: boolean;
     section?: number;
@@ -213,7 +214,28 @@ export const MarkdownWrapper = memo(
     const handleLinkClick = useCallback(onLinkClick, [onLinkClick]);
 
     const components = useMemo(() => {
-      let paragraphIndex = 0;
+      let segmentIndex = 0;
+      const HEADER_COMPONENTS = ["h1", "h2", "h3", "h4", "h5", "p"] as const;
+
+      const headerComponents = Object.fromEntries(
+        HEADER_COMPONENTS.map((tag) => [
+          tag,
+          ({ node, children, ...props }: any) => (
+            <Segment
+              tag={tag}
+              index={segmentIndex++}
+              onSegmentVisible={onSegmentVisible}
+              onSpeech={onSpeech}
+              autoTranslate={autoTranslate}
+              translatable={translatable}
+              section={section}
+              {...props}
+            >
+              {children}
+            </Segment>
+          ),
+        ])
+      );
 
       return {
         a({ node, children, ...props }: any) {
@@ -232,23 +254,9 @@ export const MarkdownWrapper = memo(
         vocabulary({ node, children, ...props }: any) {
           return <Sentence sentence={props.text} />;
         },
-        p({ node, children, ...props }: any) {
-          return (
-            <Paragraph
-              index={paragraphIndex++}
-              onParagraphVisible={onParagraphVisible}
-              onSpeech={onSpeech}
-              autoTranslate={autoTranslate}
-              translatable={translatable}
-              section={section}
-              {...props}
-            >
-              {children}
-            </Paragraph>
-          );
-        },
+        ...headerComponents,
       };
-    }, [handleLinkClick, onParagraphVisible, onSpeech, autoTranslate, section]);
+    }, [handleLinkClick, onSegmentVisible, onSpeech, autoTranslate, section]);
 
     return (
       <Markdown

@@ -23,8 +23,15 @@ import {
 } from "@renderer/context";
 
 export const DocumentEpubRenderer = () => {
-  const { ref, document, onSpeech, section, setSection, onParagraphVisible } =
-    useContext(DocumentProviderContext);
+  const {
+    ref,
+    document,
+    onSpeech,
+    section,
+    setSection,
+    onSegmentVisible,
+    locateSegment,
+  } = useContext(DocumentProviderContext);
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const [book, setBook] = useState<typeof EPUB>();
@@ -135,14 +142,7 @@ export const DocumentEpubRenderer = () => {
     if (!content) return;
     if (!ref?.current) return;
 
-    let anchor = ref.current?.querySelector(
-      `[data-index="${document.lastReadPosition.paragraph || 0}"]`
-    );
-    anchor ||= ref.current?.querySelector("#start-anchor");
-
-    anchor?.scrollIntoView({
-      behavior: "smooth",
-    });
+    locateSegment(`segment-${document.lastReadPosition.segment || 0}`);
   }, [content]);
 
   if (!book) return <LoaderSpin />;
@@ -213,7 +213,7 @@ export const DocumentEpubRenderer = () => {
         <MarkdownWrapper
           className="mx-auto max-w-full"
           onLinkClick={handleLinkClick}
-          onParagraphVisible={onParagraphVisible}
+          onSegmentVisible={onSegmentVisible}
           autoTranslate={document.config.autoTranslate}
           onSpeech={onSpeech}
           translatable={true}

@@ -6,7 +6,7 @@ async function up({ context: queryInterface }) {
     allowNull: true,
     defaultValue: 0,
   });
-  await queryInterface.addColumn("speeches", "paragraph", {
+  await queryInterface.addColumn("speeches", "segment", {
     type: DataTypes.INTEGER,
     allowNull: true,
     defaultValue: 0,
@@ -15,7 +15,7 @@ async function up({ context: queryInterface }) {
 
 async function down({ context: queryInterface }) {
   await queryInterface.removeColumn("speeches", "section");
-  await queryInterface.removeColumn("speeches", "paragraph");
+  await queryInterface.removeColumn("speeches", "segment");
 }
 
 export { up, down };

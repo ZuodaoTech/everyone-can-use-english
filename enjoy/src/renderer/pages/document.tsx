@@ -27,7 +27,7 @@ export default () => {
 };
 
 const DocumentComponent = () => {
-  const { document, playingParagraph } = useContext(DocumentProviderContext);
+  const { document, playingSegment } = useContext(DocumentProviderContext);
   const navigate = useNavigate();
 
   if (!document) {
@@ -51,7 +51,7 @@ const DocumentComponent = () => {
         <ResizablePanel id="document" order={0}>
           <ScrollArea
             className={`h-full px-4 pb-6 border rounded-lg shadow-lg ${
-              playingParagraph ? "" : "max-w-screen-md mx-auto"
+              playingSegment ? "" : "max-w-screen-md mx-auto"
             }`}
           >
             {document.metadata.extension === "html" && <DocumentHtmlRenderer />}
@@ -59,12 +59,12 @@ const DocumentComponent = () => {
           </ScrollArea>
         </ResizablePanel>
         <ResizableHandle
-          className={playingParagraph ? "invisible mx-2" : "invisible"}
+          className={playingSegment ? "invisible mx-2" : "invisible"}
         />
         <ResizablePanel
           id="player"
           order={1}
-          className={playingParagraph ? "" : "invisible fixed"}
+          className={playingSegment ? "" : "invisible fixed"}
         >
           <DocumentPlayer />
         </ResizablePanel>

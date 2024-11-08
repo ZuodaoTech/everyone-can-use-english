@@ -261,7 +261,7 @@ type EnjoyAppType = {
         sourceType: string;
         text: string;
         section?: number;
-        paragraph?: number;
+        segment?: number;
         configuration: {
           engine: string;
           model: string;

@@ -25,6 +25,8 @@ class SpeechesHandler {
       sourceId: string;
       sourceType: string;
       text: string;
+      section?: number;
+      segment?: number;
       configuration: {
         engine: string;
         model: string;

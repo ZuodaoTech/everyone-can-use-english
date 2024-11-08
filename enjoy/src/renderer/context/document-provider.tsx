@@ -3,7 +3,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -14,27 +13,42 @@ import {
 } from "@renderer/context";
 import { toast } from "@renderer/components/ui";
 import debounce from "lodash/debounce";
+import { useSpeech } from "@renderer/hooks";
 
 type DocumentProviderProps = {
   ref: React.RefObject<HTMLDivElement>;
   document: DocumentEType;
-  playingParagraph: string | null;
-  togglePlayingParagraph: (paragraph: string | null) => void;
+  playingSegmentId: string | null;
+  playingSegment: {
+    id: string;
+    index: number;
+    text: string;
+  } | null;
+  nextSegment: {
+    id: string;
+    index: number;
+    text: string;
+  } | null;
+  togglePlayingSegment: (segment: string | null) => void;
   section: number;
   setSection: (section: number) => void;
-  onSpeech: (paragraph: string) => void;
-  onParagraphVisible: (id: string) => void;
+  onSpeech: (segment: string) => void;
+  onSegmentVisible: (id: string) => void;
+  locateSegment: (id: string) => HTMLElement | null;
 };
 
 export const DocumentProviderContext = createContext<DocumentProviderProps>({
   ref: null,
   document: null,
-  playingParagraph: null,
-  togglePlayingParagraph: () => {},
+  playingSegmentId: null,
+  playingSegment: null,
+  nextSegment: null,
+  togglePlayingSegment: () => {},
   section: 0,
   setSection: () => {},
   onSpeech: () => {},
-  onParagraphVisible: () => {},
+  onSegmentVisible: () => {},
+  locateSegment: () => null,
 });
 
 export function DocumentProvider({
@@ -46,13 +60,73 @@ export function DocumentProvider({
 }) {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
+
+  const { tts } = useSpeech();
+
   const [document, setDocument] = useState<DocumentEType>(null);
   const [section, setSection] = useState(0);
-  const [playingParagraph, setPlayingParagraph] = useState<string | null>(null);
+  const [playingSegmentId, setPlayingSegmentId] = useState<string | null>(null);
+  const [playingSegment, setPlayingSegment] = useState<{
+    id: string;
+    index: number;
+    text: string;
+  } | null>(null);
+  const [nextSegment, setNextSegment] = useState<{
+    id: string;
+    index: number;
+    text: string;
+  } | null>(null);
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const onParagraphVisible = useCallback(
+  const locateSegment = (id: string) => {
+    return ref.current?.querySelector(`#${id}`) as HTMLElement | null;
+  };
+
+  const findPlayingSegment = async (index: number) => {
+    if (!playingSegmentId) return;
+
+    return locateSegment(playingSegmentId);
+  };
+
+  const findNextSegment = async (index: number) => {
+    if (!document.config.autoNextSpeech) return;
+
+    const next: HTMLElement | null = ref.current?.querySelector(
+      `[data-index="${index}"]`
+    );
+    if (!next) return;
+
+    const text = next.querySelector(".segment-content")?.textContent?.trim();
+    if (!text) {
+      return findNextSegment(index + 1);
+    }
+
+    const existingSpeech = await EnjoyApp.speeches.findOne({
+      sourceId: document.id,
+      sourceType: "Document",
+      section,
+      segment: index,
+    });
+
+    if (!existingSpeech) {
+      tts({
+        sourceId: document.id,
+        sourceType: "Document",
+        section,
+        segment: index,
+        text,
+        configuration: document.config.tts,
+      });
+    }
+    setNextSegment({
+      id: next.id,
+      index,
+      text,
+    });
+  };
+
+  const onSegmentVisible = useCallback(
     (id: string) => {
       updateDocumentPosition(id);
     },
@@ -62,11 +136,11 @@ export function DocumentProvider({
   const updateDocumentPosition = debounce((id: string) => {
     if (!id) return;
 
-    const paragraph: HTMLElement | null = ref.current?.querySelector(`#${id}`);
-    if (!paragraph) return;
+    const segment = locateSegment(id);
+    if (!segment) return;
 
-    const index = paragraph.dataset.index || "0";
-    const sectionIndex = paragraph.dataset.section || "0";
+    const index = segment.dataset.index || "0";
+    const sectionIndex = segment.dataset.section || "0";
 
     EnjoyApp.documents.update(document.id, {
       lastReadPosition: {
@@ -77,15 +151,15 @@ export function DocumentProvider({
     });
   }, 1000);
 
-  const togglePlayingParagraph = useCallback((paragraph: string | null) => {
-    setPlayingParagraph((prev) => (prev === paragraph ? null : paragraph));
+  const togglePlayingSegment = useCallback((segment: string | null) => {
+    setPlayingSegmentId((prev) => (prev === segment ? null : segment));
   }, []);
 
   const onSpeech = useCallback(
-    (paragraph: string) => {
-      togglePlayingParagraph(paragraph);
+    (segment: string) => {
+      togglePlayingSegment(segment);
     },
-    [togglePlayingParagraph]
+    [togglePlayingSegment]
   );
 
   const fetchDocument = async () => {
@@ -109,6 +183,28 @@ export function DocumentProvider({
   };
 
   useEffect(() => {
+    if (!ref.current) return;
+    if (!playingSegmentId) return;
+
+    const element = locateSegment(playingSegmentId);
+    if (!element) return;
+
+    setPlayingSegment({
+      id: element.id,
+      index: parseInt(element.dataset.index || "0"),
+      text: element.querySelector(".segment-content")?.textContent?.trim(),
+    });
+
+    element.scrollIntoView({ behavior: "smooth", block: "center" });
+    element.classList.add("playing-segment", "bg-yellow-100");
+
+    return () => {
+      setPlayingSegment(null);
+      element?.classList?.remove("playing-segment", "bg-yellow-100");
+    };
+  }, [ref, playingSegmentId]);
+
+  useEffect(() => {
     if (!document) return;
     setSection(document.lastReadPosition.section || 0);
   }, [document]);
@@ -128,17 +224,20 @@ export function DocumentProvider({
       value={{
         document,
         ref,
-        playingParagraph,
-        togglePlayingParagraph,
+        playingSegmentId,
+        playingSegment,
+        nextSegment,
+        togglePlayingSegment,
         section,
         setSection,
         onSpeech,
-        onParagraphVisible,
+        onSegmentVisible,
+        locateSegment,
       }}
     >
       <MediaShadowProvider
         layout="compact"
-        onCancel={() => togglePlayingParagraph(null)}
+        onCancel={() => togglePlayingSegment(null)}
       >
         <div ref={ref}>{children}</div>
       </MediaShadowProvider>

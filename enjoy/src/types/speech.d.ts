@@ -5,7 +5,7 @@ type SpeechType = {
   source?: MessageType;
   text: string;
   section: number;
-  paragraph: number;
+  segment: number;
   engine: string;
   model: string;
   voice: string;
