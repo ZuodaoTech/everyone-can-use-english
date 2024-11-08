@@ -37,6 +37,10 @@ export default defineConfig((env) => {
         "@": path.resolve(__dirname, "./src"),
         "@renderer": path.resolve(__dirname, "./src/renderer"),
         "@commands": path.resolve(__dirname, "./src/commands"),
+        "vendor/pdfjs": path.resolve(
+          __dirname,
+          "./node_modules/foliate-js/vendor/pdfjs"
+        ),
       },
     },
     optimizeDeps: {
