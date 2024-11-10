@@ -13,7 +13,6 @@ import {
   AISettingsProviderContext,
 } from "@renderer/context";
 import { useContext, useEffect, useState } from "react";
-import { AlertCircleIcon } from "lucide-react";
 import { SttEngineOptionEnum } from "@/types/enums";
 import { EchogardenSttSettings } from "@renderer/components";
 
