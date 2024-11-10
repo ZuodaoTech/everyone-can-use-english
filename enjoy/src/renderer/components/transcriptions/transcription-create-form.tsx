@@ -61,14 +61,19 @@ export const TranscriptionCreateForm = (props: {
     originalText,
   } = props;
   const { learningLanguage } = useContext(AppSettingsProviderContext);
-  const { sttEngine, whisperModel } = useContext(AISettingsProviderContext);
+  const { sttEngine, echogardenSttConfig } = useContext(
+    AISettingsProviderContext
+  );
 
   const form = useForm<z.infer<typeof transcriptionSchema>>({
     resolver: zodResolver(transcriptionSchema),
     values: {
       language: learningLanguage,
       service: originalText ? "upload" : sttEngine,
-      model: sttEngine === SttEngineOptionEnum.LOCAL ? whisperModel : "",
+      model:
+        sttEngine === SttEngineOptionEnum.LOCAL
+          ? echogardenSttConfig.whisper.model
+          : "",
       text: originalText,
       isolate: false,
     },

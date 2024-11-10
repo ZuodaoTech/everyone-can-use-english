@@ -11,6 +11,7 @@ export enum UserSettingKeyEnum {
   VOCABULARY = "vocabulary",
   DICTS = "dicts",
   RECORDER = "recorder",
+  ECHOGARDEN = "echogarden",
 }
 
 export enum SttEngineOptionEnum {

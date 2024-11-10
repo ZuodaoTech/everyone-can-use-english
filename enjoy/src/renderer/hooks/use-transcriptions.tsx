@@ -12,7 +12,9 @@ import { SttEngineOptionEnum } from "@/types/enums";
 import { t } from "i18next";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
-  const { sttEngine } = useContext(AISettingsProviderContext);
+  const { sttEngine, echogardenSttConfig } = useContext(
+    AISettingsProviderContext
+  );
   const { EnjoyApp, learningLanguage, webApi } = useContext(
     AppSettingsProviderContext
   );

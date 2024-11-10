@@ -84,17 +84,18 @@ class EchogardenWrapper {
   ) {
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
     try {
-      const whisperModel = await UserSetting.get(UserSettingKeyEnum.WHISPER);
-      if (WHISPER_MODELS.includes(whisperModel)) {
-        options.whisper.model = whisperModel;
+      const config = await UserSetting.get(UserSettingKeyEnum.ECHOGARDEN);
+      if (WHISPER_MODELS.includes(config?.whisper?.model)) {
+        options.whisper.model = config.whisper.model;
       }
     } catch (e) {
       logger.error(e);
     }
 
     try {
+      logger.info("check:", options);
       const result = await this.recognize(sampleFile, options);
-      logger.info(result);
+      logger.info(result?.transcript);
       fs.writeJsonSync(
         path.join(settings.cachePath(), "echogarden-check.json"),
         result,

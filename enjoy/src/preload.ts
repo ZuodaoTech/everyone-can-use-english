@@ -505,8 +505,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     transcode: (input: string) => {
       return ipcRenderer.invoke("echogarden-transcode", input);
     },
-    check: () => {
-      return ipcRenderer.invoke("echogarden-check");
+    check: (options: RecognitionOptions) => {
+      return ipcRenderer.invoke("echogarden-check", options);
     },
   },
   ffmpeg: {
