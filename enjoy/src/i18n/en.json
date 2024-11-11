@@ -911,6 +911,9 @@
   "temperature": "Temperature",
   "encoderProvider": "Encoder Provider",
   "decoderProvider": "Decoder Provider",
+  "enableGPU": "Enable GPU",
   "openPackagesDir": "Open models dir",
-  "whisperModelDescription": "Model will be downloaded when first used."
+  "whisperModelDescription": "Model will be downloaded when first used.",
+  "whisperEngineDescription": "OpenAI Whisper with inference done via the ONNX runtime.",
+  "whisperCppEngineDescription": "C++ port of the Whisper architecture."
 }

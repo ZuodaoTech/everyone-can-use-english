@@ -118,18 +118,19 @@ export const AISettingsProvider = ({
         ) {
           model = `${model}.en`;
         }
-
-        config = {
-          engine: "whisper",
-          whisper: {
-            model,
-            temperature: 0.2,
-            prompt: "",
-            encoderProvider: "cpu",
-            decoderProvider: "cpu",
-          },
-        };
       }
+
+      config = {
+        engine: "whisper",
+        whisper: {
+          model,
+          temperature: 0.2,
+          prompt: "",
+          encoderProvider: "cpu",
+          decoderProvider: "cpu",
+        },
+      };
+      EnjoyApp.userSettings.set(UserSettingKeyEnum.ECHOGARDEN, config);
     }
     setEchogardenSttConfig(config);
   };
@@ -137,17 +138,10 @@ export const AISettingsProvider = ({
   const handleSetEchogardenSttConfig = async (
     config: EchogardenSttConfigType
   ) => {
-    const updatedConfig = {
-      engine: config.engine,
-      whisper: {
-        ...echogardenSttConfig?.whisper,
-        ...config.whisper,
-      },
-    };
     return EnjoyApp.userSettings
-      .set(UserSettingKeyEnum.ECHOGARDEN, updatedConfig)
+      .set(UserSettingKeyEnum.ECHOGARDEN, config)
       .then(() => {
-        setEchogardenSttConfig(updatedConfig);
+        setEchogardenSttConfig(config);
       });
   };
 

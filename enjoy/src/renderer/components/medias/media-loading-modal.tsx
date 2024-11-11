@@ -70,7 +70,6 @@ const LoadingContent = () => {
                 generateTranscription({
                   originalText: data.text,
                   language: data.language,
-                  model: data.model,
                   service: data.service as SttEngineOptionEnum | "upload",
                   isolate: data.isolate,
                 });

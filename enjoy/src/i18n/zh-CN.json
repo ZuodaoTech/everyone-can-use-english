@@ -911,6 +911,9 @@
   "temperature": "温度",
   "encoderProvider": "编码器",
   "decoderProvider": "解码器",
+  "enableGPU": "启用 GPU",
   "openPackagesDir": "打开模型目录",
-  "whisperModelDescription": "模型首次使用时会下载。"
+  "whisperModelDescription": "模型首次使用时会下载。",
+  "whisperEngineDescription": "OpenAI Whisper 使用 ONNX 运行时进行推理。",
+  "whisperCppEngineDescription": "Whisper 的 C++ 实现。"
 }

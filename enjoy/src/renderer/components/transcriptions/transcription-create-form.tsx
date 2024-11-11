@@ -39,7 +39,6 @@ import { SttEngineOptionEnum } from "@/types/enums";
 const transcriptionSchema = z.object({
   language: z.string(),
   service: z.union([z.nativeEnum(SttEngineOptionEnum), z.literal("upload")]),
-  model: z.string().optional(),
   text: z.string().optional(),
   isolate: z.boolean().optional(),
 });
@@ -70,10 +69,6 @@ export const TranscriptionCreateForm = (props: {
     values: {
       language: learningLanguage,
       service: originalText ? "upload" : sttEngine,
-      model:
-        sttEngine === SttEngineOptionEnum.LOCAL
-          ? echogardenSttConfig.whisper.model
-          : "",
       text: originalText,
       isolate: false,
     },
@@ -189,8 +184,16 @@ export const TranscriptionCreateForm = (props: {
                 </SelectContent>
               </Select>
               <FormDescription>
-                {form.watch("service") === SttEngineOptionEnum.LOCAL &&
-                  t("localSpeechToTextDescription")}
+                {form.watch("service") === SttEngineOptionEnum.LOCAL && (
+                  <>
+                    <div>{t("localSpeechToTextDescription")}</div>
+                    <div>
+                      * {t("model")}:{echogardenSttConfig.engine}/
+                      {echogardenSttConfig[echogardenSttConfig.engine].model}
+                    </div>
+                  </>
+                )}
+
                 {form.watch("service") === SttEngineOptionEnum.ENJOY_AZURE &&
                   t("enjoyAzureSpeechToTextDescription")}
                 {form.watch("service") ===
@@ -204,34 +207,6 @@ export const TranscriptionCreateForm = (props: {
             </FormItem>
           )}
         />
-
-        {form.watch("service") === SttEngineOptionEnum.LOCAL && (
-          <FormField
-            control={form.control}
-            name="model"
-            render={({ field }) => (
-              <FormItem className="grid w-full items-center">
-                <FormLabel>{t("model")}</FormLabel>
-                <Select
-                  disabled={transcribing}
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {WHISPER_MODELS.map((model) => (
-                      <SelectItem key={model} value={model}>
-                        {model}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-        )}
 
         <FormField
           control={form.control}

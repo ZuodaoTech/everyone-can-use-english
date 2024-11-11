@@ -60,7 +60,27 @@ class EchogardenWrapper {
   public wordTimelineToSegmentSentenceTimeline: typeof wordTimelineToSegmentSentenceTimeline;
 
   constructor() {
-    this.recognize = Echogarden.recognize;
+    this.recognize = (sampleFile: string, options: RecognitionOptions) => {
+      return new Promise((resolve, reject) => {
+        const handler = (reason: any) => {
+          // Remove the handler after it's triggered
+          process.removeListener("unhandledRejection", handler);
+          reject(reason);
+        };
+
+        // Add temporary unhandledRejection listener
+        process.on("unhandledRejection", handler);
+
+        // Call the original recognize function
+        Echogarden.recognize(sampleFile, options)
+          .then((result) => {
+            // Remove the handler if successful
+            process.removeListener("unhandledRejection", handler);
+            resolve(result);
+          })
+          .catch(reject);
+      });
+    };
     this.align = Echogarden.align;
     this.alignSegments = Echogarden.alignSegments;
     this.denoise = Echogarden.denoise;
@@ -79,19 +99,10 @@ class EchogardenWrapper {
       engine: "whisper",
       whisper: {
         model: "tiny.en",
-        language: "en",
-      } as WhisperOptions,
+      },
     }
   ) {
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
-    try {
-      const config = await UserSetting.get(UserSettingKeyEnum.ECHOGARDEN);
-      if (WHISPER_MODELS.includes(config?.whisper?.model)) {
-        options.whisper.model = config.whisper.model;
-      }
-    } catch (e) {
-      logger.error(e);
-    }
 
     try {
       logger.info("check:", options);

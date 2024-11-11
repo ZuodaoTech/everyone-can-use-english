@@ -13,6 +13,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Switch,
 } from "@renderer/components/ui";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { useContext, useEffect, useState } from "react";
@@ -22,13 +23,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { WHISPER_MODELS } from "@/constants";
 
 const echogardenSttConfigSchema = z.object({
-  engine: z.enum(["whisper"]),
+  engine: z.enum(["whisper", "whisper.cpp"]),
   whisper: z.object({
     model: z.string(),
     temperature: z.number(),
     prompt: z.string(),
     encoderProvider: z.enum(["cpu", "dml", "cuda"]),
     decoderProvider: z.enum(["cpu", "dml", "cuda"]),
+  }),
+  whisperCpp: z.object({
+    model: z.string(),
+    temperature: z.number(),
+    prompt: z.string(),
+    enableGPU: z.boolean(),
   }),
 });
 
@@ -48,7 +55,7 @@ export const EchogardenSttSettings = (props: {
   const form = useForm<z.infer<typeof echogardenSttConfigSchema>>({
     resolver: zodResolver(echogardenSttConfigSchema),
     values: {
-      engine: echogardenSttConfig?.engine as "whisper",
+      engine: echogardenSttConfig?.engine,
       whisper: {
         model: "tiny",
         temperature: 0.1,
@@ -56,6 +63,13 @@ export const EchogardenSttSettings = (props: {
         encoderProvider: "cpu",
         decoderProvider: "cpu",
         ...echogardenSttConfig?.whisper,
+      },
+      whisperCpp: {
+        model: "tiny",
+        temperature: 0.1,
+        prompt: "",
+        enableGPU: false,
+        ...echogardenSttConfig?.whisperCpp,
       },
     },
   });
@@ -66,6 +80,10 @@ export const EchogardenSttSettings = (props: {
       whisper: {
         model: data.whisper.model || "tiny",
         ...data.whisper,
+      },
+      whisperCpp: {
+        model: data.whisperCpp.model || "tiny",
+        ...data.whisperCpp,
       },
     });
   };
@@ -84,6 +102,31 @@ export const EchogardenSttSettings = (props: {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="text-sm text-muted-foreground space-y-3 mb-4">
+          <FormField
+            control={form.control}
+            name="engine"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("engine")}</FormLabel>
+                <FormControl>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="min-w-fit">
+                      <SelectValue placeholder="engine"></SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="whisper">Whisper</SelectItem>
+                      <SelectItem value="whisper.cpp">Whisper.cpp</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormDescription>
+                  {form.watch("engine") === "whisper"
+                    ? t("whisperEngineDescription")
+                    : t("whisperCppEngineDescription")}
+                </FormDescription>
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="whisper.model"
@@ -122,95 +165,165 @@ export const EchogardenSttSettings = (props: {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="whisper.temperature"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("temperature")}</FormLabel>
-                <FormControl>
-                  <Input type="number" step={0.1} min={0} max={1} {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+          {form.watch("engine") === "whisper" && (
+            <>
+              <FormField
+                control={form.control}
+                name="whisper.temperature"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("temperature")}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step={0.1}
+                        min={0}
+                        max={1}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="whisper.prompt"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("prompt")}</FormLabel>
-                <FormControl>
-                  <Input placeholder={t("prompt")} {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+              <FormField
+                control={form.control}
+                name="whisper.prompt"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("prompt")}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t("prompt")} {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="whisper.encoderProvider"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("encoderProvider")}</FormLabel>
-                <FormControl>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className="min-w-fit">
-                      <SelectValue placeholder="provider"></SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="cpu">CPU</SelectItem>
-                      <SelectItem
-                        disabled={platformInfo?.platform !== "win32"}
-                        value="dml"
+              <FormField
+                control={form.control}
+                name="whisper.encoderProvider"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("encoderProvider")}</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
                       >
-                        DML
-                      </SelectItem>
-                      <SelectItem
-                        disabled={platformInfo?.platform !== "linux"}
-                        value="cuda"
-                      >
-                        CUDA
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-              </FormItem>
-            )}
-          />
+                        <SelectTrigger className="min-w-fit">
+                          <SelectValue placeholder="provider"></SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="cpu">CPU</SelectItem>
+                          <SelectItem
+                            disabled={platformInfo?.platform !== "win32"}
+                            value="dml"
+                          >
+                            DML
+                          </SelectItem>
+                          <SelectItem
+                            disabled={platformInfo?.platform !== "linux"}
+                            value="cuda"
+                          >
+                            CUDA
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="whisper.decoderProvider"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("decoderProvider")}</FormLabel>
-                <FormControl>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className="min-w-fit">
-                      <SelectValue placeholder="provider"></SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="cpu">CPU</SelectItem>
-                      <SelectItem
-                        disabled={platformInfo?.platform !== "win32"}
-                        value="dml"
+              <FormField
+                control={form.control}
+                name="whisper.decoderProvider"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("decoderProvider")}</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
                       >
-                        DML
-                      </SelectItem>
-                      <SelectItem
-                        disabled={platformInfo?.platform !== "linux"}
-                        value="cuda"
-                      >
-                        CUDA
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-              </FormItem>
-            )}
-          />
+                        <SelectTrigger className="min-w-fit">
+                          <SelectValue placeholder="provider"></SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="cpu">CPU</SelectItem>
+                          <SelectItem
+                            disabled={platformInfo?.platform !== "win32"}
+                            value="dml"
+                          >
+                            DML
+                          </SelectItem>
+                          <SelectItem
+                            disabled={platformInfo?.platform !== "linux"}
+                            value="cuda"
+                          >
+                            CUDA
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
+
+          {form.watch("engine") === "whisper.cpp" && (
+            <>
+              <FormField
+                control={form.control}
+                name="whisperCpp.temperature"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("temperature")}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step={0.1}
+                        min={0}
+                        max={1}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="whisperCpp.prompt"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("prompt")}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t("prompt")} {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="whisperCpp.enableGPU"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-2">
+                      <FormLabel>{t("enableGPU")}</FormLabel>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </div>
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
         </div>
         <div className="flex items-center justify-end space-x-2">
           <Button size="sm" type="submit">
