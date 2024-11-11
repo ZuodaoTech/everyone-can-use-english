@@ -21,6 +21,10 @@ export const LibrarySettings = () => {
     }
   };
 
+  const openLibraryDir = () => {
+    EnjoyApp.shell.openPath(libraryPath);
+  };
+
   return (
     <div className="flex items-start justify-between py-4">
       <div className="">
@@ -30,6 +34,9 @@ export const LibrarySettings = () => {
 
       <div className="">
         <div className="flex items-center justify-end space-x-2 mb-2">
+          <Button variant="secondary" size="sm" onClick={openLibraryDir}>
+            {t("open")}
+          </Button>
           <Button
             variant="secondary"
             size="sm"
