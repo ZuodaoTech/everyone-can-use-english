@@ -14,9 +14,10 @@ type AISettingsProviderState = {
   setOpenai?: (config: LlmProviderType) => void;
   setGptEngine?: (engine: GptEngineSettingType) => void;
   currentGptEngine?: GptEngineSettingType;
-  currentTtsEngine?: TtsEngineSettingType;
   gptProviders?: typeof GPT_PROVIDERS;
   ttsProviders?: typeof TTS_PROVIDERS;
+  ttsConfig?: TtsConfigType;
+  setTtsConfig?: (config: TtsConfigType) => Promise<void>;
   echogardenSttConfig?: EchogardenSttConfigType;
   setEchogardenSttConfig?: (config: EchogardenSttConfigType) => Promise<void>;
 };
@@ -40,6 +41,7 @@ export const AISettingsProvider = ({
   const [sttEngine, setSttEngine] = useState<SttEngineOptionEnum>(
     SttEngineOptionEnum.ENJOY_AZURE
   );
+  const [ttsConfig, setTtsConfig] = useState<TtsConfigType>(null);
   const [echogardenSttConfig, setEchogardenSttConfig] =
     useState<EchogardenSttConfigType>(null);
   const [gptEngine, setGptEngine] = useState<GptEngineSettingType>({
@@ -87,6 +89,28 @@ export const AISettingsProvider = ({
     }
 
     setTtsProviders({ ...providers });
+  };
+
+  const refreshTtsConfig = async () => {
+    let config = await EnjoyApp.userSettings.get(UserSettingKeyEnum.TTS_CONFIG);
+    if (!config) {
+      config = {
+        engine: "enjoyai",
+        model: "openai/tts-1",
+        voice: "alloy",
+        language: learningLanguage,
+      };
+      EnjoyApp.userSettings.set(UserSettingKeyEnum.TTS_CONFIG, config);
+    }
+    setTtsConfig(config);
+  };
+
+  const handleSetTtsConfig = async (config: TtsConfigType) => {
+    return EnjoyApp.userSettings
+      .set(UserSettingKeyEnum.TTS_CONFIG, config)
+      .then(() => {
+        setTtsConfig(config);
+      });
   };
 
   const refreshEchogardenSttConfig = async () => {
@@ -211,6 +235,7 @@ export const AISettingsProvider = ({
     }
 
     refreshEchogardenSttConfig();
+    refreshTtsConfig();
   };
 
   const handleSetOpenai = async (config: LlmProviderType) => {
@@ -238,20 +263,6 @@ export const AISettingsProvider = ({
                 key: user?.accessToken,
                 baseUrl: `${apiUrl}/api/ai`,
               }),
-        currentTtsEngine:
-          gptEngine.name === "openai"
-            ? {
-                name: "openai",
-                model: "tts-1",
-                voice: "alloy",
-                language: learningLanguage,
-              }
-            : {
-                name: "enjoyai",
-                model: "openai/tts-1",
-                voice: "alloy",
-                language: learningLanguage,
-              },
         openai,
         setOpenai: (config: LlmProviderType) => handleSetOpenai(config),
         echogardenSttConfig,
@@ -259,6 +270,8 @@ export const AISettingsProvider = ({
           handleSetEchogardenSttConfig(config),
         sttEngine,
         setSttEngine: (name: SttEngineOptionEnum) => handleSetSttEngine(name),
+        ttsConfig,
+        setTtsConfig: (config: TtsConfigType) => handleSetTtsConfig(config),
         gptProviders,
         ttsProviders,
       }}

@@ -68,10 +68,8 @@ const ChatMemberSetting = (props: {
   onFinish?: () => void;
 }) => {
   const { chat, agentMembers, onFinish } = props;
-  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
-  const { currentGptEngine, currentTtsEngine } = useContext(
-    AISettingsProviderContext
-  );
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { currentGptEngine, ttsConfig } = useContext(AISettingsProviderContext);
   const [memberTab, setMemberTab] = useState(agentMembers[0]?.userId);
   const [query, setQuery] = useState("");
   const [chatAgents, setChatAgents] = useState<ChatAgentType[]>([]);
@@ -90,10 +88,10 @@ const ChatMemberSetting = (props: {
             model: currentGptEngine.models.default,
           },
           tts: {
-            engine: currentTtsEngine.name,
-            model: currentTtsEngine.model,
-            voice: currentTtsEngine.voice,
-            language: learningLanguage,
+            engine: ttsConfig.engine,
+            model: ttsConfig.model,
+            voice: ttsConfig.voice,
+            language: ttsConfig.language,
           },
         },
       })

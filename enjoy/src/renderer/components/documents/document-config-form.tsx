@@ -12,7 +12,8 @@ import {
 import { t } from "i18next";
 import { TTSForm } from "@renderer/components";
 import { LoaderIcon } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AISettingsProviderContext } from "@renderer/context";
 
 const documentConfigSchema = z.object({
   config: z.object({
@@ -33,6 +34,7 @@ export const DocumentConfigForm = (props: {
 }) => {
   const { config, onSubmit } = props;
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const { ttsConfig } = useContext(AISettingsProviderContext);
 
   const form = useForm<z.infer<typeof documentConfigSchema>>({
     resolver: zodResolver(documentConfigSchema),
@@ -42,12 +44,7 @@ export const DocumentConfigForm = (props: {
           config: {
             autoTranslate: true,
             autoNextSpeech: true,
-            tts: {
-              engine: "openai",
-              model: "openai/tts-1",
-              language: "en-US",
-              voice: "alloy",
-            },
+            tts: ttsConfig,
           },
         },
   });

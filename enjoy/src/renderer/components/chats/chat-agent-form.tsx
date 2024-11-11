@@ -48,7 +48,7 @@ export const ChatAgentForm = (props: {
   const { EnjoyApp, learningLanguage, webApi } = useContext(
     AppSettingsProviderContext
   );
-  const { currentTtsEngine } = useContext(AISettingsProviderContext);
+  const { ttsConfig } = useContext(AISettingsProviderContext);
   const [selectedTemplate, setSelectedTemplate] = useState<string>("custom");
   const [templates, setTemplates] = useState<
     {
@@ -104,10 +104,10 @@ export const ChatAgentForm = (props: {
     const { type, name, description, config } = data;
     if (type === ChatAgentTypeEnum.TTS) {
       config.tts = {
-        engine: config.tts?.engine || currentTtsEngine.name,
-        model: config.tts?.model || currentTtsEngine.model,
-        language: config.tts?.language || learningLanguage,
-        voice: config.tts?.voice || currentTtsEngine.voice,
+        engine: config.tts?.engine || ttsConfig.engine,
+        model: config.tts?.model || ttsConfig.model,
+        language: config.tts?.language || ttsConfig.language,
+        voice: config.tts?.voice || ttsConfig.voice,
       };
     }
 

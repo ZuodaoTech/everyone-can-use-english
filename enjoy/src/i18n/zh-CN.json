@@ -915,5 +915,8 @@
   "openPackagesDir": "打开模型目录",
   "whisperModelDescription": "模型首次使用时会下载。",
   "whisperEngineDescription": "OpenAI Whisper 使用 ONNX 运行时进行推理。",
-  "whisperCppEngineDescription": "Whisper 的 C++ 实现。"
+  "whisperCppEngineDescription": "Whisper 的 C++ 实现。",
+  "ttsService": "文字转语音服务",
+  "openaiTtsServiceDescription": "使用您自己的 API key 来使用 OpenAI TTS 服务。",
+  "enjoyTtsServiceDescription": "使用 Enjoy 提供的 TTS 服务，支持 OpenAI 或 Azure。"
 }
