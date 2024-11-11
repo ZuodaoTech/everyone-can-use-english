@@ -33,7 +33,7 @@ __metadata:
     autoprefixer: "npm:^10.4.20"
     nuxt: "npm:^3.14.159"
     nuxt-og-image: "npm:^3.0.8"
-    postcss: "npm:^8.4.47"
+    postcss: "npm:^8.4.48"
     sass: "npm:^1.80.6"
     tailwindcss: "npm:^3.4.14"
     vue: "npm:^3.5.12"
@@ -12103,7 +12103,7 @@ __metadata:
     octokit: "npm:^4.0.2"
     openai: "npm:^4.71.1"
     pitchfinder: "npm:^2.3.2"
-    postcss: "npm:^8.4.47"
+    postcss: "npm:^8.4.48"
     progress: "npm:^2.0.3"
     prop-types: "npm:^15.8.1"
     proxy-agent: "npm:^6.4.0"
@@ -19172,7 +19172,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picocolors@npm:^1.0.0, picocolors@npm:^1.0.1, picocolors@npm:^1.1.0":
+"picocolors@npm:^1.0.0, picocolors@npm:^1.0.1, picocolors@npm:^1.1.0, picocolors@npm:^1.1.1":
   version: 1.1.1
   resolution: "picocolors@npm:1.1.1"
   checksum: 10c0/e2e3e8170ab9d7c7421969adaa7e1b31434f789afb9b3f115f6b96d91945041ac3ceb02e9ec6fe6510ff036bcc0bf91e69a1772edc0b707e12b19c0f2d6bcf58
@@ -19709,6 +19709,17 @@ __metadata:
     picocolors: "npm:^1.1.0"
     source-map-js: "npm:^1.2.1"
   checksum: 10c0/929f68b5081b7202709456532cee2a145c1843d391508c5a09de2517e8c4791638f71dd63b1898dba6712f8839d7a6da046c72a5e44c162e908f5911f57b5f44
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.48":
+  version: 8.4.48
+  resolution: "postcss@npm:8.4.48"
+  dependencies:
+    nanoid: "npm:^3.3.7"
+    picocolors: "npm:^1.1.1"
+    source-map-js: "npm:^1.2.1"
+  checksum: 10c0/d586361fda12fc7ab5650ce9b5763fc61d6ea2cecac9da98fceea6a3f27e42ed34db830582411bc06743492d9bb414c52b0c81da65440682d244d692da2f928a
   languageName: node
   linkType: hard
 
