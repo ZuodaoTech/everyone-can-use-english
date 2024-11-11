@@ -29,9 +29,7 @@ export const useChatSession = (chatId: string) => {
   const { EnjoyApp, user, apiUrl, learningLanguage } = useContext(
     AppSettingsProviderContext
   );
-  const { currentGptEngine, currentTtsEngine } = useContext(
-    AISettingsProviderContext
-  );
+  const { currentGptEngine, ttsConfig } = useContext(AISettingsProviderContext);
   const { openai } = useContext(AISettingsProviderContext);
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [chatMessages, dispatchChatMessages] = useReducer(
@@ -386,10 +384,10 @@ export const useChatSession = (chatId: string) => {
       agent.type === ChatAgentTypeEnum.TTS
         ? {
             tts: {
-              engine: currentTtsEngine.name,
-              model: currentTtsEngine.model,
-              voice: currentTtsEngine.voice,
-              language: learningLanguage,
+              engine: ttsConfig.engine,
+              model: ttsConfig.model,
+              voice: ttsConfig.voice,
+              language: ttsConfig.language,
               ...agent.config.tts,
             },
           }
@@ -402,10 +400,10 @@ export const useChatSession = (chatId: string) => {
               model: currentGptEngine.models.default,
             },
             tts: {
-              engine: currentTtsEngine.name,
-              model: currentTtsEngine.model,
-              voice: currentTtsEngine.voice,
-              language: learningLanguage,
+              engine: ttsConfig.engine,
+              model: ttsConfig.model,
+              voice: ttsConfig.voice,
+              language: ttsConfig.language,
             },
           };
 

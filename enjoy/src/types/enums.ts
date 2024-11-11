@@ -8,9 +8,11 @@ export enum UserSettingKeyEnum {
   HOTKEYS = "hotkeys",
   GPT_ENGINE = "gpt_engine",
   STT_ENGINE = "stt_engine",
+  TTS_CONFIG = "tts_config",
   VOCABULARY = "vocabulary",
   DICTS = "dicts",
   RECORDER = "recorder",
+  ECHOGARDEN = "echogarden",
 }
 
 export enum SttEngineOptionEnum {

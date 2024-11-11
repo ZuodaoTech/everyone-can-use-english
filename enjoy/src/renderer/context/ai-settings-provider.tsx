@@ -10,15 +10,16 @@ import { WHISPER_MODELS } from "@/constants";
 type AISettingsProviderState = {
   sttEngine?: SttEngineOptionEnum;
   setSttEngine?: (name: string) => Promise<void>;
-  whisperModel?: string;
-  setWhisperModel?: (name: string) => void;
   openai?: LlmProviderType;
   setOpenai?: (config: LlmProviderType) => void;
   setGptEngine?: (engine: GptEngineSettingType) => void;
   currentGptEngine?: GptEngineSettingType;
-  currentTtsEngine?: TtsEngineSettingType;
   gptProviders?: typeof GPT_PROVIDERS;
   ttsProviders?: typeof TTS_PROVIDERS;
+  ttsConfig?: TtsConfigType;
+  setTtsConfig?: (config: TtsConfigType) => Promise<void>;
+  echogardenSttConfig?: EchogardenSttConfigType;
+  setEchogardenSttConfig?: (config: EchogardenSttConfigType) => Promise<void>;
 };
 
 const initialState: AISettingsProviderState = {};
@@ -31,6 +32,18 @@ export const AISettingsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const { EnjoyApp, libraryPath, user, apiUrl, webApi, learningLanguage } =
+    useContext(AppSettingsProviderContext);
+  const [gptProviders, setGptProviders] = useState<any>(GPT_PROVIDERS);
+  const [ttsProviders, setTtsProviders] = useState<any>(TTS_PROVIDERS);
+  const db = useContext(DbProviderContext);
+
+  const [sttEngine, setSttEngine] = useState<SttEngineOptionEnum>(
+    SttEngineOptionEnum.ENJOY_AZURE
+  );
+  const [ttsConfig, setTtsConfig] = useState<TtsConfigType>(null);
+  const [echogardenSttConfig, setEchogardenSttConfig] =
+    useState<EchogardenSttConfigType>(null);
   const [gptEngine, setGptEngine] = useState<GptEngineSettingType>({
     name: "enjoyai",
     models: {
@@ -38,15 +51,6 @@ export const AISettingsProvider = ({
     },
   });
   const [openai, setOpenai] = useState<LlmProviderType>(null);
-  const [whisperModel, setWhisperModel] = useState<string>(null);
-  const [sttEngine, setSttEngine] = useState<SttEngineOptionEnum>(
-    SttEngineOptionEnum.ENJOY_AZURE
-  );
-  const { EnjoyApp, libraryPath, user, apiUrl, webApi, learningLanguage } =
-    useContext(AppSettingsProviderContext);
-  const [gptProviders, setGptProviders] = useState<any>(GPT_PROVIDERS);
-  const [ttsProviders, setTtsProviders] = useState<any>(TTS_PROVIDERS);
-  const db = useContext(DbProviderContext);
 
   const refreshGptProviders = async () => {
     let providers = GPT_PROVIDERS;
@@ -87,42 +91,82 @@ export const AISettingsProvider = ({
     setTtsProviders({ ...providers });
   };
 
-  const refreshWhisperModel = async () => {
-    const whisperModel = await EnjoyApp.userSettings.get(
-      UserSettingKeyEnum.WHISPER
-    );
-    if (WHISPER_MODELS.includes(whisperModel)) {
-      setWhisperModel(whisperModel);
-    } else {
-      let model = "tiny";
-      if (whisperModel.match(/tiny/)) {
-        model = "tiny";
-      } else if (whisperModel.match(/base/)) {
-        model = "base";
-      } else if (whisperModel.match(/small/)) {
-        model = "small";
-      } else if (whisperModel.match(/medium/)) {
-        model = "medium";
-      } else if (whisperModel.match(/large/)) {
-        model = "large-v3-turbo";
-      }
-
-      if (
-        learningLanguage.match(/en/) &&
-        model.match(/tiny|base|small|medium/)
-      ) {
-        model = `${model}.en`;
-      }
-
-      setWhisperModel(model);
+  const refreshTtsConfig = async () => {
+    let config = await EnjoyApp.userSettings.get(UserSettingKeyEnum.TTS_CONFIG);
+    if (!config) {
+      config = {
+        engine: "enjoyai",
+        model: "openai/tts-1",
+        voice: "alloy",
+        language: learningLanguage,
+      };
+      EnjoyApp.userSettings.set(UserSettingKeyEnum.TTS_CONFIG, config);
     }
+    setTtsConfig(config);
   };
 
-  const handleSetWhisperModel = async (name: string) => {
-    if (WHISPER_MODELS.includes(name)) {
-      setWhisperModel(name);
-      EnjoyApp.userSettings.set(UserSettingKeyEnum.WHISPER, name);
+  const handleSetTtsConfig = async (config: TtsConfigType) => {
+    return EnjoyApp.userSettings
+      .set(UserSettingKeyEnum.TTS_CONFIG, config)
+      .then(() => {
+        setTtsConfig(config);
+      });
+  };
+
+  const refreshEchogardenSttConfig = async () => {
+    let config = await EnjoyApp.userSettings.get(UserSettingKeyEnum.ECHOGARDEN);
+
+    if (!config) {
+      let model = "tiny";
+      const whisperModel = await EnjoyApp.userSettings.get(
+        UserSettingKeyEnum.WHISPER
+      );
+      if (WHISPER_MODELS.includes(whisperModel)) {
+        model = whisperModel;
+      } else {
+        if (whisperModel.match(/tiny/)) {
+          model = "tiny";
+        } else if (whisperModel.match(/base/)) {
+          model = "base";
+        } else if (whisperModel.match(/small/)) {
+          model = "small";
+        } else if (whisperModel.match(/medium/)) {
+          model = "medium";
+        } else if (whisperModel.match(/large/)) {
+          model = "large-v3-turbo";
+        }
+
+        if (
+          learningLanguage.match(/en/) &&
+          model.match(/tiny|base|small|medium/)
+        ) {
+          model = `${model}.en`;
+        }
+      }
+
+      config = {
+        engine: "whisper",
+        whisper: {
+          model,
+          temperature: 0.2,
+          prompt: "",
+          encoderProvider: "cpu",
+          decoderProvider: "cpu",
+        },
+      };
+      EnjoyApp.userSettings.set(UserSettingKeyEnum.ECHOGARDEN, config);
     }
+    setEchogardenSttConfig(config);
+  };
+
+  const handleSetEchogardenSttConfig = async (
+    config: EchogardenSttConfigType
+  ) => {
+    return EnjoyApp.userSettings
+      .set(UserSettingKeyEnum.ECHOGARDEN, config)
+      .then(() => {
+        setEchogardenSttConfig(config);
+      });
   };
 
   useEffect(() => {
@@ -190,7 +234,8 @@ export const AISettingsProvider = ({
         });
     }
 
-    refreshWhisperModel();
+    refreshEchogardenSttConfig();
+    refreshTtsConfig();
   };
 
   const handleSetOpenai = async (config: LlmProviderType) => {
@@ -218,26 +263,15 @@ export const AISettingsProvider = ({
                 key: user?.accessToken,
                 baseUrl: `${apiUrl}/api/ai`,
               }),
-        currentTtsEngine:
-          gptEngine.name === "openai"
-            ? {
-                name: "openai",
-                model: "tts-1",
-                voice: "alloy",
-                language: learningLanguage,
-              }
-            : {
-                name: "enjoyai",
-                model: "openai/tts-1",
-                voice: "alloy",
-                language: learningLanguage,
-              },
         openai,
         setOpenai: (config: LlmProviderType) => handleSetOpenai(config),
-        whisperModel,
-        setWhisperModel: handleSetWhisperModel,
+        echogardenSttConfig,
+        setEchogardenSttConfig: (config: EchogardenSttConfigType) =>
+          handleSetEchogardenSttConfig(config),
         sttEngine,
         setSttEngine: (name: SttEngineOptionEnum) => handleSetSttEngine(name),
+        ttsConfig,
+        setTtsConfig: (config: TtsConfigType) => handleSetTtsConfig(config),
         gptProviders,
         ttsProviders,
       }}

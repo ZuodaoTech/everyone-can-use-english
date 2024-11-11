@@ -12,7 +12,9 @@ import { SttEngineOptionEnum } from "@/types/enums";
 import { t } from "i18next";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {
-  const { sttEngine } = useContext(AISettingsProviderContext);
+  const { sttEngine, echogardenSttConfig } = useContext(
+    AISettingsProviderContext
+  );
   const { EnjoyApp, learningLanguage, webApi } = useContext(
     AppSettingsProviderContext
   );
@@ -113,7 +115,6 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
   const generateTranscription = async (params?: {
     originalText?: string;
     language?: string;
-    model?: string;
     service?: SttEngineOptionEnum | "upload";
     isolate?: boolean;
   }) => {
@@ -121,7 +122,6 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
       originalText,
       language = learningLanguage,
       service = sttEngine,
-      model: whisperModel,
       isolate = false,
     } = params || {};
     setService(service);
@@ -144,7 +144,6 @@ export const useTranscriptions = (media: AudioType | VideoType) => {
         {
           targetId: media.id,
           targetType: media.mediaType,
-          model: whisperModel,
           originalText,
           language,
           service,

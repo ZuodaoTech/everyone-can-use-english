@@ -30,7 +30,7 @@ export const ChatList = (props: {
   setCurrentChat: (chat: ChatType) => void;
 }) => {
   const { chats, chatAgent, currentChat, setCurrentChat } = props;
-  const { sttEngine, currentGptEngine, currentTtsEngine } = useContext(
+  const { sttEngine, currentGptEngine, ttsConfig } = useContext(
     AISettingsProviderContext
   );
   const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
@@ -78,10 +78,10 @@ export const ChatList = (props: {
       agent.type === ChatAgentTypeEnum.TTS
         ? {
             tts: {
-              engine: currentTtsEngine.name,
-              model: currentTtsEngine.model,
-              voice: currentTtsEngine.voice,
-              language: learningLanguage,
+              engine: ttsConfig.engine,
+              model: ttsConfig.model,
+              voice: ttsConfig.voice,
+              language: ttsConfig.language,
               ...agent.config.tts,
             },
           }
@@ -92,10 +92,10 @@ export const ChatList = (props: {
               model: currentGptEngine.models.default,
             },
             tts: {
-              engine: currentTtsEngine.name,
-              model: currentTtsEngine.model,
-              voice: currentTtsEngine.voice,
-              language: learningLanguage,
+              engine: ttsConfig.engine,
+              model: ttsConfig.model,
+              voice: ttsConfig.voice,
+              language: ttsConfig.language,
             },
           };
     return {

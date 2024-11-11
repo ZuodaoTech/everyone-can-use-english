@@ -42,8 +42,8 @@ export const CopilotProvider = ({
   const [active, setActive] = useState(false);
   const [currentChat, setCurrentChat] = useState<ChatType>(null);
   const [occupiedChat, setOccupiedChat] = useState<ChatType | null>(null);
-  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
-  const { sttEngine, currentGptEngine, currentTtsEngine } = useContext(
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { sttEngine, currentGptEngine, ttsConfig } = useContext(
     AISettingsProviderContext
   );
   const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
@@ -100,10 +100,10 @@ export const CopilotProvider = ({
       agent.type === ChatAgentTypeEnum.TTS
         ? {
             tts: {
-              engine: currentTtsEngine.name,
-              model: currentTtsEngine.model,
-              voice: currentTtsEngine.voice,
-              language: learningLanguage,
+              engine: ttsConfig.engine,
+              model: ttsConfig.model,
+              voice: ttsConfig.voice,
+              language: ttsConfig.language,
               ...agent.config.tts,
             },
           }
@@ -114,10 +114,10 @@ export const CopilotProvider = ({
               model: currentGptEngine.models.default,
             },
             tts: {
-              engine: currentTtsEngine.name,
-              model: currentTtsEngine.model,
-              voice: currentTtsEngine.voice,
-              language: learningLanguage,
+              engine: ttsConfig.engine,
+              model: ttsConfig.model,
+              voice: ttsConfig.voice,
+              language: ttsConfig.language,
             },
           };
     return {

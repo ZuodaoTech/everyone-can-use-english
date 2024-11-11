@@ -11,11 +11,11 @@ export const useSpeech = () => {
   const { EnjoyApp, webApi, user, apiUrl, learningLanguage } = useContext(
     AppSettingsProviderContext
   );
-  const { openai, currentGptEngine } = useContext(AISettingsProviderContext);
+  const { openai, ttsConfig } = useContext(AISettingsProviderContext);
 
   const tts = async (params: Partial<SpeechType>) => {
     const { configuration } = params;
-    const { engine, model = "tts-1", voice } = configuration || {};
+    const { engine, model, voice } = configuration || ttsConfig;
 
     let buffer;
     if (model.match(/^(openai|tts-)/)) {
@@ -47,9 +47,9 @@ export const useSpeech = () => {
   const openaiTTS = async (params: Partial<SpeechType>) => {
     const { configuration } = params;
     const {
-      engine = currentGptEngine.name,
-      model = "tts-1",
-      voice = "alloy",
+      engine = ttsConfig.engine,
+      model = ttsConfig.model,
+      voice = ttsConfig.voice,
       baseUrl,
     } = configuration || {};
 
@@ -85,8 +85,8 @@ export const useSpeech = () => {
   const azureTTS = async (
     params: Partial<SpeechType>
   ): Promise<ArrayBuffer> => {
-    const { configuration, text } = params;
-    const { model, voice } = configuration || {};
+    const { configuration = ttsConfig, text } = params;
+    const { model, voice } = configuration;
 
     if (model !== "azure/speech") return;
 

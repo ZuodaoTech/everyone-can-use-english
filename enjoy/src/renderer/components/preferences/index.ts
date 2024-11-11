@@ -15,6 +15,7 @@ export * from "./openai-settings";
 export * from "./library-settings";
 export * from "./disk-usage";
 export * from "./stt-settings";
+export * from "./tts-settings";
 
 export * from "./user-settings";
 export * from "./email-settings";
@@ -34,3 +35,5 @@ export * from "./recorder-settings";
 
 export * from "./vocabulary-settings";
 export * from "./dict-settings";
+
+export * from "./echogarden-stt-settings";

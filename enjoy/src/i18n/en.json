@@ -907,5 +907,17 @@
   "failedToLoadLink": "Failed to load link",
   "refreshSpeech": "Refresh speech",
   "locateParagraph": "Locate paragraph",
-  "close": "Close"
+  "close": "Close",
+  "config": "Config",
+  "temperature": "Temperature",
+  "encoderProvider": "Encoder Provider",
+  "decoderProvider": "Decoder Provider",
+  "enableGPU": "Enable GPU",
+  "openPackagesDir": "Open models dir",
+  "whisperModelDescription": "Model will be downloaded when first used.",
+  "whisperEngineDescription": "OpenAI Whisper with inference done via the ONNX runtime.",
+  "whisperCppEngineDescription": "C++ port of the Whisper architecture.",
+  "ttsService": "Text to Speech Service",
+  "openaiTtsServiceDescription": "Use OpenAI TTS service from your own key.",
+  "enjoyTtsServiceDescription": "Use TTS service provided by Enjoy. OpenAI or Azure is supported."
 }

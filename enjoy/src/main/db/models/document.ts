@@ -259,7 +259,9 @@ export class Document extends Model<Document> {
     }
 
     logger.debug("detected file type", filePath, mimeType, extension);
-    if (!DocumentFormats.includes(extension)) {
+    if (extension === "zip" && filePath.endsWith(".epub")) {
+      extension = "epub";
+    } else if (!DocumentFormats.includes(extension)) {
       logger.error("unsupported file type", filePath, extension);
       throw new Error(
         t("models.document.fileNotSupported", { file: filePath })

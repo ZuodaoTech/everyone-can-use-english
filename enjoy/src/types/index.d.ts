@@ -260,3 +260,20 @@ type TranscribeResultType = {
   tokenId?: number;
   url: string;
 };
+
+type EchogardenSttConfigType = {
+  engine: "whisper" | "whisper.cpp";
+  whisper: {
+    model: string;
+    temperature?: number;
+    prompt?: string;
+    encoderProvider?: "cpu" | "dml" | "cuda";
+    decoderProvider?: "cpu" | "dml" | "cuda";
+  };
+  whisperCpp?: {
+    model: string;
+    temperature?: number;
+    prompt?: string;
+    enableGPU?: boolean;
+  };
+};

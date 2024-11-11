@@ -476,6 +476,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     },
   },
   echogarden: {
+    getPackagesDir: () => {
+      return ipcRenderer.invoke("echogarden-get-packages-dir");
+    },
     recognize: (input: string, options: RecognitionOptions) => {
       return ipcRenderer.invoke("echogarden-recognize", input, options);
     },
@@ -505,8 +508,8 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     transcode: (input: string) => {
       return ipcRenderer.invoke("echogarden-transcode", input);
     },
-    check: () => {
-      return ipcRenderer.invoke("echogarden-check");
+    check: (options: RecognitionOptions) => {
+      return ipcRenderer.invoke("echogarden-check", options);
     },
   },
   ffmpeg: {

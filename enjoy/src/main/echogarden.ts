@@ -15,6 +15,8 @@ import {
   type Timeline,
   type TimelineEntry,
 } from "echogarden/dist/utilities/Timeline.d.js";
+import { WhisperOptions } from "echogarden/dist/recognition/WhisperSTT.js";
+import { ensureAndGetPackagesDir } from "echogarden/dist/utilities/PackageManager.js";
 import path from "path";
 import log from "@main/logger";
 import url from "url";
@@ -25,7 +27,6 @@ import { enjoyUrlToPath, pathToEnjoyUrl } from "./utils";
 import { UserSetting } from "./db/models";
 import { UserSettingKeyEnum } from "@/types/enums";
 import { WHISPER_MODELS } from "@/constants";
-import { WhisperOptions } from "echogarden/dist/recognition/WhisperSTT.js";
 
 Echogarden.setGlobalOption(
   "ffmpegPath",
@@ -59,7 +60,27 @@ class EchogardenWrapper {
   public wordTimelineToSegmentSentenceTimeline: typeof wordTimelineToSegmentSentenceTimeline;
 
   constructor() {
-    this.recognize = Echogarden.recognize;
+    this.recognize = (sampleFile: string, options: RecognitionOptions) => {
+      return new Promise((resolve, reject) => {
+        const handler = (reason: any) => {
+          // Remove the handler after it's triggered
+          process.removeListener("unhandledRejection", handler);
+          reject(reason);
+        };
+
+        // Add temporary unhandledRejection listener
+        process.on("unhandledRejection", handler);
+
+        // Call the original recognize function
+        Echogarden.recognize(sampleFile, options)
+          .then((result) => {
+            // Remove the handler if successful
+            process.removeListener("unhandledRejection", handler);
+            resolve(result);
+          })
+          .catch(reject);
+      });
+    };
     this.align = Echogarden.align;
     this.alignSegments = Echogarden.alignSegments;
     this.denoise = Echogarden.denoise;
@@ -78,23 +99,15 @@ class EchogardenWrapper {
       engine: "whisper",
       whisper: {
         model: "tiny.en",
-        language: "en",
-      } as WhisperOptions,
+      },
     }
   ) {
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
-    try {
-      const whisperModel = await UserSetting.get(UserSettingKeyEnum.WHISPER);
-      if (WHISPER_MODELS.includes(whisperModel)) {
-        options.whisper.model = whisperModel;
-      }
-    } catch (e) {
-      logger.error(e);
-    }
 
     try {
+      logger.info("check:", options);
       const result = await this.recognize(sampleFile, options);
-      logger.info(result);
+      logger.info(result?.transcript);
       fs.writeJsonSync(
         path.join(settings.cachePath(), "echogarden-check.json"),
         result,
@@ -224,6 +237,10 @@ class EchogardenWrapper {
 
     ipcMain.handle("echogarden-check", async (_event, options: any) => {
       return this.check(options);
+    });
+
+    ipcMain.handle("echogarden-get-packages-dir", async (_event) => {
+      return ensureAndGetPackagesDir();
     });
   }
 }
