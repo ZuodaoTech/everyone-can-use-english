@@ -12,17 +12,23 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+  toast,
 } from "@renderer/components/ui";
 import { MoreVerticalIcon, TrashIcon } from "lucide-react";
 import { t } from "i18next";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppSettingsProviderContext } from "@renderer/context";
 
 export const DocumentCard = (props: {
   document: DocumentEType;
   className?: string;
+  onDelete?: () => void;
 }) => {
-  const { document, className } = props;
+  const { document, className, onDelete } = props;
   const [deleting, setDeleting] = useState(false);
+  const { EnjoyApp } = useContext(AppSettingsProviderContext);
   const handleDelete = (event: React.MouseEvent) => {
     event.stopPropagation();
     setDeleting(true);
@@ -90,12 +96,32 @@ export const DocumentCard = (props: {
           <AlertDialogHeader>
             <AlertDialogTitle>{t("delete")}</AlertDialogTitle>
             <AlertDialogDescription>
-              {t("deleteConfirm")}
+              {t("deleteDocumentConfirm")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <Button variant="outline">{t("cancel")}</Button>
-            <Button variant="destructive">{t("delete")}</Button>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  EnjoyApp.documents
+                    .destroy(document.id)
+                    .then(() => {
+                      toast.success(t("documentDeletedSuccessfully"));
+                      onDelete?.();
+                    })
+                    .catch((error) => {
+                      toast.error(error.message);
+                    })
+                    .finally(() => {
+                      setDeleting(false);
+                    });
+                }}
+              >
+                {t("delete")}
+              </Button>
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

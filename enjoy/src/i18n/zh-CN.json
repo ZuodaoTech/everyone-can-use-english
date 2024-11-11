@@ -902,6 +902,8 @@
   "bulkDeleteAborted": "批量删除已中止",
   "notFound": "未找到",
   "saved": "已保存",
+  "deleteDocumentConfirm": "您确定要删除此文档吗？",
+  "documentDeletedSuccessfully": "文档删除成功",
   "autoTranslate": "自动翻译",
   "autoNextSpeech": "连续朗读",
   "failedToLoadLink": "加载链接失败",
