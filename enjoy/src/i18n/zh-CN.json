@@ -908,6 +908,7 @@
   "refreshSpeech": "刷新语音",
   "locateParagraph": "定位段落",
   "close": "关闭",
+  "config": "配置",
   "temperature": "温度",
   "encoderProvider": "编码器",
   "decoderProvider": "解码器",

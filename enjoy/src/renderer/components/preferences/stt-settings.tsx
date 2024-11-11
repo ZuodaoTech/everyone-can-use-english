@@ -123,7 +123,7 @@ export const SttSettings = () => {
               variant="secondary"
               size="sm"
             >
-              {editing ? t("cancel") : t("edit")}
+              {editing ? t("cancel") : t("config")}
             </Button>
             {!editing && (
               <Button onClick={handleCheck} variant="secondary" size="sm">

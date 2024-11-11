@@ -908,6 +908,7 @@
   "refreshSpeech": "Refresh speech",
   "locateParagraph": "Locate paragraph",
   "close": "Close",
+  "config": "Config",
   "temperature": "Temperature",
   "encoderProvider": "Encoder Provider",
   "decoderProvider": "Decoder Provider",
