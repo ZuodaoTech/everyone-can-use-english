@@ -1952,15 +1952,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron-forge/plugin-fuses@npm:<7.5.0":
-  version: 7.4.0
-  resolution: "@electron-forge/plugin-fuses@npm:7.4.0"
+"@electron-forge/plugin-base@npm:7.5.0":
+  version: 7.5.0
+  resolution: "@electron-forge/plugin-base@npm:7.5.0"
   dependencies:
-    "@electron-forge/plugin-base": "npm:7.4.0"
-    "@electron-forge/shared-types": "npm:7.4.0"
+    "@electron-forge/shared-types": "npm:7.5.0"
+  checksum: 10c0/b71d9669a6e172b3d96f95d70344881b5d4dda50e6f413a022a75e7f65cef1e16eb9d6bb47c58b1294ec302305cf1ff53cc86dfe3dc95d3ca4ba39c5840fece7
+  languageName: node
+  linkType: hard
+
+"@electron-forge/plugin-fuses@npm:<7.6.0":
+  version: 7.5.0
+  resolution: "@electron-forge/plugin-fuses@npm:7.5.0"
+  dependencies:
+    "@electron-forge/plugin-base": "npm:7.5.0"
+    "@electron-forge/shared-types": "npm:7.5.0"
   peerDependencies:
     "@electron/fuses": ">=1.0.0"
-  checksum: 10c0/8f69a65a376f8dbdc0584303eb3d618c73fe7116936245a36c76a90a7ccc332a9ef15c68f2228a8d30dfc68115b4dd9e0d8cec04151c008b69cd000d62840175
+  checksum: 10c0/dd8dbaf527d6e73d0267cdac24a8f4958984ad22352595916401052a5176cd0aef6192d10b64856e9ce36da07b958daf4da6ae1b77ef047892917b19eab11fe5
   languageName: node
   linkType: hard
 
@@ -11988,7 +11997,7 @@ __metadata:
     "@electron-forge/maker-squirrel": "npm:<7.5.0"
     "@electron-forge/maker-zip": "npm:<7.5.0"
     "@electron-forge/plugin-auto-unpack-natives": "npm:<7.5.0"
-    "@electron-forge/plugin-fuses": "npm:<7.5.0"
+    "@electron-forge/plugin-fuses": "npm:<7.6.0"
     "@electron-forge/plugin-vite": "npm:<7.5.0"
     "@electron-forge/publisher-github": "npm:<7.5.0"
     "@electron-forge/publisher-s3": "npm:^7.5.0"
