@@ -159,7 +159,7 @@
     "langchain": "^0.3.5",
     "lodash": "^4.17.21",
     "lru-cache": "^11.0.2",
-    "lucide-react": "^0.455.0",
+    "lucide-react": "^0.456.0",
     "mark.js": "^8.11.1",
     "microsoft-cognitiveservices-speech-sdk": "^1.41.0",
     "mime-types": "^2.1.35",

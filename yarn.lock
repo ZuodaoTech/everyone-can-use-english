@@ -12094,7 +12094,7 @@ __metadata:
     langchain: "npm:^0.3.5"
     lodash: "npm:^4.17.21"
     lru-cache: "npm:^11.0.2"
-    lucide-react: "npm:^0.455.0"
+    lucide-react: "npm:^0.456.0"
     mark.js: "npm:^8.11.1"
     microsoft-cognitiveservices-speech-sdk: "npm:^1.41.0"
     mime-types: "npm:^2.1.35"
@@ -16209,12 +16209,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.455.0":
-  version: 0.455.0
-  resolution: "lucide-react@npm:0.455.0"
+"lucide-react@npm:^0.456.0":
+  version: 0.456.0
+  resolution: "lucide-react@npm:0.456.0"
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
-  checksum: 10c0/879f51dc0143c36452022ee852cdc9c8967d644f4102ba5311d55a6fe63a0c9a5963069e56b4d034579e9e502e032736009c592e3706067cd0cf9ca2556e07f9
+  checksum: 10c0/a56f6922381ff529f1df93c3fca47766682a8e427ec266fd1f4bcf063f65f93460f9e7982abf79d79e5f7bb50b8013d0493a26f78677de9b1c06b6b5a6343d56
   languageName: node
   linkType: hard
 
