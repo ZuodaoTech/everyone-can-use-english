@@ -58,7 +58,13 @@ export default () => {
       ) : (
         <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {documents.map((document) => (
-            <DocumentCard key={document.id} document={document} />
+            <DocumentCard
+              key={document.id}
+              document={document}
+              onDelete={() =>
+                setDocuments(documents.filter((d) => d.id !== document.id))
+              }
+            />
           ))}
         </div>
       )}

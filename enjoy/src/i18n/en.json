@@ -902,6 +902,8 @@
   "bulkDeleteAborted": "Bulk delete aborted",
   "notFound": "Not found",
   "saved": "Saved",
+  "deleteDocumentConfirm": "Are you sure to delete this document?",
+  "documentDeletedSuccessfully": "Document deleted successfully",
   "autoTranslate": "Auto translate",
   "autoNextSpeech": "Auto speech",
   "failedToLoadLink": "Failed to load link",

@@ -18,9 +18,7 @@ export const DocumentTextRenderer = () => {
 
   const fetchContent = async () => {
     const res = await fetch(document.src);
-    console.log("res", res);
     const text = await res.text();
-    console.log("text", text);
     setContent(text);
   };
 

@@ -199,6 +199,13 @@ export class Document extends Model<Document> {
   }
 
   @AfterDestroy
+  static removeLocalFile(document: Document) {
+    if (document.filePath) {
+      fs.removeSync(document.filePath);
+    }
+  }
+
+  @AfterDestroy
   static async destroyRemote(document: Document) {
     const webApi = new Client({
       baseUrl: settings.apiUrl(),

@@ -45,6 +45,9 @@ export const DocumentsSegment = () => {
               key={document.id}
               document={document}
               className="w-48"
+              onDelete={() =>
+                setDocuments(documents.filter((d) => d.id !== document.id))
+              }
             />
           ))}
         </div>
