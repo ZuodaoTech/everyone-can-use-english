@@ -276,6 +276,7 @@ type EnjoyAppType = {
     delete: (id: string) => Promise<void>;
   };
   echogarden: {
+    getPackagesDir: () => Promise<string>;
     recognize: (
       input: string,
       options: RecognitionOptions

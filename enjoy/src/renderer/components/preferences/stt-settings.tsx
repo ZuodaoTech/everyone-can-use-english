@@ -16,7 +16,7 @@ import { useContext, useEffect, useState } from "react";
 import { SttEngineOptionEnum } from "@/types/enums";
 import { EchogardenSttSettings } from "@renderer/components";
 
-export const WhisperSettings = () => {
+export const SttSettings = () => {
   const {
     sttEngine,
     setSttEngine,
@@ -70,15 +70,23 @@ export const WhisperSettings = () => {
             t("openaiSpeechToTextDescription")}
         </div>
         <div
-          className={`text-sm text-muted-foreground space-y-3 ${
+          className={`text-sm text-muted-foreground mt-4 px-1 ${
             editing ? "" : "hidden"
           }`}
         >
           <EchogardenSttSettings
             echogardenSttConfig={echogardenSttConfig}
             onSave={(data) => {
-              setEchogardenSttConfig(data as EchogardenSttConfigType);
-              setEditing(false);
+              setEchogardenSttConfig(data as EchogardenSttConfigType)
+                .then(() => {
+                  toast.success(t("saved"));
+                })
+                .catch((error) => {
+                  toast.error(error.message);
+                })
+                .finally(() => {
+                  setEditing(false);
+                });
             }}
           />
         </div>

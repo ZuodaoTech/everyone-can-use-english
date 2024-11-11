@@ -9,7 +9,7 @@ import {
   UserSettings,
   BalanceSettings,
   LibrarySettings,
-  WhisperSettings,
+  SttSettings,
   OpenaiSettings,
   ProxySettings,
   ResetSettings,
@@ -40,7 +40,7 @@ export const Preferences = () => {
           <Separator />
           <LearningLanguageSettings />
           <Separator />
-          <WhisperSettings />
+          <SttSettings />
           <Separator />
           <DefaultEngineSettings />
           <Separator />

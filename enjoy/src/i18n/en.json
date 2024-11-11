@@ -907,5 +907,10 @@
   "failedToLoadLink": "Failed to load link",
   "refreshSpeech": "Refresh speech",
   "locateParagraph": "Locate paragraph",
-  "close": "Close"
+  "close": "Close",
+  "temperature": "Temperature",
+  "encoderProvider": "Encoder Provider",
+  "decoderProvider": "Decoder Provider",
+  "openPackagesDir": "Open models dir",
+  "whisperModelDescription": "Model will be downloaded when first used."
 }

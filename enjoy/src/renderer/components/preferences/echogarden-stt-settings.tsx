@@ -3,6 +3,7 @@ import {
   Button,
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -42,6 +43,7 @@ export const EchogardenSttSettings = (props: {
     arch: string;
     version: string;
   }>();
+  const [packagesDir, setPackagesDir] = useState<string>();
 
   const form = useForm<z.infer<typeof echogardenSttConfigSchema>>({
     resolver: zodResolver(echogardenSttConfigSchema),
@@ -68,8 +70,14 @@ export const EchogardenSttSettings = (props: {
     });
   };
 
+  const handleOpenPackagesDir = () => {
+    if (!packagesDir) return;
+    EnjoyApp.shell.openPath(packagesDir);
+  };
+
   useEffect(() => {
     EnjoyApp.app.getPlatformInfo().then(setPlatformInfo);
+    EnjoyApp.echogarden.getPackagesDir().then(setPackagesDir);
   }, []);
 
   return (
@@ -96,6 +104,20 @@ export const EchogardenSttSettings = (props: {
                     </SelectContent>
                   </Select>
                 </FormControl>
+                <FormDescription>
+                  {t("whisperModelDescription")}
+                  {packagesDir && (
+                    <Button
+                      size="icon"
+                      variant="link"
+                      className="ml-2"
+                      type="button"
+                      onClick={handleOpenPackagesDir}
+                    >
+                      {t("openPackagesDir")}
+                    </Button>
+                  )}
+                </FormDescription>
               </FormItem>
             )}
           />
@@ -120,7 +142,7 @@ export const EchogardenSttSettings = (props: {
               <FormItem>
                 <FormLabel>{t("prompt")}</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input placeholder={t("prompt")} {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -191,13 +213,7 @@ export const EchogardenSttSettings = (props: {
           />
         </div>
         <div className="flex items-center justify-end space-x-2">
-          <Button
-            size="sm"
-            type="submit"
-            onClick={() => {
-              onSubmit(form.getValues());
-            }}
-          >
+          <Button size="sm" type="submit">
             {t("save")}
           </Button>
         </div>

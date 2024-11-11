@@ -28,6 +28,7 @@ export default defineConfig((env) => {
           "echogarden/dist/api/API.js",
           "echogarden/dist/audio/AudioUtilities.js",
           "echogarden/dist/utilities/Timeline.js",
+          "echogarden/dist/utilities/PackageManager.js",
         ],
         output: {
           strict: false,

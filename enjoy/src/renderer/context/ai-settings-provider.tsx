@@ -18,7 +18,7 @@ type AISettingsProviderState = {
   gptProviders?: typeof GPT_PROVIDERS;
   ttsProviders?: typeof TTS_PROVIDERS;
   echogardenSttConfig?: EchogardenSttConfigType;
-  setEchogardenSttConfig?: (config: EchogardenSttConfigType) => void;
+  setEchogardenSttConfig?: (config: EchogardenSttConfigType) => Promise<void>;
 };
 
 const initialState: AISettingsProviderState = {};
@@ -144,7 +144,7 @@ export const AISettingsProvider = ({
         ...config.whisper,
       },
     };
-    EnjoyApp.userSettings
+    return EnjoyApp.userSettings
       .set(UserSettingKeyEnum.ECHOGARDEN, updatedConfig)
       .then(() => {
         setEchogardenSttConfig(updatedConfig);

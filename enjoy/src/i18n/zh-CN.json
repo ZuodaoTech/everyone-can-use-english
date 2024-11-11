@@ -907,5 +907,10 @@
   "failedToLoadLink": "加载链接失败",
   "refreshSpeech": "刷新语音",
   "locateParagraph": "定位段落",
-  "close": "关闭"
+  "close": "关闭",
+  "temperature": "温度",
+  "encoderProvider": "编码器",
+  "decoderProvider": "解码器",
+  "openPackagesDir": "打开模型目录",
+  "whisperModelDescription": "模型首次使用时会下载。"
 }

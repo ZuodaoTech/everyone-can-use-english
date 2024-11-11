@@ -15,6 +15,8 @@ import {
   type Timeline,
   type TimelineEntry,
 } from "echogarden/dist/utilities/Timeline.d.js";
+import { WhisperOptions } from "echogarden/dist/recognition/WhisperSTT.js";
+import { ensureAndGetPackagesDir } from "echogarden/dist/utilities/PackageManager.js";
 import path from "path";
 import log from "@main/logger";
 import url from "url";
@@ -25,7 +27,6 @@ import { enjoyUrlToPath, pathToEnjoyUrl } from "./utils";
 import { UserSetting } from "./db/models";
 import { UserSettingKeyEnum } from "@/types/enums";
 import { WHISPER_MODELS } from "@/constants";
-import { WhisperOptions } from "echogarden/dist/recognition/WhisperSTT.js";
 
 Echogarden.setGlobalOption(
   "ffmpegPath",
@@ -225,6 +226,10 @@ class EchogardenWrapper {
 
     ipcMain.handle("echogarden-check", async (_event, options: any) => {
       return this.check(options);
+    });
+
+    ipcMain.handle("echogarden-get-packages-dir", async (_event) => {
+      return ensureAndGetPackagesDir();
     });
   }
 }
