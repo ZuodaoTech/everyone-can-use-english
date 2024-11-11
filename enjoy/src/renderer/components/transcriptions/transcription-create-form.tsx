@@ -188,8 +188,14 @@ export const TranscriptionCreateForm = (props: {
                   <>
                     <div>{t("localSpeechToTextDescription")}</div>
                     <div>
-                      * {t("model")}:{echogardenSttConfig.engine}/
-                      {echogardenSttConfig[echogardenSttConfig.engine].model}
+                      * {t("model")}: {echogardenSttConfig.engine} /{" "}
+                      {
+                        echogardenSttConfig[
+                          echogardenSttConfig.engine.replace(".cpp", "Cpp") as
+                            | "whisper"
+                            | "whisperCpp"
+                        ]?.model
+                      }
                     </div>
                   </>
                 )}
