@@ -115,7 +115,12 @@ export const EchogardenSttSettings = (props: {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="whisper">Whisper</SelectItem>
-                      <SelectItem value="whisper.cpp">Whisper.cpp</SelectItem>
+                      <SelectItem
+                        disabled={platformInfo?.platform === "darwin"}
+                        value="whisper.cpp"
+                      >
+                        Whisper.cpp
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>
