@@ -25,7 +25,6 @@ import dict from "./dict";
 import mdict from "./mdict";
 import decompresser from "./decompresser";
 import { UserSetting } from "@main/db/models";
-import MenuBuilder from "./menu";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -510,67 +509,16 @@ ${log}
 
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    show: false,
+    icon:
+      process.platform === "win32" ? "./assets/icon.ico" : "./assets/icon.png",
     width: 1280,
     height: 720,
     minWidth: 800,
     minHeight: 600,
-    // Platform-specific icon paths
-    icon:
-      process.platform === "win32"
-        ? path.join(__dirname, "../assets/icon.ico")
-        : path.join(__dirname, "../assets/icon.png"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       spellcheck: false,
     },
-    // Base settings
-    backgroundColor: "#ffffff",
-
-    // Platform specific window settings
-    ...(() => {
-      switch (process.platform) {
-        case "darwin":
-          return {
-            titleBarStyle: "hiddenInset",
-            trafficLightPosition: { x: 20, y: 20 },
-            transparent: true,
-            vibrancy: "under-window",
-            visualEffectState: "active",
-            frame: false,
-          };
-        case "win32":
-          return {
-            frame: true,
-            backgroundMaterial: "mica",
-            useContentSize: true,
-            titleBarStyle: "hidden",
-            titleBarOverlay: {
-              color: "#ffffff",
-              symbolColor: "#000000",
-              height: 30,
-            },
-          };
-        default: // Linux
-          return {
-            frame: false,
-            transparent: false,
-            titleBarStyle: "hidden",
-            titleBarOverlay: {
-              color: "#ffffff",
-              symbolColor: "#000000",
-              height: 30,
-            },
-          };
-      }
-    })(),
-  });
-
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
-
-  mainWindow.on("ready-to-show", () => {
-    mainWindow.show();
   });
 
   mainWindow.on("resize", () => {
@@ -617,6 +565,8 @@ ${log}
     );
     // mainWindow.webContents.openDevTools();
   }
+
+  Menu.setApplicationMenu(null);
 
   main.win = mainWindow;
 };
