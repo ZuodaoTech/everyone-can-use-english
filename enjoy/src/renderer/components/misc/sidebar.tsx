@@ -92,7 +92,7 @@ export const Sidebar = () => {
         }`}
       >
         <ScrollArea className="w-full h-full pb-12">
-          <div className="py-4 mb-4 flex items-center space-x-1 justify-center">
+          <div className="py-4 flex items-center space-x-1 justify-center">
             <img
               src="./assets/logo-light.svg"
               className="w-8 h-8 cursor-pointer hover:animate-spin"
