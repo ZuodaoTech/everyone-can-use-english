@@ -354,7 +354,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-polly@npm:^3.670.0":
+"@aws-sdk/client-polly@npm:^3.687.0":
   version: 3.687.0
   resolution: "@aws-sdk/client-polly@npm:3.687.0"
   dependencies:
@@ -613,7 +613,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-transcribe-streaming@npm:^3.672.0":
+"@aws-sdk/client-transcribe-streaming@npm:^3.687.0":
   version: 3.687.0
   resolution: "@aws-sdk/client-transcribe-streaming@npm:3.687.0"
   dependencies:
@@ -1681,10 +1681,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@echogarden/espeak-ng-emscripten@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "@echogarden/espeak-ng-emscripten@npm:0.2.0"
-  checksum: 10c0/ec2669328e6f6629c5d416d5f15af5ff7de93fc01b44297022a982c0661c9df9cdcf3754f81c4ef77d6ca31fd84674c19a4fe94cc4f9bdc097315111cc157415
+"@echogarden/audio-io@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "@echogarden/audio-io@npm:0.2.3"
+  checksum: 10c0/b8b0de7f370d0115ece37272f5b012094c77de661c17407a667db1e65bbf6876bf832260234af17018fcaf92ef2480e8948e9481bdc2e8902d279b72669d99c6
+  conditions: (os=win32 | os=darwin | os=linux)
+  languageName: node
+  linkType: hard
+
+"@echogarden/espeak-ng-emscripten@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "@echogarden/espeak-ng-emscripten@npm:0.3.1"
+  checksum: 10c0/6b494d45cdfbce44af5a23c142013777c5b743cae69471ffd3eb9eec6eda23674f6b74f148af01e6fc7e9ef760fc24a8e1e9af3391996cc53f71f08678f51a6e
   languageName: node
   linkType: hard
 
@@ -1702,59 +1710,52 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@echogarden/fvad-wasm@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "@echogarden/fvad-wasm@npm:0.1.2"
-  checksum: 10c0/e5ebd0c8bddd19f26cb4862f86fffa842f941c969ffb7da726c936fc338e2cb317ef99039fe7c5472ac370af909618ad08139b8b95dce8b07993de432b86d56a
+"@echogarden/fvad-wasm@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@echogarden/fvad-wasm@npm:0.2.0"
+  checksum: 10c0/d5480abf5c555ffa7fbe3f75a18b3c5f9b0d5d64b0d31f92097269637e827f3253556b39e1d52bbabeae604c43c8f1479d1bfd798d7fee112cdb3a250124a093
   languageName: node
   linkType: hard
 
-"@echogarden/kissfft-wasm@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@echogarden/kissfft-wasm@npm:0.1.1"
-  checksum: 10c0/3c034ebb6f64f1551ec70314ca373aec5c4907cc36f6efa9aa62d759840acbf471c50f697b71f910adcf5fab09cf3d918405a76e78d7ba94ffae9baf885c780e
+"@echogarden/pffft-wasm@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "@echogarden/pffft-wasm@npm:0.4.2"
+  checksum: 10c0/4e9ffc24195f5fa44f5623124f8815125af12c0c8934e7388b69f424418aab73e7e3acdf2c98894a60eed5509dccdb6844622f1232927ee6d51b2b7444beae4c
   languageName: node
   linkType: hard
 
-"@echogarden/pffft-wasm@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "@echogarden/pffft-wasm@npm:0.3.0"
-  checksum: 10c0/7425828ed23e1a1dbd77b940b0b141738337df21c0c71f8b9dbb21706b32832f70e61b0a4a441ce7bf3053433a52d48a1b905978ef01122fae0415bf31a83e46
+"@echogarden/rnnoise-wasm@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@echogarden/rnnoise-wasm@npm:0.2.0"
+  checksum: 10c0/b38a3e66f377de5429f3be57140b3fcea55727ef516ed25e53a310261156e90cda44c5c53d83f3061edff063ac7954bab3f62b9dd94aed86bd67e59bedfbd3bc
   languageName: node
   linkType: hard
 
-"@echogarden/rnnoise-wasm@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@echogarden/rnnoise-wasm@npm:0.1.1"
-  checksum: 10c0/806e51f68836d10319b40bd82dd24b02acc340c6b60b4bcd9609d8f480cd233a76c14a40a135cabb45c530c0187afb61a1ad6b8709c50de4559ec2136d45097f
+"@echogarden/rubberband-wasm@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@echogarden/rubberband-wasm@npm:0.2.0"
+  checksum: 10c0/e37c947a241efdd489f42502184700cce2d01b7f3ceb74461c88364a7eb0407ac745cda459d8afe577f76dc77629047a3529237b561be4ca9dd246a8482f5474
   languageName: node
   linkType: hard
 
-"@echogarden/rubberband-wasm@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@echogarden/rubberband-wasm@npm:0.1.1"
-  checksum: 10c0/4d254c511f65bfb425aaedebb59de174938bbbde5b8c64e758bc6b633e0a9764cbd6091e077e38d4e5bf8b462785b7ed769786e44c285543d0bd87f9b7ab6376
+"@echogarden/sonic-wasm@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@echogarden/sonic-wasm@npm:0.2.0"
+  checksum: 10c0/936a042f0e262062f87c97afbfd7b8ce573416843198bc8be31cf45ea4827bb4bb1e47d91a5e0c0dc752afa8726395e85230c52f9c12b9f94f404e51a7792cf0
   languageName: node
   linkType: hard
 
-"@echogarden/sonic-wasm@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@echogarden/sonic-wasm@npm:0.1.1"
-  checksum: 10c0/74872334ee730e03d21191d2e38aba4516a4ebe49380f4d2baf0da62d7d23a89d08839d2096de8b0bac548199c285d895466e51e83d24b841c4f8f08a52a6594
+"@echogarden/speex-resampler-wasm@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "@echogarden/speex-resampler-wasm@npm:0.2.1"
+  checksum: 10c0/ec7a1c49c7d4d2e056cb850271d4e368a25fcd0c89b2b8c1f206e6d401b51ead4ca1d67fec9272554948f7c58ac35c9f048eb3f52605a4ad28f93ee278dddf95
   languageName: node
   linkType: hard
 
-"@echogarden/speex-resampler-wasm@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@echogarden/speex-resampler-wasm@npm:0.1.1"
-  checksum: 10c0/f210506b865a5ed42dba6bdeaa5360ee591424a4007bf1c2f0a845ae78cec4fe0068ccf78c895f0f5cbf63778b3cccde2d21dc01bf51e83dd1e7a7ca963c26d9
-  languageName: node
-  linkType: hard
-
-"@echogarden/svoxpico-wasm@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@echogarden/svoxpico-wasm@npm:0.1.0"
-  checksum: 10c0/1a787402601146ab175359831feff3dde22ec17771303a75103d157b04a2a323172681306e2bf4edb7b2b8626db52683d28202779332e48be6df178b95772d32
+"@echogarden/svoxpico-wasm@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@echogarden/svoxpico-wasm@npm:0.2.0"
+  checksum: 10c0/142454b6d5c065e3c68beffa9122d382e8a0be0fb2ca983f1abb8249ba2b5f479813665a54e4069b98a3341e230e952b1a84cb8dd478f331716699866a55edda
   languageName: node
   linkType: hard
 
@@ -9284,22 +9285,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer-indexof@npm:~0.0.0":
-  version: 0.0.2
-  resolution: "buffer-indexof@npm:0.0.2"
-  checksum: 10c0/495124d3eacdfae2da6f815881e1c837459e48144ec46c246199ca3efc7052e767822784fd5399ca65a4043ba364b3a38b6b06dc6df44aab1aedea17544fc9fc
-  languageName: node
-  linkType: hard
-
-"buffer-split@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "buffer-split@npm:1.0.0"
-  dependencies:
-    buffer-indexof: "npm:~0.0.0"
-  checksum: 10c0/59280260d41c3871d227cd605343fc48a3ae3b3a7b799f3fec9a94e7275e040bdffcd84c3ae4a8e68de7f8232dee495f8d1c410b1466fc4be265d2d3410c8f75
-  languageName: node
-  linkType: hard
-
 "buffer-to-arraybuffer@npm:0.0.6":
   version: 0.0.6
   resolution: "buffer-to-arraybuffer@npm:0.0.6"
@@ -11600,27 +11585,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"echogarden@npm:1.8.7":
-  version: 1.8.7
-  resolution: "echogarden@npm:1.8.7"
+"echogarden@npm:2.0.2":
+  version: 2.0.2
+  resolution: "echogarden@npm:2.0.2"
   dependencies:
-    "@aws-sdk/client-polly": "npm:^3.670.0"
-    "@aws-sdk/client-transcribe-streaming": "npm:^3.672.0"
-    "@echogarden/espeak-ng-emscripten": "npm:^0.2.0"
+    "@aws-sdk/client-polly": "npm:^3.687.0"
+    "@aws-sdk/client-transcribe-streaming": "npm:^3.687.0"
+    "@echogarden/audio-io": "npm:^0.2.3"
+    "@echogarden/espeak-ng-emscripten": "npm:^0.3.1"
     "@echogarden/fasttext-wasm": "npm:^0.1.0"
     "@echogarden/flite-wasi": "npm:^0.1.1"
-    "@echogarden/fvad-wasm": "npm:^0.1.2"
-    "@echogarden/kissfft-wasm": "npm:^0.1.1"
-    "@echogarden/pffft-wasm": "npm:^0.3.0"
-    "@echogarden/rnnoise-wasm": "npm:^0.1.1"
-    "@echogarden/rubberband-wasm": "npm:^0.1.1"
-    "@echogarden/sonic-wasm": "npm:^0.1.1"
-    "@echogarden/speex-resampler-wasm": "npm:^0.1.1"
-    "@echogarden/svoxpico-wasm": "npm:^0.1.0"
+    "@echogarden/fvad-wasm": "npm:^0.2.0"
+    "@echogarden/pffft-wasm": "npm:^0.4.2"
+    "@echogarden/rnnoise-wasm": "npm:^0.2.0"
+    "@echogarden/rubberband-wasm": "npm:^0.2.0"
+    "@echogarden/sonic-wasm": "npm:^0.2.0"
+    "@echogarden/speex-resampler-wasm": "npm:^0.2.1"
+    "@echogarden/svoxpico-wasm": "npm:^0.2.0"
     "@echogarden/transformers-nodejs-lite": "npm:^2.17.1-lite.3"
     "@mozilla/readability": "npm:^0.5.0"
     alawmulaw: "npm:^6.0.0"
-    buffer-split: "npm:^1.0.0"
     chalk: "npm:^5.3.0"
     cldr-segmentation: "npm:^2.2.1"
     command-exists: "npm:^1.2.9"
@@ -11628,7 +11612,6 @@ __metadata:
     fs-extra: "npm:^11.2.0"
     gaxios: "npm:^6.7.1"
     graceful-fs: "npm:^4.2.11"
-    html-escaper: "npm:^3.0.3"
     html-to-text: "npm:^9.0.5"
     import-meta-resolve: "npm:^4.1.0"
     jieba-wasm: "npm:^2.2.0"
@@ -11636,10 +11619,9 @@ __metadata:
     json5: "npm:^2.2.3"
     kuromoji: "npm:^0.1.2"
     microsoft-cognitiveservices-speech-sdk: "npm:^1.41.0"
-    moving-median: "npm:^1.0.0"
     msgpack-lite: "npm:^0.1.26"
-    onnxruntime-node: "npm:^1.19.2"
-    openai: "npm:^4.67.3"
+    onnxruntime-node: "npm:^1.20.0"
+    openai: "npm:^4.72.0"
     sam-js: "npm:^0.3.1"
     strip-ansi: "npm:^7.1.0"
     tar: "npm:^7.4.3"
@@ -12069,7 +12051,7 @@ __metadata:
     dayjs: "npm:^1.11.13"
     decamelize: "npm:^6.0.0"
     decamelize-keys: "npm:^2.0.1"
-    echogarden: "npm:1.8.7"
+    echogarden: "npm:2.0.2"
     electron: "npm:^33.2.0"
     electron-context-menu: "npm:^4.0.4"
     electron-devtools-installer: "npm:^3.2.0"
@@ -14315,13 +14297,6 @@ __metadata:
   dependencies:
     whatwg-encoding: "npm:^3.1.1"
   checksum: 10c0/523398055dc61ac9b34718a719cb4aa691e4166f29187e211e1607de63dc25ac7af52ca7c9aead0c4b3c0415ffecb17326396e1202e2e86ff4bca4c0ee4c6140
-  languageName: node
-  linkType: hard
-
-"html-escaper@npm:^3.0.3":
-  version: 3.0.3
-  resolution: "html-escaper@npm:3.0.3"
-  checksum: 10c0/a042fa4139127ff7546513e90ea39cc9161a1938ce90122dbc4260d4b7252c9aa8452f4509c0c2889901b8ae9a8699179150f1f99d3f80bcf7317573c5f08f4e
   languageName: node
   linkType: hard
 
@@ -17534,13 +17509,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moving-median@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "moving-median@npm:1.0.0"
-  checksum: 10c0/e174657eb053f0423272524ee0dd7e8bd9a925945828b7b4a13a67b1c69ff617a0dd5cf28921cf1281c2bf7eda64f62bf79e73892bad75250f66f1d56489a208
-  languageName: node
-  linkType: hard
-
 "mri@npm:^1.2.0":
   version: 1.2.0
   resolution: "mri@npm:1.2.0"
@@ -18518,7 +18486,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"onnxruntime-node@npm:^1.19.2":
+"onnxruntime-node@npm:^1.20.0":
   version: 1.20.0
   resolution: "onnxruntime-node@npm:1.20.0"
   dependencies:
@@ -18552,28 +18520,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openai@npm:^4.67.3, openai@npm:^4.72.0":
-  version: 4.72.0
-  resolution: "openai@npm:4.72.0"
-  dependencies:
-    "@types/node": "npm:^18.11.18"
-    "@types/node-fetch": "npm:^2.6.4"
-    abort-controller: "npm:^3.0.0"
-    agentkeepalive: "npm:^4.2.1"
-    form-data-encoder: "npm:1.7.2"
-    formdata-node: "npm:^4.3.2"
-    node-fetch: "npm:^2.6.7"
-  peerDependencies:
-    zod: ^3.23.8
-  peerDependenciesMeta:
-    zod:
-      optional: true
-  bin:
-    openai: bin/cli
-  checksum: 10c0/38d76a3359297b7a8f2b6780d03ccbc152985e39141e7cf7a7823d5b0b189990523c5fb6be26631eb191cb3c437e293023e7e9fd3c5c2ae37369175e838bc9e9
-  languageName: node
-  linkType: hard
-
 "openai@npm:^4.71.0":
   version: 4.71.1
   resolution: "openai@npm:4.71.1"
@@ -18593,6 +18539,28 @@ __metadata:
   bin:
     openai: bin/cli
   checksum: 10c0/468721223a68ae775dd6d7d2e3f32f7aa1ffb6d3e7fcb91c3851e7aaff75d0bf40b322a418dbc24aef34b86267821891a71f839f4cfce1a3e5bbed2084326314
+  languageName: node
+  linkType: hard
+
+"openai@npm:^4.72.0":
+  version: 4.72.0
+  resolution: "openai@npm:4.72.0"
+  dependencies:
+    "@types/node": "npm:^18.11.18"
+    "@types/node-fetch": "npm:^2.6.4"
+    abort-controller: "npm:^3.0.0"
+    agentkeepalive: "npm:^4.2.1"
+    form-data-encoder: "npm:1.7.2"
+    formdata-node: "npm:^4.3.2"
+    node-fetch: "npm:^2.6.7"
+  peerDependencies:
+    zod: ^3.23.8
+  peerDependenciesMeta:
+    zod:
+      optional: true
+  bin:
+    openai: bin/cli
+  checksum: 10c0/38d76a3359297b7a8f2b6780d03ccbc152985e39141e7cf7a7823d5b0b189990523c5fb6be26631eb191cb3c437e293023e7e9fd3c5c2ae37369175e838bc9e9
   languageName: node
   linkType: hard
 
