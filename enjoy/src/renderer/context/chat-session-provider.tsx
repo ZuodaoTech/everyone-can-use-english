@@ -447,7 +447,7 @@ export const ChatSessionProvider = ({
         updateMessage,
       }}
     >
-      <MediaShadowProvider>
+      <MediaShadowProvider onCancel={() => setShadowing(null)}>
         {chat && children}
 
         <AlertDialog
@@ -472,6 +472,7 @@ export const ChatSessionProvider = ({
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
         <Sheet
           modal={false}
           open={Boolean(shadowing)}

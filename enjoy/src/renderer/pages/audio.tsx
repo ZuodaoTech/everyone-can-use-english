@@ -1,4 +1,9 @@
-import { useParams, useSearchParams, Link } from "react-router-dom";
+import {
+  useParams,
+  useSearchParams,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import { AudioPlayer } from "@renderer/components";
 import {
   Breadcrumb,
@@ -17,6 +22,7 @@ export default () => {
   const [searchParams] = useSearchParams();
   const segmentIndex = searchParams.get("segmentIndex") || "0";
   const [audio, setAudio] = useState<AudioType | null>(null);
+  const navigate = useNavigate();
 
   return (
     <div className="h-screen flex flex-col relative">
@@ -37,7 +43,7 @@ export default () => {
       </Breadcrumb>
 
       <div className="flex-1">
-        <MediaShadowProvider>
+        <MediaShadowProvider onCancel={() => navigate("/audios")}>
           <AudioPlayer
             id={id}
             segmentIndex={parseInt(segmentIndex)}

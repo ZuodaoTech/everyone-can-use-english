@@ -40,7 +40,6 @@ export const MediaLoadingModal = () => {
 };
 
 const LoadingContent = () => {
-  const navigate = useNavigate();
   const {
     media,
     decoded,
@@ -74,7 +73,7 @@ const LoadingContent = () => {
                   isolate: data.isolate,
                 });
               }}
-              onCancel={() => navigate(-1)}
+              onCancel={onCancel}
               transcribing={transcribing}
               transcribingProgress={transcribingProgress}
               transcribingOutput={transcribingOutput}
@@ -109,12 +108,7 @@ const LoadingContent = () => {
           </div>
         </div>
         <AlertDialogFooter>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              onCancel ? onCancel() : navigate(-1);
-            }}
-          >
+          <Button variant="secondary" onClick={onCancel}>
             {t("cancel")}
           </Button>
         </AlertDialogFooter>
@@ -137,12 +131,7 @@ const LoadingContent = () => {
           )}
         </div>
         <AlertDialogFooter>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              onCancel ? onCancel() : navigate(-1);
-            }}
-          >
+          <Button variant="secondary" onClick={onCancel}>
             {t("cancel")}
           </Button>
         </AlertDialogFooter>
