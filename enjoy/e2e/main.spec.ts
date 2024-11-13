@@ -60,7 +60,7 @@ test.afterAll(async () => {
   await electronApp.close();
 });
 
-test("validate echogarden command", async () => {
+test("validate echogarden recognition", async () => {
   const res = await page.evaluate(() => {
     return window.__ENJOY_APP__.echogarden.check({
       engine: "whisper",

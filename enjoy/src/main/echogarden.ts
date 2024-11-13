@@ -24,9 +24,6 @@ import settings from "@main/settings";
 import fs from "fs-extra";
 import ffmpegPath from "ffmpeg-static";
 import { enjoyUrlToPath, pathToEnjoyUrl } from "./utils";
-import { UserSetting } from "./db/models";
-import { UserSettingKeyEnum } from "@/types/enums";
-import { WHISPER_MODELS } from "@/constants";
 
 Echogarden.setGlobalOption(
   "ffmpegPath",
@@ -113,6 +110,11 @@ class EchogardenWrapper {
         result,
         { spaces: 2 }
       );
+
+      const timeline = await this.align(sampleFile, result.transcript, {
+        language: "en",
+      });
+      logger.info(timeline);
 
       return { success: true, log: "" };
     } catch (e) {
