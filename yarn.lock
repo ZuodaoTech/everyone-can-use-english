@@ -12088,6 +12088,7 @@ __metadata:
     lru-cache: "npm:^11.0.2"
     lucide-react: "npm:^0.456.0"
     mark.js: "npm:^8.11.1"
+    media-captions: "npm:^0.0.18"
     microsoft-cognitiveservices-speech-sdk: "npm:^1.41.0"
     mime-types: "npm:^2.1.35"
     mustache: "npm:^4.2.0"
@@ -16680,6 +16681,13 @@ __metadata:
   version: 2.0.30
   resolution: "mdn-data@npm:2.0.30"
   checksum: 10c0/a2c472ea16cee3911ae742593715aa4c634eb3d4b9f1e6ada0902aa90df13dcbb7285d19435f3ff213ebaa3b2e0c0265c1eb0e3fb278fda7f8919f046a410cd9
+  languageName: node
+  linkType: hard
+
+"media-captions@npm:^0.0.18":
+  version: 0.0.18
+  resolution: "media-captions@npm:0.0.18"
+  checksum: 10c0/616ead02c3f755ab0a45f79cdc6a9204c6c157c450041e126e7d40a7e91fef5e562b343c497d276a9f99c44da23c12bcc53dbb9351c3c31448e19239dc22bc53
   languageName: node
   linkType: hard
 

@@ -161,6 +161,7 @@
     "lru-cache": "^11.0.2",
     "lucide-react": "^0.456.0",
     "mark.js": "^8.11.1",
+    "media-captions": "^0.0.18",
     "microsoft-cognitiveservices-speech-sdk": "^1.41.0",
     "mime-types": "^2.1.35",
     "mustache": "^4.2.0",

@@ -188,7 +188,9 @@ export const useTranscribe = () => {
       return {
         engine: "upload",
         model: "-",
-        transcript: segmentTimeline.map((entry) => entry.text).join(" "),
+        transcript: segmentTimeline
+          .map((entry: TimelineEntry) => entry.text)
+          .join(" "),
         segmentTimeline,
       };
     } else {
