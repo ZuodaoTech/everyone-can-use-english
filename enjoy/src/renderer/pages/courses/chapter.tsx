@@ -51,9 +51,9 @@ export default () => {
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbPage>
+            <BreadcrumbLink asChild>
               <Link to={`/courses/${id}`}>{chapter?.course?.title || id}</Link>
-            </BreadcrumbPage>
+            </BreadcrumbLink>
             <BreadcrumbSeparator />
             <BreadcrumbPage>{chapter?.title || sequence}</BreadcrumbPage>
           </BreadcrumbList>

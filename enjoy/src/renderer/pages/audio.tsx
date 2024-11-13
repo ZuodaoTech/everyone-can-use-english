@@ -5,15 +5,18 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
+  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { MediaShadowProvider } from "@renderer/context";
+import { useState } from "react";
 
 export default () => {
   const { id } = useParams<{ id: string }>();
   const [searchParams] = useSearchParams();
   const segmentIndex = searchParams.get("segmentIndex") || "0";
+  const [audio, setAudio] = useState<AudioType | null>(null);
 
   return (
     <div className="h-screen flex flex-col relative">
@@ -26,14 +29,20 @@ export default () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink>{t("shadowingAudio")}</BreadcrumbLink>
+            <BreadcrumbPage>
+              {audio?.name || t("shadowingAudio")}
+            </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
 
       <div className="flex-1">
         <MediaShadowProvider>
-          <AudioPlayer id={id} segmentIndex={parseInt(segmentIndex)} />
+          <AudioPlayer
+            id={id}
+            segmentIndex={parseInt(segmentIndex)}
+            onLoad={setAudio}
+          />
         </MediaShadowProvider>
       </div>
     </div>

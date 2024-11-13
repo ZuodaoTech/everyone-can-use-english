@@ -1,26 +1,22 @@
-import {
-  useParams,
-  useNavigate,
-  useSearchParams,
-  Link,
-} from "react-router-dom";
+import { useParams, useSearchParams, Link } from "react-router-dom";
 import { VideoPlayer } from "@renderer/components";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
+  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@renderer/components/ui";
-import { ChevronLeftIcon } from "lucide-react";
 import { t } from "i18next";
 import { MediaShadowProvider } from "@renderer/context";
+import { useState } from "react";
 
 export default () => {
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [searchParams] = useSearchParams();
   const segmentIndex = searchParams.get("segmentIndex") || "0";
+  const [video, setVideo] = useState<VideoType | null>(null);
 
   return (
     <div className="h-screen flex flex-col relative">
@@ -33,14 +29,20 @@ export default () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink>{t("shadowingVideo")}</BreadcrumbLink>
+            <BreadcrumbPage>
+              {video?.name || t("shadowingVideo")}
+            </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
 
       <div className="flex-1">
         <MediaShadowProvider>
-          <VideoPlayer id={id} segmentIndex={parseInt(segmentIndex)} />
+          <VideoPlayer
+            id={id}
+            segmentIndex={parseInt(segmentIndex)}
+            onLoad={setVideo}
+          />
         </MediaShadowProvider>
       </div>
     </div>

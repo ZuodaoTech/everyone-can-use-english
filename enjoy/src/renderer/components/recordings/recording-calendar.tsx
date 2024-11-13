@@ -162,11 +162,12 @@ export const RecordingCalendar = (props: {
           },
         }}
       />
-      <ScrollArea className="max-w-fit h-36 px-2">
+      <ScrollArea className="max-w-fit h-36">
         {tabs().map((_tab) => (
           <Button
             key={_tab.value}
-            className="w-full justify-start py-1 min-w-max text-xs xl:text-sm 2xl:text-md whitespace-wrap"
+            size="sm"
+            className="w-full justify-center py-1 px-1 min-w-max text-xs xl:text-sm 2xl:text-md mb-2"
             variant={_tab.value === tab ? "secondary" : "ghost"}
             onClick={() => handleTabChange(_tab.value)}
           >

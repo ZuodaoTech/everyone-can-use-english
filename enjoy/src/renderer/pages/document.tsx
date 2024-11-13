@@ -4,7 +4,6 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-  Button,
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
@@ -18,9 +17,8 @@ import {
   DocumentTextRenderer,
 } from "@renderer/components";
 import { useContext } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { DocumentProvider, DocumentProviderContext } from "@renderer/context";
-import { ChevronLeftIcon } from "lucide-react";
 import { t } from "i18next";
 
 export default () => {
@@ -35,7 +33,6 @@ export default () => {
 
 const DocumentComponent = () => {
   const { document, playingSegment } = useContext(DocumentProviderContext);
-  const navigate = useNavigate();
 
   if (!document) {
     return (

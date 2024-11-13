@@ -8,8 +8,9 @@ export const VideoPlayer = (props: {
   id?: string;
   md5?: string;
   segmentIndex?: number;
+  onLoad?: (video: VideoType) => void;
 }) => {
-  const { id, md5, segmentIndex } = props;
+  const { id, md5, segmentIndex, onLoad } = props;
   const { media, setMedia, setCurrentSegmentIndex, getCachedSegmentIndex } =
     useContext(MediaShadowProviderContext);
   const { video } = useVideo({ id, md5 });
@@ -21,6 +22,7 @@ export const VideoPlayer = (props: {
 
   useEffect(() => {
     setMedia(video);
+    onLoad?.(video);
   }, [video]);
 
   useEffect(() => {

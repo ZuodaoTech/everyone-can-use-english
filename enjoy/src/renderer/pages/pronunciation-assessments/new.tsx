@@ -1,19 +1,16 @@
-import { ChevronLeftIcon } from "lucide-react";
 import { t } from "i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
+  BreadcrumbPage,
   BreadcrumbSeparator,
-  Button,
 } from "@renderer/components/ui";
 import { PronunciationAssessmentForm } from "@renderer/components";
 
 export default () => {
-  const navigate = useNavigate();
-
   return (
     <div className="min-h-full px-4 py-6 lg:px-8 max-w-5xl mx-auto">
       <Breadcrumb className="mb-4">
@@ -27,7 +24,7 @@ export default () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink>{t("newAssessment")}</BreadcrumbLink>
+            <BreadcrumbPage>{t("newAssessment")}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
