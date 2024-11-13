@@ -13,7 +13,6 @@ import Stories from "./pages/stories";
 import Story from "./pages/story";
 import Documents from "./pages/documents";
 import Document from "./pages/document";
-import Books from "./pages/books";
 import Profile from "./pages/profile";
 import User from "./pages/user";
 import Home from "./pages/home";
@@ -113,10 +112,6 @@ export default createHashRouter([
       {
         path: "/stories/:id",
         element: <Story />,
-      },
-      {
-        path: "/books",
-        element: <Books />,
       },
       {
         path: "/stories/preview/:uri",

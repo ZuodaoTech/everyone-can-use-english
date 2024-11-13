@@ -116,7 +116,7 @@ export const RecordingCalendar = (props: {
   }
 
   return (
-    <div className="mx-auto p-4 rounded-lg border flex justify-between gap-4">
+    <div className="mx-auto p-4 rounded-lg border flex justify-between gap-2">
       <Calendar
         data={stats}
         labels={{
@@ -162,11 +162,11 @@ export const RecordingCalendar = (props: {
           },
         }}
       />
-      <ScrollArea className="w-32 h-36 px-2">
+      <ScrollArea className="max-w-fit h-36 px-2">
         {tabs().map((_tab) => (
           <Button
             key={_tab.value}
-            className="w-full justify-start py-1 min-w-max text-xs xl:text-sm 2xl:text-md"
+            className="w-full justify-start py-1 min-w-max text-xs xl:text-sm 2xl:text-md whitespace-wrap"
             variant={_tab.value === tab ? "secondary" : "ghost"}
             onClick={() => handleTabChange(_tab.value)}
           >

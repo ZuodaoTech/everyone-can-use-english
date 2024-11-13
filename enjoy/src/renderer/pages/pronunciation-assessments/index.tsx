@@ -138,15 +138,8 @@ export default () => {
   }, [orderBy]);
 
   return (
-    <div className="h-full px-4 py-6 lg:px-8">
-      <div className="max-w-5xl mx-auto">
-        <div className="flex space-x-1 items-center mb-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-            <ChevronLeftIcon className="w-5 h-5" />
-          </Button>
-          <span>{t("sidebar.pronunciationAssessment")}</span>
-        </div>
-
+    <>
+      <div className="min-h-full px-4 py-6 lg:px-8 max-w-5xl mx-auto">
         <div className="flex items-center justify-between mb-4">
           <div className="">
             <div className="flex items-center gap-2">
@@ -269,6 +262,6 @@ export default () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { Button, Input } from "@renderer/components/ui";
+import { Input } from "@renderer/components/ui";
 import {
   DocumentAddButton,
   DocumentCard,
@@ -7,13 +7,10 @@ import {
 import { useState, useContext, useEffect } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
-import { ChevronLeftIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDebounce } from "@uidotdev/usehooks";
 
 export default () => {
-  const navigate = useNavigate();
-
   const [documents, setDocuments] = useState<DocumentEType[]>([]);
   const [query, setQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
@@ -37,13 +34,7 @@ export default () => {
   }, [debouncedQuery]);
 
   return (
-    <div className="h-full max-w-5xl mx-auto px-4 py-6">
-      <div className="flex space-x-1 items-center mb-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-          <ChevronLeftIcon className="w-5 h-5" />
-        </Button>
-        <span>{t("sidebar.documents")}</span>
-      </div>
+    <div className="min-h-full max-w-5xl mx-auto px-4 py-6">
       <div className="flex flex-wrap items-center gap-4 mb-4">
         <Input
           className="max-w-48"

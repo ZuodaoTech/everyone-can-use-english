@@ -213,129 +213,120 @@ export default () => {
   }, [currentGptEngine]);
 
   return (
-    <div className="h-full px-4 py-6 lg:px-8 flex flex-col">
-      <div className="w-full max-w-screen-md mx-auto flex-1">
-        <div className="flex space-x-1 items-center mb-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-            <ChevronLeftIcon className="w-5 h-5" />
-          </Button>
-          <span>{t("sidebar.aiAssistant")}</span>
-        </div>
+    <div className="min-h-full px-4 py-6 lg:px-8 max-w-5xl mx-auto">
+      <div className="mb-6 flex justify-center">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              data-testid="conversation-new-button"
+              className="h-12 rounded-lg w-96"
+            >
+              {t("newConversation")}
+            </Button>
+          </DialogTrigger>
 
-        <div className="my-6 flex justify-center">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                data-testid="conversation-new-button"
-                className="h-12 rounded-lg w-96"
-              >
-                {t("newConversation")}
-              </Button>
-            </DialogTrigger>
+          <DialogContent aria-describedby={undefined}>
+            <DialogHeader>
+              <DialogTitle>{t("selectAiRole")}</DialogTitle>
+            </DialogHeader>
 
-            <DialogContent aria-describedby={undefined}>
-              <DialogHeader>
-                <DialogTitle>{t("selectAiRole")}</DialogTitle>
-              </DialogHeader>
-
-              <div data-testid="conversation-presets" className="">
-                <div className="text-sm text-foreground/70 mb-2">
-                  {t("chooseFromPresetGpts")}
-                </div>
-                <ScrollArea className="h-64 pr-4">
-                  {config.gptPresets.map((preset: any) => (
-                    <DialogTrigger
-                      key={preset.key}
-                      data-testid={`conversation-preset-${preset.key}`}
-                      asChild
-                      onClick={() => {
-                        setPreset(preset);
-                        setCreating(true);
-                      }}
-                    >
-                      <div className="w-full p-2 cursor-pointer rounded hover:bg-muted">
-                        <div className="capitalize truncate">{preset.name}</div>
-                        {preset.configuration.roleDefinition && (
-                          <div className="line-clamp-1 text-xs text-foreground/70">
-                            {preset.configuration.roleDefinition}
-                          </div>
-                        )}
-                      </div>
-                    </DialogTrigger>
-                  ))}
-                </ScrollArea>
+            <div data-testid="conversation-presets" className="">
+              <div className="text-sm text-foreground/70 mb-2">
+                {t("chooseFromPresetGpts")}
               </div>
+              <ScrollArea className="h-64 pr-4">
+                {config.gptPresets.map((preset: any) => (
+                  <DialogTrigger
+                    key={preset.key}
+                    data-testid={`conversation-preset-${preset.key}`}
+                    asChild
+                    onClick={() => {
+                      setPreset(preset);
+                      setCreating(true);
+                    }}
+                  >
+                    <div className="w-full p-2 cursor-pointer rounded hover:bg-muted">
+                      <div className="capitalize truncate">{preset.name}</div>
+                      {preset.configuration.roleDefinition && (
+                        <div className="line-clamp-1 text-xs text-foreground/70">
+                          {preset.configuration.roleDefinition}
+                        </div>
+                      )}
+                    </div>
+                  </DialogTrigger>
+                ))}
+              </ScrollArea>
+            </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <DialogTrigger asChild>
+                <Button
+                  data-testid={`conversation-preset-${config.customPreset.key}`}
+                  onClick={() => {
+                    setPreset(config.customPreset);
+                    setCreating(true);
+                  }}
+                  variant="secondary"
+                  className="w-full"
+                >
+                  {t("custom")} GPT
+                </Button>
+              </DialogTrigger>
+              {config.ttsPreset.key && (
                 <DialogTrigger asChild>
                   <Button
-                    data-testid={`conversation-preset-${config.customPreset.key}`}
+                    data-testid={`conversation-preset-${config.ttsPreset.key}`}
                     onClick={() => {
-                      setPreset(config.customPreset);
+                      setPreset(config.ttsPreset);
                       setCreating(true);
                     }}
                     variant="secondary"
                     className="w-full"
                   >
-                    {t("custom")} GPT
+                    TTS
                   </Button>
                 </DialogTrigger>
-                {config.ttsPreset.key && (
-                  <DialogTrigger asChild>
-                    <Button
-                      data-testid={`conversation-preset-${config.ttsPreset.key}`}
-                      onClick={() => {
-                        setPreset(config.ttsPreset);
-                        setCreating(true);
-                      }}
-                      variant="secondary"
-                      className="w-full"
-                    >
-                      TTS
-                    </Button>
-                  </DialogTrigger>
-                )}
-              </div>
-            </DialogContent>
-          </Dialog>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
 
-          <Sheet open={creating} onOpenChange={(value) => setCreating(value)}>
-            <SheetContent className="p-0" aria-describedby={undefined}>
-              <SheetHeader>
-                <SheetTitle className="sr-only">
-                  {t("startConversation")}
-                </SheetTitle>
-              </SheetHeader>
-              <div className="h-screen relative">
-                <ConversationForm
-                  conversation={preset}
-                  onFinish={() => setCreating(false)}
-                />
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
-
-        {conversations.map((conversation) => (
-          <Link key={conversation.id} to={`/conversations/${conversation.id}`}>
-            <ConversationCard conversation={conversation} />
-          </Link>
-        ))}
-
-        {hasMore && (
-          <div className="flex justify-center">
-            <Button
-              variant="ghost"
-              onClick={() => fetchConversations()}
-              disabled={loading || !hasMore}
-              className="px-4 py-2"
-            >
-              {t("loadMore")}
-              {loading && <LoaderIcon className="w-4 h-4 animate-spin ml-2" />}
-            </Button>
-          </div>
-        )}
+        <Sheet open={creating} onOpenChange={(value) => setCreating(value)}>
+          <SheetContent className="p-0" aria-describedby={undefined}>
+            <SheetHeader>
+              <SheetTitle className="sr-only">
+                {t("startConversation")}
+              </SheetTitle>
+            </SheetHeader>
+            <div className="h-screen relative">
+              <ConversationForm
+                conversation={preset}
+                onFinish={() => setCreating(false)}
+              />
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
+
+      {conversations.map((conversation) => (
+        <Link key={conversation.id} to={`/conversations/${conversation.id}`}>
+          <ConversationCard conversation={conversation} />
+        </Link>
+      ))}
+
+      {hasMore && (
+        <div className="flex justify-center">
+          <Button
+            variant="ghost"
+            onClick={() => fetchConversations()}
+            disabled={loading || !hasMore}
+            className="px-4 py-2"
+          >
+            {t("loadMore")}
+            {loading && <LoaderIcon className="w-4 h-4 animate-spin ml-2" />}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
