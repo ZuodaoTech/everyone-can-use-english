@@ -305,7 +305,7 @@ Community service is an important component of education here at our university.
 - do: /duː/→/du, də, d/
 - does: /dʌz/→/dəz, z, s/
 - for: /fɔː/→/fə/
-- from: /frɔm/→/frəm, frm/
+- from: /frɑːm/→/frəm, frm/
 - had: /hæd/→/həd, əd, d/
 - has: /hæz/→/həz, əz, z, s/
 - have: /hæv/→/həv, əv, v/
