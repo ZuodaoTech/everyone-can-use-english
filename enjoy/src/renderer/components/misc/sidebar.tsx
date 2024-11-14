@@ -45,10 +45,7 @@ import {
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { t } from "i18next";
 import { Preferences } from "@renderer/components";
-import {
-  AppSettingsProviderContext,
-  CopilotProviderContext,
-} from "@renderer/context";
+import { AppSettingsProviderContext } from "@renderer/context";
 import { useContext, useEffect } from "react";
 import { NoticiationsChannel } from "@renderer/cables";
 import { useState } from "react";
@@ -57,7 +54,6 @@ export const Sidebar = () => {
   const location = useLocation();
   const activeTab = location.pathname;
   const { EnjoyApp, cable } = useContext(AppSettingsProviderContext);
-  const { active, setActive } = useContext(CopilotProviderContext);
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
@@ -88,13 +84,13 @@ export const Sidebar = () => {
   return (
     <div
       className={`h-[100vh] transition-all relative ${
-        isOpen ? "w-48" : "w-14"
+        isOpen ? "w-48" : "w-12"
       }`}
       data-testid="sidebar"
     >
       <div
         className={`fixed top-0 left-0 h-full bg-muted ${
-          isOpen ? "w-48" : "w-14"
+          isOpen ? "w-48" : "w-12"
         }`}
       >
         <ScrollArea className="w-full h-full pb-12">
@@ -212,7 +208,7 @@ export const Sidebar = () => {
                     data-tooltip-content={t("sidebar.preferences")}
                     data-tooltip-place="right"
                   >
-                    <SettingsIcon className="h-5 w-5" />
+                    <SettingsIcon className="size-4" />
                     {isOpen && (
                       <span className="ml-2"> {t("sidebar.preferences")} </span>
                     )}
@@ -241,7 +237,7 @@ export const Sidebar = () => {
                       isOpen ? "justify-start" : "justify-center"
                     }`}
                   >
-                    <HelpCircleIcon className="h-5 w-5" />
+                    <HelpCircleIcon className="size-4" />
                     {isOpen && (
                       <>
                         <span className="ml-2"> {t("sidebar.help")} </span>
@@ -267,7 +263,7 @@ export const Sidebar = () => {
                     className="flex justify-between space-x-4"
                   >
                     <span>{t("userGuide")}</span>
-                    <ExternalLinkIcon className="h-6 w-4" />
+                    <ExternalLinkIcon className="size-4" />
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
 
@@ -287,7 +283,7 @@ export const Sidebar = () => {
                           className="flex justify-between space-x-4"
                         >
                           <span>Mixin</span>
-                          <ExternalLinkIcon className="h-6 w-4" />
+                          <ExternalLinkIcon className="size-4" />
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() =>
@@ -298,7 +294,7 @@ export const Sidebar = () => {
                           className="flex justify-between space-x-4"
                         >
                           <span>Github</span>
-                          <ExternalLinkIcon className="h-6 w-4" />
+                          <ExternalLinkIcon className="size-4" />
                         </DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuPortal>
@@ -317,9 +313,9 @@ export const Sidebar = () => {
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? (
-              <PanelLeftCloseIcon className="h-5 w-5" />
+              <PanelLeftCloseIcon className="size-4" />
             ) : (
-              <PanelLeftOpenIcon className="h-5 w-5" />
+              <PanelLeftOpenIcon className="size-4" />
             )}
             {isOpen && <span className="ml-2"> {t("sidebar.collapse")} </span>}
           </Button>
@@ -354,7 +350,7 @@ const SidebarItem = (props: {
         variant={active ? "default" : "ghost"}
         className={`w-full ${isOpen ? "justify-start" : "justify-center"}`}
       >
-        <Icon className="h-5 w-5" />
+        <Icon className="size-4" />
         {isOpen && <span className="ml-2">{label}</span>}
       </Button>
     </Link>
@@ -385,11 +381,11 @@ const SidebarHeader = (props: { isOpen: boolean }) => {
                   <span className="text-left text-sm font-medium line-clamp-1">
                     {user.name}
                   </span>
-                  <span className="text-xs text-muted-foreground line-clamp-1">
+                  <span className="text-left text-xs text-muted-foreground line-clamp-1">
                     {user.id}
                   </span>
                 </div>
-                <ChevronsUpDownIcon className="w-4 h-4 ml-auto" />
+                <ChevronsUpDownIcon className="size-4 ml-auto" />
               </>
             )}
           </Button>
@@ -400,23 +396,23 @@ const SidebarHeader = (props: { isOpen: boolean }) => {
           side="bottom"
         >
           <DropdownMenuItem
-            className="w-full cursor-pointer"
+            className="cursor-pointer"
             onSelect={() => navigate("/profile")}
           >
-            <span>{t("sidebar.profile")}</span>
-            <UserIcon className="w-4 h-4 ml-auto" />
+            <span className="text-sm">{t("sidebar.profile")}</span>
+            <UserIcon className="size-4 ml-auto" />
           </DropdownMenuItem>
           <DropdownMenuItem
-            className="w-full cursor-pointer"
+            className="cursor-pointer"
             onSelect={() => navigate("/community")}
           >
-            <span>{t("sidebar.community")}</span>
-            <UsersRoundIcon className="w-4 h-4 ml-auto" />
+            <span className="text-sm">{t("sidebar.community")}</span>
+            <UsersRoundIcon className="size-4 ml-auto" />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={logout}>
-            <span>{t("logout")}</span>
-            <LogOutIcon className="w-4 h-4 ml-auto" />
+          <DropdownMenuItem onSelect={logout} className="cursor-pointer">
+            <span className="text-sm">{t("logout")}</span>
+            <LogOutIcon className="size-4 ml-auto" />
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
