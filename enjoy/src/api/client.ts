@@ -106,6 +106,10 @@ export class Client {
     return this.api.post("/api/sessions", decamelizeKeys(params));
   }
 
+  oauthState(state: string): Promise<UserType> {
+    return this.api.post("/api/sessions/oauth_state", { state });
+  }
+
   config(key: string): Promise<any> {
     return this.api.get(`/api/config/${key}`);
   }
