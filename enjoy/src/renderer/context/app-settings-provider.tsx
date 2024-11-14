@@ -6,6 +6,20 @@ import ahoy from "ahoy.js";
 import { type Consumer, createConsumer } from "@rails/actioncable";
 import { DbProviderContext } from "@renderer/context";
 import { UserSettingKeyEnum } from "@/types/enums";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+  Button,
+} from "@renderer/components/ui";
+import { t } from "i18next";
+import { redirect } from "react-router-dom";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -72,6 +86,8 @@ export const AppSettingsProvider = ({
   const [ipaMappings, setIpaMappings] = useState<{ [key: string]: string }>(
     IPA_MAPPINGS
   );
+  const [loggingOut, setLoggingOut] = useState<boolean>(false);
+
   const db = useContext(DbProviderContext);
 
   const fetchLanguages = async () => {
@@ -321,7 +337,7 @@ export const AppSettingsProvider = ({
         setApiUrl: setApiUrlHandler,
         user,
         login,
-        logout,
+        logout: () => setLoggingOut(true),
         libraryPath,
         setLibraryPath: setLibraryPathHandler,
         proxy,
@@ -337,6 +353,29 @@ export const AppSettingsProvider = ({
       }}
     >
       {children}
+
+      <AlertDialog open={loggingOut} onOpenChange={setLoggingOut}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("logout")}</AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogDescription>
+            {t("logoutConfirmation")}
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive-hover"
+              onClick={() => {
+                logout();
+                redirect("/landing");
+              }}
+            >
+              {t("logout")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </AppSettingsProviderContext.Provider>
   );
 };

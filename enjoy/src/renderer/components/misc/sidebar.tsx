@@ -15,6 +15,9 @@ import {
   DropdownMenuItem,
   Separator,
   DialogTitle,
+  Avatar,
+  AvatarImage,
+  DropdownMenuSeparator,
 } from "@renderer/components/ui";
 import {
   SettingsIcon,
@@ -35,8 +38,11 @@ import {
   MessagesSquareIcon,
   PanelLeftOpenIcon,
   PanelLeftCloseIcon,
+  ChevronsUpDownIcon,
+  LogOutIcon,
+  ChevronRightIcon,
 } from "lucide-react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { t } from "i18next";
 import { Preferences } from "@renderer/components";
 import {
@@ -82,30 +88,17 @@ export const Sidebar = () => {
   return (
     <div
       className={`h-[100vh] transition-all relative ${
-        isOpen ? "w-36" : "w-14"
+        isOpen ? "w-48" : "w-14"
       }`}
       data-testid="sidebar"
     >
       <div
         className={`fixed top-0 left-0 h-full bg-muted ${
-          isOpen ? "w-36" : "w-14"
+          isOpen ? "w-48" : "w-14"
         }`}
       >
         <ScrollArea className="w-full h-full pb-12">
-          <div className="py-4 flex items-center space-x-1 justify-center">
-            <img
-              src="./assets/logo-light.svg"
-              className="w-8 h-8 cursor-pointer hover:animate-spin"
-              onClick={() => setActive(!active)}
-            />
-            <span
-              className={`text-xl font-semibold text-[#4797F5] ${
-                isOpen ? "" : "hidden"
-              }`}
-            >
-              ENJOY
-            </span>
-          </div>
+          <SidebarHeader isOpen={isOpen} />
           <div className="grid gap-2 mb-4">
             <SidebarItem
               href="/"
@@ -205,26 +198,6 @@ export const Sidebar = () => {
 
             <Separator />
 
-            <SidebarItem
-              href="/community"
-              label={t("sidebar.community")}
-              tooltip={t("sidebar.community")}
-              active={activeTab === "/community"}
-              Icon={UsersRoundIcon}
-              isOpen={isOpen}
-            />
-
-            <SidebarItem
-              href="/profile"
-              label={t("sidebar.profile")}
-              tooltip={t("sidebar.profile")}
-              active={activeTab.startsWith("/profile")}
-              Icon={UserIcon}
-              isOpen={isOpen}
-            />
-
-            <Separator />
-
             <Dialog>
               <DialogTrigger asChild>
                 <div className="px-1">
@@ -270,17 +243,26 @@ export const Sidebar = () => {
                   >
                     <HelpCircleIcon className="h-5 w-5" />
                     {isOpen && (
-                      <span className="ml-2"> {t("sidebar.help")} </span>
+                      <>
+                        <span className="ml-2"> {t("sidebar.help")} </span>
+                        <ChevronRightIcon className="w-4 h-4 ml-auto" />
+                      </>
                     )}
                   </Button>
                 </div>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent className="px-6">
+              <DropdownMenuContent
+                className="w-[--radix-dropdown-menu-trigger-width]"
+                align="start"
+                side="top"
+              >
                 <DropdownMenuGroup>
                   <DropdownMenuItem
                     onClick={() =>
-                      EnjoyApp.shell.openExternal("https://998h.org/enjoy-app/")
+                      EnjoyApp.shell.openExternal(
+                        "https://1000h.org/enjoy-app/"
+                      )
                     }
                     className="flex justify-between space-x-4"
                   >
@@ -376,5 +358,68 @@ const SidebarItem = (props: {
         {isOpen && <span className="ml-2">{label}</span>}
       </Button>
     </Link>
+  );
+};
+
+const SidebarHeader = (props: { isOpen: boolean }) => {
+  const { isOpen } = props;
+  const { user, logout } = useContext(AppSettingsProviderContext);
+  const navigate = useNavigate();
+
+  return (
+    <div className="py-3 px-1 sticky top-0 bg-muted z-10">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className={`w-full h-12 hover:bg-background ${
+              isOpen ? "justify-start" : "justify-center px-1"
+            }`}
+          >
+            <Avatar className="size-8">
+              <AvatarImage src={user.avatarUrl} />
+            </Avatar>
+            {isOpen && (
+              <>
+                <div className="ml-2 flex flex-col leading-none">
+                  <span className="text-left text-sm font-medium line-clamp-1">
+                    {user.name}
+                  </span>
+                  <span className="text-xs text-muted-foreground line-clamp-1">
+                    {user.id}
+                  </span>
+                </div>
+                <ChevronsUpDownIcon className="w-4 h-4 ml-auto" />
+              </>
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          className="w-[--radix-dropdown-menu-trigger-width]"
+          align="start"
+          side="bottom"
+        >
+          <DropdownMenuItem
+            className="w-full cursor-pointer"
+            onSelect={() => navigate("/profile")}
+          >
+            <span>{t("sidebar.profile")}</span>
+            <UserIcon className="w-4 h-4 ml-auto" />
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="w-full cursor-pointer"
+            onSelect={() => navigate("/community")}
+          >
+            <span>{t("sidebar.community")}</span>
+            <UsersRoundIcon className="w-4 h-4 ml-auto" />
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onSelect={logout}>
+            <span>{t("logout")}</span>
+            <LogOutIcon className="w-4 h-4 ml-auto" />
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 };
