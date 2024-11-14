@@ -42,9 +42,9 @@ export const ChatHeader = (props: {
           onClick={toggleSidePanel}
         >
           {sidePanelCollapsed ? (
-            <ChevronsRightIcon className="w-5 h-5" />
+            <ChevronsRightIcon className="size-4" />
           ) : (
-            <ChevronsLeftIcon className="w-5 h-5" />
+            <ChevronsLeftIcon className="size-4" />
           )}
         </Button>
         {chat.type === ChatTypeEnum.CONVERSATION && (
@@ -59,7 +59,7 @@ export const ChatHeader = (props: {
       <Dialog open={displayChatForm} onOpenChange={setDisplayChatForm}>
         <DialogTrigger asChild>
           <Button variant="ghost" size="icon" className="absolute right-4">
-            <SettingsIcon className="w-5 h-5" />
+            <SettingsIcon className="size-4" />
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-screen-sm max-h-[70%] overflow-y-auto">
