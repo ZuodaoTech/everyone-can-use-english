@@ -1,5 +1,9 @@
 import {
-  Button,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
@@ -13,9 +17,9 @@ import {
   DocumentTextRenderer,
 } from "@renderer/components";
 import { useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { DocumentProvider, DocumentProviderContext } from "@renderer/context";
-import { ChevronLeftIcon } from "lucide-react";
+import { t } from "i18next";
 
 export default () => {
   const { id } = useParams<{ id: string }>();
@@ -29,7 +33,6 @@ export default () => {
 
 const DocumentComponent = () => {
   const { document, playingSegment } = useContext(DocumentProviderContext);
-  const navigate = useNavigate();
 
   if (!document) {
     return (
@@ -41,12 +44,19 @@ const DocumentComponent = () => {
 
   return (
     <div className="h-screen flex flex-col relative">
-      <div className="flex space-x-1 items-center px-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-          <ChevronLeftIcon className="w-5 h-5" />
-        </Button>
-        <span className="text-sm line-clamp-1">{document.title}</span>
-      </div>
+      <Breadcrumb className="px-4 pt-3 pb-2">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to={`/documents`}>{t("sidebar.documents")}</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <span className="text-sm line-clamp-1">{document.title}</span>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       <ResizablePanelGroup direction="horizontal" className="p-4">
         <ResizablePanel id="document" order={0}>

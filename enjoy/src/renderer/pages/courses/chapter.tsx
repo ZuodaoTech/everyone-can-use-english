@@ -43,7 +43,7 @@ export default () => {
   return (
     <CourseProvider id={id}>
       <div className="flex flex-col h-screen px-4 xl:px-6 py-6">
-        <Breadcrumb className="mb-6">
+        <Breadcrumb className="mb-4">
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
@@ -51,9 +51,9 @@ export default () => {
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbPage>
+            <BreadcrumbLink asChild>
               <Link to={`/courses/${id}`}>{chapter?.course?.title || id}</Link>
-            </BreadcrumbPage>
+            </BreadcrumbLink>
             <BreadcrumbSeparator />
             <BreadcrumbPage>{chapter?.title || sequence}</BreadcrumbPage>
           </BreadcrumbList>

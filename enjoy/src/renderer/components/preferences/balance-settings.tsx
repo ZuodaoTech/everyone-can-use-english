@@ -131,7 +131,9 @@ export const BalanceSettings = () => {
                   {[2, 10, 50, 100].map((amount) => (
                     <div
                       className={`text-xl w-full h-20 border rounded-md flex items-center justify-center cursor-pointer shadow hover:bg-gray-100 hover:dark:text-primary-foreground transition-colors duration-200 ease-in-out ${
-                        amount == depositAmount ? "bg-gray-100 dark:text-primary-foreground" : ""
+                        amount == depositAmount
+                          ? "bg-gray-100 dark:text-primary-foreground"
+                          : ""
                       }`}
                       key={`deposit-amount-${amount}`}
                       onClick={() => setDepositAmount(amount)}
@@ -269,7 +271,7 @@ export const BalanceSettings = () => {
 };
 
 const UsageChart = () => {
-  const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { webApi } = useContext(AppSettingsProviderContext);
   const [usages, setUsages] = useState<{ label: string; data: number[] }[]>([]);
   const chartRef = useRef<HTMLCanvasElement>(null);
 

@@ -7,8 +7,9 @@ export const AudioPlayer = (props: {
   id?: string;
   md5?: string;
   segmentIndex?: number;
+  onLoad?: (audio: AudioType) => void;
 }) => {
-  const { id, md5, segmentIndex } = props;
+  const { id, md5, segmentIndex, onLoad } = props;
   const { media, setMedia, setCurrentSegmentIndex, getCachedSegmentIndex } =
     useContext(MediaShadowProviderContext);
 
@@ -21,6 +22,7 @@ export const AudioPlayer = (props: {
 
   useEffect(() => {
     setMedia(audio);
+    onLoad?.(audio);
   }, [audio]);
 
   useEffect(() => {

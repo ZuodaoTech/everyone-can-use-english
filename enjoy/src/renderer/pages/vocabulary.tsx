@@ -1,18 +1,14 @@
 import { Button } from "@renderer/components/ui";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import {
   AppSettingsProviderContext,
   HotKeysSettingsProviderContext,
 } from "@renderer/context";
 import { LoaderSpin, MeaningMemorizingCard } from "@renderer/components";
-import { t } from "i18next";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export default () => {
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState<boolean>(false);
   const [meanings, setMeanings] = useState<MeaningType[]>([]);
   const { webApi } = useContext(AppSettingsProviderContext);
@@ -24,7 +20,9 @@ export default () => {
 
   const fetchMeanings = async (page: number = nextPage) => {
     if (!page) return;
+    if (loading) return;
 
+    setLoading(true);
     webApi
       .mineMeanings({ page, items: 10 })
       .then((response) => {
@@ -67,13 +65,6 @@ export default () => {
   return (
     <div className="h-[100vh]">
       <div className="max-w-screen-md mx-auto p-4">
-        <div className="flex space-x-1 items-center mb-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-            <ChevronLeftIcon className="w-5 h-5" />
-          </Button>
-          <span>{t("sidebar.vocabulary")}</span>
-        </div>
-
         {meanings.length === 0 ? (
           <div className=""></div>
         ) : (
@@ -89,7 +80,7 @@ export default () => {
                 }
               }}
             >
-              <ChevronLeftIcon className="w-5 h-5" />
+              <ChevronLeftIcon className="size-5" />
             </Button>
             <div className="bg-background flex-1 h-5/6 border p-6 rounded-xl shadow-xl">
               <MeaningMemorizingCard meaning={meanings[currentIndex]} />
@@ -108,7 +99,7 @@ export default () => {
                 }
               }}
             >
-              <ChevronRightIcon className="w-5 h-5" />
+              <ChevronRightIcon className="size-5" />
             </Button>
           </div>
         )}

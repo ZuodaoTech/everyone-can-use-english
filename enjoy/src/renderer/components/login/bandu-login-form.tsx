@@ -8,12 +8,16 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
 } from "@renderer/components/ui";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import intlTelInput from "intl-tel-input/intlTelInputWithUtils";
 import "intl-tel-input/build/css/intlTelInput.css";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 
 export const BanduLoginButton = () => {
   const [open, setOpen] = useState(false);
@@ -117,30 +121,38 @@ export const BanduLoginForm = () => {
               value={phoneNumber}
               onInput={validatePhone}
               onBlur={validatePhone}
+              disabled={countdown > 0}
               className="border text-lg py-2 px-4 rounded w-80 dark:bg-background dark:text-foreground"
               ref={ref}
             />
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="verrificationCode">{t("verificationCode")}</Label>
-            <Input
-              id="verrificationCode"
-              className="border py-2 h-10 px-4 rounded"
-              type="text"
-              minLength={5}
-              maxLength={5}
-              placeholder={t("verificationCode")}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-            />
-          </div>
+          {codeSent && (
+            <div className="grid gap-2">
+              <Label htmlFor="verrificationCode">{t("verificationCode")}</Label>
+              <InputOTP
+                id="verrificationCode"
+                maxLength={5}
+                value={code}
+                pattern={REGEXP_ONLY_DIGITS}
+                onChange={(value) => setCode(value)}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <Button
             variant="secondary"
             size="lg"
-            className="w-full"
+            className="w-full px-2"
             disabled={!phoneNumber || countdown > 0}
             onClick={() => {
               webApi

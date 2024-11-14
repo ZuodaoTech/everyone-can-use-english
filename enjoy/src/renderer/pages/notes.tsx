@@ -48,41 +48,34 @@ export default function Notes() {
 
   return (
     <div className="min-h-[100vh] w-full max-w-5xl mx-auto px-4 py-6 lg:px-8">
-      <div className="w-full max-w-screen-md mx-auto">
-        <div className="flex space-x-1 items-center mb-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-            <ChevronLeftIcon className="w-5 h-5" />
-          </Button>
-          <span>{t("sidebar.notes")}</span>
-        </div>
-
-        {groups.length === 0 && (
-          <div className="flex justify-center">
-            <div className="my-4 text-muted-foreground text-sm">{t("noNotesYet")}</div>
+      {groups.length === 0 && (
+        <div className="flex justify-center">
+          <div className="my-4 text-muted-foreground text-sm">
+            {t("noNotesYet")}
           </div>
-        )}
-
-        <div className="flex flex-col space-y-4">
-          {groups.map((group) => (
-            <NoteSegmentGroup
-              key={group.targetId}
-              count={group.count}
-              segment={group.segment}
-            />
-          ))}
         </div>
+      )}
 
-        {hasMore && (
-          <div className="flex justify-center mt-4">
-            <Button
-              variant="secondary"
-              onClick={() => findNotesGroup({ offset: groups.length })}
-            >
-              {t("loadMore")}
-            </Button>
-          </div>
-        )}
+      <div className="flex flex-col space-y-4">
+        {groups.map((group) => (
+          <NoteSegmentGroup
+            key={group.targetId}
+            count={group.count}
+            segment={group.segment}
+          />
+        ))}
       </div>
+
+      {hasMore && (
+        <div className="flex justify-center mt-4">
+          <Button
+            variant="secondary"
+            onClick={() => findNotesGroup({ offset: groups.length })}
+          >
+            {t("loadMore")}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

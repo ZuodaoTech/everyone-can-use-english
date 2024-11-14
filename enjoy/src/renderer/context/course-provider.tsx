@@ -61,7 +61,7 @@ export const CourseProvider = ({
         setShadowing,
       }}
     >
-      <MediaShadowProvider>
+      <MediaShadowProvider onCancel={() => setShadowing(null)}>
         {children}
         <Sheet
           modal={false}

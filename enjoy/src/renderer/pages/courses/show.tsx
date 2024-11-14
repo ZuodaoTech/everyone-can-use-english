@@ -34,8 +34,8 @@ export default () => {
   }, [id]);
 
   return (
-    <div className="h-full max-w-5xl mx-auto px-4 py-6">
-      <Breadcrumb className="mb-6">
+    <div className="min-h-full max-w-5xl mx-auto px-4 py-6">
+      <Breadcrumb className="mb-4">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
@@ -113,7 +113,9 @@ const CourseDetail = (props: { course: CourseType; onUpdate: () => void }) => {
           {course.enrollmentsCount > 0 && (
             <div className="flex items-center space-x-1">
               <UsersIcon className="w-4 h-4" />
-              <span className="text-sm text-muted-foreground">{course.enrollmentsCount}</span>
+              <span className="text-sm text-muted-foreground">
+                {course.enrollmentsCount}
+              </span>
             </div>
           )}
         </div>

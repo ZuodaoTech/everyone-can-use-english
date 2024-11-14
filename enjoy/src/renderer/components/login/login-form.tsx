@@ -68,9 +68,9 @@ export const LoginForm = () => {
             {rememberedUsers.map((rememberedUser) => (
               <div
                 key={rememberedUser.id}
-                className="px-4 py-2 border-b last:border-b-0 w-full max-w-md"
+                className="px-4 border-b last:border-b-0 w-full max-w-md"
               >
-                <div className="flex items-center justify-between py-4">
+                <div className="flex items-center justify-between py-2">
                   <div className="">
                     <div className="flex items-center space-x-2">
                       <Avatar>

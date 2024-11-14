@@ -14,30 +14,21 @@ export default () => {
   const navigate = useNavigate();
 
   return (
-    <div className="h-full px-4 lg:px-8 py-6">
-      <div className="max-w-screen-md mx-auto mb-6">
-        <div className="flex space-x-1 items-center mb-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-            <ChevronLeftIcon className="w-5 h-5" />
-          </Button>
-          <span>{t("sidebar.community")}</span>
-        </div>
+    <div className="min-h-full px-4 lg:px-8 py-6 max-w-screen-md mx-auto">
+      <Tabs defaultValue="square">
+        <TabsList className="mb-4">
+          <TabsTrigger value="square">{t("square")}</TabsTrigger>
+          <TabsTrigger value="rankings">{t("rankings")}</TabsTrigger>
+        </TabsList>
 
-        <Tabs defaultValue="square">
-          <TabsList className="mb-4">
-            <TabsTrigger value="square">{t("square")}</TabsTrigger>
-            <TabsTrigger value="rankings">{t("rankings")}</TabsTrigger>
-          </TabsList>
+        <TabsContent value="square">
+          <Posts />
+        </TabsContent>
 
-          <TabsContent value="square">
-            <Posts />
-          </TabsContent>
-
-          <TabsContent value="rankings">
-            <UsersRankings />
-          </TabsContent>
-        </Tabs>
-      </div>
+        <TabsContent value="rankings">
+          <UsersRankings />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

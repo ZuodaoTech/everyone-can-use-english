@@ -509,7 +509,8 @@ ${log}
 
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    icon: "./assets/icon.png",
+    icon:
+      process.platform === "win32" ? "./assets/icon.ico" : "./assets/icon.png",
     width: 1280,
     height: 720,
     minWidth: 800,

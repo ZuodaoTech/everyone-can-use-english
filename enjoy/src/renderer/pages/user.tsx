@@ -2,9 +2,23 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AppSettingsProviderContext } from "../context";
 import { LoaderSpin, Posts } from "@renderer/components";
-import { ChevronLeftIcon } from "lucide-react";
 import { t } from "i18next";
-import { Avatar, AvatarFallback, AvatarImage, Button, Tabs, TabsContent, TabsList, TabsTrigger } from "@renderer/components/ui";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  Button,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@renderer/components/ui";
 
 export default () => {
   const { id } = useParams<{ id: string }>();
@@ -18,19 +32,19 @@ export default () => {
     webApi.user(id).then((user) => {
       setUser(user);
     });
-  }
+  };
 
   const follow = () => {
     webApi.follow(id).then(() => {
       setUser({ ...user, following: true });
     });
-  }
+  };
 
   const unfollow = () => {
     webApi.unfollow(id).then(() => {
       setUser({ ...user, following: false });
     });
-  }
+  };
 
   useEffect(() => {
     fetchUser();
@@ -41,12 +55,17 @@ export default () => {
   return (
     <div className="h-full px-4 py-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
-        <div className="flex space-x-1 items-center mb-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-            <ChevronLeftIcon className="w-5 h-5" />
-          </Button>
-          <span>{user.name}</span>
-        </div>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/community">{t("sidebar.community")}</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbPage>{user.name}</BreadcrumbPage>
+          </BreadcrumbList>
+        </Breadcrumb>
 
         <div className="mb-6">
           <div className="flex justify-center mb-2">
@@ -58,34 +77,55 @@ export default () => {
             </Avatar>
           </div>
 
-          {
-            currentUser.id != user.id && <div className="flex justify-center">{
-              user.following ? <Button variant="link" className="text-destructive" size="sm" onClick={unfollow}>{t('unfollow')}</Button> : <Button size="sm" onClick={follow}>{t('follow')}</Button>
-            }</div>
-          }
+          {currentUser.id != user.id && (
+            <div className="flex justify-center">
+              {user.following ? (
+                <Button
+                  variant="link"
+                  className="text-destructive"
+                  size="sm"
+                  onClick={unfollow}
+                >
+                  {t("unfollow")}
+                </Button>
+              ) : (
+                <Button size="sm" onClick={follow}>
+                  {t("follow")}
+                </Button>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="max-w-screen-sm mx-auto">
           <Tabs defaultValue="activities">
             <div className="w-full flex justify-center">
               <TabsList>
-                <TabsTrigger value="activities">{t('activities')}</TabsTrigger>
-                <TabsTrigger value="followers"><span className="capitalize">{t('followers')}</span></TabsTrigger>
-                <TabsTrigger value="following"><span className="capitalize">{t('following')}</span></TabsTrigger>
+                <TabsTrigger value="activities">{t("activities")}</TabsTrigger>
+                <TabsTrigger value="followers">
+                  <span className="capitalize">{t("followers")}</span>
+                </TabsTrigger>
+                <TabsTrigger value="following">
+                  <span className="capitalize">{t("following")}</span>
+                </TabsTrigger>
               </TabsList>
             </div>
 
             <TabsContent value="activities">
               <Posts userId={user.id} />
             </TabsContent>
-            <TabsContent value="followers"><UserFollowers id={user.id} /></TabsContent>
-            <TabsContent value="following"><UserFollowing id={user.id} /></TabsContent>
+            <TabsContent value="followers">
+              <UserFollowers id={user.id} />
+            </TabsContent>
+            <TabsContent value="following">
+              <UserFollowing id={user.id} />
+            </TabsContent>
           </Tabs>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const UserFollowers = (props: { id: string }) => {
   const { id } = props;
@@ -100,17 +140,22 @@ const UserFollowers = (props: { id: string }) => {
       setUsers(res.users);
       setPage(res.next);
     });
-  }
+  };
 
   useEffect(() => {
     fetchFollowers();
     return () => {
       setUsers([]);
       setPage(1);
-    }
+    };
   }, [id]);
 
-  if (users.length === 0) return <div className="w-full px-4 py-6 text-center text-sm text-muted-foreground">{t("noFollowersYet")}</div>;
+  if (users.length === 0)
+    return (
+      <div className="w-full px-4 py-6 text-center text-sm text-muted-foreground">
+        {t("noFollowersYet")}
+      </div>
+    );
 
   return (
     <>
@@ -119,14 +164,14 @@ const UserFollowers = (props: { id: string }) => {
           <UserCard key={user.id} user={user} />
         ))}
       </div>
-      {
-        page && (<div className="flex justify-center py-4">
+      {page && (
+        <div className="flex justify-center py-4">
           <Button onClick={() => fetchFollowers()}>{t("loadMore")}</Button>
-        </div>)
-      }
+        </div>
+      )}
     </>
-  )
-}
+  );
+};
 
 const UserFollowing = (props: { id: string }) => {
   const { id } = props;
@@ -141,17 +186,22 @@ const UserFollowing = (props: { id: string }) => {
       setUsers(res.users);
       setPage(res.next);
     });
-  }
+  };
 
   useEffect(() => {
     fetchFollowing();
     return () => {
       setUsers([]);
       setPage(1);
-    }
+    };
   }, [id]);
 
-  if (users.length === 0) return <div className="w-full px-4 py-6 text-center text-sm text-muted-foreground">{t("notFollowingAnyoneYet")}</div>;
+  if (users.length === 0)
+    return (
+      <div className="w-full px-4 py-6 text-center text-sm text-muted-foreground">
+        {t("notFollowingAnyoneYet")}
+      </div>
+    );
 
   return (
     <>
@@ -160,14 +210,14 @@ const UserFollowing = (props: { id: string }) => {
           <UserCard key={user.id} user={user} />
         ))}
       </div>
-      {
-        page && (<div className="flex justify-center py-4">
+      {page && (
+        <div className="flex justify-center py-4">
           <Button onClick={() => fetchFollowing()}>{t("loadMore")}</Button>
-        </div>)
-      }
+        </div>
+      )}
     </>
-  )
-}
+  );
+};
 
 const UserCard = ({ user }: { user: UserType }) => {
   const { webApi, user: currentUser } = useContext(AppSettingsProviderContext);
@@ -203,16 +253,16 @@ const UserCard = ({ user }: { user: UserType }) => {
       </div>
 
       <div className="">
-        {
-          currentUser.id != user.id && <Button
+        {currentUser.id != user.id && (
+          <Button
             variant={following ? "secondary" : "default"}
             size="sm"
             onClick={handleFollow}
           >
             {following ? t("unfollow") : t("follow")}
           </Button>
-        }
+        )}
       </div>
     </div>
   );
-}
+};

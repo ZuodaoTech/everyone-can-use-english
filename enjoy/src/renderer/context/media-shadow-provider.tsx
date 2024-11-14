@@ -18,13 +18,14 @@ import { Tooltip } from "react-tooltip";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import { t } from "i18next";
 import { SttEngineOptionEnum } from "@/types/enums";
+import { useNavigate } from "react-router-dom";
 
 const ONE_MINUTE = 60;
 const TEN_MINUTES = 10 * ONE_MINUTE;
 
 type MediaShadowContextType = {
   layout: "compact" | "normal";
-  onCancel?: () => void;
+  onCancel: () => void;
   media: AudioType | VideoType;
   setMedia: (media: AudioType | VideoType) => void;
   setMediaProvider: (mediaProvider: HTMLAudioElement | null) => void;
@@ -116,6 +117,7 @@ export const MediaShadowProvider = ({
   const { EnjoyApp, learningLanguage, recorderConfig } = useContext(
     AppSettingsProviderContext
   );
+  const navigate = useNavigate();
 
   const [media, setMedia] = useState<AudioType | VideoType>(null);
   const [mediaProvider, setMediaProvider] = useState<HTMLAudioElement | null>(
@@ -643,7 +645,7 @@ export const MediaShadowProvider = ({
       <MediaShadowProviderContext.Provider
         value={{
           layout,
-          onCancel,
+          onCancel: onCancel || (() => navigate(-1)),
           media,
           setMedia,
           setMediaProvider,
