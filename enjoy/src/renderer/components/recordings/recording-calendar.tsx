@@ -45,7 +45,7 @@ export const RecordingCalendar = (props: {
         value: currentYear,
       },
     ];
-    const startYear = dayjs(user.createdAt).year();
+    const startYear = dayjs(user?.createdAt).year();
 
     for (let i = currentYear - 1; i >= startYear; i--) {
       _tabs.push({
