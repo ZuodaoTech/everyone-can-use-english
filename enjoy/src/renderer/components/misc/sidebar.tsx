@@ -262,7 +262,7 @@ export const Sidebar = () => {
                     }
                     className="flex justify-between space-x-4"
                   >
-                    <span>{t("userGuide")}</span>
+                    <span className="min-w-fit">{t("userGuide")}</span>
                     <ExternalLinkIcon className="size-4" />
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
