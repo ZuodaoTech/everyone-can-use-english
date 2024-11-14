@@ -1,7 +1,16 @@
-import { Button, toast, Input, Label } from "@renderer/components/ui";
+import {
+  Button,
+  toast,
+  Input,
+  Label,
+  InputOTP,
+  InputOTPSlot,
+  InputOTPGroup,
+} from "@renderer/components/ui";
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 
 export const EmailLoginForm = () => {
   const [email, setEmail] = useState<string>("");
@@ -41,27 +50,33 @@ export const EmailLoginForm = () => {
           />
         </div>
 
-        <div className="grid gap-2">
-          <Label htmlFor="code">{t("verificationCode")}</Label>
-          <Input
-            id="code"
-            className="h-10"
-            type="text"
-            required
-            minLength={5}
-            maxLength={5}
-            placeholder={t("verificationCode")}
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-          />
-        </div>
+        {codeSent && (
+          <div className="grid gap-2">
+            <Label htmlFor="code">{t("verificationCode")}</Label>
+            <InputOTP
+              id="code"
+              maxLength={5}
+              value={code}
+              pattern={REGEXP_ONLY_DIGITS}
+              onChange={(value) => setCode(value)}
+            >
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+                <InputOTPSlot index={4} />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <Button
           variant="secondary"
           size="lg"
-          className="w-full"
+          className="w-full px-2"
           disabled={!email || countdown > 0}
           onClick={() => {
             webApi
@@ -83,7 +98,7 @@ export const EmailLoginForm = () => {
         <Button
           variant="default"
           size="lg"
-          className="w-full"
+          className="w-full px-2"
           disabled={!code || code.length < 5 || !email}
           onClick={() => {
             webApi

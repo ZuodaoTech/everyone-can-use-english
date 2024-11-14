@@ -19,3 +19,4 @@ export * from "./transcriptions";
 export * from "./users";
 export * from "./videos";
 export * from "./widgets";
+export * from "./login";

@@ -8,11 +8,15 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
 } from "@renderer/components/ui";
 import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 import { LoaderIcon } from "lucide-react";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 
 export const MixinLoginButton = () => {
   const [open, setOpen] = useState(false);
@@ -96,25 +100,33 @@ export const MixinLoginForm = () => {
             <input
               id="mixinId"
               value={input}
+              disabled={countdown > 0}
               placeholder={t("inputMixinId")}
               onInput={(event) => validateMixinId(event.currentTarget.value)}
               onBlur={(event) => validateMixinId(event.currentTarget.value)}
               className="border py-2 px-4 rounded dark:bg-background dark:text-foreground"
             />
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="verificationCode">{t("verificationCode")}</Label>
-            <Input
-              id="verificationCode"
-              className="border py-2 h-10 px-4 rounded"
-              type="text"
-              minLength={5}
-              maxLength={5}
-              placeholder={t("verificationCode")}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-            />
-          </div>
+          {codeSent && (
+            <div className="grid gap-2">
+              <Label htmlFor="verificationCode">{t("verificationCode")}</Label>
+              <InputOTP
+                id="verificationCode"
+                maxLength={5}
+                value={code}
+                pattern={REGEXP_ONLY_DIGITS}
+                onChange={(value) => setCode(value)}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
+          )}
 
           <div
             onClick={() =>
@@ -160,7 +172,7 @@ export const MixinLoginForm = () => {
           <Button
             variant="default"
             size="lg"
-            className="w-full"
+            className="w-full px-2"
             disabled={!code || code.length < 5 || !mixinId}
             onClick={() => {
               webApi
