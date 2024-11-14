@@ -1,6 +1,5 @@
 import { Button } from "@renderer/components/ui";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import {
   AppSettingsProviderContext,
@@ -10,7 +9,7 @@ import { LoaderSpin, MeaningMemorizingCard } from "@renderer/components";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export default () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [meanings, setMeanings] = useState<MeaningType[]>([]);
   const { webApi } = useContext(AppSettingsProviderContext);
   const { currentHotkeys, enabled } = useContext(
@@ -21,7 +20,9 @@ export default () => {
 
   const fetchMeanings = async (page: number = nextPage) => {
     if (!page) return;
+    if (loading) return;
 
+    setLoading(true);
     webApi
       .mineMeanings({ page, items: 10 })
       .then((response) => {

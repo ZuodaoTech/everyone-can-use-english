@@ -399,19 +399,19 @@ const SidebarHeader = (props: { isOpen: boolean }) => {
             className="cursor-pointer"
             onSelect={() => navigate("/profile")}
           >
-            <span className="text-sm">{t("sidebar.profile")}</span>
+            <span>{t("sidebar.profile")}</span>
             <UserIcon className="size-4 ml-auto" />
           </DropdownMenuItem>
           <DropdownMenuItem
             className="cursor-pointer"
             onSelect={() => navigate("/community")}
           >
-            <span className="text-sm">{t("sidebar.community")}</span>
+            <span>{t("sidebar.community")}</span>
             <UsersRoundIcon className="size-4 ml-auto" />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onSelect={logout} className="cursor-pointer">
-            <span className="text-sm">{t("logout")}</span>
+            <span>{t("logout")}</span>
             <LogOutIcon className="size-4 ml-auto" />
           </DropdownMenuItem>
         </DropdownMenuContent>

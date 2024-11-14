@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { toast } from "@renderer/components/ui";
 import { t } from "i18next";
-import { CourseCard } from "@renderer/components";
+import { CourseCard, LoaderSpin } from "@renderer/components";
 
 export default () => {
   return (
@@ -22,6 +22,7 @@ const CoursesList = () => {
     if (loading) return;
     if (!webApi) return;
 
+    setLoading(true);
     webApi
       .courses({ page: nextPage, language: learningLanguage })
       .then(({ courses = [], next }) => {
@@ -35,6 +36,10 @@ const CoursesList = () => {
   useEffect(() => {
     fetchCourses();
   }, []);
+
+  if (loading) {
+    return <LoaderSpin />;
+  }
 
   if (!courses.length) {
     return (
