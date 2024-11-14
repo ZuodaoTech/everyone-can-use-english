@@ -104,7 +104,7 @@ class EchogardenWrapper {
     try {
       logger.info("check:", options);
       const result = await this.recognize(sampleFile, options);
-      logger.info(result?.transcript);
+      logger.info("transcript:", result?.transcript);
       fs.writeJsonSync(
         path.join(settings.cachePath(), "echogarden-check.json"),
         result,
@@ -114,7 +114,7 @@ class EchogardenWrapper {
       const timeline = await this.align(sampleFile, result.transcript, {
         language: "en",
       });
-      logger.info(timeline);
+      logger.info("timeline:", !!timeline);
 
       return { success: true, log: "" };
     } catch (e) {

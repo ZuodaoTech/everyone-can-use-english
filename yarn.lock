@@ -1689,10 +1689,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@echogarden/espeak-ng-emscripten@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "@echogarden/espeak-ng-emscripten@npm:0.3.1"
-  checksum: 10c0/6b494d45cdfbce44af5a23c142013777c5b743cae69471ffd3eb9eec6eda23674f6b74f148af01e6fc7e9ef760fc24a8e1e9af3391996cc53f71f08678f51a6e
+"@echogarden/espeak-ng-emscripten@npm:^0.3.2":
+  version: 0.3.2
+  resolution: "@echogarden/espeak-ng-emscripten@npm:0.3.2"
+  checksum: 10c0/d6183d66c649c1d25ad93b5553145f053425918ea33335e2952d6c64064a7eca4335cfbbe7e58b71c8877c83341bf355645b93c12669bcc71fdd03b8fdf8fbd7
   languageName: node
   linkType: hard
 
@@ -11585,14 +11585,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"echogarden@npm:2.0.2":
-  version: 2.0.2
-  resolution: "echogarden@npm:2.0.2"
+"echogarden@npm:2.0.3":
+  version: 2.0.3
+  resolution: "echogarden@npm:2.0.3"
   dependencies:
     "@aws-sdk/client-polly": "npm:^3.687.0"
     "@aws-sdk/client-transcribe-streaming": "npm:^3.687.0"
     "@echogarden/audio-io": "npm:^0.2.3"
-    "@echogarden/espeak-ng-emscripten": "npm:^0.3.1"
+    "@echogarden/espeak-ng-emscripten": "npm:^0.3.2"
     "@echogarden/fasttext-wasm": "npm:^0.1.0"
     "@echogarden/flite-wasi": "npm:^0.1.1"
     "@echogarden/fvad-wasm": "npm:^0.2.0"
@@ -12051,7 +12051,7 @@ __metadata:
     dayjs: "npm:^1.11.13"
     decamelize: "npm:^6.0.0"
     decamelize-keys: "npm:^2.0.1"
-    echogarden: "npm:2.0.2"
+    echogarden: "npm:2.0.3"
     electron: "npm:^33.2.0"
     electron-context-menu: "npm:^4.0.4"
     electron-devtools-installer: "npm:^3.2.0"
