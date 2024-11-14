@@ -324,8 +324,11 @@ export class Video extends Model<Video> {
       description?: string;
       source?: string;
       coverUrl?: string;
+      compressing?: boolean;
     }
   ): Promise<Audio | Video> {
+    const { compressing = true } = params || {};
+
     // Check if file exists
     try {
       fs.accessSync(filePath, fs.constants.R_OK);
@@ -350,7 +353,9 @@ export class Video extends Model<Video> {
       },
     });
     if (!!existing) {
-      logger.warn("Video already exists:", existing.id);
+      logger.warn("Video already exists:", existing.id, existing.name);
+      existing.changed("updatedAt", true);
+      existing.update({ updatedAt: new Date() });
       return existing;
     }
 
@@ -360,7 +365,10 @@ export class Video extends Model<Video> {
     logger.debug("Generated ID:", id);
 
     const destDir = path.join(settings.userDataPath(), "videos");
-    const destFile = path.join(destDir, `${md5}.compressed.mp4`);
+    const destFile = path.join(
+      destDir,
+      compressing ? `${md5}.compressed.mp4` : `${md5}${extname}`
+    );
 
     let metadata = {
       extname,
@@ -379,8 +387,13 @@ export class Video extends Model<Video> {
         duration: fileMetadata.format.duration,
       });
 
-      // Compress file to destFile
-      await ffmpeg.compressVideo(filePath, destFile);
+      if (compressing) {
+        // Compress file to destFile
+        await ffmpeg.compressVideo(filePath, destFile);
+      } else {
+        // Copy file
+        fs.copyFileSync(filePath, destFile);
+      }
 
       // Check if file copied
       fs.accessSync(destFile, fs.constants.R_OK);

@@ -161,8 +161,9 @@ export class Audio extends Model<Audio> {
 
   get extname(): string {
     return (
-      this.getDataValue("metadata").extname ||
-      path.extname(this.getDataValue("source")) ||
+      this.getDataValue("metadata")?.extname ||
+      (this.getDataValue("source") &&
+        path.extname(this.getDataValue("source"))) ||
       ""
     );
   }
@@ -308,8 +309,10 @@ export class Audio extends Model<Audio> {
       description?: string;
       source?: string;
       coverUrl?: string;
+      compressing?: boolean;
     }
   ): Promise<Audio | Video> {
+    const { compressing = true } = params || {};
     // Check if file exists
     try {
       fs.accessSync(filePath, fs.constants.R_OK);
@@ -334,7 +337,9 @@ export class Audio extends Model<Audio> {
       },
     });
     if (!!existing) {
-      logger.warn("Audio already exists:", existing.id);
+      logger.warn("Audio already exists:", existing.id, existing.name);
+      existing.changed("updatedAt", true);
+      existing.update({ updatedAt: new Date() });
       return existing;
     }
 
@@ -344,7 +349,10 @@ export class Audio extends Model<Audio> {
     logger.debug("Generated ID:", id);
 
     const destDir = path.join(settings.userDataPath(), "audios");
-    const destFile = path.join(destDir, `${md5}.compressed.mp3`);
+    const destFile = path.join(
+      destDir,
+      compressing ? `${md5}.compressed.mp3` : `${md5}${extname}`
+    );
 
     let metadata = {
       extname,
@@ -363,8 +371,13 @@ export class Audio extends Model<Audio> {
         duration: fileMetadata.format.duration,
       });
 
-      // Compress file
-      await ffmpeg.compressAudio(filePath, destFile);
+      if (compressing) {
+        // Compress file
+        await ffmpeg.compressAudio(filePath, destFile);
+      } else {
+        // Copy file
+        fs.copyFileSync(filePath, destFile);
+      }
 
       // Check if file copied
       fs.accessSync(destFile, fs.constants.R_OK);

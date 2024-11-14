@@ -19,8 +19,7 @@ import {
   CheckCircleIcon,
   CircleAlertIcon,
 } from "lucide-react";
-import dayjs from "@renderer/lib/dayjs";
-import { secondsToTimestamp } from "@renderer/lib/utils";
+import { formatDateTime, secondsToTimestamp } from "@renderer/lib/utils";
 import { Link } from "react-router-dom";
 
 export const VideosTable = (props: {
@@ -46,7 +45,7 @@ export const VideosTable = (props: {
             {t("models.video.recordingsDuration")}
           </TableHead>
           <TableHead className="capitalize">
-            {t("models.video.createdAt")}
+            {t("models.video.updatedAt")}
           </TableHead>
           <TableHead className="capitalize">
             {t("models.video.isTranscribed")}
@@ -92,9 +91,7 @@ export const VideosTable = (props: {
             <TableCell>
               {secondsToTimestamp(video.recordingsDuration / 1000)}
             </TableCell>
-            <TableCell>
-              {dayjs(video.createdAt).format("YYYY-MM-DD HH:mm")}
-            </TableCell>
+            <TableCell>{formatDateTime(video.updatedAt)}</TableCell>
             <TableCell>
               {video.transcribed ? (
                 <CheckCircleIcon className="text-green-500 w-4 h-4" />

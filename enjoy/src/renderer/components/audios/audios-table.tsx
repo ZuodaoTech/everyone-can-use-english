@@ -19,8 +19,7 @@ import {
   CheckCircleIcon,
   CircleAlertIcon,
 } from "lucide-react";
-import dayjs from "@renderer/lib/dayjs";
-import { secondsToTimestamp } from "@renderer/lib/utils";
+import { formatDateTime, secondsToTimestamp } from "@renderer/lib/utils";
 import { Link } from "react-router-dom";
 
 export const AudiosTable = (props: {
@@ -46,7 +45,7 @@ export const AudiosTable = (props: {
             {t("models.audio.recordingsDuration")}
           </TableHead>
           <TableHead className="capitalize">
-            {t("models.audio.createdAt")}
+            {t("models.audio.updatedAt")}
           </TableHead>
           <TableHead className="capitalize">
             {t("models.audio.isTranscribed")}
@@ -92,9 +91,7 @@ export const AudiosTable = (props: {
             <TableCell>
               {secondsToTimestamp(audio.recordingsDuration / 1000)}
             </TableCell>
-            <TableCell>
-              {dayjs(audio.createdAt).format("YYYY-MM-DD HH:mm")}
-            </TableCell>
+            <TableCell>{formatDateTime(audio.updatedAt)}</TableCell>
             <TableCell>
               {audio.transcribed ? (
                 <CheckCircleIcon className="text-green-500 w-4 h-4" />
