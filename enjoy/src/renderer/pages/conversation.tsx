@@ -231,9 +231,9 @@ export default () => {
   return (
     <div
       data-testid="conversation-page"
-      className="h-screen px-4 py-6 lg:px-8 flex flex-col"
+      className="h-[calc(100vh-2rem)] px-4 py-4 lg:px-8 flex flex-col"
     >
-      <div className="h-[calc(100vh-3rem)] relative w-full max-w-screen-md mx-auto flex flex-col">
+      <div className="h-[calc(100vh-5rem)] relative w-full max-w-screen-md mx-auto flex flex-col">
         <div className="flex items-center justify-center py-2 relative">
           <div className="cursor-pointer h-6 opacity-50 hover:opacity-100">
             <Link className="flex items-center" to="/conversations">

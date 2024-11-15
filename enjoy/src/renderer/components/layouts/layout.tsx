@@ -54,7 +54,7 @@ export const Layout = () => {
           <ResizablePanel id="main-panel" order={1} minSize={50}>
             <div className="flex flex-start">
               <Sidebar />
-              <div className="flex-1 border-l overflow-x-hidden overflow-y-auto h-screen">
+              <div className="flex-1 border-l overflow-x-hidden overflow-y-auto h-[calc(100vh-2rem)]">
                 <Outlet />
               </div>
             </div>

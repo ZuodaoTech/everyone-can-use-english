@@ -83,7 +83,7 @@ export const Sidebar = () => {
 
   return (
     <div
-      className={`h-screen transition-all relative draggable-region ${
+      className={`h-[calc(100vh-2rem)] pt-8 transition-all relative draggable-region ${
         isOpen ? "w-48" : "w-12"
       }`}
       data-testid="sidebar"
