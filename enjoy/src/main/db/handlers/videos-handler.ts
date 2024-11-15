@@ -68,6 +68,7 @@ class VideosHandler {
       name?: string;
       coverUrl?: string;
       md5?: string;
+      compressing?: boolean;
     } = {}
   ) {
     let file = uri;

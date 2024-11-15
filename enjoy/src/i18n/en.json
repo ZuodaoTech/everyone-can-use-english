@@ -15,6 +15,7 @@
       "size": "size",
       "source": "source",
       "createdAt": "created at",
+      "updatedAt": "updated at",
       "recordingsCount": "recordings count",
       "recordingsDuration": "recordings duration",
       "isTranscribed": "transcribed",
@@ -40,6 +41,7 @@
       "size": "size",
       "source": "source",
       "createdAt": "created at",
+      "updatedAt": "updated at",
       "recordingsCount": "recordings count",
       "recordingsDuration": "recordings duration",
       "isTranscribed": "transcribed",
@@ -923,5 +925,7 @@
   "whisperCppEngineDescription": "C++ port of the Whisper architecture.",
   "ttsService": "Text to Speech Service",
   "openaiTtsServiceDescription": "Use OpenAI TTS service from your own key.",
-  "enjoyTtsServiceDescription": "Use TTS service provided by Enjoy. OpenAI or Azure is supported."
+  "enjoyTtsServiceDescription": "Use TTS service provided by Enjoy. OpenAI or Azure is supported.",
+  "compressMediaBeforeAdding": "Compress media before adding",
+  "keepOriginalMedia": "Keep original media"
 }

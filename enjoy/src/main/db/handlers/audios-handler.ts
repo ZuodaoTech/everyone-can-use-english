@@ -69,6 +69,7 @@ class AudiosHandler {
       name?: string;
       coverUrl?: string;
       originalText?: string;
+      compressing?: boolean;
     } = {}
   ) {
     let file = uri;
@@ -90,6 +91,7 @@ class AudiosHandler {
         source,
         name: params.name,
         coverUrl: params.coverUrl,
+        compressing: params.compressing,
       });
 
       // create transcription if originalText is provided

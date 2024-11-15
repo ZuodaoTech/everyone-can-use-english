@@ -15,6 +15,7 @@
       "size": "大小",
       "source": "来源",
       "createdAt": "创建时间",
+      "updatedAt": "更新时间",
       "recordingsCount": "练习次数",
       "recordingsDuration": "练习时长",
       "isTranscribed": "语音文本",
@@ -40,6 +41,7 @@
       "size": "大小",
       "source": "来源",
       "createdAt": "创建时间",
+      "updatedAt": "更新时间",
       "recordingsCount": "练习次数",
       "recordingsDuration": "练习时长",
       "isTranscribed": "语音文本",
@@ -923,5 +925,7 @@
   "whisperCppEngineDescription": "Whisper 的 C++ 实现。",
   "ttsService": "文字转语音服务",
   "openaiTtsServiceDescription": "使用您自己的 API key 来使用 OpenAI TTS 服务。",
-  "enjoyTtsServiceDescription": "使用 Enjoy 提供的 TTS 服务，支持 OpenAI 或 Azure。"
+  "enjoyTtsServiceDescription": "使用 Enjoy 提供的 TTS 服务，支持 OpenAI 或 Azure。",
+  "compressMediaBeforeAdding": "添加前压缩媒体",
+  "keepOriginalMedia": "保存原始媒体"
 }

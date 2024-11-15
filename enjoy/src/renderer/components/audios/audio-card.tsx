@@ -1,17 +1,32 @@
 import { Link } from "react-router-dom";
 import { cn } from "@renderer/lib/utils";
-import { AudioLinesIcon, CircleAlertIcon } from "lucide-react";
-import { Badge } from "@renderer/components/ui";
+import {
+  AudioLinesIcon,
+  CircleAlertIcon,
+  EditIcon,
+  MoreVerticalIcon,
+  TrashIcon,
+} from "lucide-react";
+import {
+  Badge,
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@renderer/components/ui";
 import { t } from "i18next";
 
 export const AudioCard = (props: {
   audio: Partial<AudioType>;
   className?: string;
+  onDelete?: () => void;
+  onEdit?: () => void;
 }) => {
-  const { audio, className } = props;
+  const { audio, className, onDelete, onEdit } = props;
 
   return (
-    <div className={cn("w-full", className)}>
+    <div className={cn("w-full relative", className)}>
       <Link to={`/audios/${audio.id}`}>
         <div
           className="aspect-square border rounded-lg overflow-hidden flex relative"
@@ -47,6 +62,38 @@ export const AudioCard = (props: {
       <div className="text-sm font-semibold mt-2 max-w-full line-clamp-2 h-10">
         {audio.name}
       </div>
+      {(onDelete || onEdit) && (
+        <div className="absolute right-1 top-1 z-10">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-transparent w-6 h-6"
+              >
+                <MoreVerticalIcon className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent>
+              {onEdit && (
+                <DropdownMenuItem onClick={onEdit}>
+                  <EditIcon className="size-4" />
+                  <span className="ml-2 text-sm">{t("edit")}</span>
+                </DropdownMenuItem>
+              )}
+              {onDelete && (
+                <DropdownMenuItem onClick={onDelete}>
+                  <TrashIcon className="size-4 text-destructive" />
+                  <span className="ml-2 text-destructive text-sm">
+                    {t("delete")}
+                  </span>
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      )}
     </div>
   );
 };

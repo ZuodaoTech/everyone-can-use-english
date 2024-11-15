@@ -10,6 +10,8 @@ import {
   Button,
   Progress,
   toast,
+  Switch,
+  Label,
 } from "@renderer/components/ui";
 import { PlusCircleIcon, LoaderIcon } from "lucide-react";
 import { t } from "i18next";
@@ -19,6 +21,7 @@ import {
   AppSettingsProviderContext,
   DbProviderContext,
 } from "@renderer/context";
+import { useNavigate } from "react-router-dom";
 
 export const MediaAddButton = (props: { type?: "Audio" | "Video" }) => {
   const { type = "Audio" } = props;
@@ -26,9 +29,12 @@ export const MediaAddButton = (props: { type?: "Audio" | "Video" }) => {
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);
   const [uri, setUri] = useState("");
   const [files, setFiles] = useState<string[]>([]);
+  const [compressing, setCompressing] = useState(true);
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [createdCount, setCreatedCount] = useState(0);
+
+  const navigate = useNavigate();
 
   const handleOpen = (value: boolean) => {
     if (submitting) {
@@ -48,7 +54,13 @@ export const MediaAddButton = (props: { type?: "Audio" | "Video" }) => {
     setSubmitting(true);
 
     if (files.length > 1) {
-      Promise.allSettled(files.map((f) => EnjoyApp.audios.create(f)))
+      Promise.allSettled(
+        files.map((f) =>
+          EnjoyApp[type.toLowerCase() as "audios" | "videos"].create(f, {
+            compressing,
+          })
+        )
+      )
         .then((results) => {
           const fulfilled = results.filter((r) => r.status === "fulfilled");
           const rejected = results.filter((r) => r.status === "rejected");
@@ -87,8 +99,9 @@ export const MediaAddButton = (props: { type?: "Audio" | "Video" }) => {
     } else {
       EnjoyApp.audios
         .create(uri)
-        .then(() => {
+        .then((media) => {
           toast.success(t("resourceAdded"));
+          navigate(`/${type.toLowerCase()}s/${media.id}`);
         })
         .catch((err) => {
           toast.error(err.message);
@@ -135,7 +148,7 @@ export const MediaAddButton = (props: { type?: "Audio" | "Video" }) => {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 mb-2">
           <Input
             placeholder="https://"
             value={uri}
@@ -167,6 +180,17 @@ export const MediaAddButton = (props: { type?: "Audio" | "Video" }) => {
           >
             {t("localFile")}
           </Button>
+        </div>
+        <div className="flex items-center space-x-2 mb-2">
+          <Switch
+            checked={compressing}
+            onCheckedChange={(value) => setCompressing(value)}
+          />
+          <span className="text-sm text-muted-foreground">
+            {compressing
+              ? t("compressMediaBeforeAdding")
+              : t("keepOriginalMedia")}
+          </span>
         </div>
 
         {files.length > 0 && (

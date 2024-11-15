@@ -509,6 +509,7 @@ ${log}
 
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    show: false,
     icon:
       process.platform === "win32" ? "./assets/icon.ico" : "./assets/icon.png",
     width: 1280,
@@ -519,6 +520,10 @@ ${log}
       preload: path.join(__dirname, "preload.js"),
       spellcheck: false,
     },
+  });
+
+  mainWindow.on("ready-to-show", () => {
+    mainWindow.show();
   });
 
   mainWindow.on("resize", () => {
