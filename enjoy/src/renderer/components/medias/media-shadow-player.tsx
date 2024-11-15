@@ -4,16 +4,13 @@ import {
   MediaRightPanel,
   MediaLeftPanel,
   MediaBottomPanel,
-  MediaProvider,
 } from "@renderer/components";
 import {
-  Button,
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@renderer/components/ui";
 import { useContext, useState } from "react";
-import { RefreshCcwDotIcon } from "lucide-react";
 
 export const MediaShadowPlayer = () => {
   return (

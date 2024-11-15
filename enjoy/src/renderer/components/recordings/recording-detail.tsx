@@ -40,7 +40,7 @@ export const RecordingDetail = (props: {
     setAssessing(true);
     createAssessment({
       recording,
-      reference: recording.referenceText || "",
+      reference: recording.referenceText?.replace(/[—]/g, ", ") || "",
       language: recording.language || learningLanguage,
     })
       .then((assessment) => {
