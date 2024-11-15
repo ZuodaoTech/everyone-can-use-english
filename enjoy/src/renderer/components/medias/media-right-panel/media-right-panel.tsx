@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext, useRef, useMemo } from "react";
 import { MediaShadowProviderContext } from "@renderer/context";
 import cloneDeep from "lodash/cloneDeep";
 import {
@@ -11,10 +11,6 @@ import {
 } from "@renderer/components/ui";
 import { MediaCaption, MediaCaptionActions } from "@renderer/components";
 import { t } from "i18next";
-import {
-  Timeline,
-  TimelineEntry,
-} from "echogarden/dist/utilities/Timeline.d.js";
 import {
   MediaCaptionAnalysis,
   MediaCaptionNote,
@@ -29,12 +25,14 @@ export const MediaRightPanel = (props: {
 }) => {
   const { className, setDisplayPanel } = props;
   const {
+    caption,
     currentSegmentIndex,
     currentTime,
     transcription,
     regions,
     activeRegion,
     setActiveRegion,
+    toggleRegion,
     editingRegion,
     setEditingRegion,
     setTranscriptionDraft,
@@ -47,7 +45,6 @@ export const MediaRightPanel = (props: {
   const [displayIpa, setDisplayIpa] = useState<boolean>(true);
   const [displayNotes, setDisplayNotes] = useState<boolean>(true);
 
-  const [caption, setCaption] = useState<TimelineEntry | null>(null);
   const [tab, setTab] = useState<string>("translation");
 
   const toggleMultiSelect = (event: KeyboardEvent) => {
@@ -79,67 +76,6 @@ export const MediaRightPanel = (props: {
     }
   };
 
-  const toggleRegion = (params: number[]) => {
-    if (!activeRegion) return;
-    if (editingRegion) {
-      toast.warning(t("currentRegionIsBeingEdited"));
-      return;
-    }
-    if (params.length === 0) {
-      if (activeRegion.id.startsWith("word-region")) {
-        activeRegion.remove();
-        setActiveRegion(
-          regions.getRegions().find((r) => r.id.startsWith("segment-region"))
-        );
-      }
-      return;
-    }
-
-    const startIndex = Math.min(...params);
-    const endIndex = Math.max(...params);
-
-    const startWord = caption.timeline[startIndex];
-    if (!startWord) return;
-
-    const endWord = caption.timeline[endIndex] || startWord;
-
-    const start = startWord.startTime;
-    const end = endWord.endTime;
-
-    // If the active region is a word region, then merge the selected words into a single region.
-    if (activeRegion.id.startsWith("word-region")) {
-      activeRegion.remove();
-
-      const region = regions.addRegion({
-        id: `word-region-${startIndex}`,
-        start,
-        end,
-        color: "#fb6f9233",
-        drag: false,
-        resize: editingRegion,
-      });
-
-      setActiveRegion(region);
-      // If the active region is a meaning group region, then active the segment region.
-    } else if (activeRegion.id.startsWith("meaning-group-region")) {
-      setActiveRegion(
-        regions.getRegions().find((r) => r.id.startsWith("segment-region"))
-      );
-      // If the active region is a segment region, then create a new word region.
-    } else {
-      const region = regions.addRegion({
-        id: `word-region-${startIndex}`,
-        start,
-        end,
-        color: "#fb6f9233",
-        drag: false,
-        resize: false,
-      });
-
-      setActiveRegion(region);
-    }
-  };
-
   useEffect(() => {
     if (!caption) return;
 
@@ -160,6 +96,7 @@ export const MediaRightPanel = (props: {
     toggleRegion(selectedIndices);
   }, [caption, selectedIndices]);
 
+  // Edit region to update transcription draft
   useEffect(() => {
     if (!activeRegion) return;
     if (!activeRegion.id.startsWith("word-region")) return;
@@ -233,12 +170,6 @@ export const MediaRightPanel = (props: {
       subscriptions.forEach((unsub) => unsub());
     };
   }, [editingRegion]);
-
-  useEffect(() => {
-    setCaption(
-      (transcription?.result?.timeline as Timeline)?.[currentSegmentIndex]
-    );
-  }, [currentSegmentIndex, transcription]);
 
   useEffect(() => {
     return () => setSelectedIndices([]);

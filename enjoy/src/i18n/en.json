@@ -927,5 +927,7 @@
   "openaiTtsServiceDescription": "Use OpenAI TTS service from your own key.",
   "enjoyTtsServiceDescription": "Use TTS service provided by Enjoy. OpenAI or Azure is supported.",
   "compressMediaBeforeAdding": "Compress media before adding",
-  "keepOriginalMedia": "Keep original media"
+  "keepOriginalMedia": "Keep original media",
+  "myPronunciation": "My pronunciation",
+  "originalPronunciation": "Original pronunciation"
 }

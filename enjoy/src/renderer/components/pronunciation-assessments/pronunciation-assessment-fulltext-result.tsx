@@ -8,8 +8,9 @@ export const PronunciationAssessmentFulltextResult = (props: {
   words: PronunciationAssessmentWordResultType[];
   currentTime?: number;
   src?: string;
+  onPlayOrigin?: (word: string, index: number) => void;
 }) => {
-  const { words, currentTime, src } = props;
+  const { words, currentTime, src, onPlayOrigin } = props;
   const [errorStats, setErrorStats] = useState({
     mispronunciation: 0,
     omission: 0,
@@ -65,6 +66,16 @@ export const PronunciationAssessmentFulltextResult = (props: {
               errorDisplay={errorDisplay}
               currentTime={currentTime}
               src={src}
+              onPlayOrigin={() => {
+                if (!onPlayOrigin) return;
+
+                const word = words[index];
+                const candidates = words.filter((w) => w.word === word.word);
+                const wordIndex = candidates.findIndex(
+                  (w) => w.offset === word.offset
+                );
+                onPlayOrigin(word.word, wordIndex);
+              }}
             />
           ))}
         </div>
