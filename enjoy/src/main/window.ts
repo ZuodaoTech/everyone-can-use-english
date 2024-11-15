@@ -520,6 +520,14 @@ ${log}
       preload: path.join(__dirname, "preload.js"),
       spellcheck: false,
     },
+    frame: false,
+    titleBarStyle: "hidden",
+    titleBarOverlay: process.platform === "darwin",
+    trafficLightPosition: {
+      x: 10,
+      y: 10,
+    },
+    useContentSize: true,
   });
 
   mainWindow.on("ready-to-show", () => {

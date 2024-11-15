@@ -83,7 +83,7 @@ export const Sidebar = () => {
 
   return (
     <div
-      className={`h-[100vh] transition-all relative ${
+      className={`h-screen transition-all relative draggable-region ${
         isOpen ? "w-48" : "w-12"
       }`}
       data-testid="sidebar"
@@ -93,7 +93,7 @@ export const Sidebar = () => {
           isOpen ? "w-48" : "w-12"
         }`}
       >
-        <ScrollArea className="w-full h-full pb-12">
+        <ScrollArea className="w-full h-full pb-12 pt-8">
           <SidebarHeader isOpen={isOpen} />
           <div className="grid gap-2 mb-4">
             <SidebarItem
@@ -196,7 +196,7 @@ export const Sidebar = () => {
 
             <Dialog>
               <DialogTrigger asChild>
-                <div className="px-1">
+                <div className="px-1 non-draggable-region">
                   <Button
                     size="sm"
                     variant="ghost"
@@ -229,7 +229,7 @@ export const Sidebar = () => {
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="px-1">
+                <div className="px-1 non-draggable-region">
                   <Button
                     size="sm"
                     variant="ghost"
@@ -269,7 +269,7 @@ export const Sidebar = () => {
 
                 <DropdownMenuGroup>
                   <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>
+                    <DropdownMenuSubTrigger className="non-draggable-region">
                       {t("feedback")}
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
@@ -309,7 +309,9 @@ export const Sidebar = () => {
           <Button
             size="sm"
             variant="ghost"
-            className={`w-full ${isOpen ? "justify-start" : "justify-center"}`}
+            className={`w-full non-draggable-region ${
+              isOpen ? "justify-start" : "justify-center"
+            }`}
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? (
@@ -343,7 +345,7 @@ const SidebarItem = (props: {
       data-tooltip-content={tooltip}
       data-tooltip-place="right"
       data-testid={testid}
-      className="block px-1"
+      className="block px-1 non-draggable-region"
     >
       <Button
         size="sm"
@@ -363,7 +365,7 @@ const SidebarHeader = (props: { isOpen: boolean }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="py-3 px-1 sticky top-0 bg-muted z-10">
+    <div className="py-3 px-1 sticky top-0 bg-muted z-10 non-draggable-region">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
