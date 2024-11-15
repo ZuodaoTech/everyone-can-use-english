@@ -17,8 +17,21 @@ type EnjoyAppType = {
     version: string;
   };
   window: {
-    onResize: (callback: (event, bounds: any) => void) => void;
-    removeListeners: () => void;
+    onChange: (
+      callback: (event, state: { event: string; state: any }) => void
+    ) => void;
+    toggleMaximized: () => Promise<void>;
+    isMaximized: () => Promise<boolean>;
+    maximize: () => Promise<void>;
+    unmaximize: () => Promise<void>;
+    fullscreen: () => Promise<void>;
+    unfullscreen: () => Promise<void>;
+    minimize: () => Promise<void>;
+    close: () => Promise<void>;
+    removeListener: (
+      listener: (event: IpcRendererEvent, ...args: any[]) => void
+    ) => void;
+    removeAllListeners: () => void;
   };
   system: {
     preferences: {

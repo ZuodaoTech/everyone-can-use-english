@@ -96,11 +96,9 @@
   }
   .draggable-region {
     -webkit-app-region: drag;
-    app-region: drag;
   }
   .non-draggable-region {
     -webkit-app-region: no-drag;
-    app-region: no-drag;
   }
 }
 

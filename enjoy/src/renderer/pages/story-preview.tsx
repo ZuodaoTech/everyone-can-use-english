@@ -14,6 +14,7 @@ import { t } from "i18next";
 import nlp from "compromise";
 import paragraphs from "compromise-paragraphs";
 import { useDebounce } from "@uidotdev/usehooks";
+import { type IpcRendererEvent } from "electron/renderer";
 nlp.plugin(paragraphs);
 
 export default () => {
@@ -154,6 +155,15 @@ export default () => {
     setLoading(false);
   };
 
+  const onWindowChange = (
+    event: IpcRendererEvent,
+    state: { event: string }
+  ) => {
+    if (state.event === "resize") {
+      setWebviewRect(containerRef.current.getBoundingClientRect());
+    }
+  };
+
   useEffect(() => {
     if (!containerRef?.current) return;
     if (!url) return;
@@ -172,12 +182,10 @@ export default () => {
     if (!containerRef?.current) return;
 
     setWebviewRect(containerRef.current.getBoundingClientRect());
-    EnjoyApp.window.onResize(() => {
-      setWebviewRect(containerRef.current.getBoundingClientRect());
-    });
+    EnjoyApp.window.onChange((_event, state) => onWindowChange(_event, state));
 
     return () => {
-      EnjoyApp.window.removeListeners();
+      EnjoyApp.window.removeListener(onWindowChange);
     };
   }, [containerRef?.current]);
 

@@ -535,7 +535,54 @@ ${log}
   });
 
   mainWindow.on("resize", () => {
-    mainWindow.webContents.send("window-on-resize", mainWindow.getBounds());
+    mainWindow.webContents.send("window-on-change", {
+      event: "resize",
+      state: mainWindow.getBounds(),
+    });
+  });
+
+  mainWindow.on("maximize", () => {
+    mainWindow.webContents.send("window-on-change", { event: "maximize" });
+  });
+
+  mainWindow.on("unmaximize", () => {
+    mainWindow.webContents.send("window-on-change", { event: "unmaximize" });
+  });
+
+  ipcMain.handle("window-is-maximized", () => {
+    return mainWindow.isMaximized();
+  });
+
+  ipcMain.handle("window-toggle-maximized", () => {
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize();
+    } else {
+      mainWindow.maximize();
+    }
+  });
+
+  ipcMain.handle("window-maximize", () => {
+    mainWindow.maximize();
+  });
+
+  ipcMain.handle("window-unmaximize", () => {
+    mainWindow.unmaximize();
+  });
+
+  ipcMain.handle("window-fullscreen", () => {
+    mainWindow.setFullScreen(true);
+  });
+
+  ipcMain.handle("window-unfullscreen", () => {
+    mainWindow.setFullScreen(false);
+  });
+
+  ipcMain.handle("window-minimize", () => {
+    mainWindow.minimize();
+  });
+
+  ipcMain.handle("window-close", () => {
+    app.quit();
   });
 
   mainWindow.webContents.setWindowOpenHandler(() => {
