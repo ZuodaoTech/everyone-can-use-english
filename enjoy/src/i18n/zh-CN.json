@@ -927,5 +927,7 @@
   "openaiTtsServiceDescription": "使用您自己的 API key 来使用 OpenAI TTS 服务。",
   "enjoyTtsServiceDescription": "使用 Enjoy 提供的 TTS 服务，支持 OpenAI 或 Azure。",
   "compressMediaBeforeAdding": "添加前压缩媒体",
-  "keepOriginalMedia": "保存原始媒体"
+  "keepOriginalMedia": "保存原始媒体",
+  "myPronunciation": "我的发音",
+  "originalPronunciation": "原始发音"
 }

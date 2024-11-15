@@ -14,8 +14,9 @@ export const RecordingDetail = (props: {
   recording: RecordingType;
   pronunciationAssessment?: PronunciationAssessmentType;
   onAssess?: (assessment: PronunciationAssessmentType) => void;
+  onPlayOrigin?: (word: string) => void;
 }) => {
-  const { recording, onAssess } = props;
+  const { recording, onAssess, onPlayOrigin } = props;
   if (!recording) return;
 
   const [pronunciationAssessment, setPronunciationAssessment] =
@@ -40,7 +41,7 @@ export const RecordingDetail = (props: {
     setAssessing(true);
     createAssessment({
       recording,
-      reference: recording.referenceText || "",
+      reference: recording.referenceText?.replace(/[—]/g, ", ") || "",
       language: recording.language || learningLanguage,
     })
       .then((assessment) => {
@@ -76,6 +77,7 @@ export const RecordingDetail = (props: {
           words={result.words}
           currentTime={currentTime}
           src={recording.src}
+          onPlayOrigin={onPlayOrigin}
         />
       ) : (
         <ScrollArea className="min-h-72 py-4 px-8 select-text">

@@ -318,7 +318,7 @@ export const MediaPlayerControls = () => {
           wavesurfer.pause();
           setTimeout(() => {
             activeRegionDebouncePlay();
-          }, 500);
+          }, 250);
         } else if (playMode === "single") {
           wavesurfer.pause();
         }

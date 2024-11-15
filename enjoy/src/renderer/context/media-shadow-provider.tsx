@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, useContext } from "react";
+import { createContext, useEffect, useState, useContext, useMemo } from "react";
 import { convertIpaToNormal, extractFrequencies } from "@/utils";
 import { AppSettingsProviderContext } from "@renderer/context";
 import {
@@ -12,7 +12,10 @@ import Regions, {
   type Region as RegionType,
 } from "wavesurfer.js/dist/plugins/regions";
 import Chart from "chart.js/auto";
-import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
+import {
+  Timeline,
+  TimelineEntry,
+} from "echogarden/dist/utilities/Timeline.d.js";
 import { toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
 import { useAudioRecorder } from "react-audio-voice-recorder";
@@ -48,6 +51,7 @@ type MediaShadowContextType = {
   regions: Regions | null;
   activeRegion: RegionType;
   setActiveRegion: (region: RegionType) => void;
+  toggleRegion: (params: number[]) => void;
   renderPitchContour: (
     region: RegionType,
     options?: {
@@ -74,6 +78,7 @@ type MediaShadowContextType = {
   transcribingOutput: string;
   transcriptionDraft: TranscriptionType["result"];
   setTranscriptionDraft: (result: TranscriptionType["result"]) => void;
+  caption: TimelineEntry;
   // Recordings
   startRecording: () => void;
   stopRecording: () => void;
@@ -179,6 +184,10 @@ export const MediaShadowProvider = ({
   } = useAudioRecorder(recorderConfig, (exception) => {
     toast.error(exception.message);
   });
+
+  const caption = useMemo(() => {
+    return (transcription?.result?.timeline as Timeline)?.[currentSegmentIndex];
+  }, [currentSegmentIndex, transcription]);
 
   const { segment, createSegment } = useSegments({
     targetId: media?.id,
@@ -466,6 +475,67 @@ export const MediaShadowProvider = ({
       );
   };
 
+  const toggleRegion = (params: number[]) => {
+    if (!activeRegion) return;
+    if (editingRegion) {
+      toast.warning(t("currentRegionIsBeingEdited"));
+      return;
+    }
+    if (params.length === 0) {
+      if (activeRegion.id.startsWith("word-region")) {
+        activeRegion.remove();
+        setActiveRegion(
+          regions.getRegions().find((r) => r.id.startsWith("segment-region"))
+        );
+      }
+      return;
+    }
+
+    const startIndex = Math.min(...params);
+    const endIndex = Math.max(...params);
+
+    const startWord = caption.timeline[startIndex];
+    if (!startWord) return;
+
+    const endWord = caption.timeline[endIndex] || startWord;
+
+    const start = startWord.startTime;
+    const end = endWord.endTime;
+
+    // If the active region is a word region, then merge the selected words into a single region.
+    if (activeRegion.id.startsWith("word-region")) {
+      activeRegion.remove();
+
+      const region = regions.addRegion({
+        id: `word-region-${startIndex}`,
+        start,
+        end,
+        color: "#fb6f9233",
+        drag: false,
+        resize: editingRegion,
+      });
+
+      setActiveRegion(region);
+      // If the active region is a meaning group region, then active the segment region.
+    } else if (activeRegion.id.startsWith("meaning-group-region")) {
+      setActiveRegion(
+        regions.getRegions().find((r) => r.id.startsWith("segment-region"))
+      );
+      // If the active region is a segment region, then create a new word region.
+    } else {
+      const region = regions.addRegion({
+        id: `word-region-${startIndex}`,
+        start,
+        end,
+        color: "#fb6f9233",
+        drag: false,
+        resize: false,
+      });
+
+      setActiveRegion(region);
+    }
+  };
+
   /*
    * When wavesurfer is decoded,
    * set up event listeners for wavesurfer
@@ -667,6 +737,7 @@ export const MediaShadowProvider = ({
           pitchChart,
           activeRegion,
           setActiveRegion,
+          toggleRegion,
           renderPitchContour,
           editingRegion,
           setEditingRegion,
@@ -676,6 +747,7 @@ export const MediaShadowProvider = ({
           transcribingOutput,
           transcriptionDraft,
           setTranscriptionDraft,
+          caption,
           startRecording,
           stopRecording,
           cancelRecording,

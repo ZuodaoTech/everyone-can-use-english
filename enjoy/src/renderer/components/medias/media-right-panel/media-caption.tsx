@@ -34,7 +34,13 @@ export const MediaCaption = (props: {
 
   const [notedquoteIndices, setNotedquoteIndices] = useState<number[]>([]);
 
-  let words = caption.text.split(" ");
+  let words = caption.text
+    .replace(/ ([.,!?:;])/g, "$1")
+    .replace(/ (['"")])/g, "$1")
+    .replace(/ \.\.\./g, "...")
+    .split(/([—]|\s+)/g)
+    .filter((word) => word.trim() !== "" && word !== "—");
+
   const ipas = caption.timeline.map((w) =>
     w.timeline?.map((t) =>
       t.timeline && language.startsWith("en")

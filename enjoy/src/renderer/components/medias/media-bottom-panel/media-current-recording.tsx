@@ -1,4 +1,4 @@
-import { useEffect, useContext, useRef, useState } from "react";
+import { useEffect, useContext, useRef, useState, useMemo } from "react";
 import {
   AppSettingsProviderContext,
   HotKeysSettingsProviderContext,
@@ -50,17 +50,13 @@ import { formatDuration } from "@renderer/lib/utils";
 import { useHotkeys } from "react-hotkeys-hook";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import debounce from "lodash/debounce";
+import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 
 const ACTION_BUTTON_HEIGHT = 35;
 export const MediaCurrentRecording = () => {
   const {
     isRecording,
     isPaused,
-    cancelRecording,
-    togglePauseResume,
-    stopRecording,
-    recordingTime,
-    mediaRecorder,
     currentRecording,
     renderPitchContour: renderMediaPitchContour,
     regions: mediaRegions,
@@ -71,6 +67,8 @@ export const MediaCurrentRecording = () => {
     currentSegment,
     createSegment,
     currentTime: mediaCurrentTime,
+    caption,
+    toggleRegion,
   } = useContext(MediaShadowProviderContext);
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);
   const { currentHotkeys } = useContext(HotKeysSettingsProviderContext);
@@ -261,6 +259,23 @@ export const MediaCurrentRecording = () => {
       .catch((err) => {
         if (err) toast.error(err.message);
       });
+  };
+
+  const playWord = (word: string, index: number) => {
+    const candidates = caption.timeline.filter(
+      (w: TimelineEntry) => w.text.toLowerCase() === word.toLowerCase()
+    );
+    const target = candidates[index];
+    if (!target) return;
+
+    const wordIndex = caption.timeline.findIndex(
+      (w) => w.startTime === target.startTime
+    );
+
+    toggleRegion([wordIndex]);
+    setTimeout(() => {
+      wavesurfer?.playPause();
+    }, 250);
   };
 
   const calContainerSize = () => {
@@ -685,7 +700,12 @@ export const MediaCurrentRecording = () => {
             </SheetClose>
           </SheetHeader>
 
-          <RecordingDetail recording={currentRecording} />
+          <RecordingDetail
+            recording={currentRecording}
+            onPlayOrigin={(word: string, index: number = 0) =>
+              playWord(word, index)
+            }
+          />
         </SheetContent>
       </Sheet>
     </div>
@@ -745,7 +765,6 @@ const MediaRecorder = () => {
   const {
     mediaRecorder,
     recordingTime,
-    isRecording,
     isPaused,
     cancelRecording,
     togglePauseResume,
