@@ -343,7 +343,9 @@
   "logoutAndRemoveAllPersonalSettings": "Logout and remove all personal settings",
   "hotkeys": "Hotkeys",
   "player": "Player",
+  "quit": "Quit",
   "quitApp": "Quit APP",
+  "quitAppDescription": "Are you sure to quit Enjoy app?",
   "openPreferences": "Open preferences",
   "openCopilot": "Open copilot",
   "playOrPause": "Play or pause",
@@ -929,5 +931,6 @@
   "compressMediaBeforeAdding": "Compress media before adding",
   "keepOriginalMedia": "Keep original media",
   "myPronunciation": "My pronunciation",
-  "originalPronunciation": "Original pronunciation"
+  "originalPronunciation": "Original pronunciation",
+  "reloadApp": "reload app"
 }

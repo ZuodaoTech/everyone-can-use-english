@@ -1,4 +1,8 @@
-import { AppSettingsProviderContext } from "@/renderer/context";
+import {
+  AppSettingsProviderContext,
+  CopilotProviderContext,
+} from "@/renderer/context";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
 import {
   AlertDialog,
   AlertDialogHeader,
@@ -10,14 +14,29 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
   Button,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuPortal,
+  DropdownMenuSubContent,
 } from "@renderer/components/ui";
 import { IpcRendererEvent } from "electron/renderer";
 import { t } from "i18next";
 import {
+  ExternalLinkIcon,
+  HelpCircleIcon,
+  LightbulbIcon,
+  LightbulbOffIcon,
+  ListRestartIcon,
   MaximizeIcon,
   MenuIcon,
   MinimizeIcon,
   MinusIcon,
+  SettingsIcon,
   XIcon,
 } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
@@ -26,7 +45,10 @@ export const TitleBar = () => {
   const [isMaximized, setIsMaximized] = useState(false);
   const [platform, setPlatform] = useState<"darwin" | "win32" | "linux">();
 
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, setDisplayPreferences } = useContext(
+    AppSettingsProviderContext
+  );
+  const { active, setActive } = useContext(CopilotProviderContext);
 
   const onWindowChange = (
     event: IpcRendererEvent,
@@ -52,68 +74,172 @@ export const TitleBar = () => {
 
   return (
     <div className="z-50 h-8 w-full bg-muted draggable-region flex items-center justify-between border-b">
-      <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="size-8 rounded-none non-draggable-region hover:bg-primary/10"
-        >
-          <MenuIcon className="size-4" />
-        </Button>
+      <div className="flex items-center px-2">
+        {platform === "darwin" && <div className="w-32"></div>}
+        <img src="/assets/icon.png" alt="Enjoy" className="size-8 p-1" />
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 rounded-none non-draggable-region hover:bg-primary/10"
+            >
+              <MenuIcon className="size-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" side="bottom">
+            <DropdownMenuItem
+              onClick={() => setDisplayPreferences(true)}
+              className="cursor-pointer"
+            >
+              <span>{t("sidebar.preferences")}</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => EnjoyApp.app.reload()}
+              className="cursor-pointer"
+            >
+              <span>{t("reloadApp")}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 rounded-none non-draggable-region hover:bg-primary/10"
+            >
+              <HelpCircleIcon className="size-4" />
+            </Button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent
+            className="w-[--radix-dropdown-menu-trigger-width]"
+            align="start"
+            side="top"
+          >
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                onClick={() =>
+                  EnjoyApp.shell.openExternal("https://1000h.org/enjoy-app/")
+                }
+                className="flex justify-between space-x-4"
+              >
+                <span className="min-w-fit">{t("userGuide")}</span>
+                <ExternalLinkIcon className="size-4" />
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+
+            <DropdownMenuGroup>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger className="non-draggable-region">
+                  {t("feedback")}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem
+                      onClick={() =>
+                        EnjoyApp.shell.openExternal(
+                          "https://mixin.one/codes/f6ff96b8-54fb-4ad8-a6d4-5a5bdb1df13e"
+                        )
+                      }
+                      className="flex justify-between space-x-4"
+                    >
+                      <span>Mixin</span>
+                      <ExternalLinkIcon className="size-4" />
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() =>
+                        EnjoyApp.shell.openExternal(
+                          "https://github.com/zuodaotech/everyone-can-use-english/discussions"
+                        )
+                      }
+                      className="flex justify-between space-x-4"
+                    >
+                      <span>Github</span>
+                      <ExternalLinkIcon className="size-4" />
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
-      {platform !== "darwin" && (
-        <div className="flex items-center">
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="icon"
-            className="size-8 rounded-none non-draggable-region hover:bg-primary/10"
-            onClick={() => EnjoyApp.window.minimize()}
+            className={`size-8 rounded-none non-draggable-region hover:bg-primary/10 ${
+              active ? "bg-primary/10" : ""
+            }`}
+            onClick={() => setActive(!active)}
           >
-            <MinusIcon className="size-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-8 rounded-none non-draggable-region hover:bg-primary/10"
-            onClick={() => EnjoyApp.window.toggleMaximized()}
-          >
-            {isMaximized ? (
-              <MinimizeIcon className="size-4" />
+            {active ? (
+              <LightbulbIcon className="size-4" />
             ) : (
-              <MaximizeIcon className="size-4" />
+              <LightbulbOffIcon className="size-4" />
             )}
           </Button>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-8 rounded-none non-draggable-region hover:bg-destructive"
-              >
-                <XIcon className="size-4" />
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>{t("quitApp")}</AlertDialogTitle>
-                <AlertDialogDescription>
-                  {t("quitAppDescription")}
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-                <AlertDialogAction
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  onClick={() => EnjoyApp.window.close()}
-                >
-                  {t("quit")}
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
         </div>
-      )}
+
+        {platform !== "darwin" && (
+          <div className="flex items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 rounded-none non-draggable-region hover:bg-primary/10"
+              onClick={() => EnjoyApp.window.minimize()}
+            >
+              <MinusIcon className="size-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 rounded-none non-draggable-region hover:bg-primary/10"
+              onClick={() => EnjoyApp.window.toggleMaximized()}
+            >
+              {isMaximized ? (
+                <MinimizeIcon className="size-4" />
+              ) : (
+                <MaximizeIcon className="size-4" />
+              )}
+            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8 rounded-none non-draggable-region hover:bg-destructive"
+                >
+                  <XIcon className="size-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t("quitApp")}</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t("quitAppDescription")}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                  <AlertDialogAction
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    onClick={() => EnjoyApp.window.close()}
+                  >
+                    {t("quit")}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

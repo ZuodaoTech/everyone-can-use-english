@@ -71,7 +71,7 @@ export const Layout = () => {
                 minSize={15}
                 onCollapse={() => setActive(false)}
               >
-                <div className="h-screen">
+                <div className="h-[calc(100vh-2rem)]">
                   <CopilotSession />
                 </div>
               </ResizablePanel>

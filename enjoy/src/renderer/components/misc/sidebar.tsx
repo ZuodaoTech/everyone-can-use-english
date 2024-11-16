@@ -1,7 +1,6 @@
 import {
   Button,
   Dialog,
-  DialogTrigger,
   DialogContent,
   ScrollArea,
   DropdownMenu,
@@ -53,7 +52,8 @@ import { useState } from "react";
 export const Sidebar = () => {
   const location = useLocation();
   const activeTab = location.pathname;
-  const { EnjoyApp, cable } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, cable, displayPreferences, setDisplayPreferences } =
+    useContext(AppSettingsProviderContext);
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
@@ -194,28 +194,30 @@ export const Sidebar = () => {
 
             <Separator />
 
-            <Dialog>
-              <DialogTrigger asChild>
-                <div className="px-1 non-draggable-region">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    id="preferences-button"
-                    className={`w-full ${
-                      isOpen ? "justify-start" : "justify-center"
-                    }`}
-                    data-tooltip-id="global-tooltip"
-                    data-tooltip-content={t("sidebar.preferences")}
-                    data-tooltip-place="right"
-                  >
-                    <SettingsIcon className="size-4" />
-                    {isOpen && (
-                      <span className="ml-2"> {t("sidebar.preferences")} </span>
-                    )}
-                  </Button>
-                </div>
-              </DialogTrigger>
+            <div className="px-1 non-draggable-region">
+              <Button
+                size="sm"
+                variant={displayPreferences ? "default" : "ghost"}
+                id="preferences-button"
+                className={`w-full ${
+                  isOpen ? "justify-start" : "justify-center"
+                }`}
+                data-tooltip-id="global-tooltip"
+                data-tooltip-content={t("sidebar.preferences")}
+                data-tooltip-place="right"
+                onClick={() => setDisplayPreferences(true)}
+              >
+                <SettingsIcon className="size-4" />
+                {isOpen && (
+                  <span className="ml-2"> {t("sidebar.preferences")} </span>
+                )}
+              </Button>
+            </div>
 
+            <Dialog
+              open={displayPreferences}
+              onOpenChange={setDisplayPreferences}
+            >
               <DialogContent
                 aria-describedby={undefined}
                 className="max-w-screen-md xl:max-w-screen-lg h-5/6 p-0"
@@ -226,82 +228,6 @@ export const Sidebar = () => {
                 <Preferences />
               </DialogContent>
             </Dialog>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <div className="px-1 non-draggable-region">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className={`w-full ${
-                      isOpen ? "justify-start" : "justify-center"
-                    }`}
-                  >
-                    <HelpCircleIcon className="size-4" />
-                    {isOpen && (
-                      <>
-                        <span className="ml-2"> {t("sidebar.help")} </span>
-                        <ChevronRightIcon className="w-4 h-4 ml-auto" />
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent
-                className="w-[--radix-dropdown-menu-trigger-width]"
-                align="start"
-                side="top"
-              >
-                <DropdownMenuGroup>
-                  <DropdownMenuItem
-                    onClick={() =>
-                      EnjoyApp.shell.openExternal(
-                        "https://1000h.org/enjoy-app/"
-                      )
-                    }
-                    className="flex justify-between space-x-4"
-                  >
-                    <span className="min-w-fit">{t("userGuide")}</span>
-                    <ExternalLinkIcon className="size-4" />
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-
-                <DropdownMenuGroup>
-                  <DropdownMenuSub>
-                    <DropdownMenuSubTrigger className="non-draggable-region">
-                      {t("feedback")}
-                    </DropdownMenuSubTrigger>
-                    <DropdownMenuPortal>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem
-                          onClick={() =>
-                            EnjoyApp.shell.openExternal(
-                              "https://mixin.one/codes/f6ff96b8-54fb-4ad8-a6d4-5a5bdb1df13e"
-                            )
-                          }
-                          className="flex justify-between space-x-4"
-                        >
-                          <span>Mixin</span>
-                          <ExternalLinkIcon className="size-4" />
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() =>
-                            EnjoyApp.shell.openExternal(
-                              "https://github.com/zuodaotech/everyone-can-use-english/discussions"
-                            )
-                          }
-                          className="flex justify-between space-x-4"
-                        >
-                          <span>Github</span>
-                          <ExternalLinkIcon className="size-4" />
-                        </DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuPortal>
-                  </DropdownMenuSub>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
         </ScrollArea>
 
