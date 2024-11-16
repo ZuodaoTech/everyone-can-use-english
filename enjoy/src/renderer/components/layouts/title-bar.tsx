@@ -23,6 +23,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuPortal,
   DropdownMenuSubContent,
+  DropdownMenuSeparator,
 } from "@renderer/components/ui";
 import { IpcRendererEvent } from "electron/renderer";
 import { t } from "i18next";
@@ -45,13 +46,13 @@ export const TitleBar = () => {
   const [isMaximized, setIsMaximized] = useState(false);
   const [platform, setPlatform] = useState<"darwin" | "win32" | "linux">();
 
-  const { EnjoyApp, setDisplayPreferences } = useContext(
+  const { EnjoyApp, setDisplayPreferences, initialized } = useContext(
     AppSettingsProviderContext
   );
   const { active, setActive } = useContext(CopilotProviderContext);
 
   const onWindowChange = (
-    event: IpcRendererEvent,
+    _event: IpcRendererEvent,
     state: { event: string }
   ) => {
     if (state.event === "maximize") {
@@ -90,19 +91,31 @@ export const TitleBar = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" side="bottom">
             <DropdownMenuItem
-              onClick={() => setDisplayPreferences(true)}
-              className="cursor-pointer"
-            >
-              <span>{t("sidebar.preferences")}</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
               onClick={() => EnjoyApp.app.reload()}
               className="cursor-pointer"
             >
               <span>{t("reloadApp")}</span>
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => EnjoyApp.window.close()}
+              className="cursor-pointer"
+            >
+              <span>{t("exit")}</span>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {initialized && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-8 rounded-none non-draggable-region hover:bg-primary/10"
+            onClick={() => setDisplayPreferences(true)}
+          >
+            <SettingsIcon className="size-4" />
+          </Button>
+        )}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -165,26 +178,39 @@ export const TitleBar = () => {
                 </DropdownMenuPortal>
               </DropdownMenuSub>
             </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() =>
+                EnjoyApp.shell.openExternal(
+                  "https://1000h.org/enjoy-app/install.html"
+                )
+              }
+              className="cursor-pointer"
+            >
+              <span>{t("checkUpdate")}</span>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className={`size-8 rounded-none non-draggable-region hover:bg-primary/10 ${
-              active ? "bg-primary/10" : ""
-            }`}
-            onClick={() => setActive(!active)}
-          >
-            {active ? (
-              <LightbulbIcon className="size-4" />
-            ) : (
-              <LightbulbOffIcon className="size-4" />
-            )}
-          </Button>
+          {initialized && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className={`size-8 rounded-none non-draggable-region hover:bg-primary/10 ${
+                active ? "bg-primary/10" : ""
+              }`}
+              onClick={() => setActive(!active)}
+            >
+              {active ? (
+                <LightbulbIcon className="size-4" />
+              ) : (
+                <LightbulbOffIcon className="size-4" />
+              )}
+            </Button>
+          )}
         </div>
 
         {platform !== "darwin" && (

@@ -6,11 +6,6 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuSub,
-  DropdownMenuPortal,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuItem,
   Separator,
   DialogTitle,
@@ -29,8 +24,6 @@ import {
   BotIcon,
   UsersRoundIcon,
   LucideIcon,
-  HelpCircleIcon,
-  ExternalLinkIcon,
   NotebookPenIcon,
   SpeechIcon,
   GraduationCapIcon,
@@ -39,7 +32,6 @@ import {
   PanelLeftCloseIcon,
   ChevronsUpDownIcon,
   LogOutIcon,
-  ChevronRightIcon,
 } from "lucide-react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { t } from "i18next";
@@ -289,6 +281,10 @@ const SidebarHeader = (props: { isOpen: boolean }) => {
   const { isOpen } = props;
   const { user, logout } = useContext(AppSettingsProviderContext);
   const navigate = useNavigate();
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="py-3 px-1 sticky top-0 bg-muted z-10 non-draggable-region">

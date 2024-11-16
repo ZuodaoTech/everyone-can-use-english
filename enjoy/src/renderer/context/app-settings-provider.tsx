@@ -346,7 +346,7 @@ export const AppSettingsProvider = ({
         setProxy: setProxyConfigHandler,
         vocabularyConfig,
         setVocabularyConfig: setVocabularyConfigHandler,
-        initialized: Boolean(db.state === "connected" && libraryPath),
+        initialized: Boolean(user && db.state === "connected" && libraryPath),
         ahoy,
         cable,
         recorderConfig,

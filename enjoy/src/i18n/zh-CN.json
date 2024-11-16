@@ -932,5 +932,6 @@
   "keepOriginalMedia": "保存原始媒体",
   "myPronunciation": "我的发音",
   "originalPronunciation": "原始发音",
-  "reloadApp": "重载应用"
+  "reloadApp": "重载应用",
+  "exit": "退出"
 }

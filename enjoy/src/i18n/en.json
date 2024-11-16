@@ -932,5 +932,6 @@
   "keepOriginalMedia": "Keep original media",
   "myPronunciation": "My pronunciation",
   "originalPronunciation": "Original pronunciation",
-  "reloadApp": "reload app"
+  "reloadApp": "reload app",
+  "exit": "Exit"
 }

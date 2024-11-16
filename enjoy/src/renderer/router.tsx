@@ -25,6 +25,7 @@ import Courses from "./pages/courses/index";
 import Course from "./pages/courses/show";
 import Chapter from "./pages/courses/chapter";
 import Chats from "./pages/chats";
+import { ProtectedPage } from "./pages/protected-page";
 
 export default createHashRouter([
   {
@@ -32,96 +33,191 @@ export default createHashRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Home /> },
+      { path: "/landing", element: <Landing /> },
+      {
+        index: true,
+        element: (
+          <ProtectedPage>
+            <Home />
+          </ProtectedPage>
+        ),
+      },
       {
         path: "/chats",
-        element: <Chats />,
+        element: (
+          <ProtectedPage>
+            <Chats />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/courses",
-        element: <Courses />,
+        element: (
+          <ProtectedPage>
+            <Courses />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/courses/:id",
-        element: <Course />,
+        element: (
+          <ProtectedPage>
+            <Course />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/courses/:id/chapters/:sequence",
-        element: <Chapter />,
+        element: (
+          <ProtectedPage>
+            <Chapter />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/community",
-        element: <Community />,
+        element: (
+          <ProtectedPage>
+            <Community />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/users/:id",
-        element: <User />,
+        element: (
+          <ProtectedPage>
+            <User />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/profile",
-        element: <Profile />,
+        element: (
+          <ProtectedPage>
+            <Profile />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/conversations",
-        element: <Conversations />,
+        element: (
+          <ProtectedPage>
+            <Conversations />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/conversations/:id",
-        element: <Conversation />,
+        element: (
+          <ProtectedPage>
+            <Conversation />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/pronunciation_assessments",
-        element: <PronunciationAssessmentsIndex />,
+        element: (
+          <ProtectedPage>
+            <PronunciationAssessmentsIndex />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/pronunciation_assessments/new",
-        element: <PronunciationAssessmentsNew />,
+        element: (
+          <ProtectedPage>
+            <PronunciationAssessmentsNew />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/vocabulary",
-        element: <Vocabulary />,
+        element: (
+          <ProtectedPage>
+            <Vocabulary />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/audios",
-        element: <Audios />,
+        element: (
+          <ProtectedPage>
+            <Audios />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/audios/:id",
-        element: <Audio />,
+        element: (
+          <ProtectedPage>
+            <Audio />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/videos",
-        element: <Videos />,
+        element: (
+          <ProtectedPage>
+            <Videos />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/videos/:id",
-        element: <Video />,
+        element: (
+          <ProtectedPage>
+            <Video />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/documents",
-        element: <Documents />,
+        element: (
+          <ProtectedPage>
+            <Documents />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/documents/:id",
-        element: <Document />,
+        element: (
+          <ProtectedPage>
+            <Document />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/stories",
-        element: <Stories />,
+        element: (
+          <ProtectedPage>
+            <Stories />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/stories/:id",
-        element: <Story />,
+        element: (
+          <ProtectedPage>
+            <Story />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/stories/preview/:uri",
-        element: <StoryPreview />,
+        element: (
+          <ProtectedPage>
+            <StoryPreview />
+          </ProtectedPage>
+        ),
       },
       {
         path: "/notes",
-        element: <Notes />,
+        element: (
+          <ProtectedPage>
+            <Notes />
+          </ProtectedPage>
+        ),
       },
     ],
   },
-  { path: "/landing", element: <Landing /> },
 ]);

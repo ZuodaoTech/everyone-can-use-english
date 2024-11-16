@@ -1,14 +1,10 @@
-import { Sidebar } from "../misc/sidebar";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import {
   AppSettingsProviderContext,
   CopilotProviderContext,
-  DbProviderContext,
 } from "@renderer/context";
 import { useContext } from "react";
-import { Button } from "@renderer/components/ui/button";
-import { DbState, CopilotSession, TitleBar } from "@renderer/components";
-import { t } from "i18next";
+import { CopilotSession, TitleBar, Sidebar } from "@renderer/components";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -17,32 +13,9 @@ import {
 
 export const Layout = () => {
   const { initialized } = useContext(AppSettingsProviderContext);
-  const db = useContext(DbProviderContext);
   const { active, setActive } = useContext(CopilotProviderContext);
 
-  if (!initialized) {
-    return (
-      <div className="h-screen flex flex-col">
-        <TitleBar />
-        <div
-          className="flex-1 flex justify-center items-center"
-          date-testid="layout-onboarding"
-        >
-          <div className="text-center">
-            <div className="text-lg mb-6">
-              {t("welcomeTo")} <span className="font-semibold">Enjoy App</span>
-            </div>
-
-            <div className="">
-              <Link data-testid="landing-button" to="/landing" replace>
-                <Button size="lg">{t("startToUse")}</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  } else if (db.state === "connected") {
+  if (initialized) {
     return (
       <div className="h-screen flex flex-col">
         <TitleBar />
@@ -82,13 +55,10 @@ export const Layout = () => {
     );
   } else {
     return (
-      <div className="h-screen w-screen flex flex-col">
+      <div className="h-screen flex flex-col w-full">
         <TitleBar />
-        <div
-          className="flex-1 flex justify-center items-center"
-          data-testid="layout-db-error"
-        >
-          <DbState />
+        <div className="flex-1 h-[calc(100vh-2rem)] overflow-y-auto">
+          <Outlet />
         </div>
       </div>
     );

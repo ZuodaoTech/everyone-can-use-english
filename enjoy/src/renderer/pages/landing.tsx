@@ -1,34 +1,64 @@
 import { t } from "i18next";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Button } from "@renderer/components/ui";
-import { Link } from "react-router-dom";
-import { LoginForm } from "@renderer/components";
-import { AppSettingsProviderContext } from "@renderer/context";
+import { Link, Navigate } from "react-router-dom";
+import { DbState, LoginForm } from "@renderer/components";
+import {
+  AppSettingsProviderContext,
+  DbProviderContext,
+} from "@renderer/context";
 
 export default () => {
-  const { initialized, EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { initialized, EnjoyApp, user } = useContext(
+    AppSettingsProviderContext
+  );
+  const [started, setStarted] = useState(false);
+  const db = useContext(DbProviderContext);
+
+  if (initialized) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (user && db.state === "error") {
+    return (
+      <div
+        className="flex justify-center items-center h-full"
+        date-testid="layout-db-error"
+      >
+        <DbState />
+      </div>
+    );
+  }
+
+  if (!started) {
+    return (
+      <div
+        className="flex justify-center items-center h-full"
+        date-testid="layout-onboarding"
+      >
+        <div className="text-center">
+          <div className="text-lg mb-6">
+            {t("welcomeTo")} <span className="font-semibold">Enjoy App</span>
+          </div>
+
+          <div className="">
+            <Button size="lg" onClick={() => setStarted(true)}>
+              {t("startToUse")}
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="h-screen w-full px-4 py-6 lg:px-8 flex flex-col">
+    <div className="w-full h-full px-4 py-6 lg:px-8 flex flex-col gap-8">
       <div className="text-center">
-        <div className="text-lg font-mono py-6">{t("login")}</div>
+        <div className="text-lg font-mono py-4">{t("login")}</div>
         <div className="text-sm opacity-70">{t("loginBeforeYouStart")}</div>
       </div>
-      <div className="flex-1 flex justify-center items-center">
+      <div className="flex-1 flex justify-center">
         <LoginForm />
-      </div>
-      <div className="mt-auto">
-        <div className="flex mb-4 justify-end space-x-4">
-          {initialized ? (
-            <Link data-testid="start-to-use-button" to="/" replace>
-              <Button className="w-24">{t("startToUse")}</Button>
-            </Link>
-          ) : (
-            <Button className="w-24" onClick={() => EnjoyApp.app.reload()}>
-              {t("reload")}
-            </Button>
-          )}
-        </div>
       </div>
     </div>
   );
