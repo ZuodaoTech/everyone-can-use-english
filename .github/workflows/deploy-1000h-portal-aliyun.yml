@@ -1,4 +1,4 @@
-name: Deploy 1000h portal (aliyun) 
+name: Deploy 1000h portal (aliyun)
 
 env:
   OSS_ENDPOINT: oss-cn-beijing.aliyuncs.com
@@ -31,9 +31,14 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Setup node env
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v3
         with:
           node-version: "20"
+
+      # Debugging installation issues
+      - name: Show npm logs if install fails
+        if: failure()
+        run: cat /home/runner/.npm/_logs/* || true
 
       - name: Install dependencies
         run: yarn install
@@ -43,6 +48,9 @@ jobs:
 
       - name: Build
         run: yarn portal:generate
+
+      - name: Install Wrangler manually (workaround)
+        run: npm install -g wrangler@3.81.0
 
       - uses: manyuanrong/setup-ossutil@v2.0
         with:
