@@ -25,6 +25,8 @@ import dict from "./dict";
 import mdict from "./mdict";
 import decompresser from "./decompresser";
 import { UserSetting } from "@main/db/models";
+import { platform } from "os";
+import { t } from "i18next";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -634,7 +636,42 @@ ${log}
     // mainWindow.webContents.openDevTools();
   }
 
-  Menu.setApplicationMenu(null);
+  if (platform() === "darwin") {
+    const menu = Menu.buildFromTemplate([
+      {
+        label: app.name,
+        submenu: [
+          { role: "about" },
+          { type: "separator" },
+          { role: "hide" },
+          { role: "unhide" },
+          { type: "separator" },
+          { role: "quit" },
+        ],
+      },
+      {
+        label: "&Help",
+        submenu: [
+          {
+            label: "Check for Updates...",
+            click: () => {
+              shell.openExternal("https://1000h.org/enjoy-app/install.html");
+            },
+          },
+          {
+            label: "Report Issue...",
+            click: () => {
+              shell.openExternal(`${REPO_URL}/issues/new`)
+            }
+          }
+        ]
+      }
+    ])
+
+    Menu.setApplicationMenu(menu);
+  } else {
+    Menu.setApplicationMenu(null);
+  }
 
   main.win = mainWindow;
 };
