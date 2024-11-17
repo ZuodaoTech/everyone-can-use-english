@@ -525,7 +525,7 @@ ${log}
     titleBarOverlay: process.platform === "darwin",
     trafficLightPosition: {
       x: 10,
-      y: 10,
+      y: 8,
     },
     useContentSize: true,
   });
@@ -539,6 +539,14 @@ ${log}
       event: "resize",
       state: mainWindow.getBounds(),
     });
+  });
+
+  mainWindow.on("enter-full-screen", () => {
+    mainWindow.webContents.send("window-on-change", { event: "enter-full-screen" });
+  });
+
+  mainWindow.on("leave-full-screen", () => {
+    mainWindow.webContents.send("window-on-change", { event: "leave-full-screen" });
   });
 
   mainWindow.on("maximize", () => {

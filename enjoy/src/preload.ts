@@ -54,6 +54,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     version,
   },
   window: {
+    isFullScreen: () => {
+      return ipcRenderer.invoke("window-is-full-screen");
+    },
+    toggleFullscreen: () => {
+      return ipcRenderer.invoke("window-fullscreen");
+    },
     isMaximized: () => {
       return ipcRenderer.invoke("window-is-maximized");
     },

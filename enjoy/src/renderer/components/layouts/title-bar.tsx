@@ -32,7 +32,6 @@ import {
   HelpCircleIcon,
   LightbulbIcon,
   LightbulbOffIcon,
-  ListRestartIcon,
   MaximizeIcon,
   MenuIcon,
   MinimizeIcon,
@@ -44,6 +43,7 @@ import { useContext, useEffect, useState } from "react";
 
 export const TitleBar = () => {
   const [isMaximized, setIsMaximized] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const [platform, setPlatform] = useState<"darwin" | "win32" | "linux">();
 
   const { EnjoyApp, setDisplayPreferences, initialized } = useContext(
@@ -59,6 +59,10 @@ export const TitleBar = () => {
       setIsMaximized(true);
     } else if (state.event === "unmaximize") {
       setIsMaximized(false);
+    } else if (state.event === "enter-full-screen") {
+      setIsFullScreen(true);
+    } else if (state.event === "leave-full-screen") {
+      setIsFullScreen(false);
     }
   };
 
@@ -76,9 +80,7 @@ export const TitleBar = () => {
   return (
     <div className="z-50 h-8 w-full bg-muted draggable-region flex items-center justify-between border-b">
       <div className="flex items-center px-2">
-        {platform === "darwin" && <div className="w-32"></div>}
-        <img src="/assets/icon.png" alt="Enjoy" className="size-8 p-1" />
-
+        {platform === "darwin" && !isFullScreen && <div className="w-16"></div>}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -86,7 +88,7 @@ export const TitleBar = () => {
               size="icon"
               className="size-8 rounded-none non-draggable-region hover:bg-primary/10"
             >
-              <MenuIcon className="size-4" />
+              <img src="/assets/icon.png" alt="Enjoy" className="size-5" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" side="bottom">
@@ -94,14 +96,14 @@ export const TitleBar = () => {
               onClick={() => EnjoyApp.app.reload()}
               className="cursor-pointer"
             >
-              <span>{t("reloadApp")}</span>
+              <span className="capitalize">{t("reloadApp")}</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => EnjoyApp.window.close()}
               className="cursor-pointer"
             >
-              <span>{t("exit")}</span>
+              <span className="capitalize">{t("exit")}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -187,7 +189,7 @@ export const TitleBar = () => {
               }
               className="cursor-pointer"
             >
-              <span>{t("checkUpdate")}</span>
+              <span className="capitalize">{t("checkUpdate")}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
