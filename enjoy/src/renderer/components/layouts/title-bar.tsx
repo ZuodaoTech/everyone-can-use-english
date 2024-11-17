@@ -142,7 +142,7 @@ export const TitleBar = () => {
                 }
                 className="flex justify-between space-x-4"
               >
-                <span className="min-w-fit">{t("userGuide")}</span>
+                <span className="min-w-fit capitalize">{t("userGuide")}</span>
                 <ExternalLinkIcon className="size-4" />
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -150,7 +150,9 @@ export const TitleBar = () => {
             <DropdownMenuGroup>
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger className="non-draggable-region">
-                  {t("feedback")}
+                  <span className="capitalize">
+                    {t("feedback")}
+                  </span>
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                   <DropdownMenuSubContent>
