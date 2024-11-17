@@ -344,7 +344,9 @@
   "hotkeys": "快捷键",
   "system": "系统",
   "player": "播放器",
+  "quit": "退出",
   "quitApp": "退出应用",
+  "quitAppDescription": "确定要退出 Enjoy 应用吗？",
   "openPreferences": "打开设置",
   "openCopilot": "打开 Copilot",
   "playOrPause": "播放/暂停",
@@ -929,5 +931,7 @@
   "compressMediaBeforeAdding": "添加前压缩媒体",
   "keepOriginalMedia": "保存原始媒体",
   "myPronunciation": "我的发音",
-  "originalPronunciation": "原始发音"
+  "originalPronunciation": "原始发音",
+  "reloadApp": "重载应用",
+  "exit": "退出"
 }

@@ -94,6 +94,12 @@
   .scroll {
     @apply scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary;
   }
+  .draggable-region {
+    -webkit-app-region: drag;
+  }
+  .non-draggable-region {
+    -webkit-app-region: no-drag;
+  }
 }
 
 body {

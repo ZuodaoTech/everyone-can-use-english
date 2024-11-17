@@ -12,14 +12,14 @@ export const ChatSession = (props: {
 
   if (!chatId) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-[calc(100vh-2rem)]">
         <span className="text-muted-foreground">{t("noChatSelected")}</span>
       </div>
     );
   }
 
   return (
-    <ScrollArea className="h-screen relative">
+    <ScrollArea className="h-[calc(100vh-2rem)] relative">
       <ChatSessionProvider chatId={chatId}>
         <ChatHeader
           sidePanelCollapsed={sidePanelCollapsed}

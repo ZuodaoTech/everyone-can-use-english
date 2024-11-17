@@ -144,10 +144,7 @@ export const MediaWaveform = () => {
     });
     observer.observe(ref.current);
 
-    EnjoyApp.window.onResize(debouncedCalContainerSize);
-
     return () => {
-      EnjoyApp.window.removeListeners();
       observer.disconnect();
     };
   }, [ref, wavesurfer]);

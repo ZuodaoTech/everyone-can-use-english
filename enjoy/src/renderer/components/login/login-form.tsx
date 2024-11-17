@@ -38,7 +38,7 @@ export const LoginForm = () => {
 
   if (user) {
     return (
-      <div className="px-4 py-2 border rounded-lg w-full max-w-sm">
+      <div className="px-4 py-2 border rounded-lg w-full max-w-sm m-auto">
         <UserSettings />
         <Separator />
         <LanguageSettings />

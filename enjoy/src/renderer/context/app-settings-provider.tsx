@@ -8,7 +8,6 @@ import { DbProviderContext } from "@renderer/context";
 import { UserSettingKeyEnum } from "@/types/enums";
 import {
   AlertDialog,
-  AlertDialogTrigger,
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -16,10 +15,10 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-  Button,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { redirect } from "react-router-dom";
+import { Preferences } from "@renderer/components";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -50,6 +49,8 @@ type AppSettingsProviderState = {
   setRecorderConfig?: (config: RecorderConfigType) => Promise<void>;
   // remote config
   ipaMappings?: { [key: string]: string };
+  displayPreferences?: boolean;
+  setDisplayPreferences?: (display: boolean) => void;
 };
 
 const EnjoyApp = window.__ENJOY_APP__;
@@ -87,6 +88,7 @@ export const AppSettingsProvider = ({
     IPA_MAPPINGS
   );
   const [loggingOut, setLoggingOut] = useState<boolean>(false);
+  const [displayPreferences, setDisplayPreferences] = useState<boolean>(false);
 
   const db = useContext(DbProviderContext);
 
@@ -344,12 +346,14 @@ export const AppSettingsProvider = ({
         setProxy: setProxyConfigHandler,
         vocabularyConfig,
         setVocabularyConfig: setVocabularyConfigHandler,
-        initialized: Boolean(db.state === "connected" && libraryPath),
+        initialized: Boolean(user && db.state === "connected" && libraryPath),
         ahoy,
         cable,
         recorderConfig,
         setRecorderConfig: setRecorderConfigHandler,
         ipaMappings,
+        displayPreferences,
+        setDisplayPreferences,
       }}
     >
       {children}

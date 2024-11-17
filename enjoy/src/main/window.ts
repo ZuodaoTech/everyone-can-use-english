@@ -25,6 +25,8 @@ import dict from "./dict";
 import mdict from "./mdict";
 import decompresser from "./decompresser";
 import { UserSetting } from "@main/db/models";
+import { platform } from "os";
+import { t } from "i18next";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -520,6 +522,14 @@ ${log}
       preload: path.join(__dirname, "preload.js"),
       spellcheck: false,
     },
+    frame: false,
+    titleBarStyle: "hidden",
+    titleBarOverlay: process.platform === "darwin",
+    trafficLightPosition: {
+      x: 10,
+      y: 8,
+    },
+    useContentSize: true,
   });
 
   mainWindow.on("ready-to-show", () => {
@@ -527,7 +537,62 @@ ${log}
   });
 
   mainWindow.on("resize", () => {
-    mainWindow.webContents.send("window-on-resize", mainWindow.getBounds());
+    mainWindow.webContents.send("window-on-change", {
+      event: "resize",
+      state: mainWindow.getBounds(),
+    });
+  });
+
+  mainWindow.on("enter-full-screen", () => {
+    mainWindow.webContents.send("window-on-change", { event: "enter-full-screen" });
+  });
+
+  mainWindow.on("leave-full-screen", () => {
+    mainWindow.webContents.send("window-on-change", { event: "leave-full-screen" });
+  });
+
+  mainWindow.on("maximize", () => {
+    mainWindow.webContents.send("window-on-change", { event: "maximize" });
+  });
+
+  mainWindow.on("unmaximize", () => {
+    mainWindow.webContents.send("window-on-change", { event: "unmaximize" });
+  });
+
+  ipcMain.handle("window-is-maximized", () => {
+    return mainWindow.isMaximized();
+  });
+
+  ipcMain.handle("window-toggle-maximized", () => {
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize();
+    } else {
+      mainWindow.maximize();
+    }
+  });
+
+  ipcMain.handle("window-maximize", () => {
+    mainWindow.maximize();
+  });
+
+  ipcMain.handle("window-unmaximize", () => {
+    mainWindow.unmaximize();
+  });
+
+  ipcMain.handle("window-fullscreen", () => {
+    mainWindow.setFullScreen(true);
+  });
+
+  ipcMain.handle("window-unfullscreen", () => {
+    mainWindow.setFullScreen(false);
+  });
+
+  ipcMain.handle("window-minimize", () => {
+    mainWindow.minimize();
+  });
+
+  ipcMain.handle("window-close", () => {
+    app.quit();
   });
 
   mainWindow.webContents.setWindowOpenHandler(() => {
@@ -571,7 +636,42 @@ ${log}
     // mainWindow.webContents.openDevTools();
   }
 
-  Menu.setApplicationMenu(null);
+  if (platform() === "darwin") {
+    const menu = Menu.buildFromTemplate([
+      {
+        label: app.name,
+        submenu: [
+          { role: "about" },
+          { type: "separator" },
+          { role: "hide" },
+          { role: "unhide" },
+          { type: "separator" },
+          { role: "quit" },
+        ],
+      },
+      {
+        label: "&Help",
+        submenu: [
+          {
+            label: "Check for Updates...",
+            click: () => {
+              shell.openExternal("https://1000h.org/enjoy-app/install.html");
+            },
+          },
+          {
+            label: "Report Issue...",
+            click: () => {
+              shell.openExternal(`${REPO_URL}/issues/new`)
+            }
+          }
+        ]
+      }
+    ])
+
+    Menu.setApplicationMenu(menu);
+  } else {
+    Menu.setApplicationMenu(null);
+  }
 
   main.win = mainWindow;
 };

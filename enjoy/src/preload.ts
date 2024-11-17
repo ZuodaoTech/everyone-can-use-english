@@ -54,14 +54,49 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     version,
   },
   window: {
-    onResize: (
+    isFullScreen: () => {
+      return ipcRenderer.invoke("window-is-full-screen");
+    },
+    toggleFullscreen: () => {
+      return ipcRenderer.invoke("window-fullscreen");
+    },
+    isMaximized: () => {
+      return ipcRenderer.invoke("window-is-maximized");
+    },
+    toggleMaximized: () => {
+      return ipcRenderer.invoke("window-toggle-maximized");
+    },
+    maximize: () => {
+      return ipcRenderer.invoke("window-maximize");
+    },
+    unmaximize: () => {
+      return ipcRenderer.invoke("window-unmaximize");
+    },
+    fullscreen: () => {
+      return ipcRenderer.invoke("window-fullscreen");
+    },
+    unfullscreen: () => {
+      return ipcRenderer.invoke("window-unfullscreen");
+    },
+    minimize: () => {
+      return ipcRenderer.invoke("window-minimize");
+    },
+    close: () => {
+      return ipcRenderer.invoke("window-close");
+    },
+    onChange: (
       callback: (
         event: IpcRendererEvent,
-        bounds: { x: number; y: number; width: number; height: number }
+        state: { event: string; state: any }
       ) => void
-    ) => ipcRenderer.on("window-on-resize", callback),
-    removeListeners: () => {
-      ipcRenderer.removeAllListeners("window-on-resize");
+    ) => ipcRenderer.on("window-on-change", callback),
+    removeListener: (
+      listener: (event: IpcRendererEvent, ...args: any[]) => void
+    ) => {
+      ipcRenderer.removeListener("window-on-change", listener);
+    },
+    removeAllListeners: () => {
+      ipcRenderer.removeAllListeners("window-on-change");
     },
   },
   system: {

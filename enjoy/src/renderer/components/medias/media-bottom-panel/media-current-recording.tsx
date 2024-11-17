@@ -448,10 +448,8 @@ export const MediaCurrentRecording = () => {
       debouncedCalContainerSize();
     });
     observer.observe(ref.current);
-    EnjoyApp.window.onResize(debouncedCalContainerSize);
 
     return () => {
-      EnjoyApp.window.removeListeners();
       observer.disconnect();
     };
   }, [ref, player]);

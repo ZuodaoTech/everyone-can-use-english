@@ -8,7 +8,7 @@ export const CopilotSession = () => {
   const { currentChat } = useContext(CopilotProviderContext);
 
   return (
-    <ScrollArea className="h-screen relative">
+    <ScrollArea className="h-[calc(100vh-2rem)] relative">
       {currentChat?.id ? (
         <ChatSessionProvider chatId={currentChat.id}>
           <CopilotHeader />
