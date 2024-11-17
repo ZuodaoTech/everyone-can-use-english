@@ -25,12 +25,17 @@ jobs:
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock', '**/package.json') }}
 
       - name: Setup node env
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v3
         with:
           node-version: "20"
+
+      # Debugging installation issues
+      - name: Show npm logs if install fails
+        if: failure()
+        run: cat /home/runner/.npm/_logs/* || true
 
       - name: Install dependencies
         run: yarn install
@@ -38,6 +43,9 @@ jobs:
       - name: Build
         run: yarn portal:generate
 
+      - name: Install Wrangler manually (workaround)
+        run: npm install -g wrangler@3.81.0
+        
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
