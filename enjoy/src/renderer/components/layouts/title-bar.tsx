@@ -88,7 +88,7 @@ export const TitleBar = () => {
               size="icon"
               className="size-8 rounded-none non-draggable-region hover:bg-primary/10"
             >
-              <img src="/assets/icon.png" alt="Enjoy" className="size-5" />
+              <img src="./assets/icon.png" alt="Enjoy" className="size-5" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" side="bottom">
