@@ -31,6 +31,11 @@ jobs:
         with:
           node-version: "20"
 
+      # Debugging installation issues
+      - name: Show npm logs if install fails
+        if: failure()
+        run: cat /home/runner/.npm/_logs/* || true
+
       - name: Install dependencies
         run: yarn install
 
@@ -46,4 +51,5 @@ jobs:
           apiToken: ${{ secrets.CF_BASEONE_API_TOKEN }}
           accountId: ${{ secrets.CF_BASEONE_ACCOUNT_ID }}
           command: deploy
+          preCommands: npm install @cloudflare/kv-asset-handler@0.2.0
           workingDirectory: "1000-hours"
