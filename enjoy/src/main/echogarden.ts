@@ -68,6 +68,12 @@ class EchogardenWrapper {
         // Add temporary unhandledRejection listener
         process.on("unhandledRejection", handler);
 
+        // Set the whisper executable path for macOS
+        if (process.platform === "darwin") {
+          options.whisperCpp = options.whisperCpp || {};
+          options.whisperCpp.executablePath = path.join(__dirname, "lib", "whisper", "main");
+        }
+
         // Call the original recognize function
         Echogarden.recognize(sampleFile, options)
           .then((result) => {
@@ -97,6 +103,9 @@ class EchogardenWrapper {
       whisper: {
         model: "tiny.en",
       },
+      whisperCpp: {
+        model: "tiny.en",
+      }
     }
   ) {
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
