@@ -116,7 +116,6 @@ export const EchogardenSttSettings = (props: {
                     <SelectContent>
                       <SelectItem value="whisper">Whisper</SelectItem>
                       <SelectItem
-                        disabled={platformInfo?.platform === "darwin"}
                         value="whisper.cpp"
                       >
                         Whisper.cpp
