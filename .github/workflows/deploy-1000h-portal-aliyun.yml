@@ -46,6 +46,9 @@ jobs:
       - name: Replace CN Footer
         run: cp 1000h-portal/components/layout/PageFooterCN.vue 1000h-portal/components/layout/PageFooter.vue
 
+      - name: Replace CN doc host
+        run: sed -i 's#https://1000h.org#https://press.1000h.org.cn/1000-hours#g' 1000h-portal/components/Slogan.vue
+
       - name: Build
         run: yarn portal:generate
 
