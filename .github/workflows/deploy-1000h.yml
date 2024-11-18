@@ -51,5 +51,5 @@ jobs:
           apiToken: ${{ secrets.CF_BASEONE_API_TOKEN }}
           accountId: ${{ secrets.CF_BASEONE_ACCOUNT_ID }}
           command: deploy
-          preCommands: npm install @cloudflare/kv-asset-handler@0.2.0
+          preCommands: npm install @cloudflare/kv-asset-handler
           workingDirectory: "1000-hours"
