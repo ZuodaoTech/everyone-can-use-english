@@ -47,7 +47,7 @@ export const Sidebar = () => {
   const activeTab = location.pathname;
   const { EnjoyApp, cable, displayPreferences, setDisplayPreferences } =
     useContext(AppSettingsProviderContext);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     if (!cable) return;
@@ -62,14 +62,14 @@ export const Sidebar = () => {
 
   // Save the sidebar state to cache
   useEffect(() => {
-    EnjoyApp.cacheObjects.set("sidebarOpen", isOpen);
-  }, [isOpen]);
+    EnjoyApp.cacheObjects.set("sidebarOpen", isCollapsed);
+  }, [isCollapsed]);
 
   // Restore the sidebar state from cache
   useEffect(() => {
     EnjoyApp.cacheObjects.get("sidebarOpen").then((value) => {
       if (value !== undefined) {
-        setIsOpen(!!value);
+        setIsCollapsed(!!value);
       }
     });
   }, []);
@@ -77,17 +77,17 @@ export const Sidebar = () => {
   return (
     <div
       className={`h-[calc(100vh-2rem)] pt-8 transition-all relative draggable-region ${
-        isOpen ? "w-48" : "w-12"
+        isCollapsed ? "w-12" : "w-48"
       }`}
       data-testid="sidebar"
     >
       <div
         className={`fixed top-0 left-0 h-full bg-muted ${
-          isOpen ? "w-48" : "w-12"
+          isCollapsed ? "w-12" : "w-48"
         }`}
       >
         <ScrollArea className="w-full h-full pb-12 pt-8">
-          <SidebarHeader isOpen={isOpen} />
+          <SidebarHeader isCollapsed={isCollapsed} />
           <div className="grid gap-2 mb-4">
             <SidebarItem
               href="/"
@@ -95,7 +95,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.home")}
               active={activeTab === "/"}
               Icon={HomeIcon}
-              isOpen={isOpen}
+              isCollapsed={isCollapsed}
             />
 
             <SidebarItem
@@ -104,7 +104,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.chats")}
               active={activeTab.startsWith("/chats")}
               Icon={MessagesSquareIcon}
-              isOpen={isOpen}
+              isCollapsed={isCollapsed}
             />
 
             <SidebarItem
@@ -113,7 +113,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.courses")}
               active={activeTab.startsWith("/courses")}
               Icon={GraduationCapIcon}
-              isOpen={isOpen}
+              isCollapsed={isCollapsed}
             />
 
             <Separator />
@@ -124,7 +124,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.audios")}
               active={activeTab.startsWith("/audios")}
               Icon={HeadphonesIcon}
-              isOpen={isOpen}
+              isCollapsed={isCollapsed}
             />
 
             <SidebarItem
@@ -133,7 +133,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.videos")}
               active={activeTab.startsWith("/videos")}
               Icon={VideoIcon}
-              isOpen={isOpen}
+              isCollapsed={isCollapsed}
             />
 
             <SidebarItem
@@ -142,7 +142,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.documents")}
               active={activeTab.startsWith("/documents")}
               Icon={NewspaperIcon}
-              isOpen={isOpen}
+              isCollapsed={isCollapsed}
             />
 
             <Separator />
@@ -154,7 +154,7 @@ export const Sidebar = () => {
               active={activeTab.startsWith("/conversations")}
               Icon={BotIcon}
               testid="sidebar-conversations"
-              isOpen={isOpen}
+              isCollapsed={isCollapsed}
             />
 
             <SidebarItem
@@ -164,7 +164,7 @@ export const Sidebar = () => {
               active={activeTab.startsWith("/pronunciation_assessments")}
               Icon={SpeechIcon}
               testid="sidebar-pronunciation-assessments"
-              isOpen={isOpen}
+              isCollapsed={isCollapsed}
             />
 
             <SidebarItem
@@ -173,7 +173,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.notes")}
               active={activeTab === "/notes"}
               Icon={NotebookPenIcon}
-              isOpen={isOpen}
+              isCollapsed={isCollapsed}
             />
 
             <SidebarItem
@@ -182,7 +182,7 @@ export const Sidebar = () => {
               tooltip={t("sidebar.vocabulary")}
               active={activeTab.startsWith("/vocabulary")}
               Icon={BookMarkedIcon}
-              isOpen={isOpen}
+              isCollapsed={isCollapsed}
             />
 
             <Separator />
@@ -193,7 +193,7 @@ export const Sidebar = () => {
                 variant={displayPreferences ? "default" : "ghost"}
                 id="preferences-button"
                 className={`w-full ${
-                  isOpen ? "justify-start" : "justify-center"
+                  isCollapsed ? "justify-center" : "justify-start"
                 }`}
                 data-tooltip-id="global-tooltip"
                 data-tooltip-content={t("sidebar.preferences")}
@@ -201,7 +201,7 @@ export const Sidebar = () => {
                 onClick={() => setDisplayPreferences(true)}
               >
                 <SettingsIcon className="size-4" />
-                {isOpen && (
+                {!isCollapsed && (
                   <span className="ml-2"> {t("sidebar.preferences")} </span>
                 )}
               </Button>
@@ -229,16 +229,18 @@ export const Sidebar = () => {
             size="sm"
             variant="ghost"
             className={`w-full non-draggable-region ${
-              isOpen ? "justify-start" : "justify-center"
+              isCollapsed ? "justify-center" : "justify-start"
             }`}
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setIsCollapsed(!isCollapsed)}
           >
-            {isOpen ? (
-              <PanelLeftCloseIcon className="size-4" />
-            ) : (
+            {isCollapsed ? (
               <PanelLeftOpenIcon className="size-4" />
+            ) : (
+              <PanelLeftCloseIcon className="size-4" />
             )}
-            {isOpen && <span className="ml-2"> {t("sidebar.collapse")} </span>}
+            {!isCollapsed && (
+              <span className="ml-2"> {t("sidebar.collapse")} </span>
+            )}
           </Button>
         </div>
       </div>
@@ -253,9 +255,9 @@ const SidebarItem = (props: {
   active: boolean;
   Icon: LucideIcon;
   testid?: string;
-  isOpen: boolean;
+  isCollapsed: boolean;
 }) => {
-  const { href, label, tooltip, active, Icon, testid, isOpen } = props;
+  const { href, label, tooltip, active, Icon, testid, isCollapsed } = props;
 
   return (
     <Link
@@ -269,25 +271,28 @@ const SidebarItem = (props: {
       <Button
         size="sm"
         variant={active ? "default" : "ghost"}
-        className={`w-full ${isOpen ? "justify-start" : "justify-center"}`}
+        className={`w-full ${isCollapsed ? "justify-center" : "justify-start"}`}
       >
         <Icon className="size-4" />
-        {isOpen && <span className="ml-2">{label}</span>}
+        {!isCollapsed && <span className="ml-2">{label}</span>}
       </Button>
     </Link>
   );
 };
 
-const SidebarHeader = (props: { isOpen: boolean }) => {
-  const { isOpen } = props;
+const SidebarHeader = (props: { isCollapsed: boolean }) => {
+  const { isCollapsed } = props;
   const { user, logout, refreshAccount, setDisplayDepositDialog } = useContext(
     AppSettingsProviderContext
   );
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    refreshAccount?.();
-  }, [isOpen]);
+    if (open) {
+      refreshAccount?.();
+    }
+  }, [open]);
 
   if (!user) {
     return null;
@@ -295,18 +300,18 @@ const SidebarHeader = (props: { isOpen: boolean }) => {
 
   return (
     <div className="py-3 px-1 sticky top-0 bg-muted z-10 non-draggable-region">
-      <DropdownMenu>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             className={`w-full h-12 hover:bg-background ${
-              isOpen ? "justify-start" : "justify-center px-1"
+              isCollapsed ? "justify-center px-1" : "justify-start"
             }`}
           >
             <Avatar className="size-8">
               <AvatarImage src={user.avatarUrl} />
             </Avatar>
-            {isOpen && (
+            {!isCollapsed && (
               <>
                 <div className="ml-2 flex flex-col leading-none">
                   <span className="text-left text-sm font-medium line-clamp-1">

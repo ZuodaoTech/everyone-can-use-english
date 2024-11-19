@@ -16,7 +16,6 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -260,8 +259,11 @@ export const AppSettingsProvider = ({
   };
 
   const refreshAccount = async () => {
-    webApi.me().then((user) => {
-      setUser(user);
+    webApi.me().then((u) => {
+      setUser({
+        ...user,
+        ...u,
+      });
     });
   };
 
