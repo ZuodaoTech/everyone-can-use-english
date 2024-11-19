@@ -9,6 +9,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "1000-hours@workspace:1000-hours"
   dependencies:
+    "@cloudflare/kv-asset-handler": "npm:^0.3.4"
     cheerio: "npm:^1.0.0"
     markdown-it-footnote: "npm:^4.0.0"
     markdown-it-ins: "npm:^4.0.0"
