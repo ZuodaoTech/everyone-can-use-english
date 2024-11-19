@@ -145,7 +145,7 @@ export const DocumentEpubRenderer = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="w-6 h-6">
-                <MenuIcon className="w-5 h-5" />
+                <MenuIcon className="size-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent

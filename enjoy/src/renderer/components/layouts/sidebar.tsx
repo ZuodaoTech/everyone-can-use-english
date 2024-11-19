@@ -350,7 +350,7 @@ const SidebarHeader = (props: { isCollapsed: boolean }) => {
             onSelect={() => setDisplayDepositDialog(true)}
             className="cursor-pointer"
           >
-            <span className="flex-1 truncate">${user.balance}</span>
+            <span className="flex-1 truncate">${user.balance || 0.0}</span>
             <CreditCardIcon className="size-4 ml-auto" />
           </DropdownMenuItem>
           <DropdownMenuSeparator />

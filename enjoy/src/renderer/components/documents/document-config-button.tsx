@@ -20,7 +20,7 @@ export const DocumentConfigButton = (props: { document: DocumentEType }) => {
     <Popover open={configOpen} onOpenChange={setConfigOpen}>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="w-6 h-6">
-          <SettingsIcon className="w-5 h-5" />
+          <SettingsIcon className="size-4" />
         </Button>
       </PopoverTrigger>
       <PopoverContent side="bottom" align="start">
