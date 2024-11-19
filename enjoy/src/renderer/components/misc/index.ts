@@ -4,7 +4,6 @@ export * from "./markdown-wrapper";
 export * from "./no-records-found";
 export * from "./page-placeholder";
 export * from "./universal-player";
-export * from "./sidebar";
 export * from "./wavesurfer-player";
 export * from "./tts-form";
 export * from "./gpt-form";

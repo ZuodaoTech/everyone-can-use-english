@@ -9,9 +9,7 @@ import {
 } from "@renderer/context";
 
 export default () => {
-  const { initialized, EnjoyApp, user } = useContext(
-    AppSettingsProviderContext
-  );
+  const { initialized, user } = useContext(AppSettingsProviderContext);
   const [started, setStarted] = useState(false);
   const db = useContext(DbProviderContext);
 

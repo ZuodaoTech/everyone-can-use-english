@@ -199,7 +199,12 @@ export const DocumentPlayer = () => {
             data-tooltip-id="global-tooltip"
             variant="outline"
             size="icon"
-            onClick={() => locateSegment(playingSegment.id)}
+            onClick={() => {
+              const el = locateSegment(playingSegment.id);
+              if (el) {
+                el.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
           >
             <LocateFixedIcon className="w-4 h-4" />
           </Button>
