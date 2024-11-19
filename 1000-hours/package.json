@@ -1,6 +1,7 @@
 {
   "name": "1000-hours",
   "devDependencies": {
+    "@cloudflare/kv-asset-handler": "^0.3.4",
     "markdown-it-footnote": "^4.0.0",
     "markdown-it-ins": "^4.0.0",
     "markdown-it-mark": "^4.0.0",
