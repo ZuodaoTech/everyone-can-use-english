@@ -12,7 +12,6 @@ on:
       - main
     paths:
       - "enjoy/**"
-      - "yarn.lock"
 jobs:
   e2e-test:
     timeout-minutes: 60
