@@ -6,67 +6,43 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
   toast,
 } from "@renderer/components/ui";
-import { Deposit } from "@renderer/components";
 import Chart from "chart.js/auto";
 
 export const BalanceSettings = () => {
-  const { webApi } = useContext(AppSettingsProviderContext);
-  const [balance, setBalance] = useState<number>(0);
-  const [displayDepositDialog, setDisplayDepositDialog] =
-    useState<boolean>(false);
+  const { refreshAccount, user, setDisplayDepositDialog } = useContext(
+    AppSettingsProviderContext
+  );
   const [displayUsage, setDisplayUsage] = useState<boolean>(false);
 
-  const refreshBalance = () => {
-    webApi.me().then((user) => {
-      setBalance(user.balance);
-    });
-  };
-
   useEffect(() => {
-    refreshBalance();
+    refreshAccount?.();
   }, []);
 
-  if (!balance) return null;
+  if (!user?.balance) return null;
+
   return (
     <div className="flex items-start justify-between py-4">
       <div className="">
         <div className="mb-2">{t("balance")}</div>
-        <div className="text-sm text-muted-foreground mb-2">${balance}</div>
+        <div className="text-sm text-muted-foreground mb-2">
+          ${user.balance}
+        </div>
       </div>
 
       <div className="flex gap-2 items-center">
-        <Dialog
-          open={displayDepositDialog}
-          onOpenChange={setDisplayDepositDialog}
+        <Button
+          variant="secondary"
+          size="sm"
+          className=""
+          onClick={() => setDisplayDepositDialog(true)}
         >
-          <DialogTrigger asChild>
-            <Button variant="secondary" size="sm" className="">
-              {t("deposit")}
-            </Button>
-          </DialogTrigger>
-
-          <DialogContent className="max-h-full overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>{t("deposit")}</DialogTitle>
-              <DialogDescription>{t("depositDescription")}</DialogDescription>
-            </DialogHeader>
-
-            {displayDepositDialog && <Deposit />}
-
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="secondary">{t("close")}</Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+          {t("deposit")}
+        </Button>
 
         <Dialog open={displayUsage} onOpenChange={setDisplayUsage}>
           <DialogTrigger asChild>

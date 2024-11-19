@@ -15,10 +15,19 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+  Button,
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { redirect } from "react-router-dom";
-import { Preferences } from "@renderer/components";
+import { Deposit } from "@renderer/components";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -31,6 +40,7 @@ type AppSettingsProviderState = {
   libraryPath?: string;
   login?: (user: UserType) => void;
   logout?: () => void;
+  refreshAccount?: () => Promise<void>;
   setLibraryPath?: (path: string) => Promise<void>;
   EnjoyApp: EnjoyAppType;
   language?: "en" | "zh-CN";
@@ -51,6 +61,8 @@ type AppSettingsProviderState = {
   ipaMappings?: { [key: string]: string };
   displayPreferences?: boolean;
   setDisplayPreferences?: (display: boolean) => void;
+  displayDepositDialog?: boolean;
+  setDisplayDepositDialog?: (display: boolean) => void;
 };
 
 const EnjoyApp = window.__ENJOY_APP__;
@@ -88,6 +100,8 @@ export const AppSettingsProvider = ({
     IPA_MAPPINGS
   );
   const [loggingOut, setLoggingOut] = useState<boolean>(false);
+  const [displayDepositDialog, setDisplayDepositDialog] =
+    useState<boolean>(false);
   const [displayPreferences, setDisplayPreferences] = useState<boolean>(false);
 
   const db = useContext(DbProviderContext);
@@ -245,6 +259,12 @@ export const AppSettingsProvider = ({
     setVocabularyConfig(config);
   };
 
+  const refreshAccount = async () => {
+    webApi.me().then((user) => {
+      setUser(user);
+    });
+  };
+
   useEffect(() => {
     if (db.state === "connected") {
       fetchLanguages();
@@ -340,6 +360,7 @@ export const AppSettingsProvider = ({
         user,
         login,
         logout: () => setLoggingOut(true),
+        refreshAccount,
         libraryPath,
         setLibraryPath: setLibraryPathHandler,
         proxy,
@@ -354,6 +375,8 @@ export const AppSettingsProvider = ({
         ipaMappings,
         displayPreferences,
         setDisplayPreferences,
+        displayDepositDialog,
+        setDisplayDepositDialog,
       }}
     >
       {children}
@@ -380,6 +403,26 @@ export const AppSettingsProvider = ({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Dialog
+        open={displayDepositDialog}
+        onOpenChange={setDisplayDepositDialog}
+      >
+        <DialogContent className="max-h-full overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{t("deposit")}</DialogTitle>
+            <DialogDescription>{t("depositDescription")}</DialogDescription>
+          </DialogHeader>
+
+          {displayDepositDialog && <Deposit />}
+
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="secondary">{t("close")}</Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AppSettingsProviderContext.Provider>
   );
 };

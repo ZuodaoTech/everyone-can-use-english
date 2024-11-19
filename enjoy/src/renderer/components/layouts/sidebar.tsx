@@ -32,6 +32,7 @@ import {
   PanelLeftCloseIcon,
   ChevronsUpDownIcon,
   LogOutIcon,
+  CreditCardIcon,
 } from "lucide-react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { t } from "i18next";
@@ -279,8 +280,14 @@ const SidebarItem = (props: {
 
 const SidebarHeader = (props: { isOpen: boolean }) => {
   const { isOpen } = props;
-  const { user, logout } = useContext(AppSettingsProviderContext);
+  const { user, logout, refreshAccount, setDisplayDepositDialog } = useContext(
+    AppSettingsProviderContext
+  );
   const navigate = useNavigate();
+
+  useEffect(() => {
+    refreshAccount?.();
+  }, [isOpen]);
 
   if (!user) {
     return null;
@@ -332,6 +339,14 @@ const SidebarHeader = (props: { isOpen: boolean }) => {
           >
             <span>{t("sidebar.community")}</span>
             <UsersRoundIcon className="size-4 ml-auto" />
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onSelect={() => setDisplayDepositDialog(true)}
+            className="cursor-pointer"
+          >
+            <span>${user.balance}</span>
+            <CreditCardIcon className="size-4 ml-auto" />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onSelect={logout} className="cursor-pointer">
