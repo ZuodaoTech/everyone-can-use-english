@@ -462,8 +462,9 @@ export default withMermaid(
             text: "阅读文本",
             collapsed: false,
             items: [
-              { text: "在线文章", link: "/enjoy-app/webpage" },
-              { text: "本地电子书", link: "/enjoy-app/ebook" },
+              { text: "简介", link: "/enjoy-app/document" },
+              { text: "本地文档", link: "/enjoy-app/document-ebook" },
+              { text: "在线文章", link: "/enjoy-app/document-webpage" },
             ],
           },
           {
