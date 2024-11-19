@@ -72,6 +72,16 @@ OpenAI STT
 利用 OpenAI 提供的 whipser 云服务，该服务需要[配置自己的 OpenAI 密钥](#openai-配置)。
 </details>
 
+### 文字转语音服务
+
+::: info 设置路径
+软件设置 -> 基本设置 -> 文字转语音服务
+:::
+
+文字转语音（即 TTS，Text to Speech）可以将文本合成为语音，以便于跟读训练。此处设置为默认值，在文字转语音时仍可选择不同服务。
+
+EnjoyAI 除了提供 OpenAI 的 TTS 服务，还集成了 Azure 的 TTS 服务，语音模型选择 `azure/speech` 即可。 Azure TTS 提供了更丰富的音色供选择。
+
 ### 默认 AI 引擎
 
 ::: info 设置路径
