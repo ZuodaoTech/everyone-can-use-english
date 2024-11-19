@@ -15,6 +15,35 @@ export default defineConfig((env) => {
   const forgeEnv = env as ConfigEnv<"build">;
   const { forgeConfigSelf } = forgeEnv;
   const define = getBuildDefine(forgeEnv);
+  const staticCopyTargets = [
+    {
+      src: `lib/youtubedr/${
+        process.env.PACKAGE_OS_ARCH || os.arch()
+      }/${os.platform()}/*`,
+      dest: "lib/youtubedr",
+    },
+    {
+      src: "lib/dictionaries/*",
+      dest: "lib/dictionaries",
+    },
+    {
+      src: "src/main/db/migrations/*",
+      dest: "migrations",
+    },
+    {
+      src: "samples/*",
+      dest: "samples",
+    },
+  ];
+
+  if (os.platform() === "darwin") {
+    staticCopyTargets.push({
+      src: `lib/whisper.cpp/${
+        process.env.PACKAGE_OS_ARCH || os.arch()
+      }/${os.platform()}/*`,
+      dest: "lib/whisper",
+    });
+  }
   const config: UserConfig = {
     build: {
       lib: {
@@ -44,32 +73,7 @@ export default defineConfig((env) => {
     plugins: [
       pluginHotRestart("restart"),
       viteStaticCopy({
-        targets: [
-          {
-            src: `lib/whisper.cpp/${
-              process.env.PACKAGE_OS_ARCH || os.arch()
-            }/${os.platform()}/*`,
-            dest: "lib/whisper",
-          },
-          {
-            src: `lib/youtubedr/${
-              process.env.PACKAGE_OS_ARCH || os.arch()
-            }/${os.platform()}/*`,
-            dest: "lib/youtubedr",
-          },
-          {
-            src: "lib/dictionaries/*",
-            dest: "lib/dictionaries",
-          },
-          {
-            src: "src/main/db/migrations/*",
-            dest: "migrations",
-          },
-          {
-            src: "samples/*",
-            dest: "samples",
-          },
-        ],
+        targets: staticCopyTargets,
       }),
     ],
     define,
