@@ -27,7 +27,7 @@ AI 是当今世界上最好的外语老师，Enjoy 做 AI 最好的助教。
 
   <img src="./enjoy/snapshots/assessment.png" alt="Home" width="800" />
 
-  <img src="./enjoy/snapshots/course.png" alt="Home" width="800" />
+  <img src="./enjoy/snapshots/document.png" alt="Home" width="800" />
 
   <img src="./enjoy/snapshots/chat.png" alt="Home" width="800" />
 </div>
