@@ -487,7 +487,7 @@ export const ChatSessionProvider = ({
             onPointerDownOutside={(event) => event.preventDefault()}
             onInteractOutside={(event) => event.preventDefault()}
           >
-            <SheetHeader className="flex items-center justify-center">
+            <SheetHeader className="flex items-center justify-center space-y-0 py-1">
               <SheetTitle className="sr-only">Shadow</SheetTitle>
               <SheetDescription className="sr-only"></SheetDescription>
               <SheetClose>
