@@ -72,12 +72,12 @@ export const CourseProvider = ({
         >
           <SheetContent
             side="bottom"
-            className="h-screen p-0 flex flex-col"
+            className="h-content p-0 flex flex-col gap-0"
             displayClose={false}
             onPointerDownOutside={(event) => event.preventDefault()}
             onInteractOutside={(event) => event.preventDefault()}
           >
-            <SheetHeader className="flex items-center justify-center">
+            <SheetHeader className="flex items-center justify-center space-y-0 py-1">
               <SheetTitle className="sr-only">Shadow</SheetTitle>
               <SheetDescription className="sr-only"></SheetDescription>
               <SheetClose>
@@ -85,7 +85,7 @@ export const CourseProvider = ({
               </SheetClose>
             </SheetHeader>
 
-            <AudioPlayer id={shadowing?.id} />
+            {shadowing && <AudioPlayer id={shadowing.id} />}
           </SheetContent>
         </Sheet>
       </MediaShadowProvider>

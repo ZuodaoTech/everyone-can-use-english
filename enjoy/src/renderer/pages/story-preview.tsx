@@ -206,7 +206,7 @@ export default () => {
   }, [readable, loading]);
 
   return (
-    <div className="h-screen w-full flex flex-col bg-muted">
+    <div className="h-content w-full flex flex-col bg-muted">
       {(loading || !readable) && (
         <div className="h-12 flex items-center space-x-2 px-4 border-b shadow">
           <Button

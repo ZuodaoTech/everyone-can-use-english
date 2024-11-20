@@ -201,7 +201,7 @@ export default () => {
         <SheetContent
           aria-describedby={undefined}
           side="bottom"
-          className="rounded-t-2xl shadow-lg max-h-screen overflow-y-scroll"
+          className="rounded-t-2xl shadow-lg max-h-content overflow-y-scroll"
           displayClose={false}
         >
           <SheetHeader className="flex items-center justify-center -mt-4 mb-2">

@@ -229,7 +229,7 @@ export default () => {
 
   return (
     <>
-      <ScrollArea className="h-screen w-full bg-muted">
+      <ScrollArea className="h-content w-full bg-muted">
         <StoryToolbar
           marked={marked}
           toggleMarked={() => setMarked(!marked)}

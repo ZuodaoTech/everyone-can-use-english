@@ -36,14 +36,14 @@ const DocumentComponent = () => {
 
   if (!document) {
     return (
-      <div className="h-screen flex flex-col justify-center items-center relative">
+      <div className="h-content flex flex-col justify-center items-center relative">
         <LoaderSpin />
       </div>
     );
   }
 
   return (
-    <div className="h-[calc(100vh-2rem)] flex flex-col relative">
+    <div className="h-content flex flex-col relative">
       <Breadcrumb className="px-4 pt-3 pb-2">
         <BreadcrumbList>
           <BreadcrumbItem>
