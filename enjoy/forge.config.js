@@ -1,7 +1,3 @@
-import { MakerSquirrel } from "@electron-forge/maker-squirrel";
-import { MakerZIP } from "@electron-forge/maker-zip";
-import { MakerDeb } from "@electron-forge/maker-deb";
-import { MakerRpm } from "@electron-forge/maker-rpm";
 import { VitePlugin } from "@electron-forge/plugin-vite";
 import os from "os";
 // import { FusesPlugin } from "@electron-forge/plugin-fuses";
@@ -32,26 +28,22 @@ const config = {
         icon: "./assets/icon.png",
       },
     },
-    new MakerSquirrel({
-      name: "Enjoy",
-      setupIcon: "./assets/icon.ico",
-      config: (arch) => ({
-        remoteReleases: `https://dl.enjoy.bot/app/win32/${arch}`,
-      }),
-    }),
-    new MakerZIP({
+    {
+      name: "@electron-forge/maker-zip",
+      platforms: ["darwin"],
       config: (arch) => ({
         macUpdateManifestBaseUrl: `https://dl.enjoy.bot/app/darwin/${arch}`,
       }),
-    }),
-    new MakerDeb({
-      options: {
-        name: "enjoy",
-        productName: "Enjoy",
-        icon: "./assets/icon.png",
-        mimeType: ["x-scheme-handler/enjoy"],
-      },
-    }),
+    },
+    {
+      name: "@electron-forge/maker-squirrel",
+      config: (arch) => ({
+        remoteReleases: `https://dl.enjoy.bot/app/win32/${arch}`,
+      }),
+    },
+    {
+      name: "@electron-forge/maker-deb",
+    },
     // new MakerRpm({
     //   options: {
     //     name: "enjoy",
