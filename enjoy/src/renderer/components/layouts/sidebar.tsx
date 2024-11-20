@@ -76,7 +76,7 @@ export const Sidebar = () => {
 
   return (
     <div
-      className={`h-[calc(100vh-2rem)] pt-8 transition-all relative draggable-region ${
+      className={`h-content pt-8 transition-all relative draggable-region ${
         isCollapsed ? "w-12" : "w-48"
       }`}
       data-testid="sidebar"

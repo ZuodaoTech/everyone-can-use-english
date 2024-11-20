@@ -27,7 +27,7 @@ export const Layout = () => {
           <ResizablePanel id="main-panel" order={1} minSize={50}>
             <div className="flex flex-start">
               <Sidebar />
-              <div className="flex-1 border-l overflow-x-hidden overflow-y-auto h-[calc(100vh-2rem)]">
+              <div className="flex-1 border-l overflow-x-hidden overflow-y-auto h-content">
                 <Outlet />
               </div>
             </div>
@@ -44,7 +44,7 @@ export const Layout = () => {
                 minSize={15}
                 onCollapse={() => setActive(false)}
               >
-                <div className="h-[calc(100vh-2rem)]">
+                <div className="h-content">
                   <CopilotSession />
                 </div>
               </ResizablePanel>
@@ -57,7 +57,7 @@ export const Layout = () => {
     return (
       <div className="h-screen flex flex-col w-full">
         <TitleBar />
-        <div className="flex-1 h-[calc(100vh-2rem)] overflow-y-auto">
+        <div className="flex-1 h-content overflow-y-auto">
           <Outlet />
         </div>
       </div>

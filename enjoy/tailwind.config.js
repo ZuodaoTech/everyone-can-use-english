@@ -13,6 +13,9 @@ module.exports = {
       },
     },
     extend: {
+      height: {
+        content: "calc(100vh - 2rem)",
+      },
       fontSize: {
         xxs: "0.625rem",
         xxxs: "0.5rem",

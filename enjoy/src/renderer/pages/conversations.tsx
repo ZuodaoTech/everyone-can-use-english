@@ -15,7 +15,7 @@ import {
 } from "@renderer/components/ui";
 import { ConversationCard, ConversationForm } from "@renderer/components";
 import { useState, useEffect, useContext, useReducer } from "react";
-import { ChevronLeftIcon, LoaderIcon } from "lucide-react";
+import { LoaderIcon } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   DbProviderContext,
@@ -292,13 +292,13 @@ export default () => {
         </Dialog>
 
         <Sheet open={creating} onOpenChange={(value) => setCreating(value)}>
-          <SheetContent className="p-0" aria-describedby={undefined}>
+          <SheetContent className="p-0 pt-8" aria-describedby={undefined}>
             <SheetHeader>
               <SheetTitle className="sr-only">
                 {t("startConversation")}
               </SheetTitle>
             </SheetHeader>
-            <div className="h-screen relative">
+            <div className="h-content relative">
               <ConversationForm
                 conversation={preset}
                 onFinish={() => setCreating(false)}

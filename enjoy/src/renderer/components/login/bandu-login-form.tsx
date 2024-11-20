@@ -41,7 +41,7 @@ export const BanduLoginButton = () => {
       </SheetTrigger>
       <SheetContent
         side="bottom"
-        className="h-screen"
+        className="h-content"
         aria-describedby={undefined}
       >
         <SheetHeader>

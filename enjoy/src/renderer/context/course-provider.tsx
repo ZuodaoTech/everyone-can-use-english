@@ -72,7 +72,7 @@ export const CourseProvider = ({
         >
           <SheetContent
             side="bottom"
-            className="h-screen p-0 flex flex-col"
+            className="max-h-content p-0 flex flex-col"
             displayClose={false}
             onPointerDownOutside={(event) => event.preventDefault()}
             onInteractOutside={(event) => event.preventDefault()}

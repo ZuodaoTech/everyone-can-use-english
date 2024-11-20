@@ -2,7 +2,6 @@ import {
   AppSettingsProviderContext,
   CopilotProviderContext,
 } from "@/renderer/context";
-import { ChevronRightIcon } from "@radix-ui/react-icons";
 import {
   AlertDialog,
   AlertDialogHeader,
@@ -78,7 +77,7 @@ export const TitleBar = () => {
   }, []);
 
   return (
-    <div className="z-50 h-8 w-full bg-muted draggable-region flex items-center justify-between border-b">
+    <div className="z-[100] h-8 w-full bg-muted draggable-region flex items-center justify-between border-b">
       <div className="flex items-center px-2">
         {platform === "darwin" && !isFullScreen && <div className="w-16"></div>}
         <DropdownMenu>
@@ -150,9 +149,7 @@ export const TitleBar = () => {
             <DropdownMenuGroup>
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger className="non-draggable-region">
-                  <span className="capitalize">
-                    {t("feedback")}
-                  </span>
+                  <span className="capitalize">{t("feedback")}</span>
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                   <DropdownMenuSubContent>

@@ -231,7 +231,7 @@ export default () => {
   return (
     <div
       data-testid="conversation-page"
-      className="h-[calc(100vh-2rem)] px-4 py-4 lg:px-8 flex flex-col"
+      className="h-content px-4 py-4 lg:px-8 flex flex-col"
     >
       <div className="h-[calc(100vh-5rem)] relative w-full max-w-screen-md mx-auto flex flex-col">
         <div className="flex items-center justify-center py-2 relative">
@@ -249,13 +249,13 @@ export default () => {
               </div>
             </SheetTrigger>
 
-            <SheetContent className="p-0" aria-describedby={undefined}>
+            <SheetContent className="p-0 pt-8" aria-describedby={undefined}>
               <SheetHeader>
                 <SheetTitle className="sr-only">
                   {t("editConversation")}
                 </SheetTitle>
               </SheetHeader>
-              <div className="h-screen">
+              <div className="h-content">
                 <ConversationForm
                   conversation={conversation}
                   onFinish={() => {

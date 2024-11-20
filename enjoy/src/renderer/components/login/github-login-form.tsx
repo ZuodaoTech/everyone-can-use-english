@@ -33,7 +33,7 @@ export const GithubLoginButton = () => {
       </SheetTrigger>
       <SheetContent
         side="bottom"
-        className="h-screen"
+        className="h-content"
         aria-describedby={undefined}
       >
         <div className="w-full h-full flex">

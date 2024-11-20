@@ -38,7 +38,7 @@ export default function Chats() {
   }, [currentChat]);
 
   return (
-    <ResizablePanelGroup direction="horizontal" className="h-screen">
+    <ResizablePanelGroup direction="horizontal" className="h-content">
       {!sidePanelCollapsed && (
         <>
           <ResizablePanel
