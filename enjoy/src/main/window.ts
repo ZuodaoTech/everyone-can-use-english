@@ -453,13 +453,17 @@ ${log}
     };
 
     const sizeSync = (p: string): number => {
-      const stat = fs.statSync(p);
-      if (stat.isFile()) return stat.size;
-      else if (stat.isDirectory())
-        return fs
-          .readdirSync(p)
-          .reduce((a, e) => a + sizeSync(path.join(p, e)), 0);
-      else return 0; // can't take size of a stream/symlink/socket/
+      try {
+        const stat = fs.statSync(p);
+        if (stat.isFile()) return stat.size;
+        else if (stat.isDirectory())
+          return fs
+            .readdirSync(p)
+            .reduce((a, e) => a + sizeSync(path.join(p, e)), 0);
+        else return 0; // can't take size of a stream/symlink/socket/
+      } catch (error) {
+        return 0; // Return 0 if path doesn't exist or there's any other error
+      }
     };
 
     return Object.keys(paths).map((key) => {
@@ -544,11 +548,15 @@ ${log}
   });
 
   mainWindow.on("enter-full-screen", () => {
-    mainWindow.webContents.send("window-on-change", { event: "enter-full-screen" });
+    mainWindow.webContents.send("window-on-change", {
+      event: "enter-full-screen",
+    });
   });
 
   mainWindow.on("leave-full-screen", () => {
-    mainWindow.webContents.send("window-on-change", { event: "leave-full-screen" });
+    mainWindow.webContents.send("window-on-change", {
+      event: "leave-full-screen",
+    });
   });
 
   mainWindow.on("maximize", () => {
@@ -661,12 +669,12 @@ ${log}
           {
             label: "Report Issue...",
             click: () => {
-              shell.openExternal(`${REPO_URL}/issues/new`)
-            }
-          }
-        ]
-      }
-    ])
+              shell.openExternal(`${REPO_URL}/issues/new`);
+            },
+          },
+        ],
+      },
+    ]);
 
     Menu.setApplicationMenu(menu);
   } else {
