@@ -30,7 +30,7 @@ import {
   toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import { LANGUAGES, WHISPER_MODELS } from "@/constants";
+import { LANGUAGES } from "@/constants";
 import { ChevronDownIcon, ChevronUpIcon, LoaderIcon } from "lucide-react";
 import { parseText } from "media-captions";
 import { milisecondsToTimestamp } from "@/utils";
@@ -184,21 +184,23 @@ export const TranscriptionCreateForm = (props: {
                 </SelectContent>
               </Select>
               <FormDescription>
-                {form.watch("service") === SttEngineOptionEnum.LOCAL && (
-                  <>
-                    <div>{t("localSpeechToTextDescription")}</div>
-                    <div>
-                      * {t("model")}: {echogardenSttConfig.engine} /{" "}
-                      {
-                        echogardenSttConfig[
-                          echogardenSttConfig.engine.replace(".cpp", "Cpp") as
-                            | "whisper"
-                            | "whisperCpp"
-                        ]?.model
-                      }
-                    </div>
-                  </>
-                )}
+                {form.watch("service") === SttEngineOptionEnum.LOCAL &&
+                  echogardenSttConfig && (
+                    <>
+                      <div>{t("localSpeechToTextDescription")}</div>
+                      <div>
+                        * {t("model")}: {echogardenSttConfig.engine} /{" "}
+                        {
+                          echogardenSttConfig[
+                            echogardenSttConfig.engine?.replace(
+                              ".cpp",
+                              "Cpp"
+                            ) as "whisper" | "whisperCpp"
+                          ]?.model
+                        }
+                      </div>
+                    </>
+                  )}
 
                 {form.watch("service") === SttEngineOptionEnum.ENJOY_AZURE &&
                   t("enjoyAzureSpeechToTextDescription")}
