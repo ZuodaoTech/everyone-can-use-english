@@ -153,7 +153,7 @@ class EchogardenWrapper {
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
 
     try {
-      logger.info("check:", options);
+      logger.info("echogarden-check:", options);
       const result = await this.recognize(sampleFile, options);
       logger.info("transcript:", result?.transcript);
       fs.writeJsonSync(
@@ -180,6 +180,7 @@ class EchogardenWrapper {
    * @returns A promise that resolves to the enjoy:// protocal URL of the transcoded WAV file.
    */
   async transcode(url: string, sampleRate = 16000): Promise<string> {
+    logger.info("echogarden-transcode:", url, sampleRate);
     const filePath = enjoyUrlToPath(url);
     const rawAudio = await this.ensureRawAudio(filePath, sampleRate);
     const audioBuffer = this.encodeRawAudioToWave(rawAudio);
@@ -194,7 +195,7 @@ class EchogardenWrapper {
     ipcMain.handle(
       "echogarden-recognize",
       async (_event, url: string, options: RecognitionOptions) => {
-        logger.debug("echogarden-recognize:", options);
+        logger.info("echogarden-recognize:", options);
         try {
           const input = enjoyUrlToPath(url);
           return await this.recognize(input, options);
@@ -213,7 +214,7 @@ class EchogardenWrapper {
         transcript: string,
         options: AlignmentOptions
       ) => {
-        logger.info("echogarden-align:", transcript, options);
+        logger.info("echogarden-align:", options);
         try {
           return await this.align(input, transcript, options);
         } catch (err) {
@@ -231,7 +232,7 @@ class EchogardenWrapper {
         timeline: Timeline,
         options: AlignmentOptions
       ) => {
-        logger.info("echogarden-align-segments:", timeline, options);
+        logger.info("echogarden-align-segments:", options);
         if (typeof input === "string") {
           input = enjoyUrlToPath(input);
         }
@@ -253,7 +254,7 @@ class EchogardenWrapper {
         transcript: string,
         language: string
       ) => {
-        logger.info("echogarden-word-to-sentence-timeline:", transcript);
+        logger.info("echogarden-word-to-sentence-timeline:", language);
 
         const { segmentTimeline } =
           await this.wordTimelineToSegmentSentenceTimeline(

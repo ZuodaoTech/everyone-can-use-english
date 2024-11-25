@@ -21,6 +21,8 @@ import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
 import log from "electron-log/renderer";
 
+const logger = log.scope("use-transcribe.tsx");
+
 // test a text string has any punctuations or not
 // some transcribed text may not have any punctuations
 const punctuationsPattern = /\w[.,!?](\s|$)/g;
@@ -134,6 +136,7 @@ export const useTranscribe = () => {
       };
     } else if (transcript) {
       setOutput("Aligning the transcript...");
+      logger.info("Aligning the transcript...");
       const alignmentResult = await EnjoyApp.echogarden.align(
         new Uint8Array(await blob.arrayBuffer()),
         transcript,
@@ -176,7 +179,7 @@ export const useTranscribe = () => {
     try {
       caption = await parseText(originalText, { type: "srt" });
     } catch (err) {
-      log.error("parseTextFailed", { error: err.message });
+      logger.error("parseTextFailed", { error: err.message });
       throw err;
     }
 
@@ -217,7 +220,7 @@ export const useTranscribe = () => {
           transcript = punctuatedText;
         } catch (err) {
           toast.error(err.message);
-          log.error("punctuateTextFailed", { error: err.message });
+          logger.error("punctuateTextFailed", { error: err.message });
         }
       }
 
@@ -244,6 +247,7 @@ export const useTranscribe = () => {
     let model: string;
 
     let res: RecognitionResult;
+    logger.info("Start transcribing from Whisper...");
     try {
       model =
         echogardenSttConfig[
@@ -289,6 +293,7 @@ export const useTranscribe = () => {
     });
 
     setOutput("Transcribing from OpenAI...");
+    logger.info("Start transcribing from OpenAI...");
     try {
       const res: {
         text: string;
@@ -332,6 +337,7 @@ export const useTranscribe = () => {
     segmentTimeline: TimelineEntry[];
   }> => {
     setOutput("Transcribing from Cloudflare...");
+    logger.info("Start transcribing from Cloudflare...");
     try {
       const res: CfWhipserOutputType = (
         await axios.postForm(
@@ -401,6 +407,7 @@ export const useTranscribe = () => {
     const reco = new sdk.SpeechRecognizer(config, audioConfig);
 
     setOutput("Transcribing from Azure...");
+    logger.info("Start transcribing from Azure...");
     let results: SpeechRecognitionResultType[] = [];
 
     const { transcript, segmentTimeline }: any = await new Promise(
@@ -419,19 +426,18 @@ export const useTranscribe = () => {
 
         reco.canceled = (_s, e) => {
           if (e.reason === sdk.CancellationReason.Error) {
-            log.error("CANCELED: Reason=" + e.reason);
+            logger.error("CANCELED: Reason=" + e.reason);
             return reject(new Error(e.errorDetails));
           }
 
           reco.stopContinuousRecognitionAsync();
-          log.info("CANCELED: Reason=" + e.reason);
+          logger.info("CANCELED: Reason=" + e.reason);
         };
 
         reco.sessionStopped = async (_s, e) => {
-          log.info(
+          logger.info(
             "Session stopped. Stop continuous recognition.",
-            e.sessionId,
-            results
+            e.sessionId
           );
           reco.stopContinuousRecognitionAsync();
 
@@ -468,7 +474,7 @@ export const useTranscribe = () => {
               segmentTimeline,
             });
           } catch (err) {
-            log.error("azureTranscribeFailed", { error: err.message });
+            logger.error("azureTranscribeFailed", { error: err.message });
             reject(t("azureTranscribeFailed", { error: err.message }));
           }
         };
