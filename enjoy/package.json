@@ -53,7 +53,7 @@
     "@types/mark.js": "^8.11.12",
     "@types/mime-types": "^2.1.4",
     "@types/mustache": "^4.2.5",
-    "@types/node": "^22.9.0",
+    "@types/node": "^22.9.3",
     "@types/prop-types": "^15.7.13",
     "@types/rails__actioncable": "^6.1.11",
     "@types/react": "^18.3.12",
