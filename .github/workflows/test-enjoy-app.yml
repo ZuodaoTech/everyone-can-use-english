@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-12, macos-14, windows-latest, ubuntu-latest]
+        os: [macos-12, macos-14, windows-latest, windows-2019, ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
 
@@ -46,7 +46,7 @@ jobs:
         run: yarn enjoy:package
 
       - name: Run main tests with xvfb-run on Ubuntu
-        continue-on-error: true
+        # continue-on-error: true
         if: contains(matrix.os, 'ubuntu')
         env:
           DEBUG: pw:browser*
@@ -54,7 +54,7 @@ jobs:
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn enjoy:test:main
 
       - name: Run main tests on Windows
-        continue-on-error: true
+        # continue-on-error: true
         if: contains(matrix.os, 'windows')
         run: yarn enjoy:test:main
 
@@ -63,7 +63,7 @@ jobs:
         run: yarn enjoy:test:main
 
       - name: Run renderer tests with xvfb-run on Ubuntu
-        continue-on-error: true
+        # continue-on-error: true
         if: contains(matrix.os, 'ubuntu')
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn enjoy:test:renderer
