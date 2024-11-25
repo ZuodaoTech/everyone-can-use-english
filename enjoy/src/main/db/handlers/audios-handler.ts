@@ -72,6 +72,7 @@ class AudiosHandler {
       compressing?: boolean;
     } = {}
   ) {
+    logger.info("Creating audio...", { uri, params });
     let file = uri;
     let source;
     if (uri.startsWith("http")) {

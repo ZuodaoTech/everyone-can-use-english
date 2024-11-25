@@ -14,11 +14,14 @@ import {
   TimelineEntry,
   type TimelineEntryType,
 } from "echogarden/dist/utilities/Timeline";
-import { parseText } from "media-captions";
+import { type ParsedCaptionsResult, parseText } from "media-captions";
 import { SttEngineOptionEnum } from "@/types/enums";
 import { RecognitionResult } from "echogarden/dist/api/API.js";
 import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
+import log from "electron-log/renderer";
+
+const logger = log.scope("use-transcribe.tsx");
 
 // test a text string has any punctuations or not
 // some transcribed text may not have any punctuations
@@ -133,6 +136,7 @@ export const useTranscribe = () => {
       };
     } else if (transcript) {
       setOutput("Aligning the transcript...");
+      logger.info("Aligning the transcript...");
       const alignmentResult = await EnjoyApp.echogarden.align(
         new Uint8Array(await blob.arrayBuffer()),
         transcript,
@@ -171,7 +175,13 @@ export const useTranscribe = () => {
     transcript: string;
     segmentTimeline: TimelineEntry[];
   }> => {
-    const caption = await parseText(originalText, { type: "srt" });
+    let caption: ParsedCaptionsResult;
+    try {
+      caption = await parseText(originalText, { type: "srt" });
+    } catch (err) {
+      logger.error("parseTextFailed", { error: err.message });
+      throw err;
+    }
 
     if (caption.cues.length > 0) {
       // valid srt file
@@ -210,7 +220,7 @@ export const useTranscribe = () => {
           transcript = punctuatedText;
         } catch (err) {
           toast.error(err.message);
-          console.warn(err);
+          logger.error("punctuateTextFailed", { error: err.message });
         }
       }
 
@@ -237,6 +247,7 @@ export const useTranscribe = () => {
     let model: string;
 
     let res: RecognitionResult;
+    logger.info("Start transcribing from Whisper...");
     try {
       model =
         echogardenSttConfig[
@@ -282,6 +293,7 @@ export const useTranscribe = () => {
     });
 
     setOutput("Transcribing from OpenAI...");
+    logger.info("Start transcribing from OpenAI...");
     try {
       const res: {
         text: string;
@@ -325,6 +337,7 @@ export const useTranscribe = () => {
     segmentTimeline: TimelineEntry[];
   }> => {
     setOutput("Transcribing from Cloudflare...");
+    logger.info("Start transcribing from Cloudflare...");
     try {
       const res: CfWhipserOutputType = (
         await axios.postForm(
@@ -394,6 +407,7 @@ export const useTranscribe = () => {
     const reco = new sdk.SpeechRecognizer(config, audioConfig);
 
     setOutput("Transcribing from Azure...");
+    logger.info("Start transcribing from Azure...");
     let results: SpeechRecognitionResultType[] = [];
 
     const { transcript, segmentTimeline }: any = await new Promise(
@@ -412,18 +426,18 @@ export const useTranscribe = () => {
 
         reco.canceled = (_s, e) => {
           if (e.reason === sdk.CancellationReason.Error) {
+            logger.error("CANCELED: Reason=" + e.reason);
             return reject(new Error(e.errorDetails));
           }
 
           reco.stopContinuousRecognitionAsync();
-          console.log("CANCELED: Reason=" + e.reason);
+          logger.info("CANCELED: Reason=" + e.reason);
         };
 
         reco.sessionStopped = async (_s, e) => {
-          console.log(
+          logger.info(
             "Session stopped. Stop continuous recognition.",
-            e.sessionId,
-            results
+            e.sessionId
           );
           reco.stopContinuousRecognitionAsync();
 
@@ -460,6 +474,7 @@ export const useTranscribe = () => {
               segmentTimeline,
             });
           } catch (err) {
+            logger.error("azureTranscribeFailed", { error: err.message });
             reject(t("azureTranscribeFailed", { error: err.message }));
           }
         };

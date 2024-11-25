@@ -15,7 +15,6 @@ import {
   type Timeline,
   type TimelineEntry,
 } from "echogarden/dist/utilities/Timeline.d.js";
-import { WhisperOptions } from "echogarden/dist/recognition/WhisperSTT.js";
 import { ensureAndGetPackagesDir } from "echogarden/dist/utilities/PackageManager.js";
 import path from "path";
 import log from "@main/logger";
@@ -71,7 +70,12 @@ class EchogardenWrapper {
         // Set the whisper executable path for macOS
         if (process.platform === "darwin") {
           options.whisperCpp = options.whisperCpp || {};
-          options.whisperCpp.executablePath = path.join(__dirname, "lib", "whisper", "main");
+          options.whisperCpp.executablePath = path.join(
+            __dirname,
+            "lib",
+            "whisper",
+            "main"
+          );
         }
 
         // Call the original recognize function
@@ -84,8 +88,46 @@ class EchogardenWrapper {
           .catch(reject);
       });
     };
-    this.align = Echogarden.align;
-    this.alignSegments = Echogarden.alignSegments;
+    this.align = (input, transcript, options) => {
+      return new Promise((resolve, reject) => {
+        const handler = (reason: any) => {
+          // Remove the handler after it's triggered
+          process.removeListener("unhandledRejection", handler);
+          reject(reason);
+        };
+
+        // Add temporary unhandledRejection listener
+        process.on("unhandledRejection", handler);
+
+        Echogarden.align(input, transcript, options)
+          .then((result) => {
+            // Remove the handler if successful
+            process.removeListener("unhandledRejection", handler);
+            resolve(result);
+          })
+          .catch(reject);
+      });
+    };
+    this.alignSegments = (input, timeline, options) => {
+      return new Promise((resolve, reject) => {
+        const handler = (reason: any) => {
+          // Remove the handler after it's triggered
+          process.removeListener("unhandledRejection", handler);
+          reject(reason);
+        };
+
+        // Add temporary unhandledRejection listener
+        process.on("unhandledRejection", handler);
+
+        Echogarden.alignSegments(input, timeline, options)
+          .then((result) => {
+            // Remove the handler if successful
+            process.removeListener("unhandledRejection", handler);
+            resolve(result);
+          })
+          .catch(reject);
+      });
+    };
     this.denoise = Echogarden.denoise;
     this.encodeRawAudioToWave = encodeRawAudioToWave;
     this.decodeWaveToRawAudio = decodeWaveToRawAudio;
@@ -105,13 +147,13 @@ class EchogardenWrapper {
       },
       whisperCpp: {
         model: "tiny.en",
-      }
+      },
     }
   ) {
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
 
     try {
-      logger.info("check:", options);
+      logger.info("echogarden-check:", options);
       const result = await this.recognize(sampleFile, options);
       logger.info("transcript:", result?.transcript);
       fs.writeJsonSync(
@@ -138,6 +180,7 @@ class EchogardenWrapper {
    * @returns A promise that resolves to the enjoy:// protocal URL of the transcoded WAV file.
    */
   async transcode(url: string, sampleRate = 16000): Promise<string> {
+    logger.info("echogarden-transcode:", url, sampleRate);
     const filePath = enjoyUrlToPath(url);
     const rawAudio = await this.ensureRawAudio(filePath, sampleRate);
     const audioBuffer = this.encodeRawAudioToWave(rawAudio);
@@ -152,7 +195,7 @@ class EchogardenWrapper {
     ipcMain.handle(
       "echogarden-recognize",
       async (_event, url: string, options: RecognitionOptions) => {
-        logger.debug("echogarden-recognize:", options);
+        logger.info("echogarden-recognize:", options);
         try {
           const input = enjoyUrlToPath(url);
           return await this.recognize(input, options);
@@ -171,7 +214,7 @@ class EchogardenWrapper {
         transcript: string,
         options: AlignmentOptions
       ) => {
-        logger.debug("echogarden-align:", transcript, options);
+        logger.info("echogarden-align:", options);
         try {
           return await this.align(input, transcript, options);
         } catch (err) {
@@ -189,7 +232,7 @@ class EchogardenWrapper {
         timeline: Timeline,
         options: AlignmentOptions
       ) => {
-        logger.debug("echogarden-align-segments:", timeline, options);
+        logger.info("echogarden-align-segments:", options);
         if (typeof input === "string") {
           input = enjoyUrlToPath(input);
         }
@@ -211,7 +254,7 @@ class EchogardenWrapper {
         transcript: string,
         language: string
       ) => {
-        logger.debug("echogarden-word-to-sentence-timeline:", transcript);
+        logger.info("echogarden-word-to-sentence-timeline:", language);
 
         const { segmentTimeline } =
           await this.wordTimelineToSegmentSentenceTimeline(
@@ -237,6 +280,7 @@ class EchogardenWrapper {
     ipcMain.handle(
       "echogarden-transcode",
       async (_event, url: string, sampleRate?: number) => {
+        logger.info("echogarden-transcode:", url, sampleRate);
         try {
           return await this.transcode(url, sampleRate);
         } catch (err) {
@@ -247,6 +291,7 @@ class EchogardenWrapper {
     );
 
     ipcMain.handle("echogarden-check", async (_event, options: any) => {
+      logger.info("echogarden-check:", options);
       return this.check(options);
     });
 
