@@ -14,11 +14,12 @@ import {
   TimelineEntry,
   type TimelineEntryType,
 } from "echogarden/dist/utilities/Timeline";
-import { parseText } from "media-captions";
+import { type ParsedCaptionsResult, parseText } from "media-captions";
 import { SttEngineOptionEnum } from "@/types/enums";
 import { RecognitionResult } from "echogarden/dist/api/API.js";
 import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";
+import log from "electron-log/renderer";
 
 // test a text string has any punctuations or not
 // some transcribed text may not have any punctuations
@@ -171,7 +172,13 @@ export const useTranscribe = () => {
     transcript: string;
     segmentTimeline: TimelineEntry[];
   }> => {
-    const caption = await parseText(originalText, { type: "srt" });
+    let caption: ParsedCaptionsResult;
+    try {
+      caption = await parseText(originalText, { type: "srt" });
+    } catch (err) {
+      log.error("parseTextFailed", { error: err.message });
+      throw err;
+    }
 
     if (caption.cues.length > 0) {
       // valid srt file
@@ -210,7 +217,7 @@ export const useTranscribe = () => {
           transcript = punctuatedText;
         } catch (err) {
           toast.error(err.message);
-          console.warn(err);
+          log.error("punctuateTextFailed", { error: err.message });
         }
       }
 
@@ -412,15 +419,16 @@ export const useTranscribe = () => {
 
         reco.canceled = (_s, e) => {
           if (e.reason === sdk.CancellationReason.Error) {
+            log.error("CANCELED: Reason=" + e.reason);
             return reject(new Error(e.errorDetails));
           }
 
           reco.stopContinuousRecognitionAsync();
-          console.log("CANCELED: Reason=" + e.reason);
+          log.info("CANCELED: Reason=" + e.reason);
         };
 
         reco.sessionStopped = async (_s, e) => {
-          console.log(
+          log.info(
             "Session stopped. Stop continuous recognition.",
             e.sessionId,
             results
@@ -460,6 +468,7 @@ export const useTranscribe = () => {
               segmentTimeline,
             });
           } catch (err) {
+            log.error("azureTranscribeFailed", { error: err.message });
             reject(t("azureTranscribeFailed", { error: err.message }));
           }
         };
