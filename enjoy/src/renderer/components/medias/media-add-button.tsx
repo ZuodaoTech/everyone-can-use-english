@@ -56,7 +56,7 @@ export const MediaAddButton = (props: { type?: "Audio" | "Video" }) => {
     if (files.length > 1) {
       Promise.allSettled(
         files.map((f) =>
-          EnjoyApp[type.toLowerCase() as "audios" | "videos"].create(f, {
+          EnjoyApp[`${type.toLowerCase()}s` as "audios" | "videos"].create(f, {
             compressing,
           })
         )
@@ -97,8 +97,8 @@ export const MediaAddButton = (props: { type?: "Audio" | "Video" }) => {
           setOpen(false);
         });
     } else {
-      EnjoyApp.audios
-        .create(uri)
+      EnjoyApp[`${type.toLowerCase()}s` as "audios" | "videos"]
+        .create(uri, { compressing })
         .then((media) => {
           toast.success(t("resourceAdded"));
           navigate(`/${type.toLowerCase()}s/${media.id}`);

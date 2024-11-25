@@ -1,6 +1,8 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import log from "electron-log/renderer";
 
+const logger = log.scope("db-provider.tsx");
+
 type DbStateEnum =
   | "connected"
   | "connecting"
@@ -83,7 +85,7 @@ export const DbProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (state === "connected") {
       EnjoyApp.db.onTransaction((_event, state) => {
-        log.debug("db-on-transaction", state);
+        logger.debug("db-on-transaction", state);
 
         const event = new CustomEvent("db-on-transaction", { detail: state });
         document.dispatchEvent(event);
