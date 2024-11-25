@@ -6,6 +6,9 @@ import {
 import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/types/enums";
 import { GPT_PROVIDERS, TTS_PROVIDERS } from "@renderer/components";
 import { WHISPER_MODELS } from "@/constants";
+import log from "electron-log/renderer";
+
+const logger = log.scope("ai-settings-provider.tsx");
 
 type AISettingsProviderState = {
   sttEngine?: SttEngineOptionEnum;
@@ -118,9 +121,8 @@ export const AISettingsProvider = ({
 
     if (!config) {
       let model = "tiny";
-      const whisperModel = await EnjoyApp.userSettings.get(
-        UserSettingKeyEnum.WHISPER
-      );
+      const whisperModel =
+        (await EnjoyApp.userSettings.get(UserSettingKeyEnum.WHISPER)) || "";
       if (WHISPER_MODELS.includes(whisperModel)) {
         model = whisperModel;
       } else {

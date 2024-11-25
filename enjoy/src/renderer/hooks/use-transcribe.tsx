@@ -118,6 +118,7 @@ export const useTranscribe = () => {
         new Uint8Array(await blob.arrayBuffer()),
         segmentTimeline,
         {
+          engine: "dtw",
           language: language.split("-")[0],
           isolate,
         }
@@ -141,6 +142,7 @@ export const useTranscribe = () => {
         new Uint8Array(await blob.arrayBuffer()),
         transcript,
         {
+          engine: "dtw",
           language: language.split("-")[0],
           isolate,
         }
@@ -263,6 +265,7 @@ export const useTranscribe = () => {
       throw new Error(t("whisperTranscribeFailed", { error: err.message }));
     }
 
+    setOutput("Whisper transcribe done");
     const { transcript, timeline } = res;
 
     return {
@@ -306,7 +309,7 @@ export const useTranscribe = () => {
         timestamp_granularities: ["word", "segment"],
       })) as any;
 
-      setOutput("Aligning the transcript...");
+      setOutput("OpenAI transcribe done");
       const segmentTimeline = (res.segments || []).map((segment) => {
         return {
           type: "segment" as TimelineEntryType,
@@ -352,6 +355,7 @@ export const useTranscribe = () => {
         )
       ).data;
 
+      setOutput("Cloudflare transcribe done");
       const segmentTimeline: TimelineEntry[] = [];
       if (res.vtt) {
         const caption = await parseText(res.vtt, { type: "vtt" });
@@ -426,17 +430,17 @@ export const useTranscribe = () => {
 
         reco.canceled = (_s, e) => {
           if (e.reason === sdk.CancellationReason.Error) {
-            logger.error("CANCELED: Reason=" + e.reason);
+            logger.error("Azure transcribe canceled: Reason=" + e.reason);
             return reject(new Error(e.errorDetails));
           }
 
           reco.stopContinuousRecognitionAsync();
-          logger.info("CANCELED: Reason=" + e.reason);
+          logger.info("Azure transcribe canceled: Reason=" + e.reason);
         };
 
         reco.sessionStopped = async (_s, e) => {
           logger.info(
-            "Session stopped. Stop continuous recognition.",
+            "Azure transcribe session stopped. Stop continuous recognition.",
             e.sessionId
           );
           reco.stopContinuousRecognitionAsync();
