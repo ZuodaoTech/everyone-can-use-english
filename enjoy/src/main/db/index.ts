@@ -175,7 +175,10 @@ db.connect = async () => {
     if (pendingMigrations.length > 0) {
       try {
         await db.backup({ force: true });
-
+      } catch (err) {
+        logger.error(err);
+      }
+      try {
         // migrate up to the latest state
         await umzug.up();
       } catch (err) {
