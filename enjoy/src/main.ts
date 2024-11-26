@@ -1,4 +1,4 @@
-import { app, BrowserWindow, protocol, net } from "electron";
+import { app, BrowserWindow, protocol, net, dialog } from "electron";
 import path from "path";
 import fs from "fs-extra";
 import settings from "@main/settings";
@@ -25,6 +25,21 @@ if (!process.env.CI) {
     notifyUser: true,
   });
 }
+
+// Handle unhandled promise rejection
+// Pop up a dialog to show the error
+// and exit the app
+process.on("unhandledRejection", (error) => {
+  logger.error("unhandledRejection:", error);
+  dialog.showErrorBox("Error", error.toString());
+  process.exit(1);
+});
+
+process.on("uncaughtException", (error) => {
+  logger.error("uncaughtException:", error);
+  dialog.showErrorBox("Error", error.toString());
+  process.exit(1);
+});
 
 if (!app.isPackaged) {
   app.disableHardwareAcceleration();
