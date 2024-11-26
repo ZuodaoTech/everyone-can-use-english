@@ -182,6 +182,23 @@ class EchogardenWrapper {
     }
   }
 
+  async checkAlign(options: AlignmentOptions) {
+    options = options || {
+      language: "en",
+    };
+    const sampleFile = path.join(__dirname, "samples", "jfk.wav");
+    const transcript =
+      "And so my fellow Americans ask not what your country can do for you ask what you can do for your country.";
+    try {
+      const timeline = await this.align(sampleFile, transcript, options);
+      logger.info("timeline:", !!timeline);
+      return { success: true, log: "" };
+    } catch (e) {
+      logger.error(e);
+      return { success: false, log: e.message };
+    }
+  }
+
   /**
    * Transcodes the audio file at the enjoy:// protocol URL into a WAV format.
    * @param url - The URL of the audio file to transcode.
@@ -305,6 +322,11 @@ class EchogardenWrapper {
     ipcMain.handle("echogarden-check", async (_event, options: any) => {
       logger.info("echogarden-check:", options);
       return this.check(options);
+    });
+
+    ipcMain.handle("echogarden-check-align", async (_event, options: any) => {
+      logger.info("echogarden-check-align:", options);
+      return this.checkAlign(options);
     });
 
     ipcMain.handle("echogarden-get-packages-dir", async (_event) => {

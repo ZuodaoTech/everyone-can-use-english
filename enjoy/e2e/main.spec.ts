@@ -90,6 +90,14 @@ test("validate echogarden recognition by whisper.cpp", async () => {
   expect(res.success).toBeTruthy();
 });
 
+test("validate echogarden alignment", async () => {
+  const res = await page.evaluate(() => {
+    return window.__ENJOY_APP__.echogarden.checkAlign();
+  });
+  console.info(res.log);
+  expect(res.success).toBeTruthy();
+});
+
 test("valid ffmpeg command", async () => {
   const res = await page.evaluate(() => {
     return window.__ENJOY_APP__.ffmpeg.check();
