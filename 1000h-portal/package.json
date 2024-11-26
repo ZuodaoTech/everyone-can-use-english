@@ -10,11 +10,11 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxtjs/seo": "^2.0.0-rc.23",
-    "nuxt": "^3.14.159",
-    "nuxt-og-image": "^3.0.8",
+    "@nuxtjs/seo": "^2.0.2",
+    "nuxt": "^3.14.1592",
+    "nuxt-og-image": "^4.0.0",
     "vue": "^3.5.13",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

@@ -311,6 +311,10 @@ type EnjoyAppType = {
     ) => Promise<Timeline>;
     transcode: (input: string) => Promise<string>;
     check: (options?: any) => Promise<{ success: boolean; log: string }>;
+    checkAlign: (options?: any) => Promise<{
+      success: boolean;
+      log: string;
+    }>;
   };
   ffmpeg: {
     check: () => Promise<boolean>;

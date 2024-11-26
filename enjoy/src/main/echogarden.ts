@@ -57,6 +57,9 @@ class EchogardenWrapper {
 
   constructor() {
     this.recognize = (sampleFile: string, options: RecognitionOptions) => {
+      if (!options) {
+        throw new Error("No config options provided");
+      }
       return new Promise((resolve, reject) => {
         const handler = (reason: any) => {
           // Remove the handler after it's triggered
@@ -89,6 +92,9 @@ class EchogardenWrapper {
       });
     };
     this.align = (input, transcript, options) => {
+      if (!options) {
+        throw new Error("No config options provided");
+      }
       return new Promise((resolve, reject) => {
         const handler = (reason: any) => {
           // Remove the handler after it's triggered
@@ -109,6 +115,9 @@ class EchogardenWrapper {
       });
     };
     this.alignSegments = (input, timeline, options) => {
+      if (!options) {
+        throw new Error("No config options provided");
+      }
       return new Promise((resolve, reject) => {
         const handler = (reason: any) => {
           // Remove the handler after it's triggered
@@ -139,8 +148,8 @@ class EchogardenWrapper {
       wordTimelineToSegmentSentenceTimeline;
   }
 
-  async check(
-    options: RecognitionOptions = {
+  async check(options: RecognitionOptions) {
+    options = options || {
       engine: "whisper",
       whisper: {
         model: "tiny.en",
@@ -148,8 +157,7 @@ class EchogardenWrapper {
       whisperCpp: {
         model: "tiny.en",
       },
-    }
-  ) {
+    };
     const sampleFile = path.join(__dirname, "samples", "jfk.wav");
 
     try {
@@ -174,12 +182,33 @@ class EchogardenWrapper {
     }
   }
 
+  async checkAlign(options: AlignmentOptions) {
+    options = options || {
+      language: "en",
+    };
+    const sampleFile = path.join(__dirname, "samples", "jfk.wav");
+    const transcript =
+      "And so my fellow Americans ask not what your country can do for you ask what you can do for your country.";
+    try {
+      const timeline = await this.align(sampleFile, transcript, options);
+      logger.info("timeline:", !!timeline);
+      return { success: true, log: "" };
+    } catch (e) {
+      logger.error(e);
+      return { success: false, log: e.message };
+    }
+  }
+
   /**
    * Transcodes the audio file at the enjoy:// protocol URL into a WAV format.
    * @param url - The URL of the audio file to transcode.
    * @returns A promise that resolves to the enjoy:// protocal URL of the transcoded WAV file.
    */
-  async transcode(url: string, sampleRate = 16000): Promise<string> {
+  async transcode(
+    url: string,
+    sampleRate: number | null = 16000
+  ): Promise<string> {
+    sampleRate = sampleRate || 16000;
     logger.info("echogarden-transcode:", url, sampleRate);
     const filePath = enjoyUrlToPath(url);
     const rawAudio = await this.ensureRawAudio(filePath, sampleRate);
@@ -293,6 +322,11 @@ class EchogardenWrapper {
     ipcMain.handle("echogarden-check", async (_event, options: any) => {
       logger.info("echogarden-check:", options);
       return this.check(options);
+    });
+
+    ipcMain.handle("echogarden-check-align", async (_event, options: any) => {
+      logger.info("echogarden-check-align:", options);
+      return this.checkAlign(options);
     });
 
     ipcMain.handle("echogarden-get-packages-dir", async (_event) => {

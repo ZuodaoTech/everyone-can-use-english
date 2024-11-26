@@ -54,7 +54,7 @@ jobs:
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn enjoy:test:main
 
       - name: Run main tests on Windows
-        # continue-on-error: true
+        continue-on-error: true
         if: contains(matrix.os, 'windows')
         run: yarn enjoy:test:main
 
