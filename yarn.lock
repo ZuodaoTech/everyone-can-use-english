@@ -9858,6 +9858,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clean-stack@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "clean-stack@npm:5.2.0"
+  dependencies:
+    escape-string-regexp: "npm:5.0.0"
+  checksum: 10c0/0de47a4152e49dcdeede5f47d7bb9a39a3ea748acb1cd2f0160dbee972d920be81390cb4c5566e6b795791b9efb12359e89fdd7c2e63b36025d59529558570f1
+  languageName: node
+  linkType: hard
+
 "clear@npm:^0.1.0":
   version: 0.1.0
   resolution: "clear@npm:0.1.0"
@@ -11828,6 +11837,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"electron-unhandled@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "electron-unhandled@npm:5.0.0"
+  dependencies:
+    clean-stack: "npm:^5.2.0"
+    electron-is-dev: "npm:^3.0.1"
+    ensure-error: "npm:^4.0.0"
+    lodash.debounce: "npm:^4.0.8"
+    serialize-error: "npm:^11.0.3"
+  checksum: 10c0/5d2d6698417103c7e684f73777d96f020f6d041912ee263162e94bdc13aac24b9881ec279f8c09c1b40489703d986f2700947f82fea26d87a16fae28ed9bce34
+  languageName: node
+  linkType: hard
+
 "electron-winstaller@npm:^5.3.0":
   version: 5.4.0
   resolution: "electron-winstaller@npm:5.4.0"
@@ -12079,6 +12101,7 @@ __metadata:
     electron-playwright-helpers: "npm:^1.7.1"
     electron-settings: "npm:^4.0.4"
     electron-squirrel-startup: "npm:^1.0.1"
+    electron-unhandled: "npm:^5.0.0"
     eslint: "npm:^9.15.0"
     eslint-import-resolver-typescript: "npm:^3.6.3"
     eslint-plugin-import: "npm:^2.31.0"
@@ -12103,6 +12126,7 @@ __metadata:
     microsoft-cognitiveservices-speech-sdk: "npm:^1.41.0"
     mime-types: "npm:^2.1.35"
     mustache: "npm:^4.2.0"
+    new-github-issue-url: "npm:^1.0.0"
     next-themes: "npm:^0.4.3"
     octokit: "npm:^4.0.2"
     openai: "npm:^4.73.1"
@@ -12153,6 +12177,13 @@ __metadata:
     zx: "npm:^8.2.2"
   languageName: unknown
   linkType: soft
+
+"ensure-error@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "ensure-error@npm:4.0.0"
+  checksum: 10c0/79a986b54574c221923fafb00e25f86963a73195d5dd0d67d0c9ca9ab35a7cbc10b634e6954d1912206b9e18eabbc4ebd18af9200e521b2a603c3d388b98fa08
+  languageName: node
+  linkType: hard
 
 "entities@npm:^2.0.0":
   version: 2.2.0
@@ -12520,6 +12551,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"escape-string-regexp@npm:5.0.0, escape-string-regexp@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "escape-string-regexp@npm:5.0.0"
+  checksum: 10c0/6366f474c6f37a802800a435232395e04e9885919873e382b157ab7e8f0feb8fed71497f84a6f6a81a49aab41815522f5839112bd38026d203aea0c91622df95
+  languageName: node
+  linkType: hard
+
 "escape-string-regexp@npm:^1.0.2":
   version: 1.0.5
   resolution: "escape-string-regexp@npm:1.0.5"
@@ -12531,13 +12569,6 @@ __metadata:
   version: 4.0.0
   resolution: "escape-string-regexp@npm:4.0.0"
   checksum: 10c0/9497d4dd307d845bd7f75180d8188bb17ea8c151c1edbf6b6717c100e104d629dc2dfb687686181b0f4b7d732c7dfdc4d5e7a8ff72de1b0ca283a75bbb3a9cd9
-  languageName: node
-  linkType: hard
-
-"escape-string-regexp@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "escape-string-regexp@npm:5.0.0"
-  checksum: 10c0/6366f474c6f37a802800a435232395e04e9885919873e382b157ab7e8f0feb8fed71497f84a6f6a81a49aab41815522f5839112bd38026d203aea0c91622df95
   languageName: node
   linkType: hard
 
@@ -16135,6 +16166,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.debounce@npm:^4.0.8":
+  version: 4.0.8
+  resolution: "lodash.debounce@npm:4.0.8"
+  checksum: 10c0/762998a63e095412b6099b8290903e0a8ddcb353ac6e2e0f2d7e7d03abd4275fe3c689d88960eb90b0dde4f177554d51a690f22a343932ecbc50a5d111849987
+  languageName: node
+  linkType: hard
+
 "lodash.defaults@npm:^4.2.0":
   version: 4.2.0
   resolution: "lodash.defaults@npm:4.2.0"
@@ -17762,6 +17800,13 @@ __metadata:
   version: 2.0.2
   resolution: "netmask@npm:2.0.2"
   checksum: 10c0/cafd28388e698e1138ace947929f842944d0f1c0b87d3fa2601a61b38dc89397d33c0ce2c8e7b99e968584b91d15f6810b91bef3f3826adf71b1833b61d4bf4f
+  languageName: node
+  linkType: hard
+
+"new-github-issue-url@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "new-github-issue-url@npm:1.0.0"
+  checksum: 10c0/6e255d55d62b1e772ee94a0aad7713d61f8cb35d20f3fc5cd5c3e7b62db57e6bb426ed922c8014a83e437a6e07756f721a5b3b9c355ae8b97e24ad302c52f248
   languageName: node
   linkType: hard
 
@@ -21298,6 +21343,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"serialize-error@npm:^11.0.3":
+  version: 11.0.3
+  resolution: "serialize-error@npm:11.0.3"
+  dependencies:
+    type-fest: "npm:^2.12.2"
+  checksum: 10c0/7263603883b8936650819f0fd5150d41427b317432678b21722c54b85367ae15b8552865eb7f3f39ba71a32a003730a2e2e971e6909431eb54db70a3ef8eca17
+  languageName: node
+  linkType: hard
+
 "serialize-error@npm:^7.0.1":
   version: 7.0.1
   resolution: "serialize-error@npm:7.0.1"
@@ -22755,6 +22809,13 @@ __metadata:
   version: 1.4.0
   resolution: "type-fest@npm:1.4.0"
   checksum: 10c0/a3c0f4ee28ff6ddf800d769eafafcdeab32efa38763c1a1b8daeae681920f6e345d7920bf277245235561d8117dab765cb5f829c76b713b4c9de0998a5397141
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^2.12.2":
+  version: 2.19.0
+  resolution: "type-fest@npm:2.19.0"
+  checksum: 10c0/a5a7ecf2e654251613218c215c7493574594951c08e52ab9881c9df6a6da0aeca7528c213c622bc374b4e0cb5c443aa3ab758da4e3c959783ce884c3194e12cb
   languageName: node
   linkType: hard
 
