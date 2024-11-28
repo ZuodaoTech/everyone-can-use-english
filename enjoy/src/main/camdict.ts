@@ -1,13 +1,9 @@
 import { ipcMain } from "electron";
 import path from "path";
 import log from "@main/logger";
-import url from "url";
 import { Sequelize, DataType } from "sequelize-typescript";
 
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path
-  .dirname(__filename)
-  .replace("app.asar", "app.asar.unpacked");
+const __dirname = import.meta.dirname.replace("app.asar", "app.asar.unpacked");
 
 const logger = log.scope("camdict");
 

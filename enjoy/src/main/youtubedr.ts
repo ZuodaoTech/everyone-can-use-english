@@ -6,15 +6,10 @@ import os from "os";
 import log from "@main/logger";
 import snakeCase from "lodash/snakeCase";
 import settings from "@main/settings";
-import url from "url";
 import mainWin from "@main/window";
 
-const __filename = url.fileURLToPath(import.meta.url);
-
 //  youtubedr bin file will be in /app.asar.unpacked instead of /app.asar
-const __dirname = path
-  .dirname(__filename)
-  .replace("app.asar", "app.asar.unpacked");
+const __dirname = import.meta.dirname.replace("app.asar", "app.asar.unpacked");
 
 const logger = log.scope("YOUTUBEDR");
 

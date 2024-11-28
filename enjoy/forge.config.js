@@ -1,14 +1,15 @@
 import { VitePlugin } from "@electron-forge/plugin-vite";
 import os from "os";
-// import { FusesPlugin } from "@electron-forge/plugin-fuses";
-// import { FuseV1Options, FuseVersion } from "@electron/fuses";
+import { FusesPlugin } from "@electron-forge/plugin-fuses";
+import { FuseV1Options, FuseVersion } from "@electron/fuses";
+import { DependenciesPlugin } from "electron-forge-plugin-dependencies";
+import pkg from "./package.json" assert { type: "json" };
 
 const config = {
   packagerConfig: {
     asar: {
       // Binary files won't work in asar, so we need to unpack them
-      unpackDir:
-        "{.vite/build/lib,.vite/build/samples,node_modules/ffmpeg-static,node_modules/@andrkrn/ffprobe-static,node_modules/onnxruntime-node/bin,lib/dictionaries}",
+      unpackDir: `{.vite/build/lib,.vite/build/samples,node_modules/ffmpeg-static,node_modules/@andrkrn/ffprobe-static,node_modules/onnxruntime-node/bin/napi-v3/${os.platform()}/${os.arch()},lib/dictionaries}`,
     },
     icon: "./assets/icon",
     name: "Enjoy",
@@ -30,7 +31,7 @@ const config = {
     },
     {
       name: "@electron-forge/maker-zip",
-      platforms: ["darwin"],
+      platforms: ["darwin", "linux"],
       config: (arch) => ({
         macUpdateManifestBaseUrl: `https://dl.enjoy.bot/app/darwin/${arch}`,
       }),
@@ -71,10 +72,12 @@ const config = {
           // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
           entry: "src/main.ts",
           config: "vite.main.config.ts",
+          target: "main",
         },
         {
           entry: "src/preload.ts",
           config: "vite.preload.config.ts",
+          target: "preload",
         },
       ],
       renderer: [
@@ -90,15 +93,21 @@ const config = {
     },
     // Fuses are used to enable/disable various Electron functionality
     // at package time, before code signing the application
-    // new FusesPlugin({
-    //   version: FuseVersion.V1,
-    //   [FuseV1Options.RunAsNode]: false,
-    //   [FuseV1Options.EnableCookieEncryption]: true,
-    //   [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
-    //   [FuseV1Options.EnableNodeCliInspectArguments]: true,
-    //   [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
-    //   [FuseV1Options.OnlyLoadAppFromAsar]: false,
-    // }),
+    new FusesPlugin({
+      version: FuseVersion.V1,
+      [FuseV1Options.RunAsNode]: false,
+      [FuseV1Options.EnableCookieEncryption]: true,
+      [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
+      [FuseV1Options.EnableNodeCliInspectArguments]: true,
+      [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
+      [FuseV1Options.OnlyLoadAppFromAsar]: false,
+    }),
+    {
+      name: "electron-forge-plugin-dependencies",
+      config: {
+        dependencies: Object.keys(pkg.dependencies),
+      },
+    },
   ],
 };
 
