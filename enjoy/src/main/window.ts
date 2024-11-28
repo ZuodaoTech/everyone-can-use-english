@@ -18,7 +18,6 @@ import { REPO_URL, WS_URL } from "@/constants";
 import { AudibleProvider, TedProvider, YoutubeProvider } from "@main/providers";
 import Ffmpeg from "@main/ffmpeg";
 import { Waveform } from "./waveform";
-import url from "url";
 import echogarden from "./echogarden";
 import camdict from "./camdict";
 import dict from "./dict";
@@ -26,10 +25,8 @@ import mdict from "./mdict";
 import decompresser from "./decompresser";
 import { UserSetting } from "@main/db/models";
 import { platform } from "os";
-import { t } from "i18next";
 
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = import.meta.dirname;
 
 const logger = log.scope("window");
 

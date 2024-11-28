@@ -42,14 +42,12 @@ import {
 } from "./handlers";
 import os from "os";
 import path from "path";
-import url from "url";
 import { i18n } from "@main/i18n";
 import { UserSettingKeyEnum } from "@/types/enums";
 import log from "@main/logger";
 import fs from "fs-extra";
 
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = import.meta.dirname;
 const logger = log.scope("DB");
 
 const db = {

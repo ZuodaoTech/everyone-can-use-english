@@ -125,7 +125,6 @@
     "electron-forge-plugin-dependencies": "^1.0.0",
     "electron-log": "^5.2.3",
     "electron-playwright-helpers": "^1.7.1",
-    "electron-settings": "^4.0.4",
     "electron-squirrel-startup": "^1.0.1",
     "electron-unhandled": "^5.0.0",
     "eslint": "^9.15.0",
@@ -195,6 +194,7 @@
   "dependencies": {
     "@andrkrn/ffprobe-static": "^5.2.0",
     "echogarden": "^1.8.7",
+    "electron-settings": "^4.0.4",
     "ffmpeg-static": "^5.2.0",
     "file-type": "^19.6.0",
     "fluent-ffmpeg": "^2.1.3",

@@ -16,10 +16,7 @@ import { enjoyUrlToPath, pathToEnjoyUrl } from "@main/utils";
  */
 Ffmpeg.setFfmpegPath(ffmpegPath.replace("app.asar", "app.asar.unpacked"));
 Ffmpeg.setFfprobePath(ffprobePath.replace("app.asar", "app.asar.unpacked"));
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path
-  .dirname(__filename)
-  .replace("app.asar", "app.asar.unpacked");
+const __dirname = import.meta.dirname.replace("app.asar", "app.asar.unpacked");
 
 const logger = log.scope("ffmpeg");
 export default class FfmpegWrapper {
