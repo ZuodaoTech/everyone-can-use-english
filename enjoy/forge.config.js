@@ -2,6 +2,8 @@ import { VitePlugin } from "@electron-forge/plugin-vite";
 import os from "os";
 import { FusesPlugin } from "@electron-forge/plugin-fuses";
 import { FuseV1Options, FuseVersion } from "@electron/fuses";
+import { DependenciesPlugin } from "electron-forge-plugin-dependencies";
+import pkg from "./package.json" assert { type: "json" };
 
 const config = {
   packagerConfig: {
@@ -70,10 +72,12 @@ const config = {
           // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
           entry: "src/main.ts",
           config: "vite.main.config.ts",
+          target: "main",
         },
         {
           entry: "src/preload.ts",
           config: "vite.preload.config.ts",
+          target: "preload",
         },
       ],
       renderer: [
@@ -98,6 +102,12 @@ const config = {
       [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
       [FuseV1Options.OnlyLoadAppFromAsar]: false,
     }),
+    {
+      name: "electron-forge-plugin-dependencies",
+      config: {
+        dependencies: Object.keys(pkg.dependencies),
+      },
+    },
   ],
 };
 
