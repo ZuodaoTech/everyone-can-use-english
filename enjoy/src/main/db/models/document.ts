@@ -84,6 +84,11 @@ export class Document extends Model<Document> {
   }
 
   @Column(DataType.VIRTUAL)
+  get layout(): "horizontal" | "vertical" {
+    return this.config.layout || "horizontal";
+  }
+
+  @Column(DataType.VIRTUAL)
   get ttsConfig(): Record<string, any> {
     return this.config.tts || {};
   }
@@ -310,6 +315,7 @@ export class Document extends Model<Document> {
       config = {
         autoTranslate: false,
         autoNextSpeech: true,
+        layout: "horizontal",
         tts: {
           engine: "enjoyai",
           model: "openai/tts-1",

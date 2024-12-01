@@ -7,6 +7,11 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Switch,
 } from "@renderer/components/ui";
 import { t } from "i18next";
@@ -19,6 +24,7 @@ const documentConfigSchema = z.object({
   config: z.object({
     autoTranslate: z.boolean(),
     autoNextSpeech: z.boolean(),
+    layout: z.enum(["horizontal", "vertical"]),
     tts: z.object({
       engine: z.string(),
       model: z.string(),
@@ -87,6 +93,29 @@ export const DocumentConfigForm = (props: {
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="config.layout"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center justify-between space-x-2">
+                  <FormLabel>{t("layout")}</FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={t("layout")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="horizontal">
+                        {t("horizontal")}
+                      </SelectItem>
+                      <SelectItem value="vertical">{t("vertical")}</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </FormItem>
             )}
