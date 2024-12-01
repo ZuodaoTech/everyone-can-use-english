@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { type Region as RegionType } from "wavesurfer.js/dist/plugins/regions";
 import {
   DropdownMenu,
@@ -61,6 +61,7 @@ export const MediaPlayerControls = () => {
   const [playMode, setPlayMode] = useState<"loop" | "single" | "all">("single");
   const [playbackRate, setPlaybackRate] = useState<number>(1);
   const [grouping, setGrouping] = useState(false);
+  const isLoopPausing = useRef(false);
 
   const playOrPause = () => {
     if (!wavesurfer) return;
@@ -263,17 +264,7 @@ export const MediaPlayerControls = () => {
       .getRegions()
       .find((r) => r.id === `segment-region-${currentSegmentIndex}`);
 
-    const activeRegionDebouncePlay = debounce(() => {
-      activeRegion?.play();
-    }, 100);
-
     const subscriptions = [
-      wavesurfer.on("finish", () => {
-        if (playMode !== "loop") return;
-
-        activeRegion?.play();
-      }),
-
       regions.on("region-updated", (region) => {
         if (region !== segmentRegion) {
           return;
@@ -313,20 +304,69 @@ export const MediaPlayerControls = () => {
 
       regions.on("region-out", (region) => {
         if (region !== activeRegion && region !== segmentRegion) return;
+        if (playMode === "all" || isLoopPausing.current) return;
 
+        // Pause immediately
+        wavesurfer.pause();
+
+        // Use a more reliable loop mechanism
         if (playMode === "loop") {
-          wavesurfer.pause();
+          // Ensure we're at the start before playing
+          wavesurfer.setTime(parseFloat(region.start.toFixed(6)));
+          isLoopPausing.current = true;
+
+          // Small delay to ensure time is set before playing
           setTimeout(() => {
-            activeRegionDebouncePlay();
-          }, 250);
+            isLoopPausing.current = false;
+            if (playMode === "loop") {
+              wavesurfer.play();
+            }
+          }, 500);
         } else if (playMode === "single") {
-          wavesurfer.pause();
+          requestAnimationFrame(() => {
+            wavesurfer.setTime(parseFloat(region.start.toFixed(6)));
+            wavesurfer.setScrollTime(parseFloat(region.start.toFixed(6)));
+          });
         }
       }),
     ];
 
+    // More robust position check interval
+    const checkIntervalId = setInterval(() => {
+      if (
+        !activeRegion ||
+        playMode === "all" ||
+        !wavesurfer.isPlaying() ||
+        isLoopPausing.current
+      )
+        return;
+
+      const currentTime = wavesurfer.getCurrentTime();
+      const EPSILON = 0.01;
+
+      const isOutsideRegion =
+        currentTime < activeRegion.start - EPSILON ||
+        currentTime > activeRegion.end + EPSILON;
+
+      if (isOutsideRegion && currentTime !== 0) {
+        if (playMode === "loop") {
+          // Force reset to start and ensure playback continues
+          wavesurfer.pause();
+          isLoopPausing.current = true;
+          wavesurfer.setTime(parseFloat(activeRegion.start.toFixed(6)));
+          setTimeout(() => {
+            isLoopPausing.current = false;
+            if (playMode === "loop") {
+              wavesurfer.play();
+            }
+          }, 500);
+        }
+      }
+    }, 50); // Even more frequent checks for better reliability
+
     return () => {
       subscriptions.forEach((unsub) => unsub());
+      clearInterval(checkIntervalId);
     };
   }, [playMode, regions, transcription, currentSegmentIndex, activeRegion]);
 
@@ -371,21 +411,6 @@ export const MediaPlayerControls = () => {
 
     setCurrentSegmentIndex(index);
   }, [currentTime, transcription?.result]);
-
-  /*
-   * Always stay in the active region when playMode is single/loop
-   */
-  useEffect(() => {
-    if (!decoded) return;
-    if (wavesurfer?.isPlaying()) return;
-    if (!activeRegion) return;
-    if (playMode === "all") return;
-
-    if (currentTime < activeRegion.start || currentTime > activeRegion.end) {
-      wavesurfer.setScrollTime(activeRegion.start);
-      wavesurfer.setTime(parseFloat(activeRegion.start.toFixed(6)));
-    }
-  }, [wavesurfer, decoded, playMode, activeRegion, currentTime]);
 
   useHotkeys(
     currentHotkeys.PlayOrPause,
