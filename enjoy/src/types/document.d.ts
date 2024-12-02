@@ -5,6 +5,7 @@ type DocumentEType = {
   title: string;
   metadata: Record<string, any>;
   config: Record<string, any>;
+  layout: "horizontal" | "vertical";
   autoTranslate: boolean;
   autoNextSpeech: boolean;
   ttsConfig: Record<string, any>;
