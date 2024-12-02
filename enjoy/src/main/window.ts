@@ -648,6 +648,7 @@ ${log}
       submenu: [
         { role: "about" },
         { type: "separator" },
+        { role: "togglefullscreen" },
         { role: "hide" },
         { role: "unhide" },
         { type: "separator" },
@@ -663,6 +664,7 @@ ${log}
         { role: "cut" },
         { role: "copy" },
         { role: "paste" },
+        { role: "selectAll" },
       ],
     },
     {
