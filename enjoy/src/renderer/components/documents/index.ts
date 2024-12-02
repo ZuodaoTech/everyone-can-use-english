@@ -7,3 +7,4 @@ export * from "./document-config-form";
 export * from "./document-add-button";
 export * from "./document-config-button";
 export * from "./documents-segment";
+export * from "./document-actions-button";

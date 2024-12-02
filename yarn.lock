@@ -2703,10 +2703,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@eslint/js@npm:9.15.0"
-  checksum: 10c0/56552966ab1aa95332f70d0e006db5746b511c5f8b5e0c6a9b2d6764ff6d964e0b2622731877cbc4e3f0e74c5b39191290d5f48147be19175292575130d499ab
+"@eslint/js@npm:9.16.0":
+  version: 9.16.0
+  resolution: "@eslint/js@npm:9.16.0"
+  checksum: 10c0/a55846a4ddade720662d36682f3eaaf38eac06eeee12c83bb837bba2b7d550dadcb3445b104219f0bc1da2e09b4fe5fb5ba123b8338c8c787bcfbd540878df75
   languageName: node
   linkType: hard
 
@@ -7490,7 +7490,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=20, @types/node@npm:^22.10.0":
+"@types/node@npm:*, @types/node@npm:>=20":
   version: 22.10.0
   resolution: "@types/node@npm:22.10.0"
   dependencies:
@@ -7521,6 +7521,15 @@ __metadata:
   dependencies:
     undici-types: "npm:~6.19.2"
   checksum: 10c0/d68bbd9f8946a56d3f405e2dbfcc98d1d7a3cdbaa45d0a8fea2865e63ecdf3a2c9a0e992d9ea1658651909273026d341047e593596e133e842374371e04031c3
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.10.1":
+  version: 22.10.1
+  resolution: "@types/node@npm:22.10.1"
+  dependencies:
+    undici-types: "npm:~6.20.0"
+  checksum: 10c0/0fbb6d29fa35d807f0223a4db709c598ac08d66820240a2cd6a8a69b8f0bc921d65b339d850a666b43b4e779f967e6ed6cf6f0fca3575e08241e6b900364c234
   languageName: node
   linkType: hard
 
@@ -9610,12 +9619,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chart.js@npm:^4.4.6":
-  version: 4.4.6
-  resolution: "chart.js@npm:4.4.6"
+"chart.js@npm:^4.4.7":
+  version: 4.4.7
+  resolution: "chart.js@npm:4.4.7"
   dependencies:
     "@kurkle/color": "npm:^0.3.0"
-  checksum: 10c0/456d16a030c35fa16182945e91d4fdd89510343454309b783f5e060ea89baaed3bc9b43d2d9b3acadd385e5921718e27ed2fcae8b5efa277d27bc4da4af639f2
+  checksum: 10c0/9db499993c561f11184112003956ba96cf00513e025f58846be36e75ebddc6cbab2f93626c3734c305bc801e9362a9ef193b9591e679c59903b2ecb48cfcb317
   languageName: node
   linkType: hard
 
@@ -10170,6 +10179,17 @@ __metadata:
     grad-school: "npm:0.0.5"
     suffix-thumb: "npm:5.0.2"
   checksum: 10c0/a0061b09cda899e424dc87869a4a22e616a314dc7501d506f955fa43f0bb4bd582187cb39afe6600a8190d216e7f7ae419c0ca8dfcd5f7670f6f9bb0a7f8820a
+  languageName: node
+  linkType: hard
+
+"compromise@npm:^14.14.3":
+  version: 14.14.3
+  resolution: "compromise@npm:14.14.3"
+  dependencies:
+    efrt: "npm:2.7.0"
+    grad-school: "npm:0.0.5"
+    suffix-thumb: "npm:5.0.2"
+  checksum: 10c0/780c0f1ef984e49e41361183653d87286effb60e73313c12602452145a7de52afe4ca56596bbbc4e62795047ea6ab93dad46703cb699588a823d6012aece31b5
   languageName: node
   linkType: hard
 
@@ -12060,7 +12080,7 @@ __metadata:
     "@types/mark.js": "npm:^8.11.12"
     "@types/mime-types": "npm:^2.1.4"
     "@types/mustache": "npm:^4.2.5"
-    "@types/node": "npm:^22.10.0"
+    "@types/node": "npm:^22.10.1"
     "@types/prop-types": "npm:^15.7.13"
     "@types/rails__actioncable": "npm:^6.1.11"
     "@types/react": "npm:^18.3.12"
@@ -12081,13 +12101,13 @@ __metadata:
     axios: "npm:^1.7.8"
     camelcase: "npm:^8.0.0"
     camelcase-keys: "npm:^9.1.3"
-    chart.js: "npm:^4.4.6"
+    chart.js: "npm:^4.4.7"
     cheerio: "npm:^1.0.0"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
     cmdk: "npm:^1.0.4"
     command-exists: "npm:^1.2.9"
-    compromise: "npm:^14.14.2"
+    compromise: "npm:^14.14.3"
     compromise-paragraphs: "npm:^0.1.0"
     compromise-stats: "npm:^0.1.0"
     dayjs: "npm:^1.11.13"
@@ -12104,7 +12124,7 @@ __metadata:
     electron-settings: "npm:^4.0.4"
     electron-squirrel-startup: "npm:^1.0.1"
     electron-unhandled: "npm:^5.0.0"
-    eslint: "npm:^9.15.0"
+    eslint: "npm:^9.16.0"
     eslint-import-resolver-typescript: "npm:^3.6.3"
     eslint-plugin-import: "npm:^2.31.0"
     ffmpeg-static: "npm:^5.2.0"
@@ -12117,7 +12137,7 @@ __metadata:
     https-proxy-agent: "npm:^7.0.5"
     i18next: "npm:^24.0.2"
     input-otp: "npm:^1.4.1"
-    intl-tel-input: "npm:^24.7.0"
+    intl-tel-input: "npm:^24.8.1"
     js-md5: "npm:^0.8.3"
     langchain: "npm:^0.3.6"
     lodash: "npm:^4.17.21"
@@ -12145,7 +12165,7 @@ __metadata:
     react-frame-component: "npm:^5.2.7"
     react-hook-form: "npm:^7.53.2"
     react-hotkeys-hook: "npm:^4.6.1"
-    react-i18next: "npm:^15.1.2"
+    react-i18next: "npm:^15.1.3"
     react-markdown: "npm:^9.0.1"
     react-resizable-panels: "npm:^2.1.7"
     react-router-dom: "npm:^7.0.1"
@@ -12176,7 +12196,7 @@ __metadata:
     wavesurfer.js: "npm:^7.8.9"
     zod: "npm:^3.23.8"
     zod-to-json-schema: "npm:^3.23.5"
-    zx: "npm:^8.2.2"
+    zx: "npm:^8.2.4"
   languageName: unknown
   linkType: soft
 
@@ -12693,16 +12713,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^9.15.0":
-  version: 9.15.0
-  resolution: "eslint@npm:9.15.0"
+"eslint@npm:^9.16.0":
+  version: 9.16.0
+  resolution: "eslint@npm:9.16.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.2.0"
     "@eslint-community/regexpp": "npm:^4.12.1"
     "@eslint/config-array": "npm:^0.19.0"
     "@eslint/core": "npm:^0.9.0"
     "@eslint/eslintrc": "npm:^3.2.0"
-    "@eslint/js": "npm:9.15.0"
+    "@eslint/js": "npm:9.16.0"
     "@eslint/plugin-kit": "npm:^0.2.3"
     "@humanfs/node": "npm:^0.16.6"
     "@humanwhocodes/module-importer": "npm:^1.0.1"
@@ -12738,7 +12758,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 10c0/d0d7606f36bfcccb1c3703d0a24df32067b207a616f17efe5fb1765a91d13f085afffc4fc97ecde4ab9c9f4edd64d9b4ce750e13ff7937a25074b24bee15b20f
+  checksum: 10c0/f36d12652c6f20bab8a77375b8ad29a6af030c3840deb0a5f9dd4cee49d68a2d68d7dc73b0c25918df59d83cd686dd5712e11387e696e1f3842e8dde15cd3255
   languageName: node
   linkType: hard
 
@@ -14870,10 +14890,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"intl-tel-input@npm:^24.7.0":
-  version: 24.7.0
-  resolution: "intl-tel-input@npm:24.7.0"
-  checksum: 10c0/dd51cda968ab69b154792cd101ed6eb07ebf446dcf636493d9f551d2e58b7ca1c1b99a817fea2a486110feeb2d3ca8e384d73a6f064665859804cf36c61d938f
+"intl-tel-input@npm:^24.8.1":
+  version: 24.8.1
+  resolution: "intl-tel-input@npm:24.8.1"
+  checksum: 10c0/6fde8ac8cc13e33de428e8526fb039941b49e21cd650029a9eb70da19445b12bf966e75b6c9f2c95053e970f8ee8364f04e301226350e95c8cf380ac5d6ce4df
   languageName: node
   linkType: hard
 
@@ -20212,9 +20232,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^15.1.2":
-  version: 15.1.2
-  resolution: "react-i18next@npm:15.1.2"
+"react-i18next@npm:^15.1.3":
+  version: 15.1.3
+  resolution: "react-i18next@npm:15.1.3"
   dependencies:
     "@babel/runtime": "npm:^7.25.0"
     html-parse-stringify: "npm:^3.0.1"
@@ -20226,7 +20246,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 10c0/b10052545f0bebcd0b55cf04eb7d58307cdf6645707108bcae28026fe92ce0ef9cf0b35ac9cb940f6fcc22f679c810f2c008e9d8284bd4cfbb26c5649e3885ab
+  checksum: 10c0/2f8de1757f5b4d91e034f621c0bf6422fad3cde0687d11d4fe87822db86f264c6c3512a26fafe03d91ea691b3c441ba5ca490f4e5611e147df985ee133265089
   languageName: node
   linkType: hard
 
@@ -24679,9 +24699,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zx@npm:^8.2.2":
-  version: 8.2.2
-  resolution: "zx@npm:8.2.2"
+"zx@npm:^8.2.4":
+  version: 8.2.4
+  resolution: "zx@npm:8.2.4"
   dependencies:
     "@types/fs-extra": "npm:>=11"
     "@types/node": "npm:>=20"
@@ -24692,6 +24712,6 @@ __metadata:
       optional: true
   bin:
     zx: build/cli.js
-  checksum: 10c0/68c2fd54cd10e2c3b32ae7db62cc0004808b7ece6aad2c87838e354174bd9868918cc1a6e067d6a7647cfb1180253e6a362f8b57aabb4b2895c8f6c0e92a62cd
+  checksum: 10c0/ae60ceef4eaf62695de0a24edab302efc770da10f2f4e79b7b8d50c2e7bee8c4b100e8722c6963a6f4badafe3f00d8d0fd50080c90745bf7bca90203c4aee59b
   languageName: node
   linkType: hard

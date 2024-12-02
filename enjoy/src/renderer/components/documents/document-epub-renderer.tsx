@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import {
+  DocumentActionsButton,
   DocumentConfigButton,
   LoaderSpin,
   MarkdownWrapper,
@@ -16,7 +17,12 @@ import {
   Button,
   toast,
 } from "@renderer/components/ui";
-import { ChevronLeftIcon, ChevronRightIcon, MenuIcon } from "lucide-react";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MenuIcon,
+  TableOfContentsIcon,
+} from "lucide-react";
 import {
   AppSettingsProviderContext,
   DocumentProviderContext,
@@ -145,7 +151,7 @@ export const DocumentEpubRenderer = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="w-6 h-6">
-                <MenuIcon className="size-4" />
+                <TableOfContentsIcon className="size-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -176,6 +182,7 @@ export const DocumentEpubRenderer = () => {
             </DropdownMenuContent>
           </DropdownMenu>
           <DocumentConfigButton document={document} />
+          <DocumentActionsButton document={document} />
         </div>
         <div className="text-xs text-muted-foreground truncate">{title}</div>
         <div className="flex items-center gap-2">
@@ -202,7 +209,7 @@ export const DocumentEpubRenderer = () => {
         <LoaderSpin />
       ) : (
         <MarkdownWrapper
-          className="mx-auto max-w-full"
+          className="mx-auto max-w-full document-renderer"
           onLinkClick={handleLinkClick}
           onSegmentVisible={onSegmentVisible}
           autoTranslate={document.config.autoTranslate}
