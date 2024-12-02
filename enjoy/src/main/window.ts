@@ -7,6 +7,7 @@ import {
   shell,
   dialog,
   systemPreferences,
+  MenuItemConstructorOptions,
 } from "electron";
 import path from "path";
 import db from "@main/db";
@@ -641,42 +642,49 @@ ${log}
     // mainWindow.webContents.openDevTools();
   }
 
-  if (platform() === "darwin") {
-    const menu = Menu.buildFromTemplate([
-      {
-        label: app.name,
-        submenu: [
-          { role: "about" },
-          { type: "separator" },
-          { role: "hide" },
-          { role: "unhide" },
-          { type: "separator" },
-          { role: "quit" },
-        ],
-      },
-      {
-        label: "&Help",
-        submenu: [
-          {
-            label: "Check for Updates...",
-            click: () => {
-              shell.openExternal("https://1000h.org/enjoy-app/install.html");
-            },
+  const menuTemplate: MenuItemConstructorOptions[] = [
+    {
+      label: app.name,
+      submenu: [
+        { role: "about" },
+        { type: "separator" },
+        { role: "hide" },
+        { role: "unhide" },
+        { type: "separator" },
+        { role: "quit" },
+      ],
+    },
+    {
+      label: "Edit",
+      submenu: [
+        { role: "undo" },
+        { role: "redo" },
+        { type: "separator" },
+        { role: "cut" },
+        { role: "copy" },
+        { role: "paste" },
+      ],
+    },
+    {
+      label: "Help",
+      submenu: [
+        {
+          label: "Check for Updates...",
+          click: () => {
+            shell.openExternal("https://1000h.org/enjoy-app/install.html");
           },
-          {
-            label: "Report Issue...",
-            click: () => {
-              shell.openExternal(`${REPO_URL}/issues/new`);
-            },
+        },
+        {
+          label: "Report Issue...",
+          click: () => {
+            shell.openExternal(`${REPO_URL}/issues/new`);
           },
-        ],
-      },
-    ]);
+        },
+      ],
+    },
+  ];
 
-    Menu.setApplicationMenu(menu);
-  } else {
-    Menu.setApplicationMenu(null);
-  }
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
 
   main.win = mainWindow;
 };
