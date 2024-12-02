@@ -106,7 +106,7 @@ export const DocumentConfigForm = (props: {
                 <FormLabel>{t("layout")}</FormLabel>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger>
-                    <SelectValue placeholder={t("layout")} />
+                    <SelectValue placeholder={t("horizontal")} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="horizontal">
