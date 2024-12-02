@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  toast,
 } from "@renderer/components/ui";
 import {
   LoaderIcon,
@@ -30,6 +31,7 @@ import {
   TranscriptionEditButton,
 } from "@renderer/components";
 import { Sentence } from "@renderer/components";
+import { useCopyToClipboard } from "@uidotdev/usehooks";
 
 export const MediaTranscription = (props: { display?: boolean }) => {
   const { display } = props;
@@ -58,6 +60,7 @@ export const MediaTranscription = (props: { display?: boolean }) => {
       segment: SegmentType;
     }[]
   >([]);
+  const [_, copyToClipboard] = useCopyToClipboard();
 
   const fetchSegmentStats = async () => {
     if (!media) return;
@@ -86,6 +89,15 @@ export const MediaTranscription = (props: { display?: boolean }) => {
           inline: "center",
         } as ScrollIntoViewOptions);
     }, 300);
+  };
+
+  const handleCopyFullText = () => {
+    if (!transcription?.result) return;
+    const fullText = (transcription.result as AlignmentResult).timeline
+      .map((s) => s.text)
+      .join("\n\n");
+    copyToClipboard(fullText);
+    toast.success(t("copied"));
   };
 
   useEffect(() => {
@@ -167,6 +179,15 @@ export const MediaTranscription = (props: { display?: boolean }) => {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <MediaTranscriptionPrint />
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Button
+                    variant="ghost"
+                    className="block w-full"
+                    onClick={handleCopyFullText}
+                  >
+                    {t("copyFullText")}
+                  </Button>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
