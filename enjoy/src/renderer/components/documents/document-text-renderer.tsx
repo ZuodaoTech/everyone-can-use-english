@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "react";
 import {
+  DocumentActionsButton,
   DocumentConfigButton,
   LoaderSpin,
   MarkdownWrapper,
@@ -33,6 +34,7 @@ export const DocumentTextRenderer = () => {
       <div className="flex items-center justify-between space-x-2 sticky top-0 z-10 bg-background py-2">
         <div className="flex items-center gap-2">
           <DocumentConfigButton document={document} />
+          <DocumentActionsButton document={document} />
         </div>
         <div className="text-xs text-muted-foreground max-w-full truncate">
           {document.title}
@@ -53,7 +55,7 @@ export const DocumentTextRenderer = () => {
         </div>
       </div>
       <MarkdownWrapper
-        className="mx-auto max-w-full"
+        className="mx-auto max-w-full document-renderer"
         autoTranslate={document.config.autoTranslate}
         onSpeech={onSpeech}
         onSegmentVisible={onSegmentVisible}

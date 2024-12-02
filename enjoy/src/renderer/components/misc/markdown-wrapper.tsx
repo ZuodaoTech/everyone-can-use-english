@@ -171,7 +171,7 @@ const Segment = memo(
           <span className="segment-content">{children}</span>
         </Tag>
         {translation && (
-          <Tag id={`translation-${index}`}>
+          <Tag id={`translation-${index}`} className="translation">
             {translation}
             <Button
               variant="ghost"
