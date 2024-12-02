@@ -58,7 +58,10 @@ const DocumentComponent = () => {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <ResizablePanelGroup direction="horizontal" className="px-4 pb-4">
+      <ResizablePanelGroup
+        direction={document.layout || "horizontal"}
+        className="px-4 pb-4"
+      >
         <ResizablePanel id="document" order={0}>
           <ScrollArea
             className={`h-full px-4 pb-6 border rounded-lg shadow-lg ${
@@ -73,7 +76,9 @@ const DocumentComponent = () => {
           </ScrollArea>
         </ResizablePanel>
         <ResizableHandle
-          className={playingSegment ? "invisible mx-2" : "invisible"}
+          className={`${document.layout === "horizontal" ? "mx-2" : "my-2"} ${
+            playingSegment ? "invisible" : ""
+          }`}
         />
         <ResizablePanel
           id="player"

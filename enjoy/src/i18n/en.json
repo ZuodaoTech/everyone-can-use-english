@@ -933,5 +933,8 @@
   "myPronunciation": "My pronunciation",
   "originalPronunciation": "Original pronunciation",
   "reloadApp": "reload app",
-  "exit": "Exit"
+  "exit": "Exit",
+  "layout": "Layout",
+  "horizontal": "Horizontal",
+  "vertical": "Vertical"
 }

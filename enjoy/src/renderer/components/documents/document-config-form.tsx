@@ -103,20 +103,18 @@ export const DocumentConfigForm = (props: {
             name="config.layout"
             render={({ field }) => (
               <FormItem>
-                <div className="flex items-center justify-between space-x-2">
-                  <FormLabel>{t("layout")}</FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t("layout")} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="horizontal">
-                        {t("horizontal")}
-                      </SelectItem>
-                      <SelectItem value="vertical">{t("vertical")}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <FormLabel>{t("layout")}</FormLabel>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={t("layout")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="horizontal">
+                      {t("horizontal")}
+                    </SelectItem>
+                    <SelectItem value="vertical">{t("vertical")}</SelectItem>
+                  </SelectContent>
+                </Select>
               </FormItem>
             )}
           />
