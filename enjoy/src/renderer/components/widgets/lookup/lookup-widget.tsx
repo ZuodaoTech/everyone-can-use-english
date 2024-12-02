@@ -16,7 +16,7 @@ import {
   AiLookupResult,
   CamdictLookupResult,
 } from "@renderer/components";
-import { ChevronLeft, ChevronFirst } from "lucide-react";
+import { ChevronLeft, ChevronFirst, SpeakerIcon, MicIcon } from "lucide-react";
 
 export const LookupWidget = () => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -107,7 +107,7 @@ export const LookupWidget = () => {
           top: selected?.position?.y,
           left: selected?.position?.x,
         }}
-      ></PopoverAnchor>
+      />
       <PopoverContent
         className="w-full p-0 z-50"
         updatePositionStrategy="always"
@@ -115,33 +115,36 @@ export const LookupWidget = () => {
         {selected?.word && (
           <ScrollArea>
             <div className="w-96 h-96 flex flex-col">
-              <div className="p-2 border-b flex justify-between items-center">
-                <div className="flex items-center">
-                  {history.length > 1 && (
-                    <div className="mr-1 flex items-center">
-                      <Button
-                        variant="ghost"
-                        className="w-6 h-6 p-0"
-                        onClick={handleViewFirst}
-                      >
-                        <ChevronFirst />
-                      </Button>
-
-                      <Button
-                        variant="ghost"
-                        className="w-6 h-6 p-0"
-                        onClick={handleViewLast}
-                      >
-                        <ChevronLeft />
-                      </Button>
-                    </div>
-                  )}
-
-                  <div className="font-bold">{current}</div>
+              <div className="p-2 border-b space-y-2">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center">
+                    {history.length > 1 && (
+                      <div className="mr-1 flex items-center">
+                        <Button
+                          variant="ghost"
+                          className="w-6 h-6 p-0"
+                          onClick={handleViewFirst}
+                        >
+                          <ChevronFirst />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          className="w-6 h-6 p-0"
+                          onClick={handleViewLast}
+                        >
+                          <ChevronLeft />
+                        </Button>
+                      </div>
+                    )}
+                    <div className="font-bold">{current}</div>
+                  </div>
+                  <div className="w-40">
+                    <DictSelect />
+                  </div>
                 </div>
 
-                <div className="w-40">
-                  <DictSelect />
+                <div className="">
+                  <VocabularyPronunciationAssessment word={current} />
                 </div>
               </div>
               <div className="p-2 pr-1 flex-1">
@@ -163,5 +166,18 @@ export const LookupWidget = () => {
         )}
       </PopoverContent>
     </Popover>
+  );
+};
+
+LookupWidget.displayName = "LookupWidget";
+
+const VocabularyPronunciationAssessment = (props: { word: string }) => {
+  const { word } = props;
+  if (!word) return null;
+
+  return (
+    <Button variant="ghost" className="size-6 p-0">
+      <MicIcon className="size-4" />
+    </Button>
   );
 };
