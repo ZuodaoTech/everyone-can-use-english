@@ -254,7 +254,7 @@ export function DocumentProvider({
       }}
     >
       <MediaShadowProvider
-        layout="compact"
+        layout={document?.config?.layout === "vertical" ? "normal" : "compact"}
         onCancel={() => togglePlayingSegment(null)}
       >
         <div ref={ref}>{children}</div>
