@@ -936,5 +936,7 @@
   "exit": "退出",
   "layout": "布局",
   "horizontal": "水平",
-  "vertical": "垂直"
+  "vertical": "垂直",
+  "copied": "已复制",
+  "copyFullText": "复制全文"
 }

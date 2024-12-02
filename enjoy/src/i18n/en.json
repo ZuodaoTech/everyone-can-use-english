@@ -936,5 +936,7 @@
   "exit": "Exit",
   "layout": "Layout",
   "horizontal": "Horizontal",
-  "vertical": "Vertical"
+  "vertical": "Vertical",
+  "copied": "Copied",
+  "copyFullText": "Copy full text"
 }
