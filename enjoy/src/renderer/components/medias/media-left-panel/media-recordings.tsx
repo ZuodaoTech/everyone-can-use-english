@@ -149,7 +149,7 @@ export const MediaRecordings = () => {
           #{currentSegmentIndex + 1}/{transcription?.result?.timeline?.length}
         </div>
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm">
               <SquareMenuIcon className="w-5 h-5 text-muted-foreground" />
             </Button>
