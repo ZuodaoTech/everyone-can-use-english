@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 import { Button, toast } from "@renderer/components/ui";
 import { t } from "i18next";
 import {
@@ -9,7 +9,10 @@ import { AlignmentResult } from "echogarden/dist/api/API.d.js";
 import { convertWordIpaToNormal } from "@/utils";
 import template from "./transcription.template.html?raw";
 
-export const MediaTranscriptionPrint = () => {
+export const MediaTranscriptionPrint = forwardRef<
+  HTMLButtonElement,
+  React.ComponentProps<typeof Button>
+>((_, ref) => {
   const { media, transcription } = useContext(MediaShadowProviderContext);
   const { EnjoyApp, learningLanguage, ipaMappings } = useContext(
     AppSettingsProviderContext
@@ -74,8 +77,15 @@ export const MediaTranscriptionPrint = () => {
   }
 
   return (
-    <Button variant="ghost" className="block w-full" onClick={download}>
+    <Button
+      ref={ref}
+      variant="ghost"
+      className="block w-full"
+      onClick={download}
+    >
       {t("print")}
     </Button>
   );
-};
+});
+
+MediaTranscriptionPrint.displayName = "MediaTranscriptionPrint";
