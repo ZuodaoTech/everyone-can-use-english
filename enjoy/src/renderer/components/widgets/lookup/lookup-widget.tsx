@@ -213,6 +213,7 @@ const VocabularyPronunciationAssessment = (props: { word: string }) => {
   const [submitting, setSubmitting] = useState(false);
   const [recording, setRecording] = useState<RecordingType>();
   const [assessment, setAssessment] = useState<PronunciationAssessmentType>();
+  const [open, setOpen] = useState(false);
   const audio = useRef<HTMLAudioElement>(null);
 
   const askForMediaAccess = () => {
@@ -301,6 +302,17 @@ const VocabularyPronunciationAssessment = (props: { word: string }) => {
     }
   }, [recordingBlob]);
 
+  /**
+   * Auto stop recording after 5 seconds
+   */
+  useEffect(() => {
+    if (!isRecording) return;
+
+    if (recordingTime >= 5) {
+      stopRecording();
+    }
+  }, [recordingTime]);
+
   if (!word) return null;
   if (!access) return null;
 
@@ -319,13 +331,13 @@ const VocabularyPronunciationAssessment = (props: { word: string }) => {
         className="rounded-full size-6 p-0 bg-red-500 hover:bg-red-500/90"
         onClick={stopRecording}
       >
-        <SquareIcon fill="white" className="size-4 text-white" />
+        <SquareIcon fill="white" className="size-3 text-white" />
       </Button>
     );
   }
 
   return (
-    <Collapsible>
+    <Collapsible open={open} onOpenChange={setOpen}>
       <div className="flex items-center gap-1">
         <Button
           variant="ghost"
