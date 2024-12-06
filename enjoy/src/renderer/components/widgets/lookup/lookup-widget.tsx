@@ -360,7 +360,7 @@ const VocabularyPronunciationAssessment = (props: { word: string }) => {
         {assessment && (
           <CollapsibleTrigger asChild>
             <Button
-              variant="ghost"
+              variant={open ? "secondary" : "ghost"}
               size="icon"
               className="rounded-full p-0 size-6 border border-secondary"
             >
@@ -381,7 +381,11 @@ const VocabularyPronunciationAssessment = (props: { word: string }) => {
             <PronunciationAssessmentPhonemeResult
               result={assessment.result.words[0]}
             />
-            <PronunciationAssessmentScoreDetail assessment={assessment} />
+            <PronunciationAssessmentScoreDetail
+              assessment={assessment}
+              fluencyScore={false}
+              completenessScore={false}
+            />
           </div>
         </CollapsibleContent>
       )}
