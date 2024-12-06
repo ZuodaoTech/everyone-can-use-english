@@ -4,6 +4,8 @@ import {
   PopoverTrigger,
   PopoverContent,
   Button,
+  ScrollArea,
+  ScrollBar,
 } from "@renderer/components/ui";
 import { Volume2Icon } from "lucide-react";
 import { useEffect, useRef } from "react";
@@ -139,36 +141,13 @@ export const PronunciationAssessmentWordResult = (props: {
       </PopoverTrigger>
 
       <PopoverContent className="bg-muted">
-        {result.phonemes.length > 0 ? (
-          <>
-            <div className="text-sm flex items-center space-x-2 mb-2">
-              <span className="font-serif">{t("score")}:</span>
-              <span className="font-serif">
-                {result.pronunciationAssessment.accuracyScore}
-              </span>
-            </div>
-            <div className="flex items-center space-x-2 flex-wrap">
-              {result.phonemes.map((phoneme, index) => (
-                <div key={index} className="text-sm text-center">
-                  <div className="font-bold">{phoneme.phoneme}</div>
-                  <div
-                    className={`text-sm font-serif ${scoreColor(
-                      phoneme.pronunciationAssessment.accuracyScore
-                    )}`}
-                  >
-                    {phoneme.pronunciationAssessment.accuracyScore}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </>
-        ) : (
-          <div>
-            {t(
-              `models.pronunciationAssessment.errors.${result.pronunciationAssessment.errorType.toLowerCase()}`
-            )}
-          </div>
-        )}
+        <div className="text-sm flex items-center space-x-2 mb-2">
+          <span className="font-serif">{t("score")}:</span>
+          <span className="font-serif">
+            {result.pronunciationAssessment.accuracyScore}
+          </span>
+        </div>
+        <PronunciationAssessmentPhonemeResult result={result} />
 
         <div className="flex items-center space-x-2">
           <span className="text-sm">{t("myPronunciation")}:</span>
@@ -238,4 +217,31 @@ const scoreColor = (score: number) => {
   if (score >= 60) return "font-bold text-yellow-600";
 
   return "font-bold text-red-600";
+};
+
+export const PronunciationAssessmentPhonemeResult = (props: {
+  result: PronunciationAssessmentWordResultType;
+}) => {
+  const { result } = props;
+  console.log(result);
+
+  return (
+    <ScrollArea className="w-full">
+      <div className="w-full flex items-center gap-2">
+        {result.phonemes.map((phoneme, index) => (
+          <div key={index} className="text-sm text-center">
+            <div className="font-bold font-code">{phoneme.phoneme}</div>
+            <div
+              className={`text-xs font-serif ${scoreColor(
+                phoneme.pronunciationAssessment.accuracyScore
+              )}`}
+            >
+              {phoneme.pronunciationAssessment.accuracyScore}
+            </div>
+          </div>
+        ))}
+      </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
+  );
 };

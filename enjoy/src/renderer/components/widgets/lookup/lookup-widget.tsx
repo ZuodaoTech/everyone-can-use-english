@@ -1,22 +1,43 @@
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState, useRef } from "react";
 import {
   AppSettingsProviderContext,
   DictProviderContext,
 } from "@renderer/context";
 import {
   Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Popover,
   PopoverAnchor,
   PopoverContent,
   ScrollArea,
+  toast,
 } from "@renderer/components/ui";
 import {
   DictLookupResult,
   DictSelect,
   AiLookupResult,
   CamdictLookupResult,
+  scoreColor,
+  PronunciationAssessmentScoreDetail,
+  PronunciationAssessmentFulltextResult,
+  PronunciationAssessmentScoreResult,
+  PronunciationAssessmentPhonemeResult,
 } from "@renderer/components";
-import { ChevronLeft, ChevronFirst, SpeakerIcon, MicIcon } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronFirst,
+  SpeakerIcon,
+  MicIcon,
+  SquareIcon,
+  LoaderIcon,
+  Volume2Icon,
+  CheckIcon,
+} from "lucide-react";
+import { useAudioRecorder } from "react-audio-voice-recorder";
+import { t } from "i18next";
+import { usePronunciationAssessments } from "@/renderer/hooks";
 
 export const LookupWidget = () => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);
@@ -173,11 +194,184 @@ LookupWidget.displayName = "LookupWidget";
 
 const VocabularyPronunciationAssessment = (props: { word: string }) => {
   const { word } = props;
+  const { EnjoyApp, recorderConfig, learningLanguage } = useContext(
+    AppSettingsProviderContext
+  );
+  const {
+    startRecording,
+    stopRecording,
+    recordingBlob,
+    isRecording,
+    isPaused,
+    recordingTime,
+    mediaRecorder,
+  } = useAudioRecorder(recorderConfig, (exception) => {
+    toast.error(exception.message);
+  });
+  const { createAssessment } = usePronunciationAssessments();
+  const [access, setAccess] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [recording, setRecording] = useState<RecordingType>();
+  const [assessment, setAssessment] = useState<PronunciationAssessmentType>();
+  const audio = useRef<HTMLAudioElement>(null);
+
+  const askForMediaAccess = () => {
+    EnjoyApp.system.preferences.mediaAccess("microphone").then((access) => {
+      if (access) {
+        setAccess(true);
+      } else {
+        setAccess(false);
+        toast.warning(t("noMicrophoneAccess"));
+      }
+    });
+  };
+
+  const findRecording = () => {
+    EnjoyApp.recordings
+      .findOne({
+        referenceText: word,
+      })
+      .then((recording) => {
+        if (recording?.pronunciationAssessment) {
+          setRecording(recording);
+          setAssessment(recording.pronunciationAssessment);
+        }
+      });
+  };
+
+  const onRecorded = async (blob: Blob) => {
+    console.log(blob);
+
+    if (!blob) return;
+
+    let recording: RecordingType;
+    try {
+      recording = await EnjoyApp.recordings.create({
+        language: learningLanguage,
+        blob: {
+          type: recordingBlob.type.split(";")[0],
+          arrayBuffer: await blob.arrayBuffer(),
+        },
+        referenceText: word,
+      });
+    } catch (err) {
+      toast.error(err.message);
+    }
+    if (!recording) return;
+
+    setSubmitting(true);
+    createAssessment({
+      language: learningLanguage,
+      reference: word,
+      recording,
+    })
+      .then((assessment) => {
+        setAssessment(assessment);
+        setRecording(recording);
+      })
+      .catch((err) => {
+        toast.error(err.message);
+        EnjoyApp.recordings.destroy(recording.id);
+      })
+      .finally(() => setSubmitting(false));
+  };
+
+  useEffect(() => {
+    askForMediaAccess();
+    findRecording();
+  }, [word]);
+
+  useEffect(() => {
+    if (recording) {
+      console.log(recording);
+      audio.current = new Audio(recording.src);
+    }
+
+    return () => {
+      if (audio.current) {
+        audio.current.pause();
+        audio.current = null;
+      }
+    };
+  }, [recording]);
+
+  useEffect(() => {
+    if (recordingBlob) {
+      onRecorded(recordingBlob);
+    }
+  }, [recordingBlob]);
+
   if (!word) return null;
+  if (!access) return null;
+
+  if (submitting) {
+    return (
+      <Button variant="ghost" className="size-6 p-0" disabled>
+        <LoaderIcon className="size-4 animate-spin" />
+      </Button>
+    );
+  }
+
+  if (isRecording) {
+    return (
+      <Button
+        variant="ghost"
+        className="rounded-full size-6 p-0 bg-red-500 hover:bg-red-500/90"
+        onClick={stopRecording}
+      >
+        <SquareIcon fill="white" className="size-4 text-white" />
+      </Button>
+    );
+  }
 
   return (
-    <Button variant="ghost" className="size-6 p-0">
-      <MicIcon className="size-4" />
-    </Button>
+    <Collapsible>
+      <div className="flex items-center gap-1">
+        <Button
+          variant="ghost"
+          className="rounded-full size-6 p-0"
+          onClick={startRecording}
+        >
+          <MicIcon className="size-4" />
+        </Button>
+        {recording && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full p-0 size-6"
+            onClick={() => audio.current?.play()}
+          >
+            <Volume2Icon className="size-4" />
+          </Button>
+        )}
+        {assessment && (
+          <CollapsibleTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full p-0 size-6"
+            >
+              <span
+                className={`text-xs ${scoreColor(
+                  assessment.pronunciationScore || 0
+                )}`}
+              >
+                {assessment.pronunciationScore.toFixed(0)}
+              </span>
+            </Button>
+          </CollapsibleTrigger>
+        )}
+      </div>
+      {assessment && (
+        <CollapsibleContent className="mt-2">
+          <div className="space-y-2">
+            <PronunciationAssessmentPhonemeResult
+              result={assessment.result.words[0]}
+            />
+            <PronunciationAssessmentScoreDetail assessment={assessment} />
+          </div>
+        </CollapsibleContent>
+      )}
+    </Collapsible>
   );
 };

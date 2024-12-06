@@ -7,9 +7,9 @@ import {
   RadialProgress,
   Badge,
 } from "@renderer/components/ui";
-import { scoreColor } from "./pronunciation-assessment-score-result";
+import { scoreColor } from "@renderer/components";
 import { t } from "i18next";
-import { formatDateTime } from "@/renderer/lib/utils";
+import { formatDateTime } from "@renderer/lib/utils";
 import { MoreHorizontalIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -149,7 +149,7 @@ export const PronunciationAssessmentScoreDetail = (props: {
       ].map(({ label, value }) => {
         if (typeof value === "number") {
           return (
-            <div key={label} className="flex items-center space-x-2 mb-2">
+            <div key={label} className="flex items-center gap-2">
               <span className="text-muted-foreground text-sm">{label}:</span>
               <span className={`text-sm font-bold ${scoreColor(value || 0)}`}>
                 {value}
