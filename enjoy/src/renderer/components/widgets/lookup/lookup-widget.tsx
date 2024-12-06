@@ -269,6 +269,7 @@ const VocabularyPronunciationAssessment = (props: { word: string }) => {
       .then((assessment) => {
         setAssessment(assessment);
         setRecording(recording);
+        setOpen(true);
       })
       .catch((err) => {
         toast.error(err.message);
@@ -361,7 +362,7 @@ const VocabularyPronunciationAssessment = (props: { word: string }) => {
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full p-0 size-6"
+              className="rounded-full p-0 size-6 border border-secondary"
             >
               <span
                 className={`text-xs ${scoreColor(

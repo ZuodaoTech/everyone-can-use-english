@@ -491,6 +491,7 @@ export const MediaCurrentRecording = () => {
       icon: MediaRecordButton,
       active: isRecording,
       onClick: () => {},
+      asChild: true,
     },
     {
       id: "recording-play-or-pause-button",
@@ -509,6 +510,7 @@ export const MediaCurrentRecording = () => {
           player?.playPause();
         }
       },
+      asChild: false,
     },
     {
       id: "media-pronunciation-assessment-button",
@@ -524,6 +526,7 @@ export const MediaCurrentRecording = () => {
           : "text-red-500"
         : "",
       onClick: () => setDetailIsOpen(!detailIsOpen),
+      asChild: false,
     },
     {
       id: "media-compare-button",
@@ -532,6 +535,7 @@ export const MediaCurrentRecording = () => {
       icon: GitCompareIcon,
       active: isComparing,
       onClick: toggleCompare,
+      asChild: false,
     },
     {
       id: "media-select-region-button",
@@ -540,6 +544,7 @@ export const MediaCurrentRecording = () => {
       icon: TextCursorInputIcon,
       active: isSelectingRegion,
       onClick: () => setIsSelectingRegion(!isSelectingRegion),
+      asChild: false,
     },
     {
       id: "media-share-button",
@@ -548,6 +553,7 @@ export const MediaCurrentRecording = () => {
       icon: Share2Icon,
       active: isSharing,
       onClick: () => setIsSharing(true),
+      asChild: false,
     },
     {
       id: "media-download-button",
@@ -556,6 +562,7 @@ export const MediaCurrentRecording = () => {
       icon: DownloadIcon,
       active: false,
       onClick: handleDownload,
+      asChild: false,
     },
   ];
 
@@ -625,6 +632,7 @@ export const MediaCurrentRecording = () => {
             data-tooltip-content={action.label}
             className="relative p-0 w-full h-full rounded-none"
             onClick={action.onClick}
+            asChild={action.asChild}
           >
             <action.icon className={`w-4 h-4 ${cn(action.iconClassName)}`} />
           </Button>
