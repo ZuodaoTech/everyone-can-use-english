@@ -14,6 +14,7 @@ import {
   AiLookupResult,
   TranslateResult,
   DictSelect,
+  VocabularyPronunciationAssessment,
 } from "@renderer/components";
 
 /*
@@ -108,6 +109,8 @@ const SelectedWords = (props: {
           <DictSelect />
         </div>
       </div>
+
+      <VocabularyPronunciationAssessment word={word} />
 
       <Separator className="my-4" />
 

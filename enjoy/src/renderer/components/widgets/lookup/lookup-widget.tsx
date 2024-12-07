@@ -192,7 +192,7 @@ export const LookupWidget = () => {
 
 LookupWidget.displayName = "LookupWidget";
 
-const VocabularyPronunciationAssessment = (props: { word: string }) => {
+export const VocabularyPronunciationAssessment = (props: { word: string }) => {
   const { word } = props;
   const { EnjoyApp, recorderConfig, learningLanguage } = useContext(
     AppSettingsProviderContext
@@ -202,9 +202,7 @@ const VocabularyPronunciationAssessment = (props: { word: string }) => {
     stopRecording,
     recordingBlob,
     isRecording,
-    isPaused,
     recordingTime,
-    mediaRecorder,
   } = useAudioRecorder(recorderConfig, (exception) => {
     toast.error(exception.message);
   });
