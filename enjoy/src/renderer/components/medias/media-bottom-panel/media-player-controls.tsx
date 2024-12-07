@@ -303,31 +303,32 @@ export const MediaPlayerControls = () => {
       }),
 
       regions.on("region-out", (region) => {
-        if (region !== activeRegion && region !== segmentRegion) return;
+        if (region.id !== activeRegion?.id) return;
         if (playMode === "all" || isLoopPausing.current) return;
 
         // Pause immediately
         wavesurfer.pause();
 
-        // Use a more reliable loop mechanism
-        if (playMode === "loop") {
-          // Ensure we're at the start before playing
-          wavesurfer.setTime(parseFloat(region.start.toFixed(6)));
-          isLoopPausing.current = true;
+        // Use requestAnimationFrame to prevent recursion
+        requestAnimationFrame(() => {
+          if (playMode === "loop") {
+            // Set time and play with proper guards
+            if (!isLoopPausing.current) {
+              isLoopPausing.current = true;
+              wavesurfer.setTime(parseFloat(region.start.toFixed(6)));
 
-          // Small delay to ensure time is set before playing
-          setTimeout(() => {
-            isLoopPausing.current = false;
-            if (playMode === "loop") {
-              wavesurfer.play();
+              setTimeout(() => {
+                isLoopPausing.current = false;
+                if (playMode === "loop") {
+                  wavesurfer.play();
+                }
+              }, 500);
             }
-          }, 500);
-        } else if (playMode === "single") {
-          requestAnimationFrame(() => {
+          } else if (playMode === "single") {
             wavesurfer.setTime(parseFloat(region.start.toFixed(6)));
             wavesurfer.setScrollTime(parseFloat(region.start.toFixed(6)));
-          });
-        }
+          }
+        });
       }),
     ];
 
@@ -488,6 +489,9 @@ export const MediaPlayerControls = () => {
       activeRegion.id.startsWith("word-region") ||
       activeRegion.id.startsWith("segment-region")
     ) {
+      if (!wavesurfer.isPlaying()) {
+        wavesurfer.setTime(parseFloat(activeRegion.start.toFixed(6)));
+      }
       setZoomRatio(fitZoomRatio);
     }
   }, [activeRegion, fitZoomRatio]);
