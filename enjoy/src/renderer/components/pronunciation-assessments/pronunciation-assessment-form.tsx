@@ -20,7 +20,7 @@ import {
 } from "@renderer/components/ui";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppSettingsProviderContext } from "@/renderer/context";
 import { LANGUAGES } from "@/constants";
 import { z } from "zod";

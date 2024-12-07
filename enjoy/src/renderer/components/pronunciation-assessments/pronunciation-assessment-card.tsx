@@ -7,9 +7,9 @@ import {
   RadialProgress,
   Badge,
 } from "@renderer/components/ui";
-import { scoreColor } from "./pronunciation-assessment-score-result";
+import { scoreColor } from "@renderer/components";
 import { t } from "i18next";
-import { formatDateTime } from "@/renderer/lib/utils";
+import { formatDateTime } from "@renderer/lib/utils";
 import { MoreHorizontalIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -108,8 +108,26 @@ export const PronunciationAssessmentCard = (props: {
 
 export const PronunciationAssessmentScoreDetail = (props: {
   assessment: PronunciationAssessmentType;
+  pronunciationScore?: boolean;
+  accuracyScore?: boolean;
+  fluencyScore?: boolean;
+  completenessScore?: boolean;
+  prosodyScore?: boolean;
+  grammarScore?: boolean;
+  vocabularyScore?: boolean;
+  topicScore?: boolean;
 }) => {
-  const { assessment } = props;
+  const {
+    assessment,
+    pronunciationScore = true,
+    accuracyScore = true,
+    fluencyScore = true,
+    completenessScore = true,
+    prosodyScore = true,
+    grammarScore = true,
+    vocabularyScore = true,
+    topicScore = true,
+  } = props;
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
@@ -117,39 +135,47 @@ export const PronunciationAssessmentScoreDetail = (props: {
         {
           label: t("models.pronunciationAssessment.pronunciationScore"),
           value: assessment.pronunciationScore,
+          show: pronunciationScore,
         },
         {
           label: t("models.pronunciationAssessment.accuracyScore"),
           value: assessment.accuracyScore,
+          show: accuracyScore,
         },
         {
           label: t("models.pronunciationAssessment.fluencyScore"),
           value: assessment.fluencyScore,
+          show: fluencyScore,
         },
         {
           label: t("models.pronunciationAssessment.completenessScore"),
           value: assessment.completenessScore,
+          show: completenessScore,
         },
         {
           label: t("models.pronunciationAssessment.prosodyScore"),
           value: assessment.prosodyScore,
+          show: prosodyScore,
         },
         {
           label: t("models.pronunciationAssessment.grammarScore"),
           value: assessment.grammarScore,
+          show: grammarScore,
         },
         {
           label: t("models.pronunciationAssessment.vocabularyScore"),
           value: assessment.vocabularyScore,
+          show: vocabularyScore,
         },
         {
           label: t("models.pronunciationAssessment.topicScore"),
           value: assessment.topicScore,
+          show: topicScore,
         },
-      ].map(({ label, value }) => {
-        if (typeof value === "number") {
+      ].map(({ label, value, show }) => {
+        if (show && typeof value === "number") {
           return (
-            <div key={label} className="flex items-center space-x-2 mb-2">
+            <div key={label} className="flex items-center gap-2">
               <span className="text-muted-foreground text-sm">{label}:</span>
               <span className={`text-sm font-bold ${scoreColor(value || 0)}`}>
                 {value}

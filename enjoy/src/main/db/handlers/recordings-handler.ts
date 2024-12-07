@@ -48,9 +48,11 @@ class RecordingsHandler {
       });
   }
 
-  private async findOne(event: IpcMainEvent, where: WhereOptions<Recording>) {
+  private async findOne(_event: IpcMainEvent, where: WhereOptions<Recording>) {
     return Recording.scope("withoutDeleted")
       .findOne({
+        include: PronunciationAssessment,
+        order: [["createdAt", "DESC"]],
         where: {
           ...where,
         },
@@ -65,12 +67,6 @@ class RecordingsHandler {
         }
 
         return recording.toJSON();
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
       });
   }
 
