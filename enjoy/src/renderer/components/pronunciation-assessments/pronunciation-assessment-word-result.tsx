@@ -140,7 +140,7 @@ export const PronunciationAssessmentWordResult = (props: {
         </div>
       </PopoverTrigger>
 
-      <PopoverContent className="bg-muted">
+      <PopoverContent align="start" className="bg-muted">
         <div className="text-sm flex items-center space-x-2 mb-2">
           <span className="font-serif">{t("score")}:</span>
           <span className="font-serif">
