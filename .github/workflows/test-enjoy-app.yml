@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-12, macos-14, windows-latest, windows-2019, ubuntu-latest]
+        os: [macos-13, macos-15, windows-latest, windows-2019, ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
 
@@ -36,8 +36,8 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Install sdl2 for macOS12
-        if: matrix.os == 'macos-12'
+      - name: Install sdl2 for macOS13
+        if: matrix.os == 'macos-13'
         run: |
           brew update
           brew install sdl2
