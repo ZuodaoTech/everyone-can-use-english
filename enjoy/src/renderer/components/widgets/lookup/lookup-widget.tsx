@@ -239,8 +239,6 @@ export const VocabularyPronunciationAssessment = (props: { word: string }) => {
   };
 
   const onRecorded = async (blob: Blob) => {
-    console.log(blob);
-
     if (!blob) return;
 
     let recording: RecordingType;
@@ -283,7 +281,6 @@ export const VocabularyPronunciationAssessment = (props: { word: string }) => {
 
   useEffect(() => {
     if (recording) {
-      console.log(recording);
       audio.current = new Audio(recording.src);
     }
 

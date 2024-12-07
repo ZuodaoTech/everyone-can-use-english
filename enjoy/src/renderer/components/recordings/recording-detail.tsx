@@ -62,7 +62,7 @@ export const RecordingDetail = (props: {
 
   return (
     <div className="">
-      <div className="flex justify-center mb-6 px-4">
+      <div className="flex justify-center mb-6">
         <WavesurferPlayer
           id={recording.id}
           src={recording.src}
@@ -74,6 +74,7 @@ export const RecordingDetail = (props: {
 
       {result ? (
         <PronunciationAssessmentFulltextResult
+          className="py-4"
           words={result.words}
           currentTime={currentTime}
           src={recording.src}

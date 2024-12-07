@@ -7,7 +7,6 @@ import {
   AlertDialogTitle,
   AlertDialogContent,
   AlertDialogFooter,
-  AlertDialogOverlay,
   Button,
   Tabs,
   TabsContent,
@@ -16,7 +15,6 @@ import {
 } from "@renderer/components/ui";
 import { CircleAlertIcon, LoaderIcon } from "lucide-react";
 import { t } from "i18next";
-import { useNavigate } from "react-router-dom";
 import { TranscriptionCreateForm, TranscriptionsList } from "../transcriptions";
 import { SttEngineOptionEnum } from "@/types/enums";
 
@@ -25,7 +23,6 @@ export const MediaLoadingModal = () => {
 
   return (
     <AlertDialog open={!decoded || !Boolean(transcription?.result?.timeline)}>
-      <AlertDialogOverlay />
       <AlertDialogContent className="max-h-[70%] overflow-y-auto">
         <AlertDialogHeader>
           <AlertDialogTitle>{t("preparingAudio")}</AlertDialogTitle>
