@@ -340,16 +340,16 @@ export const VocabularyPronunciationAssessment = (props: { word: string }) => {
       <div className="flex items-center gap-1">
         <Button
           variant="ghost"
-          className="rounded-full size-6 p-0"
+          className="rounded-full size-6 p-0 bg-red-500 hover:bg-red-500/90"
           onClick={startRecording}
         >
-          <MicIcon className="size-4" />
+          <MicIcon className="size-4 text-white" />
         </Button>
         {recording && (
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full p-0 size-6"
+            className="rounded-full p-0 size-6 border border-secondary"
             onClick={() => audio.current?.play()}
           >
             <Volume2Icon className="size-4" />
