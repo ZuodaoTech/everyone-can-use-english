@@ -1,10 +1,10 @@
-name: Build Enjoy App (macos-14)
+name: Build Enjoy App (macos-x64)
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
 
@@ -16,7 +16,7 @@ jobs:
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: "**/node_modules"
-          key: macos-14-${{ hashFiles('**/yarn.lock') }}
+          key: macos-13-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
         run: yarn install
@@ -38,6 +38,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Enjoy-${{ runner.os }}-arm64-build-${{ github.sha }}
+          name: Enjoy-${{ runner.os }}-x64-build-${{ github.sha }}
           path: |
             enjoy/out/make/**/*.dmg

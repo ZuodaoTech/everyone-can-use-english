@@ -6,7 +6,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-12, macos-14, windows-latest, ubuntu-latest]
+        os: [macos-13, macos-15, windows-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
 
@@ -38,7 +38,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Enjoy-${{ runner.os }}-${{ matrix.os == 'macos-14' && 'arm64' || 'x64' }}-build-${{ github.ref_name }}
+          name: Enjoy-${{ runner.os }}-${{ matrix.os == 'macos-15' && 'arm64' || 'x64' }}-build-${{ github.ref_name }}
           path: |
             enjoy/out/make/**/*.deb
             enjoy/out/make/**/*.rpm
