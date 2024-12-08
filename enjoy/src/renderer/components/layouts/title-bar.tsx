@@ -223,8 +223,8 @@ export const TitleBar = () => {
                   t("checkingForUpdate")}
                 {updaterState === "update-available" && t("updateAvailable")}
                 {updaterState === "update-downloaded" && t("quitAndInstall")}
-                {!updaterState ||
-                  (updaterState === "error" && t("checkUpdate"))}
+                {(!updaterState || updaterState === "error") &&
+                  t("checkUpdate")}
               </span>
             </DropdownMenuItem>
           </DropdownMenuContent>
