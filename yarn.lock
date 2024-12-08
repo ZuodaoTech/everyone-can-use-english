@@ -12197,7 +12197,6 @@ __metadata:
     typescript: "npm:^5.7.2"
     umzug: "npm:^3.8.2"
     unzipper: "npm:^0.12.3"
-    update-electron-app: "npm:^3.0.0"
     vite: "npm:^6.0.3"
     vite-plugin-static-copy: "npm:^2.2.0"
     wavesurfer.js: "npm:^7.8.10"
@@ -13935,15 +13934,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"github-url-to-object@npm:^4.0.4":
-  version: 4.0.6
-  resolution: "github-url-to-object@npm:4.0.6"
-  dependencies:
-    is-url: "npm:^1.1.0"
-  checksum: 10c0/b8ed9b2b93c55657299b7cc5ce9faf4441f143e59f995e126929d18f8fc692fc932d8530da9bde7655f35b29201beacbc17b066b7e26dbcc0dc983f8d3c918cf
-  languageName: node
-  linkType: hard
-
 "glob-parent@npm:^5.1.2, glob-parent@npm:~5.1.2":
   version: 5.1.2
   resolution: "glob-parent@npm:5.1.2"
@@ -15402,7 +15392,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-url@npm:^1.1.0, is-url@npm:^1.2.4":
+"is-url@npm:^1.2.4":
   version: 1.2.4
   resolution: "is-url@npm:1.2.4"
   checksum: 10c0/0157a79874f8f95fdd63540e3f38c8583c2ef572661cd0693cda80ae3e42dfe8e9a4a972ec1b827f861d9a9acf75b37f7d58a37f94a8a053259642912c252bc3
@@ -23521,17 +23511,6 @@ __metadata:
   bin:
     update-browserslist-db: cli.js
   checksum: 10c0/536a2979adda2b4be81b07e311bd2f3ad5e978690987956bc5f514130ad50cac87cd22c710b686d79731e00fbee8ef43efe5fcd72baa241045209195d43dcc80
-  languageName: node
-  linkType: hard
-
-"update-electron-app@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "update-electron-app@npm:3.0.0"
-  dependencies:
-    github-url-to-object: "npm:^4.0.4"
-    is-url: "npm:^1.2.4"
-    ms: "npm:^2.1.1"
-  checksum: 10c0/5e0b9ce8fd2cbcf6ea64d8029f90d90394facf05d86c8dceda5dba79af6e21522ef4f37f212982be781f488d497882529d9b11b91174159f6567a24039c76e6a
   languageName: node
   linkType: hard
 

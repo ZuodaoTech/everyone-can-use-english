@@ -7,7 +7,13 @@ export const About = () => {
   const { version, EnjoyApp } = useContext(AppSettingsProviderContext);
 
   const checkUpdate = async () => {
-    EnjoyApp.shell.openExternal("https://1000h.org/enjoy-app/install.html");
+    const platformInfo = await EnjoyApp.app.getPlatformInfo();
+    if (platformInfo.platform === "linux") {
+      EnjoyApp.shell.openExternal("https://1000h.org/enjoy-app/install.html");
+    } else {
+      EnjoyApp.app.checkForUpdates();
+      toast.info(t("checkingForUpdate"));
+    }
   };
 
   return (

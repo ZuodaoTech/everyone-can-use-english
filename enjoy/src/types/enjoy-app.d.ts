@@ -13,6 +13,16 @@ type EnjoyAppType = {
     createIssue: (title: string, body: string) => Promise<void>;
     onCmdOutput: (callback: (event, output: string) => void) => void;
     removeCmdOutputListeners: () => void;
+    checkForUpdates: () => Promise<void>;
+    quitAndInstall: () => Promise<void>;
+    onUpdater: (
+      callback: (
+        event: IpcRendererEvent,
+        eventType: string,
+        args: any[]
+      ) => void
+    ) => void;
+    removeUpdaterListeners: () => void;
     diskUsage: () => Promise<DiskUsageType>;
     version: string;
   };

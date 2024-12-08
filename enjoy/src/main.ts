@@ -7,26 +7,12 @@ import mainWindow from "@main/window";
 import ElectronSquirrelStartup from "electron-squirrel-startup";
 import contextMenu from "electron-context-menu";
 import { t } from "i18next";
-import { updateElectronApp, UpdateSourceType } from "update-electron-app";
 import unhandled from "electron-unhandled";
 import newGithubIssueUrl from "new-github-issue-url";
 
 const logger = log.scope("main");
 
 app.commandLine.appendSwitch("enable-features", "SharedArrayBuffer");
-
-// config auto updater
-if (!process.env.CI) {
-  updateElectronApp({
-    updateSource: {
-      type: UpdateSourceType.StaticStorage,
-      baseUrl: `https://dl.enjoy.bot/app/${process.platform}/${process.arch}`,
-    },
-    updateInterval: "1 hour",
-    logger: logger,
-    notifyUser: true,
-  });
-}
 
 if (!app.isPackaged) {
   app.disableHardwareAcceleration();

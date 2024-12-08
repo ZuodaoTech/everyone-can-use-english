@@ -1,4 +1,19 @@
 {
+  "menu": {
+    "about": "About",
+    "toggleFullScreen": "Toggle Full Screen",
+    "hide": "Hide",
+    "unhide": "Unhide",
+    "quit": "Quit",
+    "undo": "Undo",
+    "redo": "Redo",
+    "cut": "Cut",
+    "copy": "Copy",
+    "paste": "Paste",
+    "selectAll": "Select All",
+    "checkForUpdates": "Check for Updates",
+    "reportIssue": "Report Issue"
+  },
   "models": {
     "user": {
       "id": "ID",
@@ -360,7 +375,6 @@
   "currentVersion": "Current version",
   "checkUpdate": "Check update",
   "checkingLatestVersion": "Checking latest version",
-  "updateAvailable": "Update available",
   "updateDownloaded": "A new version has been downloaded. Restart the application to apply the updates.",
   "restart": "Restart",
   "later": "Later",
@@ -938,5 +952,8 @@
   "horizontal": "Horizontal",
   "vertical": "Vertical",
   "copied": "Copied",
-  "copyFullText": "Copy full text"
+  "copyFullText": "Copy full text",
+  "checkingForUpdate": "Checking for update",
+  "updateAvailable": "Update available",
+  "quitAndInstall": "Quit and install"
 }

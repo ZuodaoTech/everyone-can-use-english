@@ -8,6 +8,7 @@ import {
   dialog,
   systemPreferences,
   MenuItemConstructorOptions,
+  autoUpdater,
 } from "electron";
 import path from "path";
 import db from "@main/db";
@@ -25,7 +26,9 @@ import dict from "./dict";
 import mdict from "./mdict";
 import decompresser from "./decompresser";
 import { UserSetting } from "@main/db/models";
-import { platform } from "os";
+import { t } from "i18next";
+import { format } from "util";
+import pkg from "../../package.json" assert { type: "json" };
 
 const __dirname = import.meta.dirname;
 
@@ -36,6 +39,25 @@ const tedProvider = new TedProvider();
 const youtubeProvider = new YoutubeProvider();
 const ffmpeg = new Ffmpeg();
 const waveform = new Waveform();
+
+const FEED_BASE_URL = `https://dl.enjoy.bot/app/${process.platform}/${process.arch}`;
+autoUpdater.setFeedURL({
+  url:
+    process.platform === "darwin"
+      ? `${FEED_BASE_URL}/RELEASES.json`
+      : FEED_BASE_URL,
+  headers: {
+    "X-App-Version": app.getVersion(),
+    "User-Agent": format(
+      "%s/%s (%s: %s)",
+      pkg.name,
+      pkg.version,
+      process.platform,
+      process.arch
+    ),
+  },
+  serverType: process.platform === "darwin" ? "json" : "default",
+});
 
 const main = {
   win: null as BrowserWindow | null,
@@ -386,6 +408,44 @@ main.init = async () => {
     app.quit();
   });
 
+  ipcMain.handle("app-check-for-updates", () => {
+    autoUpdater.checkForUpdates();
+  });
+
+  ipcMain.handle("app-quit-and-install", () => {
+    autoUpdater.quitAndInstall();
+  });
+
+  ipcMain.on("app-on-updater", () => {
+    autoUpdater.on("error", (error) => {
+      mainWindow.webContents.send("app-on-updater", "error", [error]);
+    });
+    autoUpdater.on("checking-for-update", () => {
+      mainWindow.webContents.send("app-on-updater", "checking-for-update", []);
+    });
+    autoUpdater.on("update-available", () => {
+      mainWindow.webContents.send("app-on-updater", "update-available", []);
+    });
+    autoUpdater.on(
+      "update-downloaded",
+      (_event, releaseNotes, releaseName, releaseDate, updateURL) => {
+        logger.info(
+          "update-downloaded",
+          releaseNotes,
+          releaseName,
+          releaseDate,
+          updateURL
+        );
+        mainWindow.webContents.send("app-on-updater", "update-downloaded", [
+          releaseNotes,
+          releaseName,
+          releaseDate,
+          updateURL,
+        ]);
+      }
+    );
+  });
+
   ipcMain.handle("app-open-dev-tools", () => {
     mainWindow.webContents.openDevTools();
   });
@@ -646,38 +706,38 @@ ${log}
     {
       label: app.name,
       submenu: [
-        { role: "about" },
+        { role: "about", label: t("menu.about") },
         { type: "separator" },
-        { role: "togglefullscreen" },
-        { role: "hide" },
-        { role: "unhide" },
+        { role: "togglefullscreen", label: t("menu.toggleFullScreen") },
+        { role: "hide", label: t("menu.hide") },
+        { role: "unhide", label: t("menu.unhide") },
         { type: "separator" },
-        { role: "quit" },
+        { role: "quit", label: t("menu.quit") },
       ],
     },
     {
       label: "Edit",
       submenu: [
-        { role: "undo" },
-        { role: "redo" },
+        { role: "undo", label: t("menu.undo") },
+        { role: "redo", label: t("menu.redo") },
         { type: "separator" },
-        { role: "cut" },
-        { role: "copy" },
-        { role: "paste" },
-        { role: "selectAll" },
+        { role: "cut", label: t("menu.cut") },
+        { role: "copy", label: t("menu.copy") },
+        { role: "paste", label: t("menu.paste") },
+        { role: "selectAll", label: t("menu.selectAll") },
       ],
     },
     {
       label: "Help",
       submenu: [
         {
-          label: "Check for Updates...",
+          label: t("menu.checkForUpdates"),
           click: () => {
             shell.openExternal("https://1000h.org/enjoy-app/install.html");
           },
         },
         {
-          label: "Report Issue...",
+          label: t("menu.reportIssue"),
           click: () => {
             shell.openExternal(`${REPO_URL}/issues/new`);
           },

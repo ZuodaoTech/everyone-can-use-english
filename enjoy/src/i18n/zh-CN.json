@@ -1,4 +1,19 @@
 {
+  "menu": {
+    "about": "关于",
+    "toggleFullScreen": "全屏",
+    "hide": "隐藏",
+    "unhide": "显示",
+    "quit": "退出",
+    "undo": "撤销",
+    "redo": "重做",
+    "cut": "剪切",
+    "copy": "复制",
+    "paste": "粘贴",
+    "selectAll": "全选",
+    "checkForUpdates": "检查更新",
+    "reportIssue": "报告问题"
+  },
   "models": {
     "user": {
       "id": "ID",
@@ -360,7 +375,6 @@
   "currentVersion": "当前版本",
   "checkUpdate": "检查更新",
   "checkingLatestVersion": "正在检查最新版本",
-  "updateAvailable": "有新版本可用",
   "updateDownloaded": "新版本已下载，点击重新启动以更新",
   "restart": "Restart",
   "later": "Later",
@@ -938,5 +952,8 @@
   "horizontal": "水平",
   "vertical": "垂直",
   "copied": "已复制",
-  "copyFullText": "复制全文"
+  "copyFullText": "复制全文",
+  "checkingForUpdate": "正在检查更新",
+  "updateAvailable": "有新版本",
+  "quitAndInstall": "退出并安装新版本"
 }
