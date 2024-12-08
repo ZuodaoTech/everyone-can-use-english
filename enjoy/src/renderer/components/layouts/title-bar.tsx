@@ -32,7 +32,6 @@ import {
   LightbulbIcon,
   LightbulbOffIcon,
   MaximizeIcon,
-  MenuIcon,
   MinimizeIcon,
   MinusIcon,
   SettingsIcon,
@@ -40,15 +39,30 @@ import {
 } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 
+const INSTALL_URL = "https://1000h.org/enjoy-app/install.html";
+
 export const TitleBar = () => {
   const [isMaximized, setIsMaximized] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [platform, setPlatform] = useState<"darwin" | "win32" | "linux">();
+  const [updaterState, setUpdaterState] = useState<
+    "checking-for-update" | "update-available" | "update-downloaded" | "error"
+  >();
 
   const { EnjoyApp, setDisplayPreferences, initialized } = useContext(
     AppSettingsProviderContext
   );
   const { active, setActive } = useContext(CopilotProviderContext);
+
+  const checkUpdate = () => {
+    if (platform === "linux") {
+      EnjoyApp.shell.openExternal(INSTALL_URL);
+    } else if (updaterState === "update-downloaded") {
+      EnjoyApp.app.quitAndInstall();
+    } else {
+      EnjoyApp.app.checkForUpdates();
+    }
+  };
 
   const onWindowChange = (
     _event: IpcRendererEvent,
@@ -65,14 +79,28 @@ export const TitleBar = () => {
     }
   };
 
+  const onUpdater = (
+    _event: IpcRendererEvent,
+    eventType:
+      | "checking-for-update"
+      | "update-available"
+      | "update-downloaded"
+      | "error",
+    args: any[]
+  ) => {
+    setUpdaterState(eventType);
+  };
+
   useEffect(() => {
     EnjoyApp.window.onChange(onWindowChange);
     EnjoyApp.app.getPlatformInfo().then((info) => {
       setPlatform(info.platform as "darwin" | "win32" | "linux");
     });
+    EnjoyApp.app.onUpdater(onUpdater);
 
     return () => {
       EnjoyApp.window.removeListener(onWindowChange);
+      EnjoyApp.app.removeUpdaterListeners();
     };
   }, []);
 
@@ -123,9 +151,12 @@ export const TitleBar = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="size-8 rounded-none non-draggable-region hover:bg-primary/10"
+              className="size-8 rounded-none non-draggable-region hover:bg-primary/10 relative"
             >
               <HelpCircleIcon className="size-4" />
+              {updaterState && (
+                <span className="absolute -top-1 -right-1 bg-red-500 rounded-full size-2"></span>
+              )}
             </Button>
           </DropdownMenuTrigger>
 
@@ -181,14 +212,20 @@ export const TitleBar = () => {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() =>
-                EnjoyApp.shell.openExternal(
-                  "https://1000h.org/enjoy-app/install.html"
-                )
-              }
-              className="cursor-pointer"
+              onClick={checkUpdate}
+              className="cursor-pointer relative"
             >
-              <span className="capitalize">{t("checkUpdate")}</span>
+              {updaterState && (
+                <span className="absolute -top-1 -right-1 bg-red-500 rounded-full size-2"></span>
+              )}
+              <span className="capitalize">
+                {updaterState === "checking-for-update" &&
+                  t("checkingForUpdate")}
+                {updaterState === "update-available" && t("updateAvailable")}
+                {updaterState === "update-downloaded" && t("quitAndInstall")}
+                {!updaterState ||
+                  (updaterState === "error" && t("checkUpdate"))}
+              </span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

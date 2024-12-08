@@ -37,6 +37,22 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     quit: () => {
       ipcRenderer.invoke("app-quit");
     },
+    checkForUpdates: () => {
+      ipcRenderer.invoke("app-check-for-updates");
+    },
+    quitAndInstall: () => {
+      ipcRenderer.invoke("app-quit-and-install");
+    },
+    onUpdater: (
+      callback: (
+        event: IpcRendererEvent,
+        eventType: string,
+        args: any[]
+      ) => void
+    ) => ipcRenderer.on("app-on-updater", callback),
+    removeUpdaterListeners: () => {
+      ipcRenderer.removeAllListeners("app-on-updater");
+    },
     openDevTools: () => {
       ipcRenderer.invoke("app-open-dev-tools");
     },
