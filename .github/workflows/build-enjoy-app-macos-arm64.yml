@@ -1,4 +1,4 @@
-name: Build Enjoy App (macos-14)
+name: Build Enjoy App (macos-arm64)
 on:
   workflow_dispatch:
 
