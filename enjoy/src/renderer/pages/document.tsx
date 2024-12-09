@@ -77,7 +77,7 @@ const DocumentComponent = () => {
         </ResizablePanel>
         <ResizableHandle
           className={`${document.layout === "horizontal" ? "mx-2" : "my-2"} ${
-            playingSegment ? "invisible" : ""
+            playingSegment ? "" : "invisible"
           }`}
         />
         <ResizablePanel

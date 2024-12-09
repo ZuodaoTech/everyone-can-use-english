@@ -3,7 +3,7 @@ import {
   AppSettingsProviderContext,
   CopilotProviderContext,
 } from "@renderer/context";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CopilotSession, TitleBar, Sidebar } from "@renderer/components";
 import {
   ResizableHandle,
@@ -14,6 +14,7 @@ import {
 export const Layout = () => {
   const { initialized } = useContext(AppSettingsProviderContext);
   const { active, setActive } = useContext(CopilotProviderContext);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   if (initialized) {
     return (
@@ -25,13 +26,18 @@ export const Layout = () => {
           data-testid="layout-home"
         >
           <ResizablePanel id="main-panel" order={1} minSize={50}>
-            <div className="flex flex-start">
-              <Sidebar />
+            <div className="flex flex-start w-full">
+              <Sidebar
+                isCollapsed={isCollapsed}
+                setIsCollapsed={setIsCollapsed}
+              />
               <div
                 id="main-panel-content"
-                className="flex-1 border-l overflow-x-hidden overflow-y-auto h-content relative"
+                className="flex-1 h-content overflow-hidden relative"
               >
-                <Outlet />
+                <div className="overflow-x-hidden overflow-y-auto w-full h-content">
+                  <Outlet />
+                </div>
               </div>
             </div>
           </ResizablePanel>

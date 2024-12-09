@@ -23,6 +23,7 @@ import {
   DropdownMenuPortal,
   DropdownMenuSubContent,
   DropdownMenuSeparator,
+  toast,
 } from "@renderer/components/ui";
 import { IpcRendererEvent } from "electron/renderer";
 import { t } from "i18next";
@@ -49,7 +50,7 @@ export const TitleBar = () => {
     "checking-for-update" | "update-available" | "update-downloaded" | "error"
   >();
 
-  const { EnjoyApp, setDisplayPreferences, initialized } = useContext(
+  const { EnjoyApp, version, setDisplayPreferences, initialized } = useContext(
     AppSettingsProviderContext
   );
   const { active, setActive } = useContext(CopilotProviderContext);
@@ -61,6 +62,7 @@ export const TitleBar = () => {
       EnjoyApp.app.quitAndInstall();
     } else {
       EnjoyApp.app.checkForUpdates();
+      toast.info(t("checkingForUpdate"));
     }
   };
 
@@ -89,6 +91,11 @@ export const TitleBar = () => {
     args: any[]
   ) => {
     setUpdaterState(eventType);
+    if (eventType === "update-available") {
+      toast.info(t("updateAvailable"));
+    } else if (eventType === "update-downloaded") {
+      toast.success(t("updateDownloaded"));
+    }
   };
 
   useEffect(() => {
@@ -155,7 +162,7 @@ export const TitleBar = () => {
             >
               <HelpCircleIcon className="size-4" />
               {updaterState && (
-                <span className="absolute -top-1 -right-1 bg-red-500 rounded-full size-2"></span>
+                <span className="absolute top-1 right-1 bg-red-500 rounded-full size-1.5"></span>
               )}
             </Button>
           </DropdownMenuTrigger>
@@ -211,14 +218,17 @@ export const TitleBar = () => {
               </DropdownMenuSub>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
+            <DropdownMenuItem disabled>
+              <span className="text-xs text-muted-foreground">v{version}</span>
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={checkUpdate}
               className="cursor-pointer relative"
             >
               {updaterState && (
-                <span className="absolute -top-1 -right-1 bg-red-500 rounded-full size-2"></span>
+                <span className="absolute top-1 right-1 bg-red-500 rounded-full size-1.5"></span>
               )}
-              <span className="capitalize">
+              <span className="capitalize flex items-center gap-2">
                 {updaterState === "checking-for-update" &&
                   t("checkingForUpdate")}
                 {updaterState === "update-available" && t("updateAvailable")}

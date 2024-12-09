@@ -25,7 +25,7 @@ export default () => {
   const navigate = useNavigate();
 
   return (
-    <div className="h-content flex flex-col relative">
+    <div className="h-content flex flex-col relative max-w-full">
       <Breadcrumb className="px-4 pt-3 pb-2">
         <BreadcrumbList>
           <BreadcrumbItem>
