@@ -88,6 +88,11 @@
     font-weight: normal;
     font-style: normal;
   }
+
+  :root {
+    --sidebar-collapsed-width: 48px;
+    --sidebar-expanded-width: 192px;
+  }
 }
 
 @layer components {

@@ -42,12 +42,15 @@ import { useContext, useEffect } from "react";
 import { NoticiationsChannel } from "@renderer/cables";
 import { useState } from "react";
 
-export const Sidebar = () => {
+export const Sidebar = (props: {
+  isCollapsed: boolean;
+  setIsCollapsed: (isCollapsed: boolean) => void;
+}) => {
+  const { isCollapsed, setIsCollapsed } = props;
   const location = useLocation();
   const activeTab = location.pathname;
   const { EnjoyApp, cable, displayPreferences, setDisplayPreferences } =
     useContext(AppSettingsProviderContext);
-  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     if (!cable) return;
@@ -77,13 +80,17 @@ export const Sidebar = () => {
   return (
     <div
       className={`h-content pt-8 transition-all relative draggable-region ${
-        isCollapsed ? "w-12" : "w-48"
+        isCollapsed
+          ? "w-[--sidebar-collapsed-width]"
+          : "w-[--sidebar-expanded-width]"
       }`}
       data-testid="sidebar"
     >
       <div
-        className={`fixed top-0 left-0 h-full bg-muted ${
-          isCollapsed ? "w-12" : "w-48"
+        className={`fixed top-0 left-0 h-full bg-muted border-r ${
+          isCollapsed
+            ? "w-[--sidebar-collapsed-width]"
+            : "w-[--sidebar-expanded-width]"
         }`}
       >
         <ScrollArea className="w-full h-full pb-12 pt-8">
@@ -213,6 +220,7 @@ export const Sidebar = () => {
             >
               <DialogContent
                 aria-describedby={undefined}
+                container={document.body}
                 className="max-w-screen-md xl:max-w-screen-lg h-5/6 p-0"
               >
                 <DialogTitle className="hidden">
