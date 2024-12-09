@@ -1,19 +1,4 @@
 {
-  "menu": {
-    "about": "About",
-    "toggleFullScreen": "Toggle Full Screen",
-    "hide": "Hide",
-    "unhide": "Unhide",
-    "quit": "Quit",
-    "undo": "Undo",
-    "redo": "Redo",
-    "cut": "Cut",
-    "copy": "Copy",
-    "paste": "Paste",
-    "selectAll": "Select All",
-    "checkForUpdates": "Check for Updates",
-    "reportIssue": "Report Issue"
-  },
   "models": {
     "user": {
       "id": "ID",

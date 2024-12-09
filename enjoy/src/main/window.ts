@@ -706,38 +706,38 @@ ${log}
     {
       label: app.name,
       submenu: [
-        { role: "about", label: t("menu.about") },
+        { role: "about" },
         { type: "separator" },
-        { role: "togglefullscreen", label: t("menu.toggleFullScreen") },
-        { role: "hide", label: t("menu.hide") },
-        { role: "unhide", label: t("menu.unhide") },
+        { role: "togglefullscreen" },
+        { role: "hide" },
+        { role: "unhide" },
         { type: "separator" },
-        { role: "quit", label: t("menu.quit") },
+        { role: "quit" },
       ],
     },
     {
       label: "Edit",
       submenu: [
-        { role: "undo", label: t("menu.undo") },
-        { role: "redo", label: t("menu.redo") },
+        { role: "undo" },
+        { role: "redo" },
         { type: "separator" },
-        { role: "cut", label: t("menu.cut") },
-        { role: "copy", label: t("menu.copy") },
-        { role: "paste", label: t("menu.paste") },
-        { role: "selectAll", label: t("menu.selectAll") },
+        { role: "cut" },
+        { role: "copy" },
+        { role: "paste" },
+        { role: "selectAll" },
       ],
     },
     {
       label: "Help",
       submenu: [
         {
-          label: t("menu.checkForUpdates"),
+          label: "Check for Updates",
           click: () => {
             shell.openExternal("https://1000h.org/enjoy-app/install.html");
           },
         },
         {
-          label: t("menu.reportIssue"),
+          label: "Report an Issue",
           click: () => {
             shell.openExternal(`${REPO_URL}/issues/new`);
           },
