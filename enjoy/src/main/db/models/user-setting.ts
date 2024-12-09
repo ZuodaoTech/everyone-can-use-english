@@ -59,7 +59,11 @@ export class UserSetting extends Model<UserSetting> {
 
     // update i18n
     if (key === UserSettingKeyEnum.LANGUAGE) {
-      i18n.changeLanguage(value);
+      try {
+        await i18n.changeLanguage(value);
+      } catch (error) {
+        logger.error("UserSetting.set: changeLanguage failed", error);
+      }
     }
   }
 

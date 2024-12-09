@@ -108,15 +108,17 @@ export class Chat extends Model<Chat> {
   static async notify(chat: Chat, action: "create" | "update" | "destroy") {
     if (!mainWindow.win) return;
 
+    let chatData = { id: chat?.id };
     if (action !== "destroy") {
-      chat = await Chat.findByPk(chat.id);
+      chat = await Chat.findByPk(chat?.id);
+      chatData = chat?.toJSON() || chatData;
     }
 
     mainWindow.win.webContents.send("db-on-transaction", {
       model: "Chat",
-      id: chat.id,
+      id: chatData.id,
       action,
-      record: chat.toJSON(),
+      record: chatData,
     });
   }
 
