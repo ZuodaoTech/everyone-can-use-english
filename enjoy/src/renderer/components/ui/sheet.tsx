@@ -53,7 +53,7 @@ interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {
   displayClose?: boolean;
-  container?: HTMLElement;
+  container?: HTMLElement | string;
 }
 
 const SheetContent = React.forwardRef<
@@ -72,7 +72,11 @@ const SheetContent = React.forwardRef<
     ref
   ) => (
     <SheetPortal
-      container={container || document.getElementById("main-panel-content")}
+      container={
+        typeof container === "string"
+          ? document.getElementById(container)
+          : container
+      }
     >
       <SheetOverlay className="absolute" />
       <SheetPrimitive.Content

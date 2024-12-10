@@ -295,6 +295,7 @@ export const AssistantMessageComponent = (props: {
         onOpenChange={(value) => setShadowing(value)}
       >
         <SheetContent
+          container="main-panel-content"
           aria-describedby={undefined}
           side="bottom"
           className="h-content p-0 flex flex-col gap-0"
