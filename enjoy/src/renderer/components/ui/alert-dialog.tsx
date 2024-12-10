@@ -30,11 +30,15 @@ AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName;
 const AlertDialogContent = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content> & {
-    container?: HTMLElement;
+    container?: HTMLElement | string;
   }
 >(({ className, container, ...props }, ref) => (
   <AlertDialogPortal
-    container={container || document.getElementById("main-panel-content")}
+    container={
+      typeof container === "string"
+        ? document.getElementById(container)
+        : container
+    }
   >
     <AlertDialogOverlay className="absolute inset-0" />
     <AlertDialogPrimitive.Content

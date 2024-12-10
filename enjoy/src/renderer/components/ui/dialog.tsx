@@ -32,11 +32,15 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
-    container?: HTMLElement;
+    container?: HTMLElement | string;
   }
 >(({ className, children, container, ...props }, ref) => (
   <DialogPortal
-    container={container || document.getElementById("main-panel-content")}
+    container={
+      typeof container === "string"
+        ? document.getElementById(container)
+        : container
+    }
   >
     <DialogOverlay />
     <DialogPrimitive.Content

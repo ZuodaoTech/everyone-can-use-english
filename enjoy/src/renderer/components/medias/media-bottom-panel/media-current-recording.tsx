@@ -692,6 +692,7 @@ export const MediaCurrentRecording = () => {
 
       <Sheet open={detailIsOpen} onOpenChange={(open) => setDetailIsOpen(open)}>
         <SheetContent
+          container="main-panel-content"
           aria-describedby={undefined}
           side="bottom"
           className="rounded-t-2xl shadow-lg max-h-content overflow-y-scroll"

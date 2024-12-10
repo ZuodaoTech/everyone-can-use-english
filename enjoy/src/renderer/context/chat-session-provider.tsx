@@ -481,6 +481,7 @@ export const ChatSessionProvider = ({
           }}
         >
           <SheetContent
+            container="main-panel-content"
             side="bottom"
             className="h-content p-0 flex flex-col gap-0"
             displayClose={false}
@@ -506,6 +507,7 @@ export const ChatSessionProvider = ({
           }}
         >
           <SheetContent
+            container="main-panel-content"
             aria-describedby={undefined}
             side="bottom"
             className="rounded-t-2xl shadow-lg max-h-content overflow-y-scroll"
