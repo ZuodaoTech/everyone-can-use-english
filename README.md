@@ -14,7 +14,22 @@ AI 是当今世界上最好的外语老师，Enjoy 做 AI 最好的助教。
 
 ---
 
-## 安装及使用
+## 网页版
+
+Enjoy 网页版已经上线，可访问 [https://enjoy.bot](https://enjoy.bot) 直接使用。
+
+<div align="center" style="display:flex;overflow:auto;gap:10px;">
+  <img src="./enjoy/snapshots/web-audios.jpg" alt="Audios" width="300" />
+  <img src="./enjoy/snapshots/web-add-audio.jpg" alt="Add Audio" width="300" />
+  <img src="./enjoy/snapshots/web-audio-shadow.jpg" alt="Shadow" width="300" />
+  <img src="./enjoy/snapshots/web-audio-assessment.jpg" alt="Assessment" width="300" />
+  <img src="./enjoy/snapshots/web-new-chat.jpg" alt="New Chat" width="300" />
+  <img src="./enjoy/snapshots/web-chat.jpg" alt="Chat" width="300" />
+</div>
+
+---
+
+## 桌面版安装及使用
 
 下载及使用相关说明，请参阅 [文档](https://1000h.org/enjoy-app/)。
 
@@ -32,7 +47,7 @@ AI 是当今世界上最好的外语老师，Enjoy 做 AI 最好的助教。
   <img src="./enjoy/snapshots/chat.png" alt="Home" width="800" />
 </div>
 
-## 开发
+## 桌面版开发
 
 ```bash
 yarn install
