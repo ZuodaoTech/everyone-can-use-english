@@ -97,7 +97,9 @@ export class Note extends Model<Note> {
 
   @AfterCreate
   static syncAndUploadAfterCreate(note: Note) {
-    note.sync();
+    note.sync().catch((err) => {
+      logger.error("sync note error", note.id, err);
+    });
   }
 
   @AfterCreate
@@ -113,7 +115,7 @@ export class Note extends Model<Note> {
   @AfterUpdate
   static syncAfterUpdate(note: Note) {
     note.sync().catch((err) => {
-      logger.error("sync error", err);
+      logger.error("sync note error", note.id, err);
     });
   }
 

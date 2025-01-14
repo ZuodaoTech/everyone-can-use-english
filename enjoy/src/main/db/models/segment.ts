@@ -207,7 +207,7 @@ export class Segment extends Model<Segment> {
 
     unsyncedSegments.forEach((segment) => {
       segment.sync().catch((err) => {
-        logger.error("sync error", err);
+        logger.error("sync segment error", segment.id, err);
       });
     });
 
@@ -230,8 +230,12 @@ export class Segment extends Model<Segment> {
 
   @AfterCreate
   static syncAndUploadAfterCreate(segment: Segment) {
-    segment.sync();
-    segment.upload();
+    segment.sync().catch((err) => {
+      logger.error("sync segment error", segment.id, err);
+    });
+    segment.upload().catch((err) => {
+      logger.error("upload segment error", segment.id, err);
+    });
   }
 
   @AfterUpdate
@@ -242,7 +246,7 @@ export class Segment extends Model<Segment> {
   @AfterUpdate
   static syncAfterUpdate(segment: Segment) {
     segment.sync().catch((err) => {
-      logger.error("sync error", err);
+      logger.error("sync segment error", segment.id, err);
     });
   }
 

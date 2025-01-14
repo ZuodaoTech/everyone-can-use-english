@@ -273,9 +273,12 @@ export class Video extends Model<Video> {
 
   @AfterCreate
   static autoSync(video: Video) {
-    // auto sync should not block the main thread
-    video.sync().catch(() => {});
-    video.generateCover().catch(() => {});
+    video.sync().catch((err) => {
+      logger.error("sync video error", video.id, err);
+    });
+    video.generateCover().catch((err) => {
+      logger.error("generate cover error", video.id, err);
+    });
   }
 
   @AfterCreate
@@ -286,7 +289,9 @@ export class Video extends Model<Video> {
   @AfterUpdate
   static notifyForUpdate(video: Video) {
     this.notify(video, "update");
-    video.sync().catch(() => {});
+    video.sync().catch((err) => {
+      logger.error("sync video error", video.id, err);
+    });
   }
 
   @AfterDestroy

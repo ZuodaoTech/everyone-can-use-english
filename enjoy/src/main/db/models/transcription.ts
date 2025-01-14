@@ -106,7 +106,7 @@ export class Transcription extends Model<Transcription> {
   @AfterUpdate
   static syncAfterUpdate(transcription: Transcription) {
     transcription.sync().catch((err) => {
-      logger.error("sync error", err);
+      logger.error("sync transcription error", transcription.id, err);
     });
   }
 
