@@ -19,6 +19,7 @@
     "enjoy:publish": "yarn workspace enjoy publish",
     "enjoy:lint": "yarn workspace enjoy eslint --ext .ts,.tsx .",
     "enjoy:create-migration": "yarn workspace enjoy create-migration",
+    "enjoy:sourcemap": "yarn workspace enjoy sourcemap",
     "docs:dev": "yarn workspace 1000-hours dev",
     "docs:build": "yarn workspace 1000-hours build",
     "docs:preview": "yarn workspace 1000-hours preview",

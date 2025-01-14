@@ -46,6 +46,7 @@ export default defineConfig((env) => {
   }
   const config: UserConfig = {
     build: {
+      sourcemap: true,
       lib: {
         entry: forgeConfigSelf.entry!,
         fileName: () => "[name].js",

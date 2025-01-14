@@ -118,3 +118,5 @@ export const AGENT_FIXTURE_ANDREW = {
     ttsVoice: "en-US-AndrewNeural",
   },
 };
+
+export const BUGSNAG_API_KEY = "828ee1de10c079a250be7fd05177662f";

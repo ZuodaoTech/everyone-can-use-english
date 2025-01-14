@@ -1,4 +1,4 @@
-import { app, BrowserWindow, protocol, net, shell } from "electron";
+import { app, BrowserWindow, protocol, net } from "electron";
 import path from "path";
 import fs from "fs-extra";
 import settings from "@main/settings";
@@ -6,15 +6,17 @@ import log from "@main/logger";
 import mainWindow from "@main/window";
 import ElectronSquirrelStartup from "electron-squirrel-startup";
 import contextMenu from "electron-context-menu";
+import Bugsnag from "@bugsnag/electron";
 import { t } from "i18next";
-import unhandled from "electron-unhandled";
-import newGithubIssueUrl from "new-github-issue-url";
+import { BUGSNAG_API_KEY } from "./constants";
 
 const logger = log.scope("main");
 
 app.commandLine.appendSwitch("enable-features", "SharedArrayBuffer");
 
-if (!app.isPackaged) {
+if (app.isPackaged) {
+  Bugsnag.start({ apiKey: BUGSNAG_API_KEY });
+} else {
   app.disableHardwareAcceleration();
   app.commandLine.appendSwitch("disable-software-rasterizer");
 }
@@ -121,43 +123,6 @@ app.on("ready", async () => {
   });
 
   mainWindow.init();
-
-  unhandled({
-    showDialog: true,
-    logger: logger.error,
-    reportButton: (error) => {
-      const url = newGithubIssueUrl({
-        user: "ZuodaoTech",
-        repo: "everyone-can-use-english",
-        title: "Unhandled Error",
-        body: `
-## Node.js error stack
-
-**Message:** 
-
-\`\`\`
-${error.message}
-\`\`\`
-
-**Stack:** 
-
-\`\`\`
-${error.stack}
-\`\`\`
-
-**Environment:**
-
-\`\`\`
-${app.name} ${app.getVersion()}
-Electron ${process.versions.electron}
-${process.platform} ${process.arch}
-Locale: ${app.getLocale()}
-\`\`\``,
-      });
-
-      shell.openExternal(url);
-    },
-  });
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
