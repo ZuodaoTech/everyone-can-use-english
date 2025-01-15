@@ -14,7 +14,7 @@ export const RecordingDetail = (props: {
   recording: RecordingType;
   pronunciationAssessment?: PronunciationAssessmentType;
   onAssess?: (assessment: PronunciationAssessmentType) => void;
-  onPlayOrigin?: (word: string) => void;
+  onPlayOrigin?: (word: string, index: number) => void;
 }) => {
   const { recording, onAssess, onPlayOrigin } = props;
   if (!recording) return;

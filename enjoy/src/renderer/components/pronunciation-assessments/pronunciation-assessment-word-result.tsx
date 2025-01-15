@@ -8,7 +8,7 @@ import {
   ScrollBar,
 } from "@renderer/components/ui";
 import { Volume2Icon } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 
 export const PronunciationAssessmentWordResult = (props: {
   src?: string;
@@ -219,29 +219,28 @@ const scoreColor = (score: number) => {
   return "font-bold text-red-600";
 };
 
-export const PronunciationAssessmentPhonemeResult = (props: {
-  result: PronunciationAssessmentWordResultType;
-}) => {
-  const { result } = props;
-  console.log(result);
+export const PronunciationAssessmentPhonemeResult = memo(
+  (props: { result: PronunciationAssessmentWordResultType }) => {
+    const { result } = props;
 
-  return (
-    <ScrollArea className="w-full">
-      <div className="w-full flex items-center gap-2">
-        {result.phonemes.map((phoneme, index) => (
-          <div key={index} className="text-sm text-center">
-            <div className="font-bold font-code">{phoneme.phoneme}</div>
-            <div
-              className={`text-xs font-serif ${scoreColor(
-                phoneme.pronunciationAssessment.accuracyScore
-              )}`}
-            >
-              {phoneme.pronunciationAssessment.accuracyScore}
+    return (
+      <ScrollArea className="w-full">
+        <div className="w-full flex items-center gap-2">
+          {result.phonemes.map((phoneme, index) => (
+            <div key={index} className="text-sm text-center">
+              <div className="font-bold font-code">{phoneme.phoneme}</div>
+              <div
+                className={`text-xs font-serif ${scoreColor(
+                  phoneme.pronunciationAssessment.accuracyScore
+                )}`}
+              >
+                {phoneme.pronunciationAssessment.accuracyScore}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
-  );
-};
+          ))}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+    );
+  }
+);

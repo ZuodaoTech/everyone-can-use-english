@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { PronunciationAssessmentWordResult } from "@renderer/components";
 import { Switch, ScrollArea } from "@renderer/components/ui";
 import { InfoIcon } from "lucide-react";
@@ -29,6 +29,11 @@ export const PronunciationAssessmentFulltextResult = (props: {
     missingBreak: true,
     monotone: true,
   });
+
+  const handlePlayOrigin = useCallback((word: string, index: number) => {
+    if (!onPlayOrigin) return;
+    onPlayOrigin(word, index);
+  }, []);
 
   const calErrorStats = () => {
     return {
@@ -69,14 +74,14 @@ export const PronunciationAssessmentFulltextResult = (props: {
               currentTime={currentTime}
               src={src}
               onPlayOrigin={() => {
-                if (!onPlayOrigin) return;
+                // if (!onPlayOrigin) return;
 
                 const word = words[index];
                 const candidates = words.filter((w) => w.word === word.word);
                 const wordIndex = candidates.findIndex(
                   (w) => w.offset === word.offset
                 );
-                onPlayOrigin(word.word, wordIndex);
+                handlePlayOrigin(word.word, wordIndex);
               }}
             />
           ))}
