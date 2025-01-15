@@ -42,15 +42,8 @@ jobs:
           brew update
           brew install sdl2
 
-      - name: Package App in Windows
+      - name: Package App
         shell: bash
-        if: contains(matrix.os, 'windows')
-        run: |
-          cmd /C "yarn enjoy:package || exit 1"
-
-      - name: Package App in macOS or Ubuntu
-        shell: bash
-        if: contains(matrix.os, 'macos') || contains(matrix.os, 'ubuntu')
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
         run: |
