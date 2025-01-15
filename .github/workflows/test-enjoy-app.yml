@@ -42,8 +42,20 @@ jobs:
           brew update
           brew install sdl2
 
-      - name: Package App
-        run: yarn enjoy:package
+      - name: Package App in Windows
+        shell: bash
+        if: contains(matrix.os, 'windows')
+        run: |
+          cmd /C "yarn enjoy:package || exit 1"
+
+      - name: Package App in macOS or Ubuntu
+        shell: bash
+        if: contains(matrix.os, 'macos') || contains(matrix.os, 'ubuntu')
+        env:
+          NODE_OPTIONS: "--max-old-space-size=8192"
+        run: |
+          set -e
+          yarn enjoy:package
 
       - name: Run main tests with xvfb-run on Ubuntu
         # continue-on-error: true
