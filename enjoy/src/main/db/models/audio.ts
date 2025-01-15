@@ -21,7 +21,7 @@ import {
   Video,
 } from "@main/db/models";
 import settings from "@main/settings";
-import { AudioFormats, VideoFormats } from "@/constants";
+import { AudioFormats, MIME_TYPES, VideoFormats } from "@/constants";
 import { hashFile } from "@main/utils";
 import path from "path";
 import fs from "fs-extra";
@@ -159,6 +159,14 @@ export class Audio extends Model<Audio> {
     return this.getDataValue("md5") + this.extname;
   }
 
+  get mimeType(): string {
+    if (this.metadata?.mimeType) {
+      return this.metadata.mimeType;
+    }
+
+    return MIME_TYPES[this.extname.toLowerCase()] || "audio/mpeg";
+  }
+
   get extname(): string {
     return (
       this.getDataValue("metadata")?.extname ||
@@ -204,7 +212,7 @@ export class Audio extends Model<Audio> {
     if (this.isUploaded && !force) return;
 
     return storage
-      .put(this.md5, this.filePath)
+      .put(this.md5, this.filePath, this.mimeType)
       .then((result) => {
         logger.debug("upload result:", result.data);
         if (result.data.success) {

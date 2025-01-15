@@ -146,7 +146,7 @@ export class Document extends Model<Document> {
     if (this.isUploaded && !force) return;
 
     return storage
-      .put(this.md5, this.filePath)
+      .put(this.md5, this.filePath, this.metadata.mimeType)
       .then((result) => {
         logger.debug("upload result:", result.data);
         if (result.data.success) {

@@ -34,6 +34,7 @@ import { t } from "i18next";
 import { Attributes, Op, Transaction } from "sequelize";
 import { v5 as uuidv5 } from "uuid";
 import FfmpegWrapper from "@main/ffmpeg";
+import { MIME_TYPES } from "@/constants";
 
 const logger = log.scope("db/models/recording");
 
@@ -141,6 +142,15 @@ export class Recording extends Model<Recording> {
     )}`;
   }
 
+  @Column(DataType.VIRTUAL)
+  get mimeType(): string {
+    return MIME_TYPES[this.extname.toLowerCase()] || "audio/mpeg";
+  }
+
+  get extname(): string {
+    return path.extname(this.filePath);
+  }
+
   get filePath(): string {
     const file = path.join(
       settings.userDataPath(),
@@ -169,7 +179,7 @@ export class Recording extends Model<Recording> {
     }
 
     return storage
-      .put(this.md5, this.filePath)
+      .put(this.md5, this.filePath, this.mimeType)
       .then((result) => {
         logger.debug("upload result:", result.data);
         if (result.data.success) {
