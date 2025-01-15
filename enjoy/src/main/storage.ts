@@ -29,9 +29,11 @@ class Storage {
     return this.api.get(`/${key}`);
   }
 
-  put(key: string, filePath: string) {
+  put(key: string, filePath: string, contentType?: string) {
     const data = fs.readFileSync(filePath);
-    return this.api.postForm(`/${key}`, data);
+    const form = new FormData();
+    form.append("file", new Blob([data], { type: contentType }), key);
+    return this.api.postForm(`/${key}`, form);
   }
 }
 

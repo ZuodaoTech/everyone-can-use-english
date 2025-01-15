@@ -25,6 +25,7 @@ import FfmpegWrapper from "@/main/ffmpeg";
 import { hashFile } from "@/main/utils";
 import fs from "fs-extra";
 import { v5 as uuidv5 } from "uuid";
+import { MIME_TYPES } from "@/constants";
 
 const logger = log.scope("db/models/segment");
 const OUTPUT_FORMAT = "mp3";
@@ -105,6 +106,14 @@ export class Segment extends Model<Segment> {
     );
   }
 
+  get extname(): string {
+    return path.extname(this.filePath);
+  }
+
+  get mimeType(): string {
+    return MIME_TYPES[this.extname.toLowerCase()] || "audio/mpeg";
+  }
+
   async sync() {
     if (this.isSynced) return;
 
@@ -123,7 +132,7 @@ export class Segment extends Model<Segment> {
     if (this.isUploaded) return;
 
     return storage
-      .put(this.md5, this.filePath)
+      .put(this.md5, this.filePath, this.mimeType)
       .then((result) => {
         logger.debug("upload result:", result.data);
         if (result.data.success) {
@@ -207,7 +216,7 @@ export class Segment extends Model<Segment> {
 
     unsyncedSegments.forEach((segment) => {
       segment.sync().catch((err) => {
-        logger.error("sync error", err);
+        logger.error("sync segment error", segment.id, err);
       });
     });
 
@@ -230,8 +239,12 @@ export class Segment extends Model<Segment> {
 
   @AfterCreate
   static syncAndUploadAfterCreate(segment: Segment) {
-    segment.sync();
-    segment.upload();
+    segment.sync().catch((err) => {
+      logger.error("sync segment error", segment.id, err);
+    });
+    segment.upload().catch((err) => {
+      logger.error("upload segment error", segment.id, err);
+    });
   }
 
   @AfterUpdate
@@ -242,7 +255,7 @@ export class Segment extends Model<Segment> {
   @AfterUpdate
   static syncAfterUpdate(segment: Segment) {
     segment.sync().catch((err) => {
-      logger.error("sync error", err);
+      logger.error("sync segment error", segment.id, err);
     });
   }
 

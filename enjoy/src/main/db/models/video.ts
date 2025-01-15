@@ -21,7 +21,12 @@ import {
   UserSetting,
 } from "@main/db/models";
 import settings from "@main/settings";
-import { AudioFormats, VideoFormats, WEB_API_URL } from "@/constants";
+import {
+  AudioFormats,
+  MIME_TYPES,
+  VideoFormats,
+  WEB_API_URL,
+} from "@/constants";
 import { hashFile } from "@main/utils";
 import path from "path";
 import fs from "fs-extra";
@@ -159,6 +164,10 @@ export class Video extends Model<Video> {
     return this.getDataValue("md5") + this.extname;
   }
 
+  get mimeType(): string {
+    return MIME_TYPES[this.extname.toLowerCase()] || "video/mp4";
+  }
+
   get extname(): string {
     return (
       this.getDataValue("metadata").extname ||
@@ -212,7 +221,7 @@ export class Video extends Model<Video> {
     const finalFile = path.join(settings.cachePath(), `${hash}.png`);
     fs.renameSync(coverFile, finalFile);
 
-    storage.put(hash, finalFile).then((result) => {
+    storage.put(hash, finalFile, "image/png").then((result) => {
       logger.debug("cover upload result:", result.data);
       if (result.data.success) {
         this.update({ coverUrl: storage.getUrl(hash) });
@@ -224,7 +233,7 @@ export class Video extends Model<Video> {
     if (this.isUploaded && !force) return;
 
     return storage
-      .put(this.md5, this.filePath)
+      .put(this.md5, this.filePath, this.mimeType)
       .then((result) => {
         logger.debug("upload result:", result.data);
         if (result.data.success) {
@@ -273,9 +282,12 @@ export class Video extends Model<Video> {
 
   @AfterCreate
   static autoSync(video: Video) {
-    // auto sync should not block the main thread
-    video.sync().catch(() => {});
-    video.generateCover().catch(() => {});
+    video.sync().catch((err) => {
+      logger.error("sync video error", video.id, err);
+    });
+    video.generateCover().catch((err) => {
+      logger.error("generate cover error", video.id, err);
+    });
   }
 
   @AfterCreate
@@ -286,7 +298,9 @@ export class Video extends Model<Video> {
   @AfterUpdate
   static notifyForUpdate(video: Video) {
     this.notify(video, "update");
-    video.sync().catch(() => {});
+    video.sync().catch((err) => {
+      logger.error("sync video error", video.id, err);
+    });
   }
 
   @AfterDestroy

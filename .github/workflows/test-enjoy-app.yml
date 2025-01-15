@@ -43,7 +43,18 @@ jobs:
           brew install sdl2
 
       - name: Package App
-        run: yarn enjoy:package
+        shell: bash
+        env:
+          NODE_OPTIONS: "--max-old-space-size=8192"
+        run: |
+          set -e
+          yarn enjoy:package
+
+      - name: Configure Chrome sandbox for Linux
+        if: contains(matrix.os, 'ubuntu')
+        run: |
+          sudo chown root:root enjoy/out/Enjoy-linux-x64/chrome-sandbox
+          sudo chmod 4755 enjoy/out/Enjoy-linux-x64/chrome-sandbox
 
       - name: Run main tests with xvfb-run on Ubuntu
         # continue-on-error: true

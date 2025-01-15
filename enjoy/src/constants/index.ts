@@ -118,3 +118,15 @@ export const AGENT_FIXTURE_ANDREW = {
     ttsVoice: "en-US-AndrewNeural",
   },
 };
+
+export const BUGSNAG_API_KEY = "828ee1de10c079a250be7fd05177662f";
+
+export const MIME_TYPES: Record<string, string> = {
+  ".mp3": "audio/mpeg",
+  ".wav": "audio/wav",
+  ".ogg": "audio/ogg",
+  ".m4a": "audio/mp4",
+  ".aac": "audio/aac",
+  ".flac": "audio/flac",
+  ".wma": "audio/x-ms-wma",
+};

@@ -12,8 +12,20 @@ import { RouterProvider } from "react-router-dom";
 import { Toaster, toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
 import { LookupWidget, TranslateWidget } from "./components";
+import Bugsnag from "@bugsnag/electron";
+import BugsnagPluginReact from "@bugsnag/plugin-react";
+import { BUGSNAG_API_KEY } from "@/constants";
 
 function App() {
+  window.__ENJOY_APP__.app.isPackaged().then((isPackaged) => {
+    if (isPackaged) {
+      Bugsnag.start({
+        apiKey: BUGSNAG_API_KEY,
+        plugins: [new BugsnagPluginReact()],
+      });
+    }
+  });
+
   window.__ENJOY_APP__.onNotification((_event, notification) => {
     switch (notification.type) {
       case "success":

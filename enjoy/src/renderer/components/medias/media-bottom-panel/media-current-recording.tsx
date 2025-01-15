@@ -1,4 +1,11 @@
-import { useEffect, useContext, useRef, useState, useMemo } from "react";
+import {
+  useEffect,
+  useContext,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 import {
   AppSettingsProviderContext,
   HotKeysSettingsProviderContext,
@@ -261,22 +268,25 @@ export const MediaCurrentRecording = () => {
       });
   };
 
-  const playWord = (word: string, index: number) => {
-    const candidates = caption.timeline.filter(
-      (w: TimelineEntry) => w.text.toLowerCase() === word.toLowerCase()
-    );
-    const target = candidates[index];
-    if (!target) return;
+  const playWord = useCallback(
+    (word: string, index: number) => {
+      const candidates = caption.timeline.filter(
+        (w: TimelineEntry) => w.text.toLowerCase() === word.toLowerCase()
+      );
+      const target = candidates[index];
+      if (!target) return;
 
-    const wordIndex = caption.timeline.findIndex(
-      (w) => w.startTime === target.startTime
-    );
+      const wordIndex = caption.timeline.findIndex(
+        (w) => w.startTime === target.startTime
+      );
 
-    toggleRegion([wordIndex]);
-    setTimeout(() => {
-      wavesurfer?.playPause();
-    }, 250);
-  };
+      toggleRegion([wordIndex]);
+      setTimeout(() => {
+        wavesurfer?.playPause();
+      }, 250);
+    },
+    [caption?.timeline, toggleRegion, wavesurfer]
+  );
 
   const calContainerSize = () => {
     const size = ref?.current
@@ -709,9 +719,7 @@ export const MediaCurrentRecording = () => {
 
           <RecordingDetail
             recording={currentRecording}
-            onPlayOrigin={(word: string, index: number = 0) =>
-              playWord(word, index)
-            }
+            onPlayOrigin={playWord}
           />
         </SheetContent>
       </Sheet>

@@ -16,6 +16,7 @@ export default defineConfig((env) => {
     mode,
     base: "./",
     build: {
+      sourcemap: true,
       outDir: `.vite/renderer/${name}`,
       target: "esnext",
     },
