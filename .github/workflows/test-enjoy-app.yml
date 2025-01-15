@@ -50,6 +50,12 @@ jobs:
           set -e
           yarn enjoy:package
 
+      - name: Configure Chrome sandbox for Linux
+        if: contains(matrix.os, 'ubuntu')
+        run: |
+          sudo chown root:root enjoy/out/Enjoy-linux-x64/chrome-sandbox
+          sudo chmod 4755 enjoy/out/Enjoy-linux-x64/chrome-sandbox
+
       - name: Run main tests with xvfb-run on Ubuntu
         # continue-on-error: true
         if: contains(matrix.os, 'ubuntu')
