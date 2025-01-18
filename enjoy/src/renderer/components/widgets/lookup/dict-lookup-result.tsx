@@ -1,14 +1,11 @@
 import { useEffect, useState, useContext } from "react";
-import {
-  AppSettingsProviderContext,
-  DictProviderContext,
-  ThemeProviderContext,
-} from "@/renderer/context";
+import { DictProviderContext, ThemeProviderContext } from "@/renderer/context";
 import Frame, { useFrame } from "react-frame-component";
 import { getExtension } from "@/utils";
 import { DictDefinitionNormalizer } from "@renderer/lib/dict";
 import { LoaderSpin } from "@renderer/components";
 import { t } from "i18next";
+import debounce from "lodash/debounce";
 
 const MIME: Record<string, string> = {
   css: "text/css",
@@ -137,14 +134,25 @@ export const DictLookupResultInner = ({
   const [html, setHtml] = useState("");
   const [hash, setHash] = useState("");
 
+  const debouncedResize = debounce(onResize, 100);
+
   useEffect(() => {
     if (autoHeight) {
+      let rafId: number;
       const resizeObserver = new ResizeObserver(() => {
-        const html = innerDocument.getElementsByTagName("html")[0];
-        onResize(html.scrollHeight);
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          const html = innerDocument.getElementsByTagName("html")[0];
+          debouncedResize(html.scrollHeight);
+        });
       });
 
       resizeObserver.observe(innerDocument.getElementById("inner-dict"));
+
+      return () => {
+        resizeObserver.disconnect();
+        cancelAnimationFrame(rafId);
+      };
     }
   }, []);
 

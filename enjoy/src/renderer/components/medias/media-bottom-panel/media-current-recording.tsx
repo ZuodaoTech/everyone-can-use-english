@@ -454,13 +454,18 @@ export const MediaCurrentRecording = () => {
     if (!ref?.current) return;
     if (!player) return;
 
+    let rafId: number;
     const observer = new ResizeObserver(() => {
-      debouncedCalContainerSize();
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        debouncedCalContainerSize();
+      });
     });
     observer.observe(ref.current);
 
     return () => {
       observer.disconnect();
+      cancelAnimationFrame(rafId);
     };
   }, [ref, player]);
 
@@ -801,13 +806,18 @@ const MediaRecorder = () => {
   useEffect(() => {
     if (!ref?.current) return;
 
+    let rafId: number;
     const observer = new ResizeObserver(() => {
-      debouncedCalContainerSize();
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        debouncedCalContainerSize();
+      });
     });
     observer.observe(ref.current);
 
     return () => {
       observer.disconnect();
+      cancelAnimationFrame(rafId);
     };
   }, [ref]);
 
