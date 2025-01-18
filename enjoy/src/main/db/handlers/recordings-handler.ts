@@ -49,25 +49,21 @@ class RecordingsHandler {
   }
 
   private async findOne(_event: IpcMainEvent, where: WhereOptions<Recording>) {
-    return Recording.scope("withoutDeleted")
-      .findOne({
-        include: PronunciationAssessment,
-        order: [["createdAt", "DESC"]],
-        where: {
-          ...where,
-        },
-      })
-      .then((recording) => {
-        if (!recording) {
-          throw new Error(t("models.recording.notFound"));
-        }
+    const recording = await Recording.scope("withoutDeleted").findOne({
+      include: PronunciationAssessment,
+      order: [["createdAt", "DESC"]],
+      where: {
+        ...where,
+      },
+    });
+    if (!recording) {
+      throw new Error(t("models.recording.notFound"));
+    }
+    if (!recording.isSynced) {
+      recording.sync().catch(() => {});
+    }
 
-        if (!recording.isSynced) {
-          recording.sync();
-        }
-
-        return recording.toJSON();
-      });
+    return recording.toJSON();
   }
 
   private async sync(_event: IpcMainEvent, id: string) {
@@ -96,9 +92,7 @@ class RecordingsHandler {
     });
 
     try {
-      recordings.forEach(async (recording) => {
-        await recording.sync();
-      });
+      await Promise.all(recordings.map((recording) => recording.sync()));
     } catch (err) {
       logger.error("failed to sync recordings", err.message);
 

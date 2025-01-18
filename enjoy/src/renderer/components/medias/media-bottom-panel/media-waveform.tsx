@@ -139,13 +139,19 @@ export const MediaWaveform = () => {
     setWaveformContainerRef(ref);
 
     if (!wavesurfer) return;
+
+    let rafId: number;
     const observer = new ResizeObserver(() => {
-      debouncedCalContainerSize();
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        debouncedCalContainerSize();
+      });
     });
     observer.observe(ref.current);
 
     return () => {
       observer.disconnect();
+      cancelAnimationFrame(rafId);
     };
   }, [ref, wavesurfer]);
 

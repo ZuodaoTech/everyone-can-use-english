@@ -126,7 +126,7 @@ export const GithubLoginForm = () => {
             alt="github"
           />
         </div>
-        {oauthInfo ? (
+        {oauthInfo?.userCode ? (
           <div className="grid gap-8">
             <div className="flex items-center justify-center gap-2 text-5xl">
               {oauthInfo.userCode.split("").map((char, index) => {
