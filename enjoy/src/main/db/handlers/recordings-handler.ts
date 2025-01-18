@@ -96,9 +96,7 @@ class RecordingsHandler {
     });
 
     try {
-      recordings.forEach(async (recording) => {
-        await recording.sync();
-      });
+      await Promise.all(recordings.map((recording) => recording.sync()));
     } catch (err) {
       logger.error("failed to sync recordings", err.message);
 
