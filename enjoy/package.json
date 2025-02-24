@@ -132,7 +132,7 @@
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-import": "^2.31.0",
     "flora-colossus": "^2.0.0",
-    "foliate-js": "https://github.com/johnfactotum/foliate-js.git#commit=b5ae4c22c197ef70e12ead88277dde2856447634",
+    "foliate-js": "https://github.com/johnfactotum/foliate-js.git",
     "html-to-text": "^9.0.5",
     "https-proxy-agent": "^7.0.6",
     "i18next": "^24.2.1",

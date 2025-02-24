@@ -13152,7 +13152,7 @@ __metadata:
     file-type: "npm:^19.6.0"
     flora-colossus: "npm:^2.0.0"
     fluent-ffmpeg: "npm:^2.1.3"
-    foliate-js: "https://github.com/johnfactotum/foliate-js.git#commit=b5ae4c22c197ef70e12ead88277dde2856447634"
+    foliate-js: "https://github.com/johnfactotum/foliate-js.git"
     fs-extra: "npm:^11.2.0"
     html-to-text: "npm:^9.0.5"
     https-proxy-agent: "npm:^7.0.6"
@@ -14512,10 +14512,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"foliate-js@https://github.com/johnfactotum/foliate-js.git#commit=b5ae4c22c197ef70e12ead88277dde2856447634":
+"foliate-js@https://github.com/johnfactotum/foliate-js.git":
   version: 0.0.0
-  resolution: "foliate-js@https://github.com/johnfactotum/foliate-js.git#commit=b5ae4c22c197ef70e12ead88277dde2856447634"
-  checksum: 10c0/c1afb513be376b5760a294c5f29b13afd9d34cc9ae080569c0694b7649115810895cf1d8e2111eba977d1f710425871cffc9f73a3a6df8fe0ce46e87e3ffd642
+  resolution: "foliate-js@https://github.com/johnfactotum/foliate-js.git#commit=e2014ee7532310b8a3c60d10b84c58e6344ae4e4"
+  checksum: 10c0/55eaa4aa6a6a56fba9afb51e1855a2f690d6e02ae1475ffa3d99828fac346c8a7c52954e3a2eb2c4f23a62879513fcfbe952ff3a074373a48dd7ff900bfd00a0
   languageName: node
   linkType: hard
 
