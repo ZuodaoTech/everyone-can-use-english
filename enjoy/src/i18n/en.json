@@ -940,5 +940,6 @@
   "copyFullText": "Copy full text",
   "checkingForUpdate": "Checking for update",
   "updateAvailable": "Update available",
-  "quitAndInstall": "Quit and install"
+  "quitAndInstall": "Quit and install",
+  "pleaseSelect": "Please select"
 }

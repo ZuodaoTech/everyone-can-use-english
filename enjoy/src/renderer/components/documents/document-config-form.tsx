@@ -39,6 +39,12 @@ export const DocumentConfigForm = (props: {
   onSubmit: (data: z.infer<typeof documentConfigSchema>) => Promise<void>;
 }) => {
   const { config, onSubmit } = props;
+  if (!config?.layout) {
+    config.layout = "horizontal";
+  }
+  if (config?.tts && !config?.tts?.language) {
+    config.tts.language = "en-US";
+  }
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { ttsConfig } = useContext(AISettingsProviderContext);
 
@@ -106,7 +112,7 @@ export const DocumentConfigForm = (props: {
                 <FormLabel>{t("layout")}</FormLabel>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger>
-                    <SelectValue placeholder={t("horizontal")} />
+                    <SelectValue placeholder={t("pleaseSelect")} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="horizontal">
