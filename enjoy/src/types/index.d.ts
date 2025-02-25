@@ -7,6 +7,18 @@ declare module "foliate-js/view.js";
 declare module "foliate-js/epub.js";
 declare module "compromise-paragraphs";
 
+declare module "segment" {
+  class Segment {
+    useDefault(): void;
+    loadDict(path: string): void;
+    doSegment(
+      text: string,
+      options: { stripPunctuation: boolean }
+    ): Array<{ w: string }>;
+  }
+  export = Segment;
+}
+
 type SupportedLlmProviderType = "enjoyai" | "openai";
 
 type LlmProviderType = {

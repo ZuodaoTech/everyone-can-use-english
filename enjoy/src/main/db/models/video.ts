@@ -21,12 +21,7 @@ import {
   UserSetting,
 } from "@main/db/models";
 import settings from "@main/settings";
-import {
-  AudioFormats,
-  MIME_TYPES,
-  VideoFormats,
-  WEB_API_URL,
-} from "@/constants";
+import { AudioFormats, MIME_TYPES, VideoFormats } from "@/constants";
 import { hashFile } from "@main/utils";
 import path from "path";
 import fs from "fs-extra";

@@ -14,18 +14,27 @@ import { Tooltip } from "react-tooltip";
 import { LookupWidget, TranslateWidget } from "./components";
 import Bugsnag from "@bugsnag/electron";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
-import { BUGSNAG_API_KEY } from "@/constants";
+import { Client } from "@/api";
+import { WEB_API_URL } from "@/constants";
 
 function App() {
-  window.__ENJOY_APP__.app.isPackaged().then((isPackaged) => {
-    if (isPackaged) {
+  window.__ENJOY_APP__.app.isPackaged().then(async (isPackaged) => {
+    if (!isPackaged) return;
+    const client = new Client({
+      baseUrl: WEB_API_URL,
+    });
+    try {
+      const config = await client.config("bugsnag_api_key");
+      if (!config?.bugsnagApiKey) return;
+
       Bugsnag.start({
-        apiKey: BUGSNAG_API_KEY,
+        apiKey: config.bugsnagApiKey,
         plugins: [new BugsnagPluginReact()],
       });
+    } catch (err) {
+      console.error(err);
     }
   });
-
   window.__ENJOY_APP__.onNotification((_event, notification) => {
     switch (notification.type) {
       case "success":

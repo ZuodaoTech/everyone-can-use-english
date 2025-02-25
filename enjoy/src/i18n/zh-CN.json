@@ -940,5 +940,6 @@
   "copyFullText": "复制全文",
   "checkingForUpdate": "正在检查更新",
   "updateAvailable": "有新版本",
-  "quitAndInstall": "退出并安装新版本"
+  "quitAndInstall": "退出并安装新版本",
+  "pleaseSelect": "请选择"
 }

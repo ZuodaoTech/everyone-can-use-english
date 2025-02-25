@@ -25,8 +25,8 @@
     "docs:preview": "yarn workspace 1000-hours preview",
     "portal:generate": "yarn workspace 1000h-portal generate"
   },
-  "packageManager": "yarn@4.5.3",
+  "packageManager": "yarn@4.6.0",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   }
 }

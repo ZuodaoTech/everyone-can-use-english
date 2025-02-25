@@ -119,8 +119,6 @@ export const AGENT_FIXTURE_ANDREW = {
   },
 };
 
-export const BUGSNAG_API_KEY = "828ee1de10c079a250be7fd05177662f";
-
 export const MIME_TYPES: Record<string, string> = {
   ".mp3": "audio/mpeg",
   ".wav": "audio/wav",

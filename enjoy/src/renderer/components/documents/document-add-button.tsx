@@ -20,7 +20,7 @@ import { Readability } from "@mozilla/readability";
 import { Buffer } from "buffer";
 
 export const DocumentAddButton = () => {
-  const { EnjoyApp } = useContext(AppSettingsProviderContext);
+  const { EnjoyApp, learningLanguage } = useContext(AppSettingsProviderContext);
   const navigate = useNavigate();
   const [uri, setUri] = useState("");
   const [open, setOpen] = useState(false);
@@ -52,9 +52,11 @@ export const DocumentAddButton = () => {
         config: {
           autoTranslate: false,
           autoNextSpeech: true,
+          layout: "horizontal",
           tts: {
             engine: "enjoyai",
             model: "openai/tts-1",
+            language: learningLanguage,
             voice: "alloy",
           },
         },

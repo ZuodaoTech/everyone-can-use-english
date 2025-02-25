@@ -357,7 +357,7 @@ type EnjoyAppType = {
     set: (key: string, value: any, ttl?: number) => Promise<void>;
     delete: (key: string) => Promise<void>;
     clear: () => Promise<void>;
-    writeFile: (filename: string, data: ArrayBuffer) => Promise<string>;
+    writeFile: (filename: string, data: Buffer<ArrayBuffer>) => Promise<string>;
   };
   transcriptions: {
     findOrCreate: (params: any) => Promise<TranscriptionType>;

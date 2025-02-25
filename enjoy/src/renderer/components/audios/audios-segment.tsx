@@ -65,8 +65,8 @@ export const AudiosSegment = (props: { limit?: number }) => {
           <MediaAddButton type="Audio" />
         </div>
       ) : (
-        <ScrollArea>
-          <div className="flex items-center space-x-4 pb-4">
+        <ScrollArea className="w-full">
+          <div className="flex w-max items-center space-x-4 pb-4">
             {audios.map((audio) => {
               return (
                 <AudioCard className="w-36" key={audio.id} audio={audio} />

@@ -2,8 +2,7 @@ import { VitePlugin } from "@electron-forge/plugin-vite";
 import os from "os";
 import { FusesPlugin } from "@electron-forge/plugin-fuses";
 import { FuseV1Options, FuseVersion } from "@electron/fuses";
-import { DependenciesPlugin } from "electron-forge-plugin-dependencies";
-import pkg from "./package.json" assert { type: "json" };
+import pkg from "./package.json" with { type: "json" };
 
 const config = {
   packagerConfig: {

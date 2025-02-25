@@ -66,7 +66,7 @@ export const VideosSegment = (props: { limit?: number }) => {
         </div>
       ) : (
         <ScrollArea>
-          <div className="flex items-center space-x-4 pb-4">
+          <div className="flex w-max items-center space-x-4 pb-4">
             {videos.map((video) => {
               return (
                 <VideoCard className="w-56" key={video.id} video={video} />

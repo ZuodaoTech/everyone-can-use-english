@@ -43,7 +43,7 @@ export const EnrollmentSegment = () => {
       </div>
 
       <ScrollArea>
-        <div className="flex items-center space-x-4 pb-4">
+        <div className="flex w-max items-center space-x-4 pb-4">
           {enrollments.map((enrollment) => {
             return (
               <CourseCard

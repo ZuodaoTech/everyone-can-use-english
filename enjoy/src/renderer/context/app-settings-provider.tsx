@@ -27,6 +27,8 @@ import {
 import { t } from "i18next";
 import { redirect } from "react-router-dom";
 import { Deposit } from "@renderer/components";
+import Bugsnag from "@bugsnag/electron";
+import BugsnagPluginReact from "@bugsnag/plugin-react";
 
 type AppSettingsProviderState = {
   webApi: Client;
