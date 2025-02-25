@@ -27,6 +27,6 @@
   },
   "packageManager": "yarn@4.6.0",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   }
 }

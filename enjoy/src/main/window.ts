@@ -28,7 +28,7 @@ import decompresser from "./decompresser";
 import { UserSetting } from "@main/db/models";
 import { t } from "i18next";
 import { format } from "util";
-import pkg from "../../package.json" assert { type: "json" };
+import pkg from "../../package.json" with { type: "json" };
 
 const __dirname = import.meta.dirname;
 
