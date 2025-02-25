@@ -321,15 +321,6 @@ export const AppSettingsProvider = ({
     webApi.config("app_version").then((config) => {
       if (config.version) setLatestVersion(config.version);
     });
-
-    // webApi.config("bugsnag_api_key").then((config) => {
-    //   if (config.bugsnagApiKey) {
-    //     Bugsnag.start({
-    //       apiKey: config.bugsnagApiKey,
-    //       plugins: [new BugsnagPluginReact()],
-    //     });
-    //   }
-    // });
   }, [webApi]);
 
   useEffect(() => {
