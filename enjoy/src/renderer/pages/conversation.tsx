@@ -269,7 +269,7 @@ export default () => {
         </div>
 
         <MediaShadowProvider>
-          <div ref={containerRef} className="px-4 flex-1 overflow-y-auto">
+          <ScrollArea ref={containerRef} className="px-4 flex-1">
             <div className="messages flex flex-col-reverse gap-6 my-6">
               <div className="w-full h-24"></div>
               {messages.map((message) => (
@@ -314,7 +314,7 @@ export default () => {
                 </div>
               )}
             </div>
-          </div>
+          </ScrollArea>
         </MediaShadowProvider>
 
         <div className="bg-background px-4 absolute w-full bottom-0 left-0 z-50">

@@ -107,7 +107,7 @@ export const AudibleBooksSegment = () => {
       </div>
 
       <ScrollArea>
-        <div className="flex items-center space-x-4 pb-4">
+        <div className="flex w-max items-center space-x-4 pb-4">
           {books.map((book) => {
             return (
               <AudioBookCard

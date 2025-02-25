@@ -322,14 +322,14 @@ export const AppSettingsProvider = ({
       if (config.version) setLatestVersion(config.version);
     });
 
-    webApi.config("bugsnag_api_key").then((config) => {
-      if (config.bugsnagApiKey) {
-        Bugsnag.start({
-          apiKey: config.bugsnagApiKey,
-          plugins: [new BugsnagPluginReact()],
-        });
-      }
-    });
+    // webApi.config("bugsnag_api_key").then((config) => {
+    //   if (config.bugsnagApiKey) {
+    //     Bugsnag.start({
+    //       apiKey: config.bugsnagApiKey,
+    //       plugins: [new BugsnagPluginReact()],
+    //     });
+    //   }
+    // });
   }, [webApi]);
 
   useEffect(() => {
