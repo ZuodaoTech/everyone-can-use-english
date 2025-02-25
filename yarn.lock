@@ -8356,6 +8356,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/diff@npm:^7":
+  version: 7.0.1
+  resolution: "@types/diff@npm:7.0.1"
+  checksum: 10c0/5aaa77b8ab07dc0bd9d668e150a574536ed367553121ad4ae37e09ee7f23d110b2339c2b1f0f54e32c65d6acb46773e1b0d43d9d6ec75619384baeb3fec3ca3d
+  languageName: node
+  linkType: hard
+
 "@types/electron-squirrel-startup@npm:^1.0.2":
   version: 1.0.2
   resolution: "@types/electron-squirrel-startup@npm:1.0.2"
@@ -13370,6 +13377,7 @@ __metadata:
     "@types/ahoy.js": "npm:^0.4.2"
     "@types/autosize": "npm:^4.0.3"
     "@types/command-exists": "npm:^1.2.3"
+    "@types/diff": "npm:^7"
     "@types/electron-squirrel-startup": "npm:^1.0.2"
     "@types/fluent-ffmpeg": "npm:^2.1.27"
     "@types/html-to-text": "npm:^9.0.4"
@@ -13412,6 +13420,7 @@ __metadata:
     decamelize: "npm:^6.0.0"
     decamelize-keys: "npm:^2.0.1"
     dependencies-tree: "npm:^2.0.0"
+    diff: "npm:^7.0.0"
     echogarden: "npm:^1.8.7"
     electron: "npm:^34.2.0"
     electron-context-menu: "npm:^4.0.5"
