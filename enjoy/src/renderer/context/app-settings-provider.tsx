@@ -27,6 +27,8 @@ import {
 import { t } from "i18next";
 import { redirect } from "react-router-dom";
 import { Deposit } from "@renderer/components";
+import Bugsnag from "@bugsnag/electron";
+import BugsnagPluginReact from "@bugsnag/plugin-react";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -318,6 +320,15 @@ export const AppSettingsProvider = ({
 
     webApi.config("app_version").then((config) => {
       if (config.version) setLatestVersion(config.version);
+    });
+
+    webApi.config("bugsnag_api_key").then((config) => {
+      if (config.bugsnagApiKey) {
+        Bugsnag.start({
+          apiKey: config.bugsnagApiKey,
+          plugins: [new BugsnagPluginReact()],
+        });
+      }
     });
   }, [webApi]);
 
