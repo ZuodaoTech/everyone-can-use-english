@@ -90,6 +90,16 @@ function convertToInlineComponent(el) {
   const dataAudio = fillDataAudio(el);
   console.log('inline component', dataAudio)
 
+  // check the hostname.
+  // if the hostname is not `1000h.org`, add `/1000-hours` to the dataAudio[i].value
+  if (window.location.hostname !== '1000h.org' || window.location.hostname !== 'localhost') {
+    for (let i = 0; i < dataAudio.length; i++) {
+      if (dataAudio[i].value) {
+        dataAudio[i].value = `/1000-hours${dataAudio[i].value}`;
+      }
+    }
+  }
+
   const wrapperEl = document.createElement('div')
   wrapperEl.classList.add('speak-word-wrapper')
   const canEl = document.createElement('div')
