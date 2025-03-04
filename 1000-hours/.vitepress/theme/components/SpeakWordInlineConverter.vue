@@ -12,6 +12,13 @@ watch(() => router.route.data.relativePath, (newVal, oldVal) => {
   }
 }, { immediate: true });
 
+function wrapAssetUrl(url) {
+  if (window.location.hostname !== '1000h.org' && window.location.hostname !== 'localhost') {
+    return `/1000-hours${url}`;
+  }
+  return url;
+}
+
 function buildPlayButton(parent, accent, gender, url) {
   gender = gender || 'male';
   accent = accent || 'us';
@@ -28,7 +35,7 @@ function buildPlayButton(parent, accent, gender, url) {
   const emojiEl = document.createElement('span');
   emojiEl.classList.add('emoji');
 
-  let svg = '/images/speaker-white.svg';
+  let svg = wrapAssetUrl('/images/speaker-white.svg');
   let iconEmoji = '🇺🇸';
   if (accent === 'uk') {
     iconEmoji = '🇬🇧';
@@ -91,12 +98,9 @@ function convertToInlineComponent(el) {
   console.log('inline component', dataAudio)
 
   // check the hostname.
-  // if the hostname is not `1000h.org`, add `/1000-hours` to the dataAudio[i].value
-  if (window.location.hostname !== '1000h.org' && window.location.hostname !== 'localhost') {
-    for (let i = 0; i < dataAudio.length; i++) {
-      if (dataAudio[i].value) {
-        dataAudio[i].value = `/1000-hours${dataAudio[i].value}`;
-      }
+  for (let i = 0; i < dataAudio.length; i++) {
+    if (dataAudio[i].value) {
+      dataAudio[i].value = wrapAssetUrl(dataAudio[i].value);
     }
   }
 
