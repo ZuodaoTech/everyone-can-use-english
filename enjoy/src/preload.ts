@@ -186,6 +186,21 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     scrape: (url: string) => {
       return ipcRenderer.invoke("view-scrape", url);
     },
+    resize: (bounds: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    }) => {
+      return ipcRenderer.invoke("view-resize", bounds);
+    },
+    loadCommunity: (
+      url: string,
+      bounds: { x: number; y: number; width: number; height: number },
+      options?: { navigatable?: boolean; accessToken?: string }
+    ) => {
+      return ipcRenderer.invoke("view-load-community", url, bounds, options);
+    },
     onViewState: (
       callback: (
         event: IpcRendererEvent,

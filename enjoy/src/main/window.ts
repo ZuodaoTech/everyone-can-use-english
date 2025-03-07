@@ -16,7 +16,7 @@ import settings from "@main/settings";
 import downloader from "@main/downloader";
 import fs from "fs-extra";
 import log from "@main/logger";
-import { REPO_URL, WS_URL } from "@/constants";
+import { DISCUSS_URL, REPO_URL, WEB_API_URL, WS_URL } from "@/constants";
 import { AudibleProvider, TedProvider, YoutubeProvider } from "@main/providers";
 import Ffmpeg from "@main/ffmpeg";
 import { Waveform } from "./waveform";
@@ -238,6 +238,108 @@ main.init = async () => {
       view.webContents.loadURL(url);
     }
   );
+  
+  ipcMain.handle(
+    "view-load-community",
+    (
+      event,
+      bounds: { x: number; y: number; width: number; height: number },
+      options?: {
+        navigatable?: boolean;
+        accessToken?: string;
+        url?: string;
+        ssoUrl?: string;
+      }
+    ) => {
+      const {
+        x = 0,
+        y = 0,
+        width = mainWindow.getBounds().width,
+        height = mainWindow.getBounds().height,
+      } = bounds;
+      const { navigatable = false, accessToken, url = `${DISCUSS_URL}/login`, ssoUrl = `${WEB_API_URL}/discourse/sso` } = options || {};
+
+      logger.debug("view-load-community", url);
+      const view = new WebContentsView();
+      mainWindow.contentView.addChildView(view);
+
+      view.setBounds({
+        x: Math.round(x),
+        y: Math.round(y),
+        width: Math.round(width),
+        height: Math.round(height),
+      });
+
+      view.webContents.on("did-navigate", (_event, url) => {
+        event.sender.send("view-on-state", {
+          state: "did-navigate",
+          url,
+        });
+      });
+      view.webContents.on(
+        "did-fail-load",
+        (_event, _errorCode, errrorDescription, validatedURL) => {
+          event.sender.send("view-on-state", {
+            state: "did-fail-load",
+            error: errrorDescription,
+            url: validatedURL,
+          });
+          (view.webContents as any).destroy();
+          mainWindow.contentView.removeChildView(view);
+        }
+      );
+
+      view.webContents.on("will-redirect", (details) => {
+        const { url } = details;
+        event.sender.send("view-on-state", {
+          state: "will-redirect",
+          url,
+        });
+        // Login via SSO
+        if (url.includes(ssoUrl)) {
+          details.preventDefault();
+          // Auto login using access token
+          view.webContents.loadURL(url, {
+            extraHeaders: `Authorization: Bearer ${accessToken}\n`,
+          });
+          logger.debug("loading", url, "accessToken:", accessToken);
+        } else {
+          logger.debug("will-redirect", url);
+        }
+      });
+
+      view.webContents.on("will-navigate", (details) => {
+        const { url } = details;
+        event.sender.send("view-on-state", {
+          state: "will-navigate",
+          url,
+        });
+
+        logger.debug("will-navigate", url);
+
+        // Open in browser if not navigatable
+        if (!navigatable) {
+          logger.debug("prevent navigation", url);
+          details.preventDefault();
+          shell.openExternal(url);
+        }
+      });
+      view.webContents.loadURL(url);
+    }
+  );
+
+  ipcMain.handle("view-resize", (_event, bounds: { x: number; y: number; width: number; height: number }) => {
+    logger.debug("view-resize", bounds);
+    const view = mainWindow.contentView.children[0];
+    if (!view) return;
+
+    view.setBounds({
+      x: Math.round(bounds.x),
+      y: Math.round(bounds.y),
+      width: Math.round(bounds.width),
+      height: Math.round(bounds.height),
+    });
+  });
 
   ipcMain.handle("view-remove", () => {
     logger.debug("view-remove");
