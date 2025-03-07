@@ -123,6 +123,15 @@ export const Sidebar = (props: {
               isCollapsed={isCollapsed}
             />
 
+            <SidebarItem
+              href="/community"
+              label={t("sidebar.community")}
+              tooltip={t("sidebar.community")}
+              active={activeTab.startsWith("/community")}
+              Icon={UsersRoundIcon}
+              isCollapsed={isCollapsed}
+            />
+
             <Separator />
 
             <SidebarItem
@@ -345,13 +354,6 @@ const SidebarHeader = (props: { isCollapsed: boolean }) => {
           >
             <span>{t("sidebar.profile")}</span>
             <UserIcon className="size-4 ml-auto" />
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onSelect={() => navigate("/community")}
-          >
-            <span>{t("sidebar.community")}</span>
-            <UsersRoundIcon className="size-4 ml-auto" />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

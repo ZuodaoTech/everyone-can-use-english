@@ -1,34 +1,61 @@
-import {
-  Button,
-  Tabs,
-  TabsList,
-  TabsContent,
-  TabsTrigger,
-} from "@renderer/components/ui";
-import { UsersRankings, Posts } from "@renderer/components";
-import { ChevronLeftIcon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { t } from "i18next";
+import { useContext, useEffect, useRef } from "react";
+import { AppSettingsProviderContext } from "@renderer/context";
+import debounce from "lodash/debounce";
+import { DISCUSS_URL, WEB_API_URL } from "@/constants";
 
 export default () => {
-  const navigate = useNavigate();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { EnjoyApp, user, webApi } = useContext(AppSettingsProviderContext);
 
-  return (
-    <div className="min-h-full px-4 lg:px-8 py-6 max-w-screen-md mx-auto">
-      <Tabs defaultValue="square">
-        <TabsList className="mb-4">
-          <TabsTrigger value="square">{t("square")}</TabsTrigger>
-          <TabsTrigger value="rankings">{t("rankings")}</TabsTrigger>
-        </TabsList>
+  const loadCommunity = async () => {
+    let url = `${DISCUSS_URL}/login`;
+    let ssoUrl = `${WEB_API_URL}/discourse/sso`;
 
-        <TabsContent value="square">
-          <Posts />
-        </TabsContent>
+    try {
+      const { discussUrl, discussSsoUrl } = await webApi.config("discuss");
+      if (discussUrl) {
+        url = discussUrl;
+      }
+      if (discussSsoUrl) {
+        ssoUrl = discussSsoUrl;
+      }
+    } catch (error) {
+      console.error(error);
+    }
 
-        <TabsContent value="rankings">
-          <UsersRankings />
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
+    const { x, y, width, height } =
+      containerRef.current.getBoundingClientRect();
+    EnjoyApp.view.loadCommunity(
+      { x, y, width, height },
+      { navigatable: false, accessToken: user?.accessToken, url, ssoUrl }
+    );
+  };
+
+  const resize = debounce(() => {
+    const { x, y, width, height } =
+      containerRef.current.getBoundingClientRect();
+    EnjoyApp.view.resize({ x, y, width, height });
+  }, 100);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    loadCommunity();
+    const observer = new ResizeObserver(() => {
+      resize();
+    });
+    observer.observe(containerRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      EnjoyApp.view.remove();
+    };
+  }, []);
+
+  return <div ref={containerRef} className="w-full h-full"></div>;
 };
