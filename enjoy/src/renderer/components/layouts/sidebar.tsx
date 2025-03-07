@@ -77,6 +77,14 @@ export const Sidebar = (props: {
     });
   }, []);
 
+  useEffect(() => {
+    if (displayPreferences) {
+      EnjoyApp.view.hide();
+    } else {
+      EnjoyApp.view.show();
+    }
+  }, [displayPreferences]);
+
   return (
     <div
       className={`h-content pt-8 transition-all relative draggable-region ${

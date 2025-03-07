@@ -180,7 +180,12 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     remove: () => {
       return ipcRenderer.invoke("view-remove");
     },
-    show: (bounds: { x: number; y: number; width: number; height: number }) => {
+    show: (bounds?: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    }) => {
       return ipcRenderer.invoke("view-show", bounds);
     },
     scrape: (url: string) => {

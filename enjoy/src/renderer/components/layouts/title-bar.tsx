@@ -18,10 +18,6 @@ import {
   DropdownMenuItem,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuPortal,
-  DropdownMenuSubContent,
   DropdownMenuSeparator,
   toast,
 } from "@renderer/components/ui";
@@ -39,6 +35,7 @@ import {
   XIcon,
 } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const INSTALL_URL = "https://1000h.org/enjoy-app/install.html";
 
@@ -49,11 +46,12 @@ export const TitleBar = () => {
   const [updaterState, setUpdaterState] = useState<
     "checking-for-update" | "update-available" | "update-downloaded" | "error"
   >();
-
+  const [quiting, setQuiting] = useState(false);
   const { EnjoyApp, version, setDisplayPreferences, initialized } = useContext(
     AppSettingsProviderContext
   );
   const { active, setActive } = useContext(CopilotProviderContext);
+  const navigate = useNavigate();
 
   const checkUpdate = () => {
     if (platform === "linux") {
@@ -110,6 +108,14 @@ export const TitleBar = () => {
       EnjoyApp.app.removeUpdaterListeners();
     };
   }, []);
+
+  useEffect(() => {
+    if (quiting) {
+      EnjoyApp.view.hide();
+    } else {
+      EnjoyApp.view.show();
+    }
+  }, [quiting]);
 
   return (
     <div className="z-[100] h-8 w-full bg-muted draggable-region flex items-center justify-between border-b">
@@ -183,40 +189,12 @@ export const TitleBar = () => {
                 <ExternalLinkIcon className="size-4" />
               </DropdownMenuItem>
             </DropdownMenuGroup>
-
-            <DropdownMenuGroup>
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger className="non-draggable-region">
-                  <span className="capitalize">{t("feedback")}</span>
-                </DropdownMenuSubTrigger>
-                <DropdownMenuPortal>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuItem
-                      onClick={() =>
-                        EnjoyApp.shell.openExternal(
-                          "https://mixin.one/codes/f6ff96b8-54fb-4ad8-a6d4-5a5bdb1df13e"
-                        )
-                      }
-                      className="flex justify-between space-x-4"
-                    >
-                      <span>Mixin</span>
-                      <ExternalLinkIcon className="size-4" />
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() =>
-                        EnjoyApp.shell.openExternal(
-                          "https://github.com/zuodaotech/everyone-can-use-english/discussions"
-                        )
-                      }
-                      className="flex justify-between space-x-4"
-                    >
-                      <span>Github</span>
-                      <ExternalLinkIcon className="size-4" />
-                    </DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuPortal>
-              </DropdownMenuSub>
-            </DropdownMenuGroup>
+            <DropdownMenuItem
+              onClick={() => navigate("/community")}
+              className="flex justify-between space-x-4"
+            >
+              <span>{t("feedback")}</span>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem disabled>
               <span className="text-xs text-muted-foreground">v{version}</span>
@@ -283,7 +261,7 @@ export const TitleBar = () => {
                 <MaximizeIcon className="size-4" />
               )}
             </Button>
-            <AlertDialog>
+            <AlertDialog open={quiting} onOpenChange={setQuiting}>
               <AlertDialogTrigger asChild>
                 <Button
                   variant="ghost"
@@ -304,7 +282,10 @@ export const TitleBar = () => {
                   <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
                   <AlertDialogAction
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                    onClick={() => EnjoyApp.window.close()}
+                    onClick={() => {
+                      setQuiting(false);
+                      EnjoyApp.window.close();
+                    }}
                   >
                     {t("quit")}
                   </AlertDialogAction>

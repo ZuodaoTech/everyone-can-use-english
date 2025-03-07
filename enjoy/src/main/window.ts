@@ -360,7 +360,7 @@ main.init = async () => {
     "view-show",
     (
       _event,
-      bounds: {
+      bounds?: {
         x: number;
         y: number;
         width: number;
@@ -372,6 +372,9 @@ main.init = async () => {
 
       logger.debug("view-show", bounds);
       view.setVisible(true);
+      if (bounds) {
+        view.setBounds(bounds);
+      }
     }
   );
 

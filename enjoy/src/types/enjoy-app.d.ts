@@ -87,7 +87,7 @@ type EnjoyAppType = {
         navigatable?: boolean;
       }
     ) => Promise<void>;
-    show: (bounds: any) => Promise<void>;
+    show: (bounds?: any) => Promise<void>;
     hide: () => Promise<void>;
     remove: () => Promise<void>;
     scrape: (url: string) => Promise<void>;
