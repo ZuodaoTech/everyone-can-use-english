@@ -1,22 +1,22 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import debounce from "lodash/debounce";
 import { DISCUSS_URL, WEB_API_URL } from "@/constants";
 import { Button } from "@renderer/components/ui";
 import { t } from "i18next";
-import { LoaderSpin } from "../components";
+import { LoaderSpin } from "@renderer/components";
 
 export default () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { EnjoyApp, user, webApi, logout } = useContext(
     AppSettingsProviderContext
   );
+  const [authorized, setAuthorized] = useState(false);
 
   const loadCommunity = async () => {
     let url = `${DISCUSS_URL}/login`;
     let ssoUrl = `${WEB_API_URL}/discourse/sso`;
-    const accessToken = user?.accessToken;
-    if (!accessToken) return;
+    if (!authorized || !user?.accessToken) return;
 
     try {
       const { discussUrl, discussSsoUrl } = await webApi.config("discuss");
@@ -34,7 +34,7 @@ export default () => {
       containerRef.current.getBoundingClientRect();
     EnjoyApp.view.loadCommunity(
       { x, y, width, height },
-      { navigatable: false, accessToken, url, ssoUrl }
+      { navigatable: false, accessToken: user.accessToken, url, ssoUrl }
     );
   };
 
@@ -46,6 +46,7 @@ export default () => {
 
   useEffect(() => {
     if (!containerRef.current) return;
+    if (!authorized) return;
 
     loadCommunity();
     const observer = new ResizeObserver(() => {
@@ -56,9 +57,15 @@ export default () => {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [authorized, containerRef.current]);
 
   useEffect(() => {
+    if (!user?.accessToken) return;
+
+    webApi.me().then(() => {
+      setAuthorized(true);
+    });
+
     return () => {
       EnjoyApp.view.remove();
     };
@@ -66,19 +73,6 @@ export default () => {
 
   return (
     <div ref={containerRef} className="w-full h-full">
-      {!user?.accessToken && (
-        <div className="bg-destructive text-white py-2 px-4 h-10 flex items-center sticky top-0 z-10">
-          <span className="text-sm">{t("authorizationExpired")}</span>
-          <Button
-            variant="outline"
-            size="sm"
-            className="ml-2 py-1 px-2 text-xs h-auto w-auto"
-            onClick={logout}
-          >
-            {t("reLogin")}
-          </Button>
-        </div>
-      )}
       <LoaderSpin />
     </div>
   );
