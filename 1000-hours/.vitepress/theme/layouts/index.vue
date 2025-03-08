@@ -2,6 +2,7 @@
 import DefaultTheme from "vitepress/theme";
 import SpeakWordInlineConverter from "../components/SpeakWordInlineConverter.vue";
 import ThemedImageSwitch from "../components/ThemedImageSwitch.vue";
+import DiscourseComments from "../components/DiscourseComments.vue";
 import { register } from "swiper/element/bundle";
 
 const { Layout } = DefaultTheme;
@@ -15,6 +16,7 @@ register();
       <ClientOnly>
         <SpeakWordInlineConverter />
         <ThemedImageSwitch />
+        <DiscourseComments />
       </ClientOnly>
     </template>
   </Layout>

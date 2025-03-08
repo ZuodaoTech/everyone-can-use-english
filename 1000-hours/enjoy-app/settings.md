@@ -1,3 +1,7 @@
+---
+discourseTopicId: 25
+discourseAuthor: an-lee
+---
 # 软件设置
 
 Enjoy 只需要登录后即可直接使用，**无需其他设置**。但是，你仍然可以根据需要做个性化的设置。
