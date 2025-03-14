@@ -13,11 +13,11 @@ import {
   Scopes,
   BeforeSave,
 } from "sequelize-typescript";
-import log from "@main/logger";
+import log from "@/main/services/logger";
 import { ChatAgent, ChatMember, ChatMessage } from "@main/db/models";
-import mainWindow from "@main/window";
+import mainWindow from "@/main/ipc/window";
 import { t } from "i18next";
-import { ChatAgentTypeEnum, ChatTypeEnum } from "@/types/enums";
+import { ChatAgentTypeEnum, ChatTypeEnum } from "@/renderer/types/enums";
 
 const logger = log.scope("db/models/chat");
 @Table({

@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import {
   AppSettingsProviderContext,
   DictProviderContext,
-} from "@/renderer/context";
+} from "@renderer/context";
 import {
   Button,
   Dialog,
@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   toast,
-} from "@/renderer/components/ui";
+} from "@renderer/components/ui";
 import { t } from "i18next";
 import { LoaderIcon } from "lucide-react";
 

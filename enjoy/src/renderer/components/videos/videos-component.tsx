@@ -43,7 +43,7 @@ import {
 import { LayoutGridIcon, LayoutListIcon } from "lucide-react";
 import { videosReducer } from "@renderer/reducers";
 import { useDebounce } from "@uidotdev/usehooks";
-import { LANGUAGES } from "@/constants";
+import { LANGUAGES } from "@shared/constants";
 
 export const VideosComponent = () => {
   const { addDblistener, removeDbListener } = useContext(DbProviderContext);

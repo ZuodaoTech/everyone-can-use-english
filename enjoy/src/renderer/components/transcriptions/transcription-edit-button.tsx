@@ -24,7 +24,7 @@ import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 import { t } from "i18next";
 import { useContext, useEffect, useState } from "react";
 import { LoaderIcon } from "lucide-react";
-import { milisecondsToTimestamp } from "@/utils";
+import { milisecondsToTimestamp } from "@shared/utils";
 
 export const TranscriptionEditButton = (props: {
   children?: React.ReactNode;

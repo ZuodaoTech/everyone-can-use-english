@@ -1,4 +1,4 @@
-import settings from "@main/settings";
+import settings from "@/main/services/settings";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import { ProxyAgent } from "proxy-agent";
 import fetch from "node-fetch";

@@ -19,7 +19,7 @@ import { PlusIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { t } from "i18next";
 import { useDebounce } from "@uidotdev/usehooks";
-import { AppSettingsProviderContext } from "@/renderer/context";
+import { AppSettingsProviderContext } from "@renderer/context";
 
 export const ChatAgents = (props: {
   chatAgents: ChatAgentType[];

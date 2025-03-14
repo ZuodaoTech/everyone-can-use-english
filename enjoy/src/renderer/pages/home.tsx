@@ -11,7 +11,7 @@ import { AppSettingsProviderContext } from "@renderer/context";
 import { Button } from "@renderer/components/ui";
 import { t } from "i18next";
 import semver from "semver";
-import { DOWNLOAD_URL } from "@/constants";
+import { DOWNLOAD_URL } from "@shared/constants";
 
 export default () => {
   const [channels, setChannels] = useState<string[]>([

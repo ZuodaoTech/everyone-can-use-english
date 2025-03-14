@@ -15,7 +15,7 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "@renderer/components/ui";
-import { ChatAgentTypeEnum } from "@/types/enums";
+import { ChatAgentTypeEnum } from "@renderer/types/enums";
 
 export const ChatMessages = () => {
   const { chatMessages, chat, asking } = useContext(ChatSessionProviderContext);

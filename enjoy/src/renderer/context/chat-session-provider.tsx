@@ -26,7 +26,10 @@ import { t } from "i18next";
 import { ChevronDownIcon } from "lucide-react";
 import { AudioPlayer, RecordingDetail } from "@renderer/components";
 import { Tooltip } from "react-tooltip";
-import { ChatMessageRoleEnum, ChatMessageStateEnum } from "@/types/enums";
+import {
+  ChatMessageRoleEnum,
+  ChatMessageStateEnum,
+} from "@renderer/types/enums";
 
 type ChatSessionProviderState = {
   chat: ChatType;

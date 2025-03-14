@@ -8,7 +8,7 @@ import { Button, Separator } from "@renderer/components/ui";
 import { t } from "i18next";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useNotes } from "@/renderer/hooks";
+import { useNotes } from "@renderer/hooks";
 import { NoteCard } from "./note-card";
 import { NoteSemgent } from "./note-segment";
 

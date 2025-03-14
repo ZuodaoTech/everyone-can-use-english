@@ -1,6 +1,6 @@
 import { createHash } from "crypto";
 import { createReadStream } from "fs";
-import settings from "./settings";
+import settings from "./services/settings";
 import path from "path";
 
 export function hashFile(

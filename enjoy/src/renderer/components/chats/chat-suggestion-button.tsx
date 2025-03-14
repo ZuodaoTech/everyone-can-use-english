@@ -20,7 +20,10 @@ import { LoaderSpin } from "@renderer/components";
 import { useAiCommand } from "@renderer/hooks";
 import { md5 } from "js-md5";
 import dayjs from "@renderer/lib/dayjs";
-import { ChatMessageRoleEnum, ChatMessageStateEnum } from "@/types/enums";
+import {
+  ChatMessageRoleEnum,
+  ChatMessageStateEnum,
+} from "@renderer/types/enums";
 
 export const ChatSuggestionButton = (props: {
   chat: ChatType;

@@ -1,14 +1,14 @@
 import { app, BrowserWindow, protocol, net } from "electron";
 import path from "path";
 import fs from "fs-extra";
-import settings from "@main/settings";
-import log from "@main/logger";
-import mainWindow from "@main/window";
+import settings from "@/main/services/settings";
+import log from "@/main/services/logger";
+import mainWindow from "@/main/ipc/window";
 import ElectronSquirrelStartup from "electron-squirrel-startup";
 import contextMenu from "electron-context-menu";
 import Bugsnag from "@bugsnag/electron";
 import { t } from "i18next";
-import { Client } from "./api";
+import { Client } from "./shared/api";
 
 const logger = log.scope("main");
 

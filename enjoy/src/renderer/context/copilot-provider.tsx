@@ -5,9 +5,9 @@ import {
   HotKeysSettingsProviderContext,
 } from "@renderer/context";
 import { t } from "i18next";
-import { DEFAULT_GPT_CONFIG } from "@/constants";
+import { DEFAULT_GPT_CONFIG } from "@shared/constants";
 import { useHotkeys } from "react-hotkeys-hook";
-import { ChatAgentTypeEnum } from "@/types/enums";
+import { ChatAgentTypeEnum } from "@renderer/types/enums";
 
 type CopilotProviderState = {
   active: boolean;

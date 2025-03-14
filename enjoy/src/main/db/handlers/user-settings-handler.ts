@@ -1,7 +1,7 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { UserSetting } from "@main/db/models";
 import db from "@main/db";
-import { UserSettingKeyEnum } from "@/types/enums";
+import { UserSettingKeyEnum } from "@/renderer/types/enums";
 
 class UserSettingsHandler {
   private async get(_event: IpcMainEvent, key: UserSettingKeyEnum) {

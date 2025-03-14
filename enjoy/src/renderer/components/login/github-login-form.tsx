@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { LoaderSpin } from "@renderer/components";
-import { AppSettingsProviderContext } from "@/renderer/context";
+import { AppSettingsProviderContext } from "@renderer/context";
 import { toast } from "sonner";
 import {
   Button,

@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
-import { DictProviderContext, ThemeProviderContext } from "@/renderer/context";
+import { DictProviderContext, ThemeProviderContext } from "@renderer/context";
 import Frame, { useFrame } from "react-frame-component";
-import { getExtension } from "@/utils";
+import { getExtension } from "@shared/utils";
 import { DictDefinitionNormalizer } from "@renderer/lib/dict";
 import { LoaderSpin } from "@renderer/components";
 import { t } from "i18next";

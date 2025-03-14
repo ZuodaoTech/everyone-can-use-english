@@ -1,4 +1,4 @@
-import log from "@main/logger";
+import log from "@/main/services/logger";
 import path from "path";
 import fs from "fs-extra";
 import { ipcMain } from "electron";

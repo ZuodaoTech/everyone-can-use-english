@@ -1,8 +1,8 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { Document } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
-import downloader from "@main/downloader";
-import log from "@main/logger";
+import downloader from "@/main/services/downloader";
+import log from "@/main/services/logger";
 import { t } from "i18next";
 
 const logger = log.scope("db/handlers/documents-handler");

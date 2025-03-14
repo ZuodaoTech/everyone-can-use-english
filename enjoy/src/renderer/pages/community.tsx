@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import debounce from "lodash/debounce";
-import { DISCUSS_URL, WEB_API_URL } from "@/constants";
+import { DISCUSS_URL, WEB_API_URL } from "@shared/constants";
 import { Button } from "@renderer/components/ui";
 import { t } from "i18next";
 import { LoaderSpin } from "@renderer/components";

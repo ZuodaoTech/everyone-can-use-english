@@ -3,7 +3,7 @@ import {
   renderPitchContour,
   secondsToTimestamp,
 } from "@renderer/lib/utils";
-import { extractFrequencies } from "@/utils";
+import { extractFrequencies } from "@shared/utils";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { useCallback, useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";

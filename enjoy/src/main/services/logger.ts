@@ -1,6 +1,6 @@
 import log from "electron-log/main";
 import path from "path";
-import settings from "@main/settings";
+import settings from "@/main/services/settings";
 
 log.initialize({ preload: true });
 

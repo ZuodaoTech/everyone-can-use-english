@@ -16,7 +16,7 @@
       "@/*": ["./src/*"],
       "@renderer/*": ["./src/renderer/*"],
       "@main/*": ["./src/main/*"],
-      "@commands": ["./src/commands"]
+      "@shared/*": ["./src/shared/*"]
     },
     "types": ["vite/client"],
     "emitDecoratorMetadata": true,

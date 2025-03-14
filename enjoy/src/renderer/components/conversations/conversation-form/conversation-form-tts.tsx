@@ -13,7 +13,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@renderer/components/ui";
-import { LANGUAGES } from "@/constants";
+import { LANGUAGES } from "@shared/constants";
 
 export const ConversationFormTTS = (props: {
   form: ReturnType<typeof useForm>;

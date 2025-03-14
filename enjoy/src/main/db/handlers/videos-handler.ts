@@ -1,10 +1,10 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { Video, Transcription } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
-import downloader from "@main/downloader";
-import log from "@main/logger";
+import downloader from "@/main/services/downloader";
+import log from "@/main/services/logger";
 import { t } from "i18next";
-import youtubedr from "@main/youtubedr";
+import youtubedr from "@/main/services/youtubedr";
 import { pathToEnjoyUrl } from "@main/utils";
 
 const logger = log.scope("db/handlers/videos-handler");

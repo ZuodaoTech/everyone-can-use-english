@@ -42,7 +42,10 @@ import {
 import { useAiCommand } from "@renderer/hooks";
 import { md5 } from "js-md5";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
-import { ChatMessageRoleEnum, ChatMessageStateEnum } from "@/types/enums";
+import {
+  ChatMessageRoleEnum,
+  ChatMessageStateEnum,
+} from "@renderer/types/enums";
 
 export const ChatUserMessage = (props: {
   chatMessage: ChatMessageType;

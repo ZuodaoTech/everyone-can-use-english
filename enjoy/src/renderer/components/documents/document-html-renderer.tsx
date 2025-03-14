@@ -10,7 +10,7 @@ import Turndown from "turndown";
 import {
   AppSettingsProviderContext,
   DocumentProviderContext,
-} from "@/renderer/context";
+} from "@renderer/context";
 import { Button } from "../ui";
 import { LinkIcon } from "lucide-react";
 

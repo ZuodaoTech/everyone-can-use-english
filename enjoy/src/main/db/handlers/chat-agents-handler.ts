@@ -1,7 +1,7 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { Chat, ChatAgent, ChatMember } from "@main/db/models";
 import { FindOptions, Attributes, Op } from "sequelize";
-import log from "@main/logger";
+import log from "@/main/services/logger";
 import { t } from "i18next";
 
 const logger = log.scope("db/handlers/chat-agents-handler");

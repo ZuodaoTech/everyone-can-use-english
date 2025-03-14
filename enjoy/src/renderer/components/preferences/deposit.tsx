@@ -15,7 +15,7 @@ import {
 } from "@renderer/components/ui";
 import { LoaderSpin } from "@renderer/components";
 import { LoaderIcon } from "lucide-react";
-import { formatDateTime } from "@/renderer/lib/utils";
+import { formatDateTime } from "@renderer/lib/utils";
 
 export const Deposit = () => {
   const { webApi, EnjoyApp } = useContext(AppSettingsProviderContext);

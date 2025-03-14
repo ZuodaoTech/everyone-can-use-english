@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import settings from "@main/settings";
+import settings from "@/main/services/settings";
 import { Sequelize } from "sequelize-typescript";
 import { Umzug, SequelizeStorage, Resolver, RunnableMigration } from "umzug";
 import {
@@ -42,9 +42,9 @@ import {
 } from "./handlers";
 import os from "os";
 import path from "path";
-import { i18n } from "@main/i18n";
-import { UserSettingKeyEnum } from "@/types/enums";
-import log from "@main/logger";
+import { i18n } from "@/main/services/i18n";
+import { UserSettingKeyEnum } from "@/renderer/types/enums";
+import log from "@/main/services/logger";
 import fs from "fs-extra";
 
 const __dirname = import.meta.dirname;

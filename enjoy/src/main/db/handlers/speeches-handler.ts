@@ -2,7 +2,7 @@ import { ipcMain, IpcMainEvent } from "electron";
 import { Speech } from "@main/db/models";
 import fs from "fs-extra";
 import path from "path";
-import settings from "@main/settings";
+import settings from "@/main/services/settings";
 import { hashFile } from "@main/utils";
 import { Attributes, WhereOptions } from "sequelize";
 

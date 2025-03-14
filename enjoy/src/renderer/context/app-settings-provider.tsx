@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { WEB_API_URL, LANGUAGES, IPA_MAPPINGS } from "@/constants";
-import { Client } from "@/api";
+import { WEB_API_URL, LANGUAGES, IPA_MAPPINGS } from "@shared/constants";
+import { Client } from "@shared/api";
 import i18n from "@renderer/i18n";
 import ahoy from "ahoy.js";
 import { type Consumer, createConsumer } from "@rails/actioncable";
 import { DbProviderContext } from "@renderer/context";
-import { UserSettingKeyEnum } from "@/types/enums";
+import { UserSettingKeyEnum } from "@renderer/types/enums";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -27,8 +27,6 @@ import {
 import { t } from "i18next";
 import { redirect } from "react-router-dom";
 import { Deposit } from "@renderer/components";
-import Bugsnag from "@bugsnag/electron";
-import BugsnagPluginReact from "@bugsnag/plugin-react";
 
 type AppSettingsProviderState = {
   webApi: Client;

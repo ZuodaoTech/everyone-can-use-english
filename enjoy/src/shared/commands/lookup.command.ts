@@ -1,7 +1,7 @@
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { z } from "zod";
 import { jsonCommand } from "./json.command";
-import { LANGUAGES } from "@/constants";
+import { LANGUAGES } from "@/shared/constants";
 
 export const lookupCommand = async (
   params: {

@@ -3,10 +3,10 @@ import path from "path";
 import { exec, spawn } from "child_process";
 import fs from "fs-extra";
 import os from "os";
-import log from "@main/logger";
+import log from "@/main/services/logger";
 import snakeCase from "lodash/snakeCase";
-import settings from "@main/settings";
-import mainWin from "@main/window";
+import settings from "@/main/services/settings";
+import mainWin from "@/main/ipc/window";
 
 //  youtubedr bin file will be in /app.asar.unpacked instead of /app.asar
 const __dirname = import.meta.dirname.replace("app.asar", "app.asar.unpacked");

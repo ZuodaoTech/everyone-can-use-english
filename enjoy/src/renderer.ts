@@ -26,8 +26,8 @@
  * ```
  */
 
-import "./index.css";
-import "./renderer/index";
+import "@renderer/index.css";
+import "@renderer/index";
 
 declare global {
   interface Window {

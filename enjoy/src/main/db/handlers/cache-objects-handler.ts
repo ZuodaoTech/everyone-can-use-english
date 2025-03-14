@@ -3,7 +3,7 @@ import { CacheObject } from "@main/db/models";
 import fs from "fs-extra";
 import path from "path";
 import db from "@main/db";
-import settings from "@main/settings";
+import settings from "@/main/services/settings";
 
 class CacheObjectsHandler {
   private async get(event: IpcMainEvent, key: string) {

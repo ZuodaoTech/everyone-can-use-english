@@ -18,10 +18,10 @@ import {
 } from "@renderer/context";
 import { ChatCard } from "@renderer/components";
 import { PlusIcon } from "lucide-react";
-import { DEFAULT_GPT_CONFIG } from "@/constants";
+import { DEFAULT_GPT_CONFIG } from "@shared/constants";
 import { useChat } from "@renderer/hooks";
 import { isSameTimeRange } from "@renderer/lib/utils";
-import { ChatAgentTypeEnum } from "@/types/enums";
+import { ChatAgentTypeEnum } from "@renderer/types/enums";
 
 export const ChatList = (props: {
   chats: ChatType[];

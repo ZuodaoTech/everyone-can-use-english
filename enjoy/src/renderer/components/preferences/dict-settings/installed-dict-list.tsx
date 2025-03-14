@@ -1,7 +1,7 @@
 import {
   DictProviderContext,
   AppSettingsProviderContext,
-} from "@/renderer/context";
+} from "@renderer/context";
 import { useContext, useEffect, useState } from "react";
 import {
   Button,

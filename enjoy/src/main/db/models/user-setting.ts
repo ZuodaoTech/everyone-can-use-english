@@ -7,10 +7,13 @@ import {
   DataType,
   AllowNull,
 } from "sequelize-typescript";
-import log from "@main/logger";
-import settings from "@main/settings";
+import log from "@/main/services/logger";
+import settings from "@/main/services/settings";
 import * as i18n from "i18next";
-import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/types/enums";
+import {
+  SttEngineOptionEnum,
+  UserSettingKeyEnum,
+} from "@/renderer/types/enums";
 
 const logger = log.scope("db/userSetting");
 

@@ -20,8 +20,8 @@ import {
 import { Button, toast } from "@renderer/components/ui";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { md5 } from "js-md5";
-import { AppSettingsProviderContext } from "@/renderer/context";
-import { useAiCommand } from "@/renderer/hooks";
+import { AppSettingsProviderContext } from "@renderer/context";
+import { useAiCommand } from "@renderer/hooks";
 
 function rehypeWrapText() {
   return function wrapTextTransform(tree: any) {

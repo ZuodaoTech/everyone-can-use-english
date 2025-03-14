@@ -1,6 +1,6 @@
 import * as i18next from "i18next";
-import en from "@/i18n/en.json";
-import zh_CN from "@/i18n/zh-CN.json";
+import en from "@shared/i18n/en.json";
+import zh_CN from "@shared/i18n/zh-CN.json";
 
 const resources = {
   en: {

@@ -14,11 +14,11 @@ import {
 } from "sequelize";
 import dayjs from "dayjs";
 import { t } from "i18next";
-import log from "@main/logger";
+import log from "@/main/services/logger";
 import { NIL as NIL_UUID } from "uuid";
-import FfmpegWrapper from "@main/ffmpeg";
+import FfmpegWrapper from "@/main/services/ffmpeg";
 import path from "path";
-import settings from "@main/settings";
+import settings from "@/main/services/settings";
 import { enjoyUrlToPath, pathToEnjoyUrl } from "@main/utils";
 
 const logger = log.scope("db/handlers/recordings-handler");

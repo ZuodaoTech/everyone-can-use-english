@@ -1,10 +1,10 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { ChatMessage, Recording } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
-import log from "@main/logger";
+import log from "@/main/services/logger";
 import { enjoyUrlToPath } from "@/main/utils";
 import fs from "fs-extra";
-import { ChatMessageStateEnum } from "@/types/enums";
+import { ChatMessageStateEnum } from "@/renderer/types/enums";
 
 const logger = log.scope("db/handlers/chats-handler");
 

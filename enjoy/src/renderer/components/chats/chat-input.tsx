@@ -22,7 +22,7 @@ import { t } from "i18next";
 import autosize from "autosize";
 import { ChatMentioning, ChatSuggestionButton } from "@renderer/components";
 import { useHotkeys } from "react-hotkeys-hook";
-import { ChatTypeEnum } from "@/types/enums";
+import { ChatTypeEnum } from "@renderer/types/enums";
 
 export const ChatInput = () => {
   const {

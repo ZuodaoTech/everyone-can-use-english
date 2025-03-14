@@ -37,7 +37,7 @@ export default defineConfig((env) => {
       alias: {
         "@": path.resolve(__dirname, "./src"),
         "@renderer": path.resolve(__dirname, "./src/renderer"),
-        "@commands": path.resolve(__dirname, "./src/commands"),
+        "@shared": path.resolve(__dirname, "./src/shared"),
         "vendor/pdfjs": path.resolve(
           __dirname,
           "./node_modules/foliate-js/vendor/pdfjs"

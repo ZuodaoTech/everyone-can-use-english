@@ -12,7 +12,7 @@ import {
   summarizeTopicCommand,
   refineCommand,
   chatSuggestionCommand,
-} from "@commands";
+} from "@shared/commands";
 import { md5 as md5Hash } from "js-md5";
 
 export const useAiCommand = () => {

@@ -15,7 +15,7 @@ import {
   HasOne,
   Scopes,
 } from "sequelize-typescript";
-import mainWindow from "@main/window";
+import mainWindow from "@/main/ipc/window";
 import {
   Audio,
   PronunciationAssessment,
@@ -24,17 +24,17 @@ import {
 } from "@main/db/models";
 import fs from "fs-extra";
 import path from "path";
-import settings from "@main/settings";
+import settings from "@/main/services/settings";
 import { hashFile } from "@main/utils";
-import log from "@main/logger";
-import storage from "@main/storage";
-import { Client } from "@/api";
-import echogarden from "@main/echogarden";
+import log from "@/main/services/logger";
+import storage from "@/main/services/storage";
+import { Client } from "@/shared/api";
+import echogarden from "@/main/services/echogarden";
 import { t } from "i18next";
 import { Attributes, Op, Transaction } from "sequelize";
 import { v5 as uuidv5 } from "uuid";
-import FfmpegWrapper from "@main/ffmpeg";
-import { MIME_TYPES } from "@/constants";
+import FfmpegWrapper from "@/main/services/ffmpeg";
+import { MIME_TYPES } from "@/shared/constants";
 
 const logger = log.scope("db/models/recording");
 

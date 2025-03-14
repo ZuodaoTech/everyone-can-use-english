@@ -12,10 +12,10 @@ import {
   AllowNull,
   AfterFind,
 } from "sequelize-typescript";
-import mainWindow from "@main/window";
-import log from "@main/logger";
-import { Client } from "@/api";
-import settings from "@main/settings";
+import mainWindow from "@/main/ipc/window";
+import log from "@/main/services/logger";
+import { Client } from "@/shared/api";
+import settings from "@/main/services/settings";
 import { Segment, UserSetting } from "@main/db/models";
 
 const logger = log.scope("db/models/note");

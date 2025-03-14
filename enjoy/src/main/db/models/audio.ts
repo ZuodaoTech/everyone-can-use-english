@@ -20,20 +20,20 @@ import {
   UserSetting,
   Video,
 } from "@main/db/models";
-import settings from "@main/settings";
-import { AudioFormats, MIME_TYPES, VideoFormats } from "@/constants";
+import settings from "@/main/services/settings";
+import { AudioFormats, MIME_TYPES, VideoFormats } from "@/shared/constants";
 import { hashFile } from "@main/utils";
 import path from "path";
 import fs from "fs-extra";
 import { t } from "i18next";
-import mainWindow from "@main/window";
-import log from "@main/logger";
-import storage from "@main/storage";
-import Ffmpeg from "@main/ffmpeg";
-import { Client } from "@/api";
+import mainWindow from "@/main/ipc/window";
+import log from "@/main/services/logger";
+import storage from "@/main/services/storage";
+import Ffmpeg from "@/main/services/ffmpeg";
+import { Client } from "@/shared/api";
 import startCase from "lodash/startCase";
 import { v5 as uuidv5 } from "uuid";
-import FfmpegWrapper from "@main/ffmpeg";
+import FfmpegWrapper from "@/main/services/ffmpeg";
 
 const logger = log.scope("db/models/audio");
 

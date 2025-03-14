@@ -12,15 +12,15 @@ import {
   HasMany,
   BeforeSave,
 } from "sequelize-typescript";
-import mainWindow from "@main/window";
-import log from "@main/logger";
+import mainWindow from "@/main/ipc/window";
+import log from "@/main/services/logger";
 import { Chat, ChatMember, ChatMessage, UserSetting } from "@main/db/models";
 import {
   ChatAgentTypeEnum,
   ChatMessageRoleEnum,
   UserSettingKeyEnum,
-} from "@/types/enums";
-import { DEFAULT_GPT_CONFIG } from "@/constants";
+} from "@/renderer/types/enums";
+import { DEFAULT_GPT_CONFIG } from "@/shared/constants";
 
 const logger = log.scope("db/models/chat-agent");
 @Table({

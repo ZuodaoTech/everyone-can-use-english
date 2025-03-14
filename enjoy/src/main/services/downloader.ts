@@ -1,9 +1,9 @@
 import { ipcMain, app, BrowserWindow } from "electron";
 import path from "path";
 import fs from "fs";
-import mainWin from "@main/window";
-import log from "@main/logger";
-import settings from "@main/settings";
+import mainWin from "@/main/ipc/window";
+import log from "@/main/services/logger";
+import settings from "@/main/services/settings";
 
 const logger = log.scope("downloader");
 class Downloader {

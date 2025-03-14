@@ -30,11 +30,11 @@ import {
   toast,
 } from "@renderer/components/ui";
 import { t } from "i18next";
-import { LANGUAGES } from "@/constants";
+import { LANGUAGES } from "@shared/constants";
 import { ChevronDownIcon, ChevronUpIcon, LoaderIcon } from "lucide-react";
 import { parseText } from "media-captions";
-import { milisecondsToTimestamp } from "@/utils";
-import { SttEngineOptionEnum } from "@/types/enums";
+import { milisecondsToTimestamp } from "@shared/utils";
+import { SttEngineOptionEnum } from "@renderer/types/enums";
 
 const transcriptionSchema = z.object({
   language: z.string(),

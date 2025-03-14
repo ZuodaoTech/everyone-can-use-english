@@ -7,7 +7,7 @@ import {
 import { TabsContent, Separator } from "@renderer/components/ui";
 import { t } from "i18next";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
-import { convertWordIpaToNormal } from "@/utils";
+import { convertWordIpaToNormal } from "@shared/utils";
 import {
   CamdictLookupResult,
   DictLookupResult,

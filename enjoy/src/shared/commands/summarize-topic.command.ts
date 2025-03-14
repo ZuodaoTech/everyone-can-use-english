@@ -1,6 +1,6 @@
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { textCommand } from "./text.command";
-import { LANGUAGES } from "@/constants";
+import { LANGUAGES } from "@/shared/constants";
 
 export const summarizeTopicCommand = async (
   text: string,

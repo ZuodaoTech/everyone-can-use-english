@@ -15,7 +15,7 @@ import {
   HasMany,
 } from "sequelize-typescript";
 import { Conversation, Speech } from "@main/db/models";
-import mainWindow from "@main/window";
+import mainWindow from "@/main/ipc/window";
 
 @Table({
   modelName: "Message",

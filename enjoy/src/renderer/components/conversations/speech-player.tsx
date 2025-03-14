@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { renderPitchContour } from "@renderer/lib/utils";
-import { extractFrequencies } from "@/utils";
+import { extractFrequencies } from "@shared/utils";
 import WaveSurfer from "wavesurfer.js";
 import { Button, Skeleton } from "@renderer/components/ui";
 import { PlayIcon, PauseIcon } from "lucide-react";

@@ -4,7 +4,7 @@ import {
   DbProviderContext,
 } from "@renderer/context";
 import { t } from "i18next";
-import { UserSettingKeyEnum } from "@/types/enums";
+import { UserSettingKeyEnum } from "@renderer/types/enums";
 
 type DictProviderState = {
   settings: DictSettingType;

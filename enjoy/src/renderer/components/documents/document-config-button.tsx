@@ -8,7 +8,7 @@ import {
 import { SettingsIcon } from "lucide-react";
 import { useContext, useState } from "react";
 import { DocumentConfigForm } from "@renderer/components";
-import { AppSettingsProviderContext } from "@/renderer/context";
+import { AppSettingsProviderContext } from "@renderer/context";
 import { t } from "i18next";
 
 export const DocumentConfigButton = (props: { document: DocumentEType }) => {

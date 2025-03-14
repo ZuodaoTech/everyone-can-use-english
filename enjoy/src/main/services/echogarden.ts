@@ -17,12 +17,12 @@ import {
 } from "echogarden/dist/utilities/Timeline.d.js";
 import { ensureAndGetPackagesDir } from "echogarden/dist/utilities/PackageManager.js";
 import path from "path";
-import log from "@main/logger";
+import log from "@/main/services/logger";
 import url from "url";
-import settings from "@main/settings";
+import settings from "@/main/services/settings";
 import fs from "fs-extra";
 import ffmpegPath from "ffmpeg-static";
-import { enjoyUrlToPath, pathToEnjoyUrl } from "./utils";
+import { enjoyUrlToPath, pathToEnjoyUrl } from "../utils";
 
 Echogarden.setGlobalOption(
   "ffmpegPath",

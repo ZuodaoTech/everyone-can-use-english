@@ -37,7 +37,7 @@ import {
 } from "lucide-react";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import { t } from "i18next";
-import { usePronunciationAssessments } from "@/renderer/hooks";
+import { usePronunciationAssessments } from "@renderer/hooks";
 
 export const LookupWidget = () => {
   const { EnjoyApp } = useContext(AppSettingsProviderContext);

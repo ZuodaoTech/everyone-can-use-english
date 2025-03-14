@@ -1,4 +1,4 @@
-import { AppSettingsProviderContext } from "@/renderer/context";
+import { AppSettingsProviderContext } from "@renderer/context";
 import {
   Button,
   Popover,

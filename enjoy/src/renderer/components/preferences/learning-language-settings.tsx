@@ -8,7 +8,7 @@ import {
 } from "@renderer/components/ui";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { useContext } from "react";
-import { LANGUAGES } from "@/constants";
+import { LANGUAGES } from "@shared/constants";
 
 export const LearningLanguageSettings = () => {
   const { learningLanguage, switchLearningLanguage } = useContext(

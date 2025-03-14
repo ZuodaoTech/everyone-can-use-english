@@ -5,7 +5,7 @@ import {
 import OpenAI from "openai";
 import { useContext, useState } from "react";
 import { t } from "i18next";
-import { AI_WORKER_ENDPOINT } from "@/constants";
+import { AI_WORKER_ENDPOINT } from "@shared/constants";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import axios from "axios";
 import { useAiCommand } from "./use-ai-command";
@@ -15,7 +15,7 @@ import {
   type TimelineEntryType,
 } from "echogarden/dist/utilities/Timeline";
 import { type ParsedCaptionsResult, parseText } from "media-captions";
-import { SttEngineOptionEnum } from "@/types/enums";
+import { SttEngineOptionEnum } from "@renderer/types/enums";
 import { RecognitionResult } from "echogarden/dist/api/API.js";
 import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";

@@ -12,10 +12,13 @@ import {
   AllowNull,
   Scopes,
 } from "sequelize-typescript";
-import log from "@main/logger";
+import log from "@/main/services/logger";
 import { Chat, ChatAgent, ChatMessage } from "@main/db/models";
-import mainWindow from "@main/window";
-import { ChatMessageCategoryEnum, ChatMessageRoleEnum } from "@/types/enums";
+import mainWindow from "@/main/ipc/window";
+import {
+  ChatMessageCategoryEnum,
+  ChatMessageRoleEnum,
+} from "@/renderer/types/enums";
 
 const logger = log.scope("db/models/chat-member");
 @Table({

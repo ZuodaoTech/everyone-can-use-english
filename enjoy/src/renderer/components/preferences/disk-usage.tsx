@@ -25,8 +25,8 @@ import {
   toast,
 } from "@renderer/components/ui";
 import { useContext, useEffect, useState } from "react";
-import { AppSettingsProviderContext } from "@/renderer/context";
-import { humanFileSize } from "@/utils";
+import { AppSettingsProviderContext } from "@renderer/context";
+import { humanFileSize } from "@shared/utils";
 import { LoaderIcon } from "lucide-react";
 
 export const DiskUsage = () => {

@@ -13,7 +13,7 @@ import {
 import { PlusCircleIcon, LoaderIcon } from "lucide-react";
 import { t } from "i18next";
 import { useState, useContext, useEffect } from "react";
-import { DocumentFormats } from "@/constants";
+import { DocumentFormats } from "@shared/constants";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { useNavigate } from "react-router-dom";
 import { Readability } from "@mozilla/readability";

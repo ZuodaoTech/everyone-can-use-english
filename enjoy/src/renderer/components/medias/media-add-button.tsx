@@ -16,7 +16,7 @@ import {
 import { PlusCircleIcon, LoaderIcon } from "lucide-react";
 import { t } from "i18next";
 import { useState, useContext, useEffect } from "react";
-import { AudioFormats, VideoFormats } from "@/constants";
+import { AudioFormats, VideoFormats } from "@shared/constants";
 import {
   AppSettingsProviderContext,
   DbProviderContext,

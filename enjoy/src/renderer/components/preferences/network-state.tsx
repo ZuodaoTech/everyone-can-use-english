@@ -9,8 +9,8 @@ import React, {
 } from "react";
 import { AppSettingsProviderContext } from "@renderer/context";
 import { LoaderIcon } from "lucide-react";
-import { STORAGE_WORKER_ENDPOINT } from "@/constants";
-import { Button } from "@/renderer/components/ui";
+import { STORAGE_WORKER_ENDPOINT } from "@shared/constants";
+import { Button } from "@renderer/components/ui";
 
 export const NetworkState = () => {
   const { apiUrl, EnjoyApp, proxy } = useContext(AppSettingsProviderContext);

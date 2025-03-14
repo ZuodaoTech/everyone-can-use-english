@@ -21,8 +21,8 @@ import {
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { AppSettingsProviderContext } from "@/renderer/context";
-import { LANGUAGES } from "@/constants";
+import { AppSettingsProviderContext } from "@renderer/context";
+import { LANGUAGES } from "@shared/constants";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,7 +35,7 @@ import {
   SquareIcon,
   XIcon,
 } from "lucide-react";
-import { usePronunciationAssessments } from "@/renderer/hooks";
+import { usePronunciationAssessments } from "@renderer/hooks";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 

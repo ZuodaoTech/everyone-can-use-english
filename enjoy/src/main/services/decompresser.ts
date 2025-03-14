@@ -2,7 +2,7 @@ import { ipcMain } from "electron";
 import fs from "fs-extra";
 import { readdirSync } from "fs";
 import unzipper from "unzipper";
-import mainWin from "@main/window";
+import mainWin from "@/main/ipc/window";
 
 class Decompresser {
   public tasks: DecompressTask[];

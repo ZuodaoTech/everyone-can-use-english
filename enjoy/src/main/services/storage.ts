@@ -1,7 +1,7 @@
-import { STORAGE_WORKER_ENDPOINT } from "@/constants";
+import { STORAGE_WORKER_ENDPOINT } from "@/shared/constants";
 import axios, { AxiosInstance } from "axios";
 import fs from "fs-extra";
-import log from "@main/logger";
+import log from "@/main/services/logger";
 const logger = log.scope("STORAGE");
 
 const ONE_MINUTE = 1000 * 60; // 1 minute

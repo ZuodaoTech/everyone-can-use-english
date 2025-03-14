@@ -27,7 +27,7 @@ import {
   Timeline,
   TimelineEntry,
 } from "echogarden/dist/utilities/Timeline.d.js";
-import { convertWordIpaToNormal } from "@/utils";
+import { convertWordIpaToNormal } from "@shared/utils";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 
 export const MediaCaptionActions = (props: {

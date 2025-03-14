@@ -7,8 +7,8 @@ import {
 } from "@renderer/context";
 import { toast } from "@renderer/components/ui";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
-import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@/constants";
-import { SttEngineOptionEnum } from "@/types/enums";
+import { MAGIC_TOKEN_REGEX, END_OF_SENTENCE_REGEX } from "@shared/constants";
+import { SttEngineOptionEnum } from "@renderer/types/enums";
 import { t } from "i18next";
 
 export const useTranscriptions = (media: AudioType | VideoType) => {

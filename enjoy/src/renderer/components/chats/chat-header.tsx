@@ -21,8 +21,8 @@ import { useContext, useState } from "react";
 import { ChatSettings } from "@renderer/components";
 import { t } from "i18next";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
-import { ChatTypeEnum } from "@/types/enums";
-import { ChatSessionProviderContext } from "@/renderer/context";
+import { ChatTypeEnum } from "@renderer/types/enums";
+import { ChatSessionProviderContext } from "@renderer/context";
 
 export const ChatHeader = (props: {
   sidePanelCollapsed: boolean;

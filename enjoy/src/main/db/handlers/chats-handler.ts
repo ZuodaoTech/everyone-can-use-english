@@ -1,10 +1,10 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { Chat, ChatAgent, ChatMember, UserSetting } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
-import log from "@main/logger";
+import log from "@/main/services/logger";
 import { t } from "i18next";
 import db from "@main/db";
-import { UserSettingKeyEnum } from "@/types/enums";
+import { UserSettingKeyEnum } from "@/renderer/types/enums";
 
 const logger = log.scope("db/handlers/chats-handler");
 

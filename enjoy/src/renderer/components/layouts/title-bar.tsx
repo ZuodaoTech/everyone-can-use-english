@@ -1,7 +1,7 @@
 import {
   AppSettingsProviderContext,
   CopilotProviderContext,
-} from "@/renderer/context";
+} from "@renderer/context";
 import {
   AlertDialog,
   AlertDialogHeader,

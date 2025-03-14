@@ -1,6 +1,6 @@
 import { ipcMain } from "electron";
 import path from "path";
-import log from "@main/logger";
+import log from "@/main/services/logger";
 import { Sequelize, DataType } from "sequelize-typescript";
 
 const __dirname = import.meta.dirname.replace("app.asar", "app.asar.unpacked");

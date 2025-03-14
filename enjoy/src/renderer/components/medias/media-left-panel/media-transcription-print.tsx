@@ -4,9 +4,9 @@ import { t } from "i18next";
 import {
   MediaShadowProviderContext,
   AppSettingsProviderContext,
-} from "@/renderer/context";
+} from "@renderer/context";
 import { AlignmentResult } from "echogarden/dist/api/API.d.js";
-import { convertWordIpaToNormal } from "@/utils";
+import { convertWordIpaToNormal } from "@shared/utils";
 import template from "./transcription.template.html?raw";
 
 export const MediaTranscriptionPrint = forwardRef<

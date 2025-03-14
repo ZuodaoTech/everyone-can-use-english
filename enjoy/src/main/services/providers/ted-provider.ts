@@ -1,4 +1,4 @@
-import log from "@main/logger";
+import log from "@/main/services/logger";
 import * as cheerio from "cheerio";
 import { WebContentsView, ipcMain } from "electron";
 

@@ -1,7 +1,7 @@
 import * as i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import en from "@/i18n/en.json";
-import zh_CN from "@/i18n/zh-CN.json";
+import en from "@shared/i18n/en.json";
+import zh_CN from "@shared/i18n/zh-CN.json";
 
 // the translations
 // (tip move them in a JSON file and import them,

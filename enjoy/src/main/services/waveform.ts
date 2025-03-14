@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import settings from "@main/settings";
+import settings from "@/main/services/settings";
 import path from "path";
 import fs from "fs-extra";
 

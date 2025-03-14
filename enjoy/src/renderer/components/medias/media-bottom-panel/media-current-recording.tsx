@@ -13,7 +13,7 @@ import {
 } from "@renderer/context";
 import { RecordingDetail } from "@renderer/components";
 import { cn, renderPitchContour } from "@renderer/lib/utils";
-import { extractFrequencies } from "@/utils";
+import { extractFrequencies } from "@shared/utils";
 import WaveSurfer from "wavesurfer.js";
 import Regions from "wavesurfer.js/dist/plugins/regions";
 import {

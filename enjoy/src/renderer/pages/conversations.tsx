@@ -23,7 +23,7 @@ import {
   AISettingsProviderContext,
 } from "@renderer/context";
 import { conversationsReducer } from "@renderer/reducers";
-import { GPT_PRESETS } from "@/constants";
+import { GPT_PRESETS } from "@shared/constants";
 
 export default () => {
   const [searchParams] = useSearchParams();

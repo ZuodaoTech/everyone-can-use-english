@@ -14,7 +14,10 @@ import {
 import { BufferMemory, ChatMessageHistory } from "langchain/memory";
 import { ConversationChain } from "langchain/chains";
 import { LLMResult } from "@langchain/core/outputs";
-import { CHAT_GROUP_PROMPT_TEMPLATE, DEFAULT_GPT_CONFIG } from "@/constants";
+import {
+  CHAT_GROUP_PROMPT_TEMPLATE,
+  DEFAULT_GPT_CONFIG,
+} from "@shared/constants";
 import dayjs from "@renderer/lib/dayjs";
 import Mustache from "mustache";
 import { t } from "i18next";
@@ -23,7 +26,7 @@ import {
   ChatMessageRoleEnum,
   ChatMessageStateEnum,
   ChatTypeEnum,
-} from "@/types/enums";
+} from "@renderer/types/enums";
 
 export const useChatSession = (chatId: string) => {
   const { EnjoyApp, user, apiUrl, learningLanguage } = useContext(

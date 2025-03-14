@@ -18,7 +18,7 @@ import {
   defaultLayoutIcons,
 } from "@vidstack/react/player/layouts/default";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
-import { milisecondsToTimestamp } from "@/utils";
+import { milisecondsToTimestamp } from "@shared/utils";
 import { toast } from "@renderer/components/ui";
 import { cn } from "@renderer/lib/utils";
 

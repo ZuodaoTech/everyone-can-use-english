@@ -11,20 +11,20 @@ import {
   AfterFind,
   Unique,
 } from "sequelize-typescript";
-import mainWindow from "@main/window";
-import log from "@main/logger";
-import { Client } from "@/api";
-import settings from "@main/settings";
+import mainWindow from "@/main/ipc/window";
+import log from "@/main/services/logger";
+import { Client } from "@/shared/api";
+import settings from "@/main/services/settings";
 import { UserSetting } from "@main/db/models";
 import fs from "fs-extra";
 import { t } from "i18next";
 import path from "path";
-import { DocumentFormats } from "@/constants";
+import { DocumentFormats } from "@/shared/constants";
 import { enjoyUrlToPath, hashFile } from "@/main/utils";
 import { v5 as uuidv5 } from "uuid";
 import { fileTypeFromFile } from "file-type";
 import mime from "mime-types";
-import storage from "@/main/storage";
+import storage from "@/main/services/storage";
 
 const logger = log.scope("db/models/document");
 @Table({

@@ -3,7 +3,7 @@ import {
   AppSettingsProviderContext,
   MediaShadowProviderContext,
 } from "@renderer/context";
-import { convertWordIpaToNormal } from "@/utils";
+import { convertWordIpaToNormal } from "@shared/utils";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
 
 export const MediaCaption = (props: {

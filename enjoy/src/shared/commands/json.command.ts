@@ -1,5 +1,5 @@
 import { ChatOpenAI } from "@langchain/openai";
-import { NOT_SUPPORT_JSON_FORMAT_MODELS } from "@/constants";
+import { NOT_SUPPORT_JSON_FORMAT_MODELS } from "@/shared/constants";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
 export const jsonCommand = async (

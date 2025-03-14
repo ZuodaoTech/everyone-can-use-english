@@ -14,16 +14,16 @@ import {
   AllowNull,
   Unique,
 } from "sequelize-typescript";
-import mainWindow from "@main/window";
+import mainWindow from "@/main/ipc/window";
 import fs from "fs-extra";
 import path from "path";
-import settings from "@main/settings";
+import settings from "@/main/services/settings";
 import OpenAI, { type ClientOptions } from "openai";
 import { t } from "i18next";
 import { hashFile } from "@main/utils";
 import { Audio, Document, Message, UserSetting } from "@main/db/models";
-import log from "@main/logger";
-import proxyAgent from "@main/proxy-agent";
+import log from "@/main/services/logger";
+import proxyAgent from "@/main/services/proxy-agent";
 
 const logger = log.scope("db/models/speech");
 @Table({

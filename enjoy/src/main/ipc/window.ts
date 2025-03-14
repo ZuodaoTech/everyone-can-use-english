@@ -12,23 +12,23 @@ import {
 } from "electron";
 import path from "path";
 import db from "@main/db";
-import settings from "@main/settings";
-import downloader from "@main/downloader";
+import settings from "@/main/services/settings";
+import downloader from "@/main/services/downloader";
 import fs from "fs-extra";
-import log from "@main/logger";
-import { DISCUSS_URL, REPO_URL, WEB_API_URL, WS_URL } from "@/constants";
-import { AudibleProvider, TedProvider, YoutubeProvider } from "@main/providers";
-import Ffmpeg from "@main/ffmpeg";
-import { Waveform } from "./waveform";
-import echogarden from "./echogarden";
-import camdict from "./camdict";
-import dict from "./dict";
-import mdict from "./mdict";
-import decompresser from "./decompresser";
+import log from "@/main/services/logger";
+import { DISCUSS_URL, REPO_URL, WEB_API_URL, WS_URL } from "@/shared/constants";
+import { AudibleProvider, TedProvider, YoutubeProvider } from "@/main/services/providers";
+import Ffmpeg from "@/main/services/ffmpeg";
+import { Waveform } from "../services/waveform";
+import echogarden from "../services/echogarden";
+import camdict from "../services/camdict";
+import dict from "../services/dict";
+import mdict from "../services/mdict";
+import decompresser from "../services/decompresser";
 import { UserSetting } from "@main/db/models";
 import { t } from "i18next";
 import { format } from "util";
-import pkg from "../../package.json" with { type: "json" };
+import pkg from "../../../package.json" with { type: "json" };
 
 const __dirname = import.meta.dirname;
 

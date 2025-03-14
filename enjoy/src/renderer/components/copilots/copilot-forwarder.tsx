@@ -17,7 +17,10 @@ import {
 import { ForwardIcon } from "lucide-react";
 import { t } from "i18next";
 import { CopilotChatAgents, CopilotChats } from "@renderer/components";
-import { ChatMessageRoleEnum, ChatMessageStateEnum } from "@/types/enums";
+import {
+  ChatMessageRoleEnum,
+  ChatMessageStateEnum,
+} from "@renderer/types/enums";
 
 export const CopilotForwarder = (props: {
   prompt: string;

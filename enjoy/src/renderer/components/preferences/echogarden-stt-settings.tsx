@@ -20,7 +20,7 @@ import { useContext, useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { WHISPER_MODELS } from "@/constants";
+import { WHISPER_MODELS } from "@shared/constants";
 
 const echogardenSttConfigSchema = z.object({
   engine: z.enum(["whisper", "whisper.cpp"]),
@@ -115,11 +115,7 @@ export const EchogardenSttSettings = (props: {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="whisper">Whisper</SelectItem>
-                      <SelectItem
-                        value="whisper.cpp"
-                      >
-                        Whisper.cpp
-                      </SelectItem>
+                      <SelectItem value="whisper.cpp">Whisper.cpp</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>

@@ -11,7 +11,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@renderer/components/ui";
-import { LANGUAGES } from "@/constants";
+import { LANGUAGES } from "@shared/constants";
 import { t } from "i18next";
 import { useContext } from "react";
 import { AISettingsProviderContext } from "@renderer/context";

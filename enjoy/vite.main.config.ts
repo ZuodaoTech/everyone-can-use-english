@@ -84,7 +84,7 @@ export default defineConfig((env) => {
       alias: {
         "@": path.resolve(__dirname, "./src"),
         "@main": path.resolve(__dirname, "./src/main"),
-        "@commands": path.resolve(__dirname, "./src/commands"),
+        "@shared": path.resolve(__dirname, "./src/shared"),
       },
     },
   };

@@ -39,7 +39,7 @@ import {
 import { useAiCommand, useSpeech } from "@renderer/hooks";
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { md5 } from "js-md5";
-import { ChatAgentTypeEnum, ChatTypeEnum } from "@/types/enums";
+import { ChatAgentTypeEnum, ChatTypeEnum } from "@renderer/types/enums";
 
 export const ChatAgentMessage = (props: {
   chatMessage: ChatMessageType;
