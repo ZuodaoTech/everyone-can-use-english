@@ -17,9 +17,9 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.20",
+    "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
-    "sass": "^1.85.0",
+    "sass": "^1.85.1",
     "tailwindcss": "^3.4.17"
   }
 }
