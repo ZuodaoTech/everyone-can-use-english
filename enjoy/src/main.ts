@@ -146,7 +146,7 @@ app.on("ready", async () => {
     await db.connect();
 
     // Now that the database is connected, load user settings
-    await config.initialize();
+    await config.initialize(db.connection);
 
     // Initialize i18n with user language preference
     const language = (await config.getUserSetting("language")).value;

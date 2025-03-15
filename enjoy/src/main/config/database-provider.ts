@@ -1,7 +1,7 @@
 import { ConfigStorageProvider } from "./types";
 import log from "@main/services/logger";
 import { UserSettingKeyEnum } from "@shared/types/enums";
-
+import { type Sequelize } from "sequelize-typescript";
 const logger = log.scope("DatabaseProvider");
 
 /**
@@ -11,24 +11,12 @@ const logger = log.scope("DatabaseProvider");
  */
 export class DatabaseProvider implements ConfigStorageProvider {
   private db: any = null;
-  private userId: string | null = null;
-
-  constructor(userId: string | null = null) {
-    this.userId = userId;
-  }
 
   /**
    * Set the database instance
    */
-  setDatabase(db: any): void {
+  setDatabase(db: Sequelize): void {
     this.db = db;
-  }
-
-  /**
-   * Set the user ID
-   */
-  setUserId(userId: string | null): void {
-    this.userId = userId;
   }
 
   /**
@@ -68,10 +56,8 @@ export class DatabaseProvider implements ConfigStorageProvider {
    * Get a value from the database
    */
   async get<T>(key: string): Promise<T | undefined> {
-    if (!this.db || !this.userId) {
-      logger.warn(
-        `Cannot get value for key "${key}" - database or userId not set`
-      );
+    if (!this.db) {
+      logger.warn(`Cannot get value for key "${key}" - database not set`);
       return undefined;
     }
 
@@ -83,7 +69,11 @@ export class DatabaseProvider implements ConfigStorageProvider {
       }
 
       // Get the setting from the database
-      const setting = await this.db.getUserSetting(this.userId, settingKey);
+      const setting = await this.db.models.UserSetting.findOne({
+        where: {
+          key: settingKey,
+        },
+      });
       if (!setting) {
         return undefined;
       }
@@ -134,10 +124,8 @@ export class DatabaseProvider implements ConfigStorageProvider {
    * Set a value in the database
    */
   async set<T>(key: string, value: T): Promise<void> {
-    if (!this.db || !this.userId) {
-      logger.warn(
-        `Cannot set value for key "${key}" - database or userId not set`
-      );
+    if (!this.db) {
+      logger.warn(`Cannot set value for key "${key}" - database not set`);
       return;
     }
 
@@ -164,8 +152,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
           this.setNestedProperty(parentValue, childKey, value);
 
           // Save the updated parent value
-          await this.db.setUserSetting(
-            this.userId,
+          await this.db.models.UserSetting.set(
             parentEnum,
             JSON.stringify(parentValue)
           );
@@ -178,7 +165,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
         typeof value === "object" ? JSON.stringify(value) : String(value);
 
       // Save to database
-      await this.db.setUserSetting(this.userId, settingKey, stringValue);
+      await this.db.models.UserSetting.set(settingKey, stringValue);
     } catch (error) {
       logger.error(`Failed to set value for key "${key}"`, error);
       throw error;
@@ -189,7 +176,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
    * Check if a key exists in the database
    */
   async has(key: string): Promise<boolean> {
-    if (!this.db || !this.userId) {
+    if (!this.db) {
       return false;
     }
 
@@ -199,7 +186,11 @@ export class DatabaseProvider implements ConfigStorageProvider {
         return false;
       }
 
-      const setting = await this.db.getUserSetting(this.userId, settingKey);
+      const setting = await this.db.models.UserSetting.findOne({
+        where: {
+          key: settingKey,
+        },
+      });
 
       // Handle nested properties
       if (key.includes(".") && setting?.value) {
@@ -226,7 +217,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
    * Delete a key from the database
    */
   async delete(key: string): Promise<void> {
-    if (!this.db || !this.userId) {
+    if (!this.db) {
       return;
     }
 
@@ -251,8 +242,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
             this.deleteNestedProperty(currentParentValue, childKey);
 
             // Save the updated parent value
-            await this.db.setUserSetting(
-              this.userId,
+            await this.db.models.UserSetting.set(
               parentEnum,
               JSON.stringify(currentParentValue)
             );
@@ -262,7 +252,11 @@ export class DatabaseProvider implements ConfigStorageProvider {
       }
 
       // Delete from database
-      await this.db.deleteUserSetting(this.userId, settingKey);
+      await this.db.models.UserSetting.destroy({
+        where: {
+          key: settingKey,
+        },
+      });
     } catch (error) {
       logger.error(`Failed to delete key "${key}"`, error);
       throw error;
@@ -273,12 +267,14 @@ export class DatabaseProvider implements ConfigStorageProvider {
    * Clear all keys from the database for the current user
    */
   async clear(): Promise<void> {
-    if (!this.db || !this.userId) {
+    if (!this.db) {
       return;
     }
 
     try {
-      await this.db.clearUserSettings(this.userId);
+      await this.db.models.UserSetting.destroy({
+        where: {},
+      });
     } catch (error) {
       logger.error("Failed to clear all keys", error);
       throw error;

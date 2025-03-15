@@ -21,6 +21,7 @@ import * as i18n from "i18next";
 import { ConfigStore } from "./config-store";
 import { ElectronSettingsProvider } from "./electron-settings-provider";
 import { DatabaseProvider } from "./database-provider";
+import { type Sequelize } from "sequelize-typescript";
 
 const logger = log.scope("ConfigManager");
 
@@ -180,15 +181,16 @@ export class ConfigManager {
    * Initialize user settings from database
    * This should be called after the database is connected
    */
-  async initialize(db?: any): Promise<void> {
+  async initialize(db?: Sequelize): Promise<void> {
     if (db) {
       // Set the database instance for the database provider
       this.databaseProvider.setDatabase(db);
+      logger.info("Initialized database provider");
+    } else {
+      logger.warn(
+        "No database provided yet, loading the default user settings"
+      );
     }
-
-    // Set the user ID for the database provider
-    const userId = this.appSettings.user?.id || null;
-    this.databaseProvider.setUserId(userId);
 
     // Create user config store with database provider
     this.userStore = new ConfigStore({
@@ -292,12 +294,6 @@ export class ConfigManager {
     this.appStore.set(key as string, value).catch((error) => {
       logger.error(`Failed to set app setting "${key}" in config store`, error);
     });
-
-    // Special handling for user ID change
-    if (key === "user") {
-      const userId = (value as AppSettings["user"])?.id || null;
-      this.databaseProvider.setUserId(userId);
-    }
   }
 
   /**
