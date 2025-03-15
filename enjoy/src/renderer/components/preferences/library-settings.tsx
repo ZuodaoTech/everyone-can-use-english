@@ -13,8 +13,8 @@ export const LibrarySettings = () => {
     });
 
     if (filePaths) {
-      EnjoyApp.appSettings.setLibrary(filePaths[0]);
-      const _library = await EnjoyApp.appSettings.getLibrary();
+      EnjoyApp.config.setLibrary(filePaths[0]);
+      const _library = await EnjoyApp.config.getLibrary();
       if (_library !== libraryPath) {
         EnjoyApp.app.relaunch();
       }

@@ -159,7 +159,7 @@ export const AppSettingsProvider = ({
   };
 
   const autoLogin = async () => {
-    const currentUser = await EnjoyApp.appSettings.getUser();
+    const currentUser = await EnjoyApp.config.getUser();
     if (!currentUser) return;
 
     setUser(currentUser);
@@ -171,22 +171,22 @@ export const AppSettingsProvider = ({
     setUser(user);
     if (user.accessToken) {
       // Set current user to App settings
-      EnjoyApp.appSettings.setUser({ id: user.id, name: user.name });
+      EnjoyApp.config.setUser({ id: user.id, name: user.name });
     }
   };
 
   const logout = () => {
     setUser(null);
-    EnjoyApp.appSettings.setUser(null);
+    EnjoyApp.config.setUser(null);
   };
 
   const fetchLibraryPath = async () => {
-    const dir = await EnjoyApp.appSettings.getLibrary();
+    const dir = await EnjoyApp.config.getLibrary();
     setLibraryPath(dir);
   };
 
   const setLibraryPathHandler = async (dir: string) => {
-    await EnjoyApp.appSettings.setLibrary(dir);
+    await EnjoyApp.config.setLibrary(dir);
     setLibraryPath(dir);
   };
 
@@ -204,7 +204,7 @@ export const AppSettingsProvider = ({
   };
 
   const setApiUrlHandler = async (url: string) => {
-    EnjoyApp.appSettings.setApiUrl(url).then(() => {
+    EnjoyApp.config.setApiUrl(url).then(() => {
       EnjoyApp.app.reload();
     });
   };
@@ -335,7 +335,7 @@ export const AppSettingsProvider = ({
           UserSettingKeyEnum.PROFILE
         );
         setUser(profile);
-        EnjoyApp.appSettings.setUser({ id: profile.id, name: profile.name });
+        EnjoyApp.config.setUser({ id: profile.id, name: profile.name });
       }
     });
     return () => {

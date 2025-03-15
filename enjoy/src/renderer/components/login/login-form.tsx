@@ -31,7 +31,7 @@ export const LoginForm = () => {
   const [rememberedUsers, setRememberedUsers] = useState<{ id: string }[]>([]);
 
   useEffect(() => {
-    EnjoyApp.appSettings.getSessions().then((sessions) => {
+    EnjoyApp.config.getSessions().then((sessions) => {
       setRememberedUsers(sessions);
     });
   }, []);
@@ -94,7 +94,7 @@ export const LoginForm = () => {
                       data-testid="login-with-remembered-user-button"
                       size="sm"
                       onClick={async () => {
-                        await EnjoyApp.appSettings.setUser(rememberedUser);
+                        await EnjoyApp.config.setUser(rememberedUser);
                         login(rememberedUser);
                       }}
                     >
