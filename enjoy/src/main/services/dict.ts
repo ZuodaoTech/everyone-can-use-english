@@ -5,9 +5,9 @@ import { LRUCache } from "lru-cache";
 import log from "@/main/services/logger";
 import { DICTS } from "@/shared/constants/dicts";
 import sqlite3, { Database } from "sqlite3";
-import settings from "./settings";
 import { hashFile } from "@/main/utils";
 import decompresser from "./decompresser";
+import { config } from "@main/config";
 
 const logger = log.scope("dict");
 const sqlite = sqlite3.verbose();
@@ -18,7 +18,7 @@ export class DictHandler {
   private currentDict: string;
 
   get dictsPath() {
-    const _path = path.join(settings.libraryPath(), "dictionaries");
+    const _path = path.join(config.libraryPath(), "dictionaries");
     fs.ensureDirSync(_path);
 
     return _path;

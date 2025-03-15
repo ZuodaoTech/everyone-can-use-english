@@ -110,9 +110,6 @@ protocol.registerSchemesAsPrivileged([
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", async () => {
-  // Register config IPC handlers
-  config.registerIpcHandlers();
-
   if (!app.isPackaged) {
     import("electron-devtools-installer")
       .then((mymodule: any) => {
@@ -145,7 +142,7 @@ app.on("ready", async () => {
   });
 
   try {
-    // Initialize database
+    // Initialize database with basic config (no user settings yet)
     await db.connect();
 
     // Now that the database is connected, load user settings

@@ -26,10 +26,8 @@ import dict from "../services/dict";
 import mdict from "../services/mdict";
 import decompresser from "../services/decompresser";
 import { UserSetting } from "@main/db/models";
-import { t } from "i18next";
 import { format } from "util";
 import pkg from "../../../package.json" with { type: "json" };
-import settings from "../services/settings";
 
 const __dirname = import.meta.dirname;
 

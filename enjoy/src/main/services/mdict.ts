@@ -5,7 +5,7 @@ import { ipcMain } from "electron";
 import { LRUCache } from "lru-cache";
 import { Mdict as MdictReader } from "@divisey/js-mdict";
 import { hashFile } from "@/main/utils";
-import settings from "./settings";
+import { config } from "@main/config";
 
 const logger = log.scope("mdict");
 
@@ -19,7 +19,7 @@ export class MDictHandler {
     '<link href="/assets/styles/mdict-theme.css" rel="stylesheet" type="text/css" />';
 
   get dictsPath() {
-    const _path = path.join(settings.libraryPath(), "dictionaries");
+    const _path = path.join(config.libraryPath(), "dictionaries");
     fs.ensureDirSync(_path);
 
     return _path;
