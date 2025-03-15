@@ -222,6 +222,8 @@ db.connect = async () => {
 
     db.connection = sequelize;
     logger.info("Database connection established");
+
+    config.loadUserDatatbase(sequelize);
   } catch (err) {
     logger.error(err);
     throw err;
@@ -239,6 +241,7 @@ db.disconnect = async () => {
 
   await db.connection?.close();
   db.connection = null;
+  config.unloadUserDatatbase();
 };
 
 db.backup = async (options?: { force: boolean }) => {

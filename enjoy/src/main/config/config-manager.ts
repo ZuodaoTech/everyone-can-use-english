@@ -181,16 +181,10 @@ export class ConfigManager {
    * Initialize user settings from database
    * This should be called after the database is connected
    */
-  async initialize(db?: Sequelize): Promise<void> {
-    if (db) {
-      // Set the database instance for the database provider
-      this.databaseProvider.setDatabase(db);
-      logger.info("Initialized database provider");
-    } else {
-      logger.warn(
-        "No database provided yet, loading the default user settings"
-      );
-    }
+  async loadUserDatatbase(db: Sequelize): Promise<void> {
+    // Set the database instance for the database provider
+    this.databaseProvider.setDatabase(db);
+    logger.info("Initialized database provider");
 
     // Create user config store with database provider
     this.userStore = new ConfigStore({
@@ -202,6 +196,12 @@ export class ConfigManager {
     if (!this.isUserSettingsLoaded) {
       await this.loadUserSettings();
     }
+  }
+
+  async unloadUserDatatbase(): Promise<void> {
+    this.userStore = null;
+    this.isUserSettingsLoaded = false;
+    this.databaseProvider.setDatabase(null);
   }
 
   /**

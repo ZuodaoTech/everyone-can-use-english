@@ -15,8 +15,13 @@ export class DatabaseProvider implements ConfigStorageProvider {
   /**
    * Set the database instance
    */
-  setDatabase(db: Sequelize): void {
+  setDatabase(db: Sequelize | null): void {
     this.db = db;
+    if (this.db) {
+      logger.info("DatabaseProvider db setup");
+    } else {
+      logger.warn("DatabaseProvider db not setup");
+    }
   }
 
   /**
@@ -60,6 +65,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
       logger.warn(`Cannot get value for key "${key}" - database not set`);
       return undefined;
     }
+    logger.debug(`Getting value for key "${key}"`);
 
     try {
       const settingKey = this.mapKeyToEnum(key);
@@ -69,11 +75,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
       }
 
       // Get the setting from the database
-      const setting = await this.db.models.UserSetting.findOne({
-        where: {
-          key: settingKey,
-        },
-      });
+      const setting = await this.db.models.UserSetting.get(settingKey);
       if (!setting) {
         return undefined;
       }
@@ -128,6 +130,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
       logger.warn(`Cannot set value for key "${key}" - database not set`);
       return;
     }
+    logger.debug(`Setting value for key "${key}"`);
 
     try {
       const settingKey = this.mapKeyToEnum(key);
@@ -186,11 +189,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
         return false;
       }
 
-      const setting = await this.db.models.UserSetting.findOne({
-        where: {
-          key: settingKey,
-        },
-      });
+      const setting = await this.db.models.UserSetting.get(settingKey);
 
       // Handle nested properties
       if (key.includes(".") && setting?.value) {
@@ -272,9 +271,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
     }
 
     try {
-      await this.db.models.UserSetting.destroy({
-        where: {},
-      });
+      await this.db.models.UserSetting.clear();
     } catch (error) {
       logger.error("Failed to clear all keys", error);
       throw error;

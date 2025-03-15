@@ -106,26 +106,28 @@ export const AppSettingsProvider = ({
   const db = useContext(DbProviderContext);
 
   const fetchLanguages = async () => {
-    const language = await EnjoyApp.userSettings.get(
+    const language = await EnjoyApp.config.getUserSetting(
       UserSettingKeyEnum.LANGUAGE
     );
     setLanguage((language as "en" | "zh-CN") || "en");
     i18n.changeLanguage(language);
 
     const _nativeLanguage =
-      (await EnjoyApp.userSettings.get(UserSettingKeyEnum.NATIVE_LANGUAGE)) ||
-      "zh-CN";
+      (await EnjoyApp.config.getUserSetting(
+        UserSettingKeyEnum.NATIVE_LANGUAGE
+      )) || "zh-CN";
     setNativeLanguage(_nativeLanguage);
 
     const _learningLanguage =
-      (await EnjoyApp.userSettings.get(UserSettingKeyEnum.LEARNING_LANGUAGE)) ||
-      "en-US";
+      (await EnjoyApp.config.getUserSetting(
+        UserSettingKeyEnum.LEARNING_LANGUAGE
+      )) || "en-US";
     setLearningLanguage(_learningLanguage);
   };
 
   const switchLanguage = (language: "en" | "zh-CN") => {
-    EnjoyApp.userSettings
-      .set(UserSettingKeyEnum.LANGUAGE, language)
+    EnjoyApp.config
+      .setUserSetting(UserSettingKeyEnum.LANGUAGE, language)
       .then(() => {
         i18n.changeLanguage(language);
         setLanguage(language);
@@ -137,14 +139,14 @@ export const AppSettingsProvider = ({
     if (lang == learningLanguage) return;
 
     setNativeLanguage(lang);
-    EnjoyApp.userSettings.set(UserSettingKeyEnum.NATIVE_LANGUAGE, lang);
+    EnjoyApp.config.setUserSetting(UserSettingKeyEnum.NATIVE_LANGUAGE, lang);
   };
 
   const switchLearningLanguage = (lang: string) => {
     if (LANGUAGES.findIndex((l) => l.code == lang) < 0) return;
     if (lang == nativeLanguage) return;
 
-    EnjoyApp.userSettings.set(UserSettingKeyEnum.LEARNING_LANGUAGE, lang);
+    EnjoyApp.config.setUserSetting(UserSettingKeyEnum.LEARNING_LANGUAGE, lang);
     setLearningLanguage(lang);
   };
 
@@ -218,7 +220,9 @@ export const AppSettingsProvider = ({
   };
 
   const fetchRecorderConfig = async () => {
-    const config = await EnjoyApp.userSettings.get(UserSettingKeyEnum.RECORDER);
+    const config = await EnjoyApp.config.getUserSetting(
+      UserSettingKeyEnum.RECORDER
+    );
     if (config) {
       setRecorderConfig(config);
     } else {
@@ -234,16 +238,16 @@ export const AppSettingsProvider = ({
   };
 
   const setRecorderConfigHandler = async (config: RecorderConfigType) => {
-    return EnjoyApp.userSettings
-      .set(UserSettingKeyEnum.RECORDER, config)
+    return EnjoyApp.config
+      .setUserSetting(UserSettingKeyEnum.RECORDER, config)
       .then(() => {
         setRecorderConfig(config);
       });
   };
 
   const fetchVocabularyConfig = async () => {
-    EnjoyApp.userSettings
-      .get(UserSettingKeyEnum.VOCABULARY)
+    EnjoyApp.config
+      .getUserSetting(UserSettingKeyEnum.VOCABULARY)
       .then((config) => {
         setVocabularyConfig(config || { lookupOnMouseOver: true });
       })
@@ -254,7 +258,7 @@ export const AppSettingsProvider = ({
   };
 
   const setVocabularyConfigHandler = async (config: VocabularyConfigType) => {
-    await EnjoyApp.userSettings.set(UserSettingKeyEnum.VOCABULARY, config);
+    await EnjoyApp.config.setUserSetting(UserSettingKeyEnum.VOCABULARY, config);
     setVocabularyConfig(config);
   };
 
@@ -325,20 +329,25 @@ export const AppSettingsProvider = ({
     if (!user) return;
 
     db.connect().then(async () => {
+      console.log("db.connect", user);
       // Login via API, update profile to DB
       if (user.accessToken) {
-        EnjoyApp.userSettings.set(UserSettingKeyEnum.PROFILE, user);
+        EnjoyApp.config.setUserSetting(UserSettingKeyEnum.PROFILE, user);
         createCable(user.accessToken);
       } else {
         // Auto login from local settings, get full profile from DB
-        const profile = await EnjoyApp.userSettings.get(
+        const profile = await EnjoyApp.config.getUserSetting(
           UserSettingKeyEnum.PROFILE
         );
-        setUser(profile);
-        EnjoyApp.config.setUser({ id: profile.id, name: profile.name });
+        console.log("db.connect", profile);
+        if (profile && profile.accessToken) {
+          setUser(profile);
+        }
       }
     });
     return () => {
+      if (user) return;
+
       db.disconnect();
       setUser(null);
     };
