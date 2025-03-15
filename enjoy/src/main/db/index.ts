@@ -223,7 +223,27 @@ db.connect = async () => {
     db.connection = sequelize;
     logger.info("Database connection established");
 
-    config.loadUserDatatbase(sequelize);
+    try {
+      // Try to load user settings normally
+      await config.loadUserSettings(sequelize);
+
+      // Verify user settings are properly loaded
+      await config.verifyUserSettings();
+    } catch (loadError) {
+      logger.error(
+        "Failed to load user settings normally, trying force initialize",
+        loadError
+      );
+
+      // Try force initializing user settings as a fallback
+      try {
+        await config.forceInitializeUserSettings();
+        logger.info("User settings force initialized successfully");
+      } catch (forceError) {
+        logger.error("Failed to force initialize user settings", forceError);
+        throw forceError;
+      }
+    }
   } catch (err) {
     logger.error(err);
     throw err;
@@ -241,7 +261,6 @@ db.disconnect = async () => {
 
   await db.connection?.close();
   db.connection = null;
-  config.unloadUserDatatbase();
 };
 
 db.backup = async (options?: { force: boolean }) => {

@@ -13,6 +13,7 @@ export enum UserSettingKeyEnum {
   DICTS = "dicts",
   RECORDER = "recorder",
   ECHOGARDEN = "echogarden",
+  PLUGIN = "plugin",
 }
 
 export enum SttEngineOptionEnum {

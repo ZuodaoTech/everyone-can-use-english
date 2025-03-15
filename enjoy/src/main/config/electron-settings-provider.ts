@@ -57,7 +57,7 @@ export class ElectronSettingsProvider implements ConfigStorageProvider {
       const value = electronSettings.getSync(fullKey);
       return value as T;
     } catch (error) {
-      logger.error(`Failed to get value for key "${key}"`, error);
+      logger.warn(`Failed to get value for key "${key}"`, error);
       return undefined;
     }
   }

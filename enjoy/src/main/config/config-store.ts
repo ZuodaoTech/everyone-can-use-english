@@ -156,18 +156,27 @@ export class ConfigStore extends EventEmitter {
     try {
       // Check if value exists in storage
       const exists = await this.storage.has(key);
+      logger.debug(`Checking if key "${key}" exists in storage: ${exists}`);
 
       if (exists) {
         const value = await this.storage.get<T>(key);
-        return {
-          value: value as T,
-          source: ConfigSource.FILE,
-          timestamp: Date.now(),
-        };
+        logger.debug(`Retrieved value for key "${key}" from storage:`, value);
+
+        if (value !== undefined) {
+          return {
+            value: value as T,
+            source: ConfigSource.FILE,
+            timestamp: Date.now(),
+          };
+        }
       }
 
       // Check if there's a default value in schema
       if (key in this.defaults) {
+        logger.debug(
+          `Using default value for key "${key}":`,
+          this.defaults[key]
+        );
         return {
           value: this.defaults[key] as T,
           source: ConfigSource.DEFAULT,
@@ -176,9 +185,28 @@ export class ConfigStore extends EventEmitter {
       }
 
       // No value found
+      logger.debug(`No value found for key "${key}"`);
       throw new Error(`Config key "${key}" not found`);
     } catch (error) {
+      if (error.message === `Config key "${key}" not found`) {
+        throw error;
+      }
+
       logger.error(`Failed to get config value for key "${key}"`, error);
+
+      // Return default value if available
+      if (key in this.defaults) {
+        logger.debug(
+          `Using default value for key "${key}" after error:`,
+          this.defaults[key]
+        );
+        return {
+          value: this.defaults[key] as T,
+          source: ConfigSource.DEFAULT,
+          timestamp: Date.now(),
+        };
+      }
+
       throw error;
     }
   }
@@ -187,8 +215,23 @@ export class ConfigStore extends EventEmitter {
    * Get a configuration value directly
    */
   async getValue<T>(key: string): Promise<T> {
-    const result = await this.get<T>(key);
-    return result.value;
+    try {
+      const result = await this.get<T>(key);
+      return result.value;
+    } catch (error) {
+      logger.warn(`Failed to get value for key "${key}"`, error);
+
+      // Return default value if available
+      if (key in this.defaults) {
+        logger.debug(
+          `Returning default value for key "${key}":`,
+          this.defaults[key]
+        );
+        return this.defaults[key] as T;
+      }
+
+      throw error;
+    }
   }
 
   /**

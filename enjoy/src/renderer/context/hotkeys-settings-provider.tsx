@@ -164,13 +164,13 @@ export const HotKeysSettingsProvider = ({
   }, [dbState]);
 
   const fetchSettings = async () => {
-    const _hotkeys = await EnjoyApp.userSettings.get(
+    const _hotkeys = await EnjoyApp.config.getUserSetting(
       UserSettingKeyEnum.HOTKEYS
     );
     // During version iterations, there may be added or removed keys.
     const merged = mergeWithPreference(_hotkeys ?? {}, defaultKeyMap);
-    await EnjoyApp.userSettings
-      .set(UserSettingKeyEnum.HOTKEYS, merged)
+    await EnjoyApp.config
+      .setUserSetting(UserSettingKeyEnum.HOTKEYS, merged)
       .then(() => {
         setCurrentHotkeys(merged);
       });
@@ -212,8 +212,8 @@ export const HotKeysSettingsProvider = ({
         };
       }
 
-      await EnjoyApp.userSettings
-        .set(UserSettingKeyEnum.HOTKEYS, newMap)
+      await EnjoyApp.config
+        .setUserSetting(UserSettingKeyEnum.HOTKEYS, newMap)
         .then(() => {
           setCurrentHotkeys(newMap);
         });

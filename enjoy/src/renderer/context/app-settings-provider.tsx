@@ -339,8 +339,9 @@ export const AppSettingsProvider = ({
         const profile = await EnjoyApp.config.getUserSetting(
           UserSettingKeyEnum.PROFILE
         );
-        console.log("db.connect", profile);
+        console.log("db.connect getUserSetting", profile);
         if (profile && profile.accessToken) {
+          console.log("db.connect setUser", profile);
           setUser(profile);
         }
       }

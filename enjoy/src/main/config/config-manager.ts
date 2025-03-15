@@ -16,12 +16,15 @@ import {
   ConfigSource,
   ConfigValue,
   ConfigSchema,
+  PluginConfigOptions,
 } from "./types";
 import * as i18n from "i18next";
 import { ConfigStore } from "./config-store";
 import { ElectronSettingsProvider } from "./electron-settings-provider";
 import { DatabaseProvider } from "./database-provider";
 import { type Sequelize } from "sequelize-typescript";
+import { PluginConfigRegistry } from "./plugin-config-registry";
+import { PluginConfigManager } from "./plugin-config-manager";
 
 const logger = log.scope("ConfigManager");
 
@@ -154,7 +157,9 @@ export class ConfigManager {
   // New config stores
   private appStore: ConfigStore;
   private userStore: ConfigStore | null = null;
-  private databaseProvider: DatabaseProvider;
+
+  // Plugin configuration registry
+  private pluginRegistry: PluginConfigRegistry;
 
   constructor() {
     // Initialize with defaults
@@ -167,41 +172,14 @@ export class ConfigManager {
       storage: new ElectronSettingsProvider(),
     });
 
-    // Create database provider for user settings
-    this.databaseProvider = new DatabaseProvider();
+    // Create plugin configuration registry
+    this.pluginRegistry = new PluginConfigRegistry();
 
     // Load app settings from file
     this.loadAppSettings();
 
     // Ensure directories exist
     this.ensureDirectories();
-  }
-
-  /**
-   * Initialize user settings from database
-   * This should be called after the database is connected
-   */
-  async loadUserDatatbase(db: Sequelize): Promise<void> {
-    // Set the database instance for the database provider
-    this.databaseProvider.setDatabase(db);
-    logger.info("Initialized database provider");
-
-    // Create user config store with database provider
-    this.userStore = new ConfigStore({
-      name: "user-settings",
-      schema: USER_SETTINGS_SCHEMA,
-      storage: this.databaseProvider,
-    });
-
-    if (!this.isUserSettingsLoaded) {
-      await this.loadUserSettings();
-    }
-  }
-
-  async unloadUserDatatbase(): Promise<void> {
-    this.userStore = null;
-    this.isUserSettingsLoaded = false;
-    this.databaseProvider.setDatabase(null);
   }
 
   /**
@@ -302,43 +280,69 @@ export class ConfigManager {
   async getUserSetting<K extends keyof UserSettings>(
     key: K
   ): Promise<ConfigValue<UserSettings[K]>> {
+    logger.debug(`getUserSetting: ${key}`);
     if (!this.isUserSettingsLoaded) {
-      await this.loadUserSettings();
+      throw new Error("User settings not loaded");
     }
 
-    if (!this.userSettings) {
+    try {
+      // Try to get the value from the database first
+      if (this.userStore) {
+        // Convert camelCase to snake_case for database lookup
+        const dbKey = key
+          .toString()
+          .replace(/([A-Z])/g, "_$1")
+          .toLowerCase()
+          .replace(/^_/, "");
+
+        logger.debug(`Looking up setting in database with key: ${dbKey}`);
+        const dbValue = await this.userStore.getValue(dbKey);
+
+        if (dbValue !== undefined) {
+          logger.debug(`Found value in database for ${key}:`, dbValue);
+          return {
+            value: dbValue as UserSettings[K],
+            source: ConfigSource.DATABASE,
+            timestamp: Date.now(),
+          };
+        }
+      }
+
+      // Handle nested properties
+      if (key.toString().includes(".")) {
+        const parts = key.toString().split(".");
+        let value: any = this.userSettings;
+        for (const part of parts) {
+          value = value?.[part];
+          if (value === undefined) break;
+        }
+
+        return {
+          value: value ?? this.getDefaultUserSetting(key),
+          source:
+            value !== undefined ? ConfigSource.DATABASE : ConfigSource.DEFAULT,
+          timestamp: Date.now(),
+        };
+      }
+
+      // Return from in-memory cache or default
+      logger.debug(`Using in-memory value for ${key}:`, this.userSettings[key]);
+      return {
+        value: this.userSettings[key] ?? this.getDefaultUserSetting(key),
+        source:
+          this.userSettings[key] !== undefined
+            ? ConfigSource.DATABASE
+            : ConfigSource.DEFAULT,
+        timestamp: Date.now(),
+      };
+    } catch (error) {
+      logger.error(`Error getting user setting ${key}:`, error);
       return {
         value: this.getDefaultUserSetting(key),
         source: ConfigSource.DEFAULT,
         timestamp: Date.now(),
       };
     }
-
-    // Handle nested properties
-    if (key.includes(".")) {
-      const parts = key.split(".");
-      let value: any = this.userSettings;
-      for (const part of parts) {
-        value = value?.[part];
-        if (value === undefined) break;
-      }
-
-      return {
-        value: value ?? this.getDefaultUserSetting(key),
-        source:
-          value !== undefined ? ConfigSource.DATABASE : ConfigSource.DEFAULT,
-        timestamp: Date.now(),
-      };
-    }
-
-    return {
-      value: this.userSettings[key] ?? this.getDefaultUserSetting(key),
-      source:
-        this.userSettings[key] !== undefined
-          ? ConfigSource.DATABASE
-          : ConfigSource.DEFAULT,
-      timestamp: Date.now(),
-    };
   }
 
   /**
@@ -348,8 +352,9 @@ export class ConfigManager {
     key: K,
     value: UserSettings[K]
   ): Promise<void> {
+    logger.debug(`setUserSetting: ${key}`, value);
     if (!this.isUserSettingsLoaded) {
-      await this.loadUserSettings();
+      throw new Error("User settings not loaded");
     }
 
     // Initialize user settings if null
@@ -357,63 +362,111 @@ export class ConfigManager {
       this.userSettings = { ...DEFAULT_USER_SETTINGS };
     }
 
-    // Handle nested properties
-    if (key.includes(".")) {
-      const parts = key.split(".");
-      const parentKey = parts[0] as keyof UserSettings;
-      const childKey = parts.slice(1).join(".");
+    try {
+      // Handle nested properties
+      if (key.toString().includes(".")) {
+        const parts = key.toString().split(".");
+        const parentKey = parts[0] as keyof UserSettings;
+        const childKey = parts.slice(1).join(".");
 
-      // Get parent value
-      let parentValue = this.userSettings[parentKey];
-      if (!parentValue || typeof parentValue !== "object") {
-        parentValue = {} as any;
-      }
-
-      // Set nested property
-      let current: any = parentValue;
-      const childParts = childKey.split(".");
-      for (let i = 0; i < childParts.length - 1; i++) {
-        const part = childParts[i];
-        if (!current[part] || typeof current[part] !== "object") {
-          current[part] = {};
+        // Get parent value
+        let parentValue = this.userSettings[parentKey];
+        if (!parentValue || typeof parentValue !== "object") {
+          parentValue = {} as any;
         }
-        current = current[part];
-      }
-      current[childParts[childParts.length - 1]] = value;
 
-      // Update user settings
-      this.userSettings[parentKey] = parentValue as any;
+        // Set nested property
+        let current: any = parentValue;
+        const childParts = childKey.split(".");
+        for (let i = 0; i < childParts.length - 1; i++) {
+          const part = childParts[i];
+          if (!current[part] || typeof current[part] !== "object") {
+            current[part] = {};
+          }
+          current = current[part];
+        }
+        current[childParts[childParts.length - 1]] = value;
+
+        // Update user settings
+        this.userSettings[parentKey] = parentValue as any;
+
+        // Save to database using the new config store
+        if (this.userStore) {
+          // Convert camelCase to snake_case for database storage
+          const dbKey = parentKey
+            .toString()
+            .replace(/([A-Z])/g, "_$1")
+            .toLowerCase()
+            .replace(/^_/, "");
+
+          logger.debug(
+            `Saving nested property to database with key: ${dbKey}`,
+            parentValue
+          );
+          await this.userStore.set(dbKey, parentValue);
+        }
+
+        return;
+      }
+
+      // Update user settings in memory
+      this.userSettings[key] = value;
 
       // Save to database using the new config store
       if (this.userStore) {
-        await this.userStore.set(key as string, value);
+        // Convert camelCase to snake_case for database storage
+        const dbKey = key
+          .toString()
+          .replace(/([A-Z])/g, "_$1")
+          .toLowerCase()
+          .replace(/^_/, "");
+
+        logger.debug(`Saving to database with key: ${dbKey}`, value);
+        await this.userStore.set(dbKey, value);
       }
 
-      return;
+      // Special handling for language change
+      if (key === "language") {
+        await i18n.changeLanguage(value as string);
+      }
+    } catch (error) {
+      logger.error(`Error setting user setting ${key}:`, error);
+      throw error;
     }
+  }
 
-    // Update user settings
-    this.userSettings[key] = value;
+  /**
+   * Register a plugin configuration
+   */
+  registerPluginConfig(options: PluginConfigOptions): PluginConfigManager {
+    return this.pluginRegistry.register(options);
+  }
 
-    // Save to database using the new config store
-    if (this.userStore) {
-      await this.userStore.set(key as string, value);
-    }
+  /**
+   * Unregister a plugin configuration
+   */
+  unregisterPluginConfig(pluginId: string): void {
+    this.pluginRegistry.unregister(pluginId);
+  }
 
-    // Special handling for language change
-    if (key === "language") {
-      await i18n.changeLanguage(value as string);
-    }
+  /**
+   * Get a plugin configuration manager
+   */
+  getPluginConfig(pluginId: string): PluginConfigManager | undefined {
+    return this.pluginRegistry.getPlugin(pluginId);
+  }
+
+  /**
+   * Get all registered plugin IDs
+   */
+  getPluginIds(): string[] {
+    return this.pluginRegistry.getPluginIds();
   }
 
   /**
    * Get the full configuration
    */
   async getConfig(): Promise<Config> {
-    if (!this.isUserSettingsLoaded) {
-      await this.loadUserSettings();
-    }
-
     return {
       ...this.appSettings,
       user: this.userSettings
@@ -559,26 +612,42 @@ export class ConfigManager {
   /**
    * Load user settings from database
    */
-  private async loadUserSettings(): Promise<void> {
+  async loadUserSettings(db: Sequelize): Promise<void> {
+    logger.info("Loading user settings from database");
+
     // Initialize user settings with defaults
     this.userSettings = { ...DEFAULT_USER_SETTINGS };
 
-    // If user store is available, load settings from it
-    if (this.userStore) {
-      try {
-        // Load each user setting
-        for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
-          const value = await this.userStore.getValue(key);
-          if (value !== undefined) {
-            this.setUserSettingFromValue(key as keyof UserSettings, value);
-          }
-        }
-      } catch (error) {
-        logger.error("Failed to load user settings from database", error);
-      }
-    }
+    this.userStore = new ConfigStore({
+      name: "user-settings",
+      schema: USER_SETTINGS_SCHEMA,
+      storage: new DatabaseProvider(db, "UserSetting", USER_SETTINGS_SCHEMA),
+    });
 
-    this.isUserSettingsLoaded = true;
+    try {
+      // Load each user setting
+      for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
+        logger.debug(`Loading user setting: ${key}`);
+        const value = await this.userStore.getValue(key);
+        logger.debug(`Loaded value for ${key}:`, value);
+
+        if (value !== undefined) {
+          logger.debug(`Setting value for ${key}:`, value);
+          this.setUserSettingFromValue(key as keyof UserSettings, value);
+        } else {
+          logger.debug(`No value found for ${key}, using default`);
+        }
+      }
+
+      logger.debug("User settings after loading:", this.userSettings);
+      this.isUserSettingsLoaded = true;
+
+      // Initialize plugin registry
+      await this.pluginRegistry.initialize(db);
+    } catch (error) {
+      logger.error("Failed to load user settings from database", error);
+      this.isUserSettingsLoaded = false;
+    }
   }
 
   /**
@@ -724,6 +793,213 @@ export class ConfigManager {
   }
 
   /**
+   * Verify that user settings are properly loaded from the database
+   * This is a diagnostic function that can be called after loadUserSettings
+   */
+  async verifyUserSettings(): Promise<void> {
+    if (!this.isUserSettingsLoaded || !this.userStore) {
+      logger.error("Cannot verify user settings - not loaded");
+      return;
+    }
+
+    logger.info("Verifying user settings...");
+
+    // Check each user setting
+    for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
+      try {
+        // Convert camelCase to snake_case for database lookup
+        const dbKey = key
+          .replace(/([A-Z])/g, "_$1")
+          .toLowerCase()
+          .replace(/^_/, "");
+
+        // Get value from in-memory cache
+        const memoryValue = this.userSettings[key as keyof UserSettings];
+
+        // Get value from config store
+        const storeValue = await this.userStore.getValue(dbKey);
+
+        logger.info(`Setting ${key} (${dbKey}):`, {
+          memory: memoryValue,
+          store: storeValue,
+          default: USER_SETTINGS_SCHEMA[key].default,
+        });
+      } catch (error) {
+        logger.error(`Error verifying setting ${key}:`, error);
+      }
+    }
+  }
+
+  /**
+   * Force reload user settings from the database
+   */
+  async reloadUserSettings(): Promise<void> {
+    if (!this.userStore) {
+      logger.error("Cannot reload user settings - store not initialized");
+      return;
+    }
+
+    logger.info("Reloading user settings from database");
+
+    try {
+      // Reset user settings to defaults
+      this.userSettings = { ...DEFAULT_USER_SETTINGS };
+
+      // Load each user setting
+      for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
+        // Convert camelCase to snake_case for database lookup
+        const dbKey = key
+          .replace(/([A-Z])/g, "_$1")
+          .toLowerCase()
+          .replace(/^_/, "");
+
+        logger.debug(`Reloading user setting: ${key} (${dbKey})`);
+
+        try {
+          const value = await this.userStore.getValue(dbKey);
+          if (value !== undefined) {
+            logger.debug(`Reloaded value for ${key}:`, value);
+            this.setUserSettingFromValue(key as keyof UserSettings, value);
+          } else {
+            logger.debug(`No value found for ${key}, using default`);
+          }
+        } catch (error) {
+          logger.error(`Failed to reload setting ${key}:`, error);
+        }
+      }
+
+      logger.debug("User settings after reloading:", this.userSettings);
+      this.isUserSettingsLoaded = true;
+
+      logger.info("User settings reloaded successfully");
+    } catch (error) {
+      logger.error("Failed to reload user settings from database", error);
+    }
+  }
+
+  /**
+   * Get a user setting directly from the database (for debugging)
+   */
+  async getUserSettingDirect(key: string): Promise<any> {
+    try {
+      // Get the UserSetting model from the database
+      const db = await import("@main/db").then((module) => module.default);
+      if (!db.connection) {
+        logger.error("Database not connected");
+        return null;
+      }
+
+      // Import the UserSetting model directly
+      const { UserSetting } = await import("@main/db/models");
+
+      // Convert camelCase to snake_case for database lookup
+      const dbKey = key
+        .replace(/([A-Z])/g, "_$1")
+        .toLowerCase()
+        .replace(/^_/, "");
+
+      logger.info(`Getting user setting directly from database: ${dbKey}`);
+      const result = await UserSetting.get(dbKey);
+      logger.info(`Direct database result for ${dbKey}:`, result);
+
+      return result;
+    } catch (error) {
+      logger.error(`Error getting user setting directly: ${key}`, error);
+      return null;
+    }
+  }
+
+  /**
+   * Force initialize user settings with values from the database
+   * This is a last resort method to fix issues with user settings
+   */
+  async forceInitializeUserSettings(): Promise<void> {
+    logger.info("Force initializing user settings from database");
+
+    try {
+      // Import the UserSetting model directly
+      const { UserSetting } = await import("@main/db/models");
+
+      // Reset user settings to defaults
+      this.userSettings = { ...DEFAULT_USER_SETTINGS };
+
+      // Get all user settings from the database
+      const allSettings = await UserSetting.findAll();
+      logger.info(`Found ${allSettings.length} settings in database`);
+
+      // Process each setting
+      for (const setting of allSettings) {
+        try {
+          const key = setting.key;
+          let value;
+
+          // Parse the value if it's JSON
+          try {
+            value = JSON.parse(setting.value);
+          } catch {
+            value = setting.value;
+          }
+
+          logger.info(`Loading setting from database: ${key}`, value);
+
+          // Convert snake_case to camelCase
+          const camelKey = key.replace(/_([a-z])/g, (_, letter) =>
+            letter.toUpperCase()
+          );
+
+          // Set the value in memory
+          if (camelKey.includes(".")) {
+            // Handle nested properties
+            const parts = camelKey.split(".");
+            const parentKey = parts[0] as keyof UserSettings;
+            const childKey = parts.slice(1).join(".");
+
+            // Get parent value
+            let parentValue = this.userSettings[parentKey];
+            if (!parentValue || typeof parentValue !== "object") {
+              parentValue = {} as any;
+            }
+
+            // Set nested property
+            this.setNestedProperty(parentValue, childKey, value);
+
+            // Update user settings
+            this.userSettings[parentKey] = parentValue as any;
+          } else if (camelKey in this.userSettings) {
+            // Set direct property
+            (this.userSettings as any)[camelKey] = value;
+          }
+        } catch (error) {
+          logger.error(`Failed to process setting ${setting.key}`, error);
+        }
+      }
+
+      this.isUserSettingsLoaded = true;
+      logger.info("User settings force initialized successfully");
+    } catch (error) {
+      logger.error("Failed to force initialize user settings", error);
+    }
+  }
+
+  /**
+   * Set a nested property in an object
+   */
+  private setNestedProperty(obj: any, path: string, value: any): void {
+    const parts = path.split(".");
+    let current = obj;
+
+    for (let i = 0; i < parts.length - 1; i++) {
+      const part = parts[i];
+      if (!(part in current)) {
+        current[part] = {};
+      }
+      current = current[part];
+    }
+
+    current[parts[parts.length - 1]] = value;
+  }
+
+  /**
    * Register IPC handlers for configuration
    */
   registerIpcHandlers(): void {
@@ -768,44 +1044,59 @@ export class ConfigManager {
     );
 
     ipcMain.handle(
+      "config-get-user-setting-direct",
+      async (_event: any, key: string) => {
+        return await this.getUserSettingDirect(key);
+      }
+    );
+
+    ipcMain.handle(
       "config-set-user-setting",
       async (_event: any, key: string, value: any) => {
         await this.setUserSetting(key as any, value);
       }
     );
 
+    ipcMain.handle("config-reload-user-settings", async () => {
+      await this.reloadUserSettings();
+      return true;
+    });
+
+    ipcMain.handle("config-force-initialize-user-settings", async () => {
+      await this.forceInitializeUserSettings();
+      return true;
+    });
+
+    // Plugin settings
+    ipcMain.handle(
+      "config-get-plugin-setting",
+      async (_event: any, pluginId: string, key: string) => {
+        const plugin = this.getPluginConfig(pluginId);
+        if (!plugin) {
+          throw new Error(`Plugin ${pluginId} not found`);
+        }
+        return await plugin.getValue(key);
+      }
+    );
+
+    ipcMain.handle(
+      "config-set-plugin-setting",
+      async (_event: any, pluginId: string, key: string, value: any) => {
+        const plugin = this.getPluginConfig(pluginId);
+        if (!plugin) {
+          throw new Error(`Plugin ${pluginId} not found`);
+        }
+        await plugin.set(key, value);
+      }
+    );
+
+    ipcMain.handle("config-get-plugin-ids", () => {
+      return this.getPluginIds();
+    });
+
     // Full config
     ipcMain.handle("config-get", async () => {
       return this.getConfig();
-    });
-
-    // Add backward compatibility handlers for old IPC channels
-    ipcMain.handle("app-settings-get-library", () => {
-      return this.getAppSetting("library").value;
-    });
-
-    ipcMain.handle("app-settings-get-user", () => {
-      return this.getAppSetting("user").value;
-    });
-
-    ipcMain.handle("app-settings-set-user", (_event: any, user: any) => {
-      this.setAppSetting("user", user);
-    });
-
-    ipcMain.handle("app-settings-get-user-data-path", () => {
-      return this.userDataPath();
-    });
-
-    ipcMain.handle("app-settings-get-api-url", () => {
-      return this.getAppSetting("apiUrl").value;
-    });
-
-    ipcMain.handle("app-settings-set-api-url", (_event: any, url: string) => {
-      this.setAppSetting("apiUrl", url);
-    });
-
-    ipcMain.handle("app-settings-get-sessions", () => {
-      return this.sessions();
     });
   }
 }

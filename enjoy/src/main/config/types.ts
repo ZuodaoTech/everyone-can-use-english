@@ -39,9 +39,18 @@ export interface UserSettings {
   profile: UserType | null;
 }
 
+// Plugin configuration (stored in database)
+export interface PluginSettings {
+  [pluginId: string]: {
+    enabled: boolean;
+    settings: Record<string, any>;
+  };
+}
+
 // Combined configuration
 export interface Config extends AppSettings {
   user: (AppSettings["user"] & UserSettings) | null;
+  plugins?: PluginSettings;
   paths: {
     userData: string | null;
     library: string;
@@ -56,6 +65,7 @@ export enum ConfigSource {
   FILE = "file",
   DATABASE = "database",
   ENV = "environment",
+  PLUGIN = "plugin",
 }
 
 // Configuration value with metadata
@@ -101,3 +111,18 @@ export enum ConfigStoreEvent {
 
 // Config store listener
 export type ConfigStoreListener = (key: string, value: any) => void;
+
+// Plugin configuration schema
+export interface PluginConfigSchema extends ConfigSchema {
+  enabled: {
+    type: "boolean";
+    default: boolean;
+    description: string;
+  };
+}
+
+// Plugin configuration manager options
+export interface PluginConfigOptions {
+  pluginId: string;
+  schema: PluginConfigSchema;
+}

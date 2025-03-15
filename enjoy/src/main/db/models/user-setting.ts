@@ -7,6 +7,7 @@ import {
   DataType,
   AllowNull,
 } from "sequelize-typescript";
+import { Op } from "sequelize";
 import log from "@/main/services/logger";
 import { config } from "@main/config";
 import * as i18n from "i18next";
@@ -33,18 +34,39 @@ export class UserSetting extends Model<UserSetting> {
   @Column(DataType.TEXT)
   value: string;
 
-  static async get(key: UserSettingKeyEnum): Promise<any> {
+  static async get(key: UserSettingKeyEnum | string): Promise<any> {
+    logger.debug(`UserSetting.get: Getting value for key "${key}"`);
     const setting = await UserSetting.findOne({ where: { key } });
-    if (!setting) return null;
+    logger.debug(
+      `UserSetting.get: Retrieved setting for key "${key}":`,
+      setting?.toJSON ? setting.toJSON() : setting
+    );
+
+    if (!setting) {
+      logger.debug(`UserSetting.get: No setting found for key "${key}"`);
+      return null;
+    }
 
     try {
-      return JSON.parse(setting.value);
+      const parsedValue = JSON.parse(setting.value);
+      logger.debug(
+        `UserSetting.get: Parsed JSON value for key "${key}":`,
+        parsedValue
+      );
+      return parsedValue;
     } catch {
+      logger.debug(
+        `UserSetting.get: Returning raw value for key "${key}":`,
+        setting.value
+      );
       return setting.value;
     }
   }
 
-  static async set(key: UserSettingKeyEnum, value: any): Promise<void> {
+  static async set(
+    key: UserSettingKeyEnum | string,
+    value: any
+  ): Promise<void> {
     const setting = await UserSetting.findOne({ where: { key } });
 
     if (typeof value === "object") {
@@ -73,6 +95,56 @@ export class UserSetting extends Model<UserSetting> {
 
   static async clear(): Promise<void> {
     await UserSetting.destroy({ where: {} });
+  }
+
+  /**
+   * Get all plugin settings
+   */
+  static async getPluginSettings(
+    pluginId?: string
+  ): Promise<Record<string, any>> {
+    let whereCondition: any = {};
+
+    if (pluginId) {
+      whereCondition = {
+        key: {
+          [Op.startsWith]: `plugin.${pluginId}.`,
+        },
+      };
+    } else {
+      whereCondition = {
+        key: {
+          [Op.startsWith]: "plugin.",
+        },
+      };
+    }
+
+    const settings = await UserSetting.findAll({ where: whereCondition });
+    const result: Record<string, any> = {};
+
+    for (const setting of settings) {
+      // Extract plugin ID and key from the setting key
+      // Format: plugin.<pluginId>.<key>
+      const parts = setting.key.split(".");
+      if (parts.length < 3) continue;
+
+      const id = parts[1];
+      const key = parts.slice(2).join(".");
+
+      // Initialize plugin object if it doesn't exist
+      if (!result[id]) {
+        result[id] = {};
+      }
+
+      // Parse value if it's JSON
+      try {
+        result[id][key] = JSON.parse(setting.value);
+      } catch {
+        result[id][key] = setting.value;
+      }
+    }
+
+    return result;
   }
 
   static async migrateFromSettings(): Promise<void> {

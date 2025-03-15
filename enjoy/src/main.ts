@@ -146,8 +146,16 @@ app.on("ready", async () => {
     await db.connect();
 
     // Initialize i18n with user language preference
-    const language = (await config.getUserSetting("language")).value;
-    await i18n(language);
+    try {
+      const language = (await config.getUserSetting("language")).value;
+      await i18n(language);
+    } catch (error) {
+      logger.warn(
+        "Failed to load user language preference, using default",
+        error
+      );
+      await i18n("zh-CN"); // Default language
+    }
 
     // Initialize main window
     mainWindow.init();

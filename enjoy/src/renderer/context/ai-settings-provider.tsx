@@ -95,7 +95,9 @@ export const AISettingsProvider = ({
   };
 
   const refreshTtsConfig = async () => {
-    let config = await EnjoyApp.userSettings.get(UserSettingKeyEnum.TTS_CONFIG);
+    let config = await EnjoyApp.config.getUserSetting(
+      UserSettingKeyEnum.TTS_CONFIG
+    );
     if (!config) {
       config = {
         engine: "enjoyai",
@@ -103,26 +105,29 @@ export const AISettingsProvider = ({
         voice: "alloy",
         language: learningLanguage,
       };
-      EnjoyApp.userSettings.set(UserSettingKeyEnum.TTS_CONFIG, config);
+      EnjoyApp.config.setUserSetting(UserSettingKeyEnum.TTS_CONFIG, config);
     }
     setTtsConfig(config);
   };
 
   const handleSetTtsConfig = async (config: TtsConfigType) => {
-    return EnjoyApp.userSettings
-      .set(UserSettingKeyEnum.TTS_CONFIG, config)
+    return EnjoyApp.config
+      .setUserSetting(UserSettingKeyEnum.TTS_CONFIG, config)
       .then(() => {
         setTtsConfig(config);
       });
   };
 
   const refreshEchogardenSttConfig = async () => {
-    let config = await EnjoyApp.userSettings.get(UserSettingKeyEnum.ECHOGARDEN);
+    let config = await EnjoyApp.config.getUserSetting(
+      UserSettingKeyEnum.ECHOGARDEN
+    );
 
     if (!config) {
       let model = "tiny";
       const whisperModel =
-        (await EnjoyApp.userSettings.get(UserSettingKeyEnum.WHISPER)) || "";
+        (await EnjoyApp.config.getUserSetting(UserSettingKeyEnum.WHISPER)) ||
+        "";
       if (WHISPER_MODELS.includes(whisperModel)) {
         model = whisperModel;
       } else {
@@ -156,7 +161,7 @@ export const AISettingsProvider = ({
           decoderProvider: "cpu",
         },
       };
-      EnjoyApp.userSettings.set(UserSettingKeyEnum.ECHOGARDEN, config);
+      EnjoyApp.config.setUserSetting(UserSettingKeyEnum.ECHOGARDEN, config);
     }
     setEchogardenSttConfig(config);
   };
@@ -164,8 +169,8 @@ export const AISettingsProvider = ({
   const handleSetEchogardenSttConfig = async (
     config: EchogardenSttConfigType
   ) => {
-    return EnjoyApp.userSettings
-      .set(UserSettingKeyEnum.ECHOGARDEN, config)
+    return EnjoyApp.config
+      .setUserSetting(UserSettingKeyEnum.ECHOGARDEN, config)
       .then(() => {
         setEchogardenSttConfig(config);
       });
@@ -189,23 +194,25 @@ export const AISettingsProvider = ({
 
   const handleSetSttEngine = async (name: SttEngineOptionEnum) => {
     setSttEngine(name);
-    return EnjoyApp.userSettings.set(UserSettingKeyEnum.STT_ENGINE, name);
+    return EnjoyApp.config.setUserSetting(UserSettingKeyEnum.STT_ENGINE, name);
   };
 
   const fetchSettings = async () => {
-    const _sttEngine = await EnjoyApp.userSettings.get(
+    const _sttEngine = await EnjoyApp.config.getUserSetting(
       UserSettingKeyEnum.STT_ENGINE
     );
     if (_sttEngine) {
       setSttEngine(_sttEngine);
     }
 
-    const _openai = await EnjoyApp.userSettings.get(UserSettingKeyEnum.OPENAI);
+    const _openai = await EnjoyApp.config.getUserSetting(
+      UserSettingKeyEnum.OPENAI
+    );
     if (_openai) {
       setOpenai(Object.assign({ name: "openai" }, _openai));
     }
 
-    const _gptEngine = await EnjoyApp.userSettings.get(
+    const _gptEngine = await EnjoyApp.config.getUserSetting(
       UserSettingKeyEnum.GPT_ENGINE
     );
     if (_gptEngine) {
@@ -217,8 +224,8 @@ export const AISettingsProvider = ({
           default: "gpt-4o",
         },
       };
-      EnjoyApp.userSettings
-        .set(UserSettingKeyEnum.GPT_ENGINE, engine)
+      EnjoyApp.config
+        .setUserSetting(UserSettingKeyEnum.GPT_ENGINE, engine)
         .then(() => {
           setGptEngine(engine);
         });
@@ -229,8 +236,8 @@ export const AISettingsProvider = ({
           default: "gpt-4o",
         },
       };
-      EnjoyApp.userSettings
-        .set(UserSettingKeyEnum.GPT_ENGINE, engine)
+      EnjoyApp.config
+        .setUserSetting(UserSettingKeyEnum.GPT_ENGINE, engine)
         .then(() => {
           setGptEngine(engine);
         });
@@ -241,7 +248,7 @@ export const AISettingsProvider = ({
   };
 
   const handleSetOpenai = async (config: LlmProviderType) => {
-    await EnjoyApp.userSettings.set(UserSettingKeyEnum.OPENAI, config);
+    await EnjoyApp.config.setUserSetting(UserSettingKeyEnum.OPENAI, config);
     setOpenai(Object.assign({ name: "openai" }, config));
   };
 
@@ -249,8 +256,8 @@ export const AISettingsProvider = ({
     <AISettingsProviderContext.Provider
       value={{
         setGptEngine: (engine: GptEngineSettingType) => {
-          EnjoyApp.userSettings
-            .set(UserSettingKeyEnum.GPT_ENGINE, engine)
+          EnjoyApp.config
+            .setUserSetting(UserSettingKeyEnum.GPT_ENGINE, engine)
             .then(() => {
               setGptEngine(engine);
             });

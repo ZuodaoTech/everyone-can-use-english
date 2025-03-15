@@ -261,38 +261,6 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     showErrorBox: (title: string, content: string) =>
       ipcRenderer.invoke("dialog-show-error-box", title, content),
   },
-  appSettings: {
-    get: (key: string) => {
-      return ipcRenderer.invoke("app-settings-get", key);
-    },
-    set: (key: string, value: any) => {
-      return ipcRenderer.invoke("app-settings-set", key, value);
-    },
-    getLibrary: () => {
-      return ipcRenderer.invoke("app-settings-get-library");
-    },
-    setLibrary: (library: string) => {
-      return ipcRenderer.invoke("app-settings-set-library", library);
-    },
-    getSessions: () => {
-      return ipcRenderer.invoke("app-settings-get-sessions");
-    },
-    getUser: () => {
-      return ipcRenderer.invoke("app-settings-get-user");
-    },
-    setUser: (user: UserType) => {
-      return ipcRenderer.invoke("app-settings-set-user", user);
-    },
-    getUserDataPath: () => {
-      return ipcRenderer.invoke("app-settings-get-user-data-path");
-    },
-    getApiUrl: () => {
-      return ipcRenderer.invoke("app-settings-get-api-url");
-    },
-    setApiUrl: (url: string) => {
-      return ipcRenderer.invoke("app-settings-set-api-url", url);
-    },
-  },
   userSettings: {
     get: (key: string) => {
       return ipcRenderer.invoke("user-settings-get", key);

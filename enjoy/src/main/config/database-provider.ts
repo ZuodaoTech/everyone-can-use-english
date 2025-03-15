@@ -1,7 +1,8 @@
-import { ConfigStorageProvider } from "./types";
+import { ConfigSchema, ConfigStorageProvider } from "./types";
 import log from "@main/services/logger";
 import { UserSettingKeyEnum } from "@shared/types/enums";
 import { type Sequelize } from "sequelize-typescript";
+
 const logger = log.scope("DatabaseProvider");
 
 /**
@@ -11,36 +12,60 @@ const logger = log.scope("DatabaseProvider");
  */
 export class DatabaseProvider implements ConfigStorageProvider {
   private db: any = null;
+  private model: string;
+  private schema: ConfigSchema;
+  private prefix: string;
+
+  constructor(
+    db: Sequelize,
+    model: string,
+    schema: ConfigSchema,
+    prefix: string = ""
+  ) {
+    this.db = db;
+    this.model = model;
+    this.schema = schema;
+    this.prefix = prefix;
+  }
 
   /**
-   * Set the database instance
+   * Get the full key with prefix
    */
-  setDatabase(db: Sequelize | null): void {
-    this.db = db;
-    if (this.db) {
-      logger.info("DatabaseProvider db setup");
-    } else {
-      logger.warn("DatabaseProvider db not setup");
-    }
+  private getFullKey(key: string): string {
+    return this.prefix ? `${this.prefix}.${key}` : key;
   }
 
   /**
    * Map a key to a UserSettingKeyEnum
    */
-  private mapKeyToEnum(key: string): UserSettingKeyEnum | null {
-    // Convert camelCase to SNAKE_CASE
+  private mapKeyToEnum(key: string): UserSettingKeyEnum | string | null {
+    // If we have a prefix, this is a plugin setting
+    if (this.prefix) {
+      // Store plugin settings with a prefix to avoid conflicts
+      return `plugin.${this.prefix}.${key}`;
+    }
+
+    // First, check if the key directly matches a UserSettingKeyEnum value
+    // This handles keys that are already in snake_case format
+    const directMatch = Object.values(UserSettingKeyEnum).find(
+      (enumValue) => enumValue === key
+    );
+    if (directMatch) {
+      return directMatch;
+    }
+
+    // Convert camelCase to snake_case
     const snakeCase = key
       .replace(/([A-Z])/g, "_$1")
-      .toUpperCase()
+      .toLowerCase()
       .replace(/^_/, "");
 
-    // Check if the key exists in UserSettingKeyEnum
-    if (
-      Object.values(UserSettingKeyEnum).includes(
-        snakeCase as UserSettingKeyEnum
-      )
-    ) {
-      return snakeCase as UserSettingKeyEnum;
+    // Check if the snake_case version matches a UserSettingKeyEnum value
+    const snakeCaseMatch = Object.values(UserSettingKeyEnum).find(
+      (enumValue) => enumValue === snakeCase
+    );
+    if (snakeCaseMatch) {
+      return snakeCaseMatch;
     }
 
     // Handle nested properties
@@ -52,6 +77,11 @@ export class DatabaseProvider implements ConfigStorageProvider {
       if (parentEnum) {
         return parentEnum;
       }
+    }
+
+    // If no match is found, check if the key exists in the schema
+    if (Object.keys(this.schema).includes(key)) {
+      return key;
     }
 
     return null;
@@ -69,14 +99,19 @@ export class DatabaseProvider implements ConfigStorageProvider {
 
     try {
       const settingKey = this.mapKeyToEnum(key);
+      logger.debug(`Mapped key "${key}" to enum "${settingKey}"`);
+
       if (!settingKey) {
         logger.warn(`Unknown setting key: ${key}`);
         return undefined;
       }
 
       // Get the setting from the database
-      const setting = await this.db.models.UserSetting.get(settingKey);
+      const setting = await this.db.models[this.model].get(settingKey);
+      logger.debug(`Retrieved setting for key "${settingKey}":`, setting);
+
       if (!setting) {
+        logger.debug(`No setting found for key "${settingKey}"`);
         return undefined;
       }
 
@@ -86,38 +121,27 @@ export class DatabaseProvider implements ConfigStorageProvider {
         const parentKey = parts[0];
         const childKey = parts.slice(1).join(".");
 
-        if (parentKey && childKey && setting.value) {
+        if (parentKey && childKey && setting) {
           try {
-            const parentValue = JSON.parse(setting.value);
-            return this.getNestedProperty(parentValue, childKey) as T;
+            // The setting is already parsed by the UserSetting.get method
+            const result = this.getNestedProperty(setting, childKey) as T;
+            logger.debug(`Retrieved nested property "${childKey}":`, result);
+            return result;
           } catch (error) {
-            logger.error(`Failed to parse JSON for key "${key}"`, error);
+            logger.error(
+              `Failed to get nested property for key "${key}"`,
+              error
+            );
             return undefined;
           }
         }
       }
 
-      // Parse JSON value if needed
-      if (
-        setting.value &&
-        typeof setting.value === "string" &&
-        (setting.value.startsWith("{") ||
-          setting.value.startsWith("[") ||
-          setting.value === "true" ||
-          setting.value === "false" ||
-          !isNaN(Number(setting.value)))
-      ) {
-        try {
-          return JSON.parse(setting.value) as T;
-        } catch (error) {
-          // If parsing fails, return the raw value
-          return setting.value as unknown as T;
-        }
-      }
-
-      return setting.value as unknown as T;
+      // The setting is already parsed by the UserSetting.get method
+      // Just return it directly
+      return setting as T;
     } catch (error) {
-      logger.error(`Failed to get value for key "${key}"`, error);
+      logger.warn(`Failed to get value for key "${key}"`, error);
       return undefined;
     }
   }
@@ -130,10 +154,12 @@ export class DatabaseProvider implements ConfigStorageProvider {
       logger.warn(`Cannot set value for key "${key}" - database not set`);
       return;
     }
-    logger.debug(`Setting value for key "${key}"`);
+    logger.debug(`Setting value for key "${key}"`, value);
 
     try {
       const settingKey = this.mapKeyToEnum(key);
+      logger.debug(`Mapped key "${key}" to enum "${settingKey}"`);
+
       if (!settingKey) {
         logger.warn(`Unknown setting key: ${key}`);
         return;
@@ -155,20 +181,18 @@ export class DatabaseProvider implements ConfigStorageProvider {
           this.setNestedProperty(parentValue, childKey, value);
 
           // Save the updated parent value
-          await this.db.models.UserSetting.set(
-            parentEnum,
-            JSON.stringify(parentValue)
+          logger.debug(
+            `Saving nested property to database with key: ${parentEnum}`,
+            parentValue
           );
+          await this.db.models[this.model].set(parentEnum, parentValue);
           return;
         }
       }
 
-      // Convert value to string if it's an object or array
-      const stringValue =
-        typeof value === "object" ? JSON.stringify(value) : String(value);
-
       // Save to database
-      await this.db.models.UserSetting.set(settingKey, stringValue);
+      logger.debug(`Saving to database with key: ${settingKey}`, value);
+      await this.db.models[this.model].set(settingKey, value);
     } catch (error) {
       logger.error(`Failed to set value for key "${key}"`, error);
       throw error;
@@ -189,7 +213,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
         return false;
       }
 
-      const setting = await this.db.models.UserSetting.get(settingKey);
+      const setting = await this.db.models[this.model].get(settingKey);
 
       // Handle nested properties
       if (key.includes(".") && setting?.value) {
@@ -241,7 +265,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
             this.deleteNestedProperty(currentParentValue, childKey);
 
             // Save the updated parent value
-            await this.db.models.UserSetting.set(
+            await this.db.models[this.model].set(
               parentEnum,
               JSON.stringify(currentParentValue)
             );
@@ -251,7 +275,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
       }
 
       // Delete from database
-      await this.db.models.UserSetting.destroy({
+      await this.db.models[this.model].destroy({
         where: {
           key: settingKey,
         },
@@ -271,7 +295,17 @@ export class DatabaseProvider implements ConfigStorageProvider {
     }
 
     try {
-      await this.db.models.UserSetting.clear();
+      if (this.prefix) {
+        // Only clear keys with the current prefix
+        const allSettings = await this.db.models[this.model].findAll();
+        for (const setting of allSettings) {
+          if (setting.key.startsWith(`plugin.${this.prefix}.`)) {
+            await setting.destroy();
+          }
+        }
+      } else {
+        await this.db.models[this.model].clear();
+      }
     } catch (error) {
       logger.error("Failed to clear all keys", error);
       throw error;

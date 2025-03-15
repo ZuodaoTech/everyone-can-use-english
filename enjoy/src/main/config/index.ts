@@ -9,3 +9,5 @@ export { ConfigStore } from "./config-store";
 export { ElectronSettingsProvider } from "./electron-settings-provider";
 export { DatabaseProvider } from "./database-provider";
 export { ConfigManager } from "./config-manager";
+export { PluginConfigManager } from "./plugin-config-manager";
+export { PluginConfigRegistry } from "./plugin-config-registry";

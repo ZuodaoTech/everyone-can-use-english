@@ -154,18 +154,6 @@ type EnjoyAppType = {
     ) => Promise<Electron.MessageBoxReturnValue>;
     showErrorBox: (title: string, content: string) => Promise<void>;
   };
-  appSettings: {
-    get: (key: string) => Promise<any>;
-    set: (key: string, value: any) => Promise<void>;
-    getLibrary: () => Promise<string>;
-    setLibrary: (library: string) => Promise<void>;
-    getUser: () => Promise<UserType>;
-    setUser: (user: UserType) => Promise<void>;
-    getUserDataPath: () => Promise<string>;
-    getApiUrl: () => Promise<string>;
-    setApiUrl: (url: string) => Promise<void>;
-    getSessions: () => Promise<{ id: string }[]>;
-  };
   userSettings: {
     get: (key: UserSettingKeyEnum) => Promise<any>;
     set: (key: UserSettingKeyEnum, value: any) => Promise<void>;

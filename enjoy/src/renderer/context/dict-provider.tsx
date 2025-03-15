@@ -111,18 +111,20 @@ export const DictProvider = ({ children }: { children: React.ReactNode }) => {
   }, [dbState]);
 
   const fetchSettings = async () => {
-    return EnjoyApp.userSettings.get(UserSettingKeyEnum.DICTS).then((res) => {
-      if (res) {
-        setSettings({ ...initialState.settings, ...res });
-      } else {
-        setSettings(initialState.settings);
-      }
-    });
+    return EnjoyApp.config
+      .getUserSetting(UserSettingKeyEnum.DICTS)
+      .then((res) => {
+        if (res) {
+          setSettings({ ...initialState.settings, ...res });
+        } else {
+          setSettings(initialState.settings);
+        }
+      });
   };
 
   const updateSettings = async (_settings: DictSettingType) => {
-    return EnjoyApp.userSettings
-      .set(UserSettingKeyEnum.DICTS, _settings)
+    return EnjoyApp.config
+      .setUserSetting(UserSettingKeyEnum.DICTS, _settings)
       .then(() => setSettings(_settings));
   };
 
