@@ -25,6 +25,8 @@ import { DatabaseProvider } from "./database-provider";
 import { type Sequelize } from "sequelize-typescript";
 import { PluginConfigRegistry } from "./plugin-config-registry";
 import { PluginConfigManager } from "./plugin-config-manager";
+import snakeCase from "lodash/snakeCase";
+import camelCase from "lodash/camelCase";
 
 const logger = log.scope("ConfigManager");
 
@@ -289,11 +291,7 @@ export class ConfigManager {
       // Try to get the value from the database first
       if (this.userStore) {
         // Convert camelCase to snake_case for database lookup
-        const dbKey = key
-          .toString()
-          .replace(/([A-Z])/g, "_$1")
-          .toLowerCase()
-          .replace(/^_/, "");
+        const dbKey = snakeCase(key);
 
         logger.debug(`Looking up setting in database with key: ${dbKey}`);
         const dbValue = await this.userStore.getValue(dbKey);
@@ -393,11 +391,7 @@ export class ConfigManager {
         // Save to database using the new config store
         if (this.userStore) {
           // Convert camelCase to snake_case for database storage
-          const dbKey = parentKey
-            .toString()
-            .replace(/([A-Z])/g, "_$1")
-            .toLowerCase()
-            .replace(/^_/, "");
+          const dbKey = snakeCase(parentKey);
 
           logger.debug(
             `Saving nested property to database with key: ${dbKey}`,
@@ -415,11 +409,7 @@ export class ConfigManager {
       // Save to database using the new config store
       if (this.userStore) {
         // Convert camelCase to snake_case for database storage
-        const dbKey = key
-          .toString()
-          .replace(/([A-Z])/g, "_$1")
-          .toLowerCase()
-          .replace(/^_/, "");
+        const dbKey = snakeCase(key);
 
         logger.debug(`Saving to database with key: ${dbKey}`, value);
         await this.userStore.set(dbKey, value);
@@ -808,10 +798,7 @@ export class ConfigManager {
     for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
       try {
         // Convert camelCase to snake_case for database lookup
-        const dbKey = key
-          .replace(/([A-Z])/g, "_$1")
-          .toLowerCase()
-          .replace(/^_/, "");
+        const dbKey = snakeCase(key);
 
         // Get value from in-memory cache
         const memoryValue = this.userSettings[key as keyof UserSettings];
@@ -848,10 +835,7 @@ export class ConfigManager {
       // Load each user setting
       for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
         // Convert camelCase to snake_case for database lookup
-        const dbKey = key
-          .replace(/([A-Z])/g, "_$1")
-          .toLowerCase()
-          .replace(/^_/, "");
+        const dbKey = snakeCase(key);
 
         logger.debug(`Reloading user setting: ${key} (${dbKey})`);
 
@@ -893,10 +877,7 @@ export class ConfigManager {
       const { UserSetting } = await import("@main/db/models");
 
       // Convert camelCase to snake_case for database lookup
-      const dbKey = key
-        .replace(/([A-Z])/g, "_$1")
-        .toLowerCase()
-        .replace(/^_/, "");
+      const dbKey = snakeCase(key);
 
       logger.info(`Getting user setting directly from database: ${dbKey}`);
       const result = await UserSetting.get(dbKey);
@@ -943,9 +924,7 @@ export class ConfigManager {
           logger.info(`Loading setting from database: ${key}`, value);
 
           // Convert snake_case to camelCase
-          const camelKey = key.replace(/_([a-z])/g, (_, letter) =>
-            letter.toUpperCase()
-          );
+          const camelKey = camelCase(key);
 
           // Set the value in memory
           if (camelKey.includes(".")) {

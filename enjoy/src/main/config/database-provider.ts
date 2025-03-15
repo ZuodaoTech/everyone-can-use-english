@@ -2,6 +2,7 @@ import { ConfigSchema, ConfigStorageProvider } from "./types";
 import log from "@main/services/logger";
 import { UserSettingKeyEnum } from "@shared/types/enums";
 import { type Sequelize } from "sequelize-typescript";
+import snakeCase from "lodash/snakeCase";
 
 const logger = log.scope("DatabaseProvider");
 
@@ -55,14 +56,11 @@ export class DatabaseProvider implements ConfigStorageProvider {
     }
 
     // Convert camelCase to snake_case
-    const snakeCase = key
-      .replace(/([A-Z])/g, "_$1")
-      .toLowerCase()
-      .replace(/^_/, "");
+    const snakeCaseKey = snakeCase(key);
 
     // Check if the snake_case version matches a UserSettingKeyEnum value
     const snakeCaseMatch = Object.values(UserSettingKeyEnum).find(
-      (enumValue) => enumValue === snakeCase
+      (enumValue) => enumValue === snakeCaseKey
     );
     if (snakeCaseMatch) {
       return snakeCaseMatch;

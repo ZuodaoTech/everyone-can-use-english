@@ -192,7 +192,7 @@ export class ConfigStore extends EventEmitter {
         throw error;
       }
 
-      logger.error(`Failed to get config value for key "${key}"`, error);
+      logger.warn(`Failed to get config value for key "${key}"`, error);
 
       // Return default value if available
       if (key in this.defaults) {
