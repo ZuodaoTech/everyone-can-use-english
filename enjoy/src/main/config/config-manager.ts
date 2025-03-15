@@ -15,8 +15,12 @@ import {
   Config,
   ConfigSource,
   ConfigValue,
+  ConfigSchema,
 } from "./types";
 import * as i18n from "i18next";
+import { ConfigStore } from "./config-store";
+import { ElectronSettingsProvider } from "./electron-settings-provider";
+import { DatabaseProvider } from "./database-provider";
 
 const logger = log.scope("ConfigManager");
 
@@ -52,22 +56,118 @@ const DEFAULT_USER_SETTINGS: UserSettings = {
   profile: null,
 };
 
+// App settings schema
+const APP_SETTINGS_SCHEMA: ConfigSchema = {
+  library: {
+    type: "string",
+    default: DEFAULT_APP_SETTINGS.library,
+    description: "Path to the library directory",
+  },
+  apiUrl: {
+    type: "string",
+    default: DEFAULT_APP_SETTINGS.apiUrl,
+    description: "API URL for the web service",
+  },
+  wsUrl: {
+    type: "string",
+    default: DEFAULT_APP_SETTINGS.wsUrl,
+    description: "WebSocket URL for the web service",
+  },
+  proxy: {
+    type: "object",
+    default: DEFAULT_APP_SETTINGS.proxy,
+    description: "Proxy configuration",
+  },
+  user: {
+    type: "object",
+    default: DEFAULT_APP_SETTINGS.user,
+    description: "Current user information",
+  },
+  file: {
+    type: "string",
+    default: DEFAULT_APP_SETTINGS.file,
+    description: "Current file path",
+  },
+};
+
+// User settings schema
+const USER_SETTINGS_SCHEMA: ConfigSchema = {
+  language: {
+    type: "string",
+    default: DEFAULT_USER_SETTINGS.language,
+    description: "UI language",
+  },
+  nativeLanguage: {
+    type: "string",
+    default: DEFAULT_USER_SETTINGS.nativeLanguage,
+    description: "Native language",
+  },
+  learningLanguage: {
+    type: "string",
+    default: DEFAULT_USER_SETTINGS.learningLanguage,
+    description: "Learning language",
+  },
+  sttEngine: {
+    type: "string",
+    default: DEFAULT_USER_SETTINGS.sttEngine,
+    description: "Speech-to-text engine",
+  },
+  whisper: {
+    type: "string",
+    default: DEFAULT_USER_SETTINGS.whisper,
+    description: "Whisper model",
+  },
+  openai: {
+    type: "object",
+    default: DEFAULT_USER_SETTINGS.openai,
+    description: "OpenAI configuration",
+  },
+  gptEngine: {
+    type: "object",
+    default: DEFAULT_USER_SETTINGS.gptEngine,
+    description: "GPT engine configuration",
+  },
+  recorder: {
+    type: "object",
+    default: DEFAULT_USER_SETTINGS.recorder,
+    description: "Recorder configuration",
+  },
+  hotkeys: {
+    type: "object",
+    default: DEFAULT_USER_SETTINGS.hotkeys,
+    description: "Hotkey configuration",
+  },
+  profile: {
+    type: "object",
+    default: DEFAULT_USER_SETTINGS.profile,
+    description: "User profile",
+  },
+};
+
 export class ConfigManager {
+  // Legacy properties for backward compatibility
   private appSettings: AppSettings;
   private userSettings: UserSettings | null = null;
   private isUserSettingsLoaded = false;
 
-  constructor() {
-    // Configure electron-settings
-    if (process.env.SETTINGS_PATH) {
-      electronSettings.configure({
-        dir: process.env.SETTINGS_PATH,
-        prettify: true,
-      });
-    }
+  // New config stores
+  private appStore: ConfigStore;
+  private userStore: ConfigStore | null = null;
+  private databaseProvider: DatabaseProvider;
 
+  constructor() {
     // Initialize with defaults
     this.appSettings = { ...DEFAULT_APP_SETTINGS };
+
+    // Create app config store with electron-settings provider
+    this.appStore = new ConfigStore({
+      name: "app-settings",
+      schema: APP_SETTINGS_SCHEMA,
+      storage: new ElectronSettingsProvider(),
+    });
+
+    // Create database provider for user settings
+    this.databaseProvider = new DatabaseProvider();
 
     // Load app settings from file
     this.loadAppSettings();
@@ -80,7 +180,23 @@ export class ConfigManager {
    * Initialize user settings from database
    * This should be called after the database is connected
    */
-  async initialize(): Promise<void> {
+  async initialize(db?: any): Promise<void> {
+    if (db) {
+      // Set the database instance for the database provider
+      this.databaseProvider.setDatabase(db);
+    }
+
+    // Set the user ID for the database provider
+    const userId = this.appSettings.user?.id || null;
+    this.databaseProvider.setUserId(userId);
+
+    // Create user config store with database provider
+    this.userStore = new ConfigStore({
+      name: "user-settings",
+      schema: USER_SETTINGS_SCHEMA,
+      storage: this.databaseProvider,
+    });
+
     if (!this.isUserSettingsLoaded) {
       await this.loadUserSettings();
     }
@@ -128,27 +244,59 @@ export class ConfigManager {
     // Handle nested properties
     if (key.includes(".")) {
       const parts = key.split(".");
-      const lastPart = parts.pop()!;
-      let target: any = this.appSettings;
+      const parentKey = parts[0] as keyof AppSettings;
+      const childKey = parts.slice(1).join(".");
 
-      for (const part of parts) {
-        if (target[part] === undefined) {
-          target[part] = {};
-        }
-        target = target[part];
+      // Get parent value
+      let parentValue = this.appSettings[parentKey];
+      if (!parentValue || typeof parentValue !== "object") {
+        parentValue = {} as any;
       }
 
-      target[lastPart] = value;
-      electronSettings.setSync(key, value);
+      // Set nested property
+      let current: any = parentValue;
+      const childParts = childKey.split(".");
+      for (let i = 0; i < childParts.length - 1; i++) {
+        const part = childParts[i];
+        if (!current[part] || typeof current[part] !== "object") {
+          current[part] = {};
+        }
+        current = current[part];
+      }
+      current[childParts[childParts.length - 1]] = value;
+
+      // Update app settings
+      this.appSettings[parentKey] = parentValue as any;
+
+      // Save to electron-settings
+      electronSettings.setSync(parentKey, parentValue);
+
+      // Also update the new config store
+      this.appStore.set(key as string, value).catch((error) => {
+        logger.error(
+          `Failed to set app setting "${key}" in config store`,
+          error
+        );
+      });
+
       return;
     }
 
+    // Update app settings
     this.appSettings[key] = value;
+
+    // Save to electron-settings
     electronSettings.setSync(key, value);
 
-    // Special handling for certain settings
-    if (key === "library") {
-      this.ensureDirectories();
+    // Also update the new config store
+    this.appStore.set(key as string, value).catch((error) => {
+      logger.error(`Failed to set app setting "${key}" in config store`, error);
+    });
+
+    // Special handling for user ID change
+    if (key === "user") {
+      const userId = (value as AppSettings["user"])?.id || null;
+      this.databaseProvider.setUserId(userId);
     }
   }
 
@@ -208,6 +356,7 @@ export class ConfigManager {
       await this.loadUserSettings();
     }
 
+    // Initialize user settings if null
     if (!this.userSettings) {
       this.userSettings = { ...DEFAULT_USER_SETTINGS };
     }
@@ -215,36 +364,49 @@ export class ConfigManager {
     // Handle nested properties
     if (key.includes(".")) {
       const parts = key.split(".");
-      const lastPart = parts.pop()!;
-      let target: any = this.userSettings;
+      const parentKey = parts[0] as keyof UserSettings;
+      const childKey = parts.slice(1).join(".");
 
-      for (const part of parts) {
-        if (target[part] === undefined) {
-          target[part] = {};
+      // Get parent value
+      let parentValue = this.userSettings[parentKey];
+      if (!parentValue || typeof parentValue !== "object") {
+        parentValue = {} as any;
+      }
+
+      // Set nested property
+      let current: any = parentValue;
+      const childParts = childKey.split(".");
+      for (let i = 0; i < childParts.length - 1; i++) {
+        const part = childParts[i];
+        if (!current[part] || typeof current[part] !== "object") {
+          current[part] = {};
         }
-        target = target[part];
+        current = current[part];
+      }
+      current[childParts[childParts.length - 1]] = value;
+
+      // Update user settings
+      this.userSettings[parentKey] = parentValue as any;
+
+      // Save to database using the new config store
+      if (this.userStore) {
+        await this.userStore.set(key as string, value);
       }
 
-      target[lastPart] = value;
-    } else {
-      this.userSettings[key] = value;
+      return;
     }
 
-    // Map to UserSettingKeyEnum
-    const dbKey = this.mapKeyToUserSettingEnum(key);
-    if (dbKey) {
-      // Import UserSetting dynamically to avoid circular dependency
-      const { UserSetting } = await import("@main/db/models");
-      await UserSetting.set(dbKey, value);
+    // Update user settings
+    this.userSettings[key] = value;
+
+    // Save to database using the new config store
+    if (this.userStore) {
+      await this.userStore.set(key as string, value);
     }
 
-    // Special handling for language setting
+    // Special handling for language change
     if (key === "language") {
-      try {
-        await i18n.changeLanguage(value as string);
-      } catch (error) {
-        logger.error("Failed to change language", error);
-      }
+      await i18n.changeLanguage(value as string);
     }
   }
 
@@ -349,26 +511,52 @@ export class ConfigManager {
       this.appSettings.library = libraryPath;
     } else {
       // Set default library path
-      const defaultLibrary =
-        process.env.LIBRARY_PATH ||
-        path.join(app.getPath("documents"), LIBRARY_PATH_SUFFIX);
-
-      electronSettings.setSync("library", defaultLibrary);
-      this.appSettings.library = defaultLibrary;
+      electronSettings.setSync("library", this.appSettings.library);
     }
 
     // Load API URL
-    const apiUrlFromSettings = electronSettings.getSync("apiUrl");
-    if (apiUrlFromSettings && typeof apiUrlFromSettings === "string") {
-      this.appSettings.apiUrl = apiUrlFromSettings;
+    const apiUrl = electronSettings.getSync("apiUrl");
+    if (apiUrl && typeof apiUrl === "string") {
+      this.appSettings.apiUrl = apiUrl;
     } else {
-      electronSettings.setSync("apiUrl", DEFAULT_APP_SETTINGS.apiUrl);
+      // Set default API URL
+      electronSettings.setSync("apiUrl", this.appSettings.apiUrl);
     }
 
-    // Load user
-    const userFromSettings = electronSettings.getSync("user");
-    if (userFromSettings && typeof userFromSettings === "object") {
-      this.appSettings.user = userFromSettings as AppSettings["user"];
+    // Load WebSocket URL
+    const wsUrl = electronSettings.getSync("wsUrl");
+    if (wsUrl && typeof wsUrl === "string") {
+      this.appSettings.wsUrl = wsUrl;
+    }
+
+    // Load proxy settings
+    const proxy = electronSettings.getSync("proxy");
+    if (proxy) {
+      this.appSettings.proxy = proxy as any;
+    }
+
+    // Load user settings
+    const user = electronSettings.getSync("user");
+    if (user) {
+      this.appSettings.user = user as any;
+    }
+
+    // Load file path
+    const file = electronSettings.getSync("file");
+    if (file && typeof file === "string") {
+      this.appSettings.file = file;
+    }
+
+    // Also load settings into the new config store
+    for (const key of Object.keys(this.appSettings) as Array<
+      keyof AppSettings
+    >) {
+      this.appStore.set(key, this.appSettings[key]).catch((error) => {
+        logger.error(
+          `Failed to set app setting "${key}" in config store`,
+          error
+        );
+      });
     }
   }
 
@@ -376,67 +564,67 @@ export class ConfigManager {
    * Load user settings from database
    */
   private async loadUserSettings(): Promise<void> {
-    try {
-      // Initialize with defaults
-      this.userSettings = { ...DEFAULT_USER_SETTINGS };
+    // Initialize user settings with defaults
+    this.userSettings = { ...DEFAULT_USER_SETTINGS };
 
-      // Import UserSetting dynamically to avoid circular dependency
-      const { UserSetting } = await import("@main/db/models");
-
-      // Load settings from database
-      for (const key of Object.values(UserSettingKeyEnum)) {
-        const value = await UserSetting.get(key);
-        if (value !== null) {
-          this.setUserSettingFromDb(key, value);
+    // If user store is available, load settings from it
+    if (this.userStore) {
+      try {
+        // Load each user setting
+        for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
+          const value = await this.userStore.getValue(key);
+          if (value !== undefined) {
+            this.setUserSettingFromValue(key as keyof UserSettings, value);
+          }
         }
+      } catch (error) {
+        logger.error("Failed to load user settings from database", error);
       }
-
-      this.isUserSettingsLoaded = true;
-      logger.info("User settings loaded");
-    } catch (error) {
-      logger.error("Failed to load user settings", error);
     }
+
+    this.isUserSettingsLoaded = true;
   }
 
   /**
    * Set user setting from database value
    */
-  private setUserSettingFromDb(key: UserSettingKeyEnum, value: any): void {
-    if (!this.userSettings) {
-      this.userSettings = { ...DEFAULT_USER_SETTINGS };
+  private setUserSettingFromValue(key: keyof UserSettings, value: any): void {
+    // Handle nested properties
+    if (key.includes(".")) {
+      const parts = key.split(".");
+      const parentKey = parts[0] as keyof UserSettings;
+      const childKey = parts.slice(1).join(".");
+
+      // Get parent value
+      let parentValue = this.userSettings?.[parentKey];
+      if (!parentValue || typeof parentValue !== "object") {
+        parentValue = {} as any;
+      }
+
+      // Set nested property
+      let current: any = parentValue;
+      const childParts = childKey.split(".");
+      for (let i = 0; i < childParts.length - 1; i++) {
+        const part = childParts[i];
+        if (!current[part] || typeof current[part] !== "object") {
+          current[part] = {};
+        }
+        current = current[part];
+      }
+      current[childParts[childParts.length - 1]] = value;
+
+      // Update user settings
+      if (this.userSettings) {
+        this.userSettings[parentKey] = parentValue as any;
+      }
+
+      return;
     }
 
-    switch (key) {
-      case UserSettingKeyEnum.LANGUAGE:
-        this.userSettings.language = value;
-        break;
-      case UserSettingKeyEnum.NATIVE_LANGUAGE:
-        this.userSettings.nativeLanguage = value;
-        break;
-      case UserSettingKeyEnum.LEARNING_LANGUAGE:
-        this.userSettings.learningLanguage = value;
-        break;
-      case UserSettingKeyEnum.STT_ENGINE:
-        this.userSettings.sttEngine = value;
-        break;
-      case UserSettingKeyEnum.WHISPER:
-        this.userSettings.whisper = value;
-        break;
-      case UserSettingKeyEnum.OPENAI:
-        this.userSettings.openai = value;
-        break;
-      case UserSettingKeyEnum.GPT_ENGINE:
-        this.userSettings.gptEngine = value;
-        break;
-      case UserSettingKeyEnum.RECORDER:
-        this.userSettings.recorder = value;
-        break;
-      case UserSettingKeyEnum.HOTKEYS:
-        this.userSettings.hotkeys = value;
-        break;
-      case UserSettingKeyEnum.PROFILE:
-        this.userSettings.profile = value;
-        break;
+    // Update user settings
+    if (this.userSettings) {
+      // Use type assertion to ensure type safety
+      this.userSettings[key] = value as any;
     }
   }
 
