@@ -5,6 +5,7 @@ import log from "@/main/services/logger";
 import { t } from "i18next";
 import db from "@main/db";
 import { BaseHandler } from "./base-handler";
+import { withTransaction } from "../transaction";
 
 class MessagesHandler extends BaseHandler {
   protected prefix = "messages";
@@ -22,7 +23,7 @@ class MessagesHandler extends BaseHandler {
     options: FindOptions<Attributes<Message>>
   ) {
     return this.handleRequest(_event, async () => {
-      return Message.findAll({
+      const messages = await Message.findAll({
         include: [
           {
             association: "speeches",
@@ -34,6 +35,8 @@ class MessagesHandler extends BaseHandler {
         order: [["createdAt", "DESC"]],
         ...options,
       });
+
+      return messages.map((message) => message.toJSON());
     });
   }
 
@@ -42,7 +45,7 @@ class MessagesHandler extends BaseHandler {
     where: WhereOptions<Attributes<Message>>
   ) {
     return this.handleRequest(_event, async () => {
-      return Message.findOne({
+      const message = await Message.findOne({
         include: [
           Conversation,
           {
@@ -56,6 +59,8 @@ class MessagesHandler extends BaseHandler {
           ...where,
         },
       });
+
+      return message ? message.toJSON() : null;
     });
   }
 
@@ -63,21 +68,26 @@ class MessagesHandler extends BaseHandler {
     const { conversationId, role, content } = params;
 
     return this.handleRequest(event, async () => {
-      return Message.create({ conversationId, role, content });
+      const message = await Message.create({
+        conversationId,
+        role,
+        content,
+      });
+
+      return message.toJSON();
     });
   }
 
   private async createInBatch(event: IpcMainEvent, messages: Message[]) {
     return this.handleRequest(event, async () => {
-      const transaction = await db.connection.transaction();
-      for (const message of messages) {
-        await Message.create(message, {
-          include: [Conversation],
-          transaction,
-        });
-      }
-
-      await transaction.commit();
+      return withTransaction(async (transaction) => {
+        for (const message of messages) {
+          await Message.create(message, {
+            include: [Conversation],
+            transaction,
+          });
+        }
+      });
     });
   }
 
@@ -95,7 +105,9 @@ class MessagesHandler extends BaseHandler {
       if (!message) {
         throw new Error(t("models.message.notFound"));
       }
-      message.update({ content });
+      await message.update({ content });
+
+      return message.toJSON();
     });
   }
 
@@ -107,7 +119,9 @@ class MessagesHandler extends BaseHandler {
       if (!message) {
         throw new Error(t("models.message.notFound"));
       }
-      message.destroy();
+      await message.destroy();
+
+      return message.toJSON();
     });
   }
 
@@ -124,7 +138,9 @@ class MessagesHandler extends BaseHandler {
         throw new Error(t("models.message.notFound"));
       }
 
-      return message.createSpeech(configuration);
+      const speech = await message.createSpeech(configuration);
+
+      return speech.toJSON();
     });
   }
 }

@@ -56,17 +56,21 @@ class SpeechesHandler extends BaseHandler {
       const md5 = await hashFile(file, { algo: "md5" });
       fs.renameSync(file, path.join(path.dirname(file), `${md5}.${format}`));
 
-      return Speech.create({ ...params, extname: `.${format}`, md5 }).then(
-        (speech) => {
-          return speech.toJSON();
-        }
-      );
+      const speech = await Speech.create({
+        ...params,
+        extname: `.${format}`,
+        md5,
+      });
+
+      return speech.toJSON();
     });
   }
 
   private async delete(event: IpcMainEvent, id: string) {
     return this.handleRequest(event, async () => {
       await Speech.destroy({ where: { id } });
+
+      return true;
     });
   }
 }

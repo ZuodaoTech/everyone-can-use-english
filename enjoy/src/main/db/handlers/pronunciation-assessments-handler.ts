@@ -96,6 +96,8 @@ class PronunciationAssessmentsHandler extends BaseHandler {
       }
 
       await assessment.update(data);
+
+      return assessment.toJSON();
     });
   }
 
@@ -112,6 +114,8 @@ class PronunciationAssessmentsHandler extends BaseHandler {
       }
 
       await assessment.destroy();
+
+      return assessment.toJSON();
     });
   }
 }

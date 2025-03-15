@@ -15,34 +15,29 @@ class TranscriptionsHandler extends BaseHandler {
 
   private async findOrCreate(event: IpcMainEvent, where: Transcription) {
     return this.handleRequest(event, async () => {
-      try {
-        const { targetType, targetId } = where;
-        let target: Video | Audio = null;
-        if (targetType === "Video") {
-          target = await Video.findByPk(targetId);
-        } else if (targetType === "Audio") {
-          target = await Audio.findByPk(targetId);
-        } else {
-          throw new Error("models.transcription.invalidTargetType");
-        }
-
-        const [transcription, _created] = await Transcription.findOrCreate({
-          where: {
-            targetId,
-            targetType,
-          },
-          defaults: {
-            targetId,
-            targetType,
-            targetMd5: target.md5,
-          },
-        });
-
-        return transcription.toJSON();
-      } catch (err) {
-        logger.error(err);
-        throw err;
+      const { targetType, targetId } = where;
+      let target: Video | Audio = null;
+      if (targetType === "Video") {
+        target = await Video.findByPk(targetId);
+      } else if (targetType === "Audio") {
+        target = await Audio.findByPk(targetId);
+      } else {
+        throw new Error("models.transcription.invalidTargetType");
       }
+
+      const [transcription, _created] = await Transcription.findOrCreate({
+        where: {
+          targetId,
+          targetType,
+        },
+        defaults: {
+          targetId,
+          targetType,
+          targetMd5: target.md5,
+        },
+      });
+
+      return transcription.toJSON();
     });
   }
 
@@ -58,13 +53,15 @@ class TranscriptionsHandler extends BaseHandler {
       if (!transcription) {
         throw new Error("models.transcription.notFound");
       }
-      return await transcription.update({
+      await transcription.update({
         result,
         engine,
         model,
         state,
         language,
       });
+
+      return transcription.toJSON();
     });
   }
 }

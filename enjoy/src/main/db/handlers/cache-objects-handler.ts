@@ -17,16 +17,10 @@ class CacheObjectsHandler extends BaseHandler {
   };
 
   private async get(event: IpcMainEvent, key: string) {
-    return CacheObject.get(key)
-      .then((value) => {
-        return value;
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    return this.handleRequest(event, async () => {
+      const value = await CacheObject.get(key);
+      return value;
+    });
   }
 
   private async set(
@@ -35,43 +29,24 @@ class CacheObjectsHandler extends BaseHandler {
     value: string | object,
     ttl?: number
   ) {
-    return CacheObject.set(key, value, ttl)
-      .then(() => {
-        return;
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    return this.handleRequest(event, async () => {
+      await CacheObject.set(key, value, ttl);
+      return true;
+    });
   }
 
   private async delete(event: IpcMainEvent, key: string) {
-    return CacheObject.destroy({ where: { key } })
-      .then(() => {
-        return;
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    return this.handleRequest(event, async () => {
+      await CacheObject.destroy({ where: { key } });
+    });
   }
 
   private async clear(event: IpcMainEvent) {
-    return CacheObject.destroy({ where: {} })
-      .then(() => {
-        db.connection.query("VACUUM");
-        return;
-      })
-      .catch((err) => {
-        event.sender.send("on-notification", {
-          type: "error",
-          message: err.message,
-        });
-      });
+    return this.handleRequest(event, async () => {
+      await CacheObject.destroy({ where: {} });
+      db.connection.query("VACUUM");
+      return true;
+    });
   }
 
   private async writeFile(
@@ -79,10 +54,12 @@ class CacheObjectsHandler extends BaseHandler {
     filename: string,
     data: ArrayBuffer
   ) {
-    const output = path.join(config.cachePath(), filename);
-    fs.writeFileSync(output, Buffer.from(data));
+    return this.handleRequest(_event, async () => {
+      const output = path.join(config.cachePath(), filename);
+      fs.writeFileSync(output, Buffer.from(data));
 
-    return `enjoy://library/cache/${filename}`;
+      return `enjoy://library/cache/${filename}`;
+    });
   }
 }
 

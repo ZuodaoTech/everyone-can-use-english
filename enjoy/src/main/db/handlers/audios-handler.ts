@@ -24,52 +24,56 @@ class AudiosHandler extends BaseHandler {
     _event: IpcMainEvent,
     options: FindOptions<Attributes<Audio>> & { query?: string }
   ) {
-    const { query, where = {} } = options || {};
-    delete options.query;
-    delete options.where;
+    return this.handleRequest(_event, async () => {
+      const { query, where = {} } = options || {};
+      delete options.query;
+      delete options.where;
 
-    if (query) {
-      (where as any).name = {
-        [Op.like]: `%${query}%`,
-      };
-    }
-    const audios = await Audio.findAll({
-      order: [["updatedAt", "DESC"]],
-      include: [
-        {
-          association: "transcription",
-          model: Transcription,
-          where: { targetType: "Audio" },
-          required: false,
-        },
-      ],
-      where,
-      ...options,
-      group: ["Audio.id"],
+      if (query) {
+        (where as any).name = {
+          [Op.like]: `%${query}%`,
+        };
+      }
+      const audios = await Audio.findAll({
+        order: [["updatedAt", "DESC"]],
+        include: [
+          {
+            association: "transcription",
+            model: Transcription,
+            where: { targetType: "Audio" },
+            required: false,
+          },
+        ],
+        where,
+        ...options,
+        group: ["Audio.id"],
+      });
+
+      if (!audios) {
+        return [];
+      }
+      return audios.map((audio) => audio.toJSON());
     });
-
-    if (!audios) {
-      return [];
-    }
-    return audios.map((audio) => audio.toJSON());
   }
 
   private async findOne(
     _event: IpcMainEvent,
     where: WhereOptions<Attributes<Audio>>
   ) {
-    const audio = await Audio.findOne({
-      where: {
-        ...where,
-      },
+    return this.handleRequest(_event, async () => {
+      const audio = await Audio.findOne({
+        where: {
+          ...where,
+        },
+      });
+      if (!audio) return;
+
+      if (!audio.isSynced) {
+        audio.sync().catch(() => {});
+      }
+
+      return audio.toJSON();
     });
-    if (!audio) return;
-
-    if (!audio.isSynced) {
-      audio.sync().catch(() => {});
-    }
-
-    return audio.toJSON();
   }
 
   private async create(
@@ -132,30 +136,35 @@ class AudiosHandler extends BaseHandler {
     id: string,
     params: Attributes<Audio>
   ) {
-    const { name, description, metadata, language, coverUrl, source } = params;
+    return this.handleRequest(_event, async () => {
+      const { name, description, metadata, language, coverUrl, source } =
+        params;
 
-    const audio = await Audio.findByPk(id);
+      const audio = await Audio.findByPk(id);
 
-    if (!audio) {
-      throw new Error(t("models.audio.notFound"));
-    }
-    return await audio.update({
-      name,
-      description,
-      metadata,
-      language,
-      coverUrl,
-      source,
+      if (!audio) {
+        throw new Error(t("models.audio.notFound"));
+      }
+      return await audio.update({
+        name,
+        description,
+        metadata,
+        language,
+        coverUrl,
+        source,
+      });
     });
   }
 
   private async destroy(_event: IpcMainEvent, id: string) {
-    const audio = await Audio.findByPk(id);
+    return this.handleRequest(_event, async () => {
+      const audio = await Audio.findByPk(id);
 
-    if (!audio) {
-      throw new Error(t("models.audio.notFound"));
-    }
-    return await audio.destroy();
+      if (!audio) {
+        throw new Error(t("models.audio.notFound"));
+      }
+      return await audio.destroy();
+    });
   }
 
   private async upload(event: IpcMainEvent, id: string) {
@@ -174,25 +183,29 @@ class AudiosHandler extends BaseHandler {
     id: string,
     params: { startTime: number; endTime: number }
   ) {
-    const audio = await Audio.findByPk(id);
-    if (!audio) {
-      throw new Error(t("models.audio.notFound"));
-    }
+    return this.handleRequest(_event, async () => {
+      const audio = await Audio.findByPk(id);
+      if (!audio) {
+        throw new Error(t("models.audio.notFound"));
+      }
 
-    const { startTime, endTime } = params;
-    const output = await audio.crop({ startTime, endTime });
+      const { startTime, endTime } = params;
+      const output = await audio.crop({ startTime, endTime });
 
-    return pathToEnjoyUrl(output);
+      return pathToEnjoyUrl(output);
+    });
   }
 
-  private async cleanUp() {
-    const audios = await Audio.findAll();
+  private async cleanUp(_event: IpcMainEvent) {
+    return this.handleRequest(_event, async () => {
+      const audios = await Audio.findAll();
 
-    for (const audio of audios) {
-      if (!audio.src) {
-        audio.destroy();
+      for (const audio of audios) {
+        if (!audio.src) {
+          audio.destroy();
+        }
       }
-    }
+    });
   }
 }
 

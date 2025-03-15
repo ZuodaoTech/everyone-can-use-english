@@ -111,19 +111,12 @@ class VideosHandler extends BaseHandler {
         }
       }
 
-      return Video.buildFromLocalFile(file, {
+      const video = await Video.buildFromLocalFile(file, {
         source,
         ...params,
-      })
-        .then((video) => {
-          return video.toJSON();
-        })
-        .catch((err) => {
-          logger.error(err);
-          throw new Error(
-            t("models.video.failedToAdd", { error: err.message })
-          );
-        });
+      });
+
+      return video.toJSON();
     });
   }
 
@@ -140,7 +133,16 @@ class VideosHandler extends BaseHandler {
       if (!video) {
         throw new Error(t("models.video.notFound"));
       }
-      video.update({ name, description, metadata, language, coverUrl, source });
+      await video.update({
+        name,
+        description,
+        metadata,
+        language,
+        coverUrl,
+        source,
+      });
+
+      return video.toJSON();
     });
   }
 
@@ -150,7 +152,9 @@ class VideosHandler extends BaseHandler {
       if (!video) {
         throw new Error(t("models.video.notFound"));
       }
-      return await video.destroy();
+      await video.destroy();
+
+      return video.toJSON();
     });
   }
 
@@ -160,15 +164,9 @@ class VideosHandler extends BaseHandler {
       if (!video) {
         throw new Error(t("models.video.notFound"));
       }
-      return video
-        .upload()
-        .then((res) => {
-          return res;
-        })
-        .catch((err) => {
-          logger.error(err);
-          throw err;
-        });
+      await video.upload();
+
+      return video.toJSON();
     });
   }
 

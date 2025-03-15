@@ -26,12 +26,16 @@ class UserSettingsHandler extends BaseHandler {
   ) {
     return this.handleRequest(event, async () => {
       await UserSetting.set(key, value);
+
+      return true;
     });
   }
 
   private async delete(event: IpcMainEvent, key: UserSettingKeyEnum) {
     return this.handleRequest(event, async () => {
       await UserSetting.destroy({ where: { key } });
+
+      return true;
     });
   }
 
@@ -39,6 +43,8 @@ class UserSettingsHandler extends BaseHandler {
     return this.handleRequest(event, async () => {
       await UserSetting.destroy({ where: {} });
       db.connection.query("VACUUM");
+
+      return true;
     });
   }
 }

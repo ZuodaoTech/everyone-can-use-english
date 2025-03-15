@@ -26,7 +26,7 @@ class NotesHandler extends BaseHandler {
     return this.handleRequest(event, async () => {
       const { limit, offset } = params;
 
-      return Note.findAll({
+      const notes = await Note.findAll({
         include: [Segment],
         attributes: [
           "targetId",
@@ -37,7 +37,9 @@ class NotesHandler extends BaseHandler {
         order: [["created_at", "DESC"]],
         limit,
         offset,
-      }).then((notes) => notes.map((note) => note.toJSON()));
+      });
+
+      return notes.map((note) => note.toJSON());
     });
   }
 
@@ -47,7 +49,7 @@ class NotesHandler extends BaseHandler {
     targetType: string
   ) {
     return this.handleRequest(event, async () => {
-      return Note.findAll({
+      const notes = await Note.findAll({
         include: [
           {
             model: Segment,
@@ -65,7 +67,9 @@ class NotesHandler extends BaseHandler {
           "$segment.target_id$": targetId,
           "$segment.target_type$": targetType,
         },
-      }).then((notes) => notes.map((note) => note.toJSON()));
+      });
+
+      return notes.map((note) => note.toJSON());
     });
   }
 
@@ -102,7 +106,7 @@ class NotesHandler extends BaseHandler {
   private async find(event: IpcMainEvent, id: string) {
     return this.handleRequest(event, async () => {
       const note = await Note.findByPk(id);
-      return note.toJSON();
+      return note ? note.toJSON() : null;
     });
   }
 
@@ -136,7 +140,9 @@ class NotesHandler extends BaseHandler {
         throw new Error("Note not found");
       }
 
-      note.destroy();
+      await note.destroy();
+
+      return note.toJSON();
     });
   }
 
@@ -163,12 +169,14 @@ class NotesHandler extends BaseHandler {
           throw new Error("Invalid target");
       }
 
-      return Note.create({
+      const note = await Note.create({
         targetId,
         targetType,
         content,
         parameters,
       });
+
+      return note.toJSON();
     });
   }
 

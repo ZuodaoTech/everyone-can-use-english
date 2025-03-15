@@ -12,6 +12,7 @@ class ConversationsHandler extends BaseHandler {
     create: this.create.bind(this),
     update: this.update.bind(this),
     destroy: this.destroy.bind(this),
+    migrate: this.migrate.bind(this),
   };
 
   private async findAll(
@@ -19,7 +20,7 @@ class ConversationsHandler extends BaseHandler {
     options: FindOptions<Attributes<Conversation>>
   ) {
     return this.handleRequest(_event, async () => {
-      return Conversation.findAll({
+      const conversations = await Conversation.findAll({
         include: {
           association: "messages",
           model: Message,
@@ -31,6 +32,8 @@ class ConversationsHandler extends BaseHandler {
         order: [["createdAt", "DESC"]],
         ...options,
       });
+
+      return conversations.map((conversation) => conversation.toJSON());
     });
   }
 
@@ -39,11 +42,13 @@ class ConversationsHandler extends BaseHandler {
     where: WhereOptions<Attributes<Conversation>>
   ) {
     return this.handleRequest(_event, async () => {
-      return Conversation.findOne({
+      const conversation = await Conversation.findOne({
         where: {
           ...where,
         },
       });
+
+      return conversation ? conversation.toJSON() : null;
     });
   }
 
@@ -51,11 +56,13 @@ class ConversationsHandler extends BaseHandler {
     const { name, engine, configuration } = params;
 
     return this.handleRequest(_event, async () => {
-      return Conversation.create({
+      const conversation = await Conversation.create({
         name,
         engine,
         configuration,
       });
+
+      return conversation.toJSON();
     });
   }
 
@@ -73,7 +80,9 @@ class ConversationsHandler extends BaseHandler {
       if (!conversation) {
         throw new Error(t("models.conversation.notFound"));
       }
-      conversation.update({ name, configuration });
+      await conversation.update({ name, configuration });
+
+      return conversation.toJSON();
     });
   }
 
@@ -86,6 +95,8 @@ class ConversationsHandler extends BaseHandler {
         throw new Error(t("models.conversation.notFound"));
       }
       await conversation.destroy();
+
+      return true;
     });
   }
 

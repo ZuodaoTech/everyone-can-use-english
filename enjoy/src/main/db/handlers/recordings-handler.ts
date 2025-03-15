@@ -48,18 +48,13 @@ class RecordingsHandler extends BaseHandler {
     options: FindOptions<Attributes<Recording>>
   ) {
     return this.handleRequest(event, async () => {
-      return Recording.scope("withoutDeleted")
-        .findAll({
-          include: PronunciationAssessment,
-          order: [["createdAt", "DESC"]],
-          ...options,
-        })
-        .then((recordings) => {
-          if (!recordings) {
-            return [];
-          }
-          return recordings.map((recording) => recording.toJSON());
-        });
+      const recordings = await Recording.scope("withoutDeleted").findAll({
+        include: PronunciationAssessment,
+        order: [["createdAt", "DESC"]],
+        ...options,
+      });
+
+      return recordings.map((recording) => recording.toJSON());
     });
   }
 
@@ -72,14 +67,11 @@ class RecordingsHandler extends BaseHandler {
           ...where,
         },
       });
-      if (!recording) {
-        throw new Error(t("models.recording.notFound"));
-      }
-      if (!recording.isSynced) {
+      if (recording && !recording.isSynced) {
         recording.sync().catch(() => {});
       }
 
-      return recording.toJSON();
+      return recording?.toJSON();
     });
   }
 
@@ -95,7 +87,9 @@ class RecordingsHandler extends BaseHandler {
         throw new Error(t("models.recording.notFound"));
       }
 
-      return await recording.sync();
+      await recording.sync();
+
+      return recording.toJSON();
     });
   }
 
@@ -111,16 +105,7 @@ class RecordingsHandler extends BaseHandler {
         message: t("syncingRecordings", { count: recordings.length }),
       });
 
-      try {
-        await Promise.all(recordings.map((recording) => recording.sync()));
-      } catch (err) {
-        logger.error("failed to sync recordings", err.message);
-
-        event.sender.send("on-notification", {
-          type: "error",
-          message: t("failedToSyncRecordings"),
-        });
-      }
+      await Promise.all(recordings.map((recording) => recording.sync()));
     });
   }
 
@@ -168,6 +153,8 @@ class RecordingsHandler extends BaseHandler {
       }
 
       await recording.softDelete();
+
+      return recording.toJSON();
     });
   }
 
@@ -210,7 +197,9 @@ class RecordingsHandler extends BaseHandler {
         throw new Error(t("models.recording.notFound"));
       }
 
-      return await recording.upload();
+      await recording.upload();
+
+      return recording.toJSON();
     });
   }
 
@@ -227,7 +216,7 @@ class RecordingsHandler extends BaseHandler {
         };
       }
 
-      return Recording.findOne({
+      const stats = await Recording.findOne({
         attributes: [
           [Sequelize.fn("count", Sequelize.col("id")), "count"],
           [
@@ -236,12 +225,9 @@ class RecordingsHandler extends BaseHandler {
           ],
         ],
         where,
-      }).then((stats: any) => {
-        if (!stats) {
-          return [];
-        }
-        return stats.toJSON();
       });
+
+      return stats ? stats.toJSON() : null;
     });
   }
 
@@ -252,7 +238,7 @@ class RecordingsHandler extends BaseHandler {
     return this.handleRequest(event, async () => {
       const { from, to } = options;
 
-      return Recording.findAll({
+      const recordings = await Recording.findAll({
         attributes: [
           [Sequelize.fn("DATE", Sequelize.col("created_at")), "date"],
           [Sequelize.fn("count", Sequelize.col("id")), "count"],
@@ -264,12 +250,9 @@ class RecordingsHandler extends BaseHandler {
             [Op.between]: [from, to],
           },
         },
-      }).then((recordings) => {
-        if (!recordings) {
-          return [];
-        }
-        return recordings.map((recording) => recording.toJSON());
       });
+
+      return recordings.map((recording) => recording.toJSON());
     });
   }
 
@@ -284,7 +267,7 @@ class RecordingsHandler extends BaseHandler {
         to = dayjs().format(),
       } = options;
 
-      return Recording.findAll({
+      const recordings = await Recording.findAll({
         include: [
           {
             model: Audio,
@@ -315,12 +298,9 @@ class RecordingsHandler extends BaseHandler {
             [Op.between]: [from, to],
           },
         },
-      }).then((recordings) => {
-        if (!recordings) {
-          return [];
-        }
-        return recordings.map((recording) => recording.toJSON());
       });
+
+      return recordings.map((recording) => recording.toJSON());
     });
   }
 
@@ -330,7 +310,7 @@ class RecordingsHandler extends BaseHandler {
     targetType: string
   ) {
     return this.handleRequest(event, async () => {
-      return Recording.findAll({
+      const recordings = await Recording.findAll({
         where: {
           targetId,
           targetType,
@@ -356,12 +336,9 @@ class RecordingsHandler extends BaseHandler {
         ],
         group: ["referenceId"],
         order: [["referenceId", "ASC"]],
-      }).then((stats) => {
-        if (!stats) {
-          return [];
-        }
-        return stats.map((stat) => stat.toJSON());
       });
+
+      return recordings.map((recording) => recording.toJSON());
     });
   }
 
