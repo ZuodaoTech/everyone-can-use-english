@@ -1,14 +1,21 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { ChatMessage, Recording } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
-import log from "@/main/services/logger";
 import { enjoyUrlToPath } from "@/main/utils";
 import fs from "fs-extra";
 import { ChatMessageStateEnum } from "@/renderer/types/enums";
+import { BaseHandler } from "./base-handler";
 
-const logger = log.scope("db/handlers/chats-handler");
+class ChatMessagesHandler extends BaseHandler {
+  protected prefix = "chat-messages";
+  protected handlers = {
+    "find-all": this.findAll.bind(this),
+    "find-one": this.findOne.bind(this),
+    create: this.create.bind(this),
+    update: this.update.bind(this),
+    destroy: this.destroy.bind(this),
+  };
 
-class ChatMessagesHandler {
   private async findAll(
     _event: IpcMainEvent,
     options: FindOptions<Attributes<ChatMessage>> & { query?: string }
@@ -80,7 +87,7 @@ class ChatMessagesHandler {
       return (await message.reload()).toJSON();
     } catch (error) {
       await transaction.rollback();
-      logger.error(error);
+      this.logger.error(error);
       throw error;
     }
   }
@@ -139,7 +146,7 @@ class ChatMessagesHandler {
       return (await message.reload()).toJSON();
     } catch (error) {
       await transaction.rollback();
-      logger.error(error);
+      this.logger.error(error);
       throw error;
     }
   }
@@ -151,22 +158,6 @@ class ChatMessagesHandler {
     await message.destroy();
 
     return message.toJSON();
-  }
-
-  register() {
-    ipcMain.handle("chat-messages-find-all", this.findAll);
-    ipcMain.handle("chat-messages-find-one", this.findOne);
-    ipcMain.handle("chat-messages-create", this.create);
-    ipcMain.handle("chat-messages-update", this.update);
-    ipcMain.handle("chat-messages-destroy", this.destroy);
-  }
-
-  unregister() {
-    ipcMain.removeHandler("chat-messages-find-all");
-    ipcMain.removeHandler("chat-messages-find-one");
-    ipcMain.removeHandler("chat-messages-create");
-    ipcMain.removeHandler("chat-messages-update");
-    ipcMain.removeHandler("chat-messages-destroy");
   }
 }
 

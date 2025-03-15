@@ -1,114 +1,118 @@
-import { ipcMain, IpcMainEvent } from "electron";
+import { IpcMainEvent } from "electron";
 import { PronunciationAssessment, Recording } from "@main/db/models";
 import { Attributes, FindOptions, WhereOptions } from "sequelize";
+import { BaseHandler, HandlerMethod } from "./base-handler";
 
-class PronunciationAssessmentsHandler {
+class PronunciationAssessmentsHandler extends BaseHandler {
+  protected prefix = "pronunciation-assessments";
+  protected handlers: Record<string, HandlerMethod> = {
+    "find-all": this.findAll.bind(this),
+    "find-one": this.findOne.bind(this),
+    create: this.create.bind(this),
+    update: this.update.bind(this),
+    destroy: this.destroy.bind(this),
+  };
+
   private async findAll(
-    _event: IpcMainEvent,
+    event: IpcMainEvent,
     options: FindOptions<Attributes<PronunciationAssessment>>
   ) {
-    const assessments = await PronunciationAssessment.findAll({
-      include: [
-        {
-          association: "recording",
-          model: Recording,
-          required: false,
-        },
-      ],
-      order: [["createdAt", "DESC"]],
-      ...options,
-    });
+    return this.handleRequest(event, async () => {
+      const assessments = await PronunciationAssessment.findAll({
+        include: [
+          {
+            association: "recording",
+            model: Recording,
+            required: false,
+          },
+        ],
+        order: [["createdAt", "DESC"]],
+        ...options,
+      });
 
-    if (!assessments) {
-      return [];
-    }
-    return assessments.map((assessment) => assessment.toJSON());
+      if (!assessments) {
+        return [];
+      }
+      return assessments.map((assessment) => assessment.toJSON());
+    });
   }
 
   private async findOne(
-    _event: IpcMainEvent,
+    event: IpcMainEvent,
     where: WhereOptions<PronunciationAssessment>
   ) {
-    const assessment = await PronunciationAssessment.findOne({
-      where: {
-        ...where,
-      },
-      include: [
-        {
-          association: "recording",
-          model: Recording,
-          required: false,
+    return this.handleRequest(event, async () => {
+      const assessment = await PronunciationAssessment.findOne({
+        where: {
+          ...where,
         },
-      ],
-    });
+        include: [
+          {
+            association: "recording",
+            model: Recording,
+            required: false,
+          },
+        ],
+      });
 
-    return assessment.toJSON();
+      return assessment.toJSON();
+    });
   }
 
   private async create(
-    _event: IpcMainEvent,
+    event: IpcMainEvent,
     data: Partial<Attributes<PronunciationAssessment>>
   ) {
-    const { targetId, targetType } = data;
-    const existed = await PronunciationAssessment.findOne({
-      where: {
-        targetId,
-        targetType,
-      },
+    return this.handleRequest(event, async () => {
+      const { targetId, targetType } = data;
+      const existed = await PronunciationAssessment.findOne({
+        where: {
+          targetId,
+          targetType,
+        },
+      });
+
+      if (existed) {
+        return existed.toJSON();
+      }
+
+      const assessment = await PronunciationAssessment.create(data);
+      return assessment.toJSON();
     });
-
-    if (existed) {
-      return existed.toJSON();
-    }
-
-    const assessment = await PronunciationAssessment.create(data);
-    return assessment.toJSON();
   }
 
   private async update(
-    _event: IpcMainEvent,
+    event: IpcMainEvent,
     id: string,
     data: Attributes<PronunciationAssessment>
   ) {
-    const assessment = await PronunciationAssessment.findOne({
-      where: { id: id },
+    return this.handleRequest(event, async () => {
+      const assessment = await PronunciationAssessment.findOne({
+        where: { id: id },
+      });
+
+      if (!assessment) {
+        throw new Error("Assessment not found");
+      }
+
+      await assessment.update(data);
     });
-
-    if (!assessment) {
-      throw new Error("Assessment not found");
-    }
-
-    await assessment.update(data);
   }
 
-  private async destroy(_event: IpcMainEvent, id: string) {
-    const assessment = await PronunciationAssessment.findOne({
-      where: {
-        id,
-      },
+  private async destroy(event: IpcMainEvent, id: string) {
+    return this.handleRequest(event, async () => {
+      const assessment = await PronunciationAssessment.findOne({
+        where: {
+          id,
+        },
+      });
+
+      if (!assessment) {
+        throw new Error("Assessment not found");
+      }
+
+      await assessment.destroy();
     });
-
-    if (!assessment) {
-      throw new Error("Assessment not found");
-    }
-
-    await assessment.destroy();
-  }
-
-  register() {
-    ipcMain.handle("pronunciation-assessments-find-all", this.findAll);
-    ipcMain.handle("pronunciation-assessments-find-one", this.findOne);
-    ipcMain.handle("pronunciation-assessments-create", this.create);
-    ipcMain.handle("pronunciation-assessments-update", this.update);
-    ipcMain.handle("pronunciation-assessments-destroy", this.destroy);
-  }
-
-  unregister() {
-    ipcMain.removeHandler("pronunciation-assessments-find-all");
-    ipcMain.removeHandler("pronunciation-assessments-find-one");
-    ipcMain.removeHandler("pronunciation-assessments-create");
-    ipcMain.removeHandler("pronunciation-assessments-update");
-    ipcMain.removeHandler("pronunciation-assessments-destroy");
   }
 }
 

@@ -1,31 +1,42 @@
-import { ipcMain, IpcMainEvent } from "electron";
+import { IpcMainEvent } from "electron";
 import { Chat, ChatAgent, ChatMember } from "@main/db/models";
 import { FindOptions, Attributes } from "sequelize";
-import log from "@/main/services/logger";
 import { t } from "i18next";
+import { BaseHandler } from "./base-handler";
 
-const logger = log.scope("db/handlers/chat-members-handler");
+class ChatMembersHandler extends BaseHandler {
+  protected prefix = "chat-members";
+  protected handlers = {
+    "find-all": this.findAll.bind(this),
+    "find-one": this.findOne.bind(this),
+    create: this.create.bind(this),
+    update: this.update.bind(this),
+    destroy: this.destroy.bind(this),
+  };
 
-class ChatMembersHandler {
   private async findAll(
-    _event: IpcMainEvent,
+    event: IpcMainEvent,
     options: FindOptions<Attributes<ChatMember>>
   ) {
-    const chatMembers = await ChatMember.findAll({
-      ...options,
-    });
+    return this.handleRequest(event, async () => {
+      const chatMembers = await ChatMember.findAll({
+        ...options,
+      });
 
-    return chatMembers.map((member) => member.toJSON());
+      return chatMembers.map((member) => member.toJSON());
+    });
   }
 
   private async findOne(
-    _event: IpcMainEvent,
+    event: IpcMainEvent,
     options: FindOptions<Attributes<ChatMember>>
   ) {
-    const chatMember = await ChatMember.findOne({
-      ...options,
+    return this.handleRequest(event, async () => {
+      const chatMember = await ChatMember.findOne({
+        ...options,
+      });
+      return chatMember?.toJSON();
     });
-    return chatMember?.toJSON();
   }
 
   private async create(_event: IpcMainEvent, member: ChatMemberDtoType) {
@@ -89,22 +100,6 @@ class ChatMembersHandler {
 
     await chatMember.destroy();
     return chatMember.toJSON();
-  }
-
-  register() {
-    ipcMain.handle("chat-members-find-all", this.findAll);
-    ipcMain.handle("chat-members-find-one", this.findOne);
-    ipcMain.handle("chat-members-create", this.create);
-    ipcMain.handle("chat-members-update", this.update);
-    ipcMain.handle("chat-members-destroy", this.destroy);
-  }
-
-  unregister() {
-    ipcMain.removeHandler("chat-members-find-all");
-    ipcMain.removeHandler("chat-members-find-one");
-    ipcMain.removeHandler("chat-members-create");
-    ipcMain.removeHandler("chat-members-update");
-    ipcMain.removeHandler("chat-members-destroy");
   }
 }
 

@@ -302,7 +302,7 @@ export class Recording extends Model<Recording> {
   static async createFromBlob(
     blob: {
       type: string;
-      arrayBuffer: ArrayBuffer;
+      arrayBuffer: Buffer<ArrayBufferLike>;
     },
     params: Partial<Attributes<Recording>>,
     transaction?: Transaction

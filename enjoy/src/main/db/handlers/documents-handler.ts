@@ -1,13 +1,22 @@
 import { ipcMain, IpcMainEvent } from "electron";
 import { Document } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
-import downloader from "@/main/services/downloader";
-import log from "@/main/services/logger";
+import downloader from "@main/services/downloader";
 import { t } from "i18next";
+import { BaseHandler } from "./base-handler";
 
-const logger = log.scope("db/handlers/documents-handler");
+class DocumentsHandler extends BaseHandler {
+  protected prefix = "documents";
+  protected handlers = {
+    "find-all": this.findAll.bind(this),
+    "find-one": this.findOne.bind(this),
+    create: this.create.bind(this),
+    update: this.update.bind(this),
+    destroy: this.destroy.bind(this),
+    upload: this.upload.bind(this),
+    "clean-up": this.cleanUp.bind(this),
+  };
 
-class DocumentsHandler {
   private async findAll(
     _event: IpcMainEvent,
     options: FindOptions<Attributes<Document>> & { query?: string }
@@ -80,7 +89,7 @@ class DocumentsHandler {
 
       return document.toJSON();
     } catch (err) {
-      logger.error(err.message);
+      this.logger.error(err.message);
       throw err;
     }
   }
@@ -132,26 +141,6 @@ class DocumentsHandler {
         document.destroy();
       }
     }
-  }
-
-  register() {
-    ipcMain.handle("documents-find-all", this.findAll);
-    ipcMain.handle("documents-find-one", this.findOne);
-    ipcMain.handle("documents-create", this.create);
-    ipcMain.handle("documents-update", this.update);
-    ipcMain.handle("documents-destroy", this.destroy);
-    ipcMain.handle("documents-upload", this.upload);
-    ipcMain.handle("documents-clean-up", this.cleanUp);
-  }
-
-  unregister() {
-    ipcMain.removeHandler("documents-find-all");
-    ipcMain.removeHandler("documents-find-one");
-    ipcMain.removeHandler("documents-create");
-    ipcMain.removeHandler("documents-update");
-    ipcMain.removeHandler("documents-destroy");
-    ipcMain.removeHandler("documents-upload");
-    ipcMain.removeHandler("documents-clean-up");
   }
 }
 

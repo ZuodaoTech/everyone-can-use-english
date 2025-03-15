@@ -46,6 +46,7 @@ import { i18n } from "@/main/services/i18n";
 import { UserSettingKeyEnum } from "@/renderer/types/enums";
 import log from "@/main/services/logger";
 import fs from "fs-extra";
+import { BaseHandler } from "./handlers/base-handler";
 
 const __dirname = import.meta.dirname;
 const logger = log.scope("DB");
@@ -60,7 +61,7 @@ const db = {
   restore: async (backupFilePath: string) => {},
 };
 
-const handlers = [
+const handlers: BaseHandler[] = [
   audiosHandler,
   cacheObjectsHandler,
   chatAgentsHandler,
@@ -216,7 +217,7 @@ db.connect = async () => {
     i18n(language);
 
     // register handlers
-    logger.info(`Registering handlers`);
+    logger.info(`Registering ${handlers.length} handlers`);
     for (const handler of handlers) {
       handler.register();
     }
@@ -233,6 +234,7 @@ db.connect = async () => {
 
 db.disconnect = async () => {
   // unregister handlers
+  logger.info("Unregistering handlers");
   for (const handler of handlers) {
     handler.unregister();
   }

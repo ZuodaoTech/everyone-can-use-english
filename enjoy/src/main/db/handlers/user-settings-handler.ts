@@ -1,42 +1,45 @@
-import { ipcMain, IpcMainEvent } from "electron";
+import { IpcMainEvent } from "electron";
 import { UserSetting } from "@main/db/models";
 import db from "@main/db";
 import { UserSettingKeyEnum } from "@/renderer/types/enums";
+import { BaseHandler, HandlerMethod } from "./base-handler";
 
-class UserSettingsHandler {
-  private async get(_event: IpcMainEvent, key: UserSettingKeyEnum) {
-    return await UserSetting.get(key);
+class UserSettingsHandler extends BaseHandler {
+  protected prefix = "user-settings";
+  protected handlers: Record<string, HandlerMethod> = {
+    get: this.get.bind(this),
+    set: this.set.bind(this),
+    delete: this.delete.bind(this),
+    clear: this.clear.bind(this),
+  };
+
+  private async get(event: IpcMainEvent, key: UserSettingKeyEnum) {
+    return this.handleRequest(event, async () => {
+      return await UserSetting.get(key);
+    });
   }
 
   private async set(
-    _event: IpcMainEvent,
+    event: IpcMainEvent,
     key: UserSettingKeyEnum,
     value: string | object
   ) {
-    await UserSetting.set(key, value);
+    return this.handleRequest(event, async () => {
+      await UserSetting.set(key, value);
+    });
   }
 
-  private async delete(_event: IpcMainEvent, key: UserSettingKeyEnum) {
-    await UserSetting.destroy({ where: { key } });
+  private async delete(event: IpcMainEvent, key: UserSettingKeyEnum) {
+    return this.handleRequest(event, async () => {
+      await UserSetting.destroy({ where: { key } });
+    });
   }
 
-  private async clear(_event: IpcMainEvent) {
-    await UserSetting.destroy({ where: {} });
-    db.connection.query("VACUUM");
-  }
-
-  register() {
-    ipcMain.handle("user-settings-get", this.get);
-    ipcMain.handle("user-settings-set", this.set);
-    ipcMain.handle("user-settings-delete", this.delete);
-    ipcMain.handle("user-settings-clear", this.clear);
-  }
-
-  unregister() {
-    ipcMain.removeHandler("user-settings-get");
-    ipcMain.removeHandler("user-settings-set");
-    ipcMain.removeHandler("user-settings-delete");
-    ipcMain.removeHandler("user-settings-clear");
+  private async clear(event: IpcMainEvent) {
+    return this.handleRequest(event, async () => {
+      await UserSetting.destroy({ where: {} });
+      db.connection.query("VACUUM");
+    });
   }
 }
 

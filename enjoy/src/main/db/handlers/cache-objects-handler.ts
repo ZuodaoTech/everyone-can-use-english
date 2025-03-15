@@ -3,9 +3,19 @@ import { CacheObject } from "@main/db/models";
 import fs from "fs-extra";
 import path from "path";
 import db from "@main/db";
-import settings from "@/main/services/settings";
+import settings from "@main/services/settings";
+import { BaseHandler } from "./base-handler";
 
-class CacheObjectsHandler {
+class CacheObjectsHandler extends BaseHandler {
+  protected prefix = "cache-objects";
+  protected handlers = {
+    get: this.get.bind(this),
+    set: this.set.bind(this),
+    delete: this.delete.bind(this),
+    clear: this.clear.bind(this),
+    "write-file": this.writeFile.bind(this),
+  };
+
   private async get(event: IpcMainEvent, key: string) {
     return CacheObject.get(key)
       .then((value) => {
@@ -73,22 +83,6 @@ class CacheObjectsHandler {
     fs.writeFileSync(output, Buffer.from(data));
 
     return `enjoy://library/cache/${filename}`;
-  }
-
-  register() {
-    ipcMain.handle("cache-objects-get", this.get);
-    ipcMain.handle("cache-objects-set", this.set);
-    ipcMain.handle("cache-objects-delete", this.delete);
-    ipcMain.handle("cache-objects-clear", this.clear);
-    ipcMain.handle("cache-objects-write-file", this.writeFile);
-  }
-
-  unregister() {
-    ipcMain.removeHandler("cache-objects-get");
-    ipcMain.removeHandler("cache-objects-set");
-    ipcMain.removeHandler("cache-objects-delete");
-    ipcMain.removeHandler("cache-objects-clear");
-    ipcMain.removeHandler("cache-objects-write-file");
   }
 }
 

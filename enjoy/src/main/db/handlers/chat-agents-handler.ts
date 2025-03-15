@@ -1,12 +1,19 @@
-import { ipcMain, IpcMainEvent } from "electron";
+import { IpcMainEvent } from "electron";
 import { Chat, ChatAgent, ChatMember } from "@main/db/models";
 import { FindOptions, Attributes, Op } from "sequelize";
-import log from "@/main/services/logger";
 import { t } from "i18next";
+import { BaseHandler } from "./base-handler";
 
-const logger = log.scope("db/handlers/chat-agents-handler");
+class ChatAgentsHandler extends BaseHandler {
+  protected prefix = "chat-agents";
+  protected handlers = {
+    "find-all": this.findAll.bind(this),
+    "find-one": this.findOne.bind(this),
+    create: this.create.bind(this),
+    update: this.update.bind(this),
+    destroy: this.destroy.bind(this),
+  };
 
-class ChatAgentsHandler {
   private async findAll(
     _event: IpcMainEvent,
     options: FindOptions<Attributes<ChatAgent>> & { query?: string }
@@ -101,22 +108,6 @@ class ChatAgentsHandler {
       await transaction.rollback();
       throw error;
     }
-  }
-
-  register() {
-    ipcMain.handle("chat-agents-find-all", this.findAll);
-    ipcMain.handle("chat-agents-find-one", this.findOne);
-    ipcMain.handle("chat-agents-create", this.create);
-    ipcMain.handle("chat-agents-update", this.update);
-    ipcMain.handle("chat-agents-destroy", this.destroy);
-  }
-
-  unregister() {
-    ipcMain.removeHandler("chat-agents-find-all");
-    ipcMain.removeHandler("chat-agents-find-one");
-    ipcMain.removeHandler("chat-agents-create");
-    ipcMain.removeHandler("chat-agents-update");
-    ipcMain.removeHandler("chat-agents-destroy");
   }
 }
 
