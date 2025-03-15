@@ -11,7 +11,7 @@ import {
   DbProviderContext,
 } from "@renderer/context";
 import isEmpty from "lodash/isEmpty";
-import { UserSettingKeyEnum } from "@renderer/types/enums";
+import { UserSettingKeyEnum } from "@/shared/types/enums";
 
 function isShortcutValid(shortcut: string) {
   const modifiers = ["ctrl", "alt", "shift", "meta"];

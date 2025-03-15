@@ -34,7 +34,7 @@ import {
   CopilotProviderContext,
 } from "@renderer/context";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
-import { ChatTypeEnum } from "@renderer/types/enums";
+import { ChatTypeEnum } from "@/shared/types/enums";
 
 export const CopilotHeader = () => {
   const [displayChatForm, setDisplayChatForm] = useState(false);

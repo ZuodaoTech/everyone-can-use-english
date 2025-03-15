@@ -4,6 +4,7 @@ import fs from "fs";
 import mainWin from "@/main/ipc/window";
 import log from "@/main/services/logger";
 import settings from "@/main/services/settings";
+import { config } from "@main/config";
 
 const logger = log.scope("downloader");
 class Downloader {
@@ -25,7 +26,7 @@ class Downloader {
     return new Promise((resolve, _reject) => {
       webContents.downloadURL(url);
 
-      const cachePath = settings.cachePath();
+      const cachePath = config.cachePath();
       webContents.session.on("will-download", (_event, item, _webContents) => {
         if (savePath) {
           try {

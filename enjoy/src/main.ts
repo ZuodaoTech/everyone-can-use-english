@@ -1,7 +1,6 @@
 import { app, BrowserWindow, protocol, net } from "electron";
 import path from "path";
 import fs from "fs-extra";
-import settings from "@/main/services/settings";
 import log from "@/main/services/logger";
 import mainWindow from "@/main/ipc/window";
 import ElectronSquirrelStartup from "electron-squirrel-startup";
@@ -9,13 +8,15 @@ import contextMenu from "electron-context-menu";
 import Bugsnag from "@bugsnag/electron";
 import { t } from "i18next";
 import { Client } from "./shared/api";
+import { config } from "@main/config";
+import db from "@main/db";
 
 const logger = log.scope("main");
 
 const initBugsnag = async () => {
   if (!app.isPackaged) return;
   const webApi = new Client({
-    baseUrl: settings.apiUrl(),
+    baseUrl: config.apiUrl(),
     logger,
   });
   try {
@@ -108,6 +109,9 @@ protocol.registerSchemesAsPrivileged([
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", async () => {
+  // Register config IPC handlers
+  config.registerIpcHandlers();
+
   if (!app.isPackaged) {
     import("electron-devtools-installer")
       .then((mymodule: any) => {
@@ -121,6 +125,7 @@ app.on("ready", async () => {
       .catch((err) => console.log("An error occurred: ", err));
   }
 
+  // Register protocol handler
   protocol.handle("enjoy", (request) => {
     let url = request.url.replace("enjoy://", "");
     if (
@@ -129,15 +134,22 @@ app.on("ready", async () => {
       )
     ) {
       url = url.replace("library/", "");
-      url = path.join(settings.userDataPath(), url);
+      url = path.join(config.userDataPath(), url);
     } else if (url.startsWith("library")) {
       url = url.replace("library/", "");
-      url = path.join(settings.libraryPath(), url);
+      url = path.join(config.libraryPath(), url);
     }
 
     return net.fetch(`file:///${url}`);
   });
 
+  // Initialize database
+  await db.connect();
+
+  // Initialize config with user settings from database
+  await config.initialize();
+
+  // Initialize main window
   mainWindow.init();
 });
 
@@ -159,6 +171,6 @@ app.on("activate", () => {
 // Clean up cache folder before quit
 app.on("before-quit", () => {
   try {
-    fs.emptyDirSync(settings.cachePath());
+    fs.emptyDirSync(config.cachePath());
   } catch (err) {}
 });

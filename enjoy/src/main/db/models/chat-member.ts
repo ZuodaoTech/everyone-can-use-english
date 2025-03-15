@@ -18,7 +18,7 @@ import mainWindow from "@/main/ipc/window";
 import {
   ChatMessageCategoryEnum,
   ChatMessageRoleEnum,
-} from "@/renderer/types/enums";
+} from "@/shared/types/enums";
 
 const logger = log.scope("db/models/chat-member");
 @Table({

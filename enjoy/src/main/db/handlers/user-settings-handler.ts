@@ -1,7 +1,7 @@
 import { IpcMainEvent } from "electron";
 import { UserSetting } from "@main/db/models";
 import db from "@main/db";
-import { UserSettingKeyEnum } from "@/renderer/types/enums";
+import { UserSettingKeyEnum } from "@/shared/types/enums";
 import { BaseHandler, HandlerMethod } from "./base-handler";
 
 class UserSettingsHandler extends BaseHandler {

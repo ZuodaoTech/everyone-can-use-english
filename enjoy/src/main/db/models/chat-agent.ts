@@ -19,7 +19,7 @@ import {
   ChatAgentTypeEnum,
   ChatMessageRoleEnum,
   UserSettingKeyEnum,
-} from "@/renderer/types/enums";
+} from "@/shared/types/enums";
 import { DEFAULT_GPT_CONFIG } from "@/shared/constants";
 
 const logger = log.scope("db/models/chat-agent");

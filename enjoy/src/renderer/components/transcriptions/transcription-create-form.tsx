@@ -34,7 +34,7 @@ import { LANGUAGES } from "@shared/constants";
 import { ChevronDownIcon, ChevronUpIcon, LoaderIcon } from "lucide-react";
 import { parseText } from "media-captions";
 import { milisecondsToTimestamp } from "@shared/utils";
-import { SttEngineOptionEnum } from "@renderer/types/enums";
+import { SttEngineOptionEnum } from "@/shared/types/enums";
 
 const transcriptionSchema = z.object({
   language: z.string(),

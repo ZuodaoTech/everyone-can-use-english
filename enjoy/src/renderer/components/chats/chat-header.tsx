@@ -21,7 +21,7 @@ import { useContext, useState } from "react";
 import { ChatSettings } from "@renderer/components";
 import { t } from "i18next";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
-import { ChatTypeEnum } from "@renderer/types/enums";
+import { ChatTypeEnum } from "@/shared/types/enums";
 import { ChatSessionProviderContext } from "@renderer/context";
 
 export const ChatHeader = (props: {

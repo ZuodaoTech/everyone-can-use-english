@@ -20,7 +20,7 @@ import { toast } from "@renderer/components/ui";
 import { Tooltip } from "react-tooltip";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import { t } from "i18next";
-import { SttEngineOptionEnum } from "@renderer/types/enums";
+import { SttEngineOptionEnum } from "@/shared/types/enums";
 import { useNavigate } from "react-router-dom";
 
 const ONE_MINUTE = 60;

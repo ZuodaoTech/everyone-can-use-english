@@ -1,7 +1,7 @@
 import {
   ChatMessageCategoryEnum,
   ChatMessageRoleEnum,
-} from "@renderer/types/enums";
+} from "@/shared/types/enums";
 import { ChatAgentMessage, ChatUserMessage } from "@renderer/components";
 import { t } from "i18next";
 

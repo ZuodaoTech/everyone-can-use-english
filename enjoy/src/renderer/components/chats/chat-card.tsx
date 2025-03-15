@@ -9,7 +9,7 @@ import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { EllipsisIcon, SpeechIcon, UsersRoundIcon } from "lucide-react";
 import { t } from "i18next";
 import dayjs from "@renderer/lib/dayjs";
-import { ChatTypeEnum } from "@renderer/types/enums";
+import { ChatTypeEnum } from "@/shared/types/enums";
 
 export const ChatCard = (props: {
   chat: ChatType;

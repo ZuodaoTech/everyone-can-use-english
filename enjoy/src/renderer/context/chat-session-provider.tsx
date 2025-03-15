@@ -29,7 +29,7 @@ import { Tooltip } from "react-tooltip";
 import {
   ChatMessageRoleEnum,
   ChatMessageStateEnum,
-} from "@renderer/types/enums";
+} from "@/shared/types/enums";
 
 type ChatSessionProviderState = {
   chat: ChatType;

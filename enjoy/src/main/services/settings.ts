@@ -3,11 +3,11 @@ import {
   LIBRARY_PATH_SUFFIX,
   DATABASE_NAME,
   WEB_API_URL,
-} from "@/shared/constants";
+} from "@shared/constants";
 import { ipcMain, app } from "electron";
 import path from "path";
 import fs from "fs-extra";
-import { AppSettingsKeyEnum } from "@/renderer/types/enums";
+import { AppSettingsKeyEnum } from "@/shared/types/enums";
 
 if (process.env.SETTINGS_PATH) {
   settings.configure({

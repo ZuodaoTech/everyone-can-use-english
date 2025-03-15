@@ -20,7 +20,7 @@ import { CopilotChatAgents, CopilotChats } from "@renderer/components";
 import {
   ChatMessageRoleEnum,
   ChatMessageStateEnum,
-} from "@renderer/types/enums";
+} from "@/shared/types/enums";
 
 export const CopilotForwarder = (props: {
   prompt: string;

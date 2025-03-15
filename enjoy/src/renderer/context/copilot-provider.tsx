@@ -7,7 +7,7 @@ import {
 import { t } from "i18next";
 import { DEFAULT_GPT_CONFIG } from "@shared/constants";
 import { useHotkeys } from "react-hotkeys-hook";
-import { ChatAgentTypeEnum } from "@renderer/types/enums";
+import { ChatAgentTypeEnum } from "@/shared/types/enums";
 
 type CopilotProviderState = {
   active: boolean;

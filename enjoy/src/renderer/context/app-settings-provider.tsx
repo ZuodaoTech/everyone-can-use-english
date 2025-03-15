@@ -5,7 +5,7 @@ import i18n from "@renderer/i18n";
 import ahoy from "ahoy.js";
 import { type Consumer, createConsumer } from "@rails/actioncable";
 import { DbProviderContext } from "@renderer/context";
-import { UserSettingKeyEnum } from "@renderer/types/enums";
+import { UserSettingKeyEnum } from "@/shared/types/enums";
 import {
   AlertDialog,
   AlertDialogContent,

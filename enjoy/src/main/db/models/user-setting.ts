@@ -10,10 +10,7 @@ import {
 import log from "@/main/services/logger";
 import settings from "@/main/services/settings";
 import * as i18n from "i18next";
-import {
-  SttEngineOptionEnum,
-  UserSettingKeyEnum,
-} from "@/renderer/types/enums";
+import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/shared/types/enums";
 
 const logger = log.scope("db/userSetting");
 

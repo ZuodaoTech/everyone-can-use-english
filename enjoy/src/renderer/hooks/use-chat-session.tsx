@@ -26,7 +26,7 @@ import {
   ChatMessageRoleEnum,
   ChatMessageStateEnum,
   ChatTypeEnum,
-} from "@renderer/types/enums";
+} from "@/shared/types/enums";
 
 export const useChatSession = (chatId: string) => {
   const { EnjoyApp, user, apiUrl, learningLanguage } = useContext(

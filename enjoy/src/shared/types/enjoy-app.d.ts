@@ -170,6 +170,19 @@ type EnjoyAppType = {
     get: (key: UserSettingKeyEnum) => Promise<any>;
     set: (key: UserSettingKeyEnum, value: any) => Promise<void>;
   };
+  config: {
+    getLibrary: () => Promise<string>;
+    setLibrary: (library: string) => Promise<void>;
+    getUser: () => Promise<UserType>;
+    setUser: (user: UserType) => Promise<void>;
+    getUserDataPath: () => Promise<string>;
+    getApiUrl: () => Promise<string>;
+    setApiUrl: (url: string) => Promise<void>;
+    getSessions: () => Promise<{ id: number; name: string }[]>;
+    getUserSetting: (key: string) => Promise<any>;
+    setUserSetting: (key: string, value: any) => Promise<void>;
+    get: () => Promise<Config>;
+  };
   fs: {
     ensureDir: (path: string) => Promise<boolean>;
   };

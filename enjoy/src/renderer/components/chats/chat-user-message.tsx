@@ -45,7 +45,7 @@ import { useCopyToClipboard } from "@uidotdev/usehooks";
 import {
   ChatMessageRoleEnum,
   ChatMessageStateEnum,
-} from "@renderer/types/enums";
+} from "@/shared/types/enums";
 
 export const ChatUserMessage = (props: {
   chatMessage: ChatMessageType;

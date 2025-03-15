@@ -41,7 +41,7 @@ import {
   ChatMessageRoleEnum,
   ChatTypeEnum,
   SttEngineOptionEnum,
-} from "@renderer/types/enums";
+} from "@/shared/types/enums";
 import { ChevronDownIcon, ChevronUpIcon, RefreshCwIcon } from "lucide-react";
 import { useAiCommand } from "@renderer/hooks";
 import { cn } from "@renderer/lib/utils";

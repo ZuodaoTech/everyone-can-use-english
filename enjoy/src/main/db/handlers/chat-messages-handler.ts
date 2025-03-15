@@ -3,8 +3,9 @@ import { ChatMessage, Recording } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
 import { enjoyUrlToPath } from "@/main/utils";
 import fs from "fs-extra";
-import { ChatMessageStateEnum } from "@/renderer/types/enums";
+import { ChatMessageStateEnum } from "@/shared/types/enums";
 import { BaseHandler } from "./base-handler";
+import { withTransaction } from "@main/db/transaction";
 
 class ChatMessagesHandler extends BaseHandler {
   protected prefix = "chat-messages";
@@ -60,15 +61,14 @@ class ChatMessagesHandler extends BaseHandler {
     const { recordingUrl } = data;
     delete data.recordingUrl;
 
-    const transaction = await ChatMessage.sequelize.transaction();
-    try {
-      const message = await ChatMessage.create(data);
+    return withTransaction(async (transaction) => {
+      const message = await ChatMessage.create(data, { transaction });
 
       if (recordingUrl) {
         // create new recording
         const filePath = enjoyUrlToPath(recordingUrl);
         const blob = fs.readFileSync(filePath);
-        const recording = await Recording.createFromBlob(
+        await Recording.createFromBlob(
           {
             type: "audio/wav",
             arrayBuffer: blob,
@@ -79,17 +79,10 @@ class ChatMessagesHandler extends BaseHandler {
           },
           transaction
         );
-        message.recording = recording;
       }
 
-      await transaction.commit();
-
       return (await message.reload()).toJSON();
-    } catch (error) {
-      await transaction.rollback();
-      this.logger.error(error);
-      throw error;
-    }
+    });
   }
 
   private async update(
@@ -107,9 +100,7 @@ class ChatMessagesHandler extends BaseHandler {
     const message = await ChatMessage.findByPk(id);
     if (!message) return;
 
-    const transaction = await ChatMessage.sequelize.transaction();
-
-    try {
+    return withTransaction(async (transaction) => {
       if (recordingUrl) {
         // destroy existing recording
         await message.recording?.destroy({ transaction });
@@ -141,14 +132,8 @@ class ChatMessagesHandler extends BaseHandler {
       // update content
       await message.update({ ...data }, { transaction });
 
-      await transaction.commit();
-
       return (await message.reload()).toJSON();
-    } catch (error) {
-      await transaction.rollback();
-      this.logger.error(error);
-      throw error;
-    }
+    });
   }
 
   private async destroy(_event: IpcMainEvent, id: string) {

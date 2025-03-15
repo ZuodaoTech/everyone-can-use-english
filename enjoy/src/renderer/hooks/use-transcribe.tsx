@@ -15,7 +15,7 @@ import {
   type TimelineEntryType,
 } from "echogarden/dist/utilities/Timeline";
 import { type ParsedCaptionsResult, parseText } from "media-captions";
-import { SttEngineOptionEnum } from "@renderer/types/enums";
+import { SttEngineOptionEnum } from "@/shared/types/enums";
 import { RecognitionResult } from "echogarden/dist/api/API.js";
 import take from "lodash/take";
 import sortedUniqBy from "lodash/sortedUniqBy";

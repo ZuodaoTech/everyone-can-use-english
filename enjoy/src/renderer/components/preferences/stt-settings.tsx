@@ -13,7 +13,7 @@ import {
   AISettingsProviderContext,
 } from "@renderer/context";
 import { useContext, useEffect, useState } from "react";
-import { SttEngineOptionEnum } from "@renderer/types/enums";
+import { SttEngineOptionEnum } from "@/shared/types/enums";
 import { EchogardenSttSettings } from "@renderer/components";
 
 export const SttSettings = () => {

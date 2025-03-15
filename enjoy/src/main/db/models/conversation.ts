@@ -24,10 +24,7 @@ import {
 import mainWindow from "@/main/ipc/window";
 import log from "@/main/services/logger";
 import { t } from "i18next";
-import {
-  SttEngineOptionEnum,
-  UserSettingKeyEnum,
-} from "@/renderer/types/enums";
+import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/shared/types/enums";
 import { DEFAULT_GPT_CONFIG } from "@/shared/constants";
 
 const logger = log.scope("db/models/conversation");

@@ -20,7 +20,7 @@ import {
   TranscriptionCreateForm,
   TranscriptionsList,
 } from "@renderer/components";
-import { SttEngineOptionEnum } from "@renderer/types/enums";
+import { SttEngineOptionEnum } from "@/shared/types/enums";
 
 export const MediaTranscriptionGenerateButton = (props: {
   children: React.ReactNode;

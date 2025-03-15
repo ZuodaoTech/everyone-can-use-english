@@ -27,7 +27,7 @@ import {
   ChatMessageCategoryEnum,
   ChatMessageRoleEnum,
   ChatMessageStateEnum,
-} from "@/renderer/types/enums";
+} from "@/shared/types/enums";
 
 const logger = log.scope("db/models/chat-message");
 @Table({

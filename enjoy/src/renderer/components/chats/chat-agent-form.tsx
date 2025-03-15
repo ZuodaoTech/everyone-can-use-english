@@ -36,7 +36,7 @@ import {
   AppSettingsProviderContext,
 } from "@renderer/context";
 import { useContext, useEffect, useState } from "react";
-import { ChatAgentTypeEnum } from "@renderer/types/enums";
+import { ChatAgentTypeEnum } from "@/shared/types/enums";
 import { CHAT_AGENT_TEMPLATES } from "@shared/constants";
 import { cn } from "@renderer/lib/utils";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";

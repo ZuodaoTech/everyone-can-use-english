@@ -3,7 +3,7 @@ import { Chat, ChatAgent, ChatMember, UserSetting } from "@main/db/models";
 import { FindOptions, WhereOptions, Attributes, Op } from "sequelize";
 import { t } from "i18next";
 import db from "@main/db";
-import { UserSettingKeyEnum } from "@/renderer/types/enums";
+import { UserSettingKeyEnum } from "@/shared/types/enums";
 import { BaseHandler } from "./base-handler";
 
 class ChatsHandler extends BaseHandler {

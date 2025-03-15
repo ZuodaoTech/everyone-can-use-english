@@ -7,6 +7,7 @@ import {
   type AlignmentOptions,
   type RecognitionOptions,
 } from "echogarden/dist/api/API";
+import { Config } from "./main/config/types";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
@@ -299,6 +300,27 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     set: (key: string, value: any) => {
       return ipcRenderer.invoke("user-settings-set", key, value);
     },
+  },
+  config: {
+    // App settings
+    getLibrary: () => ipcRenderer.invoke("config-get-library"),
+    setLibrary: (library: string) =>
+      ipcRenderer.invoke("config-set-library", library),
+    getUser: () => ipcRenderer.invoke("config-get-user"),
+    setUser: (user: any) => ipcRenderer.invoke("config-set-user", user),
+    getUserDataPath: () => ipcRenderer.invoke("config-get-user-data-path"),
+    getApiUrl: () => ipcRenderer.invoke("config-get-api-url"),
+    setApiUrl: (url: string) => ipcRenderer.invoke("config-set-api-url", url),
+    getSessions: () => ipcRenderer.invoke("config-get-sessions"),
+
+    // User settings
+    getUserSetting: (key: string) =>
+      ipcRenderer.invoke("config-get-user-setting", key),
+    setUserSetting: (key: string, value: any) =>
+      ipcRenderer.invoke("config-set-user-setting", key, value),
+
+    // Full config
+    get: () => ipcRenderer.invoke("config-get"),
   },
   path: {
     join: (...paths: string[]) => {

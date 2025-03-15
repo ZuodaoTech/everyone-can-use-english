@@ -3,7 +3,7 @@ import {
   AppSettingsProviderContext,
   DbProviderContext,
 } from "@renderer/context";
-import { SttEngineOptionEnum, UserSettingKeyEnum } from "@renderer/types/enums";
+import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/shared/types/enums";
 import { GPT_PROVIDERS, TTS_PROVIDERS } from "@renderer/components";
 import { WHISPER_MODELS } from "@shared/constants";
 import log from "electron-log/renderer";

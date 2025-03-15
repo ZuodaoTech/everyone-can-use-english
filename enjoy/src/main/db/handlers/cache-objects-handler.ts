@@ -3,7 +3,7 @@ import { CacheObject } from "@main/db/models";
 import fs from "fs-extra";
 import path from "path";
 import db from "@main/db";
-import settings from "@main/services/settings";
+import { config } from "@main/config";
 import { BaseHandler } from "./base-handler";
 
 class CacheObjectsHandler extends BaseHandler {
@@ -79,7 +79,7 @@ class CacheObjectsHandler extends BaseHandler {
     filename: string,
     data: ArrayBuffer
   ) {
-    const output = path.join(settings.cachePath(), filename);
+    const output = path.join(config.cachePath(), filename);
     fs.writeFileSync(output, Buffer.from(data));
 
     return `enjoy://library/cache/${filename}`;

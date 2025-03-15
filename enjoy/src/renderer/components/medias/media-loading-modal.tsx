@@ -16,7 +16,7 @@ import {
 import { CircleAlertIcon, LoaderIcon } from "lucide-react";
 import { t } from "i18next";
 import { TranscriptionCreateForm, TranscriptionsList } from "../transcriptions";
-import { SttEngineOptionEnum } from "@renderer/types/enums";
+import { SttEngineOptionEnum } from "@/shared/types/enums";
 
 export const MediaLoadingModal = () => {
   const { decoded, transcription } = useContext(MediaShadowProviderContext);

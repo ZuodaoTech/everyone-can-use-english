@@ -23,7 +23,7 @@ import dayjs from "@renderer/lib/dayjs";
 import {
   ChatMessageRoleEnum,
   ChatMessageStateEnum,
-} from "@renderer/types/enums";
+} from "@/shared/types/enums";
 
 export const ChatSuggestionButton = (props: {
   chat: ChatType;

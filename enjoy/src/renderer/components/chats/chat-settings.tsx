@@ -21,7 +21,7 @@ import {
   ChatSessionProviderContext,
 } from "@renderer/context";
 import { DEFAULT_GPT_CONFIG } from "@shared/constants";
-import { ChatAgentTypeEnum, ChatTypeEnum } from "@renderer/types/enums";
+import { ChatAgentTypeEnum, ChatTypeEnum } from "@/shared/types/enums";
 
 export const ChatSettings = (props: { onFinish?: () => void }) => {
   const { onFinish } = props;

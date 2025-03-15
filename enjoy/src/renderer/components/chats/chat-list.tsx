@@ -21,7 +21,7 @@ import { PlusIcon } from "lucide-react";
 import { DEFAULT_GPT_CONFIG } from "@shared/constants";
 import { useChat } from "@renderer/hooks";
 import { isSameTimeRange } from "@renderer/lib/utils";
-import { ChatAgentTypeEnum } from "@renderer/types/enums";
+import { ChatAgentTypeEnum } from "@/shared/types/enums";
 
 export const ChatList = (props: {
   chats: ChatType[];

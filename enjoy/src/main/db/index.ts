@@ -1,5 +1,4 @@
 import { ipcMain } from "electron";
-import settings from "@/main/services/settings";
 import { Sequelize } from "sequelize-typescript";
 import { Umzug, SequelizeStorage, Resolver, RunnableMigration } from "umzug";
 import {
@@ -43,10 +42,10 @@ import {
 import os from "os";
 import path from "path";
 import { i18n } from "@/main/services/i18n";
-import { UserSettingKeyEnum } from "@/renderer/types/enums";
 import log from "@/main/services/logger";
 import fs from "fs-extra";
 import { BaseHandler } from "./handlers/base-handler";
+import { config } from "@main/config";
 
 const __dirname = import.meta.dirname;
 const logger = log.scope("DB");
@@ -93,7 +92,8 @@ db.connect = async () => {
     if (db.connection) {
       return;
     }
-    const dbPath = settings.dbPath();
+
+    const dbPath = config.dbPath();
     if (!dbPath) {
       throw new Error("Db path is not ready");
     }
@@ -211,9 +211,7 @@ db.connect = async () => {
     await sequelize.query("VACUUM");
 
     // initialize i18n
-    const language = (await UserSetting.get(
-      UserSettingKeyEnum.LANGUAGE
-    )) as string;
+    const language = (await config.getUserSetting("language")).value;
     i18n(language);
 
     // register handlers
@@ -246,13 +244,13 @@ db.disconnect = async () => {
 db.backup = async (options?: { force: boolean }) => {
   const force = options?.force ?? false;
 
-  const dbPath = settings.dbPath();
+  const dbPath = config.dbPath();
   if (!dbPath) {
     logger.error("Db path is not ready");
     return;
   }
 
-  const backupPath = path.join(settings.userDataPath(), "backup");
+  const backupPath = path.join(config.userDataPath(), "backup");
   fs.ensureDirSync(backupPath);
 
   const backupFiles = fs
@@ -288,7 +286,7 @@ db.backup = async (options?: { force: boolean }) => {
 };
 
 db.restore = async (backupFilePath: string) => {
-  const dbPath = settings.dbPath();
+  const dbPath = config.dbPath();
   if (!dbPath) {
     logger.error("Db path is not ready");
     return;
@@ -317,7 +315,7 @@ db.registerIpcHandlers = () => {
     if (db.isConnecting)
       return {
         state: "connecting",
-        path: settings.dbPath(),
+        path: config.dbPath(),
         error: null,
       };
 
@@ -325,14 +323,14 @@ db.registerIpcHandlers = () => {
       await db.connect();
       return {
         state: "connected",
-        path: settings.dbPath(),
+        path: config.dbPath(),
         error: null,
       };
     } catch (err) {
       return {
         state: "error",
         error: err.message,
-        path: settings.dbPath(),
+        path: config.dbPath(),
       };
     }
   });
