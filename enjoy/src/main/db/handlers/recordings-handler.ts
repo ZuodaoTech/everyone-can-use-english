@@ -236,7 +236,7 @@ class RecordingsHandler extends BaseHandler {
           ],
         ],
         where,
-      }).then((stats) => {
+      }).then((stats: any) => {
         if (!stats) {
           return [];
         }
