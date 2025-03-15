@@ -619,17 +619,16 @@ export class ConfigManager {
       for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
         logger.debug(`Loading user setting: ${key}`);
         const value = await this.userStore.getValue(key);
-        logger.debug(`Loaded value for ${key}:`, value);
+        logger.debug(`Loaded value for ${key}`);
 
         if (value !== undefined) {
-          logger.debug(`Setting value for ${key}:`, value);
+          logger.debug(`Setting value for ${key}`);
           this.setUserSettingFromValue(key as keyof UserSettings, value);
         } else {
           logger.debug(`No value found for ${key}, using default`);
         }
       }
 
-      logger.debug("User settings after loading:", this.userSettings);
       this.isUserSettingsLoaded = true;
 
       // Initialize plugin registry
@@ -842,7 +841,7 @@ export class ConfigManager {
         try {
           const value = await this.userStore.getValue(dbKey);
           if (value !== undefined) {
-            logger.debug(`Reloaded value for ${key}:`, value);
+            logger.debug(`Reloaded value for ${key}`);
             this.setUserSettingFromValue(key as keyof UserSettings, value);
           } else {
             logger.debug(`No value found for ${key}, using default`);
@@ -852,7 +851,6 @@ export class ConfigManager {
         }
       }
 
-      logger.debug("User settings after reloading:", this.userSettings);
       this.isUserSettingsLoaded = true;
 
       logger.info("User settings reloaded successfully");

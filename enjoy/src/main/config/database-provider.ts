@@ -106,7 +106,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
 
       // Get the setting from the database
       const setting = await this.db.models[this.model].get(settingKey);
-      logger.debug(`Retrieved setting for key "${settingKey}":`, setting);
+      logger.debug(`Retrieved setting for key "${settingKey}"`);
 
       if (!setting) {
         logger.debug(`No setting found for key "${settingKey}"`);
@@ -123,7 +123,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
           try {
             // The setting is already parsed by the UserSetting.get method
             const result = this.getNestedProperty(setting, childKey) as T;
-            logger.debug(`Retrieved nested property "${childKey}":`, result);
+            logger.debug(`Retrieved nested property "${childKey}"`);
             return result;
           } catch (error) {
             logger.error(
@@ -152,7 +152,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
       logger.warn(`Cannot set value for key "${key}" - database not set`);
       return;
     }
-    logger.debug(`Setting value for key "${key}"`, value);
+    logger.debug(`Setting value for key "${key}"`);
 
     try {
       const settingKey = this.mapKeyToEnum(key);
@@ -180,8 +180,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
 
           // Save the updated parent value
           logger.debug(
-            `Saving nested property to database with key: ${parentEnum}`,
-            parentValue
+            `Saving nested property to database with key: ${parentEnum}`
           );
           await this.db.models[this.model].set(parentEnum, parentValue);
           return;
@@ -189,7 +188,7 @@ export class DatabaseProvider implements ConfigStorageProvider {
       }
 
       // Save to database
-      logger.debug(`Saving to database with key: ${settingKey}`, value);
+      logger.debug(`Saving to database with key: ${settingKey}`);
       await this.db.models[this.model].set(settingKey, value);
     } catch (error) {
       logger.error(`Failed to set value for key "${key}"`, error);

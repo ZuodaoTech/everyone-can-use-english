@@ -160,7 +160,7 @@ export class ConfigStore extends EventEmitter {
 
       if (exists) {
         const value = await this.storage.get<T>(key);
-        logger.debug(`Retrieved value for key "${key}" from storage:`, value);
+        logger.debug(`Retrieved value for key "${key}" from storage`);
 
         if (value !== undefined) {
           return {
@@ -173,10 +173,7 @@ export class ConfigStore extends EventEmitter {
 
       // Check if there's a default value in schema
       if (key in this.defaults) {
-        logger.debug(
-          `Using default value for key "${key}":`,
-          this.defaults[key]
-        );
+        logger.debug(`Using default value for key "${key}"`);
         return {
           value: this.defaults[key] as T,
           source: ConfigSource.DEFAULT,
@@ -196,10 +193,7 @@ export class ConfigStore extends EventEmitter {
 
       // Return default value if available
       if (key in this.defaults) {
-        logger.debug(
-          `Using default value for key "${key}" after error:`,
-          this.defaults[key]
-        );
+        logger.debug(`Using default value for key "${key}" after error`);
         return {
           value: this.defaults[key] as T,
           source: ConfigSource.DEFAULT,
@@ -223,10 +217,7 @@ export class ConfigStore extends EventEmitter {
 
       // Return default value if available
       if (key in this.defaults) {
-        logger.debug(
-          `Returning default value for key "${key}":`,
-          this.defaults[key]
-        );
+        logger.debug(`Returning default value for key "${key}"`);
         return this.defaults[key] as T;
       }
 
