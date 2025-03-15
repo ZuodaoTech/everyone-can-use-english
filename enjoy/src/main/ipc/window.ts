@@ -12,7 +12,7 @@ import {
 } from "electron";
 import path from "path";
 import db from "@main/db";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import downloader from "@/main/services/downloader";
 import fs from "fs-extra";
 import log from "@/main/services/logger";
@@ -29,6 +29,7 @@ import { UserSetting } from "@main/db/models";
 import { t } from "i18next";
 import { format } from "util";
 import pkg from "../../../package.json" with { type: "json" };
+import settings from "../services/settings";
 
 const __dirname = import.meta.dirname;
 
@@ -78,7 +79,7 @@ main.init = async () => {
   mdict.registerIpcHandlers();
 
   // Prepare Settings
-  settings.registerIpcHandlers();
+  config.registerIpcHandlers();
 
   // echogarden
   echogarden.registerIpcHandlers();
@@ -105,13 +106,13 @@ main.init = async () => {
 
   // proxy
   ipcMain.handle("system-proxy-get", (_event) => {
-    let proxy = settings.getSync("proxy");
+    let proxy = config.getAppSetting("proxy").value;
     if (!proxy) {
       proxy = {
         enabled: false,
         url: "",
       };
-      settings.setSync("proxy", proxy);
+      config.setAppSetting("proxy", proxy);
     }
 
     return proxy;
@@ -126,21 +127,21 @@ main.init = async () => {
       config.enabled = false;
     }
 
-    return settings.setSync("proxy", config);
+    config.setAppSetting("proxy", config);
   });
 
   ipcMain.handle("system-proxy-refresh", (_event) => {
-    let config = settings.getSync("proxy") as ProxyConfigType;
-    if (!config) {
-      config = {
+    let proxy = config.getAppSetting("proxy").value;
+    if (!proxy) {
+      proxy = {
         enabled: false,
         url: "",
       };
-      settings.setSync("proxy", config);
+      config.setAppSetting("proxy", proxy);
     }
 
-    if (config.enabled && config.url) {
-      const uri = new URL(config.url);
+    if (proxy.enabled && proxy.url) {
+      const uri = new URL(proxy.url);
       const proxyRules = `http=${uri.host};https=${uri.host}`;
 
       mainWindow.webContents.session.setProxy({
@@ -466,12 +467,12 @@ main.init = async () => {
   });
 
   ipcMain.handle("app-reset", async () => {
-    const userDataPath = settings.userDataPath();
+    const userDataPath = config.userDataPath();
 
     await db.disconnect();
 
     fs.removeSync(userDataPath);
-    fs.removeSync(settings.file());
+    fs.removeSync(config.libraryPath());
 
     app.relaunch();
     app.exit();
@@ -501,11 +502,11 @@ main.init = async () => {
   });
 
   ipcMain.handle("app-api-url", () => {
-    return settings.apiUrl();
+    return config.apiUrl();
   });
 
   ipcMain.handle("app-ws-url", () => {
-    const wsUrl = settings.getSync("wsUrl");
+    const wsUrl = config.getAppSetting("wsUrl" as any).value;
     return process.env.WS_URL || wsUrl || WS_URL;
   });
 
@@ -602,17 +603,17 @@ ${log}
 
   ipcMain.handle("app-disk-usage", () => {
     const paths: { [key: string]: string } = {
-      library: settings.libraryPath(),
-      database: settings.dbPath(),
-      settings: settings.file(),
-      audios: path.join(settings.userDataPath(), "audios"),
-      videos: path.join(settings.userDataPath(), "videos"),
-      segments: path.join(settings.userDataPath(), "segments"),
-      speeches: path.join(settings.userDataPath(), "speeches"),
-      recordings: path.join(settings.userDataPath(), "recordings"),
-      waveforms: path.join(settings.libraryPath(), "waveforms"),
-      logs: path.join(settings.libraryPath(), "logs"),
-      cache: settings.cachePath(),
+      library: config.libraryPath(),
+      database: config.dbPath(),
+      settings: config.getAppSetting("file" as any).value,
+      audios: path.join(config.userDataPath(), "audios"),
+      videos: path.join(config.userDataPath(), "videos"),
+      segments: path.join(config.userDataPath(), "segments"),
+      speeches: path.join(config.userDataPath(), "speeches"),
+      recordings: path.join(config.userDataPath(), "recordings"),
+      waveforms: path.join(config.libraryPath(), "waveforms"),
+      logs: path.join(config.libraryPath(), "logs"),
+      cache: config.cachePath(),
     };
 
     const sizeSync = (p: string): number => {

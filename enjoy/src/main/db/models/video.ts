@@ -20,7 +20,7 @@ import {
   Transcription,
   UserSetting,
 } from "@main/db/models";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import { AudioFormats, MIME_TYPES, VideoFormats } from "@/shared/constants";
 import { hashFile } from "@main/utils";
 import path from "path";
@@ -177,7 +177,7 @@ export class Video extends Model<Video> {
 
   get originalFilePath(): string {
     const file = path.join(
-      settings.userDataPath(),
+      config.userDataPath(),
       "videos",
       this.getDataValue("md5") + this.extname
     );
@@ -191,7 +191,7 @@ export class Video extends Model<Video> {
 
   get compressedFilePath(): string {
     const file = path.join(
-      settings.userDataPath(),
+      config.userDataPath(),
       "videos",
       `${this.getDataValue("md5")}.compressed.mp4`
     );
@@ -210,10 +210,10 @@ export class Video extends Model<Video> {
     const ffmpeg = new Ffmpeg();
     const coverFile = await ffmpeg.generateCover(
       this.filePath,
-      path.join(settings.cachePath(), `${Date.now()}.png`)
+      path.join(config.cachePath(), `${Date.now()}.png`)
     );
     const hash = await hashFile(coverFile, { algo: "md5" });
-    const finalFile = path.join(settings.cachePath(), `${hash}.png`);
+    const finalFile = path.join(config.cachePath(), `${hash}.png`);
     fs.renameSync(coverFile, finalFile);
 
     storage.put(hash, finalFile, "image/png").then((result) => {
@@ -247,7 +247,7 @@ export class Video extends Model<Video> {
     if (this.isSynced) return;
 
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: config.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });
@@ -263,7 +263,7 @@ export class Video extends Model<Video> {
 
     const ffmpeg = new FfmpegWrapper();
     const output = path.join(
-      settings.cachePath(),
+      config.cachePath(),
       `${this.name}(${startTime.toFixed(2)}s-${endTime.toFixed(2)}).mp3`
     );
     await ffmpeg.crop(this.filePath, {
@@ -316,7 +316,7 @@ export class Video extends Model<Video> {
     });
 
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: config.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger: log.scope("video/cleanupFile"),
     });
@@ -369,11 +369,11 @@ export class Video extends Model<Video> {
     }
 
     // Generate ID
-    const userId = settings.getSync("user.id");
+    const userId = config.getAppSetting("user.id" as any).value;
     const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);
     logger.debug("Generated ID:", id);
 
-    const destDir = path.join(settings.userDataPath(), "videos");
+    const destDir = path.join(config.userDataPath(), "videos");
     const destFile = path.join(
       destDir,
       compressing ? `${md5}.compressed.mp4` : `${md5}${extname}`

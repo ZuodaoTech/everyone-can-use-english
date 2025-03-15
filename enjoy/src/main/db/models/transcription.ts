@@ -16,7 +16,7 @@ import mainWindow from "@/main/ipc/window";
 import log from "@/main/services/logger";
 import { Client } from "@/shared/api";
 import { PROCESS_TIMEOUT } from "@/shared/constants";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import { AlignmentResult } from "echogarden/dist/api/Alignment";
 import { createHash } from "crypto";
 
@@ -88,7 +88,7 @@ export class Transcription extends Model<Transcription> {
     if (this.getDataValue("state") !== "finished") return;
 
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: config.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });

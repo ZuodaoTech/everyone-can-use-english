@@ -15,7 +15,7 @@ import {
 import mainWindow from "@/main/ipc/window";
 import log from "@/main/services/logger";
 import { Client } from "@/shared/api";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import { Segment, UserSetting } from "@main/db/models";
 
 const logger = log.scope("db/models/note");
@@ -60,7 +60,7 @@ export class Note extends Model<Note> {
     if (this.isSynced) return;
 
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: config.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });
@@ -122,7 +122,7 @@ export class Note extends Model<Note> {
   @AfterDestroy
   static async destroyRemote(note: Note) {
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: config.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });

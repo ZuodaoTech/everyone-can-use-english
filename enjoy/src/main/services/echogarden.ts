@@ -18,11 +18,10 @@ import {
 import { ensureAndGetPackagesDir } from "echogarden/dist/utilities/PackageManager.js";
 import path from "path";
 import log from "@/main/services/logger";
-import url from "url";
-import settings from "@/main/services/settings";
 import fs from "fs-extra";
 import ffmpegPath from "ffmpeg-static";
 import { enjoyUrlToPath, pathToEnjoyUrl } from "../utils";
+import { config } from "@main/config";
 
 Echogarden.setGlobalOption(
   "ffmpegPath",
@@ -162,7 +161,7 @@ class EchogardenWrapper {
       const result = await this.recognize(sampleFile, options);
       logger.info("transcript:", result?.transcript);
       fs.writeJsonSync(
-        path.join(settings.cachePath(), "echogarden-check.json"),
+        path.join(config.cachePath(), "echogarden-check.json"),
         result,
         { spaces: 2 }
       );
@@ -211,7 +210,7 @@ class EchogardenWrapper {
     const rawAudio = await this.ensureRawAudio(filePath, sampleRate);
     const audioBuffer = this.encodeRawAudioToWave(rawAudio);
 
-    const outputFilePath = path.join(settings.cachePath(), `${Date.now()}.wav`);
+    const outputFilePath = path.join(config.cachePath(), `${Date.now()}.wav`);
     fs.writeFileSync(outputFilePath, audioBuffer);
 
     return pathToEnjoyUrl(outputFilePath);

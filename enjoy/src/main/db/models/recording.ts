@@ -24,7 +24,7 @@ import {
 } from "@main/db/models";
 import fs from "fs-extra";
 import path from "path";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import { hashFile } from "@main/utils";
 import log from "@/main/services/logger";
 import storage from "@/main/services/storage";
@@ -153,7 +153,7 @@ export class Recording extends Model<Recording> {
 
   get filePath(): string {
     const file = path.join(
-      settings.userDataPath(),
+      config.userDataPath(),
       "recordings",
       this.getDataValue("filename")
     );
@@ -198,7 +198,7 @@ export class Recording extends Model<Recording> {
     if (this.isSynced) return;
 
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: config.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });
@@ -292,7 +292,7 @@ export class Recording extends Model<Recording> {
   static async cleanupFile(recording: Recording) {
     fs.remove(recording.filePath);
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: config.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger: log.scope("recording/cleanupFile"),
     });
@@ -336,7 +336,7 @@ export class Recording extends Model<Recording> {
     }
 
     // save recording to file
-    const file = path.join(settings.cachePath(), `${Date.now()}.wav`);
+    const file = path.join(config.cachePath(), `${Date.now()}.wav`);
     await fs.outputFile(file, echogarden.encodeRawAudioToWave(rawAudio));
 
     // hash file
@@ -350,11 +350,11 @@ export class Recording extends Model<Recording> {
 
     // rename file
     const filename = `${md5}.mp3`;
-    const destFile = path.join(settings.userDataPath(), "recordings", filename);
+    const destFile = path.join(config.userDataPath(), "recordings", filename);
     const ffmpeg = new FfmpegWrapper();
     await ffmpeg.compressAudio(file, destFile);
 
-    const userId = settings.getSync("user.id");
+    const userId = config.getAppSetting("user.id" as any).value;
     const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);
 
     return this.create(

@@ -8,7 +8,7 @@ import {
   AllowNull,
 } from "sequelize-typescript";
 import log from "@/main/services/logger";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import * as i18n from "i18next";
 import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/shared/types/enums";
 
@@ -78,28 +78,28 @@ export class UserSetting extends Model<UserSetting> {
   static async migrateFromSettings(): Promise<void> {
     // hotkeys
     const hotkeys = await UserSetting.get(UserSettingKeyEnum.HOTKEYS);
-    const prevHotkeys = await settings.get("defaultHotkeys");
+    const prevHotkeys = config.getAppSetting("defaultHotkeys" as any).value;
     if (prevHotkeys && !hotkeys) {
       UserSetting.set(UserSettingKeyEnum.HOTKEYS, prevHotkeys as object);
     }
 
     // GPT Engine
     const gptEngine = await UserSetting.get(UserSettingKeyEnum.GPT_ENGINE);
-    const prevGptEngine = await settings.get("engine.gpt");
+    const prevGptEngine = config.getAppSetting("engine.gpt" as any).value;
     if (prevGptEngine && !gptEngine) {
       UserSetting.set(UserSettingKeyEnum.GPT_ENGINE, prevGptEngine as object);
     }
 
     // OpenAI API Key
     const openai = await UserSetting.get(UserSettingKeyEnum.OPENAI);
-    const prevOpenai = await settings.get("openai");
+    const prevOpenai = config.getAppSetting("openai" as any).value;
     if (prevOpenai && !openai) {
       UserSetting.set(UserSettingKeyEnum.OPENAI, prevOpenai as object);
     }
 
     // Language
     const language = await UserSetting.get(UserSettingKeyEnum.LANGUAGE);
-    const prevLanguage = await settings.get("language");
+    const prevLanguage = config.getAppSetting("language" as any).value;
     if (prevLanguage && !language) {
       UserSetting.set(UserSettingKeyEnum.LANGUAGE, prevLanguage as string);
     }
@@ -108,7 +108,9 @@ export class UserSetting extends Model<UserSetting> {
     const nativeLanguage = await UserSetting.get(
       UserSettingKeyEnum.NATIVE_LANGUAGE
     );
-    const prevNativeLanguage = await settings.get("nativeLanguage");
+    const prevNativeLanguage = config.getAppSetting(
+      "nativeLanguage" as any
+    ).value;
     if (prevNativeLanguage && !nativeLanguage) {
       UserSetting.set(
         UserSettingKeyEnum.NATIVE_LANGUAGE,
@@ -120,7 +122,9 @@ export class UserSetting extends Model<UserSetting> {
     const learningLanguage = await UserSetting.get(
       UserSettingKeyEnum.LEARNING_LANGUAGE
     );
-    const prevLearningLanguage = await settings.get("learningLanguage");
+    const prevLearningLanguage = config.getAppSetting(
+      "learningLanguage" as any
+    ).value;
     if (prevLearningLanguage && !learningLanguage) {
       UserSetting.set(
         UserSettingKeyEnum.LEARNING_LANGUAGE,
@@ -130,7 +134,7 @@ export class UserSetting extends Model<UserSetting> {
 
     // STT Engine
     const sttEngine = await UserSetting.get(UserSettingKeyEnum.STT_ENGINE);
-    const prevSttEngine = await settings.get("whisper.service");
+    const prevSttEngine = config.getAppSetting("whisper.service" as any).value;
     if (prevSttEngine && !sttEngine) {
       switch (prevSttEngine) {
         case "azure":
@@ -158,21 +162,23 @@ export class UserSetting extends Model<UserSetting> {
 
     // Whisper
     const whisper = await UserSetting.get(UserSettingKeyEnum.WHISPER);
-    const prevWhisper = await settings.get("whisper.model");
+    const prevWhisper = config.getAppSetting("whisper.model" as any).value;
     if (prevWhisper && !whisper) {
       UserSetting.set(UserSettingKeyEnum.WHISPER, prevWhisper as string);
     }
 
     // Profile
     const profile = await UserSetting.get(UserSettingKeyEnum.PROFILE);
-    const prevProfile = (await settings.get("user")) as UserType;
+    const prevProfile = config.getAppSetting("user" as any).value;
     if (prevProfile && !profile) {
       UserSetting.set(UserSettingKeyEnum.PROFILE, prevProfile as UserType);
     }
 
     // Recorder Config
     const recorderConfig = await UserSetting.get(UserSettingKeyEnum.RECORDER);
-    const prevRecorderConfig = await settings.get("recorderConfig");
+    const prevRecorderConfig = config.getAppSetting(
+      "recorderConfig" as any
+    ).value;
     if (prevRecorderConfig && !recorderConfig) {
       UserSetting.set(
         UserSettingKeyEnum.RECORDER,

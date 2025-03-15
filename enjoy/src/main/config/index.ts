@@ -1,5 +1,5 @@
 import electronSettings from "electron-settings";
-import { app } from "electron";
+import { app, ipcMain } from "electron";
 import path from "path";
 import fs from "fs-extra";
 import { UserSetting } from "@main/db/models";
@@ -9,6 +9,7 @@ import {
   LIBRARY_PATH_SUFFIX,
   DATABASE_NAME,
   WEB_API_URL,
+  WS_URL,
 } from "@shared/constants";
 import {
   AppSettings,
@@ -25,7 +26,13 @@ const logger = log.scope("Config");
 const DEFAULT_APP_SETTINGS: AppSettings = {
   library: path.join(app.getPath("documents"), LIBRARY_PATH_SUFFIX),
   apiUrl: WEB_API_URL,
+  wsUrl: WS_URL,
+  proxy: {
+    enabled: false,
+    url: "",
+  },
   user: null,
+  file: electronSettings.file(),
 };
 
 const DEFAULT_USER_SETTINGS: UserSettings = {
@@ -53,7 +60,6 @@ const DEFAULT_USER_SETTINGS: UserSettings = {
 class ConfigManager {
   private appSettings: AppSettings;
   private userSettings: UserSettings | null = null;
-  private isInitialized = false;
   private isUserSettingsLoaded = false;
 
   constructor() {
@@ -68,17 +74,15 @@ class ConfigManager {
     // Initialize with defaults
     this.appSettings = { ...DEFAULT_APP_SETTINGS };
 
-    // Load app settings from file
+    // Load app settings from file - but don't call methods that depend on initialization
     this.loadAppSettings();
 
-    // Ensure directories exist
+    // Now that basic settings are loaded, ensure directories exist
     this.ensureDirectories();
-
-    this.isInitialized = true;
   }
 
   /**
-   * Initialize the configuration system
+   * Initialize user settings from database
    * This should be called after the database is connected
    */
   async initialize(): Promise<void> {
@@ -93,10 +97,6 @@ class ConfigManager {
   getAppSetting<K extends keyof AppSettings>(
     key: K
   ): ConfigValue<AppSettings[K]> {
-    if (!this.isInitialized) {
-      throw new Error("ConfigManager is not initialized");
-    }
-
     // Handle nested properties
     if (key.includes(".")) {
       const parts = key.split(".");
@@ -130,10 +130,6 @@ class ConfigManager {
     key: K,
     value: AppSettings[K]
   ): void {
-    if (!this.isInitialized) {
-      throw new Error("ConfigManager is not initialized");
-    }
-
     // Handle nested properties
     if (key.includes(".")) {
       const parts = key.split(".");
@@ -282,8 +278,7 @@ class ConfigManager {
    * Get the library path
    */
   libraryPath(): string {
-    const library = this.getAppSetting("library").value;
-    return library;
+    return this.appSettings.library;
   }
 
   /**
@@ -299,7 +294,7 @@ class ConfigManager {
    * Get the user data path
    */
   userDataPath(): string | null {
-    const userId = this.getAppSetting("user").value?.id;
+    const userId = this.appSettings.user?.id;
     if (!userId) return null;
 
     const userData = path.join(this.libraryPath(), userId.toString());
@@ -323,7 +318,7 @@ class ConfigManager {
    * Get the API URL
    */
   apiUrl(): string {
-    return process.env.WEB_API_URL || this.getAppSetting("apiUrl").value;
+    return process.env.WEB_API_URL || this.appSettings.apiUrl;
   }
 
   /**
@@ -499,9 +494,7 @@ class ConfigManager {
   /**
    * Get default user setting value
    */
-  private getDefaultUserSetting<K extends keyof UserSettings>(
-    key: K
-  ): UserSettings[K] {
+  getDefaultUserSetting<K extends keyof UserSettings>(key: K): UserSettings[K] {
     // Handle nested properties
     if (key.includes(".")) {
       const parts = key.split(".");
@@ -521,11 +514,17 @@ class ConfigManager {
    */
   private ensureDirectories(): void {
     try {
-      fs.ensureDirSync(this.libraryPath());
-      fs.ensureDirSync(this.cachePath());
+      // Use direct property access instead of method calls to avoid circular dependencies
+      fs.ensureDirSync(this.appSettings.library);
 
-      const userData = this.userDataPath();
-      if (userData) {
+      // Create cache directory
+      const cacheDir = path.join(this.appSettings.library, "cache");
+      fs.ensureDirSync(cacheDir);
+
+      // Create user data directories if user is set
+      const userId = this.appSettings.user?.id;
+      if (userId) {
+        const userData = path.join(this.appSettings.library, userId.toString());
         fs.ensureDirSync(userData);
         fs.ensureDirSync(path.join(userData, "backup"));
         fs.ensureDirSync(path.join(userData, "speeches"));
@@ -540,7 +539,7 @@ class ConfigManager {
    * Register IPC handlers for configuration
    */
   registerIpcHandlers(): void {
-    const { ipcMain } = require("electron");
+    // Don't use require - ipcMain should be imported at the top of the file
 
     ipcMain.handle("config-get-library", () => {
       return this.getAppSetting("library").value;
@@ -601,6 +600,35 @@ class ConfigManager {
     // Full config
     ipcMain.handle("config-get", async () => {
       return this.getConfig();
+    });
+
+    // Add backward compatibility handlers for old IPC channels
+    ipcMain.handle("app-settings-get-library", () => {
+      return this.getAppSetting("library").value;
+    });
+
+    ipcMain.handle("app-settings-get-user", () => {
+      return this.getAppSetting("user").value;
+    });
+
+    ipcMain.handle("app-settings-set-user", (_event: any, user: any) => {
+      this.setAppSetting("user", user);
+    });
+
+    ipcMain.handle("app-settings-get-user-data-path", () => {
+      return this.userDataPath();
+    });
+
+    ipcMain.handle("app-settings-get-api-url", () => {
+      return this.getAppSetting("apiUrl").value;
+    });
+
+    ipcMain.handle("app-settings-set-api-url", (_event: any, url: string) => {
+      this.setAppSetting("apiUrl", url);
+    });
+
+    ipcMain.handle("app-settings-get-sessions", () => {
+      return this.sessions();
     });
   }
 }

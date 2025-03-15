@@ -1,6 +1,6 @@
 import { createHash } from "crypto";
 import { createReadStream } from "fs";
-import settings from "./services/settings";
+import { config } from "@main/config";
 import path from "path";
 
 export function hashFile(
@@ -54,12 +54,12 @@ export function enjoyUrlToPath(enjoyUrl: string): string {
     )
   ) {
     filePath = path.posix.join(
-      settings.userDataPath(),
+      config.userDataPath(),
       enjoyUrl.replace("enjoy://library/", "")
     );
   } else if (enjoyUrl.startsWith("enjoy://library/")) {
     filePath = path.posix.join(
-      settings.libraryPath(),
+      config.libraryPath(),
       filePath.replace("enjoy://library/", "")
     );
   }
@@ -76,13 +76,13 @@ export function enjoyUrlToPath(enjoyUrl: string): string {
 export function pathToEnjoyUrl(filePath: string): string {
   let enjoyUrl = filePath;
 
-  if (filePath.startsWith(settings.userDataPath())) {
+  if (filePath.startsWith(config.userDataPath())) {
     enjoyUrl = `enjoy://library/${filePath
-      .replace(settings.userDataPath(), "")
+      .replace(config.userDataPath(), "")
       .replace(/^\//, "")}`;
-  } else if (filePath.startsWith(settings.libraryPath())) {
+  } else if (filePath.startsWith(config.libraryPath())) {
     enjoyUrl = `enjoy://library/${filePath
-      .replace(settings.libraryPath(), "")
+      .replace(config.libraryPath(), "")
       .replace(/^\//, "")}`;
   }
 

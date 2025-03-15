@@ -7,7 +7,7 @@ import {
 import { ipcMain, app } from "electron";
 import path from "path";
 import fs from "fs-extra";
-import { AppSettingsKeyEnum } from "@/shared/types/enums";
+import { AppSettingsKeyEnum } from "@shared/types/enums";
 
 if (process.env.SETTINGS_PATH) {
   settings.configure({

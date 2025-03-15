@@ -17,7 +17,7 @@ import {
 import mainWindow from "@/main/ipc/window";
 import fs from "fs-extra";
 import path from "path";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import OpenAI, { type ClientOptions } from "openai";
 import { t } from "i18next";
 import { hashFile } from "@main/utils";
@@ -122,7 +122,7 @@ export class Speech extends Model<Speech> {
   @Column(DataType.VIRTUAL)
   get filePath(): string {
     return path.join(
-      settings.userDataPath(),
+      config.userDataPath(),
       "speeches",
       this.getDataValue("md5") + this.getDataValue("extname")
     );
@@ -192,16 +192,16 @@ export class Speech extends Model<Speech> {
 
     const extname = ".mp3";
     const filename = `${Date.now()}${extname}`;
-    const filePath = path.join(settings.userDataPath(), "speeches", filename);
+    const filePath = path.join(config.userDataPath(), "speeches", filename);
 
     let openaiConfig: ClientOptions = {};
     if (engine === "enjoyai") {
       openaiConfig = {
         apiKey: (await UserSetting.accessToken()) as string,
-        baseURL: `${settings.apiUrl()}/api/ai`,
+        baseURL: `${config.apiUrl()}/api/ai`,
       };
     } else if (engine === "openai") {
-      const defaultConfig = settings.getSync("openai") as LlmProviderType;
+      const defaultConfig = config.getUserSetting("openai") as LlmProviderType;
       if (!defaultConfig.key) {
         throw new Error(t("openaiKeyRequired"));
       }

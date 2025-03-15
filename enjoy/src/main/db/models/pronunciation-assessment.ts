@@ -15,8 +15,8 @@ import {
 } from "sequelize-typescript";
 import mainWindow from "@/main/ipc/window";
 import { Recording, UserSetting } from "@main/db/models";
-import { Client } from "@/shared/api";
-import settings from "@/main/services/settings";
+import { Client } from "@shared/api";
+import { config } from "@main/config";
 import log from "@/main/services/logger";
 
 @Table({
@@ -101,7 +101,7 @@ export class PronunciationAssessment extends Model<PronunciationAssessment> {
 
   async sync() {
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: config.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger: log.scope("api/client"),
     });

@@ -17,7 +17,7 @@ import { Audio, Transcription, UserSetting, Video } from "@main/db/models";
 import mainWindow from "@/main/ipc/window";
 import log from "@/main/services/logger";
 import { Client } from "@/shared/api";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import storage from "@/main/services/storage";
 import path from "path";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
@@ -100,7 +100,7 @@ export class Segment extends Model<Segment> {
 
   get filePath(): string {
     return path.join(
-      settings.userDataPath(),
+      config.userDataPath(),
       "segments",
       this.getDataValue("md5") + "." + OUTPUT_FORMAT
     );
@@ -118,7 +118,7 @@ export class Segment extends Model<Segment> {
     if (this.isSynced) return;
 
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: config.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });
@@ -177,7 +177,7 @@ export class Segment extends Model<Segment> {
 
     const ffmpeg = new FfmpegWrapper();
     const output = path.join(
-      settings.cachePath(),
+      config.cachePath(),
       `${target.md5}-${segmentIndex}.${OUTPUT_FORMAT}`
     );
     await ffmpeg.crop(target.filePath, {
@@ -187,9 +187,9 @@ export class Segment extends Model<Segment> {
     });
 
     const md5 = await hashFile(output, { algo: "md5" });
-    const userId = settings.getSync("user.id");
+    const userId = config.getAppSetting("user.id" as any).value;
     const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);
-    const dir = path.join(settings.userDataPath(), "segments");
+    const dir = path.join(config.userDataPath(), "segments");
     fs.ensureDirSync(dir);
     fs.moveSync(output, path.join(dir, `${md5}.${OUTPUT_FORMAT}`), {
       overwrite: true,

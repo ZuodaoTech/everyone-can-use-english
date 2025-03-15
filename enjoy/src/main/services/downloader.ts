@@ -2,11 +2,7 @@ import { ipcMain, app, BrowserWindow } from "electron";
 import path from "path";
 import fs from "fs";
 import mainWin from "@/main/ipc/window";
-import log from "@/main/services/logger";
-import settings from "@/main/services/settings";
 import { config } from "@main/config";
-
-const logger = log.scope("downloader");
 class Downloader {
   public tasks: Electron.DownloadItem[];
 

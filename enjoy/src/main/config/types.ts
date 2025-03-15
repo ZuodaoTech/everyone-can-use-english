@@ -1,13 +1,16 @@
-import { SttEngineOptionEnum, UserSettingKeyEnum } from "@/shared/types/enums";
+import { SttEngineOptionEnum } from "@shared/types/enums";
 
 // App-level configuration (stored in electron-settings)
 export interface AppSettings {
   library: string;
   apiUrl: string;
+  wsUrl: string;
+  proxy: ProxyConfigType;
   user: {
     id: string;
     name?: string;
   } | null;
+  file: string;
 }
 
 // User-level configuration (stored in database)

@@ -2,7 +2,7 @@ import { IpcMainEvent } from "electron";
 import { Speech } from "@main/db/models";
 import fs from "fs-extra";
 import path from "path";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import { hashFile } from "@main/utils";
 import { Attributes, WhereOptions } from "sequelize";
 import { BaseHandler, HandlerMethod } from "./base-handler";
@@ -51,7 +51,7 @@ class SpeechesHandler extends BaseHandler {
     return this.handleRequest(event, async () => {
       const format = blob.type.split("/")[1];
       const filename = `${Date.now()}.${format}`;
-      const file = path.join(settings.userDataPath(), "speeches", filename);
+      const file = path.join(config.userDataPath(), "speeches", filename);
       await fs.outputFile(file, Buffer.from(blob.arrayBuffer));
       const md5 = await hashFile(file, { algo: "md5" });
       fs.renameSync(file, path.join(path.dirname(file), `${md5}.${format}`));

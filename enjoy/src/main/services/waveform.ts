@@ -1,10 +1,10 @@
 import { ipcMain } from "electron";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import path from "path";
 import fs from "fs-extra";
 
 export class Waveform {
-  public dir = path.join(settings.libraryPath(), "waveforms");
+  public dir = path.join(config.libraryPath(), "waveforms");
 
   constructor() {
     fs.ensureDirSync(this.dir);

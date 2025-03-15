@@ -19,8 +19,9 @@ import {
   Transcription,
   Video,
   UserSetting,
-} from "./models";
+} from "@main/db/models";
 import {
+  BaseHandler,
   audiosHandler,
   cacheObjectsHandler,
   chatAgentsHandler,
@@ -41,10 +42,8 @@ import {
 } from "./handlers";
 import os from "os";
 import path from "path";
-import { i18n } from "@/main/services/i18n";
-import log from "@/main/services/logger";
+import log from "@main/services/logger";
 import fs from "fs-extra";
-import { BaseHandler } from "./handlers/base-handler";
 import { config } from "@main/config";
 
 const __dirname = import.meta.dirname;
@@ -95,7 +94,9 @@ db.connect = async () => {
 
     const dbPath = config.dbPath();
     if (!dbPath) {
-      throw new Error("Db path is not ready");
+      throw new Error(
+        "Database path is not ready. Make sure user is set in config."
+      );
     }
 
     const sequelize = new Sequelize({
@@ -210,9 +211,8 @@ db.connect = async () => {
     logger.info("Vacuuming the database");
     await sequelize.query("VACUUM");
 
-    // initialize i18n
-    const language = (await config.getUserSetting("language")).value;
-    i18n(language);
+    // Don't initialize i18n with user settings here since they might not be loaded yet
+    // We'll do this after config.initialize() in main.ts
 
     // register handlers
     logger.info(`Registering ${handlers.length} handlers`);

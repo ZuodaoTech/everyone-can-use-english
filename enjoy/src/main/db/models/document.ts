@@ -14,7 +14,7 @@ import {
 import mainWindow from "@/main/ipc/window";
 import log from "@/main/services/logger";
 import { Client } from "@/shared/api";
-import settings from "@/main/services/settings";
+import { config as configuration } from "@main/config";
 import { UserSetting } from "@main/db/models";
 import fs from "fs-extra";
 import { t } from "i18next";
@@ -96,7 +96,7 @@ export class Document extends Model<Document> {
   @Column(DataType.VIRTUAL)
   get filePath(): string {
     const file = path.join(
-      settings.userDataPath(),
+      configuration.userDataPath(),
       "documents",
       `${this.md5}.${this.metadata.extension}`
     );
@@ -131,7 +131,7 @@ export class Document extends Model<Document> {
     if (this.isSynced) return;
 
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: configuration.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });
@@ -213,7 +213,7 @@ export class Document extends Model<Document> {
   @AfterDestroy
   static async destroyRemote(document: Document) {
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: configuration.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger,
     });
@@ -293,10 +293,10 @@ export class Document extends Model<Document> {
     };
 
     // generate ID
-    const userId = settings.getSync("user.id");
+    const userId = configuration.getAppSetting("user.id" as any).value;
     const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);
 
-    const destDir = path.join(settings.userDataPath(), "documents");
+    const destDir = path.join(configuration.userDataPath(), "documents");
     fs.ensureDirSync(destDir);
     const destFile = path.join(destDir, `${md5}.${extension}`);
 

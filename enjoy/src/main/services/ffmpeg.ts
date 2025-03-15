@@ -5,8 +5,7 @@ import Ffmpeg from "fluent-ffmpeg";
 import log from "@/main/services/logger";
 import path from "path";
 import fs from "fs-extra";
-import settings from "@/main/services/settings";
-import url from "url";
+import { config } from "@main/config";
 import { FFMPEG_CONVERT_WAV_OPTIONS } from "@/shared/constants";
 import { enjoyUrlToPath, pathToEnjoyUrl } from "@main/utils";
 
@@ -190,7 +189,7 @@ export default class FfmpegWrapper {
     input = enjoyUrlToPath(input);
 
     if (!output) {
-      output = path.join(settings.cachePath(), `${path.basename(input)}.wav`);
+      output = path.join(config.cachePath(), `${path.basename(input)}.wav`);
     } else {
       output = enjoyUrlToPath(output);
     }
@@ -283,7 +282,7 @@ export default class FfmpegWrapper {
           logger.error(err);
           reject(err);
         })
-        .mergeToFile(output, settings.cachePath());
+        .mergeToFile(output, config.cachePath());
     });
   }
 

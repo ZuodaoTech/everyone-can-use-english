@@ -5,7 +5,7 @@ import fs from "fs-extra";
 import os from "os";
 import log from "@/main/services/logger";
 import snakeCase from "lodash/snakeCase";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import mainWin from "@/main/ipc/window";
 
 //  youtubedr bin file will be in /app.asar.unpacked instead of /app.asar
@@ -74,7 +74,7 @@ class Youtubedr {
     }
 
     const filename = `${snakeCase(info.Title)}.mp4`;
-    const directory = settings.cachePath();
+    const directory = config.cachePath();
 
     logger.debug("try to download", format);
     return this.download(url, {
@@ -260,7 +260,7 @@ class Youtubedr {
   proxyEnv = () => {
     // keep current environment variables
     let env = { ...process.env };
-    const proxyConfig = settings.getSync("proxy") as ProxyConfigType;
+    const proxyConfig = config.getAppSetting("proxy").value;
     if (proxyConfig.enabled && proxyConfig.url) {
       env["HTTP_PROXY"] = proxyConfig.url;
       env["HTTPS_PROXY"] = proxyConfig.url;

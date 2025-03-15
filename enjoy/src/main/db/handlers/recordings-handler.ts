@@ -18,7 +18,7 @@ import log from "@/main/services/logger";
 import { NIL as NIL_UUID } from "uuid";
 import FfmpegWrapper from "@/main/services/ffmpeg";
 import path from "path";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import { enjoyUrlToPath, pathToEnjoyUrl } from "@main/utils";
 import { BaseHandler, HandlerMethod } from "./base-handler";
 
@@ -452,7 +452,7 @@ class RecordingsHandler extends BaseHandler {
       // using ffmpeg concat
       const ffmpeg = new FfmpegWrapper();
       const outputFilePath = path.join(
-        settings.cachePath(),
+        config.cachePath(),
         `${targetType}-${target.id}.mp3`
       );
       const inputFiles = recordings.map((recording) =>

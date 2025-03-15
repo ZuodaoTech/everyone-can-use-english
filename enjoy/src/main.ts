@@ -1,4 +1,4 @@
-import { app, BrowserWindow, protocol, net } from "electron";
+import { app, BrowserWindow, protocol, net, dialog } from "electron";
 import path from "path";
 import fs from "fs-extra";
 import log from "@/main/services/logger";
@@ -10,6 +10,7 @@ import { t } from "i18next";
 import { Client } from "./shared/api";
 import { config } from "@main/config";
 import db from "@main/db";
+import { i18n } from "@main/services/i18n";
 
 const logger = log.scope("main");
 
@@ -143,14 +144,27 @@ app.on("ready", async () => {
     return net.fetch(`file:///${url}`);
   });
 
-  // Initialize database
-  await db.connect();
+  try {
+    // Initialize database
+    await db.connect();
 
-  // Initialize config with user settings from database
-  await config.initialize();
+    // Now that the database is connected, load user settings
+    await config.initialize();
 
-  // Initialize main window
-  mainWindow.init();
+    // Initialize i18n with user language preference
+    const language = (await config.getUserSetting("language")).value;
+    await i18n(language);
+
+    // Initialize main window
+    mainWindow.init();
+  } catch (error) {
+    logger.error("Failed to initialize application", error);
+    // Show error dialog to user
+    dialog.showErrorBox(
+      "Initialization Error",
+      `Failed to initialize the application: ${error.message}`
+    );
+  }
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

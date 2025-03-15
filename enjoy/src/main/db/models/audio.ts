@@ -20,7 +20,7 @@ import {
   UserSetting,
   Video,
 } from "@main/db/models";
-import settings from "@/main/services/settings";
+import { config } from "@main/config";
 import { AudioFormats, MIME_TYPES, VideoFormats } from "@/shared/constants";
 import { hashFile } from "@main/utils";
 import path from "path";
@@ -182,7 +182,7 @@ export class Audio extends Model<Audio> {
 
   get originalFilePath(): string {
     const file = path.join(
-      settings.userDataPath(),
+      config.userDataPath(),
       "audios",
       this.getDataValue("md5") + this.extname
     );
@@ -196,7 +196,7 @@ export class Audio extends Model<Audio> {
 
   get compressedFilePath(): string {
     const file = path.join(
-      settings.userDataPath(),
+      config.userDataPath(),
       "audios",
       this.getDataValue("md5") + ".compressed.mp3"
     );
@@ -231,7 +231,7 @@ export class Audio extends Model<Audio> {
     if (this.isSynced) return;
 
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: config.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger: log.scope("audio/sync"),
     });
@@ -247,7 +247,7 @@ export class Audio extends Model<Audio> {
 
     const ffmpeg = new FfmpegWrapper();
     const output = path.join(
-      settings.cachePath(),
+      config.cachePath(),
       `${this.name}(${startTime.toFixed(2)}s-${endTime.toFixed(2)}).mp3`
     );
     await ffmpeg.crop(this.filePath, {
@@ -300,7 +300,7 @@ export class Audio extends Model<Audio> {
     });
 
     const webApi = new Client({
-      baseUrl: settings.apiUrl(),
+      baseUrl: config.apiUrl(),
       accessToken: (await UserSetting.accessToken()) as string,
       logger: log.scope("audio/cleanupFile"),
     });
@@ -352,11 +352,11 @@ export class Audio extends Model<Audio> {
     }
 
     // Generate ID
-    const userId = settings.getSync("user.id");
+    const userId = config.getAppSetting("user.id" as any).value;
     const id = uuidv5(`${userId}/${md5}`, uuidv5.URL);
     logger.debug("Generated ID:", id);
 
-    const destDir = path.join(settings.userDataPath(), "audios");
+    const destDir = path.join(config.userDataPath(), "audios");
     const destFile = path.join(
       destDir,
       compressing ? `${md5}.compressed.mp3` : `${md5}${extname}`
