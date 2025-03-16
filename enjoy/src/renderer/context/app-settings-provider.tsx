@@ -279,8 +279,26 @@ export const AppSettingsProvider = ({
   ) => {
     console.log("handleConfigChange", state);
     switch (state.type) {
+      case ConfigEvent.APP_SETTINGS_CHANGED:
+        switch (state.details.key) {
+          case "apiUrl":
+            setApiUrl(state.details.value);
+            break;
+          case "library":
+            setLibraryPath(state.details.value);
+            break;
+          case "proxy":
+            setProxy(state.details.value);
+            break;
+        }
+        break;
       case ConfigEvent.USER_SETTINGS_LOADED:
         setUser(state.details.profile);
+        setRecorderConfig(state.details.recorder);
+        setVocabularyConfig(state.details.vocabulary);
+        setLanguage(state.details.language);
+        setNativeLanguage(state.details.nativeLanguage);
+        setLearningLanguage(state.details.learningLanguage);
         break;
       case ConfigEvent.USER_SETTINGS_UNLOADED:
         setUser(null);
