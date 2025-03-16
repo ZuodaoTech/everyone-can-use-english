@@ -5,21 +5,22 @@ import fs from "fs-extra";
 import log from "@main/services/logger";
 import { DATABASE_NAME, LIBRARY_PATH_SUFFIX } from "@shared/constants";
 import {
-  AppSettings,
-  UserSettings,
-  Config,
+  AppConfigType,
+  UserConfigType,
+  ConfigType,
   ConfigSource,
   ConfigValue,
-} from "./types";
+} from "@shared/types/config";
 import * as i18n from "i18next";
-import { type Sequelize } from "sequelize-typescript";
 import snakeCase from "lodash/snakeCase";
 import {
   DEFAULT_APP_SETTINGS,
   DEFAULT_USER_SETTINGS,
   USER_SETTINGS_SCHEMA,
-} from "./schema";
+} from "./config-schema";
 import { EventEmitter } from "events";
+import { type UserSetting } from "@main/db/models";
+import { UserSettingKeyEnum } from "@/shared/types/enums";
 
 const logger = log.scope("ConfigManager");
 
@@ -32,11 +33,13 @@ export enum ConfigEvent {
 }
 
 export class ConfigManager extends EventEmitter {
+  private static instance: ConfigManager;
+
   // Core properties
-  private appSettings: AppSettings;
-  private userSettings: UserSettings | null = null;
+  private appSettings: AppConfigType;
+  private userSettings: UserConfigType | null = null;
   private isUserSettingsLoaded = false;
-  private db: Sequelize | null = null;
+  private db: typeof UserSetting | null = null;
 
   constructor() {
     super(); // Initialize EventEmitter
@@ -52,11 +55,21 @@ export class ConfigManager extends EventEmitter {
   }
 
   /**
+   * Get singleton instance
+   */
+  public static getInstance(): ConfigManager {
+    if (!ConfigManager.instance) {
+      ConfigManager.instance = new ConfigManager();
+    }
+    return ConfigManager.instance;
+  }
+
+  /**
    * Get app setting value
    */
-  getAppSetting<K extends keyof AppSettings>(
+  getAppSetting<K extends keyof AppConfigType>(
     key: K
-  ): ConfigValue<AppSettings[K]> {
+  ): ConfigValue<AppConfigType[K]> {
     // Handle nested properties
     if (key.includes(".")) {
       const parts = key.split(".");
@@ -86,14 +99,14 @@ export class ConfigManager extends EventEmitter {
   /**
    * Set app setting value
    */
-  setAppSetting<K extends keyof AppSettings>(
+  setAppSetting<K extends keyof AppConfigType>(
     key: K,
-    value: AppSettings[K]
+    value: AppConfigType[K]
   ): void {
     // Handle nested properties
     if (key.includes(".")) {
       const parts = key.split(".");
-      const parentKey = parts[0] as keyof AppSettings;
+      const parentKey = parts[0] as keyof AppConfigType;
       const childKey = parts.slice(1).join(".");
 
       // Get parent value
@@ -139,9 +152,9 @@ export class ConfigManager extends EventEmitter {
   /**
    * Get user setting value
    */
-  async getUserSetting<K extends keyof UserSettings>(
+  async getUserSetting<K extends keyof UserConfigType>(
     key: K
-  ): Promise<ConfigValue<UserSettings[K]>> {
+  ): Promise<ConfigValue<UserConfigType[K]>> {
     logger.debug(`getUserSetting: ${key}`);
     if (!this.isUserSettingsLoaded) {
       throw new Error("User settings not loaded");
@@ -152,17 +165,13 @@ export class ConfigManager extends EventEmitter {
       if (this.db) {
         // Convert camelCase to snake_case for database lookup
         const dbKey = snakeCase(key);
-
         logger.debug(`Looking up setting in database with key: ${dbKey}`);
-
-        // Import the UserSetting model directly
-        const { UserSetting } = await import("@main/db/models");
-        const dbValue = await UserSetting.get(dbKey);
+        const dbValue = await this.db.get(dbKey);
 
         if (dbValue !== undefined) {
           logger.debug(`Found value in database for ${key}:`, dbValue);
           return {
-            value: dbValue as UserSettings[K],
+            value: dbValue as UserConfigType[K],
             source: ConfigSource.DATABASE,
             timestamp: Date.now(),
           };
@@ -212,9 +221,9 @@ export class ConfigManager extends EventEmitter {
   /**
    * Set user setting value
    */
-  async setUserSetting<K extends keyof UserSettings>(
+  async setUserSetting<K extends keyof UserConfigType>(
     key: K,
-    value: UserSettings[K]
+    value: UserConfigType[K]
   ): Promise<void> {
     logger.debug(`setUserSetting: ${key}`, value);
     if (!this.isUserSettingsLoaded) {
@@ -230,7 +239,7 @@ export class ConfigManager extends EventEmitter {
       // Handle nested properties
       if (key.toString().includes(".")) {
         const parts = key.toString().split(".");
-        const parentKey = parts[0] as keyof UserSettings;
+        const parentKey = parts[0] as keyof UserConfigType;
         const childKey = parts.slice(1).join(".");
 
         // Get parent value
@@ -258,15 +267,11 @@ export class ConfigManager extends EventEmitter {
         if (this.db) {
           // Convert camelCase to snake_case for database storage
           const dbKey = snakeCase(parentKey);
-
-          // Import the UserSetting model directly
-          const { UserSetting } = await import("@main/db/models");
-
           logger.debug(
             `Saving nested property to database with key: ${dbKey}`,
             parentValue
           );
-          await UserSetting.set(dbKey, parentValue);
+          await this.db.set(dbKey as UserSettingKeyEnum, parentValue);
         }
 
         // Emit event that user settings changed
@@ -283,11 +288,8 @@ export class ConfigManager extends EventEmitter {
         // Convert camelCase to snake_case for database storage
         const dbKey = snakeCase(key);
 
-        // Import the UserSetting model directly
-        const { UserSetting } = await import("@main/db/models");
-
         logger.debug(`Saving to database with key: ${dbKey}`);
-        await UserSetting.set(dbKey, value);
+        await this.db.set(dbKey as UserSettingKeyEnum, value);
       }
 
       // Special handling for language change
@@ -306,7 +308,7 @@ export class ConfigManager extends EventEmitter {
   /**
    * Get the full configuration
    */
-  async getConfig(): Promise<Config> {
+  async getConfig(): Promise<ConfigType> {
     return {
       ...this.appSettings,
       user: this.userSettings
@@ -429,18 +431,12 @@ export class ConfigManager extends EventEmitter {
     if (user) {
       this.appSettings.user = user as any;
     }
-
-    // Load file path
-    const file = electronSettings.getSync("file");
-    if (file && typeof file === "string") {
-      this.appSettings.file = file;
-    }
   }
 
   /**
    * Load user settings from database
    */
-  async loadUserSettings(db: Sequelize): Promise<void> {
+  async loadUserSettings(db: typeof UserSetting): Promise<void> {
     logger.info("Loading user settings from database");
 
     // Store database reference
@@ -450,9 +446,6 @@ export class ConfigManager extends EventEmitter {
     this.userSettings = { ...DEFAULT_USER_SETTINGS };
 
     try {
-      // Import the UserSetting model directly
-      const { UserSetting } = await import("@main/db/models");
-
       // Load each user setting
       for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
         logger.debug(`Loading user setting: ${key}`);
@@ -460,12 +453,12 @@ export class ConfigManager extends EventEmitter {
         // Convert camelCase to snake_case for database lookup
         const dbKey = snakeCase(key);
 
-        const value = await UserSetting.get(dbKey);
+        const value = await this.db.get(dbKey);
         logger.debug(`Loaded value for ${key}`);
 
         if (value !== undefined) {
           logger.debug(`Setting value for ${key}`);
-          this.setUserSettingFromValue(key as keyof UserSettings, value);
+          this.setUserSettingFromValue(key as keyof UserConfigType, value);
         } else {
           logger.debug(`No value found for ${key}, using default`);
         }
@@ -484,11 +477,11 @@ export class ConfigManager extends EventEmitter {
   /**
    * Set user setting from database value
    */
-  private setUserSettingFromValue(key: keyof UserSettings, value: any): void {
+  private setUserSettingFromValue(key: keyof UserConfigType, value: any): void {
     // Handle nested properties
-    if (key.includes(".")) {
-      const parts = key.split(".");
-      const parentKey = parts[0] as keyof UserSettings;
+    if (key.toString().includes(".")) {
+      const parts = key.toString().split(".");
+      const parentKey = parts[0] as keyof UserConfigType;
       const childKey = parts.slice(1).join(".");
 
       // Get parent value
@@ -527,9 +520,9 @@ export class ConfigManager extends EventEmitter {
   /**
    * Get default app setting value
    */
-  private getDefaultAppSetting<K extends keyof AppSettings>(
+  private getDefaultAppSetting<K extends keyof AppConfigType>(
     key: K
-  ): AppSettings[K] {
+  ): AppConfigType[K] {
     // Handle nested properties
     if (key.includes(".")) {
       const parts = key.split(".");
@@ -547,12 +540,12 @@ export class ConfigManager extends EventEmitter {
   /**
    * Get default user setting value
    */
-  private getDefaultUserSetting<K extends keyof UserSettings>(
+  private getDefaultUserSetting<K extends keyof UserConfigType>(
     key: K
-  ): UserSettings[K] {
+  ): UserConfigType[K] {
     // Handle nested properties
-    if (key.includes(".")) {
-      const parts = key.split(".");
+    if (key.toString().includes(".")) {
+      const parts = key.toString().split(".");
       let value: any = DEFAULT_USER_SETTINGS;
       for (const part of parts) {
         value = value?.[part];
@@ -604,35 +597,6 @@ export class ConfigManager extends EventEmitter {
   }
 
   /**
-   * Get a user setting directly from the database (for debugging)
-   */
-  async getUserSettingDirect(key: string): Promise<any> {
-    try {
-      // Get the UserSetting model from the database
-      const db = await import("@main/db").then((module) => module.default);
-      if (!db.connection) {
-        logger.error("Database not connected");
-        return null;
-      }
-
-      // Import the UserSetting model directly
-      const { UserSetting } = await import("@main/db/models");
-
-      // Convert camelCase to snake_case for database lookup
-      const dbKey = snakeCase(key);
-
-      logger.debug(`Getting user setting directly from database: ${dbKey}`);
-      const result = await UserSetting.get(dbKey);
-      logger.debug(`Direct database result for ${dbKey}`);
-
-      return result;
-    } catch (error) {
-      logger.error(`Error getting user setting directly: ${key}`, error);
-      return null;
-    }
-  }
-
-  /**
    * Register IPC handlers for configuration
    */
   registerIpcHandlers(): void {
@@ -646,7 +610,7 @@ export class ConfigManager extends EventEmitter {
 
     ipcMain.handle(
       "config-set-user",
-      (_event: any, user: AppSettings["user"]) => {
+      (_event: any, user: AppConfigType["user"]) => {
         this.setAppSetting("user", user);
       }
     );
@@ -676,13 +640,6 @@ export class ConfigManager extends EventEmitter {
     );
 
     ipcMain.handle(
-      "config-get-user-setting-direct",
-      async (_event: any, key: string) => {
-        return await this.getUserSettingDirect(key);
-      }
-    );
-
-    ipcMain.handle(
       "config-set-user-setting",
       async (_event: any, key: string, value: any) => {
         await this.setUserSetting(key as any, value);
@@ -695,3 +652,5 @@ export class ConfigManager extends EventEmitter {
     });
   }
 }
+
+export const config = ConfigManager.getInstance();

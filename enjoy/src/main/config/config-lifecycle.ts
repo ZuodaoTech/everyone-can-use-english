@@ -1,6 +1,5 @@
 import { app } from "electron";
-import { ConfigEvent } from "./config-manager";
-import { config } from "./config-instance";
+import { config, ConfigEvent } from "./config-manager";
 import db from "@main/db";
 import log from "@main/services/logger";
 import { i18n } from "@main/services/i18n";

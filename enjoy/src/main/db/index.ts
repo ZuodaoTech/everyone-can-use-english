@@ -224,7 +224,7 @@ db.connect = async () => {
     logger.info("Database connection established");
 
     // Try to load user settings normally
-    await config.loadUserSettings(sequelize);
+    await config.loadUserSettings(UserSetting);
   } catch (err) {
     logger.error(err);
     throw err;

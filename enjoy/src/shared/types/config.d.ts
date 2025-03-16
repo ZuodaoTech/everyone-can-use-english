@@ -1,7 +1,7 @@
 import { SttEngineOptionEnum } from "@shared/types/enums";
 
 // App-level configuration (stored in electron-settings)
-export interface AppSettings {
+export interface AppConfigType {
   library: string;
   apiUrl: string;
   wsUrl: string;
@@ -14,7 +14,7 @@ export interface AppSettings {
 }
 
 // User-level configuration (stored in database)
-export interface UserSettings {
+export interface UserConfigType {
   language: string;
   nativeLanguage: string;
   learningLanguage: string;
@@ -39,17 +39,9 @@ export interface UserSettings {
   profile: UserType | null;
 }
 
-// Plugin configuration (stored in database)
-export interface PluginSettings {
-  [pluginId: string]: {
-    enabled: boolean;
-    settings: Record<string, any>;
-  };
-}
-
 // Combined configuration
-export interface Config extends AppSettings {
-  user: (AppSettings["user"] & UserSettings) | null;
+export interface ConfigType extends AppConfigType {
+  user: (AppConfigType["user"] & UserConfigType) | null;
   plugins?: PluginSettings;
   paths: {
     userData: string | null;
@@ -65,7 +57,6 @@ export enum ConfigSource {
   FILE = "file",
   DATABASE = "database",
   ENV = "environment",
-  PLUGIN = "plugin",
 }
 
 // Configuration value with metadata
@@ -73,17 +64,6 @@ export interface ConfigValue<T> {
   value: T;
   source: ConfigSource;
   timestamp: number;
-}
-
-// New types for the refactored config system
-
-// Storage provider interface
-export interface ConfigStorageProvider {
-  get<T>(key: string): Promise<T | undefined>;
-  set<T>(key: string, value: T): Promise<void>;
-  has(key: string): Promise<boolean>;
-  delete(key: string): Promise<void>;
-  clear(): Promise<void>;
 }
 
 // Config schema definition
@@ -94,35 +74,4 @@ export interface ConfigSchema {
     validate?: (value: any) => boolean;
     description?: string;
   };
-}
-
-// Config store options
-export interface ConfigStoreOptions {
-  name: string;
-  schema?: ConfigSchema;
-  storage?: ConfigStorageProvider;
-}
-
-// Config store events
-export enum ConfigStoreEvent {
-  CHANGE = "change",
-  ERROR = "error",
-}
-
-// Config store listener
-export type ConfigStoreListener = (key: string, value: any) => void;
-
-// Plugin configuration schema
-export interface PluginConfigSchema extends ConfigSchema {
-  enabled: {
-    type: "boolean";
-    default: boolean;
-    description: string;
-  };
-}
-
-// Plugin configuration manager options
-export interface PluginConfigOptions {
-  pluginId: string;
-  schema: PluginConfigSchema;
 }

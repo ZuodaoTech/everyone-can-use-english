@@ -7,7 +7,6 @@ import {
   type AlignmentOptions,
   type RecognitionOptions,
 } from "echogarden/dist/api/API";
-import { Config } from "./main/config/types";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {

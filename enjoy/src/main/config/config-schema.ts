@@ -1,10 +1,14 @@
 import { SttEngineOptionEnum } from "@shared/types/enums";
-import { AppSettings, ConfigSchema, UserSettings } from "./types";
+import {
+  AppConfigType,
+  ConfigSchema,
+  UserConfigType,
+} from "../../shared/types/config";
 import { LIBRARY_PATH_SUFFIX, WEB_API_URL } from "@shared/constants";
 import path from "path";
 import { app } from "electron";
 
-export const DEFAULT_USER_SETTINGS: UserSettings = {
+export const DEFAULT_USER_SETTINGS: UserConfigType = {
   language: "zh-CN",
   nativeLanguage: "zh-CN",
   learningLanguage: "en-US",
@@ -27,7 +31,7 @@ export const DEFAULT_USER_SETTINGS: UserSettings = {
 };
 
 // Default configurations
-export const DEFAULT_APP_SETTINGS: AppSettings = {
+export const DEFAULT_APP_SETTINGS: AppConfigType = {
   library: path.join(app.getPath("documents"), LIBRARY_PATH_SUFFIX),
   apiUrl: WEB_API_URL,
   wsUrl: "",
