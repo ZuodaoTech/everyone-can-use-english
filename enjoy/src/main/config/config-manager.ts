@@ -2,11 +2,11 @@ import electronSettings from "electron-settings";
 import { app, ipcMain } from "electron";
 import path from "path";
 import fs from "fs-extra";
-import { UserSettingKeyEnum, SttEngineOptionEnum } from "@shared/types/enums";
+import { SttEngineOptionEnum } from "@shared/types/enums";
 import log from "@main/services/logger";
 import {
-  LIBRARY_PATH_SUFFIX,
   DATABASE_NAME,
+  LIBRARY_PATH_SUFFIX,
   WEB_API_URL,
 } from "@shared/constants";
 import {
@@ -16,15 +16,12 @@ import {
   ConfigSource,
   ConfigValue,
   ConfigSchema,
-  PluginConfigOptions,
 } from "./types";
 import * as i18n from "i18next";
 import { ConfigStore } from "./config-store";
 import { ElectronSettingsProvider } from "./electron-settings-provider";
 import { DatabaseProvider } from "./database-provider";
 import { type Sequelize } from "sequelize-typescript";
-import { PluginConfigRegistry } from "./plugin-config-registry";
-import { PluginConfigManager } from "./plugin-config-manager";
 import snakeCase from "lodash/snakeCase";
 import camelCase from "lodash/camelCase";
 
@@ -160,9 +157,6 @@ export class ConfigManager {
   private appStore: ConfigStore;
   private userStore: ConfigStore | null = null;
 
-  // Plugin configuration registry
-  private pluginRegistry: PluginConfigRegistry;
-
   constructor() {
     // Initialize with defaults
     this.appSettings = { ...DEFAULT_APP_SETTINGS };
@@ -173,9 +167,6 @@ export class ConfigManager {
       schema: APP_SETTINGS_SCHEMA,
       storage: new ElectronSettingsProvider(),
     });
-
-    // Create plugin configuration registry
-    this.pluginRegistry = new PluginConfigRegistry();
 
     // Load app settings from file
     this.loadAppSettings();
@@ -426,34 +417,6 @@ export class ConfigManager {
   }
 
   /**
-   * Register a plugin configuration
-   */
-  registerPluginConfig(options: PluginConfigOptions): PluginConfigManager {
-    return this.pluginRegistry.register(options);
-  }
-
-  /**
-   * Unregister a plugin configuration
-   */
-  unregisterPluginConfig(pluginId: string): void {
-    this.pluginRegistry.unregister(pluginId);
-  }
-
-  /**
-   * Get a plugin configuration manager
-   */
-  getPluginConfig(pluginId: string): PluginConfigManager | undefined {
-    return this.pluginRegistry.getPlugin(pluginId);
-  }
-
-  /**
-   * Get all registered plugin IDs
-   */
-  getPluginIds(): string[] {
-    return this.pluginRegistry.getPluginIds();
-  }
-
-  /**
    * Get the full configuration
    */
   async getConfig(): Promise<Config> {
@@ -630,9 +593,6 @@ export class ConfigManager {
       }
 
       this.isUserSettingsLoaded = true;
-
-      // Initialize plugin registry
-      await this.pluginRegistry.initialize(db);
     } catch (error) {
       logger.error("Failed to load user settings from database", error);
       this.isUserSettingsLoaded = false;
@@ -679,39 +639,6 @@ export class ConfigManager {
     if (this.userSettings) {
       // Use type assertion to ensure type safety
       this.userSettings[key] = value as any;
-    }
-  }
-
-  /**
-   * Map a user setting key to UserSettingKeyEnum
-   */
-  private mapKeyToUserSettingEnum(key: string): UserSettingKeyEnum | null {
-    // Handle nested properties
-    const baseKey = key.split(".")[0];
-
-    switch (baseKey) {
-      case "language":
-        return UserSettingKeyEnum.LANGUAGE;
-      case "nativeLanguage":
-        return UserSettingKeyEnum.NATIVE_LANGUAGE;
-      case "learningLanguage":
-        return UserSettingKeyEnum.LEARNING_LANGUAGE;
-      case "sttEngine":
-        return UserSettingKeyEnum.STT_ENGINE;
-      case "whisper":
-        return UserSettingKeyEnum.WHISPER;
-      case "openai":
-        return UserSettingKeyEnum.OPENAI;
-      case "gptEngine":
-        return UserSettingKeyEnum.GPT_ENGINE;
-      case "recorder":
-        return UserSettingKeyEnum.RECORDER;
-      case "hotkeys":
-        return UserSettingKeyEnum.HOTKEYS;
-      case "profile":
-        return UserSettingKeyEnum.PROFILE;
-      default:
-        return null;
     }
   }
 
@@ -778,41 +705,6 @@ export class ConfigManager {
       }
     } catch (error) {
       logger.error("Failed to ensure directories", error);
-    }
-  }
-
-  /**
-   * Verify that user settings are properly loaded from the database
-   * This is a diagnostic function that can be called after loadUserSettings
-   */
-  async verifyUserSettings(): Promise<void> {
-    if (!this.isUserSettingsLoaded || !this.userStore) {
-      logger.error("Cannot verify user settings - not loaded");
-      return;
-    }
-
-    logger.info("Verifying user settings...");
-
-    // Check each user setting
-    for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
-      try {
-        // Convert camelCase to snake_case for database lookup
-        const dbKey = snakeCase(key);
-
-        // Get value from in-memory cache
-        const memoryValue = this.userSettings[key as keyof UserSettings];
-
-        // Get value from config store
-        const storeValue = await this.userStore.getValue(dbKey);
-
-        logger.info(`Setting ${key} (${dbKey}):`, {
-          memory: memoryValue,
-          store: storeValue,
-          default: USER_SETTINGS_SCHEMA[key].default,
-        });
-      } catch (error) {
-        logger.error(`Error verifying setting ${key}:`, error);
-      }
     }
   }
 
@@ -885,76 +777,6 @@ export class ConfigManager {
     } catch (error) {
       logger.error(`Error getting user setting directly: ${key}`, error);
       return null;
-    }
-  }
-
-  /**
-   * Force initialize user settings with values from the database
-   * This is a last resort method to fix issues with user settings
-   */
-  async forceInitializeUserSettings(): Promise<void> {
-    logger.info("Force initializing user settings from database");
-
-    try {
-      // Import the UserSetting model directly
-      const { UserSetting } = await import("@main/db/models");
-
-      // Reset user settings to defaults
-      this.userSettings = { ...DEFAULT_USER_SETTINGS };
-
-      // Get all user settings from the database
-      const allSettings = await UserSetting.findAll();
-      logger.info(`Found ${allSettings.length} settings in database`);
-
-      // Process each setting
-      for (const setting of allSettings) {
-        try {
-          const key = setting.key;
-          let value;
-
-          // Parse the value if it's JSON
-          try {
-            value = JSON.parse(setting.value);
-          } catch {
-            value = setting.value;
-          }
-
-          logger.info(`Loading setting from database: ${key}`, value);
-
-          // Convert snake_case to camelCase
-          const camelKey = camelCase(key);
-
-          // Set the value in memory
-          if (camelKey.includes(".")) {
-            // Handle nested properties
-            const parts = camelKey.split(".");
-            const parentKey = parts[0] as keyof UserSettings;
-            const childKey = parts.slice(1).join(".");
-
-            // Get parent value
-            let parentValue = this.userSettings[parentKey];
-            if (!parentValue || typeof parentValue !== "object") {
-              parentValue = {} as any;
-            }
-
-            // Set nested property
-            this.setNestedProperty(parentValue, childKey, value);
-
-            // Update user settings
-            this.userSettings[parentKey] = parentValue as any;
-          } else if (camelKey in this.userSettings) {
-            // Set direct property
-            (this.userSettings as any)[camelKey] = value;
-          }
-        } catch (error) {
-          logger.error(`Failed to process setting ${setting.key}`, error);
-        }
-      }
-
-      this.isUserSettingsLoaded = true;
-      logger.info("User settings force initialized successfully");
-    } catch (error) {
-      logger.error("Failed to force initialize user settings", error);
     }
   }
 
@@ -1037,38 +859,6 @@ export class ConfigManager {
     ipcMain.handle("config-reload-user-settings", async () => {
       await this.reloadUserSettings();
       return true;
-    });
-
-    ipcMain.handle("config-force-initialize-user-settings", async () => {
-      await this.forceInitializeUserSettings();
-      return true;
-    });
-
-    // Plugin settings
-    ipcMain.handle(
-      "config-get-plugin-setting",
-      async (_event: any, pluginId: string, key: string) => {
-        const plugin = this.getPluginConfig(pluginId);
-        if (!plugin) {
-          throw new Error(`Plugin ${pluginId} not found`);
-        }
-        return await plugin.getValue(key);
-      }
-    );
-
-    ipcMain.handle(
-      "config-set-plugin-setting",
-      async (_event: any, pluginId: string, key: string, value: any) => {
-        const plugin = this.getPluginConfig(pluginId);
-        if (!plugin) {
-          throw new Error(`Plugin ${pluginId} not found`);
-        }
-        await plugin.set(key, value);
-      }
-    );
-
-    ipcMain.handle("config-get-plugin-ids", () => {
-      return this.getPluginIds();
     });
 
     // Full config

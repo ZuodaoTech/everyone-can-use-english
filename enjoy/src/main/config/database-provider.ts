@@ -30,13 +30,6 @@ export class DatabaseProvider implements ConfigStorageProvider {
   }
 
   /**
-   * Get the full key with prefix
-   */
-  private getFullKey(key: string): string {
-    return this.prefix ? `${this.prefix}.${key}` : key;
-  }
-
-  /**
    * Map a key to a UserSettingKeyEnum
    */
   private mapKeyToEnum(key: string): UserSettingKeyEnum | string | null {
