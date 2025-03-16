@@ -12,40 +12,37 @@ import {
   ConfigValue,
 } from "./types";
 import * as i18n from "i18next";
-import { ConfigStore } from "./config-store";
-import { ElectronSettingsProvider } from "./electron-settings-provider";
-import { DatabaseProvider } from "./database-provider";
 import { type Sequelize } from "sequelize-typescript";
 import snakeCase from "lodash/snakeCase";
 import {
-  APP_SETTINGS_SCHEMA,
   DEFAULT_APP_SETTINGS,
   DEFAULT_USER_SETTINGS,
   USER_SETTINGS_SCHEMA,
 } from "./schema";
+import { EventEmitter } from "events";
 
 const logger = log.scope("ConfigManager");
 
-export class ConfigManager {
-  // Legacy properties for backward compatibility
+// Add this new enum for config events
+export enum ConfigEvent {
+  USER_SETTINGS_LOADED = "userSettingsLoaded",
+  USER_SETTINGS_UNLOADED = "userSettingsUnloaded",
+  APP_SETTINGS_CHANGED = "appSettingsChanged",
+  USER_SETTINGS_CHANGED = "userSettingsChanged",
+}
+
+export class ConfigManager extends EventEmitter {
+  // Core properties
   private appSettings: AppSettings;
   private userSettings: UserSettings | null = null;
   private isUserSettingsLoaded = false;
-
-  // New config stores
-  private appStore: ConfigStore;
-  private userStore: ConfigStore | null = null;
+  private db: Sequelize | null = null;
 
   constructor() {
+    super(); // Initialize EventEmitter
+
     // Initialize with defaults
     this.appSettings = { ...DEFAULT_APP_SETTINGS };
-
-    // Create app config store with electron-settings provider
-    this.appStore = new ConfigStore({
-      name: "app-settings",
-      schema: APP_SETTINGS_SCHEMA,
-      storage: new ElectronSettingsProvider(),
-    });
 
     // Load app settings from file
     this.loadAppSettings();
@@ -123,13 +120,8 @@ export class ConfigManager {
       // Save to electron-settings
       electronSettings.setSync(parentKey, parentValue);
 
-      // Also update the new config store
-      this.appStore.set(key as string, value).catch((error) => {
-        logger.error(
-          `Failed to set app setting "${key}" in config store`,
-          error
-        );
-      });
+      // Emit event that app settings changed
+      this.emit(ConfigEvent.APP_SETTINGS_CHANGED, key, value);
 
       return;
     }
@@ -140,10 +132,8 @@ export class ConfigManager {
     // Save to electron-settings
     electronSettings.setSync(key, value);
 
-    // Also update the new config store
-    this.appStore.set(key as string, value).catch((error) => {
-      logger.error(`Failed to set app setting "${key}" in config store`, error);
-    });
+    // Emit event that app settings changed
+    this.emit(ConfigEvent.APP_SETTINGS_CHANGED, key, value);
   }
 
   /**
@@ -159,12 +149,15 @@ export class ConfigManager {
 
     try {
       // Try to get the value from the database first
-      if (this.userStore) {
+      if (this.db) {
         // Convert camelCase to snake_case for database lookup
         const dbKey = snakeCase(key);
 
         logger.debug(`Looking up setting in database with key: ${dbKey}`);
-        const dbValue = await this.userStore.getValue(dbKey);
+
+        // Import the UserSetting model directly
+        const { UserSetting } = await import("@main/db/models");
+        const dbValue = await UserSetting.get(dbKey);
 
         if (dbValue !== undefined) {
           logger.debug(`Found value in database for ${key}:`, dbValue);
@@ -194,11 +187,14 @@ export class ConfigManager {
       }
 
       // Return from in-memory cache or default
-      logger.debug(`Using in-memory value for ${key}:`, this.userSettings[key]);
+      logger.debug(
+        `Using in-memory value for ${key}:`,
+        this.userSettings?.[key]
+      );
       return {
-        value: this.userSettings[key] ?? this.getDefaultUserSetting(key),
+        value: this.userSettings?.[key] ?? this.getDefaultUserSetting(key),
         source:
-          this.userSettings[key] !== undefined
+          this.userSettings?.[key] !== undefined
             ? ConfigSource.DATABASE
             : ConfigSource.DEFAULT,
         timestamp: Date.now(),
@@ -258,17 +254,23 @@ export class ConfigManager {
         // Update user settings
         this.userSettings[parentKey] = parentValue as any;
 
-        // Save to database using the new config store
-        if (this.userStore) {
+        // Save to database directly
+        if (this.db) {
           // Convert camelCase to snake_case for database storage
           const dbKey = snakeCase(parentKey);
+
+          // Import the UserSetting model directly
+          const { UserSetting } = await import("@main/db/models");
 
           logger.debug(
             `Saving nested property to database with key: ${dbKey}`,
             parentValue
           );
-          await this.userStore.set(dbKey, parentValue);
+          await UserSetting.set(dbKey, parentValue);
         }
+
+        // Emit event that user settings changed
+        this.emit(ConfigEvent.USER_SETTINGS_CHANGED, key, value);
 
         return;
       }
@@ -276,19 +278,25 @@ export class ConfigManager {
       // Update user settings in memory
       this.userSettings[key] = value;
 
-      // Save to database using the new config store
-      if (this.userStore) {
+      // Save to database directly
+      if (this.db) {
         // Convert camelCase to snake_case for database storage
         const dbKey = snakeCase(key);
 
-        logger.debug(`Saving to database with key: ${dbKey}`, value);
-        await this.userStore.set(dbKey, value);
+        // Import the UserSetting model directly
+        const { UserSetting } = await import("@main/db/models");
+
+        logger.debug(`Saving to database with key: ${dbKey}`);
+        await UserSetting.set(dbKey, value);
       }
 
       // Special handling for language change
       if (key === "language") {
         await i18n.changeLanguage(value as string);
       }
+
+      // Emit event that user settings changed
+      this.emit(ConfigEvent.USER_SETTINGS_CHANGED, key, value);
     } catch (error) {
       logger.error(`Error setting user setting ${key}:`, error);
       throw error;
@@ -427,18 +435,6 @@ export class ConfigManager {
     if (file && typeof file === "string") {
       this.appSettings.file = file;
     }
-
-    // Also load settings into the new config store
-    for (const key of Object.keys(this.appSettings) as Array<
-      keyof AppSettings
-    >) {
-      this.appStore.set(key, this.appSettings[key]).catch((error) => {
-        logger.error(
-          `Failed to set app setting "${key}" in config store`,
-          error
-        );
-      });
-    }
   }
 
   /**
@@ -447,20 +443,24 @@ export class ConfigManager {
   async loadUserSettings(db: Sequelize): Promise<void> {
     logger.info("Loading user settings from database");
 
+    // Store database reference
+    this.db = db;
+
     // Initialize user settings with defaults
     this.userSettings = { ...DEFAULT_USER_SETTINGS };
 
-    this.userStore = new ConfigStore({
-      name: "user-settings",
-      schema: USER_SETTINGS_SCHEMA,
-      storage: new DatabaseProvider(db, "UserSetting", USER_SETTINGS_SCHEMA),
-    });
-
     try {
+      // Import the UserSetting model directly
+      const { UserSetting } = await import("@main/db/models");
+
       // Load each user setting
       for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
         logger.debug(`Loading user setting: ${key}`);
-        const value = await this.userStore.getValue(key);
+
+        // Convert camelCase to snake_case for database lookup
+        const dbKey = snakeCase(key);
+
+        const value = await UserSetting.get(dbKey);
         logger.debug(`Loaded value for ${key}`);
 
         if (value !== undefined) {
@@ -472,6 +472,9 @@ export class ConfigManager {
       }
 
       this.isUserSettingsLoaded = true;
+
+      // Emit event that user settings are loaded
+      this.emit(ConfigEvent.USER_SETTINGS_LOADED, this.userSettings);
     } catch (error) {
       logger.error("Failed to load user settings from database", error);
       this.isUserSettingsLoaded = false;
@@ -588,46 +591,16 @@ export class ConfigManager {
   }
 
   /**
-   * Force reload user settings from the database
+   * Unload user settings (e.g., when user logs out)
    */
-  async reloadUserSettings(): Promise<void> {
-    if (!this.userStore) {
-      logger.error("Cannot reload user settings - store not initialized");
-      return;
-    }
+  unloadUserSettings(): void {
+    logger.info("Unloading user settings");
+    this.userSettings = null;
+    this.db = null;
+    this.isUserSettingsLoaded = false;
 
-    logger.info("Reloading user settings from database");
-
-    try {
-      // Reset user settings to defaults
-      this.userSettings = { ...DEFAULT_USER_SETTINGS };
-
-      // Load each user setting
-      for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
-        // Convert camelCase to snake_case for database lookup
-        const dbKey = snakeCase(key);
-
-        logger.debug(`Reloading user setting: ${key} (${dbKey})`);
-
-        try {
-          const value = await this.userStore.getValue(dbKey);
-          if (value !== undefined) {
-            logger.debug(`Reloaded value for ${key}`);
-            this.setUserSettingFromValue(key as keyof UserSettings, value);
-          } else {
-            logger.debug(`No value found for ${key}, using default`);
-          }
-        } catch (error) {
-          logger.error(`Failed to reload setting ${key}:`, error);
-        }
-      }
-
-      this.isUserSettingsLoaded = true;
-
-      logger.info("User settings reloaded successfully");
-    } catch (error) {
-      logger.error("Failed to reload user settings from database", error);
-    }
+    // Emit event that user settings are unloaded
+    this.emit(ConfigEvent.USER_SETTINGS_UNLOADED);
   }
 
   /**
@@ -648,9 +621,9 @@ export class ConfigManager {
       // Convert camelCase to snake_case for database lookup
       const dbKey = snakeCase(key);
 
-      logger.info(`Getting user setting directly from database: ${dbKey}`);
+      logger.debug(`Getting user setting directly from database: ${dbKey}`);
       const result = await UserSetting.get(dbKey);
-      logger.info(`Direct database result for ${dbKey}:`, result);
+      logger.debug(`Direct database result for ${dbKey}`);
 
       return result;
     } catch (error) {
@@ -663,7 +636,6 @@ export class ConfigManager {
    * Register IPC handlers for configuration
    */
   registerIpcHandlers(): void {
-    // Import ipcMain dynamically to avoid circular dependency
     ipcMain.handle("config-get-library", () => {
       return this.getAppSetting("library").value;
     });
@@ -716,11 +688,6 @@ export class ConfigManager {
         await this.setUserSetting(key as any, value);
       }
     );
-
-    ipcMain.handle("config-reload-user-settings", async () => {
-      await this.reloadUserSettings();
-      return true;
-    });
 
     // Full config
     ipcMain.handle("config-get", async () => {

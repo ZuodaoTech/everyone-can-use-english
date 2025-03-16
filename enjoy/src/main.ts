@@ -11,6 +11,7 @@ import { Client } from "./shared/api";
 import { config } from "@main/config";
 import db from "@main/db";
 import { i18n } from "@main/services/i18n";
+import { configLifecycle } from "@main/config/config-lifecycle";
 
 const logger = log.scope("main");
 
@@ -142,20 +143,8 @@ app.on("ready", async () => {
   });
 
   try {
-    // Initialize database with basic config (no user settings yet)
-    await db.connect();
-
-    // Initialize i18n with user language preference
-    try {
-      const language = (await config.getUserSetting("language")).value;
-      await i18n(language);
-    } catch (error) {
-      logger.warn(
-        "Failed to load user language preference, using default",
-        error
-      );
-      await i18n("zh-CN"); // Default language
-    }
+    // Initialize config system
+    await configLifecycle.initialize();
 
     // Initialize main window
     mainWindow.init();

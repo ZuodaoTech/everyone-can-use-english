@@ -4,8 +4,6 @@ export { config } from "./config-instance";
 // Export types
 export * from "./types";
 
-// Export new config system components
-export { ConfigStore } from "./config-store";
-export { ElectronSettingsProvider } from "./electron-settings-provider";
-export { DatabaseProvider } from "./database-provider";
-export { ConfigManager } from "./config-manager";
+// Export config manager and events
+export { ConfigManager, ConfigEvent } from "./config-manager";
+export { configLifecycle } from "./config-lifecycle";
