@@ -47,6 +47,7 @@ export default defineConfig((env) => {
   const config: UserConfig = {
     build: {
       sourcemap: true,
+      outDir: `.vite/build`,
       lib: {
         entry: forgeConfigSelf.entry!,
         fileName: () => "[name].js",

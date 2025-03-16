@@ -45,6 +45,7 @@ import path from "path";
 import log from "@main/services/logger";
 import fs from "fs-extra";
 import { config } from "@main/config";
+import { ConfigEvent } from "@shared/types/config.d";
 
 const __dirname = import.meta.dirname;
 const logger = log.scope("DB");
@@ -58,6 +59,14 @@ const db = {
   backup: async (options?: { force: boolean }) => {},
   restore: async (backupFilePath: string) => {},
 };
+
+config.on(ConfigEvent.USER_LOGIN, async () => {
+  await db.connect();
+});
+
+config.on(ConfigEvent.USER_LOGOUT, async () => {
+  await db.disconnect();
+});
 
 const handlers: BaseHandler[] = [
   audiosHandler,
@@ -223,8 +232,7 @@ db.connect = async () => {
     db.connection = sequelize;
     logger.info("Database connection established");
 
-    // Try to load user settings normally
-    await config.loadUserSettings(UserSetting);
+    config.loadUserSettings(UserSetting);
   } catch (err) {
     logger.error(err);
     throw err;

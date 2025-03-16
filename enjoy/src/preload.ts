@@ -7,6 +7,7 @@ import {
   type AlignmentOptions,
   type RecognitionOptions,
 } from "echogarden/dist/api/API";
+import { ConfigEvent } from "@shared/types/config.d";
 
 contextBridge.exposeInMainWorld("__ENJOY_APP__", {
   app: {
@@ -279,6 +280,22 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     getApiUrl: () => ipcRenderer.invoke("config-get-api-url"),
     setApiUrl: (url: string) => ipcRenderer.invoke("config-set-api-url", url),
     getSessions: () => ipcRenderer.invoke("config-get-sessions"),
+
+    login: (user?: any) => ipcRenderer.invoke("config-login", user),
+    logout: () => ipcRenderer.invoke("config-logout"),
+
+    onChange: (
+      callback: (
+        event: IpcRendererEvent,
+        state: {
+          type: ConfigEvent;
+          details: Record<string, any>;
+        }
+      ) => void
+    ) => ipcRenderer.on("config-on-change", callback),
+    removeChangeListener: () => {
+      ipcRenderer.removeAllListeners("config-on-change");
+    },
 
     // User settings
     getUserSetting: (key: string) =>

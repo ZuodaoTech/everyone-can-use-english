@@ -1,17 +1,14 @@
+import { config } from "@main/config";
 import { app, BrowserWindow, protocol, net, dialog } from "electron";
 import path from "path";
 import fs from "fs-extra";
-import log from "@/main/services/logger";
-import mainWindow from "@/main/ipc/window";
+import log from "@main/services/logger";
+import mainWindow from "@main/ipc/window";
 import ElectronSquirrelStartup from "electron-squirrel-startup";
 import contextMenu from "electron-context-menu";
 import Bugsnag from "@bugsnag/electron";
 import { t } from "i18next";
-import { Client } from "./shared/api";
-import { config } from "@main/config";
-import db from "@main/db";
-import { i18n } from "@main/services/i18n";
-import { configLifecycle } from "@main/config/config-lifecycle";
+import { Client } from "@shared/api";
 
 const logger = log.scope("main");
 
@@ -143,9 +140,6 @@ app.on("ready", async () => {
   });
 
   try {
-    // Initialize config system
-    await configLifecycle.initialize();
-
     // Initialize main window
     mainWindow.init();
   } catch (error) {

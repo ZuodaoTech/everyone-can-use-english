@@ -5,7 +5,7 @@ import i18n from "@renderer/i18n";
 import ahoy from "ahoy.js";
 import { type Consumer, createConsumer } from "@rails/actioncable";
 import { DbProviderContext } from "@renderer/context";
-import { UserSettingKeyEnum } from "@/shared/types/enums";
+import { UserSettingKeyEnum } from "@shared/types/enums";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -27,6 +27,7 @@ import {
 import { t } from "i18next";
 import { redirect } from "react-router-dom";
 import { Deposit } from "@renderer/components";
+import { ConfigEvent } from "@shared/types/config.d";
 
 type AppSettingsProviderState = {
   webApi: Client;
@@ -161,7 +162,9 @@ export const AppSettingsProvider = ({
   };
 
   const autoLogin = async () => {
-    const currentUser = await EnjoyApp.config.getUser();
+    const currentUser = await EnjoyApp.config.getUserSetting(
+      UserSettingKeyEnum.PROFILE
+    );
     if (!currentUser) return;
 
     setUser(currentUser);
@@ -170,16 +173,11 @@ export const AppSettingsProvider = ({
   const login = async (user: UserType) => {
     if (!user?.id) return;
 
-    setUser(user);
-    if (user.accessToken) {
-      // Set current user to App settings
-      EnjoyApp.config.setUser({ id: user.id, name: user.name });
-    }
+    EnjoyApp.config.login(user);
   };
 
   const logout = () => {
-    setUser(null);
-    EnjoyApp.config.setUser(null);
+    EnjoyApp.config.logout();
   };
 
   const fetchLibraryPath = async () => {
@@ -271,13 +269,31 @@ export const AppSettingsProvider = ({
     });
   };
 
-  useEffect(() => {
-    if (db.state === "connected") {
-      fetchLanguages();
-      fetchVocabularyConfig();
-      fetchRecorderConfig();
+  const handleConfigChange = (
+    _event: any,
+    state: {
+      type: ConfigEvent;
+      details: Record<string, any>;
     }
-  }, [db.state]);
+  ) => {
+    console.log("handleConfigChange", state);
+    switch (state.type) {
+      case ConfigEvent.USER_SETTINGS_LOADED:
+        setUser(state.details.userSettings.profile);
+        break;
+      case ConfigEvent.USER_SETTINGS_UNLOADED:
+        setUser(null);
+        break;
+    }
+  };
+
+  useEffect(() => {
+    if (!user) return;
+
+    fetchLanguages();
+    fetchVocabularyConfig();
+    fetchRecorderConfig();
+  }, [user]);
 
   useEffect(() => {
     autoLogin();
@@ -326,33 +342,12 @@ export const AppSettingsProvider = ({
   }, [webApi]);
 
   useEffect(() => {
-    if (!user) return;
+    EnjoyApp.config.onChange(handleConfigChange);
 
-    db.connect().then(async () => {
-      console.log("db.connect", user);
-      // Login via API, update profile to DB
-      if (user.accessToken) {
-        EnjoyApp.config.setUserSetting(UserSettingKeyEnum.PROFILE, user);
-        createCable(user.accessToken);
-      } else {
-        // Auto login from local settings, get full profile from DB
-        const profile = await EnjoyApp.config.getUserSetting(
-          UserSettingKeyEnum.PROFILE
-        );
-        console.log("db.connect getUserSetting", profile);
-        if (profile && profile.accessToken) {
-          console.log("db.connect setUser", profile);
-          setUser(profile);
-        }
-      }
-    });
     return () => {
-      if (user) return;
-
-      db.disconnect();
-      setUser(null);
+      EnjoyApp.config.removeChangeListener();
     };
-  }, [user?.id]);
+  }, []);
 
   return (
     <AppSettingsProviderContext.Provider

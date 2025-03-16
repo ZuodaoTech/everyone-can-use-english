@@ -170,6 +170,15 @@ type EnjoyAppType = {
     getUserSetting: (key: string) => Promise<any>;
     setUserSetting: (key: string, value: any) => Promise<void>;
     get: () => Promise<Config>;
+    login: (user?: UserType) => Promise<void>;
+    logout: () => Promise<void>;
+    onChange: (
+      callback: (
+        event: IpcRendererEvent,
+        state: { type: ConfigEvent; details: Record<string, any> }
+      ) => void
+    ) => void;
+    removeChangeListener: () => void;
   };
   fs: {
     ensureDir: (path: string) => Promise<boolean>;

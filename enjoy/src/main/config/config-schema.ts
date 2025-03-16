@@ -32,7 +32,9 @@ export const DEFAULT_USER_SETTINGS: UserConfigType = {
 
 // Default configurations
 export const DEFAULT_APP_SETTINGS: AppConfigType = {
-  library: path.join(app.getPath("documents"), LIBRARY_PATH_SUFFIX),
+  library:
+    process.env.LIBRARY_PATH ||
+    path.join(app.getPath("documents"), LIBRARY_PATH_SUFFIX),
   apiUrl: WEB_API_URL,
   wsUrl: "",
   proxy: null,

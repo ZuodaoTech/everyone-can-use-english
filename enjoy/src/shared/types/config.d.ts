@@ -9,6 +9,7 @@ export interface AppConfigType {
   user: {
     id: string;
     name?: string;
+    avatar_url?: string;
   } | null;
   file: string;
 }
@@ -74,4 +75,14 @@ export interface ConfigSchema {
     validate?: (value: any) => boolean;
     description?: string;
   };
+}
+
+// Add this new enum for config events
+export enum ConfigEvent {
+  USER_LOGIN = "userLogin",
+  USER_LOGOUT = "userLogout",
+  USER_SETTINGS_LOADED = "userSettingsLoaded",
+  USER_SETTINGS_UNLOADED = "userSettingsUnloaded",
+  APP_SETTINGS_CHANGED = "appSettingsChanged",
+  USER_SETTINGS_CHANGED = "userSettingsChanged",
 }
