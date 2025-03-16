@@ -13,11 +13,11 @@ import {
 import path from "path";
 import db from "@main/db";
 import { config } from "@main/config";
-import downloader from "@/main/services/downloader";
+import downloader from "@main/services/downloader";
 import fs from "fs-extra";
-import log from "@/main/services/logger";
-import { DISCUSS_URL, REPO_URL, WEB_API_URL, WS_URL } from "@/shared/constants";
-import { AudibleProvider, TedProvider, YoutubeProvider } from "@/main/services/providers";
+import log from "@main/services/logger";
+import { DISCUSS_URL, REPO_URL, WEB_API_URL, WS_URL } from "@shared/constants";
+import { AudibleProvider, TedProvider, YoutubeProvider } from "@main/services/providers";
 import Ffmpeg from "@main/services/ffmpeg";
 import { Waveform } from "@main/services/waveform";
 import echogarden from "@main/services/echogarden";
@@ -28,6 +28,7 @@ import decompresser from "@main/services/decompresser";
 import { UserSetting } from "@main/db/models";
 import { format } from "util";
 import pkg from "../../../package.json" with { type: "json" };
+import { ConfigEvent } from "@shared/types/config.d";
 
 const __dirname = import.meta.dirname;
 
@@ -763,6 +764,34 @@ ${log}
 
   ipcMain.handle("window-close", () => {
     app.quit();
+  });
+
+  config.on(ConfigEvent.APP_SETTINGS_CHANGED, (details: any) => {
+    mainWindow.webContents.send("config-on-change", {
+      type: ConfigEvent.APP_SETTINGS_CHANGED,
+      details,
+    });
+  });
+
+  config.on(ConfigEvent.USER_SETTINGS_CHANGED, (details: any) => {
+    mainWindow.webContents.send("config-on-change", {
+      type: ConfigEvent.USER_SETTINGS_CHANGED,
+      details,
+    });
+  });
+
+  config.on(ConfigEvent.USER_SETTINGS_LOADED, (details: any) => {
+    mainWindow.webContents.send("config-on-change", {
+      type: ConfigEvent.USER_SETTINGS_LOADED,
+      details,
+    });
+  });
+
+  config.on(ConfigEvent.USER_SETTINGS_UNLOADED, (details: any) => {
+    mainWindow.webContents.send("config-on-change", {
+      type: ConfigEvent.USER_SETTINGS_UNLOADED,
+      details,
+    });
   });
 
   mainWindow.webContents.setWindowOpenHandler(() => {

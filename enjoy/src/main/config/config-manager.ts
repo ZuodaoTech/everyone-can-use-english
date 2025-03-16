@@ -170,7 +170,11 @@ export class ConfigManager extends EventEmitter {
   ): Promise<ConfigValue<UserConfigType[K]>> {
     logger.debug(`getUserSetting: ${key}`);
     if (!this.isUserSettingsLoaded) {
-      throw new Error("User settings not loaded");
+      return {
+        value: DEFAULT_USER_SETTINGS[key],
+        source: ConfigSource.DEFAULT,
+        timestamp: Date.now(),
+      };
     }
 
     try {
@@ -469,16 +473,12 @@ export class ConfigManager extends EventEmitter {
     try {
       // Load each user setting
       for (const key of Object.keys(USER_SETTINGS_SCHEMA)) {
-        logger.debug(`Loading user setting: ${key}`);
-
         // Convert camelCase to snake_case for database lookup
         const dbKey = snakeCase(key);
 
         const value = await this.userSettingModel.get(dbKey);
-        logger.debug(`Loaded value for ${key}`);
 
         if (value !== undefined) {
-          logger.debug(`Setting value for ${key}`);
           this.setUserSettingFromValue(key as keyof UserConfigType, value);
         } else {
           logger.debug(`No value found for ${key}, using default`);
@@ -669,7 +669,7 @@ export class ConfigManager extends EventEmitter {
     ipcMain.handle(
       "config-get-user-setting",
       async (_event: any, key: string) => {
-        return (await this.getUserSetting(key as any)).value;
+        return (await this.getUserSetting(key as any))?.value;
       }
     );
 
@@ -683,45 +683,6 @@ export class ConfigManager extends EventEmitter {
     // Full config
     ipcMain.handle("config-get", async () => {
       return this.getConfig();
-    });
-
-    // Event listeners
-    ipcMain.on("config-on-change", (event: any) => {
-      this.on(ConfigEvent.APP_SETTINGS_CHANGED, (key: string, value: any) => {
-        event.sender.send("config-on-change", {
-          type: ConfigEvent.APP_SETTINGS_CHANGED,
-          details: {
-            key,
-            value,
-          },
-        });
-      });
-
-      this.on(ConfigEvent.USER_SETTINGS_CHANGED, (key: string, value: any) => {
-        event.sender.send("config-on-change", {
-          type: ConfigEvent.USER_SETTINGS_CHANGED,
-          details: {
-            key,
-            value,
-          },
-        });
-      });
-
-      this.on(ConfigEvent.USER_SETTINGS_LOADED, (userSettings: any) => {
-        event.sender.send("config-on-change", {
-          type: ConfigEvent.USER_SETTINGS_LOADED,
-          details: {
-            userSettings,
-          },
-        });
-      });
-
-      this.on(ConfigEvent.USER_SETTINGS_UNLOADED, () => {
-        event.sender.send("config-on-change", {
-          type: ConfigEvent.USER_SETTINGS_UNLOADED,
-          details: {},
-        });
-      });
     });
   }
 }

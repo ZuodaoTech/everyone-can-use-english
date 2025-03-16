@@ -173,6 +173,7 @@ export const AppSettingsProvider = ({
   const login = async (user: UserType) => {
     if (!user?.id) return;
 
+    console.log("login", user);
     EnjoyApp.config.login(user);
   };
 
@@ -279,7 +280,7 @@ export const AppSettingsProvider = ({
     console.log("handleConfigChange", state);
     switch (state.type) {
       case ConfigEvent.USER_SETTINGS_LOADED:
-        setUser(state.details.userSettings.profile);
+        setUser(state.details.profile);
         break;
       case ConfigEvent.USER_SETTINGS_UNLOADED:
         setUser(null);

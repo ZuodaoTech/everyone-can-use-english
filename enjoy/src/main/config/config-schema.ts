@@ -3,7 +3,7 @@ import {
   AppConfigType,
   ConfigSchema,
   UserConfigType,
-} from "../../shared/types/config";
+} from "@shared/types/config.d";
 import { LIBRARY_PATH_SUFFIX, WEB_API_URL } from "@shared/constants";
 import path from "path";
 import { app } from "electron";

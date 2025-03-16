@@ -235,6 +235,7 @@ db.connect = async () => {
     config.loadUserSettings(UserSetting);
   } catch (err) {
     logger.error(err);
+    config.unloadUserSettings();
     throw err;
   } finally {
     db.isConnecting = false;
@@ -250,6 +251,7 @@ db.disconnect = async () => {
 
   await db.connection?.close();
   db.connection = null;
+  config.unloadUserSettings();
 };
 
 db.backup = async (options?: { force: boolean }) => {
