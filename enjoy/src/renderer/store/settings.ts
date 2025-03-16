@@ -12,6 +12,8 @@ import {
   EchogardenSttConfigType,
 } from "./types";
 import { Client } from "@shared/api";
+import { GPT_PROVIDERS, TTS_PROVIDERS } from "@renderer/components";
+import { WHISPER_MODELS } from "@shared/constants";
 
 interface SettingsState {
   // App settings
@@ -37,6 +39,11 @@ interface SettingsState {
   openai: LlmProviderType | null;
   ttsConfig: TtsConfigType | null;
   echogardenSttConfig: EchogardenSttConfigType | null;
+  gptProviders: typeof GPT_PROVIDERS;
+  ttsProviders: typeof TTS_PROVIDERS;
+
+  // Computed values
+  currentGptEngine: GptEngineSettingType;
 
   // Hotkeys
   hotkeys: Record<string, string>;
@@ -62,6 +69,8 @@ interface SettingsState {
   setOpenai: (config: LlmProviderType) => Promise<void>;
   setTtsConfig: (config: TtsConfigType) => Promise<void>;
   setEchogardenSttConfig: (config: EchogardenSttConfigType) => Promise<void>;
+  refreshGptProviders: () => Promise<void>;
+  refreshTtsProviders: () => Promise<void>;
 
   // Actions - Hotkeys
   setHotkey: (key: string, value: string) => Promise<void>;
@@ -105,6 +114,26 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
   openai: null,
   ttsConfig: null,
   echogardenSttConfig: null,
+  gptProviders: GPT_PROVIDERS,
+  ttsProviders: TTS_PROVIDERS,
+
+  // Computed values
+  get currentGptEngine() {
+    const state = get();
+    if (state.gptEngine.name === "openai") {
+      return {
+        ...state.gptEngine,
+        key: state.openai?.key,
+        baseUrl: state.openai?.baseUrl,
+      };
+    } else {
+      return {
+        ...state.gptEngine,
+        key: state.user?.accessToken,
+        baseUrl: `${state.apiUrl}/api/ai`,
+      };
+    }
+  },
 
   // Initial state - Hotkeys
   hotkeys: {},
@@ -216,6 +245,9 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
       engine
     );
     set({ gptEngine: engine });
+
+    // Refresh providers when engine changes
+    get().refreshGptProviders();
   },
 
   setOpenai: async (config: LlmProviderType) => {
@@ -224,6 +256,9 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
       config
     );
     set({ openai: { ...config, name: "openai" } });
+
+    // Refresh providers when OpenAI config changes
+    get().refreshGptProviders();
   },
 
   setTtsConfig: async (config: TtsConfigType) => {
@@ -240,6 +275,59 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
       config
     );
     set({ echogardenSttConfig: config });
+  },
+
+  refreshGptProviders: async () => {
+    const { openai } = get();
+    let providers = { ...GPT_PROVIDERS };
+
+    try {
+      const webApi = new Client({
+        baseUrl: get().apiUrl,
+        accessToken: get().user?.accessToken,
+      });
+
+      const config = await webApi.config("gpt_providers");
+      if (config) {
+        providers = Object.assign(providers, config);
+      }
+    } catch (e) {
+      console.warn(`Failed to fetch remote GPT config: ${e.message}`);
+    }
+
+    try {
+      const response = await fetch(providers["ollama"]?.baseUrl + "/api/tags");
+      const data = await response.json();
+      providers["ollama"].models = data.models.map((m: any) => m.name);
+    } catch (e) {
+      console.warn(`No ollama server found: ${e.message}`);
+    }
+
+    if (openai?.models) {
+      providers["openai"].models = openai.models.split(",");
+    }
+
+    set({ gptProviders: providers });
+  },
+
+  refreshTtsProviders: async () => {
+    let providers = { ...TTS_PROVIDERS };
+
+    try {
+      const webApi = new Client({
+        baseUrl: get().apiUrl,
+        accessToken: get().user?.accessToken,
+      });
+
+      const config = await webApi.config("tts_providers_v2");
+      if (config) {
+        providers = Object.assign(providers, config);
+      }
+    } catch (e) {
+      console.warn(`Failed to fetch remote TTS config: ${e.message}`);
+    }
+
+    set({ ttsProviders: providers });
   },
 
   // Actions - Hotkeys
@@ -292,9 +380,57 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
     const ttsConfig = await EnjoyApp.config.getUserSetting(
       UserSettingKeyEnum.TTS_CONFIG
     );
-    const echogardenSttConfig = await EnjoyApp.config.getUserSetting(
+
+    // Initialize echogardenSttConfig with proper defaults if not set
+    let echogardenSttConfig = await EnjoyApp.config.getUserSetting(
       UserSettingKeyEnum.ECHOGARDEN
     );
+    if (!echogardenSttConfig) {
+      let model = "tiny";
+      const whisperModel =
+        (await EnjoyApp.config.getUserSetting(UserSettingKeyEnum.WHISPER)) ||
+        "";
+
+      if (WHISPER_MODELS.includes(whisperModel)) {
+        model = whisperModel;
+      } else {
+        if (whisperModel.match(/tiny/)) {
+          model = "tiny";
+        } else if (whisperModel.match(/base/)) {
+          model = "base";
+        } else if (whisperModel.match(/small/)) {
+          model = "small";
+        } else if (whisperModel.match(/medium/)) {
+          model = "medium";
+        } else if (whisperModel.match(/large/)) {
+          model = "large-v3-turbo";
+        }
+
+        if (
+          learningLanguage.match(/en/) &&
+          model.match(/tiny|base|small|medium/)
+        ) {
+          model = `${model}.en`;
+        }
+      }
+
+      echogardenSttConfig = {
+        engine: "whisper",
+        whisper: {
+          model,
+          temperature: 0.2,
+          prompt: "",
+          encoderProvider: "cpu",
+          decoderProvider: "cpu",
+        },
+      };
+
+      await EnjoyApp.config.setUserSetting(
+        UserSettingKeyEnum.ECHOGARDEN,
+        echogardenSttConfig
+      );
+    }
+
     const vocabularyConfig = (await EnjoyApp.config.getUserSetting(
       UserSettingKeyEnum.VOCABULARY
     )) || { lookupOnMouseOver: true };
@@ -352,6 +488,11 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
       echogardenSttConfig,
       hotkeys,
     });
+
+    // Refresh providers
+    const state = get();
+    state.refreshGptProviders();
+    state.refreshTtsProviders();
 
     // Set up config change listener
     EnjoyApp.config.onChange((event: any, state: any) => {
