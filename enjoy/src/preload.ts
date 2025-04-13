@@ -628,7 +628,7 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     cancelAll: () => ipcRenderer.invoke("download-cancel-all"),
     dashboard: () => ipcRenderer.invoke("download-dashboard"),
     removeAllListeners: () =>
-      ipcRenderer.removeAllListeners("download-on-error"),
+      ipcRenderer.removeAllListeners("download-on-state"),
   },
   cacheObjects: {
     get: (key: string) => {
