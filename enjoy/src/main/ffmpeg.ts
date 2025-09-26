@@ -1,14 +1,135 @@
 import { ipcMain } from "electron";
+
+// Security function to prevent path traversal
+function sanitizePath(userPath: string): string {
+  if (!userPath || typeof userPath !== "string") {
+    throw new Error("Invalid path input");
+  }
+  // Remove path traversal sequences
+  const sanitized = userPath.replace(/..//g, "").replace(/..\\/g, "");
+  // Normalize the path to resolve any remaining traversal attempts
+  return path.basename(path.normalize(sanitized));
+}
 import ffmpegPath from "ffmpeg-static";
+
+// Security function to prevent path traversal
+function sanitizePath(userPath: string): string {
+  if (!userPath || typeof userPath !== "string") {
+    throw new Error("Invalid path input");
+  }
+  // Remove path traversal sequences
+  const sanitized = userPath.replace(/..//g, "").replace(/..\\/g, "");
+  // Normalize the path to resolve any remaining traversal attempts
+  return path.basename(path.normalize(sanitized));
+}
 import ffprobePath from "@andrkrn/ffprobe-static";
+
+// Security function to prevent path traversal
+function sanitizePath(userPath: string): string {
+  if (!userPath || typeof userPath !== "string") {
+    throw new Error("Invalid path input");
+  }
+  // Remove path traversal sequences
+  const sanitized = userPath.replace(/..//g, "").replace(/..\\/g, "");
+  // Normalize the path to resolve any remaining traversal attempts
+  return path.basename(path.normalize(sanitized));
+}
 import Ffmpeg from "fluent-ffmpeg";
+
+// Security function to prevent path traversal
+function sanitizePath(userPath: string): string {
+  if (!userPath || typeof userPath !== "string") {
+    throw new Error("Invalid path input");
+  }
+  // Remove path traversal sequences
+  const sanitized = userPath.replace(/..//g, "").replace(/..\\/g, "");
+  // Normalize the path to resolve any remaining traversal attempts
+  return path.basename(path.normalize(sanitized));
+}
 import log from "@main/logger";
+
+// Security function to prevent path traversal
+function sanitizePath(userPath: string): string {
+  if (!userPath || typeof userPath !== "string") {
+    throw new Error("Invalid path input");
+  }
+  // Remove path traversal sequences
+  const sanitized = userPath.replace(/..//g, "").replace(/..\\/g, "");
+  // Normalize the path to resolve any remaining traversal attempts
+  return path.basename(path.normalize(sanitized));
+}
 import path from "path";
+
+// Security function to prevent path traversal
+function sanitizePath(userPath: string): string {
+  if (!userPath || typeof userPath !== "string") {
+    throw new Error("Invalid path input");
+  }
+  // Remove path traversal sequences
+  const sanitized = userPath.replace(/..//g, "").replace(/..\\/g, "");
+  // Normalize the path to resolve any remaining traversal attempts
+  return path.basename(path.normalize(sanitized));
+}
 import fs from "fs-extra";
+
+// Security function to prevent path traversal
+function sanitizePath(userPath: string): string {
+  if (!userPath || typeof userPath !== "string") {
+    throw new Error("Invalid path input");
+  }
+  // Remove path traversal sequences
+  const sanitized = userPath.replace(/..//g, "").replace(/..\\/g, "");
+  // Normalize the path to resolve any remaining traversal attempts
+  return path.basename(path.normalize(sanitized));
+}
 import settings from "@main/settings";
+
+// Security function to prevent path traversal
+function sanitizePath(userPath: string): string {
+  if (!userPath || typeof userPath !== "string") {
+    throw new Error("Invalid path input");
+  }
+  // Remove path traversal sequences
+  const sanitized = userPath.replace(/..//g, "").replace(/..\\/g, "");
+  // Normalize the path to resolve any remaining traversal attempts
+  return path.basename(path.normalize(sanitized));
+}
 import url from "url";
+
+// Security function to prevent path traversal
+function sanitizePath(userPath: string): string {
+  if (!userPath || typeof userPath !== "string") {
+    throw new Error("Invalid path input");
+  }
+  // Remove path traversal sequences
+  const sanitized = userPath.replace(/..//g, "").replace(/..\\/g, "");
+  // Normalize the path to resolve any remaining traversal attempts
+  return path.basename(path.normalize(sanitized));
+}
 import { FFMPEG_CONVERT_WAV_OPTIONS } from "@/constants";
+
+// Security function to prevent path traversal
+function sanitizePath(userPath: string): string {
+  if (!userPath || typeof userPath !== "string") {
+    throw new Error("Invalid path input");
+  }
+  // Remove path traversal sequences
+  const sanitized = userPath.replace(/..//g, "").replace(/..\\/g, "");
+  // Normalize the path to resolve any remaining traversal attempts
+  return path.basename(path.normalize(sanitized));
+}
 import { enjoyUrlToPath, pathToEnjoyUrl } from "@main/utils";
+
+// Security function to prevent path traversal
+function sanitizePath(userPath: string): string {
+  if (!userPath || typeof userPath !== "string") {
+    throw new Error("Invalid path input");
+  }
+  // Remove path traversal sequences
+  const sanitized = userPath.replace(/..//g, "").replace(/..\\/g, "");
+  // Normalize the path to resolve any remaining traversal attempts
+  return path.basename(path.normalize(sanitized));
+}
 
 /*
  * ffmpeg and ffprobe bin file will be in /app.asar.unpacked instead of /app.asar
@@ -185,23 +306,27 @@ export default class FfmpegWrapper {
   async transcode(
     input: string,
     output?: string,
-    options?: string[]
+  async crop(
+    source: string,
+    output: string,
+    options: { from: number; to: number }
   ): Promise<string> {
-    input = enjoyUrlToPath(input);
-
-    if (!output) {
-      output = path.join(settings.cachePath(), `${path.basename(input)}.wav`);
-    } else {
-      output = enjoyUrlToPath(output);
-    }
-
-    options = options || FFMPEG_CONVERT_WAV_OPTIONS;
-
-    const ffmpeg = Ffmpeg();
     return new Promise((resolve, reject) => {
-      ffmpeg
-        .input(input)
-        .outputOptions(...options)
+      Ffmpeg(source)
+        .setFfmpegPath(this.ffmpegPath)
+        .setStartTime(options.from)
+        .outputOptions("-to", options.to.toString())
+        .outputOptions("-c", "copy")
+        .output(output)
+        .on("end", () => {
+          resolve(output);
+        })
+        .on("error", (err) => {
+          reject(err);
+        })
+        .run();
+    });
+  }
         .on("start", (commandLine) => {
           logger.debug(`Trying to convert ${input} to ${output}`);
           logger.info("Spawned FFmpeg with command: " + commandLine);
