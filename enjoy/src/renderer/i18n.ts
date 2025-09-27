@@ -1,6 +1,7 @@
 import * as i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import en from "@/i18n/en.json";
+import es from "@/i18n/es.json";
 import zh_CN from "@/i18n/zh-CN.json";
 
 // the translations
@@ -9,6 +10,9 @@ import zh_CN from "@/i18n/zh-CN.json";
 const resources = {
   en: {
     translation: en,
+  },
+  es: {
+    translation: es,
   },
   "zh-CN": {
     translation: zh_CN,
@@ -20,7 +24,7 @@ i18n
   .init({
     resources,
     lng: "en",
-    supportedLngs: ["en", "zh-CN"],
+    supportedLngs: ["en", "es", "zh-CN"],
     fallbackLng: "en",
     interpolation: {
       escapeValue: false, // react already safes from xss
