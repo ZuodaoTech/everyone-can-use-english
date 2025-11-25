@@ -43,13 +43,11 @@ jobs:
       - name: Build
         run: yarn portal:generate
 
-      - name: Install Wrangler manually (workaround)
-        run: npm install -g wrangler@3.81.0
-        
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_BASEONE_API_TOKEN }}
+          preCommands: npm install @cloudflare/kv-asset-handler
           accountId: ${{ secrets.CF_BASEONE_ACCOUNT_ID }}
           command: deploy
           workingDirectory: "1000h-portal"
