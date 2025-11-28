@@ -1,3 +1,35 @@
+
+<div align="right">
+  <details>
+    <summary >🌐 Language</summary>
+    <div>
+      <div align="center">
+        <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=en">English</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=zh-CN">简体中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=zh-TW">繁體中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=ja">日本語</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=ko">한국어</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=hi">हिन्दी</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=th">ไทย</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=fr">Français</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=de">Deutsch</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=es">Español</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=it">Italiano</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=ru">Русский</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=pt">Português</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=nl">Nederlands</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=pl">Polski</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=ar">العربية</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=fa">فارسی</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=tr">Türkçe</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=vi">Tiếng Việt</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=id">Bahasa Indonesia</a>
+        | <a href="https://openaitx.github.io/view.html?user=ZuodaoTech&project=everyone-can-use-english&lang=as">অসমীয়া</
+      </div>
+    </div>
+  </details>
+</div>
+
 <div align="center">
   <img src="./enjoy/assets/icon.png" alt="Clash" width="128" />
 </div>
