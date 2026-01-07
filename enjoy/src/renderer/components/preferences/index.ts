@@ -29,6 +29,8 @@ export * from "./theme-settings";
 
 export * from "./proxy-settings";
 
+export * from "./azure-speech-settings";
+
 export * from "./network-state";
 
 export * from "./recorder-settings";

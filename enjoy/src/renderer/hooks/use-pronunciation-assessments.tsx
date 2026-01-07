@@ -29,15 +29,35 @@ export const usePronunciationAssessments = () => {
 
     const { language, reference = recording.referenceText } = params;
 
-    const {
-      id: tokenId,
-      token,
-      region,
-    } = await webApi.generateSpeechToken({
-      purpose: "pronunciation_assessment",
-      targetId,
-      targetType,
-    });
+    const customKey = await EnjoyApp.appSettings.getAzureSpeechKey();
+    const customEndpoint = await EnjoyApp.appSettings.getAzureSpeechEndpoint();
+    const customRegion = await EnjoyApp.appSettings.getAzureSpeechRegion();
+
+    let tokenId: number;
+    let speechConfig: sdk.SpeechConfig;
+
+    if (customKey && customRegion) {
+      // Use user's own subscription
+      if (customEndpoint) {
+        speechConfig = sdk.SpeechConfig.fromEndpoint(new URL(customEndpoint), customKey);
+      } else {
+        speechConfig = sdk.SpeechConfig.fromSubscription(customKey, customRegion);
+      }
+    } else {
+      // Use default service token
+      const { id, token, region } = await webApi.generateSpeechToken({
+        purpose: "pronunciation_assessment",
+        targetId,
+        targetType,
+      });
+      tokenId = id;
+      
+      if (customEndpoint) {
+        speechConfig = sdk.SpeechConfig.fromEndpoint(new URL(customEndpoint), token);
+      } else {
+        speechConfig = sdk.SpeechConfig.fromAuthorizationToken(token, customRegion || region);
+      }
+    }
 
     let result = null;
 
@@ -48,7 +68,7 @@ export const usePronunciationAssessments = () => {
           language,
           reference,
         },
-        { token, region }
+        { speechConfig }
       );
     } else {
       result = await continousAssess(
@@ -57,7 +77,7 @@ export const usePronunciationAssessments = () => {
           language,
           reference,
         },
-        { token, region }
+        { speechConfig }
       );
     }
 
@@ -94,13 +114,12 @@ export const usePronunciationAssessments = () => {
       reference?: string;
     },
     options: {
-      token: string;
-      region: string;
+      speechConfig: sdk.SpeechConfig;
     }
   ): Promise<sdk.PronunciationAssessmentResult> => {
     const { blob, language, reference } = params;
-    const { token, region } = options;
-    const config = sdk.SpeechConfig.fromAuthorizationToken(token, region);
+    const { speechConfig } = options;
+    
     const audioConfig = sdk.AudioConfig.fromWavFileInput(
       new File([blob], "audio.wav")
     );
@@ -114,10 +133,10 @@ export const usePronunciationAssessments = () => {
     pronunciationAssessmentConfig.phonemeAlphabet = "IPA";
 
     // setting the recognition language
-    config.speechRecognitionLanguage = language;
+    speechConfig.speechRecognitionLanguage = language;
 
     // create the speech recognizer.
-    const reco = new sdk.SpeechRecognizer(config, audioConfig);
+    const reco = new sdk.SpeechRecognizer(speechConfig, audioConfig);
     pronunciationAssessmentConfig.applyTo(reco);
 
     return new Promise((resolve, reject) => {
@@ -162,13 +181,12 @@ export const usePronunciationAssessments = () => {
       reference?: string;
     },
     options: {
-      token: string;
-      region: string;
+      speechConfig: sdk.SpeechConfig;
     }
   ): Promise<sdk.PronunciationAssessmentResult> => {
     const { blob, language, reference } = params;
-    const { token, region } = options;
-    const config = sdk.SpeechConfig.fromAuthorizationToken(token, region);
+    const { speechConfig } = options;
+    
     const audioConfig = sdk.AudioConfig.fromWavFileInput(
       new File([blob], "audio.wav")
     );
@@ -182,10 +200,10 @@ export const usePronunciationAssessments = () => {
     pronunciationAssessmentConfig.phonemeAlphabet = "IPA";
 
     // setting the recognition language
-    config.speechRecognitionLanguage = language;
+    speechConfig.speechRecognitionLanguage = language;
 
     // create the speech recognizer.
-    const reco = new sdk.SpeechRecognizer(config, audioConfig);
+    const reco = new sdk.SpeechRecognizer(speechConfig, audioConfig);
     pronunciationAssessmentConfig.applyTo(reco);
 
     return new Promise((resolve, reject) => {

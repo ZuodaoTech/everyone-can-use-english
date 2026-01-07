@@ -26,6 +26,9 @@ export enum AppSettingsKeyEnum {
   LIBRARY = "library",
   USER = "user",
   API_URL = "api_url",
+  AZURE_SPEECH_KEY = "azure_speech_key",
+  AZURE_SPEECH_ENDPOINT = "azure_speech_endpoint",
+  AZURE_SPEECH_REGION = "azure_speech_region",
 }
 
 export enum ChatTypeEnum {

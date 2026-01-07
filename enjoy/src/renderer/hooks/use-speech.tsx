@@ -90,11 +90,35 @@ export const useSpeech = () => {
 
     if (model !== "azure/speech") return;
 
-    const { id, token, region } = await webApi.generateSpeechToken({
-      purpose: "tts",
-      input: text,
-    });
-    const speechConfig = sdk.SpeechConfig.fromAuthorizationToken(token, region);
+    const customKey = await EnjoyApp.appSettings.getAzureSpeechKey();
+    const customEndpoint = await EnjoyApp.appSettings.getAzureSpeechEndpoint();
+    const customRegion = await EnjoyApp.appSettings.getAzureSpeechRegion();
+
+    let tokenId: number;
+    let speechConfig: sdk.SpeechConfig;
+
+    if (customKey && customRegion) {
+      // Use user's own subscription
+      if (customEndpoint) {
+        speechConfig = sdk.SpeechConfig.fromEndpoint(new URL(customEndpoint), customKey);
+      } else {
+        speechConfig = sdk.SpeechConfig.fromSubscription(customKey, customRegion);
+      }
+    } else {
+      // Use default service token
+      const { id, token, region } = await webApi.generateSpeechToken({
+        purpose: "tts",
+        input: text,
+      });
+      tokenId = id;
+      
+      if (customEndpoint) {
+        speechConfig = sdk.SpeechConfig.fromEndpoint(new URL(customEndpoint), token);
+      } else {
+        speechConfig = sdk.SpeechConfig.fromAuthorizationToken(token, customRegion || region);
+      }
+    }
+    
     speechConfig.speechRecognitionLanguage = learningLanguage;
     speechConfig.speechSynthesisVoiceName = voice;
 
@@ -109,16 +133,16 @@ export const useSpeech = () => {
           speechSynthesizer.close();
 
           if (result && result.audioData) {
-            webApi.consumeSpeechToken(id);
+            if (tokenId) webApi.consumeSpeechToken(tokenId);
             resolve(result.audioData);
           } else {
-            webApi.revokeSpeechToken(id);
+            if (tokenId) webApi.revokeSpeechToken(tokenId);
             reject(result);
           }
         },
         (error) => {
           speechSynthesizer.close();
-          webApi.revokeSpeechToken(id);
+          if (tokenId) webApi.revokeSpeechToken(tokenId);
           reject(error);
         }
       );

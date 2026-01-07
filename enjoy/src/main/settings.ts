@@ -115,6 +115,30 @@ export default {
     ipcMain.handle("app-settings-get-sessions", (_event) => {
       return sessions();
     });
+
+    ipcMain.handle("app-settings-get-azure-speech-key", (_event) => {
+      return settings.getSync(AppSettingsKeyEnum.AZURE_SPEECH_KEY);
+    });
+
+    ipcMain.handle("app-settings-set-azure-speech-key", (_event, key) => {
+      settings.setSync(AppSettingsKeyEnum.AZURE_SPEECH_KEY, key);
+    });
+
+    ipcMain.handle("app-settings-get-azure-speech-endpoint", (_event) => {
+      return settings.getSync(AppSettingsKeyEnum.AZURE_SPEECH_ENDPOINT);
+    });
+
+    ipcMain.handle("app-settings-set-azure-speech-endpoint", (_event, endpoint) => {
+      settings.setSync(AppSettingsKeyEnum.AZURE_SPEECH_ENDPOINT, endpoint);
+    });
+
+    ipcMain.handle("app-settings-get-azure-speech-region", (_event) => {
+      return settings.getSync(AppSettingsKeyEnum.AZURE_SPEECH_REGION);
+    });
+
+    ipcMain.handle("app-settings-set-azure-speech-region", (_event, region) => {
+      settings.setSync(AppSettingsKeyEnum.AZURE_SPEECH_REGION, region);
+    });
   },
   cachePath,
   libraryPath,

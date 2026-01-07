@@ -291,6 +291,24 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     setApiUrl: (url: string) => {
       return ipcRenderer.invoke("app-settings-set-api-url", url);
     },
+    getAzureSpeechKey: () => {
+      return ipcRenderer.invoke("app-settings-get-azure-speech-key");
+    },
+    setAzureSpeechKey: (key: string) => {
+      return ipcRenderer.invoke("app-settings-set-azure-speech-key", key);
+    },
+    getAzureSpeechEndpoint: () => {
+      return ipcRenderer.invoke("app-settings-get-azure-speech-endpoint");
+    },
+    setAzureSpeechEndpoint: (endpoint: string) => {
+      return ipcRenderer.invoke("app-settings-set-azure-speech-endpoint", endpoint);
+    },
+    getAzureSpeechRegion: () => {
+      return ipcRenderer.invoke("app-settings-get-azure-speech-region");
+    },
+    setAzureSpeechRegion: (region: string) => {
+      return ipcRenderer.invoke("app-settings-set-azure-speech-region", region);
+    },
   },
   userSettings: {
     get: (key: string) => {

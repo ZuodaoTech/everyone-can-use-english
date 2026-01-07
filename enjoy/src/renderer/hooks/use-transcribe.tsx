@@ -395,11 +395,35 @@ export const useTranscribe = () => {
     segmentTimeline: TimelineEntry[];
     tokenId: number;
   }> => {
-    const { id, token, region } = await webApi.generateSpeechToken({
-      ...params,
-      purpose: "transcribe",
-    });
-    const config = sdk.SpeechConfig.fromAuthorizationToken(token, region);
+    const customKey = await EnjoyApp.appSettings.getAzureSpeechKey();
+    const customEndpoint = await EnjoyApp.appSettings.getAzureSpeechEndpoint();
+    const customRegion = await EnjoyApp.appSettings.getAzureSpeechRegion();
+
+    let tokenId: number;
+    let config: sdk.SpeechConfig;
+
+    if (customKey && customRegion) {
+      // Use user's own subscription
+      if (customEndpoint) {
+        config = sdk.SpeechConfig.fromEndpoint(new URL(customEndpoint), customKey);
+      } else {
+        config = sdk.SpeechConfig.fromSubscription(customKey, customRegion);
+      }
+    } else {
+      // Use default service token
+      const { id, token, region } = await webApi.generateSpeechToken({
+        ...params,
+        purpose: "transcribe",
+      });
+      tokenId = id;
+      
+      if (customEndpoint) {
+        config = sdk.SpeechConfig.fromEndpoint(new URL(customEndpoint), token);
+      } else {
+        config = sdk.SpeechConfig.fromAuthorizationToken(token, customRegion || region);
+      }
+    }
+    
     const audioConfig = sdk.AudioConfig.fromWavFileInput(file);
     // setting the recognition language to learning language, such as 'en-US'.
     config.speechRecognitionLanguage = language;
@@ -491,7 +515,7 @@ export const useTranscribe = () => {
       model: "whisper",
       transcript,
       segmentTimeline,
-      tokenId: id,
+      tokenId,
     };
   };
 

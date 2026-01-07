@@ -164,6 +164,12 @@ type EnjoyAppType = {
     getUserDataPath: () => Promise<string>;
     getApiUrl: () => Promise<string>;
     setApiUrl: (url: string) => Promise<void>;
+    getAzureSpeechKey: () => Promise<string>;
+    setAzureSpeechKey: (key: string) => Promise<void>;
+    getAzureSpeechEndpoint: () => Promise<string>;
+    setAzureSpeechEndpoint: (endpoint: string) => Promise<void>;
+    getAzureSpeechRegion: () => Promise<string>;
+    setAzureSpeechRegion: (region: string) => Promise<void>;
     getSessions: () => Promise<{ id: string }[]>;
   };
   userSettings: {
