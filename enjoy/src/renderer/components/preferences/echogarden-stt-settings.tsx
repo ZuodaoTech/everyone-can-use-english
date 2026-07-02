@@ -133,7 +133,11 @@ export const EchogardenSttSettings = (props: {
           />
           <FormField
             control={form.control}
-            name="whisper.model"
+            name={
+              form.watch("engine") === "whisper.cpp"
+                ? "whisperCpp.model"
+                : "whisper.model"
+            }
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("model")}</FormLabel>

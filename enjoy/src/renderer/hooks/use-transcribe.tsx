@@ -114,15 +114,30 @@ export const useTranscribe = () => {
     }
 
     if (segmentTimeline && segmentTimeline.length > 0) {
-      const wordTimeline = await EnjoyApp.echogarden.alignSegments(
-        new Uint8Array(await blob.arrayBuffer()),
-        segmentTimeline,
-        {
-          engine: "dtw",
-          language: language.split("-")[0],
-          isolate,
-        }
+      // If the segment timeline already contains word-level timestamps (e.g. from
+      // Azure), use them directly instead of re-aligning with DTW+eSpeak.
+      // DTW alignment via eSpeak is unreliable for non-Latin-script languages
+      // (Japanese, Chinese, Korean) because eSpeak's synthetic reference audio
+      // differs acoustically from natural speech, leading to misaligned waveform
+      // markers.
+      const hasWordTimeline = segmentTimeline.some(
+        (s) => s.timeline && s.timeline.length > 0
       );
+
+      let wordTimeline: TimelineEntry[];
+      if (hasWordTimeline) {
+        wordTimeline = segmentTimeline.flatMap((s) => s.timeline);
+      } else {
+        wordTimeline = await EnjoyApp.echogarden.alignSegments(
+          new Uint8Array(await blob.arrayBuffer()),
+          segmentTimeline,
+          {
+            engine: "dtw",
+            language: language.split("-")[0],
+            isolate,
+          }
+        );
+      }
 
       const timeline = await EnjoyApp.echogarden.wordToSentenceTimeline(
         wordTimeline,
@@ -464,12 +479,20 @@ export const useTranscribe = () => {
               const firstWord = best.Words[0];
               const lastWord = best.Words[best.Words.length - 1];
 
+              const wordTimeline: TimelineEntry[] = best.Words.map((word) => ({
+                type: "word" as TimelineEntryType,
+                text: word.Word,
+                startTime: word.Offset / 10000000.0,
+                endTime: (word.Offset + word.Duration) / 10000000.0,
+                timeline: [],
+              }));
+
               segmentTimeline.push({
                 type: "segment",
                 text: best.Display,
                 startTime: firstWord.Offset / 10000000.0,
                 endTime: (lastWord.Offset + lastWord.Duration) / 10000000.0,
-                timeline: [],
+                timeline: wordTimeline,
               });
             });
 

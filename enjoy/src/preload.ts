@@ -588,6 +588,9 @@ contextBridge.exposeInMainWorld("__ENJOY_APP__", {
     checkAlign: (options: AlignmentOptions) => {
       return ipcRenderer.invoke("echogarden-check-align", options);
     },
+    getJapaneseReadings: (text: string) => {
+      return ipcRenderer.invoke("echogarden-get-japanese-readings", text);
+    },
   },
   ffmpeg: {
     check: () => {

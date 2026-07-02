@@ -340,6 +340,9 @@ type EnjoyAppType = {
       success: boolean;
       log: string;
     }>;
+    getJapaneseReadings: (
+      text: string
+    ) => Promise<{ surface: string; reading: string }[]>;
   };
   ffmpeg: {
     check: () => Promise<boolean>;

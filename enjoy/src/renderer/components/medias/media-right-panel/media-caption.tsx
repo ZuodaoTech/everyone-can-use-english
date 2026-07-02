@@ -1,10 +1,18 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect, useMemo } from "react";
 import {
   AppSettingsProviderContext,
   MediaShadowProviderContext,
 } from "@renderer/context";
 import { convertWordIpaToNormal } from "@/utils";
 import { TimelineEntry } from "echogarden/dist/utilities/Timeline.d.js";
+
+// Convert katakana to hiragana (traditional furigana style)
+function katakanaToHiragana(str: string): string {
+  return str.replace(/[\u30A1-\u30F6]/g, (ch) =>
+    String.fromCharCode(ch.charCodeAt(0) - 0x60)
+  );
+}
+
 
 export const MediaCaption = (props: {
   caption: TimelineEntry;
@@ -17,7 +25,7 @@ export const MediaCaption = (props: {
   onClick?: (index: number) => void;
 }) => {
   const { currentNotes } = useContext(MediaShadowProviderContext);
-  const { learningLanguage, ipaMappings } = useContext(
+  const { EnjoyApp, learningLanguage, ipaMappings } = useContext(
     AppSettingsProviderContext
   );
   const notes = currentNotes.filter((note) => note.parameters?.quoteIndices);
@@ -33,6 +41,18 @@ export const MediaCaption = (props: {
   const language = props.language || learningLanguage;
 
   const [notedquoteIndices, setNotedquoteIndices] = useState<number[]>([]);
+  // Japanese word readings: maps word index → hiragana reading
+  const [japaneseReadings, setJapaneseReadings] = useState<
+    { surface: string; reading: string }[]
+  >([]);
+
+  useEffect(() => {
+    if (!language.startsWith("ja") || !displayIpa) return;
+    EnjoyApp.echogarden
+      .getJapaneseReadings(caption.text)
+      .then((tokens) => setJapaneseReadings(tokens))
+      .catch(() => setJapaneseReadings([]));
+  }, [caption.text, language, displayIpa]);
 
   let words = caption.text
     .replace(/ ([.,!?:;])/g, "$1")
@@ -55,6 +75,28 @@ export const MediaCaption = (props: {
   if (words.length !== caption.timeline.length) {
     words = caption.timeline.map((w) => w.text);
   }
+
+  // For Japanese: greedily match kuromoji tokens to each display word and
+  // collect the hiragana reading. Sequential matching handles repeated words.
+  const furiganaByIndex = useMemo(() => {
+    if (!language.startsWith("ja") || japaneseReadings.length === 0) return [];
+    let tokenIdx = 0;
+    return words.map((word) => {
+      let furigana = "";
+      let remaining = word;
+      while (remaining.length > 0 && tokenIdx < japaneseReadings.length) {
+        const token = japaneseReadings[tokenIdx];
+        if (remaining.startsWith(token.surface)) {
+          furigana += katakanaToHiragana(token.reading);
+          remaining = remaining.slice(token.surface.length);
+          tokenIdx++;
+        } else {
+          break;
+        }
+      }
+      return furigana;
+    });
+  }, [words, japaneseReadings, language]);
 
   return (
     <div className="flex flex-wrap px-4 py-2 bg-muted/50">
@@ -80,7 +122,16 @@ export const MediaCaption = (props: {
             {word}
           </div>
 
-          {displayIpa && (
+          {displayIpa && language.startsWith("ja") ? (
+            // Japanese: show hiragana furigana from kuromoji instead of
+            // eSpeak phoneme text (which is garbled for kanji characters).
+            furiganaByIndex[index] &&
+            furiganaByIndex[index] !== words[index] ? (
+              <div className="select-text text-xs text-muted-foreground px-1 text-center">
+                {furiganaByIndex[index]}
+              </div>
+            ) : null
+          ) : displayIpa ? (
             <div
               className={`select-text text-sm 2xl:text-base text-muted-foreground font-code px-1 ${
                 index === 0 ? "before:content-['/']" : ""
@@ -92,7 +143,7 @@ export const MediaCaption = (props: {
             >
               {ipas[index]}
             </div>
-          )}
+          ) : null}
 
           {displayNotes &&
             notes

@@ -11,6 +11,32 @@ import {
   AudioSourceParam,
 } from "echogarden/dist/audio/AudioUtilities.js";
 import { wordTimelineToSegmentSentenceTimeline } from "echogarden/dist/utilities/Timeline.js";
+import { splitJapaneseTextToWords_Kuromoji } from "echogarden/dist/nlp/JapaneseSegmentation.js";
+
+// Cached kuromoji tokenizer for Japanese readings (reused across calls)
+let _kuromojiTokenizer: any = null;
+async function getKuromojiTokenizer(): Promise<any> {
+  if (_kuromojiTokenizer) return _kuromojiTokenizer;
+  const { default: kuromoji } = await import("kuromoji");
+  const { resolveModuleScriptPath } = await import(
+    "echogarden/dist/utilities/Utilities.js"
+  );
+  const { getDirName, joinPath } = await import(
+    "echogarden/dist/utilities/PathUtilities.js"
+  );
+  const kuromojiScriptPath = await resolveModuleScriptPath("kuromoji");
+  const dictionaryPath = joinPath(getDirName(kuromojiScriptPath), "..", "/dict");
+  return new Promise((resolve, reject) => {
+    kuromoji.builder({ dicPath: dictionaryPath }).build((error, tokenizer) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      _kuromojiTokenizer = tokenizer;
+      resolve(tokenizer);
+    });
+  });
+}
 import {
   type Timeline,
   type TimelineEntry,
@@ -51,6 +77,9 @@ class EchogardenWrapper {
   public trimAudioStart: typeof trimAudioStart;
   public trimAudioEnd: typeof trimAudioEnd;
   public wordTimelineToSegmentSentenceTimeline: typeof wordTimelineToSegmentSentenceTimeline;
+  public getJapaneseReadings: (
+    text: string
+  ) => Promise<{ surface: string; reading: string }[]>;
 
   constructor() {
     this.recognize = (sampleFile: string, options: RecognitionOptions) => {
@@ -143,6 +172,14 @@ class EchogardenWrapper {
     this.trimAudioEnd = trimAudioEnd;
     this.wordTimelineToSegmentSentenceTimeline =
       wordTimelineToSegmentSentenceTimeline;
+    this.getJapaneseReadings = async (text: string) => {
+      const tokenizer = await getKuromojiTokenizer();
+      const results = tokenizer.tokenize(text);
+      return results.map((t: any) => ({
+        surface: t.surface_form,
+        reading: t.reading || t.surface_form,
+      }));
+    };
   }
 
   async check(options: RecognitionOptions) {
@@ -329,6 +366,19 @@ class EchogardenWrapper {
     ipcMain.handle("echogarden-get-packages-dir", async (_event) => {
       return ensureAndGetPackagesDir();
     });
+
+    ipcMain.handle(
+      "echogarden-get-japanese-readings",
+      async (_event, text: string) => {
+        logger.info("echogarden-get-japanese-readings:", text);
+        try {
+          return await this.getJapaneseReadings(text);
+        } catch (err) {
+          logger.error(err);
+          throw err;
+        }
+      }
+    );
   }
 }
 
