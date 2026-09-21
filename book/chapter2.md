@@ -186,7 +186,7 @@ Meanwhile, everyone is becoming even more distinctive, especially in terms of th
 
 所以，“父母们之所以选择男女分校，很可能的原因之一是因为他们害怕自己的孩子早恋。” 这句话，我愣是用英文说不出来。但，我还是先把这句话中能说明白的部分记在本子上：
 
-> One of the reasons why many parents want to send their children to separate school is that they are worried about 早恋.
+> One of the reasons why many parents want to send their children to separate schools is that they are worried about 早恋.
 
 很长时间里，我没有找到答案。
 
@@ -195,7 +195,7 @@ Meanwhile, everyone is becoming even more distinctive, especially in terms of th
 1. 在 …… 之下，比如 underground；
 2. ……不足、不良，比如，undernutrition，比如 underage drinking……
 读到 “underage drinking”（未成年人饮酒）的那一瞬间，我突然想到，实际上，我可以不用 “早恋” 这个词就能把我要说的说明白。其实，中国的父母害怕的并不是所谓的 “早恋”，如若一切发生在思维之中，他们很可能其实是并不关心的，就算因 “早恋” 发生了行动，拉拉手、亲亲嘴，他们也很可能不会太过紧张；然而，他们真的害怕自己的孩子发生 “underage sexual behaviors”……
-One of the reasons why many parents want to send their children to separate school is that they are worried about possible underage sexual behaviors.
+One of the reasons why many parents want to send their children to separate schools is that they are worried about possible underage sexual behaviors.
 
 这里的关键还是在于，过去遇到的问题我记录了下来，所以当某个可能的解决方案出现之时──无论那方案来自多么不可想象的方向──我能够想起那曾经的问题，于是，问题有可能被解决。
 
