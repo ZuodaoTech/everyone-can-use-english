@@ -60,6 +60,71 @@ test.afterAll(async () => {
   await electronApp.close();
 });
 
+test("configure medium ONNX CPU sessions safely on macOS", async () => {
+  const result = await electronApp.evaluate(async () => {
+    const { Whisper } = await import(
+      "echogarden/dist/recognition/WhisperSTT.js"
+    );
+    const { InferenceSession } = await import("onnxruntime-node");
+    const originalCreate = InferenceSession.create;
+    const cases: { model: string; providers: string[]; options: any[] }[] = [];
+    let options: any[] = [];
+
+    // Exercise the packaged dependency without downloading large model files.
+    InferenceSession.create = (async (_file: string, sessionOptions: any) => {
+      options.push(sessionOptions);
+      return {} as any;
+    }) as typeof InferenceSession.create;
+
+    try {
+      const models = ["medium", "medium.en", "tiny.en", "small.en"] as const;
+      const providerSets: ("cpu" | "cuda")[][] = [["cpu"], ["cuda", "cpu"]];
+      for (const model of models) {
+        for (const providers of providerSets) {
+          options = [];
+          const whisper = new Whisper(model, "/unused", providers, providers);
+          await whisper.initializeEncoderSessionIfNeeded();
+          await whisper.initializeDecoderSessionIfNeeded();
+          // Already initialized sessions should not be created again.
+          await whisper.initializeEncoderSessionIfNeeded();
+          await whisper.initializeDecoderSessionIfNeeded();
+          cases.push({ model, providers, options });
+        }
+      }
+    } finally {
+      InferenceSession.create = originalCreate;
+    }
+
+    return { platform: process.platform, cases };
+  });
+
+  for (const { model, providers, options } of result.cases) {
+    expect(options).toHaveLength(2);
+    const needsWorkaround =
+      result.platform === "darwin" &&
+      ["medium", "medium.en"].includes(model) &&
+      providers.length === 1;
+    for (const sessionOptions of options) {
+      expect(sessionOptions.executionProviders).toEqual(providers);
+      if (needsWorkaround) {
+        expect(sessionOptions).toMatchObject({
+          enableCpuMemArena: false,
+          enableMemPattern: false,
+          executionMode: "sequential",
+          intraOpNumThreads: 0,
+          interOpNumThreads: 1,
+        });
+      } else {
+        expect(sessionOptions.enableCpuMemArena).toBeUndefined();
+        expect(sessionOptions.enableMemPattern).toBeUndefined();
+        expect(sessionOptions.executionMode).toBeUndefined();
+        expect(sessionOptions.intraOpNumThreads).toBeUndefined();
+        expect(sessionOptions.interOpNumThreads).toBeUndefined();
+      }
+    }
+  }
+});
+
 test("validate echogarden recognition by whisper", async () => {
   const res = await page.evaluate(() => {
     return window.__ENJOY_APP__.echogarden.check({

@@ -196,7 +196,7 @@
     "@andrkrn/ffprobe-static": "^5.2.0",
     "@bugsnag/electron": "^8.2.0",
     "@bugsnag/plugin-react": "^8.2.0",
-    "echogarden": "^2.3.5",
+    "echogarden": "patch:echogarden@npm%3A2.3.5#~/.yarn/patches/echogarden-npm-2.3.5-351eef5932.patch",
     "electron-settings": "^4.0.4",
     "ffmpeg-static": "^5.2.0",
     "file-type": "^19.6.0",

@@ -14071,9 +14071,70 @@ __metadata:
   languageName: node
   linkType: hard
 
-"echogarden@npm:^2.3.5":
+"echogarden@npm:2.3.5":
   version: 2.3.5
   resolution: "echogarden@npm:2.3.5"
+  dependencies:
+    "@aws-sdk/client-polly": "npm:^3.758.0"
+    "@aws-sdk/client-transcribe-streaming": "npm:^3.758.0"
+    "@echogarden/audio-io": "npm:^0.3.0"
+    "@echogarden/espeak-ng-emscripten": "npm:^0.3.3"
+    "@echogarden/fasttext-wasm": "npm:^0.1.0"
+    "@echogarden/flite-wasi": "npm:^0.1.1"
+    "@echogarden/fvad-wasm": "npm:^0.2.0"
+    "@echogarden/gnuspeech-wasm": "npm:^0.2.1"
+    "@echogarden/pffft-wasm": "npm:^0.4.2"
+    "@echogarden/rnnoise-wasm": "npm:^0.2.0"
+    "@echogarden/rubberband-wasm": "npm:^0.2.0"
+    "@echogarden/sonic-wasm": "npm:^0.2.0"
+    "@echogarden/speex-resampler-wasm": "npm:^0.3.0"
+    "@echogarden/svoxpico-wasm": "npm:^0.2.0"
+    "@echogarden/transformers-nodejs-lite": "npm:^2.17.1-lite.3"
+    "@mozilla/readability": "npm:^0.5.0"
+    alawmulaw: "npm:^6.0.0"
+    chalk: "npm:^5.4.1"
+    cldr-segmentation: "npm:^2.2.1"
+    command-exists: "npm:^1.2.9"
+    compromise: "npm:^14.14.4"
+    fs-extra: "npm:^11.3.0"
+    gaxios: "npm:^6.7.1"
+    graceful-fs: "npm:^4.2.11"
+    html-to-text: "npm:^9.0.5"
+    import-meta-resolve: "npm:^4.1.0"
+    jieba-wasm: "npm:^2.2.0"
+    jsdom: "npm:^26.0.0"
+    json5: "npm:^2.2.3"
+    kuromoji: "npm:^0.1.2"
+    microsoft-cognitiveservices-speech-sdk: "npm:^1.42.0"
+    msgpack-lite: "npm:^0.1.26"
+    onnxruntime-node: "npm:^1.20.1"
+    openai: "npm:^4.86.1"
+    sam-js: "npm:^0.3.1"
+    strip-ansi: "npm:^7.1.0"
+    tar: "npm:^7.4.3"
+    tiktoken: "npm:^1.0.20"
+    tinyld: "npm:^1.3.4"
+    wasm-feature-detect: "npm:^1.8.0"
+    ws: "npm:^8.18.1"
+    wtf_wikipedia: "npm:^10.4.0"
+  peerDependencies:
+    "@echogarden/vosk": ^0.3.39-patched.1
+    winax: ^3.4.2
+  peerDependenciesMeta:
+    "@echogarden/vosk":
+      optional: true
+    winax:
+      optional: true
+  bin:
+    echogarden: dist/cli/CLILauncher.js
+  checksum: 10c0/2ea1bd6c9c0c9a70f64d79ea2368346a135293699c7e5634c14a62faa56638892844a45bc0def92f7c50120a5872066bfac518e04841db80c888a9b44746af34
+  conditions: (os=win32 | os=darwin | os=linux)
+  languageName: node
+  linkType: hard
+
+"echogarden@patch:echogarden@npm%3A2.3.5#~/.yarn/patches/echogarden-npm-2.3.5-351eef5932.patch":
+  version: 2.3.5
+  resolution: "echogarden@patch:echogarden@npm%3A2.3.5#~/.yarn/patches/echogarden-npm-2.3.5-351eef5932.patch::version=2.3.5&hash=3e5fe7"
   dependencies:
     "@aws-sdk/client-polly": "npm:^3.758.0"
     "@aws-sdk/client-transcribe-streaming": "npm:^3.758.0"
@@ -14572,7 +14633,7 @@ __metadata:
     decamelize-keys: "npm:^2.0.1"
     dependencies-tree: "npm:^2.0.0"
     diff: "npm:^7.0.0"
-    echogarden: "npm:^2.3.5"
+    echogarden: "patch:echogarden@npm%3A2.3.5#~/.yarn/patches/echogarden-npm-2.3.5-351eef5932.patch"
     electron: "npm:^34.3.3"
     electron-context-menu: "npm:^4.0.5"
     electron-devtools-installer: "npm:^4.0.0"

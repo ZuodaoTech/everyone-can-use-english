@@ -1,0 +1,44 @@
+diff --git a/dist/recognition/WhisperSTT.js b/dist/recognition/WhisperSTT.js
+index 3498823fa96241f60fd8843f92bf476474301a6f..a1ea885dc54e3eb33fd47a6b3e783c22781059cf 100644
+--- a/dist/recognition/WhisperSTT.js
++++ b/dist/recognition/WhisperSTT.js
+@@ -1099,6 +1099,19 @@ export class Whisper {
+         }
+         const logger = new Logger();
+         const onnxSessionOptions = getOnnxSessionOptions({ executionProviders: this.encoderExecutionProviders });
++        // Work around large ONNX CPU allocations crashing in Electron on macOS.
++        // https://github.com/microsoft/onnxruntime/issues/29763
++        if (process.platform === 'darwin' && process.versions.electron
++            && (this.modelName === 'medium' || this.modelName === 'medium.en')
++            && onnxSessionOptions.executionProviders.every(provider => provider === 'cpu')) {
++            Object.assign(onnxSessionOptions, {
++                enableCpuMemArena: false,
++                enableMemPattern: false,
++                executionMode: 'sequential',
++                intraOpNumThreads: 0,
++                interOpNumThreads: 1,
++            });
++        }
+         const onnxProvidersString = onnxSessionOptions.executionProviders.length > 0 ? `${onnxSessionOptions.executionProviders.join(', ')}` : `default`;
+         await logger.startAsync(`Create encoder inference session for model '${this.modelName}' (ONNX provider: ${onnxProvidersString})`);
+         const encoderFilePath = joinPath(this.modelDir, 'encoder.onnx');
+@@ -1112,6 +1125,19 @@ export class Whisper {
+         }
+         const logger = new Logger();
+         const onnxSessionOptions = getOnnxSessionOptions({ executionProviders: this.decoderExecutionProviders });
++        // Work around large ONNX CPU allocations crashing in Electron on macOS.
++        // https://github.com/microsoft/onnxruntime/issues/29763
++        if (process.platform === 'darwin' && process.versions.electron
++            && (this.modelName === 'medium' || this.modelName === 'medium.en')
++            && onnxSessionOptions.executionProviders.every(provider => provider === 'cpu')) {
++            Object.assign(onnxSessionOptions, {
++                enableCpuMemArena: false,
++                enableMemPattern: false,
++                executionMode: 'sequential',
++                intraOpNumThreads: 0,
++                interOpNumThreads: 1,
++            });
++        }
+         const onnxProvidersString = onnxSessionOptions.executionProviders.length > 0 ? `${onnxSessionOptions.executionProviders.join(', ')}` : `default`;
+         await logger.startAsync(`Create decoder inference session for model '${this.modelName}' (ONNX provider: ${onnxProvidersString})`);
+         const decoderFilePath = joinPath(this.modelDir, 'decoder.onnx');
